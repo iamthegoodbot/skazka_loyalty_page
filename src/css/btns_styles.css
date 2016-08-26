@@ -1,0 +1,15 @@
+.vk_share_btn, .fb_share_btn, .ok_share_btn {
+    line-height: 35px;
+    height: 35px;
+    text-decoration: none;
+    color: #FFFFFF;
+    font-family: Arial;
+    font-size: 14px;
+    font-weight: 500;
+    text-shadow: 0 0 1px #000000;
+    text-align: center;
+    background-color: #A11636;
+    border-bottom: 1px solid #000;
+    box-sizing: border-box;
+    min-width: 140px;
+}
