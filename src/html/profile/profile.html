@@ -1,0 +1,41 @@
+<div class="bon_profile_wrap" data-ng-cloak data-sailplay-profile>
+  <div class="bon_profile_info">
+    <div class="bon_profile_top clearfix">
+      <div class="bon_profile_top_left">
+        <h3>Ваш профиль</h3>
+        <h4>Здесь отображается количество накопленных баллов и прогресс получения подарков</h4>
+      </div>
+      <div class="bon_profile_right">
+        <img data-ng-src="{{ (user().user.pic | sailplay_pic) || 'dist/img/prof_def.png'}}" alt="You">
+        <span data-ng-bind="user().user.name || 'Имя не указано'"></span>
+        <a href="#" data-ng-click="open_profile();$event.preventDefault();">Редактировать профиль</a>
+      </div>
+    </div>
+    <div class="bon_profile_stat">
+      <div class="bps_left">
+        <span data-ng-bind="(user().user_points.confirmed | number)  + ' ' + (user().user_points.confirmed | sailplay_pluralize:'балл,балла,баллов')"></span>
+        <a href="#">История начислений</a>
+      </div>
+      <div class="bps_right">
+        <div class="progress_line_main">
+          <div class="progress_line_bg"></div>
+          <div class="progress_line" data-procent="0"
+               data-ng-style="{ width: setProgress(user().user_points.confirmed) + '%' }">
+            <div class="progress_text" data-ng-show="getOffsetToGift(user().user_points.confirmed)">
+              <span data-ng-bind="getOffsetToGift(user().user_points.confirmed) + ' ' + ((getOffsetToGift(user().user_points.confirmed) | sailplay_pluralize:'балл,балла,баллов')) + ' до подарка'"></span>
+            </div>
+          </div>
+
+          <div class="gift_item" data-ng-repeat="limit in limits track by $index"
+               data-ng-class="{act : limit <= user().user_points.confirmed }"
+               data-ng-style="{ left: progressGiftWidth($index, limits.length) + '%' }">
+
+            <span class="gift_item_hint" data-ng-bind="limit"></span>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,25 +1,25 @@
 {
-  "name": "sailplay.mtt",
+  "name": "sailplay-magic",
   "version": "0.0.1",
   "description": "",
-  "author": "awesome",
+  "author": "saike",
   "license": "ISC",
   "dependencies": {
     "angular": "latest",
     "angular-cookie": "latest",
+    "angular-i18n": "^1.5.6",
     "angular-utils-pagination": "^0.11.1",
-    "gulp-imagemin": "^3.0.1",
-    "jquery": "^2.2.3",
     "sailplay-hub": "latest",
     "sailplay-hub-actions": "latest"
   },
   "devDependencies": {
-    "gulp": "^3.9.1",
     "browser-sync": "latest",
+    "gulp": "^3.9.1",
     "gulp-concat": "^2.6.0",
     "gulp-less": "^3.0.5",
     "gulp-minify-html": "^1.0.6",
     "gulp-ng-annotate": "^2.0.0",
-    "gulp-ng-html2js": "^0.2.2"
+    "gulp-ng-html2js": "^0.2.2",
+    "gulp-ngdocs": "^0.2.13"
   }
 }

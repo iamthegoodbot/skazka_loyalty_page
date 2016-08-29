@@ -2,32 +2,35 @@
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js"> <!--<![endif]-->
 <head>
-    <meta charset="utf-8">
-    <title>MTT</title>
-    <meta name="description" content="Golf description">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    
-    <link rel="icon" href="favicon.ico" type="image/x-icon">
-    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-    <link rel="shortcut icon" href="favicon.png" type="image/png">
-    
-    <link rel="stylesheet" href="dist/css/sailplay.mtt.css">
+  <meta charset="utf-8">
+  <title>SailPlay MAGIC!</title>
+  <meta name="description" content="Golf description">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-    <script>
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="favicon.png" type="image/png">
 
-        window.auth_hash = 'c4598994d3a3356fac05608a57c158fae76260bd';
+  <link rel="stylesheet" href="dist/css/magic.css">
 
-    </script>
+  <!--dev deps-->
+  <script src="node_modules/angular/angular.min.js"></script>
+  <script src="node_modules/angular-cookie/angular-cookie.min.js"></script>
+  <script src="node_modules/angular-utils-pagination/dirPagination.js"></script>
+
+  <script src="node_modules/sailplay-hub/sailplay.hub.js"></script>
+  <script src="node_modules/sailplay-hub-actions/sailplay.hub.actions.js"></script>
+
+  <!--app-->
+  <script src="dist/js/sailplay-magic.js"></script>
 
 </head>
 <body>
 
-<sailplay-mtt></sailplay-mtt>
-
-<script src="dist/js/sailplay.mtt.js"></script>
-
+  <sailplay-magic></sailplay-magic>
 
 </body>
 </html>
