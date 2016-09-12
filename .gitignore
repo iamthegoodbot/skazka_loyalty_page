@@ -15,3 +15,6 @@ Thumbs.db
 
 # Dev dependencies
 node_modules/
+
+# Dist
+dist/

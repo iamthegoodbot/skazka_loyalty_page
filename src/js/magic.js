@@ -1,8 +1,24 @@
 (function () {
 
-  angular.module('magic', [ 'sailplay', 'core', 'ipCookie', 'tools' ])
+  angular.module('magic', [ 'sailplay', 'core', 'ipCookie', 'tools', 'magic.config' ])
 
-  .directive('sailplayMagic', function(SailPlay, ipCookie, SailPlayApi, $document, $rootScope, $filter){
+  .config(function(SailPlayProvider, MAGIC_CONFIG, SailPlayHistoryProvider, SailPlayActionsDataProvider){
+
+    SailPlayActionsDataProvider.set_actions_data(MAGIC_CONFIG.widgets.actions.data);
+
+    SailPlayProvider.set_auth_hash_id(MAGIC_CONFIG.auth.auth_hash_id);
+
+    SailPlayProvider.set_remote_config({
+      background: 'transparent'
+    });
+
+    SailPlayHistoryProvider.set_dictionary(MAGIC_CONFIG.widgets.profile.texts.history_items);
+
+    //SailPlayProvider.set_auth_type(MAGIC_CONFIG.auth.type);
+
+  })
+
+  .directive('sailplayMagic', function(SailPlay, ipCookie, SailPlayApi, $document, $rootScope, MAGIC_CONFIG){
 
     return {
       restrict: 'E',
@@ -11,19 +27,11 @@
       templateUrl: '/html/magic.html',
       link: function(scope){
 
-        scope.show_history = false;
-
         scope.show_statuses_list = false;
-
-        scope.show_profile_info = false;
 
         scope.show_profile_action = true;
 
         scope.show_login = false;
-
-        scope.show_companies = false;
-
-        scope.show_download = false;
 
         scope.$on('sailplay-login-cancel', function(){
           scope.show_login = false;
@@ -33,11 +41,6 @@
           scope.show_login = false;
         });
 
-        scope.$on('sailplay-logout-success', function(){
-
-          SailPlayApi.reset();
-
-        });
 
         scope.fill_profile = function(){
 
@@ -116,12 +119,25 @@
 
   });
 
-  window.addEventListener('DOMContentLoaded', function(){
+  //define magic constructor
+  if(typeof SAILPLAY === 'undefined') return;
 
-    var app_container = document.getElementsByTagName('sailplay-magic')[0];
+  SAILPLAY.magic = function(config){
 
-    app_container && angular.bootstrap(app_container, [ 'magic' ]);
+    SAILPLAY.send('init', config);
 
-  });
+    SAILPLAY.on('init.success', function(res){
+
+      if(!res.partner.loyalty_page_config) return;
+
+      angular.module('magic.config', []).constant('MAGIC_CONFIG', res.partner.loyalty_page_config);
+
+      var app_container = document.getElementsByTagName('sailplay-magic')[0];
+
+      app_container && angular.bootstrap(app_container, [ 'magic' ]);
+
+    });
+
+  };
 
 }());

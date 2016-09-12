@@ -1,6 +1,15 @@
 //variables
 @font_dir: '../font/';
 
+//colors
+@white: #ffffff;
+@black: #000000;
+@main: #888888;
+@main_light: #cccccc;
+@main_lighter: #eeeeee;
+@main_dark: #444444;
+@main_darker: #222222;
+
 //media queries
 @highdensity: ~"only screen and (-webkit-min-device-pixel-ratio: 1.5)",
 ~"only screen and (min--moz-device-pixel-ratio: 1.5)",
@@ -11,7 +20,7 @@
 @desktop:     ~"only screen and (min-width: 950px) and (max-width: 1128px)";
 @desktop-xl:  ~"only screen and (min-width: 1129px)";
 
-.body_lock {
+.overflow_hidden {
   overflow: hidden;
 }
 
@@ -19,4 +28,8 @@
   content:"";
   display:table;
   clear:both;
+}
+
+.transparent {
+  opacity: 0;
 }

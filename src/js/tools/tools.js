@@ -1,259 +1,14 @@
 (function () {
 
   angular.module('tools', [
-    'angularUtils.directives.dirPagination'
+    'angularUtils.directives.dirPagination',
+    'ui.mask'
   ])
 
-
-    .provider('FillProfile', function(){
-
-      var profile_tag = 'Completed Profile';
-      var cookie_name = 'sailplay_profile_form';
-
-      return {
-
-        set_tag: function(tag){
-
-          profile_tag = tag || profile_tag;
-
-        },
-
-        set_cookie_name: function(name){
-
-          cookie_name = name || cookie_name;
-
-        },
-
-        $get: function(){
-
-          this.tag = profile_tag;
-
-          this.cookie_name = cookie_name;
-
-          return this;
-
-        }
-
-      };
-
-    })
-
-    .directive('fillProfile', function(SailPlay, $rootScope, $q, ipCookie, SailPlayApi, FillProfile){
-
-      return {
-
-        restrict: 'A',
-        scope: true,
-        link: function(scope){
-
-          var saved_form = false;
-
-          var new_form = {
-
-            user: {
-
-              addPhone: '',
-              addEmail: '',
-              birthDate: '',
-              firstName: '',
-              lastName: '',
-              sex: ''
-
-            },
-            custom_vars: {
-              'Address': ''
-            },
-            tags: [],
-            hide_hist: false
-
-          };
-
-          scope.$watch(function(){
-            return angular.toJson([ SailPlayApi.data('load.user.info')() ]);
-          }, function(){
-
-            var user = SailPlayApi.data('load.user.info')();
-
-            if(!user) return;
-            scope.profile_form = angular.copy(new_form);
-            scope.profile_form.user.auth_hash = SailPlay.config().auth_hash;
-            //angular.extend(scope.profile_form.user, user.user);
-            scope.profile_form.user.addPhone = user.user.phone;
-            scope.profile_form.user.addEmail = user.user.email;
-            scope.profile_form.user.firstName = user.user.first_name;
-            scope.profile_form.user.lastName = user.user.last_name;
-            scope.profile_form.user.birthDate = user.user.birth_date || '';
-            if(ipCookie(FillProfile.cookie_name) && SailPlay.config().auth_hash === ipCookie(FillProfile.cookie_name).user.auth_hash ){
-              angular.extend(scope.profile_form, ipCookie(FillProfile.cookie_name));
-            }
-
-            saved_form = angular.copy(scope.profile_form);
-
-          });
-
-          scope.revert_profile_form = function(form){
-            if (form) {
-              form.$setPristine();
-              form.$setUntouched();
-            }
-            scope.profile_form = angular.copy(saved_form);
-          };
-
-          scope.toggle_tag = function(arr, tag){
-
-            if(!tag) return;
-
-            var index = arr.indexOf(tag);
-
-            if(index > -1){
-
-              arr.splice(index, 1);
-
-            }
-            else {
-
-              arr.push(tag);
-
-            }
-
-          };
-
-          scope.submit_profile = function(form, callback){
-
-            if(!form || !form.$valid) {
-              return;
-            }
-
-            var data_user = SailPlayApi.data('load.user.info')() && SailPlayApi.data('load.user.info')().user;
-
-            var req_user = angular.copy(scope.profile_form.user);
-            //console.log(data_user.phone, req_user.addPhone);
-
-            if(data_user && data_user.phone && data_user.phone.replace(/\D/g,'') == req_user.addPhone.replace(/\D/g,'')){
-              delete req_user.addPhone;
-            }
-
-            if(data_user && data_user.email && data_user.email == req_user.addEmail){
-              delete req_user.addEmail;
-            }
-
-            SailPlay.send('users.update', req_user, function(user_res){
-
-              if(user_res.status === 'ok'){
-
-                var req_tags = angular.copy(scope.profile_form.tags);
-
-                if(!scope.profile_form.user.sex || !scope.profile_form.custom_vars.Address){
-                  req_tags.push('Profile Uncompleted');
-                }
-                else {
-                  req_tags.push(FillProfile.tag);
-                }
-
-                function chunk(array, chunkSize) {
-                  return [].concat.apply([],
-                    array.map(function(elem,i) {
-                      return i%chunkSize ? [] : [array.slice(i,i+chunkSize)];
-                    })
-                  );
-                }
-
-                var chunked_tags = chunk(req_tags, 10);
-
-                var tag_promises = [];
-
-                angular.forEach(chunked_tags, function(chunk){
-
-                  var promise = $q(function(resolve, reject){
-
-                    SailPlay.send('tags.add', { tags: chunk }, function(tags_res){
-                      if(tags_res.status === 'ok') {
-
-                        resolve(tags_res);
-
-                        //sp.send('leads.submit.success', { lead: self, response: user_res, tags: res });
-                      }
-                      else {
-                        reject(tags_res);
-                        //sp.send('leads.submit.error', { lead: self, response: user_res, tags: res });
-                      }
-                    });
-
-                  });
-
-                  tag_promises.push(promise);
-
-                });
-
-                $q.all(tag_promises).then(function(tags_res){
-
-                  SailPlay.send('vars.add', { custom_vars: scope.profile_form.custom_vars }, function(vars_res){
-
-                    var response = {
-                      user: user_res,
-                      tags: tags_res,
-                      vars: vars_res
-                    };
-
-                    if(vars_res.status === 'ok') {
-
-                      ipCookie(FillProfile.cookie_name, scope.profile_form);
-
-                      $rootScope.$broadcast('notifier:notify', {
-
-                        header: $rootScope.locale.thanks,
-                        body: $rootScope.locale.notifications.fill_profile_success
-
-                      });
-
-                      SailPlayApi.call('load.user.info', { all: 1 });
-
-                      callback && callback(response);
-                      scope.$apply();
-
-
-                    }
-                    else {
-
-                      $rootScope.$broadcast('notifier:notify', {
-
-                        header: $rootScope.locale.error,
-                        body: user_res.message || $rootScope.locale.notifications.default_error
-
-                      });
-                      scope.$apply();
-
-                    }
-
-                  });
-
-                });
-
-
-
-              }
-
-              else {
-
-                $rootScope.$broadcast('notifier:notify', {
-
-                  header: $rootScope.locale.error,
-                  body: ($rootScope.locale.errors && $rootScope.locale.errors[user_res.status_code] || $rootScope.locale.errors[user_res.message]) || $rootScope.locale.notifications.default_error
-
-                });
-                $rootScope.$apply();
-
-              }
-
-            });
-
-          };
-
-        }
-
-      };
-
-    })
+    .config(['uiMask.ConfigProvider', function (uiMaskConfigProvider) {
+      uiMaskConfigProvider.maskDefinitions({'_': /[0-9]/});
+      uiMaskConfigProvider.addDefaultPlaceholder(true);
+    }])
 
     .directive('overlayClick', function(){
 
@@ -423,15 +178,19 @@
       };
     })
 
-    .directive('notifier', function(){
+    .directive('notifier', function(MAGIC_CONFIG){
 
        return {
 
          restrict: 'E',
          replace: true,
          scope: true,
-         templateUrl: '/html/tools/tools.notifier.html',
+         templateUrl: '/html/tools/notifier.html',
          link: function(scope){
+
+           scope._notifier_config = MAGIC_CONFIG.tools.notifier;
+
+           scope._tools = MAGIC_CONFIG.tools;
 
            var new_data = {
 
@@ -461,94 +220,79 @@
 
     })
 
-    .directive('phoneMask', function($timeout){
+    //.directive('phoneMask', function($timeout){
+    //
+    //  return {
+    //    restrict: 'A',
+    //    require: 'ngModel',
+    //    link: function(scope, elm, attrs, ngModel){
+    //
+    //      function valid_phone(value){
+    //
+    //        return value && /^[0-9]{11}$/.test(value);
+    //
+    //      }
+    //
+    //      ngModel.$render = function(){
+    //
+    //        ngModel.$setValidity('phone', valid_phone(ngModel.$modelValue));
+    //
+    //        $(elm).unmask();
+    //        $(elm).val(ngModel.$modelValue);
+    //        $(elm).mask(attrs.phoneMask || '+7(000) 000-00-00',
+    //          {
+    //            placeholder: attrs.placeholder || "+7(___)___-__-__",
+    //            onComplete: function(cep) {
+    //              ngModel.$setViewValue(cep);
+    //              ngModel.$setValidity('phone', true);
+    //              scope.$digest();
+    //            },
+    //            onChange: function(cep){
+    //              var value = (cep || '').replace(/\D/g,'');
+    //              if(!valid_phone(cep)){
+    //                ngModel.$setViewValue('');
+    //                ngModel.$setValidity('phone', false);
+    //                scope.$digest();
+    //              }
+    //            },
+    //            onInvalid: function(val, e, f, invalid, options){
+    //              ngModel.$setViewValue('');
+    //              ngModel.$setValidity('phone', false);
+    //              scope.$digest();
+    //            }
+    //          });
+    //      };
+    //
+    //    }
+    //  };
+    //
+    //})
 
-      return {
-        restrict: 'A',
-        require: 'ngModel',
-        link: function(scope, elm, attrs, ngModel){
-
-          function valid_phone(value){
-
-            return value && /^[0-9]{11}$/.test(value);
-
-          }
-
-          ngModel.$render = function(){
-
-            ngModel.$setValidity('phone', valid_phone(ngModel.$modelValue));
-
-            $(elm).unmask();
-            $(elm).val(ngModel.$modelValue);
-            $(elm).mask(attrs.phoneMask || '+7(000) 000-00-00',
-              {
-                placeholder: attrs.placeholder || "+7(___)___-__-__",
-                onComplete: function(cep) {
-                  ngModel.$setViewValue(cep);
-                  ngModel.$setValidity('phone', true);
-                  scope.$digest();
-                },
-                onChange: function(cep){
-                  var value = (cep || '').replace(/\D/g,'');
-                  if(!valid_phone(cep)){
-                    ngModel.$setViewValue('');
-                    ngModel.$setValidity('phone', false);
-                    scope.$digest();
-                  }
-                },
-                onInvalid: function(val, e, f, invalid, options){
-                  ngModel.$setViewValue('');
-                  ngModel.$setValidity('phone', false);
-                  scope.$digest();
-                }
-              });
-          };
-
-        }
-      };
-
-    })
-
-    .directive('maskedPhoneNumber', function(){
-      return {
-        restrict: 'A',
-        scope: {
-          phone: '=?'
-        },
-        link: function(scope, elm, attrs){
-
-          scope.$watch('phone', function(new_value){
-
-            if(new_value){
-              $(elm).text(new_value);
-              $(elm).unmask();
-              $(elm).mask(attrs.maskedPhoneNumber || '+7(000) 000-00-00');
-            }
-            else {
-              $(elm).text(attrs.noValue || '');
-            }
-
-
-          });
-
-        }
-      }
-    })
-
-    .directive('selectize', function($timeout){
-
-      return {
-        restrict: 'A',
-        link: function(scope, elm){
-
-          $timeout(function(){
-            $(elm).selectize({});
-          }, 0);
-
-        }
-      };
-
-    })
+    //.directive('maskedPhoneNumber', function(){
+    //  return {
+    //    restrict: 'A',
+    //    scope: {
+    //      phone: '=?'
+    //    },
+    //    link: function(scope, elm, attrs){
+    //
+    //      scope.$watch('phone', function(new_value){
+    //
+    //        if(new_value){
+    //          $(elm).text(new_value);
+    //          $(elm).unmask();
+    //          $(elm).mask(attrs.maskedPhoneNumber || '+7(000) 000-00-00');
+    //        }
+    //        else {
+    //          $(elm).text(attrs.noValue || '');
+    //        }
+    //
+    //
+    //      });
+    //
+    //    }
+    //  }
+    //})
 
     .directive('dateSelector', function($parse){
 
@@ -618,6 +362,217 @@
       return function(text) {
         return $sce.trustAsHtml(text);
       };
-    }]);
+    }])
+
+    .filter('background_image', function(){
+      return function(url) {
+        return url && 'url(' + url + ')' || '';
+      };
+    })
+
+    .service('tools', function($document){
+
+      var self = this;
+
+      var initial_overflow = $document[0].body.style.overflow;
+
+      self.body_lock = function(state){
+        $document[0].body.style.overflow = state ? 'hidden' : initial_overflow;
+      };
+
+      self.stringify_widget_css = function(prefix, obj){
+
+        var css_string = '';
+
+        for(var selector in obj){
+
+          if(obj.hasOwnProperty(selector)){
+
+            css_string += prefix + ' .' + selector + '{ ';
+
+            var selector_styles = obj[selector];
+
+            for(var prop in selector_styles){
+
+              if(selector_styles.hasOwnProperty(prop)) {
+
+                css_string += prop + ':' + selector_styles[prop] + ' !important;';
+
+              }
+
+            }
+
+            css_string += ' }';
+
+          }
+
+        }
+
+        return css_string;
+
+      };
+
+    })
+
+    .directive('widgetStyle', function(tools, $document){
+
+      return {
+
+        restrict: 'A',
+        replace: false,
+        scope: {
+          widget_style: '=widgetStyle'
+        },
+        link: function(scope, element, attrs){
+
+          element[0].type = 'text/css';
+
+          var prefix = '.sailplay.magic ' + (attrs.widgetName ? '.' + attrs.widgetName : '');
+
+          var css_string = tools.stringify_widget_css(prefix, scope.widget_style);
+
+          if (element[0].styleSheet){
+            element[0].styleSheet.cssText = css_string;
+          } else {
+            element[0].appendChild($document[0].createTextNode(css_string));
+          }
+
+        }
+
+      };
+
+    })
+
+    .directive('magicModal', function($parse, tools, MAGIC_CONFIG){
+
+      return {
+        restrict: 'E',
+        replace: true,
+        templateUrl: '/html/tools/modal.html',
+        scope: true,
+        transclude: true,
+        link: function(scope, elm, attrs){
+
+          scope._modal_config = MAGIC_CONFIG.tools.modal;
+
+          scope.show = false;
+
+          scope.close = function(){
+            $parse(attrs.show).assign(scope.$parent, false);
+            scope.$eval(attrs.onClose);
+          };
+
+          elm.on('click', function(e){
+            if(e.target === elm[0]){
+              scope.$apply(function () {
+                scope.close();
+              });
+            }
+          });
+
+          scope.$watch(function(){
+            return angular.toJson([scope.$eval(attrs.show)]);
+          }, function(){
+            var new_value = scope.$eval(attrs.show);
+            scope.show = new_value;
+            tools.body_lock(new_value);
+          });
+
+        }
+      };
+
+    })
+
+    .directive('magicSlider', function(MAGIC_CONFIG){
+
+      return {
+        restrict: 'A',
+        scope: true,
+        link: function(scope, elm, attrs){
+
+          scope._slider_config = MAGIC_CONFIG.tools.slider;
+
+          scope.left = 0;
+
+          scope.current_position = 0;
+
+          scope.show_left = false;
+          scope.show_right = true;
+
+
+          // Переделать
+          scope.set_position = function (position) {
+
+            var slides = elm[0].querySelectorAll('[data-magic-slide]');
+            var wrapper = elm[0].querySelectorAll('[data-magic-gallery]')[0];
+
+            angular.forEach(slides, function(slide){
+              slide.style.width = '';
+            });
+
+            var _width = slides[0].offsetWidth || 0;
+
+            _width = _width ? _width + 30 : 0;
+
+            var _limits = {
+              min: 1,
+              max: 4
+            };
+
+            if (!_width) return;
+
+            var _wrap_width = wrapper.offsetWidth;
+
+            var _count_show = Math.floor(_wrap_width / _width) > _limits.max ? Math.floor(_wrap_width / _width) < _limits.min ? _limits.min : Math.floor(_wrap_width / _width) : Math.floor(_wrap_width / _width);
+
+            if (!_count_show) return;
+
+            _width = Math.floor(_wrap_width / _count_show);
+
+            angular.forEach(slides, function(slide){
+              slide.style.width = _width - 30;
+            });
+
+            var _max = Math.ceil(slides.length - _count_show);
+
+            var _current = scope.current_position;
+
+            var _next = _current;
+
+            if (position == 'left') {
+
+              _next = _current - 1 < 0 ? 0 : _current - 1;
+
+            } else if (position == 'right') {
+
+              _next = _current + 1 > _max ? _max : _current + 1;
+
+            }
+
+            scope.show_right = true;
+            scope.show_left = true;
+
+            if(_next == _max) {
+              scope.show_right = false;
+            }
+
+            if(_next == 0) {
+              scope.show_left = false;
+            }
+
+            if(_count_show > slides.length) {
+              scope.show_right = false;
+            }
+
+            scope.current_position = _next;
+
+            scope.left = '-' + (_next * _width) + 'px';
+
+          };
+
+        }
+      }
+
+    });
 
 }());

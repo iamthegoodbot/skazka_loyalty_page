@@ -111,6 +111,7 @@
         link: function(scope){
 
           scope.actions = SailPlayApi.data('load.actions.list');
+          scope.actions_custom = SailPlayApi.data('load.actions.custom.list');
 
           scope.perform_action = function(action){
 
@@ -187,6 +188,7 @@
           function parse_action(action){
             $timeout(function(){
               attrs.styles && elm.attr('data-styles', attrs.styles);
+              console.log(attrs.styles);
               attrs.text && elm.attr('data-text', attrs.text);
               SailPlay.actions && action && SailPlay.actions.parse(elm[0], action);
             }, 0);
@@ -194,9 +196,66 @@
 
           scope.$watch('action', function(new_value){
             if(new_value){
-              elm.html(init_state);
+              elm.html('');
+              elm.append($compile(init_state)(scope.$parent));
               parse_action(new_value);
             }
+          });
+
+        }
+
+      };
+
+    })
+
+    /**
+     * @ngdoc directive
+     * @name sailplay.actions.directive:sailplayActionCustom
+     * @scope
+     * @restrict A
+     *
+     * @description
+     * Renders SailPlay custom action in element.
+     *
+     * @param {object}  action   A SailPlay custom action object, received from api.
+     *
+     */
+    .directive('sailplayActionCustom', function(SailPlay, $document){
+
+      var init_state;
+
+      return {
+
+        restrict: 'A',
+        replace: false,
+        scope: {
+          action: '='
+        },
+        link: function(scope, elm, attrs){
+
+          var iframe = $document[0].createElement('iframe');
+
+          iframe.style.backgroundColor = "transparent";
+          iframe.frameBorder = "0";
+          iframe.allowTransparency="true";
+
+          elm.append(iframe);
+
+          scope.$watch('action', function(action){
+
+            if(action){
+
+              var config = SailPlay.config();
+
+              iframe.src = (config && ((config.DOMAIN + config.urls.actions.custom.render.replace(':action_id', action.id) + '?auth_hash=' + config.auth_hash))) || '';
+
+              iframe.className = ['sailplay_action_custom_frame', action.type].join(' ');
+
+            }
+            else {
+              iframe.src = '';
+            }
+
           });
 
         }

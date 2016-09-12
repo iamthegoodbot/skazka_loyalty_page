@@ -11,12 +11,11 @@
 
     .run(function(SailPlay, $rootScope){
 
-      SailPlay.send('init', SailPlay.CONFIG);
-
       SailPlay.on('init.success', function(res){
 
         $rootScope.$broadcast('sailplay-init-success', res);
         $rootScope.$apply();
+
       });
 
       SailPlay.on('login.error', function (res) {
@@ -48,12 +47,7 @@
       });
 
     })
-    
-    .service('sailplay_config', function($window){
-      
-      return typeof $window._CONFIG !== 'undefined' && $window._CONFIG.SAILPLAY || { partner_id: 1, domain: 'https://sailplay.net' };
-      
-    })
+
 
     .provider('SailPlay', function(){
 
@@ -61,12 +55,7 @@
 
       var auth_options = {};
 
-      var auth_hash_cookie_name = 'sailplay_auth_hash';
-
-      var config = {
-        partner_id: 1,
-        domain: 'https://sailplay.net'
-      };
+      var auth_hash_id = 'sailplay_auth_hash';
 
       return {
 
@@ -78,15 +67,9 @@
 
         },
 
-        set_cookie_name: function(name){
+        set_auth_hash_id: function(name){
 
-          if(name) auth_hash_cookie_name = name;
-
-        },
-
-        set_config: function(new_config){
-
-          angular.merge(config, new_config);
+          if(name) auth_hash_id = name;
 
         },
 
@@ -100,46 +83,51 @@
 
           var sp = $window.SAILPLAY || {};
 
-          sp.CONFIG = config;
+          sp.authorize = function(type){
 
-          switch (auth_type){
+            type = type || auth_type;
 
-            case 'url':
+            switch (type){
 
-              sp.authorize = function(){
+              case 'url':
 
                 var params = sp.url_params();
 
                 if (params) {
-                  sp.send('login', params.auth_hash);
+                  sp.send('login', params[auth_hash_id]);
                 }
                 else {
                   $rootScope.$broadcast('sailplay-login-error', { status: 'error', message: 'No auth_hash found' });
                 }
 
-              };
-              break;
+                break;
 
-            case 'cookie':
+              case 'cookie':
 
-              var auth_hash = ipCookie(auth_hash_cookie_name);
-              if(auth_hash){
-                sp.send('login', auth_hash);
-              }
-              else {
-                $rootScope.$broadcast('sailplay-login-error', { status: 'error', message: 'No auth_hash found' });
-              }
-              break;
+                var auth_hash = ipCookie(auth_hash_id);
+                if(auth_hash){
+                  sp.send('login', auth_hash);
+                }
+                else {
+                  $rootScope.$broadcast('sailplay-login-error', { status: 'error', message: 'No auth_hash found' });
+                }
+                break;
 
-            case 'remote':
-              sp.authorize = function() {
+              case 'remote':
+
                 sp.send('login.remote', auth_options);
-              };
+
+            }
 
 
-          }
 
-          sp.auth_hash_cookie_name = auth_hash_cookie_name;
+          };
+
+          sp.auth_hash_id = auth_hash_id;
+
+          sp.set_auth_hash_cookie = function(auth_hash){
+            ipCookie(auth_hash_id, auth_hash);
+          };
 
           return sp;
 
@@ -162,6 +150,7 @@
         'load.gifts.list',
         'load.user.history',
         'load.actions.list',
+        'load.actions.custom.list',
         'load.badges.list',
         'tags.exist',
         'tags.add'
@@ -224,7 +213,7 @@
       var cases = [2, 0, 1, 1, 1, 2];
       return function (input, titles) {
         input = Math.abs(input);
-        titles = titles.split(',');
+        titles = titles && titles.split(',') || [];
         return titles[(input % 100 > 4 && input % 100 < 20) ? 2 : cases[(input % 10 < 5) ? input % 10 : 5]];
       }
     })
