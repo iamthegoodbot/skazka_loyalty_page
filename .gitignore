@@ -14,7 +14,7 @@ Thumbs.db
 .Trashes
 
 # Dev dependencies
-node_modules/
+# node_modules/
 
 # Dist
-dist/
+# dist/
