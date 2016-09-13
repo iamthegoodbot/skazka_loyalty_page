@@ -1210,6 +1210,187 @@
   box-sizing: border-box;
   width: 600px;
 }
+.sailplay.magic .widget.badges {
+  float: left;
+  width: 100%;
+  background-color: #eeeeee;
+  overflow: hidden;
+}
+.sailplay.magic .widget.badges .bon_header {
+  float: left;
+  width: 90%;
+  margin-left: 5%;
+  color: #000000;
+  font-size: 30px;
+  font-family: 'RotondaC';
+  margin-top: 80px;
+}
+.sailplay.magic .widget.badges .bon_sub_header {
+  float: left;
+  width: 90%;
+  margin-left: 5%;
+  font-size: 14px;
+  color: #000000;
+  margin-top: 10px;
+}
+.sailplay.magic .widget.badges .bon_slide_cat_item_wrap {
+  float: left;
+  width: 74%;
+  margin-left: 13%;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  position: relative;
+}
+.sailplay.magic .widget.badges .bon_slide_cat_item_wrap.cycle-slide {
+  display: none !important;
+}
+.sailplay.magic .widget.badges .bon_slide_cat_item_wrap.cycle-slide.cycle-slide-active {
+  display: block !important;
+}
+.sailplay.magic .widget.badges .bon_slide_cat_item_wrap.cycle-slide.cycle-sentinel {
+  display: block !important;
+}
+.sailplay.magic .widget.badges .bon_item_main {
+  float: left;
+  width: 100%;
+}
+.sailplay.magic .widget.badges .bon_item_main .arr_left {
+  position: absolute;
+  left: 0;
+  margin-left: -110px;
+  width: 100px;
+  height: 110px;
+  border-radius: 20px 0px 0px 20px;
+  background-color: #eeeeee;
+  background-image: url(../img/left_arr.png);
+  background-position: center center;
+  background-repeat: no-repeat;
+  display: block;
+  top: 50%;
+  margin-top: -55px;
+}
+.sailplay.magic .widget.badges .bon_item_main .arr_right {
+  position: absolute;
+  right: 0;
+  margin-right: -110px;
+  width: 100px;
+  height: 110px;
+  border-radius: 0px 20px 20px 0px;
+  background-color: #eeeeee;
+  background-image: url(../img/right_arr.png);
+  background-position: center center;
+  background-repeat: no-repeat;
+  display: block;
+  top: 50%;
+  margin-top: -55px;
+}
+.sailplay.magic .widget.badges .bon_item_main .bon_slide_cat_item {
+  float: left;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.sailplay.magic .widget.badges .bon_item_main .bon_slide_cat_item .bon_item_line {
+  position: relative;
+  left: 0;
+  transition: .3s ease;
+}
+.sailplay.magic .widget.badges .bon_item_main .bon_slide_cat_item .bon_item {
+  width: 245px;
+  height: 360px;
+  border: 1px solid #cccccc;
+  margin-left: 15px;
+  margin-right: 15px;
+  background-color: #ffffff;
+  text-align: center;
+  display: inline-block;
+  white-space: normal;
+}
+.sailplay.magic .widget.badges .bon_item_main .bon_slide_cat_item .bon_item .bon_item_iner {
+  position: relative;
+  float: left;
+  width: 100%;
+  height: 100%;
+}
+.sailplay.magic .widget.badges .bon_item_main .bon_slide_cat_item .bon_item .bon_item_iner span {
+  white-space: normal;
+  float: left;
+  margin-left: 30px;
+  width: 185px;
+  text-align: left;
+  color: #222222;
+  -webkit-transition: all 300ms ease;
+  -moz-transition: all 300ms ease;
+  -ms-transition: all 300ms ease;
+  -o-transition: all 300ms ease;
+  transition: all 300ms ease;
+}
+.sailplay.magic .widget.badges .bon_item_main .bon_slide_cat_item .bon_item .bon_item_iner .bon_item_name {
+  font-size: 16px;
+  position: absolute;
+  left: 0px;
+  bottom: 61px;
+}
+.sailplay.magic .widget.badges .bon_item_main .bon_slide_cat_item .bon_item .bon_item_iner .bon_tem_info {
+  font-size: 14px;
+  opacity: 0.5;
+  font-weight: 300;
+  position: absolute;
+  left: 0px;
+  bottom: 37px;
+}
+.sailplay.magic .widget.badges .bon_item_main .bon_slide_cat_item .bon_item .bon_item_iner img {
+  margin-top: 30px;
+  max-height: 200px;
+}
+.sailplay.magic .widget.badges .bon_item_main .bon_slide_cat_item .bon_item .bon_item_iner a {
+  position: absolute;
+  bottom: 37px;
+  left: 50%;
+  width: 160px;
+  line-height: 35px;
+  text-decoration: none;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 500;
+  margin-left: -80px;
+  background-color: #888888;
+  border-bottom: 1px solid #000000;
+  text-shadow: 0 0 1px #000000;
+  opacity: 0;
+  -webkit-transition: all 300ms ease;
+  -moz-transition: all 300ms ease;
+  -ms-transition: all 300ms ease;
+  -o-transition: all 300ms ease;
+  transition: all 300ms ease;
+}
+.sailplay.magic .widget.badges .badge_lines_container {
+  margin: 30px auto;
+  float: left;
+  width: 100%;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.sailplay.magic .widget.badges .one_level .badge_arrow {
+  display: none;
+}
+.sailplay.magic .widget.badges .badge {
+  position: relative;
+}
+.sailplay.magic .widget.badges .badge .badge_arrow {
+  position: absolute;
+  left: 100%;
+  top: 50%;
+  width: 30px;
+  height: 15px;
+  background-position: center left;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+.sailplay.magic .widget.badges .badge.last .badge_arrow {
+  display: none;
+}
 .sailplay.magic .sailplay.magic,
 .sailplay.magic * {
   margin: 0;

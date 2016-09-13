@@ -3,8 +3,9 @@
     "type": "hybrid",
     "auth_hash_id": "sailplay_magic_auth_hash"
   },
-  "widgets": {
-    "profile": {
+  "widgets": [
+    {
+      "name": "profile",
       "enabled": true,
       "texts": {
         "header": "Natura Loyalty",
@@ -15,56 +16,9 @@
         "login_reg": "Login/Register",
         "logout": "Logout",
         "before_gift": "until next gift",
-        "fill_profile": {
-          "header": "Fill your profile",
-          "inputs": {
-            "name": {
-              "label": "Name",
-              "placeholder": "Enter your name"
-            },
-            "last_name": {
-              "label": "Last name",
-              "placeholder": "Enter your last name"
-            },
-            "phone": {
-              "label": "Phone",
-              "placeholder": "1 (999) 999-99-99"
-            },
-            "email": {
-              "label": "E-Mail",
-              "placeholder": "your@address.net"
-            },
-            "gender": {
-              "label": "Gender",
-              "male": "Male",
-              "female": "Female",
-              "not_defined": "Not defined"
-            },
-            "birth_date": {
-              "label": "Birth date",
-              "placeholder": "01/01/1927"
-            }
-          }
-        },
         "history": {
           "header": "Your history",
-          "caption": "All user actions histoey is shown here"
-        },
-        "history_items": {
-          "purchase": "Purchase",
-          "gift_purchase": "Gift",
-          "badge": "Badge",
-          "registration": "Sign up",
-          "referral": "Invite friend",
-          "referred": "Registration from friend's invite",
-          "referred_purchase": "Friend's purchase",
-          "promocode": "Promocode activation",
-          "enter_group": "Joined our group on ",
-          "share_purchase": "Shared a purchase on ",
-          "social_share": "Shared our website on ",
-          "share_badge": "Shared a badge on ",
-          "earn_badge": "Earn badge ",
-          "custom_action": "Custom action"
+          "caption": "All user actions history is shown here"
         }
       },
       "images": {},
@@ -158,54 +112,103 @@
           "font-family": "Helvetica"
         }
       },
-      "fill_profile_config": {
-        "fields": [
-          {
-            "type": "system",
-            "name": "firstName",
-            "label": "Your name",
-            "placeholder": "Enter your name",
-            "input": "text"
-          },
-          {
-            "type": "system",
-            "name": "lastName",
-            "label": "Your last name",
-            "placeholder": "Enter your last name",
-            "input": "text"
-          },
-          {
-            "type": "system",
-            "name": "birthDate",
-            "label": "Your last name",
-            "placeholder": "Enter your last name",
-            "input": "date"
-          },
-          {
-            "type": "system",
-            "name": "sex",
-            "label": "Gender",
-            "placeholder": "Enter your last name",
-            "input": "select",
-            "data": [
-              {
-                "value": "0",
-                "text": "Not defined"
-              },
-              {
-                "value": "1",
-                "text": "Male"
-              },
-              {
-                "value": "2",
-                "text": "Female"
-              }
-            ]
-          }
-        ]
+      "fill_profile": {
+        "header": "Fill your profile",
+        "config": {
+          "tag": "Client filled profile",
+          "fields": [
+            {
+              "type": "system",
+              "name": "firstName",
+              "label": "Your name",
+              "placeholder": "Enter your name",
+              "input": "text"
+            },
+            {
+              "type": "system",
+              "name": "lastName",
+              "label": "Your last name",
+              "placeholder": "Enter your last name",
+              "input": "text"
+            },
+            {
+              "type": "system",
+              "name": "addPhone",
+              "label": "Your phone number",
+              "placeholder": "9 (999) 999-99-99",
+              "input": "phone"
+            },
+            {
+              "type": "system",
+              "name": "addEmail",
+              "label": "Your E-Mail",
+              "placeholder": "your@address.com",
+              "input": "email"
+            },
+            {
+              "type": "system",
+              "name": "birthDate",
+              "label": "Your last name",
+              "placeholder": "Enter your last name",
+              "input": "date"
+            },
+            {
+              "type": "system",
+              "name": "sex",
+              "label": "Gender",
+              "placeholder": "Enter your last name",
+              "input": "select",
+              "data": [
+                {
+                  "value": "",
+                  "text": "Not defined"
+                },
+                {
+                  "value": 1,
+                  "text": "Male"
+                },
+                {
+                  "value": 2,
+                  "text": "Female"
+                }
+              ]
+            }
+          ]
+        }
       }
     },
-    "gifts": {
+    {
+      "name": "badges",
+      "enabled": true,
+      "texts": {
+        "header": "Badges",
+        "caption": "Earn badges for better rewards"
+      },
+      "styles": {
+        "container": {
+          "background-color": "#a86e59"
+        },
+        "badge": {
+          "border": "none",
+          "background-color": "transparent",
+          "height": "245px"
+        },
+        "badge_pic": {
+          "border-radius": "100%"
+        },
+        "badge_points": {
+          "display": "none"
+        },
+        "badge_name": {
+          "display": "none"
+        },
+        "badge_arrow": {
+          "background-image": "url(http://forums.support.roxio.com/uploads/monthly_07_2011/post-96629-057574400%201309840714.png)"
+        }
+      }
+    },
+    {
+      "name": "gifts",
       "enabled": true,
       "texts": {
         "header": "Gifts",
@@ -280,7 +283,8 @@
         }
       }
     },
-    "actions": {
+    {
+      "name": "actions",
       "enabled": true,
       "texts": {
         "header": "Quests",
@@ -355,307 +359,9 @@
           "width": "800px",
           "padding": "20px"
         }
-      },
-      "data": {
-        "system": {
-          "emailBinding": {
-            "name": "Add your email address",
-            "pic": "https://d3sailplay.cdnvideo.ru/media/assets/assetfile/f56a3fe6291372e5b4d178508136c47d.png",
-            "description": "Earn 10 points for updating your email address",
-            "button_text": "Bind E-Mail"
-          },
-          "fillProfile": {
-            "name": "Update your profile",
-            "pic": "https://d3sailplay.cdnvideo.ru/media/assets/assetfile/f56a3fe6291372e5b4d178508136c47d.png",
-            "description": "Earn 10 points for updating your profile",
-            "button_text": "Fill profile"
-          },
-          "inviteFriend": {
-            "name": "Invite a friend",
-            "pic": "https://d3sailplay.cdnvideo.ru/media/assets/assetfile/a212622efce628a4e0fa90548746b2f6.png",
-            "description": "Earn 10 points for inviting a friend to Natura",
-            "button_text": "Invite friend"
-          }
-        },
-        "social": {
-          "vk": {
-            "like": {
-              "name": "Вступите в группу VK",
-              "pic": "http://saike.ru/sailplay-magic/dist/img/actions/data/icon_vk.png",
-              "description": "Some description for action here",
-              "button_text": "Join VK group",
-              "styles": {
-                "vk_share_btn": {
-                  "background": "#333",
-                  "color": "#ddd",
-                  "cursor": "pointer",
-                  "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
-                  "line-height": "35px",
-                  "font-size": "14px",
-                  "width": "140px",
-                  "text-align": "center"
-                },
-                "vk_share_btn:hover": {
-                  "background": "#111"
-                }
-              }
-            },
-            "partner_page": {
-              "name": "Рассказать о нашем магазине в VK",
-              "pic": "http://saike.ru/sailplay-magic/dist/img/actions/data/icon_vk.png",
-              "description": "Some description for action here",
-              "button_text": "Share",
-              "styles": {
-                "vk_share_btn": {
-                  "background": "#333",
-                  "color": "#ddd",
-                  "cursor": "pointer",
-                  "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
-                  "line-height": "35px",
-                  "font-size": "14px",
-                  "width": "140px",
-                  "text-align": "center"
-                },
-                "vk_share_btn:hover": {
-                  "background": "#111"
-                }
-              }
-            },
-            "purchase": {
-              "name": "Поделитесь вашей покупкой в VK",
-              "pic": "http://saike.ru/sailplay-magic/dist/img/actions/data/icon_vk.png",
-              "description": "Some description for action here",
-              "button_text": "Share",
-              "styles": {
-                "vk_share_btn": {
-                  "background": "#333",
-                  "color": "#ddd",
-                  "cursor": "pointer",
-                  "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
-                  "line-height": "35px",
-                  "font-size": "14px",
-                  "width": "140px",
-                  "text-align": "center"
-                },
-                "vk_share_btn:hover": {
-                  "background": "#111"
-                }
-              }
-            }
-          },
-          "fb": {
-            "like": {
-              "name": "Join the Facebook group",
-              "pic": "https://d3sailplay.cdnvideo.ru/media/assets/assetfile/ec06873d95084786de9fe50e549c2419.png",
-              "description": "Earn 10 points for joining our Facebook group",
-              "button_text": "Like us",
-              "styles": {
-                "fb_share_btn": {
-                  "background": "#333",
-                  "color": "#ddd",
-                  "cursor": "pointer",
-                  "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
-                  "line-height": "35px",
-                  "font-size": "14px",
-                  "width": "140px",
-                  "text-align": "center"
-                },
-                "fb_share_btn:hover": {
-                  "background": "#111"
-                }
-              }
-            },
-            "partner_page": {
-              "name": "Share Natura on Facebook",
-              "pic": "https://d3sailplay.cdnvideo.ru/media/assets/assetfile/ec06873d95084786de9fe50e549c2419.png",
-              "description": "Earn 10 points for Sharing Natura on Facebook",
-              "button_text": "Share",
-              "styles": {
-                "fb_share_btn": {
-                  "background": "#333",
-                  "color": "#ddd",
-                  "cursor": "pointer",
-                  "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
-                  "line-height": "35px",
-                  "font-size": "14px",
-                  "width": "140px",
-                  "text-align": "center"
-                },
-                "fb_share_btn:hover": {
-                  "background": "#111"
-                }
-              }
-            },
-            "purchase": {
-              "name": "Share your recent purchase on Facebook",
-              "pic": "https://d3sailplay.cdnvideo.ru/media/assets/assetfile/ec06873d95084786de9fe50e549c2419.png",
-              "description": "Earn 10 points by sharing your recent purchase on Facebook",
-              "button_text": "Share",
-              "styles": {
-                "fb_share_btn": {
-                  "background": "#333",
-                  "color": "#ddd",
-                  "cursor": "pointer",
-                  "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
-                  "line-height": "35px",
-                  "font-size": "14px",
-                  "width": "140px",
-                  "text-align": "center"
-                },
-                "fb_share_btn:hover": {
-                  "background": "#111"
-                }
-              }
-            }
-          },
-          "gp": {
-            "like": {
-              "name": "Like our Google+ page",
-              "pic": "https://d3sailplay.cdnvideo.ru/media/assets/assetfile/9f71487bf935bdc3c6ad5eeefd7b9a28.png",
-              "description": "Earn 10 points by giving our Google+ page +1",
-              "button_text": "Like",
-              "styles": {
-                "gp_share_btn": {
-                  "background": "#333",
-                  "color": "#ddd",
-                  "cursor": "pointer",
-                  "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
-                  "line-height": "35px",
-                  "font-size": "14px",
-                  "width": "140px",
-                  "text-align": "center"
-                },
-                "gp_share_btn:hover": {
-                  "background": "#111"
-                }
-              }
-            },
-            "partner_page": {
-              "name": "Share our Google+ page with your friends",
-              "pic": "https://d3sailplay.cdnvideo.ru/media/assets/assetfile/9f71487bf935bdc3c6ad5eeefd7b9a28.png",
-              "description": "Earn 10 points by telling your Google+ friends about Natura",
-              "button_text": "Share",
-              "styles": {
-                "gp_share_btn": {
-                  "background": "#333",
-                  "color": "#ddd",
-                  "cursor": "pointer",
-                  "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
-                  "line-height": "35px",
-                  "font-size": "14px",
-                  "width": "140px",
-                  "text-align": "center"
-                },
-                "gp_share_btn:hover": {
-                  "background": "#111"
-                }
-              }
-            },
-            "purchase": {
-              "name": "Share your recent purchase on Google+",
-              "pic": "https://d3sailplay.cdnvideo.ru/media/assets/assetfile/9f71487bf935bdc3c6ad5eeefd7b9a28.png",
-              "description": "Earn 10 points by sharing your recent purchase on Google+",
-              "button_text": "Share",
-              "styles": {
-                "gp_share_btn": {
-                  "background": "#333",
-                  "color": "#ddd",
-                  "cursor": "pointer",
-                  "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
-                  "line-height": "35px",
-                  "font-size": "14px",
-                  "width": "140px",
-                  "text-align": "center"
-                },
-                "gp_share_btn:hover": {
-                  "background": "#111"
-                }
-              }
-            }
-          },
-          "ok": {
-            "like": {
-              "name": "Вступите в группу Одноклассники",
-              "pic": "http://saike.ru/sailplay-magic/dist/img/actions/data/icon_ok.png",
-              "description": "Some description for action here",
-              "button_text": "Like",
-              "styles": {
-                "ok_share_btn": {
-                  "background": "#333",
-                  "color": "#ddd",
-                  "cursor": "pointer",
-                  "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
-                  "line-height": "35px",
-                  "font-size": "14px",
-                  "width": "140px",
-                  "text-align": "center"
-                },
-                "ok_share_btn:hover": {
-                  "background": "#111"
-                }
-              }
-            },
-            "partner_page": {
-              "name": "Рассказать о нашем магазине в Одноклассники",
-              "pic": "http://saike.ru/sailplay-magic/dist/img/actions/data/icon_ok.png",
-              "description": "Some description for action here",
-              "button_text": "Share",
-              "styles": {
-                "ok_share_btn": {
-                  "background": "#333",
-                  "color": "#ddd",
-                  "cursor": "pointer",
-                  "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
-                  "line-height": "35px",
-                  "font-size": "14px",
-                  "width": "140px",
-                  "text-align": "center"
-                },
-                "ok_share_btn:hover": {
-                  "background": "#111"
-                }
-              }
-            },
-            "purchase": {
-              "name": "Поделитесь вашей покупкой в Одноклассники",
-              "pic": "http://saike.ru/sailplay-magic/dist/img/actions/data/icon_ok.png",
-              "description": "Some description for action here",
-              "button_text": "Share",
-              "styles": {
-                "ok_share_btn": {
-                  "background": "#333",
-                  "color": "#ddd",
-                  "cursor": "pointer",
-                  "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
-                  "line-height": "35px",
-                  "font-size": "14px",
-                  "width": "140px",
-                  "text-align": "center"
-                },
-                "ok_share_btn:hover": {
-                  "background": "#111"
-                }
-              }
-            }
-          },
-          "tw": {
-            "partner_page": {
-              "name": "Share Natura on Twitter",
-              "pic": "https://d3sailplay.cdnvideo.ru/media/assets/assetfile/945cb8deb99c96043747b5c59b3f9b79.png",
-              "description": "Earn 10 points for mentioning @natura on Twitter!",
-              "button_text": "Share"
-            },
-            "purchase": {
-              "name": "Share your Natura purchase on Twitter",
-              "pic": "https://d3sailplay.cdnvideo.ru/media/assets/assetfile/945cb8deb99c96043747b5c59b3f9b79.png",
-              "description": "Earn 10 points for sharing your purchase with Natura using Twitter!",
-              "button_text": "Share"
-            }
-          }
-        }
       }
     }
-  },
+  ],
   "tools": {
     "modal": {
       "images": {
@@ -748,6 +454,322 @@
           "color": "#333",
           "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
           "font-weight": 300
+        }
+      }
+    }
+  },
+  "data": {
+    "history": {
+      "purchase": "Purchase",
+      "gift_purchase": "Gift",
+      "badge": "Badge",
+      "registration": "Sign up",
+      "referral": "Invite friend",
+      "referred": "Registration from friend's invite",
+      "referred_purchase": "Friend's purchase",
+      "promocode": "Promocode activation",
+      "enter_group": "Joined our group on ",
+      "share_purchase": "Shared a purchase on ",
+      "social_share": "Shared our website on ",
+      "share_badge": "Shared a badge on ",
+      "earn_badge": "Earn badge ",
+      "custom_action": "Custom action"
+    },
+    "actions": {
+      "system": {
+        "emailBinding": {
+          "name": "Add your email address",
+          "pic": "https://d3sailplay.cdnvideo.ru/media/assets/assetfile/f56a3fe6291372e5b4d178508136c47d.png",
+          "description": "Earn 10 points for updating your email address",
+          "button_text": "Bind E-Mail"
+        },
+        "fillProfile": {
+          "name": "Update your profile",
+          "pic": "https://d3sailplay.cdnvideo.ru/media/assets/assetfile/f56a3fe6291372e5b4d178508136c47d.png",
+          "description": "Earn 10 points for updating your profile",
+          "button_text": "Fill profile"
+        },
+        "inviteFriend": {
+          "name": "Invite a friend",
+          "pic": "https://d3sailplay.cdnvideo.ru/media/assets/assetfile/a212622efce628a4e0fa90548746b2f6.png",
+          "description": "Earn 10 points for inviting a friend to Natura",
+          "button_text": "Invite friend"
+        }
+      },
+      "social": {
+        "vk": {
+          "like": {
+            "name": "Вступите в группу VK",
+            "pic": "http://saike.ru/sailplay-magic/dist/img/actions/data/icon_vk.png",
+            "description": "Some description for action here",
+            "button_text": "Join VK group",
+            "styles": {
+              "vk_share_btn": {
+                "background": "#333",
+                "color": "#ddd",
+                "cursor": "pointer",
+                "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
+                "line-height": "35px",
+                "font-size": "14px",
+                "width": "140px",
+                "text-align": "center"
+              },
+              "vk_share_btn:hover": {
+                "background": "#111"
+              }
+            }
+          },
+          "partner_page": {
+            "name": "Рассказать о нашем магазине в VK",
+            "pic": "http://saike.ru/sailplay-magic/dist/img/actions/data/icon_vk.png",
+            "description": "Some description for action here",
+            "button_text": "Share",
+            "styles": {
+              "vk_share_btn": {
+                "background": "#333",
+                "color": "#ddd",
+                "cursor": "pointer",
+                "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
+                "line-height": "35px",
+                "font-size": "14px",
+                "width": "140px",
+                "text-align": "center"
+              },
+              "vk_share_btn:hover": {
+                "background": "#111"
+              }
+            }
+          },
+          "purchase": {
+            "name": "Поделитесь вашей покупкой в VK",
+            "pic": "http://saike.ru/sailplay-magic/dist/img/actions/data/icon_vk.png",
+            "description": "Some description for action here",
+            "button_text": "Share",
+            "styles": {
+              "vk_share_btn": {
+                "background": "#333",
+                "color": "#ddd",
+                "cursor": "pointer",
+                "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
+                "line-height": "35px",
+                "font-size": "14px",
+                "width": "140px",
+                "text-align": "center"
+              },
+              "vk_share_btn:hover": {
+                "background": "#111"
+              }
+            }
+          }
+        },
+        "fb": {
+          "like": {
+            "name": "Join the Facebook group",
+            "pic": "https://d3sailplay.cdnvideo.ru/media/assets/assetfile/ec06873d95084786de9fe50e549c2419.png",
+            "description": "Earn 10 points for joining our Facebook group",
+            "button_text": "Like us",
+            "styles": {
+              "fb_share_btn": {
+                "background": "#333",
+                "color": "#ddd",
+                "cursor": "pointer",
+                "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
+                "line-height": "35px",
+                "font-size": "14px",
+                "width": "140px",
+                "text-align": "center"
+              },
+              "fb_share_btn:hover": {
+                "background": "#111"
+              }
+            }
+          },
+          "partner_page": {
+            "name": "Share Natura on Facebook",
+            "pic": "https://d3sailplay.cdnvideo.ru/media/assets/assetfile/ec06873d95084786de9fe50e549c2419.png",
+            "description": "Earn 10 points for Sharing Natura on Facebook",
+            "button_text": "Share",
+            "styles": {
+              "fb_share_btn": {
+                "background": "#333",
+                "color": "#ddd",
+                "cursor": "pointer",
+                "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
+                "line-height": "35px",
+                "font-size": "14px",
+                "width": "140px",
+                "text-align": "center"
+              },
+              "fb_share_btn:hover": {
+                "background": "#111"
+              }
+            }
+          },
+          "purchase": {
+            "name": "Share your recent purchase on Facebook",
+            "pic": "https://d3sailplay.cdnvideo.ru/media/assets/assetfile/ec06873d95084786de9fe50e549c2419.png",
+            "description": "Earn 10 points by sharing your recent purchase on Facebook",
+            "button_text": "Share",
+            "styles": {
+              "fb_share_btn": {
+                "background": "#333",
+                "color": "#ddd",
+                "cursor": "pointer",
+                "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
+                "line-height": "35px",
+                "font-size": "14px",
+                "width": "140px",
+                "text-align": "center"
+              },
+              "fb_share_btn:hover": {
+                "background": "#111"
+              }
+            }
+          }
+        },
+        "gp": {
+          "like": {
+            "name": "Like our Google+ page",
+            "pic": "https://d3sailplay.cdnvideo.ru/media/assets/assetfile/9f71487bf935bdc3c6ad5eeefd7b9a28.png",
+            "description": "Earn 10 points by giving our Google+ page +1",
+            "button_text": "Like",
+            "styles": {
+              "gp_share_btn": {
+                "background": "#333",
+                "color": "#ddd",
+                "cursor": "pointer",
+                "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
+                "line-height": "35px",
+                "font-size": "14px",
+                "width": "140px",
+                "text-align": "center"
+              },
+              "gp_share_btn:hover": {
+                "background": "#111"
+              }
+            }
+          },
+          "partner_page": {
+            "name": "Share our Google+ page with your friends",
+            "pic": "https://d3sailplay.cdnvideo.ru/media/assets/assetfile/9f71487bf935bdc3c6ad5eeefd7b9a28.png",
+            "description": "Earn 10 points by telling your Google+ friends about Natura",
+            "button_text": "Share",
+            "styles": {
+              "gp_share_btn": {
+                "background": "#333",
+                "color": "#ddd",
+                "cursor": "pointer",
+                "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
+                "line-height": "35px",
+                "font-size": "14px",
+                "width": "140px",
+                "text-align": "center"
+              },
+              "gp_share_btn:hover": {
+                "background": "#111"
+              }
+            }
+          },
+          "purchase": {
+            "name": "Share your recent purchase on Google+",
+            "pic": "https://d3sailplay.cdnvideo.ru/media/assets/assetfile/9f71487bf935bdc3c6ad5eeefd7b9a28.png",
+            "description": "Earn 10 points by sharing your recent purchase on Google+",
+            "button_text": "Share",
+            "styles": {
+              "gp_share_btn": {
+                "background": "#333",
+                "color": "#ddd",
+                "cursor": "pointer",
+                "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
+                "line-height": "35px",
+                "font-size": "14px",
+                "width": "140px",
+                "text-align": "center"
+              },
+              "gp_share_btn:hover": {
+                "background": "#111"
+              }
+            }
+          }
+        },
+        "ok": {
+          "like": {
+            "name": "Вступите в группу Одноклассники",
+            "pic": "http://saike.ru/sailplay-magic/dist/img/actions/data/icon_ok.png",
+            "description": "Some description for action here",
+            "button_text": "Like",
+            "styles": {
+              "ok_share_btn": {
+                "background": "#333",
+                "color": "#ddd",
+                "cursor": "pointer",
+                "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
+                "line-height": "35px",
+                "font-size": "14px",
+                "width": "140px",
+                "text-align": "center"
+              },
+              "ok_share_btn:hover": {
+                "background": "#111"
+              }
+            }
+          },
+          "partner_page": {
+            "name": "Рассказать о нашем магазине в Одноклассники",
+            "pic": "http://saike.ru/sailplay-magic/dist/img/actions/data/icon_ok.png",
+            "description": "Some description for action here",
+            "button_text": "Share",
+            "styles": {
+              "ok_share_btn": {
+                "background": "#333",
+                "color": "#ddd",
+                "cursor": "pointer",
+                "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
+                "line-height": "35px",
+                "font-size": "14px",
+                "width": "140px",
+                "text-align": "center"
+              },
+              "ok_share_btn:hover": {
+                "background": "#111"
+              }
+            }
+          },
+          "purchase": {
+            "name": "Поделитесь вашей покупкой в Одноклассники",
+            "pic": "http://saike.ru/sailplay-magic/dist/img/actions/data/icon_ok.png",
+            "description": "Some description for action here",
+            "button_text": "Share",
+            "styles": {
+              "ok_share_btn": {
+                "background": "#333",
+                "color": "#ddd",
+                "cursor": "pointer",
+                "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
+                "line-height": "35px",
+                "font-size": "14px",
+                "width": "140px",
+                "text-align": "center"
+              },
+              "ok_share_btn:hover": {
+                "background": "#111"
+              }
+            }
+          }
+        },
+        "tw": {
+          "partner_page": {
+            "name": "Share Natura on Twitter",
+            "pic": "https://d3sailplay.cdnvideo.ru/media/assets/assetfile/945cb8deb99c96043747b5c59b3f9b79.png",
+            "description": "Earn 10 points for mentioning @natura on Twitter!",
+            "button_text": "Share"
+          },
+          "purchase": {
+            "name": "Share your Natura purchase on Twitter",
+            "pic": "https://d3sailplay.cdnvideo.ru/media/assets/assetfile/945cb8deb99c96043747b5c59b3f9b79.png",
+            "description": "Earn 10 points for sharing your purchase with Natura using Twitter!",
+            "button_text": "Share"
+          }
         }
       }
     }

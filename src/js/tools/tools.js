@@ -421,13 +421,14 @@
         restrict: 'A',
         replace: false,
         scope: {
-          widget_style: '=widgetStyle'
+          widget_style: '=widgetStyle',
+          widget_name: '=?widgetName'
         },
         link: function(scope, element, attrs){
 
           element[0].type = 'text/css';
 
-          var prefix = '.sailplay.magic ' + (attrs.widgetName ? '.' + attrs.widgetName : '');
+          var prefix = '.sailplay.magic ' + (scope.widget_name ? '.' + scope.widget_name : '');
 
           var css_string = tools.stringify_widget_css(prefix, scope.widget_style);
 

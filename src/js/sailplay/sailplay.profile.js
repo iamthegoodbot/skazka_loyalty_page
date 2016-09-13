@@ -190,7 +190,6 @@
      *
      * @description
      * SailPlay profile directive implements user's profile editing.
-     * You can access scope through SailPlayProfileEdit variable.
      * This directive extends parent scope with property: sailplay.fill_profile
      *
      */

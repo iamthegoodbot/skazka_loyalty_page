@@ -4,7 +4,7 @@
 
   .config(function(SailPlayProvider, MAGIC_CONFIG, SailPlayHistoryProvider, SailPlayActionsDataProvider){
 
-    SailPlayActionsDataProvider.set_actions_data(MAGIC_CONFIG.widgets.actions.data);
+    SailPlayActionsDataProvider.set_actions_data(MAGIC_CONFIG.data.actions);
 
     SailPlayProvider.set_auth_hash_id(MAGIC_CONFIG.auth.auth_hash_id);
 
@@ -12,7 +12,7 @@
       background: 'transparent'
     });
 
-    SailPlayHistoryProvider.set_dictionary(MAGIC_CONFIG.widgets.profile.texts.history_items);
+    SailPlayHistoryProvider.set_dictionary(MAGIC_CONFIG.data.history);
 
     //SailPlayProvider.set_auth_type(MAGIC_CONFIG.auth.type);
 
