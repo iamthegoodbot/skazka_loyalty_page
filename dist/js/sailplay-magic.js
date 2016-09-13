@@ -291,7 +291,7 @@ try {
 }
 module.run(['$templateCache', function($templateCache) {
   $templateCache.put('/html/core/widgets/badges.badge.html',
-    '<div class="bon_item badge"><div class="bon_item_iner"><img class="badge_pic" data-ng-src="{{ badge.thumbs.url_250x250 | sailplay_pic }}" alt="{{ badge.name }}"> <span class="bon_item_name badge_name" data-ng-bind="badge.name"></span> <span class="bon_tem_info badge_points" data-ng-bind="(badge.points | number) + \' \' + (gift.points | sailplay_pluralize:_tools.points.texts.pluralize)"></span></div><div class="badge_arrow"></div></div>');
+    '<div class="bon_item badge"><div class="bon_item_iner"><img class="badge_pic" data-ng-src="{{ (badge.is_received ? badge.thumbs.url_250x250 : badge.thumbs.url_gs) | sailplay_pic }}" alt="{{ badge.name }}"> <span class="bon_item_name badge_name" data-ng-bind="badge.name"></span> <span class="bon_tem_info badge_points" data-ng-bind="(badge.points | number) + \' \' + (gift.points | sailplay_pluralize:_tools.points.texts.pluralize)"></span></div><div class="badge_arrow"></div></div>');
 }]);
 })();
 
