@@ -291,6 +291,36 @@
         }
       }
 
+    })
+
+    .factory('SailPlayShare', function ($window) {
+      return function (network, url, title, description, image) {
+
+        var share_url = '';
+
+        switch (network){
+
+          case 'fb':
+
+            share_url = 'http://www.facebook.com/sharer.php?s=100';
+            share_url += '&t=' + encodeURIComponent(title);
+            share_url += '&u=' + encodeURIComponent(url);
+            break;
+
+          case 'tw':
+
+            share_url = 'https://twitter.com/intent/tweet?tw_p=tweetbutton';
+            share_url += '&original_referer=' + encodeURIComponent(url);
+            share_url += '&url=' + encodeURIComponent(url);
+            share_url +=  '&text=' + encodeURIComponent(description);
+
+
+
+        }
+
+        $window[0].open(share_url, '_blank', 'toolbar=0,status=0,width=626,height=436,location=no');
+
+      }
     });
 
 }());

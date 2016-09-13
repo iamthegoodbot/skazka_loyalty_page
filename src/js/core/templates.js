@@ -66,7 +66,7 @@ try {
 }
 module.run(['$templateCache', function($templateCache) {
   $templateCache.put('/html/core/widgets/badges.badge.html',
-    '<div class="bon_item badge"><div class="bon_item_iner"><img class="badge_pic" data-ng-src="{{ (badge.is_received ? badge.thumbs.url_250x250 : badge.thumbs.url_gs) | sailplay_pic }}" alt="{{ badge.name }}"> <span class="bon_item_name badge_name" data-ng-bind="badge.name"></span> <span class="bon_tem_info badge_points" data-ng-bind="(badge.points | number) + \' \' + (gift.points | sailplay_pluralize:_tools.points.texts.pluralize)"></span></div><div class="badge_arrow"></div></div>');
+    '<div class="badge"><div class="badge_iner" data-ng-click="on_click(badge)"><div class="badge_pic"><img data-ng-src="{{ (badge.is_received ? badge.thumbs.url_250x250 : badge.thumbs.url_gs) | sailplay_pic }}" alt="{{ badge.name }}"></div><span class="badge_name" data-ng-bind="badge.name"></span></div><div class="badge_arrow"></div></div>');
 }]);
 })();
 
@@ -78,7 +78,7 @@ try {
 }
 module.run(['$templateCache', function($templateCache) {
   $templateCache.put('/html/core/widgets/badges.html',
-    '<div class="widget {{ _config.name }} clearfix"><div class="bon_choice_main container" data-ng-show="_config.enabled" data-ng-cloak=""><style scoped="" data-widget-style="_config.styles" data-widget-name="_config.name"></style><h3 class="bon_header"><span class="header">{{ _config.texts.header }}</span></h3><h4 class="bon_sub_header"><span class="caption">{{ _config.texts.caption }}</span></h4><div data-sailplay-badges="" class="badge_lines_container clearfix"><sailplay-magic-badge-line class="multi_level" data-ng-repeat="line in sailplay.badges.list().multilevel_badges" data-line="line"></sailplay-magic-badge-line><sailplay-magic-badge-line class="one_level" data-line="sailplay.badges.list().one_level_badges" data-type="one_level"></sailplay-magic-badge-line></div></div></div>');
+    '<div class="widget {{ _config.name }} clearfix"><div class="container clearfix" data-ng-show="_config.enabled" data-ng-cloak=""><style scoped="" data-widget-style="_config.styles" data-widget-name="_config.name"></style><h3 class="bon_header"><span class="header">{{ _config.texts.header }}</span></h3><h4 class="bon_sub_header"><span class="caption">{{ _config.texts.caption }}</span></h4><div data-sailplay-badges="" class="badge_lines_container clearfix"><sailplay-magic-badge-line class="multi_level" data-ng-repeat="line in sailplay.badges.list().multilevel_badges" data-line="line" data-config="_config"></sailplay-magic-badge-line><sailplay-magic-badge-line class="one_level" data-line="sailplay.badges.list().one_level_badges" data-type="one_level" data-config="_config"></sailplay-magic-badge-line></div></div></div>');
 }]);
 })();
 
@@ -90,7 +90,7 @@ try {
 }
 module.run(['$templateCache', function($templateCache) {
   $templateCache.put('/html/core/widgets/badges.line.html',
-    '<div class="clearfix"><div class="bon_item_main clearfix" data-ng-show="line.length" data-magic-slider=""><div class="bon_slide_cat_item_wrap" data-magic-gallery=""><div class="bon_slide_cat_item"><div class="bon_item_line" data-ng-style="{left : left}"><sailplay-magic-badge data-magic-slide="" data-badge="badge" data-ng-repeat="badge in line" data-ng-class="{ last: $last }"></sailplay-magic-badge></div></div><a href="#" class="arr_left arr_left slider_arrow_left" data-ng-click="$event.preventDefault(); set_position(\'left\');" data-ng-show="show_left"></a> <a href="#" class="arr_right arr_right slider_arrow_right" data-ng-click="$event.preventDefault(); set_position(\'right\');" data-ng-show="show_right"></a></div></div></div>');
+    '<div class="clearfix"><div class="bon_item_main clearfix" data-ng-show="line.length"><div class="bon_slide_cat_item_wrap" data-magic-gallery=""><div class="bon_slide_cat_item"><div class="bon_item_line" data-ng-style="{left : left}"><sailplay-magic-badge data-magic-slide="" data-badge="badge" data-on-click="badge_select(badge);" data-ng-repeat="badge in line" data-ng-class="{ last: $last }"></sailplay-magic-badge></div></div></div></div><magic-modal class="modal_badge_selected" data-ng-cloak="" data-show="badge_selected"><div><div class="modal_badge_image"><img class="gift_more_img" data-ng-src="{{ badge_selected.thumbs.url_250x250 | sailplay_pic }}" alt="{{ badge_selected.name }}"></div><div class="modal_badge_tools"><p><span class="modal_badge_name" data-ng-bind="badge_selected.name"></span></p><p style="margin-top: 10px;"><span class="modal_badge_description" data-ng-bind="badge_selected.descr"></span></p><p class="modal_badge_buttons"><span class="badge_share_button fb_icon" data-ng-click="badge_share(\'fb\', badge_selected)">{{ _config.texts.share_fb }}</span> <span class="badge_share_button tw_icon" style="margin-right: 20px;" data-ng-click="badge_share(\'tw\', badge_selected)">{{ _config.texts.share_tw }}</span> <span class="sp_btn button_primary" data-ng-click="badge_select(false);">{{ _tools.buttons.texts.close }}</span></p></div></div></magic-modal></div>');
 }]);
 })();
 

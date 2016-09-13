@@ -1,21 +1,61 @@
 <div class="clearfix">
-  <div class="bon_item_main clearfix" data-ng-show="line.length" data-magic-slider>
+  <div class="bon_item_main clearfix" data-ng-show="line.length">
 
     <div class="bon_slide_cat_item_wrap" data-magic-gallery>
       <div class="bon_slide_cat_item">
 
         <div class="bon_item_line" data-ng-style="{left : left}">
 
-          <sailplay-magic-badge data-magic-slide data-badge="badge" data-ng-repeat="badge in line" data-ng-class="{ last: $last }"></sailplay-magic-badge>
+          <sailplay-magic-badge data-magic-slide data-badge="badge" data-on-click="badge_select(badge);" data-ng-repeat="badge in line" data-ng-class="{ last: $last }"></sailplay-magic-badge>
 
         </div>
 
       </div>
 
-      <a href="#" class="arr_left arr_left slider_arrow_left" data-ng-click="$event.preventDefault(); set_position('left');" data-ng-show="show_left"></a>
-      <a href="#" class="arr_right arr_right slider_arrow_right" data-ng-click="$event.preventDefault(); set_position('right');" data-ng-show="show_right"></a>
+      <!--<a href="#" class="arr_left arr_left slider_arrow_left" data-ng-click="$event.preventDefault(); set_position('left');" data-ng-show="show_left"></a>-->
+      <!--<a href="#" class="arr_right arr_right slider_arrow_right" data-ng-click="$event.preventDefault(); set_position('right');" data-ng-show="show_right"></a>-->
 
     </div>
 
   </div>
+
+  <magic-modal class="modal_badge_selected" data-ng-cloak data-show="badge_selected">
+
+    <div>
+
+      <div class="modal_badge_image">
+        <img class="gift_more_img" data-ng-src="{{ badge_selected.thumbs.url_250x250 | sailplay_pic }}"
+             alt="{{ badge_selected.name }}">
+      </div>
+
+      <div class="modal_badge_tools">
+
+        <p>
+          <span class="modal_badge_name" data-ng-bind="badge_selected.name"></span>
+        </p>
+
+        <!--<p style="margin-top: 10px;">-->
+          <!--<span class="modal_badge_points" data-ng-bind="(action_selected.points | number) + ' ' + (selected_gift.points | sailplay_pluralize:_tools.points.texts.pluralize)"></span>-->
+        <!--</p>-->
+
+        <p style="margin-top: 10px;">
+          <span class="modal_badge_description" data-ng-bind="badge_selected.descr"></span>
+        </p>
+
+        <p class="modal_badge_buttons">
+          <span class="badge_share_button fb_icon" data-ng-click="badge_share('fb', badge_selected)">
+            {{ _config.texts.share_fb }}
+          </span>
+          <span class="badge_share_button tw_icon" style="margin-right: 20px;" data-ng-click="badge_share('tw', badge_selected)">
+            {{ _config.texts.share_tw }}
+          </span>
+          <span class="sp_btn button_primary" data-ng-click="badge_select(false);">{{ _tools.buttons.texts.close }}</span>
+        </p>
+
+      </div>
+
+    </div>
+
+  </magic-modal>
+
 </div>

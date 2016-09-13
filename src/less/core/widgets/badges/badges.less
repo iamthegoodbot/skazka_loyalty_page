@@ -1,3 +1,6 @@
+@badge_width: 150px;
+@badge_height: @badge_width + 40px;
+
 .widget.badges {
   float: left;
   width: 100%;
@@ -23,8 +26,9 @@
 
   .bon_slide_cat_item_wrap {
     float: left;
-    width: 74%;
-    margin-left: 13%;
+    width: 100%;
+    margin-left: 5%;
+    margin-right: 5%;
     margin-top: 30px;
     margin-bottom: 30px;
     position: relative;
@@ -83,76 +87,6 @@
         left: 0;
         transition: .3s ease;
       }
-      .bon_item {
-        width: 245px;
-        height: 360px;
-        border: 1px solid @main_light;
-        margin-left: 15px;
-        margin-right: 15px;
-        background-color: @white;
-        text-align: center;
-        display: inline-block;
-        white-space: normal;
-        .bon_item_iner {
-          position: relative;
-          float: left;
-          width: 100%;
-          height: 100%;
-          span {
-            white-space: normal;
-            float: left;
-            margin-left: 30px;
-            width: 185px;
-            text-align: left;
-            color: @main_darker;
-            -webkit-transition: all 300ms ease;
-            -moz-transition: all 300ms ease;
-            -ms-transition: all 300ms ease;
-            -o-transition: all 300ms ease;
-            transition: all 300ms ease;
-          }
-          .bon_item_name {
-            font-size: 16px;
-            position: absolute;
-            left: 0px;
-            bottom: 61px;
-
-          }
-          .bon_tem_info {
-            font-size: 14px;
-            opacity: 0.5;
-            font-weight: 300;
-            position: absolute;
-            left: 0px;
-            bottom: 37px;
-          }
-          img {
-            margin-top: 30px;
-            max-height: 200px;
-          }
-          a {
-            position: absolute;
-            bottom: 37px;
-            left: 50%;
-            width: 160px;
-            line-height: 35px;
-            text-decoration: none;
-            color: @white;
-            font-size: 14px;
-            font-weight: 500;
-            margin-left: -80px;
-            background-color: @main;
-            border-bottom: 1px solid @black;
-            text-shadow: 0 0 1px @black;
-            opacity: 0;
-            -webkit-transition: all 300ms ease;
-            -moz-transition: all 300ms ease;
-            -ms-transition: all 300ms ease;
-            -o-transition: all 300ms ease;
-            transition: all 300ms ease;
-          }
-        }
-      }
     }
   }
 
@@ -175,15 +109,89 @@
 
     position: relative;
 
+    width: @badge_width;
+    height: @badge_height;
+    border: 1px solid @main_light;
+    margin-left: 30px;
+    margin-right: 30px;
+    background-color: @white;
+    text-align: center;
+    display: inline-block;
+    white-space: normal;
+
+    .badge_iner {
+      position: relative;
+      float: left;
+      width: 100%;
+      height: 100%;
+      cursor: pointer;
+
+      span {
+        white-space: normal;
+        float: left;
+        color: @main_darker;
+        -webkit-transition: all 300ms ease;
+        -moz-transition: all 300ms ease;
+        -ms-transition: all 300ms ease;
+        -o-transition: all 300ms ease;
+        transition: all 300ms ease;
+      }
+
+      .badge_name {
+        font-size: 16px;
+        width: 100%;
+        text-align: center;
+        margin-top: 10px;
+      }
+      .bon_tem_info {
+        font-size: 14px;
+        opacity: 0.5;
+        font-weight: 300;
+        position: absolute;
+        left: 0px;
+        bottom: 37px;
+      }
+      .badge_pic {
+        width: 100%;
+        max-height: @badge_width;
+        overflow: hidden;
+        img {
+          width: 100%;
+          height: auto;
+        }
+      }
+      a {
+        position: absolute;
+        bottom: 37px;
+        left: 50%;
+        width: 160px;
+        line-height: 35px;
+        text-decoration: none;
+        color: @white;
+        font-size: 14px;
+        font-weight: 500;
+        margin-left: -80px;
+        background-color: @main;
+        border-bottom: 1px solid @black;
+        text-shadow: 0 0 1px @black;
+        opacity: 0;
+        -webkit-transition: all 300ms ease;
+        -moz-transition: all 300ms ease;
+        -ms-transition: all 300ms ease;
+        -o-transition: all 300ms ease;
+        transition: all 300ms ease;
+      }
+    }
+
     .badge_arrow {
 
       position: absolute;
       left: 100%;
-      top: 50%;
-      width: 30px;
-      height: 15px;
+      top: @badge_width/2-10;
+      width: 60px;
+      height: 20px;
       background-position: center left;
-      background-size: cover;
+      background-size: 100% 100%;
       background-repeat: no-repeat;
 
     }
@@ -194,6 +202,69 @@
       }
     }
 
+  }
+
+}
+
+//selected badge modal
+.modal_badge_selected {
+
+  .bns_overlay_iner {
+    .box-sizing(border-box);
+    width: 600px;
+  }
+
+  .modal_badge_image {
+    display: inline-block;
+    .box-sizing(border-box);
+    width: 30%;
+    padding: 0;
+    vertical-align: middle;
+    overflow: hidden;
+    img {
+      width: 100%;
+      vertical-align: top;
+    }
+  }
+
+  .modal_badge_tools {
+
+    display: inline-block;
+    .box-sizing(border-box);
+    width: 70%;
+    padding: 0 0 0 40px;
+    vertical-align: middle;
+
+    .modal_badge_name {
+
+    }
+
+    .modal_badge_description {
+
+    }
+
+  }
+
+  .modal_badge_buttons {
+    margin-top: 30px;
+  }
+
+  .badge_share_button {
+    vertical-align: middle;
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    background-position: center;
+    background-size: 20px 20px;
+    background-repeat: no-repeat;
+    cursor: pointer;
+    margin-right: 10px;
+    .transition(all 0.3s linear);
+    background-color: @main_light;
+    border-radius: 20px;
+    &:hover {
+      background-color: @main;
+    }
   }
 
 }
