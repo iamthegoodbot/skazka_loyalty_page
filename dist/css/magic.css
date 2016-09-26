@@ -1449,10 +1449,10 @@
   list-style: none;
 }
 .sailplay.magic .leaderboard__list {
-  width: 600px;
+  max-width: 600px;
   box-sizing: border-box;
-  padding: 0;
-  margin: 0 auto !important;
+  padding: 0 10px;
+  margin: 0 auto 20px !important;
   float: none;
 }
 .sailplay.magic .leaderboard__list-item {
