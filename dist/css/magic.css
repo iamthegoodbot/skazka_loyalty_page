@@ -1445,6 +1445,61 @@
 .sailplay.magic .modal_badge_selected .badge_share_button:hover {
   background-color: #888888;
 }
+.sailplay.magic .leaderboard ul li {
+  list-style: none;
+}
+.sailplay.magic .leaderboard__list {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 50px;
+}
+.sailplay.magic .leaderboard__list-item {
+  display: inline-block;
+  width: 100%;
+  position: relative;
+  box-sizing: border-box;
+  z-index: 1;
+  font-size: 0;
+  padding: 5px;
+}
+.sailplay.magic .leaderboard__list-item.type_current {
+  background: #6385b5;
+}
+.sailplay.magic .leaderboard__list-item.type_current span {
+  color: white;
+}
+.sailplay.magic .leaderboard__list-item.type_headers {
+  margin-bottom: 5px;
+}
+.sailplay.magic .leaderboard__list-item span {
+  display: inline-block;
+  vertical-align: middle;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #676767;
+  white-space: nowrap;
+  line-height: 18px;
+}
+.sailplay.magic .leaderboard__list-item__photo {
+  height: 18px;
+  display: inline-block;
+  vertical-align: top;
+}
+.sailplay.magic .leaderboard__list-item__rank {
+  font-size: 18px;
+  width: 20%;
+  text-align: left;
+}
+.sailplay.magic .leaderboard__list-item__name {
+  font-size: 14px;
+  width: 60%;
+  text-align: center;
+}
+.sailplay.magic .leaderboard__list-item__score {
+  font-size: 18px;
+  width: 20%;
+  text-align: right;
+}
 .sailplay.magic .sailplay.magic,
 .sailplay.magic * {
   margin: 0;

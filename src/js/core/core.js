@@ -6,6 +6,7 @@
     'widgets.profile',
     'widgets.gifts',
     'widgets.badges',
+    'widgets.leaderboard',
     'widgets.actions'
   ])
 
@@ -23,6 +24,7 @@
       SailPlayApi.call('load.actions.list');
       SailPlayApi.call('load.actions.custom.list');
       SailPlayApi.call('load.gifts.list');
+      SailPlayApi.call('leaderboard.load');
     }
 
     //when bad login
@@ -47,6 +49,7 @@
       SailPlayApi.call('load.actions.custom.list');
       SailPlayApi.call('load.user.history');
       SailPlayApi.call('load.gifts.list');
+      SailPlayApi.call('leaderboard.load');
     });
 
     //unfortunately, we need to update actions list after perform
@@ -67,6 +70,7 @@
 
       SailPlayApi.call('load.user.info', { all: 1 });
       SailPlayApi.call('load.user.history');
+      SailPlayApi.call('leaderboard.load');
 
       $rootScope.$apply();
 

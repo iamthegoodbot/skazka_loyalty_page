@@ -148,6 +148,7 @@
 
         'load.user.info',
         'load.gifts.list',
+        'leaderboard.load',
         'load.user.history',
         'load.actions.list',
         'load.actions.custom.list',
