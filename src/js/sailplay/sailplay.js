@@ -200,7 +200,7 @@
 
       self.call = function(name, params, callback){
 
-        SailPlay.send(name, params);
+        SailPlay.send(name, params, callback);
 
       };
 

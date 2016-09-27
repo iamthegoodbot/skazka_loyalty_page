@@ -35,6 +35,17 @@
           </div>
         </div>
 
+        <div class="mb_item action" data-ng-if="quiz_list && quiz_list.length && ((!exist || !exist()) || !checkTag(quiz.tag, exist()))" data-ng-repeat="quiz in $parent.quiz_list" data-ng-style="_config.styles.action">
+          <div class="mb_item_left">
+            <span class="action_name" data-ng-bind="quiz.name"></span>
+            <span class="action_points" data-ng-show="quiz.points" data-ng-bind="((quiz.points || 0) | number) + ' ' + (quiz.points | sailplay_pluralize:_tools.points.texts.pluralize)"></span>
+            <a class="sp_btn button_primary" data-ng-click="$event.preventDefault();open_quiz(quiz)">{{ quiz.button_text }}</a>
+          </div>
+          <div class="mb_item_right">
+            <img data-ng-src="{{ quiz.icon | sailplay_pic }}" alt="">
+          </div>
+        </div>
+
       </div>
 
       <magic-modal class="actions_selected_modal" data-ng-cloak data-show="$parent.action_selected">
@@ -79,6 +90,55 @@
       <magic-modal class="actions_custom_selected_modal" data-ng-cloak data-show="$parent.action_custom_selected">
 
         <div data-sailplay-action-custom data-action="action_custom_selected"></div>
+
+      </magic-modal>
+
+
+      <magic-modal class="actions_custom_selected_modal" data-ng-cloak data-show="$parent.quiz.show">
+
+        <div class="quiz_main">
+
+          <div class="quiz_block" data-ng-if="$parent.quiz.data">
+
+            <div class="quiz_block__title" data-ng-bind="$parent.quiz.data.name"></div>
+
+            <div class="quiz_block__counter" data-ng-bind="$parent.quiz.step + ' / ' + $parent.quiz.data.data.length"></div>
+
+            <div class="quiz_block__name" data-ng-bind="getCurrentTest().name"></div>
+
+            <label data-ng-repeat="question in getCurrentTest().answers"
+                   data-ng-switch="getCurrentTest().type"
+                   data-ng-click="$event.preventDefault();change(question, getCurrentTest());">
+
+              <input data-ng-switch-when="many" type="checkbox"
+                     name="quiz_[[ $index ]]"
+                     data-ng-checked="check(question)">
+
+              <input data-ng-switch-when="one" type="radio"
+                     name="quiz"
+                     data-ng-checked="check(question)">
+
+              <span data-ng-bind="question.text"></span>
+
+            </label>
+
+            <textarea name="variable" data-ng-show="needToShowVariable()"
+                      data-ng-model="models.variable"></textarea>
+
+            <div class="button_wrapper clearfix">
+
+                <span data-ng-click="prev();" class="quiz_block__btn prev"
+                      data-ng-class="{type_disabled: $parent.quiz.step == 1}">Prev</span>
+
+                <span data-ng-click="next();" class="quiz_block__btn next"
+                      data-ng-class="{type_disabled: !canPressNext() }"
+                      data-ng-bind="step == $parent.quiz.data.data.length ? 'Finish' : 'Next' ">next</span>
+
+            </div>
+
+          </div>
+
+        </div>
 
       </magic-modal>
 

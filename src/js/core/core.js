@@ -10,7 +10,7 @@
     'widgets.actions'
   ])
 
-  .run(function(SailPlay, SailPlayApi, $rootScope, $window, MAGIC_CONFIG){
+  .run(function(SailPlay, SailPlayApi, $rootScope, $window, MAGIC_CONFIG, $timeout, QuizService){
 
     //we need global template reference for config
     $rootScope.MAGIC_CONFIG = MAGIC_CONFIG;
@@ -37,6 +37,8 @@
       logout_reset();
     });
 
+    var TAGS = QuizService.getTags();
+
     //wait for sailplay inited, then try to login by cookie (we need to see unauthorized content)
     SailPlay.authorize('cookie');
 
@@ -48,6 +50,7 @@
       SailPlayApi.call('load.actions.list');
       SailPlayApi.call('load.actions.custom.list');
       SailPlayApi.call('load.user.history');
+      SailPlayApi.call('tags.exist', {tags: TAGS});
       SailPlayApi.call('load.gifts.list');
       SailPlayApi.call('leaderboard.load');
     });
@@ -63,6 +66,12 @@
 
     SailPlay.on('actions.perform.complete', function(){
       SailPlayApi.call('load.actions.list');
+    });
+
+    SailPlay.on('tags.add.success', function(){
+      $timeout(function(){
+        SailPlayApi.call('tags.exist', {tags: TAGS});
+      }, 2000);
     });
 
     //also, we need update user info after gift purchase

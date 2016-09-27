@@ -91,6 +91,84 @@
 
     })
 
+    .constant('TAGS_ADD_LIMIT', 10)
+
+    .service('QuizService', function (MAGIC_CONFIG, TAGS_ADD_LIMIT, SailPlayApi) {
+
+      var self = this;
+
+      self.getTags = function () {
+
+        var tags = [];
+
+        if (MAGIC_CONFIG && MAGIC_CONFIG.data.quiz) {
+
+          tags = tags.concat(MAGIC_CONFIG.data.quiz.map(function (item) {
+            return item.tag;
+          }));
+
+        }
+
+        return tags;
+      };
+
+      self.checkTag = function (tag, exist) {
+
+        if (!tag || !exist) return true;
+
+        var _tag = exist.tags.filter(function (item) {
+            return item.name == tag
+          })[0] || {};
+
+        return _tag.exist;
+
+      };
+
+      self.addTags = function (data, callback) {
+
+        var _send_data = angular.copy(data);
+
+        sending(_send_data.tags.slice(0, TAGS_ADD_LIMIT));
+
+        function sending(tags) {
+
+          SailPlayApi.call('tags.add', {tags: tags}, function () {
+
+            _send_data.tags = _send_data.tags.slice(TAGS_ADD_LIMIT);
+
+            if (_send_data.tags.length != 0) {
+
+              sending(_send_data.tags.slice(0, TAGS_ADD_LIMIT));
+
+              return;
+
+            }
+
+            if (Object.keys(_send_data.vars).length) {
+
+              SailPlayApi.call('vars.add', {custom_vars: _send_data.vars}, function () {
+
+                callback && callback();
+
+              });
+
+            } else {
+
+              callback && callback();
+
+            }
+
+          });
+
+        }
+
+
+      };
+
+      return self;
+
+    })
+
     /**
      * @ngdoc directive
      * @name sailplay.actions.directive:sailplayActions
@@ -101,7 +179,7 @@
      * SailPlay profile directive used for rendering sailplay actions, sush as: fill profile, invite friend and social sharing. =)
      *
      */
-    .directive('sailplayActions', function(SailPlayApi, SailPlay, SailPlayActionsData){
+    .directive('sailplayActions', function(SailPlayApi, SailPlay, SailPlayActionsData, QuizService){
 
       return {
 
@@ -112,6 +190,10 @@
 
           scope.actions = SailPlayApi.data('load.actions.list');
           scope.actions_custom = SailPlayApi.data('load.actions.custom.list');
+
+          scope.exist = SailPlayApi.data('tags.exist');
+
+          scope.checkTag = QuizService.checkTag;
 
           scope.perform_action = function(action){
 

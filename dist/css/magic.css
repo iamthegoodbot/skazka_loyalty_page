@@ -1210,6 +1210,94 @@
   box-sizing: border-box;
   width: 600px;
 }
+.sailplay.magic .quiz_selected_modal .bns_overlay_iner {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 600px;
+}
+.sailplay.magic .quiz_block {
+  width: 100%;
+  border-radius: 10px;
+  box-sizing: border-box;
+}
+.sailplay.magic .quiz_block .button_wrapper {
+  margin: 5px 0;
+}
+.sailplay.magic .quiz_block__title {
+  width: 100%;
+  color: #57baad;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+}
+.sailplay.magic .quiz_block label {
+  display: block;
+  width: 100%;
+  font-size: 14px;
+  margin: 10px 0;
+  white-space: nowrap;
+}
+.sailplay.magic .quiz_block label input {
+  display: inline-block;
+  height: 14px;
+  width: 14px;
+  line-height: 14px;
+  vertical-align: middle;
+}
+.sailplay.magic .quiz_block label span {
+  white-space: normal;
+  display: inline-block;
+  vertical-align: middle;
+  line-height: 18px;
+}
+.sailplay.magic .quiz_block__counter {
+  width: 100%;
+  display: block;
+  margin: 5px 0;
+  text-align: center;
+  font-weight: bold;
+  font-size: 18px;
+  color: #57baad;
+}
+.sailplay.magic .quiz_block__name {
+  width: 100%;
+  display: block;
+  margin: 20px 0;
+  text-align: left;
+  font-size: 18px;
+}
+.sailplay.magic .quiz_block textarea {
+  width: 100%;
+  min-height: 150px;
+  padding: 10px;
+  resize: none;
+  border-radius: 10px;
+  font-size: 18px;
+  box-sizing: border-box;
+  border: 1px solid grey;
+  margin: 5px 0;
+}
+.sailplay.magic .quiz_block__btn {
+  width: 200px;
+  line-height: 40px;
+  text-align: center;
+  color: #ffffff;
+  background-color: #f8b01c;
+  text-decoration: none;
+  font-size: 14px;
+  border-radius: 10px;
+}
+.sailplay.magic .quiz_block__btn.next {
+  float: right;
+}
+.sailplay.magic .quiz_block__btn.prev {
+  float: left;
+}
+.sailplay.magic .quiz_block__btn.type_disabled {
+  cursor: default;
+  background-color: grey;
+}
 .sailplay.magic .widget.badges {
   float: left;
   width: 100%;
