@@ -699,7 +699,7 @@ module.run(['$templateCache', function($templateCache) {
 
               var config = SailPlay.config();
 
-              iframe.src = (config && ((config.DOMAIN + config.urls.actions.custom.render.replace(':action_id', action.id) + '?auth_hash=' + config.auth_hash))) || '';
+              iframe.src = (config && ((config.DOMAIN + config.urls.actions.custom.render.replace(':action_id', action.id) + '?auth_hash=' + config.auth_hash + '&lang=' + config.lang))) || '';
 
               iframe.className = ['sailplay_action_custom_frame', action.type].join(' ');
 
