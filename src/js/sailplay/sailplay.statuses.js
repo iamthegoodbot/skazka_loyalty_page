@@ -29,7 +29,6 @@
 
             var points = user_points ? user_points.confirmed + user_points.spent + user_points.spent_extra : 0;
 
-
             if (status_points[status_points.length - 1] && (points > status_points[status_points.length - 1])) {
               return {
                 width: '100%'

@@ -13,7 +13,7 @@
 
         <div data-sailplay-gifts>
 
-            <div class="bon_item_main" data-ng-show="gifts().length" data-magic-slider>
+            <div class="bon_item_main" data-ng-show="gifts && gifts().length" data-magic-slider>
 
                 <div class="bon_slide_cat_item_wrap" data-magic-gallery>
 
@@ -85,9 +85,10 @@
                     <p class="modal_gift_description">
                         {{ _config.texts.no_points_message }}
                     </p>
-                    <a class="alink button_primary" href="#magic_actions" data-ng-click="gift_unconfirm()">{{
+                    <a class="alink button_primary earn_points_button" href="#magic_actions" data-ng-click="gift_unconfirm()">{{
                         _config.texts.earn_points }}</a>
-                    <a class="alink button_primary" target="_blank" href="{{ _config.texts.partner_service_url }}"
+                    <a class="alink button_primary service_button" data-ng-if="_config.texts.partner_service_url"
+                       target="_blank" href="{{ _config.texts.partner_service_url }}"
                        data-ng-click="gift_unconfirm()">{{ _config.texts.service }}</a>
                 </div>
             </magic-modal>

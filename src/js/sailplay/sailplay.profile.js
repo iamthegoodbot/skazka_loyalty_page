@@ -330,8 +330,13 @@
 
             var data_user = SailPlayApi.data('load.user.info')() && SailPlayApi.data('load.user.info')().user;
 
-            var req_user = angular.copy(scope.profile_form.user);
-            //console.log(data_user.phone, req_user.addPhone);
+            var req_user = {};
+
+            angular.forEach(scope.sailplay.fill_profile.form, function(item){
+              req_user[item.name] = item.value;
+            });
+
+            console.log('req_user,', req_user);
 
             if(data_user && data_user.phone && data_user.phone.replace(/\D/g,'') == req_user.addPhone.replace(/\D/g,'')){
               delete req_user.addPhone;
@@ -345,95 +350,17 @@
 
               if(user_res.status === 'ok'){
 
-                var req_tags = angular.copy(scope.profile_form.tags);
+                $rootScope.$broadcast('notifier:notify', {
 
-                if(!scope.profile_form.user.sex || !scope.profile_form.custom_vars.Address){
-                  req_tags.push('Profile Uncompleted');
-                }
-                else {
-                  req_tags.push(FillProfile.tag);
-                }
-
-                function chunk(array, chunkSize) {
-                  return [].concat.apply([],
-                    array.map(function(elem,i) {
-                      return i%chunkSize ? [] : [array.slice(i,i+chunkSize)];
-                    })
-                  );
-                }
-
-                var chunked_tags = chunk(req_tags, 10);
-
-                var tag_promises = [];
-
-                angular.forEach(chunked_tags, function(chunk){
-
-                  var promise = $q(function(resolve, reject){
-
-                    SailPlay.send('tags.add', { tags: chunk }, function(tags_res){
-                      if(tags_res.status === 'ok') {
-
-                        resolve(tags_res);
-
-                        //sp.send('leads.submit.success', { lead: self, response: user_res, tags: res });
-                      }
-                      else {
-                        reject(tags_res);
-                        //sp.send('leads.submit.error', { lead: self, response: user_res, tags: res });
-                      }
-                    });
-
-                  });
-
-                  tag_promises.push(promise);
+                  header: $rootScope.locale.thanks,
+                  body: $rootScope.locale.notifications.fill_profile_success
 
                 });
 
-                $q.all(tag_promises).then(function(tags_res){
+                SailPlayApi.call('load.user.info', { all: 1 });
 
-                  SailPlay.send('vars.add', { custom_vars: scope.profile_form.custom_vars }, function(vars_res){
-
-                    var response = {
-                      user: user_res,
-                      tags: tags_res,
-                      vars: vars_res
-                    };
-
-                    if(vars_res.status === 'ok') {
-
-                      ipCookie(FillProfile.cookie_name, scope.profile_form);
-
-                      $rootScope.$broadcast('notifier:notify', {
-
-                        header: $rootScope.locale.thanks,
-                        body: $rootScope.locale.notifications.fill_profile_success
-
-                      });
-
-                      SailPlayApi.call('load.user.info', { all: 1 });
-
-                      callback && callback(response);
-                      scope.$apply();
-
-
-                    }
-                    else {
-
-                      $rootScope.$broadcast('notifier:notify', {
-
-                        header: $rootScope.locale.error,
-                        body: user_res.message || $rootScope.locale.notifications.default_error
-
-                      });
-                      scope.$apply();
-
-                    }
-
-                  });
-
-                });
-
-
+                callback && callback(response);
+                scope.$apply();
 
               }
 

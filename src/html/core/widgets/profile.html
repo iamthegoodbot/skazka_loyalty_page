@@ -30,7 +30,7 @@
       <div class="status_block" data-ng-show="user()">
         <span class="status_block_title" data-ng-bind="_config.texts.user_status"></span>
         <img class="status_block_img" data-ng-src="{{ user().user_status.pic | sailplay_pic }}" alt="{{ user().user_status.name }}">
-        <span class="status_block_name" data-ng-bind="user().user_status.name"></span>
+        <span class="status_block_name" data-ng-bind="user().user_status.name || _config.texts.empty_status "></span>
       </div>
       <div class="bon_profile_stat">
         <div class="bps_left clearfix" data-ng-class="{ transparent: !user() }">

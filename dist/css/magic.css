@@ -594,6 +594,17 @@
   opacity: 1;
   top: -20px;
 }
+.sailplay.magic .bon_profile_wrap .status_block {
+  width: 30%;
+}
+@media screen and (max-width: 650px) {
+  .sailplay.magic .bon_profile_wrap .status_block {
+    width: 100%;
+  }
+  .sailplay.magic .bon_profile_wrap .bon_profile_stat .bps_left {
+    text-align: left;
+  }
+}
 @media only screen and (min-width: 1129px) {
   .sailplay.magic .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right {
     width: 100%;
@@ -1132,7 +1143,7 @@
   .sailplay.magic .more_bonus .more_bonus_main .mb_item {
     width: 100%;
     position: relative;
-    height: 300px;
+    height: auto !important;
     margin-right: 0px;
   }
   .sailplay.magic .more_bonus .more_bonus_main .mb_item.act {
