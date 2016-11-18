@@ -79,16 +79,29 @@
       width: 100%;
       margin-top: 50px;
       margin-bottom: 78px;
+
+      .points_confirmed {
+
+        span {
+          color: inherit;
+          font-family: inherit;
+        }
+
+        &_name {
+          margin-left: 2px;
+        }
+      }
+
       .bps_left {
         float: left;
         width: auto;
-        span {
+        > span {
           color: @white;
           display: block;
           font-size: 33px;
           font-family: 'RotondaC bold';
         }
-        a {
+        > a {
           font-size: 14px;
           color: @white;
         }

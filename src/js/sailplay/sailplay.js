@@ -6,6 +6,7 @@
     'sailplay.history',
     'sailplay.actions',
     'sailplay.badges',
+    'sailplay.statuses',
     'ipCookie'
   ])
 

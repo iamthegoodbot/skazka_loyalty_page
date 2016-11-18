@@ -7,7 +7,8 @@
     'widgets.gifts',
     'widgets.badges',
     'widgets.leaderboard',
-    'widgets.actions'
+    'widgets.actions',
+    'widgets.statuses'
   ])
 
   .run(function(SailPlay, SailPlayApi, $rootScope, $window, MAGIC_CONFIG, $timeout, QuizService){

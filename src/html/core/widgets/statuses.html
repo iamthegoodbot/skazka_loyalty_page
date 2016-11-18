@@ -1,0 +1,25 @@
+<div class="{{ _config.name }} clearfix">
+
+    <div class="status-list container" data-ng-show="_config.enabled" data-ng-cloak>
+
+        <style scoped data-widget-style="_config.styles" data-widget-name="_config.name"></style>
+
+        <div class="status-list__wrapper" data-sailplay-statuses data-ng-cloak>
+
+            <div class="status-list__progress element-progress" data-ng-style="getProgress(user().user_points, _statuses)"></div>
+
+            <div class="status-list__item element-item"
+                 data-ng-class="{ type_active : item.points <= user().user_points.confirmed + user().user_points.spent + user().user_points.spent_extra }" data-ng-repeat="item in _statuses"
+                 data-ng-style="generateOffset($index, _statuses)">
+
+                <div class="status-list__item-point element-item-point"></div>
+                <div class="status-list__item-name element-item-name" data-ng-bind="item.name"></div>
+                <div class="status-list__item-status element-item-status" data-ng-if="item.status" data-ng-bind="item.status"
+                     style="{{ (item.color) ? ('color: ' + item.color) : '' }}"></div>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
