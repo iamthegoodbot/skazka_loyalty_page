@@ -353,6 +353,63 @@
   -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
+.sailplay.magic .form_field .form_date {
+  float: left;
+  position: relative;
+  z-index: 1;
+}
+.sailplay.magic .form_field .form_date span {
+  color: #000000;
+  font-size: 18px;
+  float: left;
+  width: 100%;
+  box-sizing: border-box;
+  padding-left: 10px;
+  border: 2px solid #cccccc;
+  border-radius: 5px;
+  line-height: 53px;
+  height: 57px;
+  background-image: url('https://d3sailplay.cdnvideo.ru/media/assets/assetfile/303e1f38393495b1a059952843abeeb0.png');
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 10px;
+}
+.sailplay.magic .form_field .form_date__popup {
+  display: none;
+  position: absolute;
+  top: 56px;
+  left: 0px;
+  right: 0px;
+  z-index: 2;
+  max-height: 100px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background-color: #ffffff;
+  border-radius: 0 0 3px 3px;
+  border: 1px solid #cccccc;
+  text-align: center;
+}
+.sailplay.magic .form_field .form_date__popup a {
+  float: left;
+  width: 100%;
+  line-height: 25px;
+  text-decoration: none;
+  color: #000000;
+  background: #ffffff;
+}
+.sailplay.magic .form_field .form_date__day {
+  width: 20%;
+}
+.sailplay.magic .form_field .form_date__month {
+  width: 48%;
+  margin: 0 1%;
+}
+.sailplay.magic .form_field .form_date__year {
+  width: 30%;
+}
+.sailplay.magic .form_field .form_date:hover .form_date__popup {
+  display: block;
+}
 .sailplay.magic .form_field .form_label {
   width: 100%;
   line-height: 100%;
@@ -1212,10 +1269,15 @@
   position: absolute !important;
   top: 0 !important;
   left: 0 !important;
+  bottom: 0 !important;
+  margin: auto;
   width: 140px !important;
   height: 100% !important;
   overflow: visible !important;
   border: none !important;
+}
+.sailplay.magic .actions_selected_modal .sailplay_action_frame.gp.like {
+  right: 0 !important;
 }
 .sailplay.magic .actions_selected_modal .action_buttons {
   margin-top: 30px;

@@ -256,7 +256,8 @@
 
                     case 'birthDate':
 
-                      form_field.value = user.user.birth_date || '';
+                      var bd = user.user.birth_date && user.user.birth_date.split('-');
+                      form_field.value = bd ? [parseInt(bd[2]), parseInt(bd[1]), parseInt(bd[0])] : [null, null, null];
                       break;
 
                     case 'addPhone':
@@ -322,8 +323,6 @@
 
           scope.sailplay.fill_profile.submit = function(form, callback){
 
-            console.dir(form);
-
             if(!form || !form.$valid) {
               return;
             }
@@ -332,47 +331,44 @@
 
             var req_user = {};
 
-            angular.forEach(scope.sailplay.fill_profile.form, function(item){
+            angular.forEach(scope.sailplay.fill_profile.form.fields, function(item){
               req_user[item.name] = item.value;
             });
 
-            console.log('req_user,', req_user);
-
-            if(data_user && data_user.phone && data_user.phone.replace(/\D/g,'') == req_user.addPhone.replace(/\D/g,'')){
+            if(req_user.addPhone && data_user && data_user.phone && data_user.phone.replace(/\D/g,'') == req_user.addPhone.replace(/\D/g,'')){
               delete req_user.addPhone;
             }
 
-            if(data_user && data_user.email && data_user.email == req_user.addEmail){
+            if(req_user.addEmail && data_user && data_user.email && data_user.email == req_user.addEmail){
               delete req_user.addEmail;
+            }
+
+            if(req_user.birthDate) {
+              var bd = angular.copy(req_user.birthDate);
+              bd[0] = parseInt(bd[0]) < 10 ? '0' + parseInt(bd[0]) : bd[0];
+              bd[1] = parseInt(bd[1]) < 10 ? '0' + parseInt(bd[1]) : bd[1];
+              req_user.birthDate = bd.reverse().join('-');
             }
 
             SailPlay.send('users.update', req_user, function(user_res){
 
               if(user_res.status === 'ok'){
 
-                $rootScope.$broadcast('notifier:notify', {
+                scope.$apply(function(){
 
-                  header: $rootScope.locale.thanks,
-                  body: $rootScope.locale.notifications.fill_profile_success
+                  if (typeof callback == 'function') callback();
+
+                  SailPlayApi.call('load.user.info', { all: 1 });
 
                 });
 
-                SailPlayApi.call('load.user.info', { all: 1 });
+              } else {
 
-                callback && callback(response);
+                $rootScope.$broadcast('notifier:notify', {
+                  body: user_res.message
+                });
+                
                 scope.$apply();
-
-              }
-
-              else {
-
-                $rootScope.$broadcast('notifier:notify', {
-
-                  header: $rootScope.locale.error,
-                  body: ($rootScope.locale.errors && $rootScope.locale.errors[user_res.status_code] || $rootScope.locale.errors[user_res.message]) || $rootScope.locale.notifications.default_error
-
-                });
-                $rootScope.$apply();
 
               }
 

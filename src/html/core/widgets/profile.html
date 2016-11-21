@@ -109,7 +109,7 @@
           <span class="modal_profile_header">{{ _config.fill_profile.header }}</span>
         </div>
 
-        <form name="fill_profile" class="mb_popup_main mb_popup_main_mt" data-ng-submit="sailplay.fill_profile.submit(fill_profile);">
+        <form name="fill_profile" class="mb_popup_main mb_popup_main_mt" data-ng-submit="sailplay.fill_profile.submit(fill_profile, $parent.fill_profile);">
 
           <div class="form_field" data-ng-repeat="field in sailplay.fill_profile.form.fields" data-ng-switch="field.input">
 
@@ -124,7 +124,7 @@
 
             <div data-ng-switch-when="date" class="clearfix">
               <label class="form_label">{{ field.label }}</label>
-              <input class="form_input" type="text" placeholder="{{ field.placeholder }}" data-ng-model="field.value">
+              <date-picker data-model="field.value"></date-picker>
             </div>
 
             <div data-ng-switch-when="select" class="clearfix">

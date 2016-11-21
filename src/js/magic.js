@@ -12,6 +12,10 @@
       background: 'transparent'
     });
 
+    if(MAGIC_CONFIG.auth.config) {
+      SailPlayProvider.set_remote_config(MAGIC_CONFIG.auth.config);
+    }
+
     SailPlayHistoryProvider.set_dictionary(MAGIC_CONFIG.data.history);
 
     //SailPlayProvider.set_auth_type(MAGIC_CONFIG.auth.type);

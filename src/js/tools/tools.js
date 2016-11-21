@@ -2,7 +2,8 @@
 
   angular.module('tools', [
     'angularUtils.directives.dirPagination',
-    'ui.mask'
+    'ui.mask',
+    'ui.datepicker'
   ])
 
     .config(['uiMask.ConfigProvider', function (uiMaskConfigProvider) {
