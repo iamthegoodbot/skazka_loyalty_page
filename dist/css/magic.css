@@ -101,7 +101,7 @@
   top: 0px;
   width: 17px;
   height: 17px;
-  background-image: url(../img/close.png);
+  background-image: url(https://d3sailplay.cdnvideo.ru/media/assets/assetfile/70307b6d34034ee34047e2863830a862.png);
   display: block;
 }
 .sailplay.magic .bns_overlay .b_about {
@@ -312,9 +312,6 @@
   cursor: pointer;
 }
 .sailplay.magic .magic_select {
-  background-repeat: no-repeat;
-  background-size: 50px 50px;
-  background-position: top right;
   overflow: hidden;
   width: 100%;
   float: left;
@@ -329,6 +326,10 @@
   background-color: #ffffff;
   position: relative;
   display: inline-block;
+  background-image: url(https://d3sailplay.cdnvideo.ru/media/assets/assetfile/303e1f38393495b1a059952843abeeb0.png);
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 10px;
 }
 .sailplay.magic .magic_select select {
   position: absolute;
@@ -524,6 +525,9 @@
   float: left;
   width: 165px;
   color: #ffffff;
+}
+.sailplay.magic .bon_profile_wrap .bon_profile_info .bon_profile_right .user_info span {
+  word-wrap: break-word;
 }
 .sailplay.magic .bon_profile_wrap .bon_profile_info .bon_profile_right .user_avatar_image {
   width: 100%;
@@ -863,7 +867,7 @@
   height: 110px;
   border-radius: 20px 0px 0px 20px;
   background-color: #eeeeee;
-  background-image: url(../img/left_arr.png);
+  background-image: url(https://d3sailplay.cdnvideo.ru/media/assets/assetfile/04cbb41a3a145a39e718ff25a37690d5.png);
   background-position: center center;
   background-repeat: no-repeat;
   display: block;
@@ -878,7 +882,7 @@
   height: 110px;
   border-radius: 0px 20px 20px 0px;
   background-color: #eeeeee;
-  background-image: url(../img/right_arr.png);
+  background-image: url(https://d3sailplay.cdnvideo.ru/media/assets/assetfile/26bbb44e136d0cf99e7099522eab8fc9.png);
   background-position: center center;
   background-repeat: no-repeat;
   display: block;
@@ -1433,7 +1437,7 @@
   height: 110px;
   border-radius: 20px 0px 0px 20px;
   background-color: #eeeeee;
-  background-image: url(../img/left_arr.png);
+  background-image: url(https://d3sailplay.cdnvideo.ru/media/assets/assetfile/04cbb41a3a145a39e718ff25a37690d5.png);
   background-position: center center;
   background-repeat: no-repeat;
   display: block;
@@ -1448,7 +1452,7 @@
   height: 110px;
   border-radius: 0px 20px 20px 0px;
   background-color: #eeeeee;
-  background-image: url(../img/right_arr.png);
+  background-image: url(https://d3sailplay.cdnvideo.ru/media/assets/assetfile/26bbb44e136d0cf99e7099522eab8fc9.png);
   background-position: center center;
   background-repeat: no-repeat;
   display: block;
@@ -1737,6 +1741,13 @@
     font-size: 14px;
   }
 }
+@media screen and (max-width: 450px) {
+  .sailplay.magic .status-list__item-status {
+    font-size: 12px;
+    min-width: 100%;
+    top: 50px;
+  }
+}
 .sailplay.magic .status-list__item-name {
   display: inline-block;
   min-width: 80px;
@@ -1749,6 +1760,13 @@
 @media screen and (max-width: 650px) {
   .sailplay.magic .status-list__item-name {
     font-size: 12px;
+  }
+}
+@media screen and (max-width: 450px) {
+  .sailplay.magic .status-list__item-name {
+    font-size: 8px;
+    min-width: 100%;
+    top: 25px;
   }
 }
 .sailplay.magic .status-list__item.type_active .status-list__item-point:before {

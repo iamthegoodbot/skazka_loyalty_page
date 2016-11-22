@@ -270,7 +270,6 @@
           function parse_action(action){
             $timeout(function(){
               attrs.styles && elm.attr('data-styles', attrs.styles);
-              console.log(attrs.styles);
               attrs.text && elm.attr('data-text', attrs.text);
               SailPlay.actions && action && SailPlay.actions.parse(elm[0], action);
             }, 0);

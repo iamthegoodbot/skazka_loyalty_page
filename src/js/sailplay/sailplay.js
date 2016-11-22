@@ -7,7 +7,8 @@
     'sailplay.actions',
     'sailplay.badges',
     'sailplay.statuses',
-    'ipCookie'
+    'ipCookie',
+    'ngTouch'
   ])
 
     .run(function(SailPlay, $rootScope){

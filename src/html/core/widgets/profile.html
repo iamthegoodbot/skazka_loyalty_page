@@ -18,7 +18,7 @@
           </div>
           <div class="user_info">
             <span class="user_name"  data-ng-bind="user().user.name || _config.texts.name_not_defined"></span>
-            <span class="user_phone" data-ng-if="user().user.phone"  data-ng-bind="user().user.phone"></span>
+            <span class="user_phone" data-ng-model="user().user.phone" data-ng-bind="user().user.phone | tel"></span>
             <span class="user_email" data-ng-if="user().user.email"  data-ng-bind="user().user.email"></span>
             <a href="#" class="edit_profile_btn button_link" data-ng-click="$event.preventDefault();fill_profile(true);">{{ _config.texts.edit_profile_button }}</a>
           </div>

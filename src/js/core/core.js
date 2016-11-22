@@ -59,6 +59,7 @@
     //unfortunately, we need to update actions list after perform
     SailPlay.on('actions.perform.success', function(){
       SailPlayApi.call('load.actions.list');
+      SailPlayApi.call('load.user.info', { all: 1 });
     });
 
     SailPlay.on('actions.perform.error', function(){

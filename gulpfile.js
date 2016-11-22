@@ -33,6 +33,13 @@
 
   gulp.task('javascript.concat',['build.templates'], function() {
     return gulp.src([
+      __dirname + '/node_modules/angular/angular.min.js',
+      __dirname + '/node_modules/angular-cookie/angular-cookie.min.js',
+      __dirname + '/node_modules/angular-utils-pagination/dirPagination.js',
+      __dirname + '/node_modules/angular-ui-mask/dist/mask.min.js',
+      __dirname + '/node_modules/angular-touch/angular-touch.min.js',
+      __dirname + '/node_modules/sailplay-hub/sailplay.hub.js',
+      __dirname + '/node_modules/sailplay-hub-actions/sailplay.hub.actions.js',
       __dirname + '/src/js/**/*.js'
     ])
       .pipe(concat('sailplay-magic.js'))

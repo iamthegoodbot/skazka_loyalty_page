@@ -13,7 +13,7 @@
 
         <div data-sailplay-gifts>
 
-            <div class="bon_item_main" data-ng-show="gifts && gifts().length" data-magic-slider>
+            <div class="bon_item_main" data-ng-show="gifts_list.length" data-magic-slider>
 
                 <div class="bon_slide_cat_item_wrap" data-magic-gallery>
 
@@ -21,7 +21,7 @@
 
                         <div class="bon_item_line" data-ng-style="{left : left}">
 
-                            <div class="bon_item gift" data-magic-slide data-ng-repeat="gift in gifts()">
+                            <div class="bon_item gift" data-magic-slide data-ng-repeat="gift in gifts_list">
                                 <div class="bon_item_iner">
                                     <div class="gift_img">
                                         <img data-ng-src="{{ gift.thumbs.url_250x250 | sailplay_pic }}"

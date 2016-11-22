@@ -21,7 +21,11 @@
         scope: true,
         link: function (scope) {
 
+          // TODO: create new directive!!!
+
           scope.gifts = SailPlayApi.data('load.gifts.list');
+
+          scope.gifts_list = [];
 
           var user = SailPlayApi.data('load.user.info');
 
@@ -52,7 +56,9 @@
               return;
             }
 
-            var target = Math.max.apply(Math, scope.gifts().map(function (o) {
+            var gifts = angular.copy(scope.gifts());
+
+            var target = Math.max.apply(Math, gifts.map(function (o) {
               return o.points;
             }));
 
@@ -83,7 +89,9 @@
 
             };
 
-            scope.gifts().sort(function (a, b) {
+            scope.gifts_list = angular.copy(gifts);
+
+            scope.gifts_list.sort(function (a, b) {
               return a.points > b.points;
             }).reduce(function (prev_gift, current_gift) {
 
@@ -124,6 +132,7 @@
 
 
             }, 0);
+
 
           }
 
