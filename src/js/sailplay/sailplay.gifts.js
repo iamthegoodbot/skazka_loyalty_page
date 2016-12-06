@@ -143,6 +143,55 @@
 
     })
 
+    .directive('magicGift', function($timeout){
+      return {
+        restrict: 'A',
+        scope: false,
+        link: function(scope, elm, attrs){
+          if (scope.$last) {
+
+            $timeout(function () {
+
+              var slides = elm[0].parentElement.querySelectorAll('[data-magic-slide]');
+              var wrapper = elm[0].parentElement.parentElement.parentElement;
+
+              if (!slides.length) return;
+
+              angular.forEach(slides, function (slide) {
+                slide.style.width = '';
+              });
+
+              var _width = slides[0].offsetWidth || 0;
+
+              _width = _width ? _width + 30 : 0;
+
+              var _limits = {
+                min: 1,
+                max: 4
+              };
+
+              if (!_width) return;
+
+              var _wrap_width = wrapper.offsetWidth;
+
+              var _count_show = Math.floor(_wrap_width / _width) > _limits.max ? Math.floor(_wrap_width / _width) < _limits.min ? _limits.min : Math.floor(_wrap_width / _width) : Math.floor(_wrap_width / _width);
+
+              if (!_count_show) return;
+
+              _width = Math.floor(_wrap_width / _count_show);
+
+              angular.forEach(slides, function (slide) {
+                console.log("SLIDE:", slide);
+                slide.style.width = (_width - 30) + 'px';
+              });
+
+            }, 200);
+
+          }
+        }
+      }
+    })
+
     .directive('sailplayOrderGift', function (SailPlay, $rootScope, $q, ipCookie, SailPlayApi) {
 
       return {
@@ -162,7 +211,7 @@
           };
 
           if (!config) {
-            console.error('Provide order_form_config');
+            console.log('Provide order_form_config');
           }
 
           scope.sailplay.order_gift.submit = function (form, gift, callback) {

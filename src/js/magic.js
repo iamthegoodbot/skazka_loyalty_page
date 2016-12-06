@@ -83,7 +83,7 @@
 
         SailPlay.on('tags.exist.success', function(res){
 
-          if(res.status === 'ok' && res.tags[0].exist) {
+          if(res.status === 'ok' && res.tags && res.tags.length && res.tags[0].exist) {
 
             scope.show_profile_action = false;
             scope.$apply();

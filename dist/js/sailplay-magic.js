@@ -2439,7 +2439,7 @@ var SAILPLAY = (function () {
 
         SailPlay.on('tags.exist.success', function(res){
 
-          if(res.status === 'ok' && res.tags[0].exist) {
+          if(res.status === 'ok' && res.tags && res.tags.length && res.tags[0].exist) {
 
             scope.show_profile_action = false;
             scope.$apply();
@@ -2714,7 +2714,7 @@ try {
 }
 module.run(['$templateCache', function($templateCache) {
   $templateCache.put('/html/core/widgets/gifts.html',
-    '<div class="{{ _config.name }} clearfix"><div class="bon_choice_main container" data-ng-show="_config.enabled" data-ng-cloak=""><style scoped="" data-widget-style="_config.styles" data-widget-name="_config.name"></style><h3 class="bon_header"><span class="header">{{ _config.texts.header }}</span></h3><h4 class="bon_sub_header"><span class="caption">{{ _config.texts.caption }}</span></h4><div data-sailplay-gifts=""><div class="bon_item_main" data-ng-show="gifts_list.length" data-magic-slider=""><div class="bon_slide_cat_item_wrap" data-magic-gallery=""><div class="bon_slide_cat_item"><div class="bon_item_line" data-ng-style="{left : left}"><div class="bon_item gift" data-magic-slide="" data-ng-repeat="gift in gifts_list"><div class="bon_item_iner"><div class="gift_img"><img data-ng-src="{{ gift.thumbs.url_250x250 | sailplay_pic }}" alt="{{ gift.name }}"></div><div class="gift_info"><span class="bon_item_name gift_name" data-ng-bind="gift.name"></span> <span class="bon_tem_info gift_points" data-ng-bind="(gift.points | number) + \' \' + (gift.points | sailplay_pluralize:_tools.points.texts.pluralize)"></span></div><a href="#" class="button_primary" data-ng-click="gift_select(gift); $event.preventDefault();">{{ _config.texts.get }}</a></div></div></div></div><a href="#" class="arr_left arr_left slider_arrow_left" data-ng-click="$event.preventDefault(); set_position(\'left\');" data-ng-show="show_left"></a> <a href="#" class="arr_right arr_right slider_arrow_right" data-ng-click="$event.preventDefault(); set_position(\'right\');" data-ng-show="show_right"></a></div></div><magic-modal class="bns_overlay_gift" data-ng-cloak="" data-show="$parent.selected_gift"><div><div class="gift_img"><img class="gift_more_img" data-ng-src="{{ selected_gift.thumbs.url_250x250 | sailplay_pic }}" alt="{{ selected_gift.name }}"></div><div class="gift_more_block"><span class="gift_more_name modal_gift_name" data-ng-bind="selected_gift.name"></span> <span class="gift_more_points modal_gift_points" data-ng-bind="(selected_gift.points | number) + \' \' + (selected_gift.points | sailplay_pluralize:_tools.points.texts.pluralize)"></span><p class="gift_more_descr modal_gift_description" data-ng-bind="selected_gift.descr"></p><span class="alink button_primary" data-ng-click="gift_select(false);">{{ _tools.buttons.texts.close }}</span> <span class="alink button_primary" style="margin-left: 5px;" data-ng-click="gift_confirm();" data-ng-bind="gift_affordable(selected_gift) ? _config.texts.get : _config.texts.no_points_button_text">{{ _config.texts.get }}</span></div></div></magic-modal><magic-modal class="bns_overlay_gift_not_points" data-ng-cloak="" data-show="$parent.no_points_error"><div><p class="modal_gift_description">{{ _config.texts.no_points_message }}</p><a class="alink button_primary earn_points_button" href="#magic_actions" data-ng-click="gift_unconfirm()">{{ _config.texts.earn_points }}</a> <a class="alink button_primary service_button" data-ng-if="_config.texts.partner_service_url" target="_blank" href="{{ _config.texts.partner_service_url }}" data-ng-click="gift_unconfirm()">{{ _config.texts.service }}</a></div></magic-modal><magic-modal class="bns_overlay_gift_complete" data-ng-cloak="" data-show="$parent.confirmed_gift"><div><p class="modal_gift_description">{{ _config.texts.confirm_message_start }} {{ (confirmed_gift.points | number) + \' \' + (confirmed_gift.points | sailplay_pluralize:_tools.points.texts.pluralize) }}. {{ _config.texts.confirm_message_end }}</p><span class="alink button_primary" data-ng-click="gift_unconfirm();">{{ _tools.buttons.texts.close }}</span> <span class="alink button_primary" data-ng-click="gift_purchase(confirmed_gift);">{{ _tools.buttons.texts.get }}</span></div></magic-modal><magic-modal class="bns_overlay_gift bns_overlay_order_gift" data-ng-cloak="" data-show="$parent.order_gift"><div class="mb_popup mb_popup_order_gift" data-sailplay-order-gift="" data-config="{{ _config.order_gift.config }}"><div class="gift_img"><img class="gift_more_img" data-ng-src="{{ $parent.order_gift.thumbs.url_250x250 | sailplay_pic }}" alt="{{ $parent.order_gift.name }}"></div><div class="gift_overlay"><div class="gift_more_block"><span class="gift_more_name modal_gift_name" data-ng-bind="$parent.order_gift.name"></span> <span class="gift_more_points modal_gift_points" data-ng-bind="($parent.order_gift.points | number) + \' \' + ($parent.order_gift.points | sailplay_pluralize:_tools.points.texts.pluralize)"></span><p class="gift_more_descr modal_gift_description" data-ng-bind="$parent.order_gift.descr"></p></div><div class="mb_popup_top"><span class="modal_profile_header">{{ _config.order_gift.header }}</span></div><form name="order_gift" class="mb_popup_main mb_popup_main_mt" data-ng-submit="sailplay.order_gift.submit(order_gift, $parent.order_gift, gift_purchase);"><div class="form_field" data-ng-repeat="field in sailplay.order_gift.form" data-ng-switch="field.input"><div data-ng-switch-when="image" class="avatar_upload clearfix"><img width="160px" data-ng-src="{{ (field.value | sailplay_pic) || \'http://saike.ru/sailplay-magic/dist/img/profile/avatar_default.png\'}}" alt=""></div><div data-ng-switch-when="text" class="clearfix"><label class="form_label">{{ field.label }}</label> <input class="form_input" type="text" placeholder="{{ field.placeholder }}" data-ng-required="field.required" data-ng-model="field.value"></div><div data-ng-switch-when="date" class="clearfix"><label class="form_label">{{ field.label }}</label> <input class="form_input" type="text" placeholder="{{ field.placeholder }}" data-ng-required="field.required" data-ng-model="field.value"></div><div data-ng-switch-when="select" class="clearfix"><label class="form_label">{{ field.label }}</label><div class="magic_select form_input"><select data-ng-model="field.value" data-ng-required="field.required" data-ng-options="item.value as item.text for item in field.data"></select></div></div><div data-ng-switch-when="phone" class="clearfix"><label class="form_label">{{ field.label }}</label> <input class="form_input" type="text" data-ui-mask="{{ field.placeholder }}" data-ng-required="field.required" data-ng-model="field.value"></div><div data-ng-switch-when="email" class="clearfix"><label class="form_label">{{ field.label }}</label> <input class="form_input" type="email" placeholder="{{ field.placeholder }}" data-ng-required="field.required" data-ng-model="field.value"></div></div><div class="answ_text"><button type="submit" class="sp_btn button_primary">{{ _tools.buttons.texts.save }}</button></div></form></div></div></magic-modal></div></div></div>');
+    '<div class="{{ _config.name }} clearfix"><div class="bon_choice_main container" data-ng-show="_config.enabled" data-ng-cloak=""><style scoped="" data-widget-style="_config.styles" data-widget-name="_config.name"></style><h3 class="bon_header"><span class="header">{{ _config.texts.header }}</span></h3><h4 class="bon_sub_header"><span class="caption">{{ _config.texts.caption }}</span></h4><div data-sailplay-gifts=""><div class="bon_item_main" data-ng-show="gifts_list.length" data-magic-slider=""><div class="bon_slide_cat_item_wrap" data-magic-gallery=""><div class="bon_slide_cat_item"><div class="bon_item_line" data-ng-style="{left : left}"><div class="bon_item gift" data-magic-slide="" data-magic-gift="" data-ng-repeat="gift in gifts_list"><div class="bon_item_iner"><div class="gift_img"><img data-ng-src="{{ gift.thumbs.url_250x250 | sailplay_pic }}" alt="{{ gift.name }}"></div><div class="gift_info"><span class="bon_item_name gift_name" data-ng-bind="gift.name"></span> <span class="bon_tem_info gift_points" data-ng-bind="(gift.points | number) + \' \' + (gift.points | sailplay_pluralize:_tools.points.texts.pluralize)"></span></div><a href="#" class="button_primary" data-ng-click="gift_select(gift); $event.preventDefault();">{{ _config.texts.get }}</a></div></div></div></div><a href="#" class="arr_left arr_left slider_arrow_left" data-ng-click="$event.preventDefault(); set_position(\'left\');" data-ng-show="show_left"></a> <a href="#" class="arr_right arr_right slider_arrow_right" data-ng-click="$event.preventDefault(); set_position(\'right\');" data-ng-show="show_right"></a></div></div><magic-modal class="bns_overlay_gift" data-ng-cloak="" data-show="$parent.selected_gift"><div><div class="gift_img"><img class="gift_more_img" data-ng-src="{{ selected_gift.thumbs.url_250x250 | sailplay_pic }}" alt="{{ selected_gift.name }}"></div><div class="gift_more_block"><span class="gift_more_name modal_gift_name" data-ng-bind="selected_gift.name"></span> <span class="gift_more_points modal_gift_points" data-ng-bind="(selected_gift.points | number) + \' \' + (selected_gift.points | sailplay_pluralize:_tools.points.texts.pluralize)"></span><p class="gift_more_descr modal_gift_description" data-ng-bind="selected_gift.descr"></p><span class="alink button_primary" data-ng-click="gift_select(false);">{{ _tools.buttons.texts.close }}</span> <span class="alink button_primary" style="margin-left: 5px;" data-ng-click="gift_confirm();" data-ng-bind="gift_affordable(selected_gift) ? _config.texts.get : _config.texts.no_points_button_text">{{ _config.texts.get }}</span></div></div></magic-modal><magic-modal class="bns_overlay_gift_not_points" data-ng-cloak="" data-show="$parent.no_points_error"><div><p class="modal_gift_description">{{ _config.texts.no_points_message }}</p><a class="alink button_primary earn_points_button" href="#magic_actions" data-ng-click="gift_unconfirm()">{{ _config.texts.earn_points }}</a> <a class="alink button_primary service_button" data-ng-if="_config.texts.partner_service_url" target="_blank" href="{{ _config.texts.partner_service_url }}" data-ng-click="gift_unconfirm()">{{ _config.texts.service }}</a></div></magic-modal><magic-modal class="bns_overlay_gift_complete" data-ng-cloak="" data-show="$parent.confirmed_gift"><div><p class="modal_gift_description">{{ _config.texts.confirm_message_start }} {{ (confirmed_gift.points | number) + \' \' + (confirmed_gift.points | sailplay_pluralize:_tools.points.texts.pluralize) }}. {{ _config.texts.confirm_message_end }}</p><span class="alink button_primary" data-ng-click="gift_unconfirm();">{{ _tools.buttons.texts.close }}</span> <span class="alink button_primary" data-ng-click="gift_purchase(confirmed_gift);">{{ _tools.buttons.texts.get }}</span></div></magic-modal><magic-modal class="bns_overlay_gift bns_overlay_order_gift" data-ng-cloak="" data-show="$parent.order_gift"><div class="mb_popup mb_popup_order_gift" data-sailplay-order-gift="" data-config="{{ _config.order_gift.config }}"><div class="gift_img"><img class="gift_more_img" data-ng-src="{{ $parent.order_gift.thumbs.url_250x250 | sailplay_pic }}" alt="{{ $parent.order_gift.name }}"></div><div class="gift_overlay"><div class="gift_more_block"><span class="gift_more_name modal_gift_name" data-ng-bind="$parent.order_gift.name"></span> <span class="gift_more_points modal_gift_points" data-ng-bind="($parent.order_gift.points | number) + \' \' + ($parent.order_gift.points | sailplay_pluralize:_tools.points.texts.pluralize)"></span><p class="gift_more_descr modal_gift_description" data-ng-bind="$parent.order_gift.descr"></p></div><div class="mb_popup_top"><span class="modal_profile_header">{{ _config.order_gift.header }}</span></div><form name="order_gift" class="mb_popup_main mb_popup_main_mt" data-ng-submit="sailplay.order_gift.submit(order_gift, $parent.order_gift, gift_purchase);"><div class="form_field" data-ng-repeat="field in sailplay.order_gift.form" data-ng-switch="field.input"><div data-ng-switch-when="image" class="avatar_upload clearfix"><img width="160px" data-ng-src="{{ (field.value | sailplay_pic) || \'http://saike.ru/sailplay-magic/dist/img/profile/avatar_default.png\'}}" alt=""></div><div data-ng-switch-when="text" class="clearfix"><label class="form_label">{{ field.label }}</label> <input class="form_input" type="text" placeholder="{{ field.placeholder }}" data-ng-required="field.required" data-ng-model="field.value"></div><div data-ng-switch-when="date" class="clearfix"><label class="form_label">{{ field.label }}</label> <input class="form_input" type="text" placeholder="{{ field.placeholder }}" data-ng-required="field.required" data-ng-model="field.value"></div><div data-ng-switch-when="select" class="clearfix"><label class="form_label">{{ field.label }}</label><div class="magic_select form_input"><select data-ng-model="field.value" data-ng-required="field.required" data-ng-options="item.value as item.text for item in field.data"></select></div></div><div data-ng-switch-when="phone" class="clearfix"><label class="form_label">{{ field.label }}</label> <input class="form_input" type="text" data-ui-mask="{{ field.placeholder }}" data-ng-required="field.required" data-ng-model="field.value"></div><div data-ng-switch-when="email" class="clearfix"><label class="form_label">{{ field.label }}</label> <input class="form_input" type="email" placeholder="{{ field.placeholder }}" data-ng-required="field.required" data-ng-model="field.value"></div></div><div class="answ_text"><button type="submit" class="sp_btn button_primary">{{ _tools.buttons.texts.save }}</button></div></form></div></div></magic-modal></div></div></div>');
 }]);
 })();
 
@@ -3384,6 +3384,55 @@ module.run(['$templateCache', function($templateCache) {
 
     })
 
+    .directive('magicGift', function($timeout){
+      return {
+        restrict: 'A',
+        scope: false,
+        link: function(scope, elm, attrs){
+          if (scope.$last) {
+
+            $timeout(function () {
+
+              var slides = elm[0].parentElement.querySelectorAll('[data-magic-slide]');
+              var wrapper = elm[0].parentElement.parentElement.parentElement;
+
+              if (!slides.length) return;
+
+              angular.forEach(slides, function (slide) {
+                slide.style.width = '';
+              });
+
+              var _width = slides[0].offsetWidth || 0;
+
+              _width = _width ? _width + 30 : 0;
+
+              var _limits = {
+                min: 1,
+                max: 4
+              };
+
+              if (!_width) return;
+
+              var _wrap_width = wrapper.offsetWidth;
+
+              var _count_show = Math.floor(_wrap_width / _width) > _limits.max ? Math.floor(_wrap_width / _width) < _limits.min ? _limits.min : Math.floor(_wrap_width / _width) : Math.floor(_wrap_width / _width);
+
+              if (!_count_show) return;
+
+              _width = Math.floor(_wrap_width / _count_show);
+
+              angular.forEach(slides, function (slide) {
+                console.log("SLIDE:", slide);
+                slide.style.width = (_width - 30) + 'px';
+              });
+
+            }, 200);
+
+          }
+        }
+      }
+    })
+
     .directive('sailplayOrderGift', function (SailPlay, $rootScope, $q, ipCookie, SailPlayApi) {
 
       return {
@@ -3403,7 +3452,7 @@ module.run(['$templateCache', function($templateCache) {
           };
 
           if (!config) {
-            console.error('Provide order_form_config');
+            console.log('Provide order_form_config');
           }
 
           scope.sailplay.order_gift.submit = function (form, gift, callback) {
@@ -4969,7 +5018,6 @@ module.run(['$templateCache', function($templateCache) {
           scope.show_left = false;
           scope.show_right = true;
 
-
           // Переделать
           scope.set_position = function (position) {
 
@@ -5000,7 +5048,7 @@ module.run(['$templateCache', function($templateCache) {
             _width = Math.floor(_wrap_width / _count_show);
 
             angular.forEach(slides, function(slide){
-              slide.style.width = _width - 30;
+              slide.style.width = (_width - 30) + 'px';
             });
 
             var _max = Math.ceil(slides.length - _count_show);

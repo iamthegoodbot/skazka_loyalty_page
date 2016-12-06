@@ -546,7 +546,6 @@
           scope.show_left = false;
           scope.show_right = true;
 
-
           // Переделать
           scope.set_position = function (position) {
 
@@ -577,7 +576,7 @@
             _width = Math.floor(_wrap_width / _count_show);
 
             angular.forEach(slides, function(slide){
-              slide.style.width = _width - 30;
+              slide.style.width = (_width - 30) + 'px';
             });
 
             var _max = Math.ceil(slides.length - _count_show);
