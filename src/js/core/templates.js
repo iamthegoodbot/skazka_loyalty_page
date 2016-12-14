@@ -6,7 +6,7 @@ try {
 }
 module.run(['$templateCache', function($templateCache) {
   $templateCache.put('/html/magic.html',
-    '<div class="sailplay magic"><style data-ng-repeat="tool in MAGIC_CONFIG.tools" data-widget-style="tool.styles"></style><div class="bn_wrap clearfix"><div class="clearfix" data-ng-repeat="widget in MAGIC_CONFIG.widgets" data-ng-switch="widget.name"><sailplay-magic-profile data-ng-switch-when="profile" data-config="widget"></sailplay-magic-profile><sailplay-magic-badges data-ng-switch-when="badges" data-config="widget"></sailplay-magic-badges><sailplay-magic-gifts data-ng-switch-when="gifts" data-config="widget"></sailplay-magic-gifts><sailplay-magic-actions data-ng-switch-when="actions" data-config="widget"></sailplay-magic-actions><sailplay-magic-leaderboard data-ng-switch-when="leaderboard" data-config="widget"></sailplay-magic-leaderboard><sailplay-magic-statuses data-ng-switch-when="statuses" data-config="widget"></sailplay-magic-statuses></div></div><notifier></notifier></div>');
+    '<div class="sailplay magic"><style data-ng-repeat="tool in MAGIC_CONFIG.tools" data-widget-style="tool.styles"></style><div class="bn_wrap clearfix"><div class="clearfix" data-ng-repeat="widget in MAGIC_CONFIG.widgets" data-ng-switch="widget.name"><sailplay-magic-profile data-ng-switch-when="profile" data-config="widget"></sailplay-magic-profile><sailplay-magic-badges data-ng-switch-when="badges" data-config="widget"></sailplay-magic-badges><sailplay-magic-gifts data-ng-switch-when="gifts" data-config="widget"></sailplay-magic-gifts><sailplay-magic-actions data-ng-switch-when="actions" data-config="widget"></sailplay-magic-actions><sailplay-magic-leaderboard data-ng-switch-when="leaderboard" data-config="widget"></sailplay-magic-leaderboard><sailplay-magic-statuses data-ng-switch-when="statuses" data-config="widget"></sailplay-magic-statuses><sailplay-magic-banner data-ng-switch-when="banner" data-config="widget"></sailplay-magic-banner></div></div><notifier></notifier></div>');
 }]);
 })();
 
@@ -103,6 +103,18 @@ try {
 module.run(['$templateCache', function($templateCache) {
   $templateCache.put('/html/core/widgets/badges.line.html',
     '<div class="clearfix"><div class="bon_item_main clearfix" data-ng-show="line.length"><div class="bon_slide_cat_item_wrap" data-magic-gallery=""><div class="bon_slide_cat_item"><div class="bon_item_line" data-ng-style="{left : left}"><sailplay-magic-badge data-magic-slide="" data-badge="badge" data-on-click="badge_select(badge);" data-ng-repeat="badge in line" data-ng-class="{ last: $last }"></sailplay-magic-badge></div></div></div></div><magic-modal class="modal_badge_selected" data-ng-cloak="" data-show="badge_selected"><div><div class="modal_badge_image"><img class="gift_more_img" data-ng-src="{{ badge_selected.thumbs.url_250x250 | sailplay_pic }}" alt="{{ badge_selected.name }}"></div><div class="modal_badge_tools"><p><span class="modal_badge_name" data-ng-bind="badge_selected.name"></span></p><p style="margin-top: 10px;"><span class="modal_badge_description" data-ng-bind="badge_selected.descr"></span></p><p class="modal_badge_buttons"><span class="badge_share_button fb_icon" data-ng-click="badge_share(\'fb\', badge_selected)">{{ _config.texts.share_fb }}</span> <span class="badge_share_button tw_icon" style="margin-right: 20px;" data-ng-click="badge_share(\'tw\', badge_selected)">{{ _config.texts.share_tw }}</span> <span class="sp_btn button_primary" data-ng-click="badge_select(false);">{{ _tools.buttons.texts.close }}</span></p></div></div></magic-modal></div>');
+}]);
+})();
+
+(function(module) {
+try {
+  module = angular.module('core.templates');
+} catch (e) {
+  module = angular.module('core.templates', []);
+}
+module.run(['$templateCache', function($templateCache) {
+  $templateCache.put('/html/core/widgets/banner.html',
+    '<div class="{{ _config.name }} clearfix"><div class="bon_choice_main container block_images" data-ng-show="_config.enabled" data-ng-cloak=""><style scoped="" data-widget-style="_config.styles" data-widget-name="_config.name"></style><img class="block_images__item" data-ng-repeat="image_url in _config.images" data-ng-src="{{ image_url }}" alt="{{ _config.name }}"></div></div>');
 }]);
 })();
 

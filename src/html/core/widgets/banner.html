@@ -1,0 +1,7 @@
+<div class="{{ _config.name }} clearfix">
+    <div class="bon_choice_main container block_images" data-ng-show="_config.enabled" data-ng-cloak>
+        <style scoped data-widget-style="_config.styles" data-widget-name="_config.name"></style>
+        <img class="block_images__item" data-ng-repeat="image_url in _config.images" data-ng-src="{{ image_url }}" alt="{{ _config.name }}">
+    </div>
+</div>
+

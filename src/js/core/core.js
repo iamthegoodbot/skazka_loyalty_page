@@ -8,6 +8,7 @@
     'widgets.badges',
     'widgets.leaderboard',
     'widgets.actions',
+    'widgets.banner',
     'widgets.statuses'
   ])
 

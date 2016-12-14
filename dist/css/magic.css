@@ -1805,6 +1805,12 @@
     top: 2.5px;
   }
 }
+.sailplay.magic .block_images {
+  width: 100%;
+}
+.sailplay.magic .block_images__item {
+  max-width: 100%;
+}
 .sailplay.magic .sailplay.magic,
 .sailplay.magic * {
   margin: 0;
