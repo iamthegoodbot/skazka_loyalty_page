@@ -2515,6 +2515,11 @@ var SAILPLAY = (function () {
     'widgets.statuses'
   ])
 
+  .config( function( $compileProvider ) {
+    $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension):/);
+    $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension):/);
+  })
+
   .run(function(SailPlay, SailPlayApi, $rootScope, $window, MAGIC_CONFIG, $timeout, QuizService){
 
     //we need global template reference for config
