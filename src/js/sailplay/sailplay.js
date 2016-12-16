@@ -114,17 +114,6 @@
                   $rootScope.$broadcast('sailplay-login-error', { status: 'error', message: 'No auth_hash found' });
                 }
                 break;
-              
-              case 'config':
-
-                if(auth_options.auth_hash){
-                  sp.send('login', auth_options.auth_hash);
-                }
-                else {
-                  $rootScope.$broadcast('sailplay-login-error', { status: 'error', message: 'No auth_hash found' });
-                }
-                
-                break;
 
               case 'remote':
 
