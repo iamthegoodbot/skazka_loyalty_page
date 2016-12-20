@@ -1,4 +1,4 @@
-import { WidgetRegister } from '@core/widget';
+import { WidgetRegister, Widget } from '@core/widget';
 import GiftsTemplate from './gifts.html';
 import './gifts.less';
 
@@ -86,28 +86,51 @@ WidgetRegister({
   }
 });
 
-// (function () {
-//
-//   angular.module('widgets.gifts', [])
-//
-//     .directive('sailplayMagicGifts', function(MAGIC_CONFIG, SailPlayApi, SailPlay, $rootScope){
-//
-//       return {
-//
-//         restrict: "E",
-//         replace: true,
-//         scope: {
-//           _config: '=?config'
-//         },
-//         templateUrl: '/html/core/widgets/gifts.html',
-//         link: function(scope, elm, attrs){
-//
-//
-//
-//         }
-//
-//       };
-//
-//     });
-//
-// }());
+Widget.directive('magicGift', function($timeout){
+  return {
+    restrict: 'A',
+    scope: false,
+    link: function(scope, elm, attrs){
+      if (scope.$last) {
+
+        $timeout(function () {
+
+          var slides = elm[0].parentElement.querySelectorAll('[data-magic-slide]');
+          var wrapper = elm[0].parentElement.parentElement.parentElement;
+
+          if (!slides.length) return;
+
+          angular.forEach(slides, function (slide) {
+            slide.style.width = '';
+          });
+
+          var _width = slides[0].offsetWidth || 0;
+
+          _width = _width ? _width + 30 : 0;
+
+          var _limits = {
+            min: 1,
+            max: 4
+          };
+
+          if (!_width) return;
+
+          var _wrap_width = wrapper.offsetWidth;
+
+          var _count_show = Math.floor(_wrap_width / _width) > _limits.max ? Math.floor(_wrap_width / _width) < _limits.min ? _limits.min : Math.floor(_wrap_width / _width) : Math.floor(_wrap_width / _width);
+
+          if (!_count_show) return;
+
+          _width = Math.floor(_wrap_width / _count_show);
+
+          angular.forEach(slides, function (slide) {
+            console.log("SLIDE:", slide);
+            slide.style.width = (_width - 30) + 'px';
+          });
+
+        }, 200);
+
+      }
+    }
+  }
+});

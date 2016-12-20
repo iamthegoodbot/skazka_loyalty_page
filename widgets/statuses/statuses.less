@@ -1,0 +1,135 @@
+.spm_wrapper {
+
+  .status-list {
+    float: left;
+    width: 86%;
+    position: relative;
+    margin-left: 7% !important;
+    padding: 40px 0 80px;
+
+    @media screen and (max-width: 650px) {
+      width: 80%;
+      margin-left: 10% !important;
+    }
+
+    &__wrapper {
+      background: #F4F4F4;
+      width: 100%;
+      position: relative;
+      height: 20px;
+      border-radius: 5px;
+
+      @media screen and (max-width: 650px) {
+        height: 10px;
+      }
+
+    }
+
+    &__item {
+      position: absolute;
+      z-index: 1;
+      height: 100%;
+      width: 0;
+
+      &-point {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 50px;
+        height: 50px;
+        transform: translate3d(-50%, -50%, 0);
+        border-radius: 50%;
+        background: #f4f4f4;
+
+        @media screen and (max-width: 650px) {
+          width: 30px;
+          height: 30px;
+        }
+
+      }
+
+      &-status {
+        display: inline-block;
+        min-width: 100px;
+        left: 0;
+        position: absolute;
+        top: 60px;
+        transform: translateX(-50%);
+        text-align: center;
+
+        @media screen and (max-width: 650px) {
+          font-size: 14px;
+        }
+
+        @media screen and (max-width: 450px) {
+          font-size: 12px;
+          min-width: 100%;
+          top: 50px;
+        }
+
+      }
+
+      &-name {
+        display: inline-block;
+        min-width: 80px;
+        position: absolute;
+        top: 40px;
+        left: 0;
+        transform: translateX(-50%);
+        text-align: center;
+
+        @media screen and (max-width: 650px) {
+          font-size: 12px;
+        }
+
+        @media screen and (max-width: 450px) {
+          font-size: 8px;
+          min-width: 100%;
+          top: 25px;
+        }
+
+      }
+
+      &.type_active {
+
+        .status-list__item-point:before {
+          content: '';
+          position: relative;
+          width: 30px;
+          height: 30px;
+          display: block;
+          border-radius: 50%;
+          margin: 10px 0 0 10px;
+          background: #D9534F;
+
+          @media screen and (max-width: 650px) {
+            width: 20px;
+            height: 20px;
+            margin: 5px 0 0 5px;
+          }
+
+        }
+
+      }
+
+    }
+
+    &__progress {
+      height: 10px;
+      position: absolute;
+      width: 0;
+      background: #D9534F;
+      z-index: 2;
+      top: 5px;
+      border-radius: 5px;
+
+      @media screen and (max-width: 650px) {
+        height: 5px;
+        top: 2.5px;
+      }
+
+    }
+
+  }
+
+}

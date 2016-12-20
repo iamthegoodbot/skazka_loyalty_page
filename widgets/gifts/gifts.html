@@ -7,14 +7,14 @@
   </h4>
 
   <div data-sailplay-gifts>
-    <div class="bon_item_main" data-ng-show="gifts().length" data-magic-slider>
+    <div class="bon_item_main" data-ng-show="gifts && gifts().length" data-magic-slider>
 
       <div class="bon_slide_cat_item_wrap" data-magic-gallery>
         <div class="bon_slide_cat_item">
 
           <div class="bon_item_line" data-ng-style="{left : left}">
 
-            <div class="bon_item gift" data-magic-slide data-ng-repeat="gift in gifts()">
+            <div class="bon_item gift" data-magic-slide data-magic-gift data-ng-repeat="gift in gifts()">
               <div class="bon_item_iner">
                 <img data-ng-src="{{ gift.thumbs.url_250x250 | sailplay_pic }}" alt="{{ gift.name }}">
                 <span class="bon_item_name gift_name" data-ng-bind="gift.name"></span>
@@ -67,8 +67,8 @@
         <p class="modal_gift_description">
           {{ widget.texts.no_points_message }}
         </p>
-        <a class="alink button_primary" href="#magic_actions" data-ng-click="gift_unconfirm()">{{ widget.texts.earn_points }}</a>
-        <a class="alink button_primary" target="_blank" href="{{ widget.texts.partner_service_url }}" data-ng-click="gift_unconfirm()">{{ widget.texts.service }}</a>
+        <a class="alink button_primary earn_points_button" href="#magic_actions" data-ng-click="gift_unconfirm()">{{ widget.texts.earn_points }}</a>
+        <a class="alink button_primary service_button" target="_blank" href="{{ widget.texts.partner_service_url }}" data-ng-click="gift_unconfirm()">{{ widget.texts.service }}</a>
       </div>
     </magic-modal>
 

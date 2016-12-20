@@ -4,12 +4,14 @@ import angular from 'angular';
 import SailPlay from './sailplay/sailplay';
 import core, { Core } from './core/core';
 import Cookies from 'angular-cookie';
+import NgTouch from 'angular-touch';
 import Tools from './tools/tools';
+// import NgLocale from 'angular-i18n';
 
 //import theme styles
 import './theme/theme.less';
 
-export let magic = angular.module('magic', [ SailPlay, core, Cookies, Tools ])
+export let magic = angular.module('magic', [ SailPlay, core, Cookies, Tools, NgTouch ])
 
 .config(function(SailPlayProvider, MAGIC_CONFIG, SailPlayHistoryProvider, SailPlayActionsDataProvider){
 
@@ -17,7 +19,7 @@ export let magic = angular.module('magic', [ SailPlay, core, Cookies, Tools ])
 
   SailPlayProvider.set_auth_hash_id(MAGIC_CONFIG.auth.auth_hash_id);
 
-  SailPlayProvider.set_remote_config({
+  SailPlayProvider.set_remote_config(MAGIC_CONFIG.auth.config || {
     background: 'transparent'
   });
 
@@ -96,7 +98,7 @@ export let magic = angular.module('magic', [ SailPlay, core, Cookies, Tools ])
 
       SailPlay.on('tags.exist.success', function(res){
 
-        if(res.status === 'ok' && res.tags[0].exist) {
+        if(res.status === 'ok' && res.tags && res.tags.length && res.tags[0].exist) {
 
           scope.show_profile_action = false;
           scope.$apply();

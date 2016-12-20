@@ -1,3 +1,28 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto+Slab:300,400,700');
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,700');
+@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700');
+
+@font_dir: '../assets/fonts/';
+
+//font face mixin
+.font-face(@dir, @name, @file_name){
+  @font-face {
+    font-family: @name;
+    src: url('@{dir}@{file_name}.eot');
+    src: url('@{dir}@{file_name}.eot?#iefix') format('embedded-opentype'),
+    url('@{dir}@{file_name}.woff2') format('woff2'),
+    url('@{dir}@{file_name}.woff') format('woff'),
+    url('@{dir}@{file_name}.ttf') format('truetype');
+    //url('@{font_dir}RotondaC-Bold.svg#RotondaC-Bold') format('svg');
+    font-weight: bold;
+    font-style: normal;
+  }
+}
+
+//define fonts
+.font-face(@font_dir, 'RotondaC bold', 'RotondaC-Bold');
+.font-face(@font_dir, 'RotondaC', 'RotondaC');
+
 .spm_wrapper {
   //default font
   font-family: 'Roboto', sans-serif;

@@ -5,6 +5,7 @@ import Layout from './layout/layout';
 import Widget from './widget/widget';
 import Notifier from './notifier/notifier'
 import MagicModal from './modal/modal';
+import DatePicker from './datepicker/datepicker';
 
 export let Tools = angular.module('magic.tools', [
   NgPagination,
@@ -12,7 +13,8 @@ export let Tools = angular.module('magic.tools', [
   Layout,
   Widget,
   Notifier,
-  MagicModal
+  MagicModal,
+  DatePicker
 ])
 
 .filter('tools', function (MAGIC_CONFIG, $parse) {
@@ -435,7 +437,7 @@ export let Tools = angular.module('magic.tools', [
         _width = Math.floor(_wrap_width / _count_show);
 
         angular.forEach(slides, function(slide){
-          slide.style.width = _width - 30;
+          slide.style.width = (_width - 30) + 'px';
         });
 
         var _max = Math.ceil(slides.length - _count_show);
@@ -522,6 +524,51 @@ export let Tools = angular.module('magic.tools', [
 
   };
 
+})
+
+.filter('tel', function () {
+  return function (tel) {
+    if (!tel) { return ''; }
+
+    var value = tel.toString().trim().replace(/^\+/, '');
+
+    if (value.match(/[^0-9]/)) {
+      return tel;
+    }
+
+    var country, city, number;
+
+    switch (value.length) {
+      case 10: // +1PPP####### -> C (PPP) ###-####
+        country = 1;
+        city = value.slice(0, 3);
+        number = value.slice(3);
+        break;
+
+      case 11: // +CPPP####### -> CCC (PP) ###-####
+        country = value[0];
+        city = value.slice(1, 4);
+        number = value.slice(4);
+        break;
+
+      case 12: // +CCCPP####### -> CCC (PP) ###-####
+        country = value.slice(0, 3);
+        city = value.slice(3, 5);
+        number = value.slice(5);
+        break;
+
+      default:
+        return tel;
+    }
+
+    if (country == 1) {
+      country = "";
+    }
+
+    number = number.slice(0, 3) + '-' + number.slice(3);
+
+    return (country + " (" + city + ") " + number).trim();
+  };
 });
 
 export default Tools.name;

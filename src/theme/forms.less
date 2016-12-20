@@ -3,10 +3,6 @@
 
 .magic_select {
 
-  //background-image: url(http://i62.tinypic.com/15xvbd5.png);
-  background-repeat: no-repeat;
-  background-size: 50px 50px;
-  background-position: top right;
   overflow: hidden;
   width: 100%;
 
@@ -22,6 +18,11 @@
   background-color: @white;
   position: relative;
   display: inline-block;
+
+  background-image: url(https://d3sailplay.cdnvideo.ru/media/assets/assetfile/303e1f38393495b1a059952843abeeb0.png);
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 10px;
 
   select {
     position: absolute;
@@ -46,6 +47,75 @@
   padding-bottom: 20px;
   padding-right: 40px;
   .box-sizing(border-box);
+
+  .form_date {
+    float: left;
+    position: relative;
+    z-index: 1;
+
+    span {
+      color: @black;
+      font-size: 18px;
+      float: left;
+      width: 100%;
+      box-sizing: border-box;
+      padding-left: 10px;
+      border: 2px solid @main_light;
+      border-radius: 5px;
+      line-height: 53px;
+      height: 57px;
+      background-image: url('https://d3sailplay.cdnvideo.ru/media/assets/assetfile/303e1f38393495b1a059952843abeeb0.png');
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      background-size: 10px;
+    }
+
+    &__popup {
+      display: none;
+      position: absolute;
+      top: 56px;
+      left: 0px;
+      right: 0px;
+      z-index: 2;
+      max-height: 100px;
+      overflow-x: hidden;
+      overflow-y: auto;
+      background-color: @white;
+      border-radius: 0 0 3px 3px;
+      border: 1px solid @main_light;
+      text-align: center;
+
+      a {
+        float: left;
+        width: 100%;
+        line-height: 25px;
+        text-decoration: none;
+        color: @black;
+        background: @white;
+      }
+
+    }
+
+    &__day {
+      width: 20%;
+    }
+
+    &__month {
+      width: 48%;
+      margin: 0 1%;
+    }
+
+    &__year {
+      width: 30%;
+    }
+
+    &:hover {
+      .form_date__popup {
+        display: block;
+      }
+    }
+
+  }
 
   .form_label {
     width: 100%;
@@ -78,4 +148,5 @@
     padding: 0 0 20px 0;
   }
 }
+
 

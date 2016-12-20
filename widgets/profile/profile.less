@@ -65,7 +65,7 @@
           margin-top: 9px;
           color: @white;
         }
-        .user_avatar{
+        .user_avatar {
           max-width: 81px;
           float: right;
           text-align: center;
@@ -75,6 +75,9 @@
           float: left;
           width: 165px;
           color: @white;
+          span {
+            word-wrap: break-word;
+          }
         }
         .user_avatar_image {
           width: 100%;
@@ -85,16 +88,29 @@
         width: 100%;
         margin-top: 50px;
         margin-bottom: 78px;
+
+        .points_confirmed {
+
+          span {
+            color: inherit;
+            font-family: inherit;
+          }
+
+          &_name {
+            margin-left: 2px;
+          }
+        }
+
         .bps_left {
           float: left;
           width: auto;
-          span {
+          > span {
             color: @white;
             display: block;
             font-size: 33px;
             font-family: 'RotondaC bold';
           }
-          a {
+          > a {
             font-size: 14px;
             color: @white;
           }
@@ -112,6 +128,7 @@
               height: 14px;
               border-top: 3px solid @black;
               background-color: @white;
+              //background-image: url(../img/line_bg.png);
               border-radius: 20px;
             }
             .progress_line {
@@ -134,7 +151,6 @@
                 padding-top: 32px;
                 border-right: 1px solid #fff;
                 top: 0px;
-                z-index: 1;
                 &.right_position {
                   right: auto;
                   left: 100%;
@@ -201,6 +217,20 @@
       }
     }
 
+    .status_block {
+      width: 30%;
+    }
+
+    @media screen and (max-width: 650px) {
+      .status_block {
+        width: 100%;
+      }
+
+      .bon_profile_stat .bps_left {
+        text-align: left;
+      }
+    }
+
     //media queries
     @media @desktop-xl {
       .bon_profile_info {
@@ -247,7 +277,7 @@
       }
     }
 
-    .profile_mobile(){
+    .profile_mobile() {
 
       .bon_profile_info {
         width: 100%;
