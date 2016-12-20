@@ -1,0 +1,81 @@
+@import (reference) "colors";
+@import (reference) "mixins";
+
+.magic_select {
+
+  //background-image: url(http://i62.tinypic.com/15xvbd5.png);
+  background-repeat: no-repeat;
+  background-size: 50px 50px;
+  background-position: top right;
+  overflow: hidden;
+  width: 100%;
+
+  float: left;
+  height: 57px;
+  border: 0;
+  border-top: 2px solid @main_light;
+  border-radius: 5px;
+  padding-left: 25px;
+  font-size: 18px;
+  outline: none;
+  box-sizing: border-box;
+  background-color: @white;
+  position: relative;
+  display: inline-block;
+
+  select {
+    position: absolute;
+    background: transparent;
+    border: none;
+    height: 100%;
+    width: 100%;
+    font-size: inherit;
+    font-weight: inherit;
+    font-family: inherit;
+    outline: none;
+    -webkit-appearance: none;
+    box-shadow: none;
+    background-image: none;
+  }
+
+}
+
+.form_field {
+  float: left;
+  width: 50%;
+  padding-bottom: 20px;
+  padding-right: 40px;
+  .box-sizing(border-box);
+
+  .form_label {
+    width: 100%;
+    line-height: 100%;
+    color: @main_darker;
+    font-size: 16px;
+    float: left;
+  }
+  .form_input {
+    &[type="text"], &[type="email"] {
+      background-color: @white;
+      float: left;
+      height: 57px;
+      border: 0;
+      border-top: 2px solid @main_light;
+      border-radius: 5px;
+      padding-left: 25px;
+      width: 100%;
+      font-size: 18px;
+      outline: none;
+      box-sizing: border-box;
+    }
+  }
+
+}
+
+@media @tablet, @mobile {
+  .form_field {
+    width: 100%;
+    padding: 0 0 20px 0;
+  }
+}
+

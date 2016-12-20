@@ -1,6 +1,6 @@
 {
   "name": "sailplay-magic",
-  "version": "0.0.1",
+  "version": "2.0.0",
   "description": "",
   "author": "saike",
   "license": "ISC",
@@ -13,17 +13,30 @@
     "angular-i18n": "^1.5.6",
     "angular-ui-mask": "^1.8.7",
     "angular-utils-pagination": "^0.11.1",
-    "sailplay-hub": "latest",
-    "sailplay-hub-actions": "latest"
+    "sailplay-hub": "^2.0.14",
+    "sailplay-hub-actions": "^1.0.8"
   },
   "devDependencies": {
-    "browser-sync": "latest",
+    "babel-cli": "latest",
+    "babel-core": "latest",
+    "babel-loader": "latest",
+    "babel-plugin-transform-decorators-legacy": "latest",
+    "babel-plugin-transform-runtime": "^6.15.0",
+    "babel-preset-es2015": "latest",
+    "babel-preset-es2016": "latest",
+    "babel-preset-es2017": "latest",
+    "babel-preset-stage-0": "latest",
+    "css-loader": "^0.26.1",
     "gulp": "^3.9.1",
-    "gulp-concat": "^2.6.0",
-    "gulp-less": "^3.0.5",
-    "gulp-minify-html": "^1.0.6",
-    "gulp-ng-annotate": "^2.0.0",
-    "gulp-ng-html2js": "^0.2.2",
-    "gulp-ngdocs": "^0.2.13"
+    "gulp-connect": "^5.0.0",
+    "gulp-ngdocs": "^0.2.13",
+    "gulp-watch": "^4.3.11",
+    "html-loader": "^0.4.4",
+    "less": "^2.7.1",
+    "less-loader": "^2.2.3",
+    "ng-annotate-loader": "^0.2.0",
+    "run-sequence": "^1.2.2",
+    "style-loader": "^0.13.1",
+    "webpack": "^1.13.3"
   }
 }

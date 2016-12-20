@@ -1,0 +1,12 @@
+<div class="badge">
+  <div class="badge_iner" data-ng-click="on_click(badge)">
+    <div class="badge_pic">
+      <img data-ng-src="{{ (badge.is_received ? badge.thumbs.url_250x250 : badge.thumbs.url_gs) | sailplay_pic }}" alt="{{ badge.name }}">
+    </div>
+    <span class="badge_name" data-ng-bind="badge.name"></span>
+    <!--<span class="bon_tem_info badge_points" data-ng-bind="(badge.points | number) + ' ' + (gift.points | sailplay_pluralize:_tools.points.texts.pluralize)"></span>-->
+  </div>
+  <div class="badge_arrow">
+
+  </div>
+</div>

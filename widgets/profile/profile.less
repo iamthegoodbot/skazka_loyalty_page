@@ -1,0 +1,364 @@
+@import (reference) "../../src/theme/mixins";
+@import (reference) "../../src/theme/helpers";
+@import (reference) "../../src/theme/colors";
+
+.spm_wrapper {
+
+  .bon_profile_wrap {
+
+    float: left;
+    width: 100%;
+    padding: 0 5%;
+    .box-sizing(border-box);
+    background-color: @main;
+    //background-image: url(../img/prof_bg.png);
+    position: relative;
+
+    .bon_profile_info {
+      width: 100%;
+      float: left;
+      .bon_profile_top_left {
+        float: left;
+        width: 580px;
+        h3 {
+          float: left;
+          width: 100%;
+          font-size: 30px;
+          color: @white;
+          font-family: 'RotondaC';
+          margin-top: 50px;
+          margin-bottom: 10px;
+        }
+        h4 {
+          float: left;
+          width: 100%;
+          color: @white;
+          font-size: 14px;
+          font-weight: 400;
+        }
+      }
+      .bon_profile_right {
+        float: right;
+        width: 265px;
+        margin-top: 50px;
+        img {
+          border-radius: 100%;
+          -webkit-box-shadow: 0 2px 7px 1px rgba(0, 0, 0, 0.2);
+          box-shadow: 0 2px 7px 1px rgba(0, 0, 0, 0.2);
+        }
+        span {
+          font-size: 16px;
+          font-weight: 700;
+          margin-top: 18px;
+        }
+        .login_reg_btn {
+          float: right;
+        }
+        .logout_btn {
+          width: auto;
+          font-size: 14px;
+          margin-top: 9px;
+          color: @white;
+        }
+        .edit_profile_btn {
+          font-size: 14px;
+          margin-top: 9px;
+          color: @white;
+        }
+        .user_avatar{
+          max-width: 81px;
+          float: right;
+          text-align: center;
+        }
+        .user_info {
+          text-align: right;
+          float: left;
+          width: 165px;
+          color: @white;
+        }
+        .user_avatar_image {
+          width: 100%;
+        }
+      }
+      .bon_profile_stat {
+        float: left;
+        width: 100%;
+        margin-top: 50px;
+        margin-bottom: 78px;
+        .bps_left {
+          float: left;
+          width: auto;
+          span {
+            color: @white;
+            display: block;
+            font-size: 33px;
+            font-family: 'RotondaC bold';
+          }
+          a {
+            font-size: 14px;
+            color: @white;
+          }
+        }
+        .bps_right {
+          float: right;
+          width: 70%;
+          margin-top: 12px;
+          margin-right: 20px;
+          .progress_line_main {
+            position: relative;
+            float: left;
+            width: 100%;
+            .progress_line_bg {
+              height: 14px;
+              border-top: 3px solid @black;
+              background-color: @white;
+              border-radius: 20px;
+            }
+            .progress_line {
+              position: absolute;
+              left: 0px;
+              top: 3px;
+              width: 0%;
+              background-color: @white;
+              height: 14px;
+              border-radius: 20px 0px 0px 20px;
+              -webkit-transition: all 1000ms ease;
+              -moz-transition: all 1000ms ease;
+              -ms-transition: all 1000ms ease;
+              -o-transition: all 1000ms ease;
+              transition: all 1000ms ease;
+              .progress_text {
+                min-width: 100px;
+                position: absolute;
+                right: 0px;
+                padding-top: 32px;
+                border-right: 1px solid #fff;
+                top: 0px;
+                z-index: 1;
+                &.right_position {
+                  right: auto;
+                  left: 100%;
+                  border-left: 1px solid #fff;
+                  border-right: none;
+                  span {
+                    border-radius: 0px 5px 5px 0px;
+                  }
+                }
+                span {
+                  float: right;
+                  line-height: 30px;
+                  background-color: rgba(255, 255, 255, 0.2);
+                  color: @white;
+                  font-size: 14px;
+                  font-family: 'RotondaC';
+                  border-radius: 5px 0px 0px 5px;
+                  padding-left: 10px;
+                  padding-right: 10px;
+                }
+              }
+            }
+            .gift_item {
+              position: absolute;
+              top: 50%;
+              width: 36px;
+              height: 36px;
+              margin-top: -19px;
+              margin-left: -19px;
+              background-color: @main_light;
+              border-radius: 6px;
+              -webkit-background-size: 20px 22px;
+              background-size: 20px 22px;
+              background-repeat: no-repeat;
+              background-position: center center;
+              border-top: 3px solid @black;
+              &.act {
+                background-color: @white;
+              }
+              &_hint {
+                opacity: 0;
+                visibility: hidden;
+                display: inline-block;
+                position: absolute;
+                left: 0;
+                text-align: center;
+                width: 100%;
+                top: 0;
+                font-weight: bold;
+                transition: .3s ease;
+                color: white;
+              }
+
+              &:hover {
+                .gift_item_hint {
+                  visibility: visible;
+                  opacity: 1;
+                  top: -20px;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    //media queries
+    @media @desktop-xl {
+      .bon_profile_info {
+        .bon_profile_stat {
+          .bps_right {
+            width: 100%;
+            margin-top: 30px;
+            margin-right: 0px;
+          }
+        }
+        .bon_profile_top_left {
+          width: 60%;
+        }
+      }
+    }
+
+    @media @desktop {
+      .progress_line_main {
+
+        .progress_text {
+          border: none !important;
+
+          &:before {
+            content: '';
+            width: 1px;
+            background: white;
+            right: 0;
+            top: 0;
+            position: absolute;
+            height: 17px;
+            display: block;
+          }
+
+          span {
+
+            position: relative;
+            left: 50%;
+            border-radius: 5px !important;
+
+          }
+
+        }
+
+      }
+    }
+
+    .profile_mobile(){
+
+      .bon_profile_info {
+        width: 100%;
+        .bon_profile_right {
+          width: 265px;
+        }
+        .bon_profile_top_left {
+          width: 80%;
+          float: left;
+        }
+        .bon_profile_stat {
+          .bps_right {
+            float: left;
+            width: 100%;
+            margin-top: 30px;
+            margin-bottom: 12px;
+            .progress_line_main {
+              float: left;
+              width: 95%;
+            }
+          }
+        }
+      }
+    }
+
+    @media @tablet {
+      .profile_mobile();
+    }
+
+    @media @mobile {
+      .profile_mobile();
+    }
+
+  }
+
+  //history section
+  .bns_hist_table {
+    float: left;
+    width: 100%;
+    margin-top: 12px;
+    td {
+      vertical-align: text-top;
+      padding: 5px 11px;
+    }
+    td:nth-child(1) {
+      color: @main;
+      font-size: 13px;
+      line-height: 19px;
+      padding-right: 0px;
+      padding-left: 0px;
+      white-space: nowrap;
+    }
+    td:nth-child(2) {
+      color: @black;
+      font-size: 12px;
+      font-weight: 200;
+      line-height: 19px;
+      position: relative;
+      padding-left: 0px;
+      width: 570px;
+      &::after {
+        position: absolute;
+        left: 0px;
+        width: 100%;
+        border-top: 1px dotted @main_dark;
+        top: 14px;
+        content: '';
+        display: block;
+      }
+      span {
+        display: block;
+        position: relative;
+        z-index: 1;
+        font-size: 13px;
+        color: @main_darker;
+        b {
+          background-color: @white;
+          padding-right: 15px;
+          padding-left: 11px;
+          font-weight: 200;
+        }
+      }
+      span:first-child {
+        color: @black;
+      }
+    }
+    td:nth-child(3) {
+      color: @main_dark;
+      font-size: 14px;
+      font-weight: bold;
+      text-align: right;
+      line-height: 19px;
+      span {
+        display: block;
+        white-space: nowrap;
+        font-size: 13px;
+      }
+    }
+  }
+
+  .bns_hist_pager {
+    float: right;
+    font-size: 13px;
+    a {
+      text-decoration: none;
+      color: #000;
+      margin-right: 4px;
+      &.active {
+        font-weight: bold;
+      }
+    }
+  }
+
+}
