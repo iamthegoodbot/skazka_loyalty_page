@@ -2,7 +2,7 @@ import { Widget } from '@core/widget';
 import WidgetProfileTemplate from './profile.html'
 import HistoryPaginationTemplate from './history_pagination.html';
 import './profile.less';
-
+import DefaultAvatarImage from './assets/img/avatar_default.png';
 
 const ProfileWidget = {
 
@@ -13,6 +13,8 @@ const ProfileWidget = {
     return function (scope, elm, attrs) {
 
       // scope._tools = MAGIC_CONFIG.tools;
+
+      scope.default_avatar = DefaultAvatarImage;
 
       scope.profile = {
         history: false,

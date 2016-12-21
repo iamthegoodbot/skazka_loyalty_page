@@ -77,11 +77,16 @@ export default {
         test: /\.less$/,
         loader: "style-loader!css-loader!less-loader"
       },
+      //fonts loaders
       { test: /\.svg$/, loader: 'url?limit=65000&mimetype=image/svg+xml' },
       { test: /\.woff$/, loader: 'url?limit=65000&mimetype=application/font-woff' },
       { test: /\.woff2$/, loader: 'url?limit=65000&mimetype=application/font-woff2' },
       { test: /\.[ot]tf$/, loader: 'url?limit=65000&mimetype=application/octet-stream' },
-      { test: /\.eot$/, loader: 'url?limit=65000&mimetype=application/vnd.ms-fontobject' }
+      { test: /\.eot$/, loader: 'url?limit=65000&mimetype=application/vnd.ms-fontobject' },
+      //image loaders
+      {
+        test: /\.png/, loader: 'url?limit=65000&mimetype=image/png'
+      }
     ]
   },
   plugins: [

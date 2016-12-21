@@ -12,7 +12,7 @@
       </div>
       <div class="bon_profile_right" data-ng-show="user()">
         <div class="user_avatar">
-          <img class="user_avatar_image" data-ng-src="{{ (user().user.pic | sailplay_pic) || 'http://saike.ru/sailplay-magic/dist/img/profile/avatar_default.png  '}}" alt="You">
+          <img class="user_avatar_image" data-ng-src="{{ (user().user.pic | sailplay_pic) || default_avatar}}" alt="You">
           <a href="#" class="logout_btn button_link" data-ng-click="$event.preventDefault(); logout();">{{ widget.texts.logout }}</a>
         </div>
         <div class="user_info">
