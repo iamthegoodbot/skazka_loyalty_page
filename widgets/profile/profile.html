@@ -17,7 +17,7 @@
         </div>
         <div class="user_info">
           <span class="user_name"  data-ng-bind="user().user.name || widget.texts.name_not_defined"></span>
-          <span class="user_phone" data-ng-if="user().user.phone"  data-ng-bind="user().user.phone"></span>
+          <span class="user_phone" data-ng-if="user().user.phone"  data-ng-bind="user().user.phone | tel"></span>
           <span class="user_email" data-ng-if="user().user.email"  data-ng-bind="user().user.email"></span>
         </div>
         <div class="user_info">
@@ -30,21 +30,21 @@
     </div>
 
     <!-- status -->
-    <div class="status_block" data-ng-show="user()">
+    <div class="status_block" data-ng-show="user() && user().user_status.name">
       <span class="status_block_title" data-ng-bind="widget.texts.user_status"></span>
       <img class="status_block_img" data-ng-src="{{ user().user_status.pic | sailplay_pic }}" alt="{{ user().user_status.name }}">
       <span class="status_block_name" data-ng-bind="user().user_status.name || widget.texts.empty_status "></span>
     </div>
 
     <div class="bon_profile_stat">
-      <div class="bps_left clearfix" data-ng-class="{ transparent: !user() }">
+      <div class="bps_left points_block clearfix" data-ng-class="{ transparent: !user() }">
         <span class="points_confirmed">
           <span class="points_confirmed_value" data-ng-bind="user().user_points.confirmed | number"></span>
           <span class="points_confirmed_name" data-ng-bind="user().user_points.confirmed | sailplay_pluralize: ('points.texts.pluralize' | tools)"></span>
         </span>
-        <a class="button_link" href="#" data-ng-click="$event.preventDefault(); profile.history = true;">{{ widget.texts.history_button }}</a>
+        <a class="button_link history_button" href="#" data-ng-click="$event.preventDefault(); profile.history = true;">{{ widget.texts.history_button }}</a>
       </div>
-      <div class="bps_right clearfix" data-sailplay-gifts data-ng-show="progress">
+      <div class="bps_right progress_block clearfix" data-sailplay-gifts data-ng-show="progress">
         <div class="progress_line_main">
           <div class="progress_line_bg progress_bar progress_bar_border"></div>
           <div class="progress_line progress_bar_filled" data-procent="0" data-ng-style="{ width: progress.plenum + '%' }">
