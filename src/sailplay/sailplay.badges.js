@@ -98,6 +98,17 @@ export let SailPlayBadges = angular.module('sailplay.badges', [])
 
       };
 
+      scope.get_next = function () {
+
+
+
+        return {
+          status: {},
+          offset: 0
+        };
+
+      };
+
 
     }
 

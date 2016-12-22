@@ -1,11 +1,20 @@
+@import (reference) "../../src/theme/mixins";
+@import (reference) "../../src/theme/helpers";
+@import (reference) "../../src/theme/colors";
+
 .spm_wrapper {
 
   .status-list {
     float: left;
     width: 86%;
     position: relative;
-    margin-left: 7% !important;
-    padding: 40px 0 80px;
+    margin: 0 5%;
+    padding: 30px 0 80px;
+    z-index: 1;
+
+    .next_status_info {
+      margin-bottom: 30px;
+    }
 
     @media screen and (max-width: 650px) {
       width: 80%;
@@ -14,11 +23,11 @@
 
     &__wrapper {
       background: #F4F4F4;
-      width: 100%;
       position: relative;
       height: 20px;
       border-radius: 5px;
-
+      display: block;
+      margin: 0 20px;
       @media screen and (max-width: 650px) {
         height: 10px;
       }
@@ -27,9 +36,28 @@
 
     &__item {
       position: absolute;
-      z-index: 1;
       height: 100%;
       width: 0;
+
+      .element-item-point-inner {
+        z-index: 1;
+        content: '';
+        position: absolute;
+        width: 30px;
+        height: 30px;
+        display: none;
+        margin-top: -15px;
+        margin-left: -15px;
+        top: 50%;
+        left: 50%;
+        border-radius: 50%;
+        background: @main_dark;
+        @media screen and (max-width: 650px) {
+          width: 20px;
+          height: 20px;
+          margin: 5px 0 0 5px;
+        }
+      }
 
       &-point {
         position: absolute;
@@ -40,7 +68,7 @@
         transform: translate3d(-50%, -50%, 0);
         border-radius: 50%;
         background: #f4f4f4;
-
+        z-index: -1;
         @media screen and (max-width: 650px) {
           width: 30px;
           height: 30px;
@@ -92,22 +120,8 @@
 
       &.type_active {
 
-        .status-list__item-point:before {
-          content: '';
-          position: relative;
-          width: 30px;
-          height: 30px;
+        .element-item-point-inner {
           display: block;
-          border-radius: 50%;
-          margin: 10px 0 0 10px;
-          background: #D9534F;
-
-          @media screen and (max-width: 650px) {
-            width: 20px;
-            height: 20px;
-            margin: 5px 0 0 5px;
-          }
-
         }
 
       }
@@ -118,8 +132,8 @@
       height: 10px;
       position: absolute;
       width: 0;
-      background: #D9534F;
-      z-index: 2;
+      background: @main_dark;
+      z-index: 0;
       top: 5px;
       border-radius: 5px;
 

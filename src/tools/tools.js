@@ -272,29 +272,90 @@ export let Tools = angular.module('magic.tools', [
 //  }
 //})
 
-.directive('dateSelector', function($parse){
+.directive('dateSelector', function(){
 
   return {
-    restrict: 'A',
+    restrict: 'AE',
+    replace: true,
     require: 'ngModel',
+    template:
+      `
+        <div class="clearfix">
+
+          <div class="form_date form_date__day">
+            <select class="form_select" data-ng-model="selected_date[0]" data-ng-options="day as day for day in range(1, date_data.days[selected_date[1] || 1])">
+              <option value="">Day</option>
+            </select>
+          </div>
+          <div class="form_date form_date__month">
+            <select class="form_select" data-ng-model="selected_date[1]" data-ng-options="number as name for (number, name) in date_data.months">
+              <option value="">Month</option>
+            </select>
+          </div>
+          <div class="form_date form_date__year" >
+            <select class="form_select" data-ng-model="selected_date[2]" data-ng-options="year as year for year in date_data.years">
+              <option value="">Year</option>
+            </select>
+          </div>
+        
+        </div>
+      `,
     scope: true,
     link: function(scope, elm, attrs, ngModelCtrl){
 
-      var years = function(startYear) {
-        var currentYear = new Date().getFullYear(), years = [];
-        startYear = startYear || 1980;
+      let max_year = attrs.maxYear || new Date().getFullYear();
 
-        while ( startYear <= currentYear ) {
-          years.push(startYear++);
+      let min_year = attrs.minYear || 1930;
+
+      let years = function() {
+
+        let min_year_counter = min_year, years = [];
+
+        while ( min_year_counter <= max_year ) {
+          years.push(min_year_counter++);
         }
 
         return years.reverse();
       };
 
+      scope.range = function (start, end) {
+        var result = [];
+        for (var i = start; i <= end; i++) {
+          result.push(i);
+        }
+        return result;
+      };
+
       scope.date_data = {
-        days: new Array(31),
-        months: new Array(12),
-        years: years(1930)
+        days: {
+          1: 31,
+          2: 29,
+          3: 31,
+          4: 30,
+          5: 31,
+          6: 30,
+          7: 31,
+          8: 31,
+          9: 30,
+          10: 31,
+          11: 30,
+          12: 31
+        },
+        months: {
+          1: "January",
+          2: "February",
+          3: "March",
+          4: "April",
+          5: "May",
+          6: "June",
+          7: "July",
+          8: "August",
+          9: "September",
+          10: "October",
+          11: "November",
+          12: "December"
+        },
+        years: years()
       };
 
       scope.selected_date = [ '', '', '' ];

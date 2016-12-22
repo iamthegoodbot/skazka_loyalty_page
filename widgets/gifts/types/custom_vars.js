@@ -1,4 +1,5 @@
 import { GiftTypeRegister } from '../gifts';
+import angular from 'angular';
 
 GiftTypeRegister({
 
@@ -10,10 +11,10 @@ GiftTypeRegister({
   template:
     `
       <form name="custom_vars_form" class="clearfix">
-        <div class="form_field" data-ng-repeat="field in options.data.fields" data-ng-switch="field.type">
+        <div class="form_field" style="width: 100%;" data-ng-repeat="field in options.data.fields" data-ng-switch="field.type">
           <div data-ng-switch-when="date" class="clearfix">
             <label class="form_label">{{ field.label }}</label>
-            <date-picker data-model="field.value"></date-picker>
+            <date-selector data-ng-model="field.value" data-max-year="{{ field.options.max_year }}" data-min-year="{{ field.options.min_year }}"></date-selector>
           </div>
         </div>
       </form>
@@ -29,7 +30,6 @@ GiftTypeRegister({
       SailPlay.on('gifts.purchase', (params) => {
         if(params.gift.id === scope.gift.id){
           purchasing = true;
-          scope.$digest();
         }
       });
 
@@ -37,13 +37,25 @@ GiftTypeRegister({
 
         console.dir(res);
 
-        if(!purchasing) return;
+        if (!purchasing) return;
 
         purchasing = false;
 
         console.log(scope.options.data.fields);
 
         scope.$digest();
+
+        let custom_vars = {};
+
+        angular.forEach(scope.options.data.fields, function (field) {
+          custom_vars[field.variable] = field.value;
+        });
+
+        SailPlay.send('vars.add', {custom_vars: custom_vars}, function (vars_res) {
+
+          console.log('custom vars added:', vars_res);
+
+        });
 
       });
 
