@@ -86,6 +86,94 @@ WidgetRegister({
   }
 });
 
+Widget.provider('GiftsWidget', function () {
+
+  let gift_types = [];
+
+  const get_gift_type_config = (type_id) => {
+    return gift_types.filter((gift_type) => {
+      return gift_type.id === type_id;
+    })[0];
+  };
+
+  return {
+    register: function (config) {
+
+      const unique = !get_gift_type_config(config.id);
+      unique && gift_types.push(config);
+      console.log('registered gift types: ', gift_types);
+
+    },
+    $get: function () {
+
+      return {
+        types: gift_types,
+        get_type: get_gift_type_config
+      }
+
+    }
+  };
+
+});
+
+export const GiftTypeRegister = function (config) {
+
+  Widget.config(function (GiftsWidgetProvider) {
+    GiftsWidgetProvider.register(config);
+  })
+
+};
+
+Widget.directive('giftType', function (GiftsWidget, $injector, $compile) {
+  return {
+    restrict: 'A',
+    scope: {
+      types: '=',
+      gift: '='
+    },
+    link: function (scope, elm) {
+
+      scope.$watch(() => {
+        return angular.toJson([ scope.types, scope.gift ]);
+      }, function (data) {
+
+        data = angular.fromJson(data);
+
+        let types = data[0];
+
+        let gift = data[1];
+
+        elm.html('');
+
+        if(!types || !gift) return;
+
+        let gift_type_options = types.filter((gift_type) => {
+          return gift_type.categories && gift_type.categories.indexOf(gift.category) >= 0;
+        })[0];
+
+        if(!gift_type_options) return;
+
+        let gift_type_config = GiftsWidget.get_type(gift_type_options.id);
+
+        let gift_type_scope = scope.$new();
+
+        gift_type_scope.options = angular.copy(gift_type_options);
+
+        gift_type_scope.gift = angular.copy(gift);
+
+        gift_type_config.controller.$inject = gift_type_config.inject || [];
+
+        $injector.invoke(gift_type_config.controller)(gift_type_scope, elm);
+
+        elm.append($compile(gift_type_config.template)(gift_type_scope));
+
+        console.log('gift type data', data);
+      });
+
+    }
+  };
+});
+
 Widget.directive('magicGift', function($timeout){
   return {
     restrict: 'A',

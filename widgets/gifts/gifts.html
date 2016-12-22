@@ -34,7 +34,7 @@
 
     </div>
 
-    <magic-modal class="bns_overlay_gift" data-ng-cloak data-show="selected_gift">
+    <magic-modal class="bns_overlay_gift" data-ng-cloak data-show="$parent.selected_gift">
 
       <div>
 
@@ -50,12 +50,16 @@
 
           <p class="gift_more_descr modal_gift_description" data-ng-bind="selected_gift.descr"></p>
 
-          <span class="alink button_primary" data-ng-click="gift_select(false);">{{ 'buttons.texts.close' | tools }}</span>
+          <div class="modal_gift_type_block clearfix" data-gift-type data-types="widget.options.gift_types" data-gift="selected_gift"></div>
 
-          <span class="alink button_primary"
-                style="margin-left: 5px;"
-                data-ng-click="gift_confirm();"
-                data-ng-bind="gift_affordable(selected_gift) ? widget.texts.get : widget.texts.no_points_button_text">{{ widget.texts.get }}</span>
+          <div class="modal_gift_buttons">
+            <span class="alink button_primary" data-ng-click="gift_select(false);">{{ 'buttons.texts.close' | tools }}</span>
+
+            <span class="alink button_primary"
+                  style="margin-left: 5px;"
+                  data-ng-click="gift_confirm();"
+                  data-ng-bind="gift_affordable(selected_gift) ? widget.texts.get : widget.texts.no_points_button_text">{{ widget.texts.get }}</span>
+          </div>
 
         </div>
       </div>

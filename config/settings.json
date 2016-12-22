@@ -6,14 +6,27 @@
     },
     "widgets": [
       {
-        "id": "banner",
-        "enabled": false,
-        "texts": {},
-        "errors": {},
-        "images": {
-          "Welcome": "https://d3sailplay.cdnvideo.ru/media/assets/assetfile/acd16982b06546442f1506469cf39fd2.png"
+        "id": "header",
+        "enabled": true,
+        "texts": {
+          "title": "Arbor Leaf Loyalty",
+          "sub_title": "Earn bonus points, get rewards, and manage your loyalty account"
         },
-        "styles": {}
+        "styles": {
+          "container": {
+            "background-image": "url(https://api.monosnap.com/rpc/file/download?id=4Az5geGIOjV4NkLOPIcbFGk68d3DmG)",
+            "background-size": "cover",
+            "background-position": "top center",
+            "height": "300px",
+            "background-color": "#fff"
+          },
+          "header_title": {
+            "margin-top": "140px"
+          },
+          "header_sub_title": {
+            "font-family": "RotondaC, sans-serif"
+          }
+        }
       },
       {
         "id": "profile",
@@ -35,53 +48,43 @@
         "images": {},
         "styles": {
           "container": {
-            "background-image": "url(https://sailplays3.cdnvideo.ru/media/assets/assetfile/81a3ddbf0220265e293ad741f64f2420.png)",
-            "background-repeat": "repeat",
-            "background-size": "auto 100%"
+            "background-image": "url(https://api.monosnap.com/rpc/file/download?id=HVRz6zFsbuGkcQpweZTo3O1GsSgOy5)",
+            "background-repeat": "no-repeat",
+            "background-size": "auto 100%",
+            "background-position": "top right",
+            "background-color": "#fff"
           },
-          "header": {
-            "color": "#333",
-            "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
-            "background-color": "rgba(255,255,255,0.0)"
-          },
-          "caption": {
-            "color": "#666",
-            "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
-            "background-color": "rgba(255,255,255,0.0)"
+          "bon_profile_top_left": {
+            "display": "none"
           },
           "progress_line_main": {
-            "top": "30px"
+            "display": "none"
           },
-          "progress_bar": {
-            "background": "#C89676"
+          "bon_profile_right": {
+            "float": "left",
+            "background-color": "#f9f9f3",
+            "padding": "30px 40px",
+            "box-shadow": "0px 0px 16px 0px rgba(50,50,50,0.75)"
           },
-          "progress_bar_filled": {
-            "background-color": "#FFF"
+          "bon_profile_right .user_avatar": {
+            "float": "left"
           },
-          "progress_bar_border": {
-            "border-color": "#111"
+          "bon_profile_right .user_info": {
+            "float": "right",
+            "text-align": "left"
           },
-          "progress_bar_gift": {
-            "background-image": "url(http://saike.ru/sailplay-magic/lib/magic/img/profile/progress_gift.png)",
-            "background-color": "rgba(225,206,196,0.5)"
+          "bon_profile_right .edit_profile_btn": {
+            "margin-top": "10px",
+            "display": "inline-block"
           },
-          "progress_bar_gift_filled": {
-            "background-image": "url(http://saike.ru/sailplay-magic/lib/magic/img/profile/progress_gift.png)",
-            "background-color": "#aaa"
+          "points_block": {
+            "background-color": "#f9f9f3",
+            "padding": "30px 40px",
+            "box-shadow": "0px 0px 16px 0px rgba(50,50,50,0.75)"
           },
-          "progress_bar_flag": {
-            "padding-top": "32px",
-            "border-color": "#fff"
-          },
-          "progress_bar_flag_text": {
-            "color": "#fff",
-            "font-size": "14px",
-            "background-color": "#C89676",
-            "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
-            "font-weight": 300
-          },
-          "progress_text": {
-            "color": "#333"
+          "bon_profile_stat": {
+            "margin-top": "20px",
+            "margin-bottom": "0"
           },
           "points_confirmed": {
             "color": "#a86e59",
@@ -89,9 +92,8 @@
             "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif"
           },
           "user_name": {
-            "font-size": "24px",
-            "color": "#aaa",
-            "text-shadow": "1px 1px #333"
+            "font-size": "30px",
+            "color": "#000"
           },
           "before_gift": {
             "color": "#333"
@@ -122,14 +124,15 @@
             "color": "#333",
             "font-family": "Helvetica"
           },
-          "status_block": {
-            "display": "none"
-          },
           "user_phone": {
-            "display": "none"
+            "display": "block",
+            "margin-top": "0",
+            "color": "#000"
           },
           "user_email": {
-            "display": "none"
+            "display": "block",
+            "margin-top": "0",
+            "color": "#000"
           }
         },
         "fill_profile": {
@@ -221,9 +224,17 @@
         "options": {
           "gift_types": [
             {
-              "id": "order",
-              "categories": [ "Random category" ],
-              "fields": []
+              "id": "custom_vars",
+              "categories": [ 746 ],
+              "data": {
+                "fields": [
+                  {
+                    "label": "Please specify the date for your free night",
+                    "variable": "fn_reg",
+                    "type": "date"
+                  }
+                ]
+              }
             }
           ]
         },
