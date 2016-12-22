@@ -41,7 +41,7 @@ WidgetRegister({
 
         return {
           status: future_statuses[0],
-          offset: future_statuses[0].points - points
+          offset: future_statuses[0] && future_statuses[0].points - points || 0
         };
 
       }

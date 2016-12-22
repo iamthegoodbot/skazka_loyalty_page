@@ -51,7 +51,7 @@ export let Widget = angular.module('magic.tools.widget', [])
 
     restrict: 'E',
     replace: true,
-    template: '<style scoped></style>',
+    template: '<style></style>',
     scope: {
       widget: '=?'
     },

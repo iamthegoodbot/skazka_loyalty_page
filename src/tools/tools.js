@@ -549,7 +549,7 @@ export let Tools = angular.module('magic.tools', [
 
     restrict: 'E',
     replace: true,
-    template: '<style scoped></style>',
+    template: '<style></style>',
     scope: {
       widget: '=?'
     },

@@ -2,7 +2,7 @@
 
   <div class="status-list container">
 
-    <div class="next_status_info">
+    <div class="next_status_info" data-ng-show="get_next_status().status">
 
       <div class="next_status_name">
         {{ widget.texts.next_status }} <span data-ng-style="{ color: get_next_status().status.color  }">{{ get_next_status().status.status }}</span>
