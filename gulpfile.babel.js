@@ -4,7 +4,7 @@ import server from 'gulp-connect';
 import run from 'run-sequence';
 
 import webpack from 'webpack';
-import webpack_config from './webpack.config.babel'; // <-- Contains ES6+
+import webpack_config, { production } from './webpack.config.babel'; // <-- Contains ES6+
 
 const paths = {
   src: './src/**/*',
@@ -23,6 +23,14 @@ gulp.task('dev', (callback) => {
 gulp.task('build', (callback) => {
 
   let bundler = webpack(webpack_config);
+
+  bundler.run(callback);
+
+});
+
+gulp.task('deploy', (callback) => {
+
+  let bundler = webpack(production);
 
   bundler.run(callback);
 

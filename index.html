@@ -16,9 +16,13 @@
   <!--<link rel="stylesheet" href="dist/css/magic.css">-->
 
   <!--app-->
-  <script src="dist/sailplay-magic-vendor.js"></script>
-  <script src="dist/sailplay-magic.js"></script>
-  <script src="dist/sailplay-magic-widgets.js"></script>
+  <script src="dist/dev/sailplay-magic-vendor.js"></script>
+  <script src="dist/dev/sailplay-magic.js"></script>
+  <script src="dist/dev/sailplay-magic-widgets.js"></script>
+
+  <!-- prod -->
+  <!--<script src="dist/prod/sailplay-magic.js"></script>-->
+
 
   <style>
     body {
@@ -33,8 +37,6 @@
   <sailplay-magic></sailplay-magic>
   <script>
 
-    console.log(window.SAILPLAY);
-
     var params = SAILPLAY.url_params();
 
     var magic = new SAILPLAY.Magic({
@@ -44,8 +46,6 @@
       lang:  params.lang || "en"
 
     });
-
-    console.log(magic);
 
   </script>
 

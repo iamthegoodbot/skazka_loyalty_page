@@ -48,7 +48,7 @@ export default {
     }
   },
   output: {
-    path: path.join(__dirname, 'dist'),
+    path: path.join(__dirname, 'dist', 'dev'),
     filename: "[name].js",
     libraryTarget: 'umd'
   },
@@ -92,4 +92,58 @@ export default {
   plugins: [
     new webpack.optimize.CommonsChunkPlugin('sailplay-magic-vendor', 'sailplay-magic-vendor.js', Infinity)
   ]
+};
+
+export let production = {
+
+  entry: {
+    'prod': [ path.join(__dirname, 'src', app_name) ].concat(widgets)
+  },
+  resolve: {
+    alias: {
+      "@core": path.join(__dirname, 'src', 'core')
+    }
+  },
+  output: {
+    path: path.join(__dirname, 'dist', 'prod'),
+    filename: "sailplay-magic.js",
+    libraryTarget: 'umd'
+  },
+  module: {
+    loaders: [
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        loader: 'ng-annotate'
+      },
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        loader: 'babel',
+        query: {
+          cacheDirectory: true,
+          plugins: ['transform-decorators-legacy', 'transform-runtime' ],
+          presets: ['es2015', 'es2017', 'es2016', 'stage-0']
+        }
+      },
+      {
+        test: /\.html$/,
+        loader: "html"
+      },
+      {
+        test: /\.less$/,
+        loader: "style-loader!css-loader!less-loader"
+      },
+      //fonts loaders
+      { test: /\.svg$/, loader: 'url?limit=65000&mimetype=image/svg+xml' },
+      { test: /\.woff$/, loader: 'url?limit=65000&mimetype=application/font-woff' },
+      { test: /\.woff2$/, loader: 'url?limit=65000&mimetype=application/font-woff2' },
+      { test: /\.[ot]tf$/, loader: 'url?limit=65000&mimetype=application/octet-stream' },
+      { test: /\.eot$/, loader: 'url?limit=65000&mimetype=application/vnd.ms-fontobject' },
+      //image loaders
+      {
+        test: /\.png/, loader: 'url?limit=65000&mimetype=image/png'
+      }
+    ]
+  }
 };
