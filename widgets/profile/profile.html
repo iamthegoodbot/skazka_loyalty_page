@@ -37,7 +37,7 @@
     </div>
 
     <div class="bon_profile_stat">
-      <div class="bps_left points_block clearfix" data-ng-class="{ transparent: !user() }">
+      <div class="bps_left points_block clearfix" data-ng-show="user()">
         <span class="points_confirmed">
           <span class="points_confirmed_value" data-ng-bind="user().user_points.confirmed | number"></span>
           <span class="points_confirmed_name" data-ng-bind="user().user_points.confirmed | sailplay_pluralize: ('points.texts.pluralize' | tools)"></span>

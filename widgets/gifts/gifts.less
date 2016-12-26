@@ -116,28 +116,26 @@
               width: 185px;
               text-align: left;
               color: @main_darker;
-              -webkit-transition: all 300ms ease;
-              -moz-transition: all 300ms ease;
-              -ms-transition: all 300ms ease;
-              -o-transition: all 300ms ease;
-              transition: all 300ms ease;
             }
             &:hover span {
               opacity: 0;
+              visibility: hidden;
             }
             &:hover a {
               opacity: 1;
+              visibility: visible;
             }
             .bon_item_name {
               font-size: 16px;
               position: absolute;
               left: 0px;
               bottom: 61px;
-
+              visibility: visible;
             }
             .bon_tem_info {
               font-size: 14px;
               opacity: 0.5;
+              visibility: visible;
               font-weight: 300;
               position: absolute;
               left: 0px;
@@ -162,11 +160,7 @@
               border-bottom: 1px solid @black;
               text-shadow: 0 0 1px @black;
               opacity: 0;
-              -webkit-transition: all 300ms ease;
-              -moz-transition: all 300ms ease;
-              -ms-transition: all 300ms ease;
-              -o-transition: all 300ms ease;
-              transition: all 300ms ease;
+              visibility: hidden;
             }
           }
         }
