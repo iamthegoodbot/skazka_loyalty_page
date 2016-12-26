@@ -32,7 +32,7 @@
         "id": "profile",
         "enabled": true,
         "texts": {
-          "header": "Natura Loyalty",
+          "header": "Arbor Hotels Leaf Loyalty",
           "spoiler": "Earn bonus points, get rewards, and manage your loyalty account",
           "edit_profile_button": "Edit Profile",
           "name_not_defined": "John Doe",
@@ -40,6 +40,7 @@
           "login_reg": "Login/Register",
           "logout": "Logout",
           "before_gift": "until next gift",
+          "user_status": "Your status:",
           "history": {
             "header": "Your history",
             "caption": "All user actions history is shown here"
@@ -48,11 +49,14 @@
         "images": {},
         "styles": {
           "container": {
-            "background-image": "url(https://api.monosnap.com/rpc/file/download?id=HVRz6zFsbuGkcQpweZTo3O1GsSgOy5)",
+            "background-color": "#fff"
+          },
+          "bon_profile_info": {
+            "background-image": "url(https://sailplays3.cdnvideo.ru/media/assets/assetfile/eac870dbc40eec3a26b32281c1b5ad90.png)",
             "background-repeat": "no-repeat",
             "background-size": "auto 100%",
             "background-position": "top right",
-            "background-color": "#fff"
+            "margin-top": "20px"
           },
           "bon_profile_top_left": {
             "display": "none"
@@ -77,19 +81,45 @@
             "margin-top": "10px",
             "display": "inline-block"
           },
+          "bon_profile_right .login_reg_btn": {
+            "margin": "0",
+            "float": "none"
+          },
           "points_block": {
             "background-color": "#f9f9f3",
             "padding": "30px 40px",
-            "box-shadow": "0px 0px 16px 0px rgba(50,50,50,0.75)"
+            "box-shadow": "0px 0px 16px 0px rgba(50,50,50,0.75)",
+            "text-align": "center"
+          },
+          "points_block .history_button": {
+            "background-color": "rgb(10,75,137)",
+            "color": "#fff",
+            "text-decoration": "none",
+            "text-transform": "uppercase",
+            "padding": "7px 30px",
+            "font-size": "12px",
+            "border": "1px solid #020707",
+            "margin-top": "20px",
+            "display": "inline-block",
+            "font-weight": "300"
           },
           "bon_profile_stat": {
             "margin-top": "20px",
             "margin-bottom": "0"
           },
-          "points_confirmed": {
-            "color": "#a86e59",
-            "text-shadow": "1px 1px #333",
-            "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif"
+          "points_confirmed span": {
+            "color": "#000",
+            "display": "block",
+            "font-family": "Roboto",
+            "text-align": "center"
+          },
+          "points_confirmed_value": {
+            "font-weight": "bold",
+            "font-size": "48px"
+          },
+          "points_confirmed_name": {
+            "font-size": "26px",
+            "margin-left": "0"
           },
           "user_name": {
             "font-size": "30px",
@@ -98,14 +128,30 @@
           "before_gift": {
             "color": "#333"
           },
+          "bns_hist_table td:after": {
+            "display": "none"
+          },
+          "bns_hist_table td": {
+            "padding-top": "15px",
+            "padding-bottom": "15px",
+            "border-bottom": "1px solid #E2E3E4"
+          },
+          "bns_hist_pager": {
+            "float": "left",
+            "margin-top": "30px"
+          },
+          "bns_hist_pager a.active": {
+            "font-size": "16px",
+            "color": "#132D61"
+          },
           "modal_history_header": {
-            "color": "#aaa",
+            "color": "#132D61",
             "font-family": "Helvetica"
           },
           "modal_history_caption": {
-            "color": "#bbb",
+            "color": "#333",
             "font-family": "Helvetica",
-            "font-weight": 400
+            "font-weight": "300"
           },
           "modal_history_date": {
             "color": "#333",
@@ -113,12 +159,14 @@
           },
           "modal_history_content": {
             "color": "#222",
+            "font-weight": "normal",
             "font-family": "Helvetica",
-            "background-color": "pink"
+            "font-size": "16px"
           },
           "modal_history_points": {
-            "color": "red",
-            "font-family": "Helvetica"
+            "color": "#B2B1B2",
+            "font-family": "Helvetica",
+            "font-size": "18px"
           },
           "modal_profile_header": {
             "color": "#333",
@@ -133,10 +181,30 @@
             "display": "block",
             "margin-top": "0",
             "color": "#000"
+          },
+          "status_block, .bon_profile_stat": {
+            "width": "auto"
+          },
+          "status_block .status_block_img": {
+            "display": "block",
+            "width": "130px"
+          },
+          "status_block .status_block_title": {
+            "color": "rgb(77,77,77)",
+            "display": "block"
+          },
+          "status_block .status_block_name": {
+            "font-size": "44px",
+            "font-weight": "bold"
+          },
+          "status_block": {
+            "margin-top": "20px",
+            "margin-left": "30px",
+            "text-align": "center"
           }
         },
         "fill_profile": {
-          "header": "Fill your profile",
+          "header": "Update your profile",
           "config": {
             "tag": "Client filled profile",
             "fields": [
@@ -203,18 +271,26 @@
       {
         "id": "statuses",
         "enabled": true,
-        "texts": {},
+        "texts": {
+          "next_status": "Next status:",
+          "next_status_offset": "Points to next status:"
+        },
         "errors": {},
         "images": {},
         "styles": {
           "element-item-status": {
-            "text-shadow": "1px 0 black, 0 1px black, 1px 0 black, 0 1px black",
             "font-family": "Source Sans Pro, sans-serif",
-            "font-weight": "400"
+            "font-weight": "500"
           },
           "element-item-name": {
             "font-family": "Source Sans Pro, sans-serif",
             "font-weight": "300"
+          },
+          "next_status_info": {
+
+          },
+          "progress_line": {
+            "background-color": "#fff"
           }
         }
       },
@@ -231,7 +307,28 @@
                   {
                     "label": "Please specify the date for your free night",
                     "variable": "fn_reg",
-                    "type": "date"
+                    "type": "date",
+                    "options": {
+                      "max_year": "2018",
+                      "min_year": "2016"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "id": "custom_vars",
+              "categories": [ 747 ],
+              "data": {
+                "fields": [
+                  {
+                    "label": "Please specify the date for your free night",
+                    "variable": "fn_spec",
+                    "type": "date",
+                    "options": {
+                      "max_year": "2018",
+                      "min_year": "2016"
+                    }
                   }
                 ]
               }
@@ -248,7 +345,7 @@
           "no_points_message": "Not enough points. Try completing some of these actions:",
           "earn_points": "earn points",
           "service": "Select service",
-          "partner_service_url": "https://natura.com.br",
+          "partner_service_url": "https://arborhotels.com",
           "coupon_number": "Coupon number",
           "gift_received": "Your gift request has been received!",
           "purchase_success_header": "Congratulations!",
@@ -258,58 +355,89 @@
         "images": {},
         "styles": {
           "container": {
-            "background-color": "#FFFFFF"
+            "background-image": "url(https://sailplays3.cdnvideo.ru/media/assets/assetfile/59245679ecff4351466d817049c9d1fc.png)",
+            "background-size": "cover",
+            "background-position": "top center",
+            "background-color": "#fff"
+          },
+          "bon_header": {
+            "margin-top": "40px"
           },
           "header": {
-            "color": "#111",
-            "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
-            "background-color": "rgba(255,255,255,0.0)"
+            "color": "#142D61",
+            "font-family": "helvetica,arial,nimbus sans l,sans-serif"
           },
           "caption": {
-            "color": "#666",
-            "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
-            "background-color": "rgba(255,255,255,0.0)"
+            "color": "#403C3C",
+            "font-family": "helvetica,arial,nimbus sans l,sans-serif"
           },
           "gift": {
-            "background-color": "#FFF",
+            "background-color": "rgba(255,255,255,0.0)",
             "background-repeat": "no-repeat",
             "background-size": "cover",
-            "border-color": "#a86e59",
-            "border-width": "4px"
+            "border-color": "#000",
+            "border-width": "3px",
+            "margin-top": "10px",
+            "margin-bottom": "10px"
           },
           "gift_img": {
             "display": "inline"
           },
           "gift:hover": {
-            "border-color": "#555"
+            "border-color": "#555",
+            "background-color": "#FFF",
+            "-webkit-box-shadow": "0px 0px 15px 2px rgba(0,0,0,0.75)",
+            "-moz-box-shadow": "0px 0px 15px 2px rgba(0,0,0,0.75)",
+            "box-shadow": "0px 0px 15px 2px rgba(0,0,0,0.75)"
           },
           "gift_name": {
             "color": "#333",
-            "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif"
+            "font-family": "helvetica,arial,nimbus sans l,sans-serif"
           },
           "gift_points": {
-            "color": "#333",
-            "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
-            "font-size": "16px"
+            "color": "#514D4D",
+            "font-family": "helvetica,arial,nimbus sans l,sans-serif",
+            "font-size": "16px",
+            "font-weight": "bold",
+            "opacity": "1"
           },
           "description": {
             "color": "#333",
-            "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
+            "font-family": "helvetica,arial,nimbus sans l,sans-serif",
             "font-size": "14px"
+          },
+          "bns_overlay_gift .modal_container": {
+            "width": "500px"
+          },
+          "modal_gift_container": {
+            "text-align": "center"
+          },
+          "modal_gift_container .gift_more_block": {
+            "width": "100%",
+            "text-align": "left",
+            "margin-top": "30px"
           },
           "modal_gift_name": {
-            "color": "#555",
-            "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif"
+            "color": "#142D61",
+            "font-size": "36px",
+            "font-family": "helvetica,arial,nimbus sans l,sans-serif"
           },
           "modal_gift_points": {
-            "color": "#666",
-            "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
-            "font-size": "20px"
+            "color": "#514D4D",
+            "font-family": "helvetica,arial,nimbus sans l,sans-serif",
+            "font-size": "20px",
+            "opacity": "1"
           },
           "modal_gift_description": {
-            "color": "#333",
-            "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
-            "font-size": "14px"
+            "color": "#403C3C",
+            "font-family": "helvetica,arial,nimbus sans l,sans-serif",
+            "font-size": "18px"
+          },
+          "modal_gift_buttons .button_primary": {
+            "width": "auto"
+          },
+          "bns_overlay_gift_complete .modal_container, .bns_overlay_notify .modal_container": {
+            "width": "500px"
           }
         }
       },
@@ -325,67 +453,79 @@
         "images": {},
         "styles": {
           "container": {
-            "background-image": "url(https://sailplays3.cdnvideo.ru/media/assets/assetfile/7fb21312fc48b1e3420a01b902e7f947.png)",
-            "background-repeat": "n0-repeat",
-            "background-size": "cover"
+            "background-color": "#FFF"
           },
           "header": {
-            "color": "#ccc",
-            "text-shadow": "1px 1px #333",
-            "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
-            "background-color": "rgba(255,255,255,0.0)",
-            "padding-right": "10px",
-            "padding-left": "10px"
+            "color": "#142D61",
+            "font-family": "helvetica,arial,nimbus sans l,sans-serif"
           },
           "caption": {
-            "color": "#aaa",
-            "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
-            "background-color": "rgba(255,255,255,0.0)",
-            "padding-right": "10px",
-            "padding-left": "10px",
-            "text-shadow": "1px 1px #333"
+            "color": "#403C3C",
+            "font-family": "helvetica,arial,nimbus sans l,sans-serif"
           },
           "action_points": {
-            "color": "#333",
-            "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
-            "font-size": "16px",
-            "font-weight": "300",
-            "background-color": "rgba(255,255,255,0.0)",
+            "color": "#514D4D",
+            "font-family": "helvetica,arial,nimbus sans l,sans-serif",
+            "font-size": "18px",
+            "font-weight": "bold",
             "padding": "6px"
           },
           "action": {
-            "background-color": "#aaa",
-            "background-repeat": "no-repeat",
-            "background-size": "cover",
-            "border-color": "#222",
-            "border-width": "4px"
+            "background-color": "transparent",
+            "border": "1px solid #222"
+          },
+          "action:hover .mb_item_right": {
+            "opacity": "0"
+          },
+          "action .mb_item_left .button_primary": {
+            "left": "75%"
+          },
+          "action .mb_item_right": {
+            "background-color": "transparent"
           },
           "action_name": {
-            "color": "#333",
-            "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
+            "color": "#111",
             "font-size": "16px",
-            "font-weight": "300",
-            "background-color": "rgba(255,255,255,0.0)",
-            "padding": "6px"
+            "font-weight": "400",
+            "padding": "6px",
+            "font-family": "RotondaC, sans-serif"
           },
           "modal_action_description": {
             "color": "#333",
-            "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
+            "font-family": "helvetica,arial,nimbus sans l,sans-serif",
             "font-size": "14px"
           },
           "modal_action_name": {
-            "color": "#333",
-            "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
-            "font-size": "16px"
+            "color": "#142D61",
+            "font-size": "36px",
+            "font-family": "helvetica,arial,nimbus sans l,sans-serif"
           },
           "modal_action_points": {
             "color": "#333",
-            "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
+            "font-family": "helvetica,arial,nimbus sans l,sans-serif",
             "font-size": "20px"
           },
           "actions_custom_selected_modal .modal_container": {
             "width": "800px",
             "padding": "20px"
+          },
+          "actions_selected_modal .modal_container": {
+            "padding": "0"
+          },
+          "actions_selected_modal .action_image": {
+            "width": "100%",
+            "text-align": "center",
+            "background-color": "#F9FAF5"
+          },
+          "actions_selected_modal .gift_more_img": {
+            "margin": "30px auto",
+            "width": "auto",
+            "height": "120px",
+            "display": "inline-block"
+          },
+          "actions_selected_modal .action_tools": {
+            "width": "100%",
+            "padding": "30px"
           }
         }
       },
@@ -395,27 +535,31 @@
         "texts": {
           "header": "Badges",
           "caption": "Earn badges for better rewards",
-          "share_url": "http://natura.com.br/"
+          "share_url": "http://arborhotels.com/"
         },
         "styles": {
           "container": {
-            "background-color": "#FFF"
+            "background-image": "url(https://sailplays3.cdnvideo.ru/media/assets/assetfile/59245679ecff4351466d817049c9d1fc.png)",
+            "background-size": "cover",
+            "background-position": "top center",
+            "background-color": "#fff"
           },
           "badge": {
             "border": "none",
+            "height": "auto",
+            "vertical-align": "top",
             "background-color": "transparent"
           },
           "badge_pic": {
             "border-radius": "100%"
           },
           "badge_arrow": {
-            "background-image": "url(https://d3257v5wstjx8h.cloudfront.net/media/assets/assetfile/6212f474ff61b35c1d2100dceb3f6340.png)"
-          },
-          "modal_badge_image": {
-            "border-radius": "100%"
+            "background-image": "url(https://sailplays3.cdnvideo.ru/media/assets/assetfile/c7916d44905e4087cf3e6ec0472f1cd4.png)"
           },
           "modal_badge_name": {
-            "font-size": "20px"
+            "color": "#142D61",
+            "font-size": "36px",
+            "font-family": "helvetica,arial,nimbus sans l,sans-serif"
           },
           "modal_description": {
             "font-size": "16px"
@@ -425,6 +569,25 @@
           },
           "fb_icon": {
             "background-image": "url(https://d3sailplay.cdnvideo.ru/media/assets/assetfile/ec06873d95084786de9fe50e549c2419.png)"
+          },
+          "modal_badge_selected .modal_container": {
+            "padding": "0"
+          },
+          "modal_badge_selected .modal_badge_image": {
+            "width": "100%",
+            "text-align": "center",
+            "background-color": "#F9FAF5"
+          },
+          "modal_badge_selected .gift_more_img": {
+            "margin": "20px auto",
+            "width": "auto",
+            "height": "160px",
+            "display": "inline-block",
+            "border-radius": "100%"
+          },
+          "modal_badge_selected .modal_badge_tools": {
+            "width": "100%",
+            "padding": "30px"
           }
         }
       }
@@ -436,7 +599,8 @@
         },
         "styles": {
           "modal_container": {
-            "background-color": "#eee"
+            "background-color": "#FFFFFF",
+            "box-shadow": "0px 0px 16px 0px rgba(50,50,50,0.75)"
           }
         }
       },
@@ -472,12 +636,21 @@
         },
         "styles": {
           "button_primary": {
-            "background": "rgba(46,46,46,0.95)",
-            "color": "#ddd",
-            "cursor": "pointer"
+            "background-color": "#0A428E",
+            "color": "#fff",
+            "text-decoration": "none",
+            "text-transform": "uppercase",
+            "padding": "7px 30px",
+            "font-size": "12px",
+            "border": "1px solid #020707",
+            "display": "inline-block",
+            "font-weight": "300",
+            "cursor": "pointer",
+            "height": "auto",
+            "line-height": "120%"
           },
           "button_primary:hover": {
-            "background": "rgba(51,34,28,0.95)"
+            "background": "#020707"
           },
           "button_link": {
             "padding": "2px",
@@ -487,7 +660,7 @@
             "width": "auto"
           },
           "button_link:hover": {
-            "color": "#a86e59"
+            "color": "#0A4B89"
           }
         }
       },
@@ -499,12 +672,12 @@
         "styles": {
           "notifier_header": {
             "color": "#333",
-            "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
+            "font-family": "helvetica,arial,nimbus sans l,sans-serif",
             "font-size": "26px"
           },
           "notifier_body": {
             "color": "#333",
-            "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
+            "font-family": "helvetica,arial,nimbus sans l,sans-serif",
             "font-weight": 300
           }
         }
@@ -513,26 +686,40 @@
         "texts": {},
         "styles": {
           "form_label": {
-            "color": "#333",
-            "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
-            "font-size": "16px"
+            "color": "#190042",
+            "font-family": "helvetica,arial,nimbus sans l,sans-serif",
+            "font-size": "16px",
+            "margin-bottom": "4px"
           },
           "form_input": {
+            "border": "2px solid #020707",
+            "border-radius": "0",
             "color": "#333",
-            "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
-            "font-weight": 300
+            "font-family": "helvetica,arial,nimbus sans l,sans-serif",
+            "font-weight": 300,
+            "height": "44px",
+            "line-height": "44px",
+            "padding-left": "15px"
           },
           "form_date": {
-            "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
+            "font-family": "helvetica,arial,nimbus sans l,sans-serif",
             "font-weight": 300
           },
           "form_date span": {
             "color": "#333",
-            "border-left": "none",
-            "border-right": "none",
-            "border-bottom": "none",
-            "border-top": "2px solid #ccc",
-            "background": "white"
+            "border": "2px solid #020707",
+            "border-radius": "0",
+            "background": "white",
+            "line-height": "44px",
+            "height": "44px"
+          },
+          "form_date select": {
+            "color": "#333",
+            "border": "2px solid #020707",
+            "border-radius": "0",
+            "background": "white",
+            "line-height": "44px",
+            "height": "44px"
           },
           "form_date .form_date__popup": {
             "border": "2px solid #ccc",
@@ -545,65 +732,6 @@
       }
     },
     "data": {
-      "quiz": [
-        {
-          "id": 1,
-          "name": "Name of Quiz",
-          "points": 1000,
-          "icon": "http://skazka.loc/media/users/user/ddbe4836acd8eb1671e59e7ccf38d79c.250x250.png",
-          "tag": "Tag of test quiz",
-          "button_text": "Get points",
-          "data": [
-            {
-              "name": "Question 1",
-              "type": "one",
-              "answers": [
-                {
-                  "text": "Text 1",
-                  "tag": "Text 11 tag"
-                },
-                {
-                  "text": "Text 2",
-                  "tag": "Text 12 tag"
-                }
-              ]
-            },
-            {
-              "name": "Question 2",
-              "type": "many",
-              "answers": [
-                {
-                  "text": "Text 1",
-                  "tag": "Text 21 tag"
-                },
-                {
-                  "text": "Text 2",
-                  "tag": "Text 22 tag"
-                }
-              ]
-            },
-            {
-              "name": "question 3",
-              "type": "one",
-              "answers": [
-                {
-                  "text": "Text 1",
-                  "tag": "Text 31 tag"
-                },
-                {
-                  "text": "Text 2",
-                  "tag": "Text 32 tag"
-                },
-                {
-                  "text": "Text 3",
-                  "tag": "Text 33 tag",
-                  "my_version": "var_question_3"
-                }
-              ]
-            }
-          ]
-        }
-      ],
       "history": {
         "purchase": "Purchase",
         "gift_purchase": "Gift",
@@ -637,7 +765,7 @@
           "inviteFriend": {
             "name": "Invite a friend",
             "pic": "https://d3sailplay.cdnvideo.ru/media/assets/assetfile/a212622efce628a4e0fa90548746b2f6.png",
-            "description": "Earn 10 points for inviting a friend to Natura",
+            "description": "Earn 10 points for inviting a friend to Arbor Hotels",
             "button_text": "Invite friend"
           }
         },
@@ -650,13 +778,18 @@
               "button_text": "Join VK group",
               "styles": {
                 "vk_share_btn": {
-                  "background": "#333",
-                  "color": "#ddd",
+                  "background-color": "#0A428E",
+                  "color": "#fff",
+                  "text-decoration": "none",
+                  "text-transform": "uppercase",
+                  "padding": "7px 30px",
+                  "font-size": "12px",
+                  "border": "1px solid #020707",
+                  "display": "inline-block",
+                  "font-weight": "300",
                   "cursor": "pointer",
-                  "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
-                  "line-height": "35px",
-                  "font-size": "14px",
-                  "width": "140px",
+                  "height": "auto",
+                  "line-height": "120%",
                   "text-align": "center"
                 },
                 "vk_share_btn:hover": {
@@ -674,7 +807,7 @@
                   "background": "#333",
                   "color": "#ddd",
                   "cursor": "pointer",
-                  "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
+                  "font-family": "helvetica,arial,nimbus sans l,sans-serif",
                   "line-height": "35px",
                   "font-size": "14px",
                   "width": "140px",
@@ -695,7 +828,7 @@
                   "background": "#333",
                   "color": "#ddd",
                   "cursor": "pointer",
-                  "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
+                  "font-family": "helvetica,arial,nimbus sans l,sans-serif",
                   "line-height": "35px",
                   "font-size": "14px",
                   "width": "140px",
@@ -718,7 +851,7 @@
                   "background": "#333",
                   "color": "#ddd",
                   "cursor": "pointer",
-                  "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
+                  "font-family": "helvetica,arial,nimbus sans l,sans-serif",
                   "line-height": "35px",
                   "font-size": "14px",
                   "width": "140px",
@@ -730,23 +863,31 @@
               }
             },
             "partner_page": {
-              "name": "Share Natura on Facebook",
+              "name": "Share Arbor Hotels on Facebook",
               "pic": "https://d3sailplay.cdnvideo.ru/media/assets/assetfile/ec06873d95084786de9fe50e549c2419.png",
-              "description": "Earn 10 points for Sharing Natura on Facebook",
+              "description": "Earn 10 points for Sharing Arbor Hotels on Facebook",
               "button_text": "Share",
               "styles": {
                 "fb_share_btn": {
-                  "background": "#333",
-                  "color": "#ddd",
+                  "background-color": "#0A428E",
+                  "color": "#fff",
+                  "text-decoration": "none",
+                  "text-transform": "uppercase",
+                  "padding": "7px 30px",
+                  "font-size": "12px",
+                  "border": "1px solid #020707",
+                  "display": "inline-block",
+                  "font-weight": "300",
                   "cursor": "pointer",
-                  "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
-                  "line-height": "35px",
-                  "font-size": "14px",
+                  "height": "auto",
+                  "line-height": "120%",
+                  "text-align": "center",
+                  "font-family": "helvetica,arial,nimbus sans l,sans-serif",
                   "width": "140px",
-                  "text-align": "center"
+                  "box-sizing": "border-box"
                 },
                 "fb_share_btn:hover": {
-                  "background": "#111"
+                  "background": "#020707"
                 }
               }
             },
@@ -757,17 +898,25 @@
               "button_text": "Share",
               "styles": {
                 "fb_share_btn": {
-                  "background": "#333",
-                  "color": "#ddd",
+                  "background-color": "#0A428E",
+                  "color": "#fff",
+                  "text-decoration": "none",
+                  "text-transform": "uppercase",
+                  "padding": "7px 30px",
+                  "font-size": "12px",
+                  "border": "1px solid #020707",
+                  "display": "inline-block",
+                  "font-weight": "300",
                   "cursor": "pointer",
-                  "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
-                  "line-height": "35px",
-                  "font-size": "14px",
+                  "height": "auto",
+                  "line-height": "120%",
+                  "text-align": "center",
+                  "font-family": "helvetica,arial,nimbus sans l,sans-serif",
                   "width": "140px",
-                  "text-align": "center"
+                  "box-sizing": "border-box"
                 },
                 "fb_share_btn:hover": {
-                  "background": "#111"
+                  "background": "#020707"
                 }
               }
             }
@@ -780,38 +929,54 @@
               "button_text": "Like",
               "styles": {
                 "gp_share_btn": {
-                  "background": "#333",
-                  "color": "#ddd",
+                  "background-color": "#0A428E",
+                  "color": "#fff",
+                  "text-decoration": "none",
+                  "text-transform": "uppercase",
+                  "padding": "7px 30px",
+                  "font-size": "12px",
+                  "border": "1px solid #020707",
+                  "display": "inline-block",
+                  "font-weight": "300",
                   "cursor": "pointer",
-                  "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
-                  "line-height": "35px",
-                  "font-size": "14px",
+                  "height": "auto",
+                  "line-height": "120%",
+                  "text-align": "center",
+                  "font-family": "helvetica,arial,nimbus sans l,sans-serif",
                   "width": "140px",
-                  "text-align": "center"
+                  "box-sizing": "border-box"
                 },
                 "gp_share_btn:hover": {
-                  "background": "#111"
+                  "background": "#020707"
                 }
               }
             },
             "partner_page": {
               "name": "Share our Google+ page with your friends",
               "pic": "https://d3sailplay.cdnvideo.ru/media/assets/assetfile/9f71487bf935bdc3c6ad5eeefd7b9a28.png",
-              "description": "Earn 10 points by telling your Google+ friends about Natura",
+              "description": "Earn 10 points by telling your Google+ friends about Arbor Hotels",
               "button_text": "Share",
               "styles": {
                 "gp_share_btn": {
-                  "background": "#333",
-                  "color": "#ddd",
+                  "background-color": "#0A428E",
+                  "color": "#fff",
+                  "text-decoration": "none",
+                  "text-transform": "uppercase",
+                  "padding": "7px 30px",
+                  "font-size": "12px",
+                  "border": "1px solid #020707",
+                  "display": "inline-block",
+                  "font-weight": "300",
                   "cursor": "pointer",
-                  "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
-                  "line-height": "35px",
-                  "font-size": "14px",
+                  "height": "auto",
+                  "line-height": "120%",
+                  "text-align": "center",
+                  "font-family": "helvetica,arial,nimbus sans l,sans-serif",
                   "width": "140px",
-                  "text-align": "center"
+                  "box-sizing": "border-box"
                 },
                 "gp_share_btn:hover": {
-                  "background": "#111"
+                  "background": "#020707"
                 }
               }
             },
@@ -822,17 +987,25 @@
               "button_text": "Share",
               "styles": {
                 "gp_share_btn": {
-                  "background": "#333",
-                  "color": "#ddd",
+                  "background-color": "#0A428E",
+                  "color": "#fff",
+                  "text-decoration": "none",
+                  "text-transform": "uppercase",
+                  "padding": "7px 30px",
+                  "font-size": "12px",
+                  "border": "1px solid #020707",
+                  "display": "inline-block",
+                  "font-weight": "300",
                   "cursor": "pointer",
-                  "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
-                  "line-height": "35px",
-                  "font-size": "14px",
+                  "height": "auto",
+                  "line-height": "120%",
+                  "text-align": "center",
+                  "font-family": "helvetica,arial,nimbus sans l,sans-serif",
                   "width": "140px",
-                  "text-align": "center"
+                  "box-sizing": "border-box"
                 },
                 "gp_share_btn:hover": {
-                  "background": "#111"
+                  "background": "#020707"
                 }
               }
             }
@@ -848,7 +1021,7 @@
                   "background": "#333",
                   "color": "#ddd",
                   "cursor": "pointer",
-                  "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
+                  "font-family": "helvetica,arial,nimbus sans l,sans-serif",
                   "line-height": "35px",
                   "font-size": "14px",
                   "width": "140px",
@@ -869,7 +1042,7 @@
                   "background": "#333",
                   "color": "#ddd",
                   "cursor": "pointer",
-                  "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
+                  "font-family": "helvetica,arial,nimbus sans l,sans-serif",
                   "line-height": "35px",
                   "font-size": "14px",
                   "width": "140px",
@@ -890,7 +1063,7 @@
                   "background": "#333",
                   "color": "#ddd",
                   "cursor": "pointer",
-                  "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
+                  "font-family": "helvetica,arial,nimbus sans l,sans-serif",
                   "line-height": "35px",
                   "font-size": "14px",
                   "width": "140px",
@@ -904,15 +1077,15 @@
           },
           "tw": {
             "partner_page": {
-              "name": "Share Natura on Twitter",
+              "name": "Share Arbor Hotels on Twitter",
               "pic": "https://d3sailplay.cdnvideo.ru/media/assets/assetfile/945cb8deb99c96043747b5c59b3f9b79.png",
-              "description": "Earn 10 points for mentioning @natura on Twitter!",
+              "description": "Earn 10 points for mentioning @ArborInnLBK on Twitter!",
               "button_text": "Share"
             },
             "purchase": {
-              "name": "Share your Natura purchase on Twitter",
+              "name": "Share your Arbor Hotels purchase on Twitter",
               "pic": "https://d3sailplay.cdnvideo.ru/media/assets/assetfile/945cb8deb99c96043747b5c59b3f9b79.png",
-              "description": "Earn 10 points for sharing your purchase with Natura using Twitter!",
+              "description": "Earn 10 points for sharing your stay at Arbor Hotels using Twitter!",
               "button_text": "Share"
             }
           }
@@ -920,22 +1093,19 @@
       },
       "statuses":  [
         {
-          "color": "#E8BE74",
-          "status": "Bronze status",
-          "name": "Level 1",
-          "points": 100
+          "color": "#339933",
+          "status": "Green",
+          "points": 0
         },
         {
-          "color": "#EAEAEA",
-          "status": "Silver status",
-          "name": "Level 5",
-          "points": 5000
+          "color": "#003399",
+          "status": "Blue",
+          "points": 2000
         },
         {
-          "color": "#EAD673",
-          "status": "Gold status",
-          "name": "Level 10",
-          "points": 100000
+          "color": "#F4A833",
+          "status": "Gold",
+          "points": 6000
         }
       ]
     }
@@ -944,7 +1114,7 @@
     "data": {
       "feed": [
         {
-          "title": "Natura Conference Rio",
+          "title": "Arbor Hotels Conference Rio",
           "description": "Join us in Rio this weekend!",
           "image": "https://sailplays3.cdnvideo.ru/media/assets/assetfile/651404a798666bf0fbc1bc381d906670.png",
           "url": "#/",
@@ -966,14 +1136,14 @@
       "quiz": [
         {
           "id": 1,
-          "name": "Natura's Survey",
+          "name": "Arbor Hotels Survey",
           "points": 1000,
           "icon": "https://sailplays3.cdnvideo.ru/media/actions/customaction/3731baacddfc84a8cbf74c05cf4ba5ae.png",
           "tag": "Quiz 1",
           "button_text": "Pass Quiz",
           "data": [
             {
-              "name": "What is your favorite Natura Product?",
+              "name": "What is your favorite Arbor Hotels Product?",
               "type": "many",
               "answers": [
                 {
@@ -1102,7 +1272,7 @@
           "inviteFriend": {
             "name": "Invite a friend",
             "pic": "https://d3sailplay.cdnvideo.ru/media/assets/assetfile/a212622efce628a4e0fa90548746b2f6.png",
-            "description": "Earn 10 points for inviting a friend to Natura",
+            "description": "Earn 10 points for inviting a friend to Arbor Hotels",
             "button_text": "Invite friend"
           }
         },
@@ -1118,7 +1288,7 @@
                   "background": "#333",
                   "color": "#ddd",
                   "cursor": "pointer",
-                  "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
+                  "font-family": "helvetica,arial,nimbus sans l,sans-serif",
                   "line-height": "35px",
                   "font-size": "14px",
                   "width": "140px",
@@ -1139,7 +1309,7 @@
                   "background": "#333",
                   "color": "#ddd",
                   "cursor": "pointer",
-                  "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
+                  "font-family": "helvetica,arial,nimbus sans l,sans-serif",
                   "line-height": "35px",
                   "font-size": "14px",
                   "width": "140px",
@@ -1160,7 +1330,7 @@
                   "background": "#333",
                   "color": "#ddd",
                   "cursor": "pointer",
-                  "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
+                  "font-family": "helvetica,arial,nimbus sans l,sans-serif",
                   "line-height": "35px",
                   "font-size": "14px",
                   "width": "140px",
@@ -1183,7 +1353,7 @@
                   "background": "#333",
                   "color": "#ddd",
                   "cursor": "pointer",
-                  "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
+                  "font-family": "helvetica,arial,nimbus sans l,sans-serif",
                   "line-height": "35px",
                   "font-size": "14px",
                   "width": "140px",
@@ -1195,16 +1365,16 @@
               }
             },
             "partner_page": {
-              "name": "Share Natura on Facebook",
+              "name": "Share Arbor Hotels on Facebook",
               "pic": "https://d3sailplay.cdnvideo.ru/media/assets/assetfile/ec06873d95084786de9fe50e549c2419.png",
-              "description": "Earn 10 points for Sharing Natura on Facebook",
+              "description": "Earn 10 points for Sharing Arbor Hotels on Facebook",
               "button_text": "Share",
               "styles": {
                 "fb_share_btn": {
                   "background": "#333",
                   "color": "#ddd",
                   "cursor": "pointer",
-                  "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
+                  "font-family": "helvetica,arial,nimbus sans l,sans-serif",
                   "line-height": "35px",
                   "font-size": "14px",
                   "width": "140px",
@@ -1225,7 +1395,7 @@
                   "background": "#333",
                   "color": "#ddd",
                   "cursor": "pointer",
-                  "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
+                  "font-family": "helvetica,arial,nimbus sans l,sans-serif",
                   "line-height": "35px",
                   "font-size": "14px",
                   "width": "140px",
@@ -1248,7 +1418,7 @@
                   "background": "#333",
                   "color": "#ddd",
                   "cursor": "pointer",
-                  "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
+                  "font-family": "helvetica,arial,nimbus sans l,sans-serif",
                   "line-height": "35px",
                   "font-size": "14px",
                   "width": "140px",
@@ -1262,14 +1432,14 @@
             "partner_page": {
               "name": "Share our Google+ page with your friends",
               "pic": "https://d3sailplay.cdnvideo.ru/media/assets/assetfile/9f71487bf935bdc3c6ad5eeefd7b9a28.png",
-              "description": "Earn 10 points by telling your Google+ friends about Natura",
+              "description": "Earn 10 points by telling your Google+ friends about Arbor Hotels",
               "button_text": "Share",
               "styles": {
                 "gp_share_btn": {
                   "background": "#333",
                   "color": "#ddd",
                   "cursor": "pointer",
-                  "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
+                  "font-family": "helvetica,arial,nimbus sans l,sans-serif",
                   "line-height": "35px",
                   "font-size": "14px",
                   "width": "140px",
@@ -1290,7 +1460,7 @@
                   "background": "#333",
                   "color": "#ddd",
                   "cursor": "pointer",
-                  "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
+                  "font-family": "helvetica,arial,nimbus sans l,sans-serif",
                   "line-height": "35px",
                   "font-size": "14px",
                   "width": "140px",
@@ -1313,7 +1483,7 @@
                   "background": "#333",
                   "color": "#ddd",
                   "cursor": "pointer",
-                  "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
+                  "font-family": "helvetica,arial,nimbus sans l,sans-serif",
                   "line-height": "35px",
                   "font-size": "14px",
                   "width": "140px",
@@ -1334,7 +1504,7 @@
                   "background": "#333",
                   "color": "#ddd",
                   "cursor": "pointer",
-                  "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
+                  "font-family": "helvetica,arial,nimbus sans l,sans-serif",
                   "line-height": "35px",
                   "font-size": "14px",
                   "width": "140px",
@@ -1355,7 +1525,7 @@
                   "background": "#333",
                   "color": "#ddd",
                   "cursor": "pointer",
-                  "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
+                  "font-family": "helvetica,arial,nimbus sans l,sans-serif",
                   "line-height": "35px",
                   "font-size": "14px",
                   "width": "140px",
@@ -1369,15 +1539,15 @@
           },
           "tw": {
             "partner_page": {
-              "name": "Share Natura on Twitter",
+              "name": "Share Arbor Hotels on Twitter",
               "pic": "https://d3sailplay.cdnvideo.ru/media/assets/assetfile/945cb8deb99c96043747b5c59b3f9b79.png",
-              "description": "Earn 10 points for mentioning @natura on Twitter!",
+              "description": "Earn 10 points for mentioning @ArborInnLBKK on Twitter!",
               "button_text": "Share"
             },
             "purchase": {
-              "name": "Share your Natura purchase on Twitter",
+              "name": "Share your Arbor Hotels  purchase on Twitter",
               "pic": "https://d3sailplay.cdnvideo.ru/media/assets/assetfile/945cb8deb99c96043747b5c59b3f9b79.png",
-              "description": "Earn 10 points for sharing your purchase with Natura using Twitter!",
+              "description": "Earn 10 points for sharing your stay at Arbor Hotels using Twitter!",
               "button_text": "Share"
             }
           }
