@@ -1,3 +1,5 @@
+@import (reference) "mixins";
+
 .overflow_hidden {
   overflow: hidden;
 }
@@ -10,4 +12,28 @@
 
 .transparent {
   opacity: 0;
+}
+
+//grid system
+.spm_row {
+  .box-sizing(border-box);
+  margin-left: -15px;
+  margin-right: -15px;
+  display: block;
+  position: relative;
+}
+
+.spm_col {
+  padding-left: 15px;
+  padding-right: 15px;
+  .box-sizing(border-box);
+  min-height: 1px;
+  display: inline-block;
+  position: relative;
+  float: left;
+  &:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
 }

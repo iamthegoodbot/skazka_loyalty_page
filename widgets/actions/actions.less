@@ -24,15 +24,17 @@
       color: @black;
       margin-top: 10px;
     }
+
     .more_bonus_main {
       width: 90%;
-      margin-left: 5%;
+      margin: 40px 5% 0 5%;
       float: left;
-      margin-top: 40px;
+
+      .spm_col {
+        width: 33.3%;
+      }
+
       .mb_item {
-        float: left;
-        width: 31%;
-        margin-right: 3.5%;
         background-color: @main_lighter;
         height: 175px;
         margin-bottom: 30px;
@@ -42,14 +44,13 @@
         -ms-transition: all 300ms ease;
         -o-transition: all 300ms ease;
         transition: all 300ms ease;
+        width: 100%;
         .box-sizing(border-box);
         &.act {
           margin-bottom: 0px;
           height: 155px;
         }
-        &:nth-child(3n) {
-          margin-right: 0;
-        }
+
         &:hover {
 
           span {
@@ -150,14 +151,8 @@
 
     .more_bonus {
       .more_bonus_main {
-        .mb_item {
-          width: 46.5%;
-          &:nth-child(3n) {
-            margin-right: 0;
-          }
-          &:nth-child(3n) {
-            margin-right: 3.5%;
-          }
+        .spm_col {
+          width: 50%;
         }
       }
     }
@@ -168,14 +163,8 @@
 
     .more_bonus {
       .more_bonus_main {
-        .mb_item {
-          width: 46.5%;
-          &:nth-child(3n) {
-            margin-right: 0;
-          }
-          &:nth-child(3n) {
-            margin-right: 3.5%;
-          }
+        .spm_col {
+          width: 50%;
         }
       }
     }
@@ -186,10 +175,12 @@
 
     .more_bonus {
       .more_bonus_main {
-        .mb_item {
+        .spm_col {
+          .mb_item {
+            height: auto;
+          }
           width: 100%;
           position: relative;
-          height: 300px;
           margin-right: 0px;
           &.act {
             margin-bottom: 0px;
