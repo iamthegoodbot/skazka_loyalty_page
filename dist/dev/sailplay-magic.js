@@ -205,6 +205,9 @@ return webpackJsonp([0],[
 
 	    //public method for authorize
 	    value: function authorize() {}
+	  }], [{
+	    key: 'Migrator',
+	    value: function Migrator() {}
 	  }]);
 	  return Magic;
 	}();

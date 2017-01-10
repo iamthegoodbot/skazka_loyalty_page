@@ -36,11 +36,23 @@ let widgets = get_file_list('./widgets/').filter((file) => {
 
 console.log(widgets);
 
+/*
+  load migrations
+*/
+let migrations = get_file_list('./migrator/migrations').filter((file) => {
+  return file.match(/.*\.js$/);
+}).map((file) => {
+  return './' + file;
+});
+
+console.log(migrations);
+
 export default {
   entry: {
     'sailplay-magic': path.join(__dirname, 'src', app_name),
     'sailplay-magic-widgets': widgets,
-    'sailplay-magic-vendor':  vendors
+    'sailplay-magic-vendor':  vendors,
+    'sailplay-magic-migrator': [ path.join(__dirname, 'migrator', 'migrator.js') ].concat(migrations)
   },
   resolve: {
     alias: {

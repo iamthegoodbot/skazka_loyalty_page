@@ -9,6 +9,7 @@ import webpack_config, { production } from './webpack.config.babel'; // <-- Cont
 const paths = {
   src: './src/**/*',
   widgets: './widgets/**/*',
+  migrator: './migrator/**/*',
   dist: './dist'
 };
 
@@ -37,7 +38,7 @@ gulp.task('deploy', (callback) => {
 });
 
 gulp.task('watch', () => {
-  return watch([ paths.src, paths.widgets ], () => {
+  return watch([ paths.src, paths.widgets, paths.migrator ], () => {
     gulp.start('build');
   })
 });
