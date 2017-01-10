@@ -170,10 +170,6 @@ export default class Magic {
 
   }
 
-  static Migrator() {
-
-  }
-
 }
 
 //extend SAILPLAY with Magic class

@@ -109,7 +109,8 @@ export default {
 export let production = {
 
   entry: {
-    'prod': [ path.join(__dirname, 'src', app_name) ].concat(widgets)
+    'sailplay-magic': [ path.join(__dirname, 'src', app_name) ].concat(widgets),
+    'sailplay-magic-migrator': [ path.join(__dirname, 'migrator', 'migrator.js') ].concat(migrations)
   },
   resolve: {
     alias: {
@@ -118,7 +119,7 @@ export let production = {
   },
   output: {
     path: path.join(__dirname, 'dist', 'prod'),
-    filename: "sailplay-magic.js",
+    filename: "[name].js",
     libraryTarget: 'umd'
   },
   module: {
