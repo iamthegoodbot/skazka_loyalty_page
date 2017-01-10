@@ -8,44 +8,43 @@
   <meta charset="utf-8">
   <title>SailPlay MAGIC!</title>
   <meta name="description" content="SailPlay Magic!">
-  <meta name="viewport" content="width=1000px, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-  <link rel="icon" href="favicon.ico" type="image/x-icon">
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
   <link rel="shortcut icon" href="favicon.png" type="image/png">
 
-  <link rel="stylesheet" href="dist/css/magic.css">
-
-  <!--dev deps-->
-  <!--<script src="node_modules/angular/angular.min.js"></script>-->
-  <!--<script src="node_modules/angular-cookie/angular-cookie.min.js"></script>-->
-  <!--<script src="node_modules/angular-utils-pagination/dirPagination.js"></script>-->
-  <!--<script src="node_modules/angular-ui-mask/dist/mask.min.js"></script>-->
-  <!--<script src="node_modules/angular-touch/angular-touch.min.js"></script>-->
-<!---->
-  <!--<script src="node_modules/sailplay-hub/sailplay.hub.js"></script>-->
-  <!--<script src="node_modules/sailplay-hub-actions/sailplay.hub.actions.js"></script>-->
+  <!--<link rel="stylesheet" href="dist/css/magic.css">-->
 
   <!--app-->
-  <script src="dist/js/sailplay-magic.js"></script>
+  <script src="dist/dev/sailplay-magic-vendor.js"></script>
+  <script src="dist/dev/sailplay-magic.js"></script>
+  <script src="dist/dev/sailplay-magic-widgets.js"></script>
+
+  <script src="dist/dev/sailplay-magic-migrator.js"></script>
+
+  <!-- prod -->
+  <!--<script src="dist/prod/sailplay-magic.js"></script>-->
+
 
   <style>
     body {
       margin: 0;
       padding: 0;
-      position: relative;
     }
   </style>
 
 </head>
 <body>
 
+  <!--<script src="dist/prod/2.0.0/sailplay-magic.js"></script>-->
   <sailplay-magic></sailplay-magic>
   <script>
 
+    console.log(SAILPLAY.MagicMigrator);
+
     var params = SAILPLAY.url_params();
 
-    SAILPLAY.magic({
+    var magic = new SAILPLAY.Magic({
 
       partner_id: params.partner_id || 1,
       domain: params.domain || "https://sailplay.net",

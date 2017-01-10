@@ -1,783 +1,1555 @@
 {
-  "auth": {
-    "type": "hybrid",
-    "auth_hash_id": "sailplay_magic_auth_hash"
+  "$MAGIC": {
+    "auth": {
+      "type": "hybrid",
+      "auth_hash_id": "sailplay_magic_auth_hash"
+    },
+    "widgets": [
+      {
+        "id": "header",
+        "enabled": true,
+        "texts": {
+          "title": "Arbor Leaf Loyalty",
+          "sub_title": "Earn bonus points, get rewards, and manage your loyalty account"
+        },
+        "styles": {
+          "container": {
+            "background-image": "url(https://api.monosnap.com/rpc/file/download?id=4Az5geGIOjV4NkLOPIcbFGk68d3DmG)",
+            "background-size": "cover",
+            "background-position": "top center",
+            "height": "300px",
+            "background-color": "#fff"
+          },
+          "header_title": {
+            "margin-top": "140px"
+          },
+          "header_sub_title": {
+            "font-family": "RotondaC, sans-serif"
+          }
+        }
+      },
+      {
+        "id": "profile",
+        "enabled": true,
+        "texts": {
+          "header": "Arbor Hotels Leaf Loyalty",
+          "spoiler": "Earn bonus points, get rewards, and manage your loyalty account",
+          "edit_profile_button": "Edit Profile",
+          "name_not_defined": "John Doe",
+          "history_button": "History",
+          "login_reg": "Login/Register",
+          "logout": "Logout",
+          "before_gift": "until next gift",
+          "user_status": "Your status:",
+          "history": {
+            "header": "Your history",
+            "caption": "All user actions history is shown here"
+          }
+        },
+        "images": {},
+        "styles": {
+          "container": {
+            "background-color": "#fff"
+          },
+          "bon_profile_info": {
+            "background-image": "url(https://sailplays3.cdnvideo.ru/media/assets/assetfile/eac870dbc40eec3a26b32281c1b5ad90.png)",
+            "background-repeat": "no-repeat",
+            "background-size": "auto 100%",
+            "background-position": "top right",
+            "margin-top": "20px"
+          },
+          "bon_profile_top_left": {
+            "display": "none"
+          },
+          "progress_line_main": {
+            "display": "none"
+          },
+          "bon_profile_right": {
+            "float": "left",
+            "background-color": "#f9f9f3",
+            "padding": "30px 40px",
+            "box-shadow": "0px 0px 16px 0px rgba(50,50,50,0.75)"
+          },
+          "bon_profile_right .user_avatar": {
+            "float": "left"
+          },
+          "bon_profile_right .user_info": {
+            "float": "right",
+            "text-align": "left"
+          },
+          "bon_profile_right .edit_profile_btn": {
+            "margin-top": "10px",
+            "display": "inline-block"
+          },
+          "bon_profile_right .login_reg_btn": {
+            "margin": "0",
+            "float": "none"
+          },
+          "points_block": {
+            "background-color": "#f9f9f3",
+            "padding": "30px 40px",
+            "box-shadow": "0px 0px 16px 0px rgba(50,50,50,0.75)",
+            "text-align": "center"
+          },
+          "points_block .history_button": {
+            "background-color": "rgb(10,75,137)",
+            "color": "#fff",
+            "text-decoration": "none",
+            "text-transform": "uppercase",
+            "padding": "7px 30px",
+            "font-size": "12px",
+            "border": "1px solid #020707",
+            "margin-top": "20px",
+            "display": "inline-block",
+            "font-weight": "300"
+          },
+          "bon_profile_stat": {
+            "margin-top": "20px",
+            "margin-bottom": "0"
+          },
+          "points_confirmed span": {
+            "color": "#000",
+            "display": "block",
+            "font-family": "Roboto",
+            "text-align": "center"
+          },
+          "points_confirmed_value": {
+            "font-weight": "bold",
+            "font-size": "48px"
+          },
+          "points_confirmed_name": {
+            "font-size": "26px",
+            "margin-left": "0"
+          },
+          "user_name": {
+            "font-size": "30px",
+            "color": "#000"
+          },
+          "before_gift": {
+            "color": "#333"
+          },
+          "bns_hist_table td:after": {
+            "display": "none"
+          },
+          "bns_hist_table td": {
+            "padding-top": "15px",
+            "padding-bottom": "15px",
+            "border-bottom": "1px solid #E2E3E4"
+          },
+          "bns_hist_pager": {
+            "float": "left",
+            "margin-top": "30px"
+          },
+          "bns_hist_pager a.active": {
+            "font-size": "16px",
+            "color": "#132D61"
+          },
+          "modal_history_header": {
+            "color": "#132D61",
+            "font-family": "Helvetica"
+          },
+          "modal_history_caption": {
+            "color": "#333",
+            "font-family": "Helvetica",
+            "font-weight": "300"
+          },
+          "modal_history_date": {
+            "color": "#333",
+            "font-family": "Helvetica"
+          },
+          "modal_history_content": {
+            "color": "#222",
+            "font-weight": "normal",
+            "font-family": "Helvetica",
+            "font-size": "16px"
+          },
+          "modal_history_points": {
+            "color": "#B2B1B2",
+            "font-family": "Helvetica",
+            "font-size": "18px"
+          },
+          "modal_profile_header": {
+            "color": "#333",
+            "font-family": "Helvetica"
+          },
+          "user_phone": {
+            "display": "block",
+            "margin-top": "0",
+            "color": "#000"
+          },
+          "user_email": {
+            "display": "block",
+            "margin-top": "0",
+            "color": "#000"
+          },
+          "status_block, .bon_profile_stat": {
+            "width": "auto"
+          },
+          "status_block .status_block_img": {
+            "display": "block",
+            "width": "130px"
+          },
+          "status_block .status_block_title": {
+            "color": "rgb(77,77,77)",
+            "display": "block"
+          },
+          "status_block .status_block_name": {
+            "font-size": "44px",
+            "font-weight": "bold"
+          },
+          "status_block": {
+            "margin-top": "20px",
+            "margin-left": "30px",
+            "text-align": "center"
+          }
+        },
+        "fill_profile": {
+          "header": "Update your profile",
+          "config": {
+            "tag": "Client filled profile",
+            "fields": [
+              {
+                "type": "system",
+                "name": "firstName",
+                "label": "Your name",
+                "placeholder": "Enter your name",
+                "input": "text"
+              },
+              {
+                "type": "system",
+                "name": "lastName",
+                "label": "Your last name",
+                "placeholder": "Enter your last name",
+                "input": "text"
+              },
+              {
+                "type": "system",
+                "name": "addPhone",
+                "label": "Your phone number",
+                "placeholder": "9 (999) 999-99-99",
+                "input": "phone"
+              },
+              {
+                "type": "system",
+                "name": "addEmail",
+                "label": "Your E-Mail",
+                "placeholder": "your@address.com",
+                "input": "email"
+              },
+              {
+                "type": "system",
+                "name": "birthDate",
+                "label": "Your birth date",
+                "placeholder": "Enter your birth date",
+                "input": "date"
+              },
+              {
+                "type": "system",
+                "name": "sex",
+                "label": "Gender",
+                "placeholder": "Enter your last name",
+                "input": "select",
+                "data": [
+                  {
+                    "value": "",
+                    "text": "Not defined"
+                  },
+                  {
+                    "value": 1,
+                    "text": "Male"
+                  },
+                  {
+                    "value": 2,
+                    "text": "Female"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "statuses",
+        "enabled": true,
+        "texts": {
+          "next_status": "Next status:",
+          "next_status_offset": "Points to next status:"
+        },
+        "errors": {},
+        "images": {},
+        "styles": {
+          "element-item-status": {
+            "font-family": "Source Sans Pro, sans-serif",
+            "font-weight": "500"
+          },
+          "element-item-name": {
+            "font-family": "Source Sans Pro, sans-serif",
+            "font-weight": "300"
+          },
+          "next_status_info": {
+
+          },
+          "progress_line": {
+            "background-color": "#fff"
+          }
+        }
+      },
+      {
+        "id": "gifts",
+        "enabled": true,
+        "options": {
+          "gift_types": [
+            {
+              "id": "custom_vars",
+              "categories": [ 746 ],
+              "data": {
+                "fields": [
+                  {
+                    "label": "Please specify the date for your free night",
+                    "variable": "fn_reg",
+                    "type": "date",
+                    "options": {
+                      "max_year": "2018",
+                      "min_year": "2016"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "id": "custom_vars",
+              "categories": [ 747 ],
+              "data": {
+                "fields": [
+                  {
+                    "label": "Please specify the date for your free night",
+                    "variable": "fn_spec",
+                    "type": "date",
+                    "options": {
+                      "max_year": "2018",
+                      "min_year": "2016"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "texts": {
+          "header": "Gifts",
+          "caption": "Redeem your bonus points for these great gifts!",
+          "get": "Get",
+          "no_points_button_text": "Not enough points",
+          "confirm_message_start": "Confirm",
+          "confirm_message_end": "Cancel",
+          "no_points_message": "Not enough points. Try completing some of these actions:",
+          "earn_points": "earn points",
+          "service": "Select service",
+          "partner_service_url": "https://arborhotels.com",
+          "coupon_number": "Coupon number",
+          "gift_received": "Your gift request has been received!",
+          "purchase_success_header": "Congratulations!",
+          "purchase_error_header": "Gift was not received.",
+          "gift_received_error": "Sorry, we're unable to process your request at this time"
+        },
+        "images": {},
+        "styles": {
+          "container": {
+            "background-image": "url(https://sailplays3.cdnvideo.ru/media/assets/assetfile/59245679ecff4351466d817049c9d1fc.png)",
+            "background-size": "cover",
+            "background-position": "top center",
+            "background-color": "#fff"
+          },
+          "bon_header": {
+            "margin-top": "40px"
+          },
+          "header": {
+            "color": "#142D61",
+            "font-family": "helvetica,arial,nimbus sans l,sans-serif"
+          },
+          "caption": {
+            "color": "#403C3C",
+            "font-family": "helvetica,arial,nimbus sans l,sans-serif"
+          },
+          "gift": {
+            "background-color": "rgba(255,255,255,0.0)",
+            "background-repeat": "no-repeat",
+            "background-size": "cover",
+            "border-color": "#000",
+            "border-width": "3px",
+            "margin-top": "10px",
+            "margin-bottom": "10px"
+          },
+          "gift_img": {
+            "display": "inline"
+          },
+          "gift:hover": {
+            "border-color": "#555",
+            "background-color": "#FFF",
+            "-webkit-box-shadow": "0px 0px 15px 2px rgba(0,0,0,0.75)",
+            "-moz-box-shadow": "0px 0px 15px 2px rgba(0,0,0,0.75)",
+            "box-shadow": "0px 0px 15px 2px rgba(0,0,0,0.75)"
+          },
+          "gift_name": {
+            "color": "#333",
+            "font-family": "helvetica,arial,nimbus sans l,sans-serif"
+          },
+          "gift_points": {
+            "color": "#514D4D",
+            "font-family": "helvetica,arial,nimbus sans l,sans-serif",
+            "font-size": "16px",
+            "font-weight": "bold",
+            "opacity": "1"
+          },
+          "description": {
+            "color": "#333",
+            "font-family": "helvetica,arial,nimbus sans l,sans-serif",
+            "font-size": "14px"
+          },
+          "bns_overlay_gift .modal_container": {
+            "width": "500px"
+          },
+          "modal_gift_container": {
+            "text-align": "center"
+          },
+          "modal_gift_container .gift_more_block": {
+            "width": "100%",
+            "text-align": "left",
+            "margin-top": "30px"
+          },
+          "modal_gift_name": {
+            "color": "#142D61",
+            "font-size": "36px",
+            "font-family": "helvetica,arial,nimbus sans l,sans-serif"
+          },
+          "modal_gift_points": {
+            "color": "#514D4D",
+            "font-family": "helvetica,arial,nimbus sans l,sans-serif",
+            "font-size": "20px",
+            "opacity": "1"
+          },
+          "modal_gift_description": {
+            "color": "#403C3C",
+            "font-family": "helvetica,arial,nimbus sans l,sans-serif",
+            "font-size": "18px"
+          },
+          "modal_gift_buttons .button_primary": {
+            "width": "auto"
+          },
+          "bns_overlay_gift_complete .modal_container, .bns_overlay_notify .modal_container": {
+            "width": "500px"
+          }
+        }
+      },
+      {
+        "id": "actions",
+        "enabled": true,
+        "texts": {
+          "header": "Quests",
+          "caption": "Complete these actions to earn extra bonus points",
+          "perform": "Share"
+        },
+        "errors": {},
+        "images": {},
+        "styles": {
+          "container": {
+            "background-color": "#FFF"
+          },
+          "header": {
+            "color": "#142D61",
+            "font-family": "helvetica,arial,nimbus sans l,sans-serif"
+          },
+          "caption": {
+            "color": "#403C3C",
+            "font-family": "helvetica,arial,nimbus sans l,sans-serif"
+          },
+          "action_points": {
+            "color": "#514D4D",
+            "font-family": "helvetica,arial,nimbus sans l,sans-serif",
+            "font-size": "18px",
+            "font-weight": "bold",
+            "padding": "6px"
+          },
+          "action": {
+            "background-color": "transparent",
+            "border": "1px solid #222"
+          },
+          "action:hover .mb_item_right": {
+            "opacity": "0"
+          },
+          "action .mb_item_left .button_primary": {
+            "left": "75%"
+          },
+          "action .mb_item_right": {
+            "background-color": "transparent"
+          },
+          "action_name": {
+            "color": "#111",
+            "font-size": "16px",
+            "font-weight": "400",
+            "padding": "6px",
+            "font-family": "RotondaC, sans-serif"
+          },
+          "modal_action_description": {
+            "color": "#333",
+            "font-family": "helvetica,arial,nimbus sans l,sans-serif",
+            "font-size": "14px"
+          },
+          "modal_action_name": {
+            "color": "#142D61",
+            "font-size": "36px",
+            "font-family": "helvetica,arial,nimbus sans l,sans-serif"
+          },
+          "modal_action_points": {
+            "color": "#333",
+            "font-family": "helvetica,arial,nimbus sans l,sans-serif",
+            "font-size": "20px"
+          },
+          "actions_custom_selected_modal .modal_container": {
+            "width": "800px",
+            "padding": "20px"
+          },
+          "actions_selected_modal .modal_container": {
+            "padding": "0"
+          },
+          "actions_selected_modal .action_image": {
+            "width": "100%",
+            "text-align": "center",
+            "background-color": "#F9FAF5"
+          },
+          "actions_selected_modal .gift_more_img": {
+            "margin": "30px auto",
+            "width": "auto",
+            "height": "120px",
+            "display": "inline-block"
+          },
+          "actions_selected_modal .action_tools": {
+            "width": "100%",
+            "padding": "30px"
+          }
+        }
+      },
+      {
+        "id": "badges",
+        "enabled": true,
+        "texts": {
+          "header": "Badges",
+          "caption": "Earn badges for better rewards",
+          "share_url": "http://arborhotels.com/"
+        },
+        "styles": {
+          "container": {
+            "background-image": "url(https://sailplays3.cdnvideo.ru/media/assets/assetfile/59245679ecff4351466d817049c9d1fc.png)",
+            "background-size": "cover",
+            "background-position": "top center",
+            "background-color": "#fff"
+          },
+          "badge": {
+            "border": "none",
+            "height": "auto",
+            "vertical-align": "top",
+            "background-color": "transparent"
+          },
+          "badge_pic": {
+            "border-radius": "100%"
+          },
+          "badge_arrow": {
+            "background-image": "url(https://sailplays3.cdnvideo.ru/media/assets/assetfile/c7916d44905e4087cf3e6ec0472f1cd4.png)"
+          },
+          "modal_badge_name": {
+            "color": "#142D61",
+            "font-size": "36px",
+            "font-family": "helvetica,arial,nimbus sans l,sans-serif"
+          },
+          "modal_description": {
+            "font-size": "16px"
+          },
+          "tw_icon": {
+            "background-image": "url(https://d3sailplay.cdnvideo.ru/media/assets/assetfile/945cb8deb99c96043747b5c59b3f9b79.png)"
+          },
+          "fb_icon": {
+            "background-image": "url(https://d3sailplay.cdnvideo.ru/media/assets/assetfile/ec06873d95084786de9fe50e549c2419.png)"
+          },
+          "modal_badge_selected .modal_container": {
+            "padding": "0"
+          },
+          "modal_badge_selected .modal_badge_image": {
+            "width": "100%",
+            "text-align": "center",
+            "background-color": "#F9FAF5"
+          },
+          "modal_badge_selected .gift_more_img": {
+            "margin": "20px auto",
+            "width": "auto",
+            "height": "160px",
+            "display": "inline-block",
+            "border-radius": "100%"
+          },
+          "modal_badge_selected .modal_badge_tools": {
+            "width": "100%",
+            "padding": "30px"
+          }
+        }
+      }
+    ],
+    "tools": {
+      "modal": {
+        "images": {
+          "close": "http://saike.ru/sailplay-magic/lib/magic/img/tools/modal/close.png"
+        },
+        "styles": {
+          "modal_container": {
+            "background-color": "#FFFFFF",
+            "box-shadow": "0px 0px 16px 0px rgba(50,50,50,0.75)"
+          }
+        }
+      },
+      "points": {
+        "texts": {
+          "pluralize": "point,points,points"
+        }
+      },
+      "slider": {
+        "styles": {
+          "slider_arrow_left": {
+            "background-image": "url(http://saike.ru/sailplay-magic/lib/magic/img/tools/slider/arrow_left.png)",
+            "background-color": "rgba(46,46,46,0.5)"
+          },
+          "slider_arrow_left:hover": {
+            "background-color": "rgba(51,34,28,0.5)"
+          },
+          "slider_arrow_right": {
+            "background-image": "url(http://saike.ru/sailplay-magic/lib/magic/img/tools/slider/arrow_right.png)",
+            "background-color": "rgba(46,46,46,0.5)"
+          },
+          "slider_arrow_right:hover": {
+            "background-color": "rgba(51,34,28,0.5)"
+          }
+        }
+      },
+      "buttons": {
+        "texts": {
+          "close": "Close",
+          "get": "Get",
+          "ok": "OK",
+          "save": "Save"
+        },
+        "styles": {
+          "button_primary": {
+            "background-color": "#0A428E",
+            "color": "#fff",
+            "text-decoration": "none",
+            "text-transform": "uppercase",
+            "padding": "7px 30px",
+            "font-size": "12px",
+            "border": "1px solid #020707",
+            "display": "inline-block",
+            "font-weight": "300",
+            "cursor": "pointer",
+            "height": "auto",
+            "line-height": "120%"
+          },
+          "button_primary:hover": {
+            "background": "#020707"
+          },
+          "button_link": {
+            "padding": "2px",
+            "background": "rgba(200,200,200,0.5)",
+            "color": "#222",
+            "cursor": "pointer",
+            "width": "auto"
+          },
+          "button_link:hover": {
+            "color": "#0A4B89"
+          }
+        }
+      },
+      "notifier": {
+        "texts": {
+          "congratulations": "Congratulations!",
+          "error": "An error occurred"
+        },
+        "styles": {
+          "notifier_header": {
+            "color": "#333",
+            "font-family": "helvetica,arial,nimbus sans l,sans-serif",
+            "font-size": "26px"
+          },
+          "notifier_body": {
+            "color": "#333",
+            "font-family": "helvetica,arial,nimbus sans l,sans-serif",
+            "font-weight": 300
+          }
+        }
+      },
+      "forms": {
+        "texts": {},
+        "styles": {
+          "form_label": {
+            "color": "#190042",
+            "font-family": "helvetica,arial,nimbus sans l,sans-serif",
+            "font-size": "16px",
+            "margin-bottom": "4px"
+          },
+          "form_input": {
+            "border": "2px solid #020707",
+            "border-radius": "0",
+            "color": "#333",
+            "font-family": "helvetica,arial,nimbus sans l,sans-serif",
+            "font-weight": 300,
+            "height": "44px",
+            "line-height": "44px",
+            "padding-left": "15px"
+          },
+          "form_date": {
+            "font-family": "helvetica,arial,nimbus sans l,sans-serif",
+            "font-weight": 300
+          },
+          "form_date span": {
+            "color": "#333",
+            "border": "2px solid #020707",
+            "border-radius": "0",
+            "background": "white",
+            "line-height": "44px",
+            "height": "44px"
+          },
+          "form_date select": {
+            "color": "#333",
+            "border": "2px solid #020707",
+            "border-radius": "0",
+            "background": "white",
+            "line-height": "44px",
+            "height": "44px"
+          },
+          "form_date .form_date__popup": {
+            "border": "2px solid #ccc",
+            "background": "white"
+          },
+          "form_date .form_date__popup a": {
+            "color": "#333"
+          }
+        }
+      }
+    },
+    "data": {
+      "history": {
+        "purchase": "Purchase",
+        "gift_purchase": "Gift",
+        "badge": "Badge",
+        "registration": "Sign up",
+        "referral": "Invite friend",
+        "referred": "Registration from friend's invite",
+        "referred_purchase": "Friend's purchase",
+        "promocode": "Promocode activation",
+        "enter_group": "Joined our group on ",
+        "share_purchase": "Shared a purchase on ",
+        "social_share": "Shared our website on ",
+        "share_badge": "Shared a badge on ",
+        "earn_badge": "Earn badge ",
+        "custom_action": "Custom action"
+      },
+      "actions": {
+        "system": {
+          "emailBinding": {
+            "name": "Add your email address",
+            "pic": "https://d3sailplay.cdnvideo.ru/media/assets/assetfile/f56a3fe6291372e5b4d178508136c47d.png",
+            "description": "Earn 10 points for updating your email address",
+            "button_text": "Bind E-Mail"
+          },
+          "fillProfile": {
+            "name": "Update your profile",
+            "pic": "https://d3sailplay.cdnvideo.ru/media/assets/assetfile/f56a3fe6291372e5b4d178508136c47d.png",
+            "description": "Earn 10 points for updating your profile",
+            "button_text": "Fill profile"
+          },
+          "inviteFriend": {
+            "name": "Invite a friend",
+            "pic": "https://d3sailplay.cdnvideo.ru/media/assets/assetfile/a212622efce628a4e0fa90548746b2f6.png",
+            "description": "Earn 10 points for inviting a friend to Arbor Hotels",
+            "button_text": "Invite friend"
+          }
+        },
+        "social": {
+          "vk": {
+            "like": {
+              "name": "Вступите в группу VK",
+              "pic": "http://saike.ru/sailplay-magic/lib/magic/img/actions/data/icon_vk.png",
+              "description": "Some description for action here",
+              "button_text": "Join VK group",
+              "styles": {
+                "vk_share_btn": {
+                  "background-color": "#0A428E",
+                  "color": "#fff",
+                  "text-decoration": "none",
+                  "text-transform": "uppercase",
+                  "padding": "7px 30px",
+                  "font-size": "12px",
+                  "border": "1px solid #020707",
+                  "display": "inline-block",
+                  "font-weight": "300",
+                  "cursor": "pointer",
+                  "height": "auto",
+                  "line-height": "120%",
+                  "text-align": "center"
+                },
+                "vk_share_btn:hover": {
+                  "background": "#111"
+                }
+              }
+            },
+            "partner_page": {
+              "name": "Рассказать о нашем магазине в VK",
+              "pic": "http://saike.ru/sailplay-magic/lib/magic/img/actions/data/icon_vk.png",
+              "description": "Some description for action here",
+              "button_text": "Share",
+              "styles": {
+                "vk_share_btn": {
+                  "background": "#333",
+                  "color": "#ddd",
+                  "cursor": "pointer",
+                  "font-family": "helvetica,arial,nimbus sans l,sans-serif",
+                  "line-height": "35px",
+                  "font-size": "14px",
+                  "width": "140px",
+                  "text-align": "center"
+                },
+                "vk_share_btn:hover": {
+                  "background": "#111"
+                }
+              }
+            },
+            "purchase": {
+              "name": "Поделитесь вашей покупкой в VK",
+              "pic": "http://saike.ru/sailplay-magic/lib/magic/img/actions/data/icon_vk.png",
+              "description": "Some description for action here",
+              "button_text": "Share",
+              "styles": {
+                "vk_share_btn": {
+                  "background": "#333",
+                  "color": "#ddd",
+                  "cursor": "pointer",
+                  "font-family": "helvetica,arial,nimbus sans l,sans-serif",
+                  "line-height": "35px",
+                  "font-size": "14px",
+                  "width": "140px",
+                  "text-align": "center"
+                },
+                "vk_share_btn:hover": {
+                  "background": "#111"
+                }
+              }
+            }
+          },
+          "fb": {
+            "like": {
+              "name": "Join the Facebook group",
+              "pic": "https://d3sailplay.cdnvideo.ru/media/assets/assetfile/ec06873d95084786de9fe50e549c2419.png",
+              "description": "Earn 10 points for joining our Facebook group",
+              "button_text": "Like us",
+              "styles": {
+                "fb_share_btn": {
+                  "background": "#333",
+                  "color": "#ddd",
+                  "cursor": "pointer",
+                  "font-family": "helvetica,arial,nimbus sans l,sans-serif",
+                  "line-height": "35px",
+                  "font-size": "14px",
+                  "width": "140px",
+                  "text-align": "center"
+                },
+                "fb_share_btn:hover": {
+                  "background": "#111"
+                }
+              }
+            },
+            "partner_page": {
+              "name": "Share Arbor Hotels on Facebook",
+              "pic": "https://d3sailplay.cdnvideo.ru/media/assets/assetfile/ec06873d95084786de9fe50e549c2419.png",
+              "description": "Earn 10 points for Sharing Arbor Hotels on Facebook",
+              "button_text": "Share",
+              "styles": {
+                "fb_share_btn": {
+                  "background-color": "#0A428E",
+                  "color": "#fff",
+                  "text-decoration": "none",
+                  "text-transform": "uppercase",
+                  "padding": "7px 30px",
+                  "font-size": "12px",
+                  "border": "1px solid #020707",
+                  "display": "inline-block",
+                  "font-weight": "300",
+                  "cursor": "pointer",
+                  "height": "auto",
+                  "line-height": "120%",
+                  "text-align": "center",
+                  "font-family": "helvetica,arial,nimbus sans l,sans-serif",
+                  "width": "140px",
+                  "box-sizing": "border-box"
+                },
+                "fb_share_btn:hover": {
+                  "background": "#020707"
+                }
+              }
+            },
+            "purchase": {
+              "name": "Share your recent purchase on Facebook",
+              "pic": "https://d3sailplay.cdnvideo.ru/media/assets/assetfile/ec06873d95084786de9fe50e549c2419.png",
+              "description": "Earn 10 points by sharing your recent purchase on Facebook",
+              "button_text": "Share",
+              "styles": {
+                "fb_share_btn": {
+                  "background-color": "#0A428E",
+                  "color": "#fff",
+                  "text-decoration": "none",
+                  "text-transform": "uppercase",
+                  "padding": "7px 30px",
+                  "font-size": "12px",
+                  "border": "1px solid #020707",
+                  "display": "inline-block",
+                  "font-weight": "300",
+                  "cursor": "pointer",
+                  "height": "auto",
+                  "line-height": "120%",
+                  "text-align": "center",
+                  "font-family": "helvetica,arial,nimbus sans l,sans-serif",
+                  "width": "140px",
+                  "box-sizing": "border-box"
+                },
+                "fb_share_btn:hover": {
+                  "background": "#020707"
+                }
+              }
+            }
+          },
+          "gp": {
+            "like": {
+              "name": "Like our Google+ page",
+              "pic": "https://d3sailplay.cdnvideo.ru/media/assets/assetfile/9f71487bf935bdc3c6ad5eeefd7b9a28.png",
+              "description": "Earn 10 points by giving our Google+ page +1",
+              "button_text": "Like",
+              "styles": {
+                "gp_share_btn": {
+                  "background-color": "#0A428E",
+                  "color": "#fff",
+                  "text-decoration": "none",
+                  "text-transform": "uppercase",
+                  "padding": "7px 30px",
+                  "font-size": "12px",
+                  "border": "1px solid #020707",
+                  "display": "inline-block",
+                  "font-weight": "300",
+                  "cursor": "pointer",
+                  "height": "auto",
+                  "line-height": "120%",
+                  "text-align": "center",
+                  "font-family": "helvetica,arial,nimbus sans l,sans-serif",
+                  "width": "140px",
+                  "box-sizing": "border-box"
+                },
+                "gp_share_btn:hover": {
+                  "background": "#020707"
+                }
+              }
+            },
+            "partner_page": {
+              "name": "Share our Google+ page with your friends",
+              "pic": "https://d3sailplay.cdnvideo.ru/media/assets/assetfile/9f71487bf935bdc3c6ad5eeefd7b9a28.png",
+              "description": "Earn 10 points by telling your Google+ friends about Arbor Hotels",
+              "button_text": "Share",
+              "styles": {
+                "gp_share_btn": {
+                  "background-color": "#0A428E",
+                  "color": "#fff",
+                  "text-decoration": "none",
+                  "text-transform": "uppercase",
+                  "padding": "7px 30px",
+                  "font-size": "12px",
+                  "border": "1px solid #020707",
+                  "display": "inline-block",
+                  "font-weight": "300",
+                  "cursor": "pointer",
+                  "height": "auto",
+                  "line-height": "120%",
+                  "text-align": "center",
+                  "font-family": "helvetica,arial,nimbus sans l,sans-serif",
+                  "width": "140px",
+                  "box-sizing": "border-box"
+                },
+                "gp_share_btn:hover": {
+                  "background": "#020707"
+                }
+              }
+            },
+            "purchase": {
+              "name": "Share your recent purchase on Google+",
+              "pic": "https://d3sailplay.cdnvideo.ru/media/assets/assetfile/9f71487bf935bdc3c6ad5eeefd7b9a28.png",
+              "description": "Earn 10 points by sharing your recent purchase on Google+",
+              "button_text": "Share",
+              "styles": {
+                "gp_share_btn": {
+                  "background-color": "#0A428E",
+                  "color": "#fff",
+                  "text-decoration": "none",
+                  "text-transform": "uppercase",
+                  "padding": "7px 30px",
+                  "font-size": "12px",
+                  "border": "1px solid #020707",
+                  "display": "inline-block",
+                  "font-weight": "300",
+                  "cursor": "pointer",
+                  "height": "auto",
+                  "line-height": "120%",
+                  "text-align": "center",
+                  "font-family": "helvetica,arial,nimbus sans l,sans-serif",
+                  "width": "140px",
+                  "box-sizing": "border-box"
+                },
+                "gp_share_btn:hover": {
+                  "background": "#020707"
+                }
+              }
+            }
+          },
+          "ok": {
+            "like": {
+              "name": "Вступите в группу Одноклассники",
+              "pic": "http://saike.ru/sailplay-magic/lib/magic/img/actions/data/icon_ok.png",
+              "description": "Some description for action here",
+              "button_text": "Like",
+              "styles": {
+                "ok_share_btn": {
+                  "background": "#333",
+                  "color": "#ddd",
+                  "cursor": "pointer",
+                  "font-family": "helvetica,arial,nimbus sans l,sans-serif",
+                  "line-height": "35px",
+                  "font-size": "14px",
+                  "width": "140px",
+                  "text-align": "center"
+                },
+                "ok_share_btn:hover": {
+                  "background": "#111"
+                }
+              }
+            },
+            "partner_page": {
+              "name": "Рассказать о нашем магазине в Одноклассники",
+              "pic": "http://saike.ru/sailplay-magic/lib/magic/img/actions/data/icon_ok.png",
+              "description": "Some description for action here",
+              "button_text": "Share",
+              "styles": {
+                "ok_share_btn": {
+                  "background": "#333",
+                  "color": "#ddd",
+                  "cursor": "pointer",
+                  "font-family": "helvetica,arial,nimbus sans l,sans-serif",
+                  "line-height": "35px",
+                  "font-size": "14px",
+                  "width": "140px",
+                  "text-align": "center"
+                },
+                "ok_share_btn:hover": {
+                  "background": "#111"
+                }
+              }
+            },
+            "purchase": {
+              "name": "Поделитесь вашей покупкой в Одноклассники",
+              "pic": "http://saike.ru/sailplay-magic/lib/magic/img/actions/data/icon_ok.png",
+              "description": "Some description for action here",
+              "button_text": "Share",
+              "styles": {
+                "ok_share_btn": {
+                  "background": "#333",
+                  "color": "#ddd",
+                  "cursor": "pointer",
+                  "font-family": "helvetica,arial,nimbus sans l,sans-serif",
+                  "line-height": "35px",
+                  "font-size": "14px",
+                  "width": "140px",
+                  "text-align": "center"
+                },
+                "ok_share_btn:hover": {
+                  "background": "#111"
+                }
+              }
+            }
+          },
+          "tw": {
+            "partner_page": {
+              "name": "Share Arbor Hotels on Twitter",
+              "pic": "https://d3sailplay.cdnvideo.ru/media/assets/assetfile/945cb8deb99c96043747b5c59b3f9b79.png",
+              "description": "Earn 10 points for mentioning @ArborInnLBK on Twitter!",
+              "button_text": "Share"
+            },
+            "purchase": {
+              "name": "Share your Arbor Hotels purchase on Twitter",
+              "pic": "https://d3sailplay.cdnvideo.ru/media/assets/assetfile/945cb8deb99c96043747b5c59b3f9b79.png",
+              "description": "Earn 10 points for sharing your stay at Arbor Hotels using Twitter!",
+              "button_text": "Share"
+            }
+          }
+        }
+      },
+      "statuses":  [
+        {
+          "color": "#339933",
+          "status": "Green",
+          "points": 0
+        },
+        {
+          "color": "#003399",
+          "status": "Blue",
+          "points": 2000
+        },
+        {
+          "color": "#F4A833",
+          "status": "Gold",
+          "points": 6000
+        }
+      ]
+    }
   },
-  "widgets": [
-    {
-      "name": "profile",
-      "enabled": true,
-      "texts": {
-        "header": "Natura Loyalty",
-        "spoiler": "Earn bonus points, get rewards, and manage your loyalty account",
-        "edit_profile_button": "Edit Profile",
-        "name_not_defined": "John Doe",
-        "history_button": "History",
-        "login_reg": "Login/Register",
-        "logout": "Logout",
-        "before_gift": "until next gift",
-        "history": {
-          "header": "Your history",
-          "caption": "All user actions history is shown here"
+  "$MOBILE": {
+    "data": {
+      "feed": [
+        {
+          "title": "Arbor Hotels Conference Rio",
+          "description": "Join us in Rio this weekend!",
+          "image": "https://sailplays3.cdnvideo.ru/media/assets/assetfile/651404a798666bf0fbc1bc381d906670.png",
+          "url": "#/",
+          "points": 300
+        },
+        {
+          "title": "Integrative and Holistic Medicine Conference",
+          "description": "October 31 - November 2, 2016",
+          "image": "https://sailplays3.cdnvideo.ru/media/assets/assetfile/5c728786975c78112372e38e6a067370.png",
+          "url": "#/"
+        },
+        {
+          "title": "New Ekos Products released",
+          "description": "#NaturezaGeraBeleza",
+          "image": "https://sailplays3.cdnvideo.ru/media/assets/assetfile/c2ec7f1fa6095cd8f5f36b0b76617714.png",
+          "url": "#/gifts"
         }
-      },
-      "images": {},
-      "styles": {
-        "container": {
-          "background-image": "url(https://sailplays3.cdnvideo.ru/media/assets/assetfile/81a3ddbf0220265e293ad741f64f2420.png)",
-          "background-repeat": "repeat",
-          "background-size": "auto 100%"
-        },
-        "header": {
-          "color": "#333",
-          "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
-          "background-color": "rgba(255,255,255,0.0)"
-        },
-        "caption": {
-          "color": "#666",
-          "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
-          "background-color": "rgba(255,255,255,0.0)"
-        },
-        "progress_line_main": {
-          "top": "30px"
-        },
-        "progress_bar": {
-          "background": "#C89676"
-        },
-        "progress_bar_filled": {
-          "background-color": "#FFF"
-        },
-        "progress_bar_border": {
-          "border-color": "#111"
-        },
-        "progress_bar_gift": {
-          "background-image": "url(http://saike.ru/sailplay-magic/dist/img/profile/progress_gift.png)",
-          "background-color": "rgba(225,206,196,0.5)"
-        },
-        "progress_bar_gift_filled": {
-          "background-image": "url(http://saike.ru/sailplay-magic/dist/img/profile/progress_gift.png)",
-          "background-color": "#aaa"
-        },
-        "progress_bar_flag": {
-          "padding-top": "32px",
-          "border-color": "#fff"
-        },
-        "progress_bar_flag_text": {
-          "color": "#fff",
-          "font-size": "14px",
-          "background-color": "#C89676",
-          "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
-          "font-weight": 300
-        },
-        "progress_text": {
-          "color": "#333"
-        },
-        "points_confirmed": {
-          "color": "#a86e59",
-          "text-shadow": "1px 1px #333",
-          "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif"
-        },
-        "user_name": {
-          "font-size": "24px",
-          "color": "#aaa",
-          "text-shadow": "1px 1px #333"
-        },
-        "before_gift": {
-          "color": "#333"
-        },
-        "modal_history_header": {
-          "color": "#aaa",
-          "font-family": "Helvetica"
-        },
-        "modal_history_caption": {
-          "color": "#bbb",
-          "font-family": "Helvetica",
-          "font-weight": 400
-        },
-        "modal_history_date": {
-          "color": "#333",
-          "font-family": "Helvetica"
-        },
-        "modal_history_content": {
-          "color": "#222",
-          "font-family": "Helvetica",
-          "background-color": "pink"
-        },
-        "modal_history_points": {
-          "color": "red",
-          "font-family": "Helvetica"
-        },
-        "modal_profile_header": {
-          "color": "#333",
-          "font-family": "Helvetica"
-        }
-      },
-      "fill_profile": {
-        "header": "Fill your profile",
-        "config": {
-          "tag": "Client filled profile",
-          "fields": [
+      ],
+      "quiz": [
+        {
+          "id": 1,
+          "name": "Arbor Hotels Survey",
+          "points": 1000,
+          "icon": "https://sailplays3.cdnvideo.ru/media/actions/customaction/3731baacddfc84a8cbf74c05cf4ba5ae.png",
+          "tag": "Quiz 1",
+          "button_text": "Pass Quiz",
+          "data": [
             {
-              "type": "system",
-              "name": "firstName",
-              "label": "Your name",
-              "placeholder": "Enter your name",
-              "input": "text"
-            },
-            {
-              "type": "system",
-              "name": "lastName",
-              "label": "Your last name",
-              "placeholder": "Enter your last name",
-              "input": "text"
-            },
-            {
-              "type": "system",
-              "name": "addPhone",
-              "label": "Your phone number",
-              "placeholder": "9 (999) 999-99-99",
-              "input": "phone"
-            },
-            {
-              "type": "system",
-              "name": "addEmail",
-              "label": "Your E-Mail",
-              "placeholder": "your@address.com",
-              "input": "email"
-            },
-            {
-              "type": "system",
-              "name": "birthDate",
-              "label": "Your last name",
-              "placeholder": "Enter your last name",
-              "input": "date"
-            },
-            {
-              "type": "system",
-              "name": "sex",
-              "label": "Gender",
-              "placeholder": "Enter your last name",
-              "input": "select",
-              "data": [
+              "name": "What is your favorite Arbor Hotels Product?",
+              "type": "many",
+              "answers": [
                 {
-                  "value": "",
-                  "text": "Not defined"
+                  "text": "PÓS BANHO",
+                  "tag": "Question1 - PÓS BANHO"
                 },
                 {
-                  "value": 1,
-                  "text": "Male"
+                  "text": "MASSAGEM",
+                  "tag": "Question1 - MASSAGEM"
+                }
+              ]
+            },
+            {
+              "name": "How often do you visit our website?",
+              "type": "one",
+              "answers": [
+                {
+                  "text": "Less than once a month",
+                  "tag": "Question2 - Less than once a month"
                 },
                 {
-                  "value": 2,
-                  "text": "Female"
+                  "text": "Once or twice per month",
+                  "tag": "Question2 - Once or twice per month"
+                },
+                {
+                  "text": "Once per week",
+                  "tag": "Question2 - Once per week"
+                },
+                {
+                  "text": "Every day",
+                  "tag": "Question2 - Every day"
+                }
+              ]
+            },
+            {
+              "name": "Have you ever redeemed your bonus points for a gift?",
+              "type": "one",
+              "answers": [
+                {
+                  "text": "Yes",
+                  "tag": "Question3 - Yes",
+                  "my_version": "var_question_3"
+                },
+                {
+                  "text": "No",
+                  "tag": "Question3 - No",
+                  "my_version": "var_question_3"
                 }
               ]
             }
           ]
         }
-      }
-    },
-    {
-      "name": "gifts",
-      "enabled": true,
-      "texts": {
-        "header": "Gifts",
-        "caption": "Redeem your bonus points for these great gifts!",
-        "get": "Get",
-        "no_points_button_text": "Not enough points",
-        "confirm_message_start": "Confirm",
-        "confirm_message_end": "Cancel",
-        "no_points_message": "Not enough points. Try completing some of these actions:",
-        "earn_points": "earn points",
-        "service": "Select service",
-        "partner_service_url": "https://natura.com.br",
-        "coupon_number": "Coupon number",
-        "gift_received": "Your gift request has been received!"
-      },
-      "errors": {
-        "gift_received_error": "Sorry, we're unable to process your request at this time"
-      },
-      "images": {
-      },
-      "styles": {
-        "container": {
-          "background-color": "#FFFFFF"
+      ],
+      "history": {
+        "purchase": {
+          "text": "Purchase",
+          "icon": ""
         },
-        "header": {
-          "color": "#111",
-          "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
-          "background-color": "rgba(255,255,255,0.0)"
-        },
-        "caption": {
-          "color": "#666",
-          "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
-          "background-color": "rgba(255,255,255,0.0)"
-        },
-        "gift": {
-          "background-color": "#FFF",
-          "background-repeat": "no-repeat",
-          "background-size": "cover",
-          "border-color": "#a86e59",
-          "border-width": "4px"
-        },
-        "gift:hover": {
-          "border-color": "#555"
-        },
-        "gift_name": {
-          "color": "#333",
-          "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif"
-        },
-        "gift_points": {
-          "color": "#333",
-          "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
-          "font-size": "16px"
-        },
-        "description": {
-          "color": "#333",
-          "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
-          "font-size": "14px"
-        },
-        "modal_gift_name": {
-          "color": "#555",
-          "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif"
-        },
-        "modal_gift_points": {
-          "color": "#666",
-          "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
-          "font-size": "20px"
-        },
-        "modal_gift_description": {
-          "color": "#333",
-          "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
-          "font-size": "14px"
-        }
-      }
-    },
-    {
-      "name": "actions",
-      "enabled": true,
-      "texts": {
-        "header": "Quests",
-        "caption": "Complete these actions to earn extra bonus points",
-        "perform": "Share"
-      },
-      "errors": {
-      },
-      "images": {
-      },
-      "styles": {
-        "container": {
-          "background-image": "url(https://sailplays3.cdnvideo.ru/media/assets/assetfile/7fb21312fc48b1e3420a01b902e7f947.png)",
-          "background-repeat": "n0-repeat",
-          "background-size": "cover"
-        },
-        "header": {
-          "color": "#ccc",
-          "text-shadow": "1px 1px #333",
-          "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
-          "background-color": "rgba(255,255,255,0.0)",
-          "padding-right": "10px",
-          "padding-left": "10px"
-        },
-        "caption": {
-          "color": "#aaa",
-          "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
-          "background-color": "rgba(255,255,255,0.0)",
-          "padding-right": "10px",
-          "padding-left": "10px",
-          "text-shadow": "1px 1px #333"
-        },
-        "action_points": {
-          "color": "#333",
-          "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
-          "font-size": "16px",
-          "font-weight": "300",
-          "background-color": "rgba(255,255,255,0.0)",
-          "padding": "6px"
-        },
-        "action": {
-          "background-color": "#aaa",
-          "background-repeat": "no-repeat",
-          "background-size": "cover",
-          "border-color": "#222",
-          "border-width": "4px"
-        },
-        "action_name": {
-          "color": "#333",
-          "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
-          "font-size": "16px",
-          "font-weight": "300",
-          "background-color": "rgba(255,255,255,0.0)",
-          "padding": "6px"
-        },
-        "modal_action_description": {
-          "color": "#333",
-          "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
-          "font-size": "14px"
-        },
-        "modal_action_name": {
-          "color": "#333",
-          "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
-          "font-size": "16px"
-        },
-        "modal_action_points": {
-          "color": "#333",
-          "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
-          "font-size": "20px"
-        },
-        "actions_custom_selected_modal .modal_container": {
-          "width": "800px",
-          "padding": "20px"
-        }
-      }
-    },
-    {
-      "name": "badges",
-      "enabled": false,
-      "texts": {
-        "header": "Badges",
-        "caption": "Earn badges for better rewards",
-        "share_url": "http://sailplay.net"
-      },
-      "styles": {
-        "container": {
-          "background-color": "#a86e59"
+        "gift_purchase": {
+          "text": "Gift",
+          "icon": ""
         },
         "badge": {
-          "border": "none",
-          "background-color": "transparent"
+          "text": "Badge",
+          "icon": ""
         },
-        "badge_pic": {
-          "border-radius": "100%"
+        "registration": {
+          "text": "Sign up",
+          "icon": ""
         },
-        "badge_arrow": {
-          "background-image": "url(https://d3257v5wstjx8h.cloudfront.net/media/assets/assetfile/6212f474ff61b35c1d2100dceb3f6340.png)"
+        "referral": {
+          "text": "Invite friend",
+          "icon": ""
         },
-        "modal_badge_image": {
-          "border-radius": "100%"
+        "referred": {
+          "text": "Registration from friend's invite",
+          "icon": ""
         },
-        "modal_badge_name": {
-          "font-size": "20px"
+        "referred_purchase": {
+          "text": "Friend's purchase",
+          "icon": ""
         },
-        "modal_description": {
-          "font-size": "16px"
+        "promocode": {
+          "text": "Promocode activation",
+          "icon": ""
         },
-        "tw_icon": {
-          "background-image": "url(https://d3sailplay.cdnvideo.ru/media/assets/assetfile/945cb8deb99c96043747b5c59b3f9b79.png)"
+        "enter_group": {
+          "text": "Joined our group on ",
+          "icon": ""
         },
-        "fb_icon": {
-          "background-image": "url(https://d3sailplay.cdnvideo.ru/media/assets/assetfile/ec06873d95084786de9fe50e549c2419.png)"
-        }
-      }
-    }
-  ],
-  "tools": {
-    "modal": {
-      "images": {
-        "close": "http://saike.ru/sailplay-magic/dist/img/tools/modal/close.png"
-      },
-      "styles": {
-        "modal_container": {
-          "background-color": "#eee"
-        }
-      }
-    },
-    "points": {
-      "texts": {
-        "pluralize": "point,points,points"
-      }
-    },
-    "slider": {
-      "styles": {
-        "slider_arrow_left": {
-          "background-image": "url(http://saike.ru/sailplay-magic/dist/img/tools/slider/arrow_left.png)",
-          "background-color": "rgba(46,46,46,0.5)"
+        "share_purchase": {
+          "text": "Shared a purchase on ",
+          "icon": ""
         },
-        "slider_arrow_left:hover": {
-          "background-color": "rgba(51,34,28,0.5)"
+        "social_share": {
+          "text": "Shared our website on ",
+          "icon": ""
         },
-        "slider_arrow_right": {
-          "background-image": "url(http://saike.ru/sailplay-magic/dist/img/tools/slider/arrow_right.png)",
-          "background-color": "rgba(46,46,46,0.5)"
+        "share_badge": {
+          "text": "Shared a badge on ",
+          "icon": ""
         },
-        "slider_arrow_right:hover": {
-          "background-color": "rgba(51,34,28,0.5)"
-        }
-      }
-    },
-    "buttons": {
-      "texts": {
-        "close": "Close",
-        "get": "Get",
-        "ok": "OK",
-        "save": "Save"
-      },
-      "styles": {
-        "button_primary": {
-          "background": "rgba(46,46,46,0.95)",
-          "color": "#ddd",
-          "cursor": "pointer"
+        "earn_badge": {
+          "text": "Earn badge ",
+          "icon": ""
         },
-        "button_primary:hover": {
-          "background": "rgba(51,34,28,0.95)"
-        },
-        "button_link": {
-          "padding": "2px",
-          "background": "rgba(200,200,200,0.5)",
-          "color": "#222",
-          "cursor": "pointer",
-          "width": "auto"
-        },
-        "button_link:hover": {
-          "color": "#a86e59"
-        }
-      }
-    },
-    "notifier": {
-      "texts": {
-        "congratulations": "Congratulations!",
-        "error": "An error occurred"
-      },
-      "styles": {
-        "notifier_header": {
-          "color": "#333",
-          "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
-          "font-size": "26px"
-        },
-        "notifier_body": {
-          "color": "#333",
-          "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
-          "font-weight": 300
-        }
-      }
-    },
-    "forms": {
-      "texts": {},
-      "styles": {
-        "form_label": {
-          "color": "#333",
-          "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
-          "font-size": "16px"
-        },
-        "form_input": {
-          "color": "#333",
-          "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
-          "font-weight": 300
-        }
-      }
-    }
-  },
-  "data": {
-    "history": {
-      "purchase": "Purchase",
-      "gift_purchase": "Gift",
-      "badge": "Badge",
-      "registration": "Sign up",
-      "referral": "Invite friend",
-      "referred": "Registration from friend's invite",
-      "referred_purchase": "Friend's purchase",
-      "promocode": "Promocode activation",
-      "enter_group": "Joined our group on ",
-      "share_purchase": "Shared a purchase on ",
-      "social_share": "Shared our website on ",
-      "share_badge": "Shared a badge on ",
-      "earn_badge": "Earn badge ",
-      "custom_action": "Custom action"
-    },
-    "actions": {
-      "system": {
-        "emailBinding": {
-          "name": "Add your email address",
-          "pic": "https://d3sailplay.cdnvideo.ru/media/assets/assetfile/f56a3fe6291372e5b4d178508136c47d.png",
-          "description": "Earn 10 points for updating your email address",
-          "button_text": "Bind E-Mail"
-        },
-        "fillProfile": {
-          "name": "Update your profile",
-          "pic": "https://d3sailplay.cdnvideo.ru/media/assets/assetfile/f56a3fe6291372e5b4d178508136c47d.png",
-          "description": "Earn 10 points for updating your profile",
-          "button_text": "Fill profile"
-        },
-        "inviteFriend": {
-          "name": "Invite a friend",
-          "pic": "https://d3sailplay.cdnvideo.ru/media/assets/assetfile/a212622efce628a4e0fa90548746b2f6.png",
-          "description": "Earn 10 points for inviting a friend to Natura",
-          "button_text": "Invite friend"
+        "custom_action": {
+          "text": "Custom action",
+          "icon": ""
         }
       },
-      "social": {
-        "vk": {
-          "like": {
-            "name": "Вступите в группу VK",
-            "pic": "http://saike.ru/sailplay-magic/dist/img/actions/data/icon_vk.png",
-            "description": "Some description for action here",
-            "button_text": "Join VK group",
-            "styles": {
-              "vk_share_btn": {
-                "background": "#333",
-                "color": "#ddd",
-                "cursor": "pointer",
-                "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
-                "line-height": "35px",
-                "font-size": "14px",
-                "width": "140px",
-                "text-align": "center"
-              },
-              "vk_share_btn:hover": {
-                "background": "#111"
-              }
-            }
+      "actions": {
+        "system": {
+          "emailBinding": {
+            "name": "Add your email address",
+            "pic": "https://d3sailplay.cdnvideo.ru/media/assets/assetfile/f56a3fe6291372e5b4d178508136c47d.png",
+            "description": "Earn 10 points for updating your email address",
+            "button_text": "Bind E-Mail"
           },
-          "partner_page": {
-            "name": "Рассказать о нашем магазине в VK",
-            "pic": "http://saike.ru/sailplay-magic/dist/img/actions/data/icon_vk.png",
-            "description": "Some description for action here",
-            "button_text": "Share",
-            "styles": {
-              "vk_share_btn": {
-                "background": "#333",
-                "color": "#ddd",
-                "cursor": "pointer",
-                "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
-                "line-height": "35px",
-                "font-size": "14px",
-                "width": "140px",
-                "text-align": "center"
-              },
-              "vk_share_btn:hover": {
-                "background": "#111"
-              }
-            }
+          "fillProfile": {
+            "name": "Update your profile",
+            "pic": "https://d3sailplay.cdnvideo.ru/media/assets/assetfile/f56a3fe6291372e5b4d178508136c47d.png",
+            "description": "Earn 10 points for updating your profile",
+            "button_text": "Fill profile"
           },
-          "purchase": {
-            "name": "Поделитесь вашей покупкой в VK",
-            "pic": "http://saike.ru/sailplay-magic/dist/img/actions/data/icon_vk.png",
-            "description": "Some description for action here",
-            "button_text": "Share",
-            "styles": {
-              "vk_share_btn": {
-                "background": "#333",
-                "color": "#ddd",
-                "cursor": "pointer",
-                "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
-                "line-height": "35px",
-                "font-size": "14px",
-                "width": "140px",
-                "text-align": "center"
-              },
-              "vk_share_btn:hover": {
-                "background": "#111"
-              }
-            }
+          "inviteFriend": {
+            "name": "Invite a friend",
+            "pic": "https://d3sailplay.cdnvideo.ru/media/assets/assetfile/a212622efce628a4e0fa90548746b2f6.png",
+            "description": "Earn 10 points for inviting a friend to Arbor Hotels",
+            "button_text": "Invite friend"
           }
         },
-        "fb": {
-          "like": {
-            "name": "Join the Facebook group",
-            "pic": "https://d3sailplay.cdnvideo.ru/media/assets/assetfile/ec06873d95084786de9fe50e549c2419.png",
-            "description": "Earn 10 points for joining our Facebook group",
-            "button_text": "Like us",
-            "styles": {
-              "fb_share_btn": {
-                "background": "#333",
-                "color": "#ddd",
-                "cursor": "pointer",
-                "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
-                "line-height": "35px",
-                "font-size": "14px",
-                "width": "140px",
-                "text-align": "center"
-              },
-              "fb_share_btn:hover": {
-                "background": "#111"
+        "social": {
+          "vk": {
+            "like": {
+              "name": "Вступите в группу VK",
+              "pic": "http://saike.ru/sailplay-magic/lib/magic/img/actions/data/icon_vk.png",
+              "description": "Some description for action here",
+              "button_text": "Join VK group",
+              "styles": {
+                "vk_share_btn": {
+                  "background": "#333",
+                  "color": "#ddd",
+                  "cursor": "pointer",
+                  "font-family": "helvetica,arial,nimbus sans l,sans-serif",
+                  "line-height": "35px",
+                  "font-size": "14px",
+                  "width": "140px",
+                  "text-align": "center"
+                },
+                "vk_share_btn:hover": {
+                  "background": "#111"
+                }
+              }
+            },
+            "partner_page": {
+              "name": "Рассказать о нашем магазине в VK",
+              "pic": "http://saike.ru/sailplay-magic/lib/magic/img/actions/data/icon_vk.png",
+              "description": "Some description for action here",
+              "button_text": "Share",
+              "styles": {
+                "vk_share_btn": {
+                  "background": "#333",
+                  "color": "#ddd",
+                  "cursor": "pointer",
+                  "font-family": "helvetica,arial,nimbus sans l,sans-serif",
+                  "line-height": "35px",
+                  "font-size": "14px",
+                  "width": "140px",
+                  "text-align": "center"
+                },
+                "vk_share_btn:hover": {
+                  "background": "#111"
+                }
+              }
+            },
+            "purchase": {
+              "name": "Поделитесь вашей покупкой в VK",
+              "pic": "http://saike.ru/sailplay-magic/lib/magic/img/actions/data/icon_vk.png",
+              "description": "Some description for action here",
+              "button_text": "Share",
+              "styles": {
+                "vk_share_btn": {
+                  "background": "#333",
+                  "color": "#ddd",
+                  "cursor": "pointer",
+                  "font-family": "helvetica,arial,nimbus sans l,sans-serif",
+                  "line-height": "35px",
+                  "font-size": "14px",
+                  "width": "140px",
+                  "text-align": "center"
+                },
+                "vk_share_btn:hover": {
+                  "background": "#111"
+                }
               }
             }
           },
-          "partner_page": {
-            "name": "Share Natura on Facebook",
-            "pic": "https://d3sailplay.cdnvideo.ru/media/assets/assetfile/ec06873d95084786de9fe50e549c2419.png",
-            "description": "Earn 10 points for Sharing Natura on Facebook",
-            "button_text": "Share",
-            "styles": {
-              "fb_share_btn": {
-                "background": "#333",
-                "color": "#ddd",
-                "cursor": "pointer",
-                "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
-                "line-height": "35px",
-                "font-size": "14px",
-                "width": "140px",
-                "text-align": "center"
-              },
-              "fb_share_btn:hover": {
-                "background": "#111"
+          "fb": {
+            "like": {
+              "name": "Join the Facebook group",
+              "pic": "https://d3sailplay.cdnvideo.ru/media/assets/assetfile/ec06873d95084786de9fe50e549c2419.png",
+              "description": "Earn 10 points for joining our Facebook group",
+              "button_text": "Like us",
+              "styles": {
+                "fb_share_btn": {
+                  "background": "#333",
+                  "color": "#ddd",
+                  "cursor": "pointer",
+                  "font-family": "helvetica,arial,nimbus sans l,sans-serif",
+                  "line-height": "35px",
+                  "font-size": "14px",
+                  "width": "140px",
+                  "text-align": "center"
+                },
+                "fb_share_btn:hover": {
+                  "background": "#111"
+                }
+              }
+            },
+            "partner_page": {
+              "name": "Share Arbor Hotels on Facebook",
+              "pic": "https://d3sailplay.cdnvideo.ru/media/assets/assetfile/ec06873d95084786de9fe50e549c2419.png",
+              "description": "Earn 10 points for Sharing Arbor Hotels on Facebook",
+              "button_text": "Share",
+              "styles": {
+                "fb_share_btn": {
+                  "background": "#333",
+                  "color": "#ddd",
+                  "cursor": "pointer",
+                  "font-family": "helvetica,arial,nimbus sans l,sans-serif",
+                  "line-height": "35px",
+                  "font-size": "14px",
+                  "width": "140px",
+                  "text-align": "center"
+                },
+                "fb_share_btn:hover": {
+                  "background": "#111"
+                }
+              }
+            },
+            "purchase": {
+              "name": "Share your recent purchase on Facebook",
+              "pic": "https://d3sailplay.cdnvideo.ru/media/assets/assetfile/ec06873d95084786de9fe50e549c2419.png",
+              "description": "Earn 10 points by sharing your recent purchase on Facebook",
+              "button_text": "Share",
+              "styles": {
+                "fb_share_btn": {
+                  "background": "#333",
+                  "color": "#ddd",
+                  "cursor": "pointer",
+                  "font-family": "helvetica,arial,nimbus sans l,sans-serif",
+                  "line-height": "35px",
+                  "font-size": "14px",
+                  "width": "140px",
+                  "text-align": "center"
+                },
+                "fb_share_btn:hover": {
+                  "background": "#111"
+                }
               }
             }
           },
-          "purchase": {
-            "name": "Share your recent purchase on Facebook",
-            "pic": "https://d3sailplay.cdnvideo.ru/media/assets/assetfile/ec06873d95084786de9fe50e549c2419.png",
-            "description": "Earn 10 points by sharing your recent purchase on Facebook",
-            "button_text": "Share",
-            "styles": {
-              "fb_share_btn": {
-                "background": "#333",
-                "color": "#ddd",
-                "cursor": "pointer",
-                "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
-                "line-height": "35px",
-                "font-size": "14px",
-                "width": "140px",
-                "text-align": "center"
-              },
-              "fb_share_btn:hover": {
-                "background": "#111"
+          "gp": {
+            "like": {
+              "name": "Like our Google+ page",
+              "pic": "https://d3sailplay.cdnvideo.ru/media/assets/assetfile/9f71487bf935bdc3c6ad5eeefd7b9a28.png",
+              "description": "Earn 10 points by giving our Google+ page +1",
+              "button_text": "Like",
+              "styles": {
+                "gp_share_btn": {
+                  "background": "#333",
+                  "color": "#ddd",
+                  "cursor": "pointer",
+                  "font-family": "helvetica,arial,nimbus sans l,sans-serif",
+                  "line-height": "35px",
+                  "font-size": "14px",
+                  "width": "140px",
+                  "text-align": "center"
+                },
+                "gp_share_btn:hover": {
+                  "background": "#111"
+                }
               }
-            }
-          }
-        },
-        "gp": {
-          "like": {
-            "name": "Like our Google+ page",
-            "pic": "https://d3sailplay.cdnvideo.ru/media/assets/assetfile/9f71487bf935bdc3c6ad5eeefd7b9a28.png",
-            "description": "Earn 10 points by giving our Google+ page +1",
-            "button_text": "Like",
-            "styles": {
-              "gp_share_btn": {
-                "background": "#333",
-                "color": "#ddd",
-                "cursor": "pointer",
-                "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
-                "line-height": "35px",
-                "font-size": "14px",
-                "width": "140px",
-                "text-align": "center"
-              },
-              "gp_share_btn:hover": {
-                "background": "#111"
+            },
+            "partner_page": {
+              "name": "Share our Google+ page with your friends",
+              "pic": "https://d3sailplay.cdnvideo.ru/media/assets/assetfile/9f71487bf935bdc3c6ad5eeefd7b9a28.png",
+              "description": "Earn 10 points by telling your Google+ friends about Arbor Hotels",
+              "button_text": "Share",
+              "styles": {
+                "gp_share_btn": {
+                  "background": "#333",
+                  "color": "#ddd",
+                  "cursor": "pointer",
+                  "font-family": "helvetica,arial,nimbus sans l,sans-serif",
+                  "line-height": "35px",
+                  "font-size": "14px",
+                  "width": "140px",
+                  "text-align": "center"
+                },
+                "gp_share_btn:hover": {
+                  "background": "#111"
+                }
               }
-            }
-          },
-          "partner_page": {
-            "name": "Share our Google+ page with your friends",
-            "pic": "https://d3sailplay.cdnvideo.ru/media/assets/assetfile/9f71487bf935bdc3c6ad5eeefd7b9a28.png",
-            "description": "Earn 10 points by telling your Google+ friends about Natura",
-            "button_text": "Share",
-            "styles": {
-              "gp_share_btn": {
-                "background": "#333",
-                "color": "#ddd",
-                "cursor": "pointer",
-                "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
-                "line-height": "35px",
-                "font-size": "14px",
-                "width": "140px",
-                "text-align": "center"
-              },
-              "gp_share_btn:hover": {
-                "background": "#111"
-              }
-            }
-          },
-          "purchase": {
-            "name": "Share your recent purchase on Google+",
-            "pic": "https://d3sailplay.cdnvideo.ru/media/assets/assetfile/9f71487bf935bdc3c6ad5eeefd7b9a28.png",
-            "description": "Earn 10 points by sharing your recent purchase on Google+",
-            "button_text": "Share",
-            "styles": {
-              "gp_share_btn": {
-                "background": "#333",
-                "color": "#ddd",
-                "cursor": "pointer",
-                "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
-                "line-height": "35px",
-                "font-size": "14px",
-                "width": "140px",
-                "text-align": "center"
-              },
-              "gp_share_btn:hover": {
-                "background": "#111"
-              }
-            }
-          }
-        },
-        "ok": {
-          "like": {
-            "name": "Вступите в группу Одноклассники",
-            "pic": "http://saike.ru/sailplay-magic/dist/img/actions/data/icon_ok.png",
-            "description": "Some description for action here",
-            "button_text": "Like",
-            "styles": {
-              "ok_share_btn": {
-                "background": "#333",
-                "color": "#ddd",
-                "cursor": "pointer",
-                "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
-                "line-height": "35px",
-                "font-size": "14px",
-                "width": "140px",
-                "text-align": "center"
-              },
-              "ok_share_btn:hover": {
-                "background": "#111"
+            },
+            "purchase": {
+              "name": "Share your recent purchase on Google+",
+              "pic": "https://d3sailplay.cdnvideo.ru/media/assets/assetfile/9f71487bf935bdc3c6ad5eeefd7b9a28.png",
+              "description": "Earn 10 points by sharing your recent purchase on Google+",
+              "button_text": "Share",
+              "styles": {
+                "gp_share_btn": {
+                  "background": "#333",
+                  "color": "#ddd",
+                  "cursor": "pointer",
+                  "font-family": "helvetica,arial,nimbus sans l,sans-serif",
+                  "line-height": "35px",
+                  "font-size": "14px",
+                  "width": "140px",
+                  "text-align": "center"
+                },
+                "gp_share_btn:hover": {
+                  "background": "#111"
+                }
               }
             }
           },
-          "partner_page": {
-            "name": "Рассказать о нашем магазине в Одноклассники",
-            "pic": "http://saike.ru/sailplay-magic/dist/img/actions/data/icon_ok.png",
-            "description": "Some description for action here",
-            "button_text": "Share",
-            "styles": {
-              "ok_share_btn": {
-                "background": "#333",
-                "color": "#ddd",
-                "cursor": "pointer",
-                "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
-                "line-height": "35px",
-                "font-size": "14px",
-                "width": "140px",
-                "text-align": "center"
-              },
-              "ok_share_btn:hover": {
-                "background": "#111"
+          "ok": {
+            "like": {
+              "name": "Вступите в группу Одноклассники",
+              "pic": "http://saike.ru/sailplay-magic/lib/magic/img/actions/data/icon_ok.png",
+              "description": "Some description for action here",
+              "button_text": "Like",
+              "styles": {
+                "ok_share_btn": {
+                  "background": "#333",
+                  "color": "#ddd",
+                  "cursor": "pointer",
+                  "font-family": "helvetica,arial,nimbus sans l,sans-serif",
+                  "line-height": "35px",
+                  "font-size": "14px",
+                  "width": "140px",
+                  "text-align": "center"
+                },
+                "ok_share_btn:hover": {
+                  "background": "#111"
+                }
+              }
+            },
+            "partner_page": {
+              "name": "Рассказать о нашем магазине в Одноклассники",
+              "pic": "http://saike.ru/sailplay-magic/lib/magic/img/actions/data/icon_ok.png",
+              "description": "Some description for action here",
+              "button_text": "Share",
+              "styles": {
+                "ok_share_btn": {
+                  "background": "#333",
+                  "color": "#ddd",
+                  "cursor": "pointer",
+                  "font-family": "helvetica,arial,nimbus sans l,sans-serif",
+                  "line-height": "35px",
+                  "font-size": "14px",
+                  "width": "140px",
+                  "text-align": "center"
+                },
+                "ok_share_btn:hover": {
+                  "background": "#111"
+                }
+              }
+            },
+            "purchase": {
+              "name": "Поделитесь вашей покупкой в Одноклассники",
+              "pic": "http://saike.ru/sailplay-magic/lib/magic/img/actions/data/icon_ok.png",
+              "description": "Some description for action here",
+              "button_text": "Share",
+              "styles": {
+                "ok_share_btn": {
+                  "background": "#333",
+                  "color": "#ddd",
+                  "cursor": "pointer",
+                  "font-family": "helvetica,arial,nimbus sans l,sans-serif",
+                  "line-height": "35px",
+                  "font-size": "14px",
+                  "width": "140px",
+                  "text-align": "center"
+                },
+                "ok_share_btn:hover": {
+                  "background": "#111"
+                }
               }
             }
           },
-          "purchase": {
-            "name": "Поделитесь вашей покупкой в Одноклассники",
-            "pic": "http://saike.ru/sailplay-magic/dist/img/actions/data/icon_ok.png",
-            "description": "Some description for action here",
-            "button_text": "Share",
-            "styles": {
-              "ok_share_btn": {
-                "background": "#333",
-                "color": "#ddd",
-                "cursor": "pointer",
-                "font-family": "natura sans,helvetica,arial,nimbus sans l,sans-serif",
-                "line-height": "35px",
-                "font-size": "14px",
-                "width": "140px",
-                "text-align": "center"
-              },
-              "ok_share_btn:hover": {
-                "background": "#111"
-              }
+          "tw": {
+            "partner_page": {
+              "name": "Share Arbor Hotels on Twitter",
+              "pic": "https://d3sailplay.cdnvideo.ru/media/assets/assetfile/945cb8deb99c96043747b5c59b3f9b79.png",
+              "description": "Earn 10 points for mentioning @ArborInnLBKK on Twitter!",
+              "button_text": "Share"
+            },
+            "purchase": {
+              "name": "Share your Arbor Hotels  purchase on Twitter",
+              "pic": "https://d3sailplay.cdnvideo.ru/media/assets/assetfile/945cb8deb99c96043747b5c59b3f9b79.png",
+              "description": "Earn 10 points for sharing your stay at Arbor Hotels using Twitter!",
+              "button_text": "Share"
             }
-          }
-        },
-        "tw": {
-          "partner_page": {
-            "name": "Share Natura on Twitter",
-            "pic": "https://d3sailplay.cdnvideo.ru/media/assets/assetfile/945cb8deb99c96043747b5c59b3f9b79.png",
-            "description": "Earn 10 points for mentioning @natura on Twitter!",
-            "button_text": "Share"
-          },
-          "purchase": {
-            "name": "Share your Natura purchase on Twitter",
-            "pic": "https://d3sailplay.cdnvideo.ru/media/assets/assetfile/945cb8deb99c96043747b5c59b3f9b79.png",
-            "description": "Earn 10 points for sharing your purchase with Natura using Twitter!",
-            "button_text": "Share"
           }
         }
       }
