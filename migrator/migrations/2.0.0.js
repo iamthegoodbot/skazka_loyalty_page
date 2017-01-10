@@ -54,4 +54,5 @@ MagicMigrator.create({
       };
     });
   }
+
 });

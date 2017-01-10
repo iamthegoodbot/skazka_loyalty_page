@@ -56,7 +56,9 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	__webpack_require__(179);
-	module.exports = __webpack_require__(180);
+	__webpack_require__(180);
+	__webpack_require__(181);
+	module.exports = __webpack_require__(182);
 
 
 /***/ },
@@ -113,6 +115,26 @@ return /******/ (function(modules) { // webpackBootstrap
 	_migrator2.default.create({
 
 	  //required param version
+	  version: '1.0.0'
+
+	});
+
+/***/ },
+
+/***/ 181:
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _migrator = __webpack_require__(179);
+
+	var _migrator2 = _interopRequireDefault(_migrator);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	_migrator2.default.create({
+
+	  //required param version
 	  version: '2.0.0',
 
 	  //this function ups version of config
@@ -156,6 +178,27 @@ return /******/ (function(modules) { // webpackBootstrap
 	      };
 	    });
 	  }
+
+	});
+
+/***/ },
+
+/***/ 182:
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _migrator = __webpack_require__(179);
+
+	var _migrator2 = _interopRequireDefault(_migrator);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	_migrator2.default.create({
+
+	  //required param version
+	  version: '2.0.1'
+
 	});
 
 /***/ }
