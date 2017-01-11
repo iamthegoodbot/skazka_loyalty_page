@@ -144,6 +144,10 @@ export let SailPlayBadges = angular.module('sailplay.badges', [])
         list: SailPlayApi.data('load.badges.list')
       };
 
+      scope.sailplay.user = {
+        info: SailPlayApi.data('load.user.info')
+      };
+
       let user = SailPlayApi.data('load.user.info');
 
     }
