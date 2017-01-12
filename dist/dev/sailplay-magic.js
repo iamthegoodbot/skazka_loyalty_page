@@ -179,8 +179,9 @@ return webpackJsonp([0],[
 	//define magic class
 	var Magic = (_temp = _class = function () {
 	  function Magic(config) {
+	    var _this = this;
+
 	    (0, _classCallCheck3.default)(this, Magic);
-	    this.module = magic;
 
 
 	    config = config || {};
@@ -189,37 +190,47 @@ return webpackJsonp([0],[
 
 	    _sailplayHub2.default.on('init.success', function (res) {
 
+	      if (_this.inited) return;
+
 	      _sailplayHub2.default.send('magic.config', config.config);
 	    });
 
 	    _sailplayHub2.default.on('magic.config.success', function (res_config) {
 
-	      if (!res_config.config || !res_config.config.config.$MAGIC) return;
+	      if (_this.inited || !res_config.config || !res_config.config.config.$MAGIC) return;
 
 	      _core.Core.constant('MAGIC_CONFIG', res_config.config.config.$MAGIC);
 
 	      var app_container = config.root || document.getElementsByTagName('sailplay-magic')[0];
 
 	      app_container && _angular2.default.bootstrap(app_container, [magic.name]);
+
+	      _this.inited = true;
 	    });
 
 	    _sailplayHub2.default.on('magic.config.error', function () {
 	      alert('Cannot load config with name: ' + config.config);
 	    });
+
+	    //public reference to main angular module
+	    this.module = magic;
+
+	    //store inited property for disable reinit
+	    this.inited = false;
 	  }
 
-	  //public reference to main angular module
+	  //public method for authorize
 
 
 	  (0, _createClass3.default)(Magic, [{
 	    key: 'authorize',
-
-
-	    //public method for authorize
 	    value: function authorize() {}
+
+	    //////////////// this variable will replace to package version when deploy
+
 	  }]);
 	  return Magic;
-	}(), _class.Widget = _widget.WidgetRegister, _temp);
+	}(), _class.Widget = _widget.WidgetRegister, _class.version = '${MAGIC_VERSION}', _temp);
 
 	//extend SAILPLAY with Magic class
 
