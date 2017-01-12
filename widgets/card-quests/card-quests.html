@@ -1,0 +1,163 @@
+<div class="container clearfix" id="magic_actions">
+
+  <div class="card_quests">
+
+    <h3 class="card_quests_header">
+      <span class="header">{{ widget.texts.header }}</span>
+    </h3>
+
+    <h4 class="card_quests_caption">
+      <span class="caption">{{ widget.texts.caption }}</span>
+    </h4>
+
+    <div data-sailplay-actions class="card_quests_list clearfix">
+
+      <div class="spm_row clearfix">
+
+          <div class="spm_col quest_card_container" data-ng-repeat="action in actions().actions">
+
+            <div class="quest_card" data-ng-style="widget.styles.action">
+              <div class="quest_card_image">
+                <img data-ng-src="{{ action_data(action).pic | sailplay_pic }}" alt="">
+              </div>
+              <div class="quest_card_tools">
+                <div class="quest_card_info">
+                  <span class="quest_card_name" data-ng-bind="action_data(action).name"></span>
+                  <span class="quest_card_points" data-ng-show="action.points" data-ng-bind="((action.points || 0) | number) + ' ' + (action.points | sailplay_pluralize:( 'points.texts.pluralize' | tools ))"></span>
+                </div>
+                <div class="quest_card_buttons">
+                  <a class="button_primary" data-ng-click="action_select(action)">{{ action_data(action).button_text }}</a>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+          <div class="spm_col" data-ng-repeat="action in actions_custom()">
+            <div class="mb_item action" data-ng-style="widget.styles.action">
+              <div class="mb_item_left">
+                <span class="action_name" data-ng-bind="action.name"></span>
+                <span class="action_points" data-ng-show="action.points" data-ng-bind="((action.points || 0) | number) + ' ' + (action.points | sailplay_pluralize:( 'points.texts.pluralize' | tools ))"></span>
+                <a class="sp_btn button_primary" data-ng-click="action_custom_select(action)">{{ action.button_text }}</a>
+              </div>
+              <div class="mb_item_right">
+                <img data-ng-src="{{ action.icon | sailplay_pic }}" alt="">
+              </div>
+            </div>
+          </div>
+
+          <div class="spm_col" data-ng-repeat="quiz in $parent.quiz_list" data-ng-if="quiz_list && quiz_list.length && ((!exist || !exist()) || !checkTag(quiz.tag, exist()))" >
+            <div class="mb_item action"data-ng-style="widget.styles.action">
+              <div class="mb_item_left">
+                <span class="action_name" data-ng-bind="quiz.name"></span>
+                <span class="action_points" data-ng-show="quiz.points" data-ng-bind="((quiz.points || 0) | number) + ' ' + (quiz.points | sailplay_pluralize:( 'points.texts.pluralize' | tools ))"></span>
+                <a class="sp_btn button_primary" data-ng-click="$event.preventDefault();open_quiz(quiz)">{{ quiz.button_text }}</a>
+              </div>
+              <div class="mb_item_right">
+                <img data-ng-src="{{ quiz.icon | sailplay_pic }}" alt="">
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+
+      <magic-modal class="actions_selected_modal" data-ng-cloak data-show="$parent.action_selected">
+
+        <div>
+
+          <div class="action_image">
+            <img class="gift_more_img" data-ng-src="{{ action_data(action_selected).pic | sailplay_pic }}"
+                 alt="{{ action_data(action_selected).name }}">
+          </div>
+
+          <div class="action_tools">
+
+            <p>
+              <span class="modal_action_name" data-ng-bind="action_data(action_selected).name"></span>
+            </p>
+
+            <p style="margin-top: 10px;">
+              <span class="modal_action_points" data-ng-bind="(action_selected.points | number) + ' ' + (selected_gift.points | sailplay_pluralize:( 'points.texts.pluralize' | tools ))"></span>
+            </p>
+
+            <p style="margin-top: 10px;">
+              <span class="modal_action_description" data-ng-bind="action_data(action_selected).description"></span>
+            </p>
+
+
+            <p class="action_buttons">
+            <span data-sailplay-action
+                  data-styles="{{ action_styles(action_data(action_selected)) }}"
+                  data-action="action_selected"
+                  data-text="{{ action_data(action_selected).button_text }}">
+              <span class="sp_btn button_primary">{{ action_data(action_selected).button_text }}</span>
+            </span>
+            </p>
+
+          </div>
+
+        </div>
+
+      </magic-modal>
+
+      <magic-modal class="actions_custom_selected_modal" data-ng-cloak data-show="$parent.action_custom_selected">
+
+        <div data-sailplay-action-custom data-action="action_custom_selected"></div>
+
+      </magic-modal>
+
+
+      <magic-modal class="actions_custom_selected_modal" data-ng-cloak data-show="$parent.quiz.show">
+
+        <div class="quiz_main">
+
+          <div class="quiz_block" data-ng-if="$parent.quiz.data">
+
+            <div class="quiz_block__title" data-ng-bind="$parent.quiz.data.name"></div>
+
+            <div class="quiz_block__counter" data-ng-bind="$parent.quiz.step + ' / ' + $parent.quiz.data.data.length"></div>
+
+            <div class="quiz_block__name" data-ng-bind="getCurrentTest().name"></div>
+
+            <label data-ng-repeat="question in getCurrentTest().answers"
+                   data-ng-switch="getCurrentTest().type"
+                   data-ng-click="$event.preventDefault();change(question, getCurrentTest());">
+
+              <input data-ng-switch-when="many" type="checkbox"
+                     name="quiz_[[ $index ]]"
+                     data-ng-checked="check(question)">
+
+              <input data-ng-switch-when="one" type="radio"
+                     name="quiz"
+                     data-ng-checked="check(question)">
+
+              <span data-ng-bind="question.text"></span>
+
+            </label>
+
+            <textarea name="variable" data-ng-show="needToShowVariable()"
+                      data-ng-model="models.variable"></textarea>
+
+            <div class="button_wrapper clearfix">
+
+                <span data-ng-click="prev();" class="quiz_block__btn prev"
+                      data-ng-class="{type_disabled: $parent.quiz.step == 1}">Prev</span>
+
+              <span data-ng-click="next();" class="quiz_block__btn next"
+                    data-ng-class="{type_disabled: !canPressNext() }"
+                    data-ng-bind="step == $parent.quiz.data.data.length ? 'Finish' : 'Next' ">next</span>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </magic-modal>
+
+    </div>
+
+  </div>
+</div>
