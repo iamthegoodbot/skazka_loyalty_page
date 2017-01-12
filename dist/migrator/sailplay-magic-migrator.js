@@ -119,6 +119,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var Migrator = {
 
+	  version: '2.1.0',
+
 	  migrations: [],
 
 	  migrate: function migrate(config, version_from, version_to) {

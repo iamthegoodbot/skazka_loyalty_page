@@ -149,14 +149,16 @@ export default class Magic {
     SAILPLAY.send('init', config);
 
     SAILPLAY.on('init.success', (res) => {
-      
+
+      if(this.inited) return;
+
       SAILPLAY.send('magic.config', config.config);
 
     });
 
     SAILPLAY.on('magic.config.success', (res_config) => {
 
-      if(!res_config.config || !res_config.config.config.$MAGIC) return;
+      if(this.inited || !res_config.config || !res_config.config.config.$MAGIC) return;
 
       Core.constant('MAGIC_CONFIG', res_config.config.config.$MAGIC);
 
@@ -164,16 +166,21 @@ export default class Magic {
 
       app_container && angular.bootstrap(app_container, [ magic.name ]);
 
+      this.inited = true;
+
     });
 
     SAILPLAY.on('magic.config.error', () => {
       alert(`Cannot load config with name: ${config.config}`);
     });
 
-  }
+    //public reference to main angular module
+    this.module = magic;
 
-  //public reference to main angular module
-  module = magic;
+    //store inited property for disable reinit
+    this.inited = false;
+
+  }
 
   //public method for authorize
   authorize() {
@@ -181,7 +188,10 @@ export default class Magic {
 
   }
 
-  static Widget = WidgetRegister
+  static Widget = WidgetRegister;
+
+  //////////////// this variable will replace to package version when deploy
+  static version = '${MAGIC_VERSION}';
 
 }
 
