@@ -40,7 +40,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// "0" means "already loaded"
 /******/ 	// Array means "loading", array contains callbacks
 /******/ 	var installedChunks = {
-/******/ 		2:0
+/******/ 		1:0
 /******/ 	};
 
 /******/ 	// The require function
@@ -86,7 +86,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 			script.charset = 'utf-8';
 /******/ 			script.async = true;
 
-/******/ 			script.src = __webpack_require__.p + "" + chunkId + "." + ({"0":"sailplay-magic","1":"sailplay-magic-migrator","3":"sailplay-magic-widgets"}[chunkId]||chunkId) + ".js";
+/******/ 			script.src = __webpack_require__.p + "" + chunkId + "." + ({"0":"sailplay-magic","2":"sailplay-magic-widgets"}[chunkId]||chunkId) + ".js";
 /******/ 			head.appendChild(script);
 /******/ 		}
 /******/ 	};
@@ -791,7 +791,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    });
 
 	    //BADGES LIST
-	    sp.on('load.badges.list', function () {
+	    sp.on('load.badges.list', function (p) {
 	      if (_config == {}) {
 	        initError();
 	        return;
@@ -799,6 +799,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var params = {
 	        auth_hash: _config.auth_hash
 	      };
+	      if(p){
+	        if(p.include_rules) {
+	          params.include_rules = 1;
+	        }
+	      }
 	      JSONP.get(_config.DOMAIN + _config.urls.badges.list, params, function (res) {
 
 	        //      console.dir(res);
@@ -947,7 +952,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    });
 
 	    // tag exist
-	    sp.on("tags.exist", function (data) {
+	    sp.on("tags.exist", function (data, callback) {
 	      if (_config == {}) {
 	        initError();
 	        return;
@@ -971,6 +976,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          } else {
 	            sp.send('tags.exist.error', res);
 	          }
+	          callback && callback(res);
 	        });
 	      } else {
 	        sp.send('tags.exist.auth.error', data);
@@ -1081,6 +1087,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	          sp.send('purchases.add.success', res);
 	        } else {
 	          sp.send('purchases.add.error', res);
+	        }
+	      });
+	    });
+
+	    sp.on('magic.config', function (name) {
+	      if (_config == {}) {
+	        initError();
+	        return;
+	      }
+	      JSONP.get(_config.DOMAIN + _config.urls.loyalty_page_config_by_name, { name: name || 'default' }, function (res) {
+	        if (res.status == 'ok') {
+	          sp.send('magic.config.success', res);
+	        } else {
+	          sp.send('magic.config.error', res);
 	        }
 	      });
 	    });
@@ -1562,7 +1582,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports) {
 
 	/**
-	 * @license AngularJS v1.6.0
+	 * @license AngularJS v1.6.1
 	 * (c) 2010-2016 Google, Inc. http://angularjs.org
 	 * License: MIT
 	 */
@@ -1620,7 +1640,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      return match;
 	    });
 
-	    message += '\nhttp://errors.angularjs.org/1.6.0/' +
+	    message += '\nhttp://errors.angularjs.org/1.6.1/' +
 	      (module ? module + '/' : '') + code;
 
 	    for (i = SKIP_INDEXES, paramPrefix = '?'; i < templateArgs.length; i++, paramPrefix = '&') {
@@ -4186,11 +4206,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	var version = {
 	  // These placeholder strings will be replaced by grunt's `build` task.
 	  // They need to be double- or single-quoted.
-	  full: '1.6.0',
+	  full: '1.6.1',
 	  major: 1,
 	  minor: 6,
-	  dot: 0,
-	  codeName: 'rainbow-tsunami'
+	  dot: 1,
+	  codeName: 'promise-rectification'
 	};
 
 
@@ -5316,12 +5336,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  after: function(element, newElement) {
 	    var index = element, parent = element.parentNode;
-	    newElement = new JQLite(newElement);
 
-	    for (var i = 0, ii = newElement.length; i < ii; i++) {
-	      var node = newElement[i];
-	      parent.insertBefore(node, index.nextSibling);
-	      index = node;
+	    if (parent) {
+	      newElement = new JQLite(newElement);
+
+	      for (var i = 0, ii = newElement.length; i < ii; i++) {
+	        var node = newElement[i];
+	        parent.insertBefore(node, index.nextSibling);
+	        index = node;
+	      }
 	    }
 	  },
 
@@ -14456,7 +14479,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	      * appropriate moment.  See the example below for more details on how and when to do this.
 	      * </div>
 	      *
-	      * @param {function()} fn A function that should be called repeatedly.
+	      * @param {function()} fn A function that should be called repeatedly. If no additional arguments
+	      *   are passed (see below), the function is called with the current iteration count.
 	      * @param {number} delay Number of milliseconds between each function call.
 	      * @param {number=} [count=0] Number of times to repeat. If not set, or 0, will repeat
 	      *   indefinitely.
@@ -18087,6 +18111,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * @description
 	   * Retrieves or overrides whether to generate an error when a rejected promise is not handled.
+	   * This feature is enabled by default.
 	   *
 	   * @param {boolean=} value Whether to generate an error when a rejected promise is not handled.
 	   * @returns {boolean|ng.$qProvider} Current value when called without a new value or self for
@@ -18228,7 +18253,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	      if (!toCheck.pur) {
 	        toCheck.pur = true;
 	        var errorMessage = 'Possibly unhandled rejection: ' + toDebugString(toCheck.value);
-	        exceptionHandler(errorMessage);
+	        if (toCheck.value instanceof Error) {
+	          exceptionHandler(toCheck.value, errorMessage);
+	        } else {
+	          exceptionHandler(errorMessage);
+	        }
 	      }
 	    }
 	  }
@@ -18962,15 +18991,21 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	        if (!array) {
 	          array = scope.$$watchers = [];
+	          array.$$digestWatchIndex = -1;
 	        }
 	        // we use unshift since we use a while loop in $digest for speed.
 	        // the while loop reads in reverse order.
 	        array.unshift(watcher);
+	        array.$$digestWatchIndex++;
 	        incrementWatchersCount(this, 1);
 
 	        return function deregisterWatch() {
-	          if (arrayRemove(array, watcher) >= 0) {
+	          var index = arrayRemove(array, watcher);
+	          if (index >= 0) {
 	            incrementWatchersCount(scope, -1);
+	            if (index < array.$$digestWatchIndex) {
+	              array.$$digestWatchIndex--;
+	            }
 	          }
 	          lastDirtyWatch = null;
 	        };
@@ -19303,7 +19338,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	      $digest: function() {
 	        var watch, value, last, fn, get,
 	            watchers,
-	            length,
 	            dirty, ttl = TTL,
 	            next, current, target = this,
 	            watchLog = [],
@@ -19344,10 +19378,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	          do { // "traverse the scopes" loop
 	            if ((watchers = current.$$watchers)) {
 	              // process our watches
-	              length = watchers.length;
-	              while (length--) {
+	              watchers.$$digestWatchIndex = watchers.length;
+	              while (watchers.$$digestWatchIndex--) {
 	                try {
-	                  watch = watchers[length];
+	                  watch = watchers[watchers.$$digestWatchIndex];
 	                  // Most common watches are on primitives, in which case we can short
 	                  // circuit it with === operator, only when === fails do we use .equals
 	                  if (watch) {
@@ -21664,6 +21698,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	  var lastCookies = {};
 	  var lastCookieString = '';
 
+	  function safeGetCookie(rawDocument) {
+	    try {
+	      return rawDocument.cookie || '';
+	    } catch (e) {
+	      return '';
+	    }
+	  }
+
 	  function safeDecodeURIComponent(str) {
 	    try {
 	      return decodeURIComponent(str);
@@ -21674,7 +21716,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  return function() {
 	    var cookieArray, cookie, i, index, name;
-	    var currentCookieString = rawDocument.cookie || '';
+	    var currentCookieString = safeGetCookie(rawDocument);
 
 	    if (currentCookieString !== lastCookieString) {
 	      lastCookieString = currentCookieString;
@@ -27262,51 +27304,71 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function classDirective(name, selector) {
 	  name = 'ngClass' + name;
-	  return ['$animate', function($animate) {
+	  var indexWatchExpression;
+
+	  return ['$parse', function($parse) {
 	    return {
 	      restrict: 'AC',
 	      link: function(scope, element, attr) {
-	        var oldVal;
+	        var expression = attr[name].trim();
+	        var isOneTime = (expression.charAt(0) === ':') && (expression.charAt(1) === ':');
 
-	        scope.$watch(attr[name], ngClassWatchAction, true);
+	        var watchInterceptor = isOneTime ? toFlatValue : toClassString;
+	        var watchExpression = $parse(expression, watchInterceptor);
+	        var watchAction = isOneTime ? ngClassOneTimeWatchAction : ngClassWatchAction;
 
-	        attr.$observe('class', function(value) {
-	          ngClassWatchAction(scope.$eval(attr[name]));
-	        });
+	        var classCounts = element.data('$classCounts');
+	        var oldModulo = true;
+	        var oldClassString;
 
-
-	        if (name !== 'ngClass') {
-	          scope.$watch('$index', function($index, old$index) {
-	            /* eslint-disable no-bitwise */
-	            var mod = $index & 1;
-	            if (mod !== (old$index & 1)) {
-	              var classes = arrayClasses(scope.$eval(attr[name]));
-	              if (mod === selector) {
-	                addClasses(classes);
-	              } else {
-	                removeClasses(classes);
-	              }
-	            }
-	            /* eslint-enable */
-	          });
-	        }
-
-	        function addClasses(classes) {
-	          var newClasses = digestClassCounts(classes, 1);
-	          attr.$addClass(newClasses);
-	        }
-
-	        function removeClasses(classes) {
-	          var newClasses = digestClassCounts(classes, -1);
-	          attr.$removeClass(newClasses);
-	        }
-
-	        function digestClassCounts(classes, count) {
+	        if (!classCounts) {
 	          // Use createMap() to prevent class assumptions involving property
 	          // names in Object.prototype
-	          var classCounts = element.data('$classCounts') || createMap();
+	          classCounts = createMap();
+	          element.data('$classCounts', classCounts);
+	        }
+
+	        if (name !== 'ngClass') {
+	          if (!indexWatchExpression) {
+	            indexWatchExpression = $parse('$index', function moduloTwo($index) {
+	              // eslint-disable-next-line no-bitwise
+	              return $index & 1;
+	            });
+	          }
+
+	          scope.$watch(indexWatchExpression, ngClassIndexWatchAction);
+	        }
+
+	        scope.$watch(watchExpression, watchAction, isOneTime);
+
+	        function addClasses(classString) {
+	          classString = digestClassCounts(split(classString), 1);
+	          attr.$addClass(classString);
+	        }
+
+	        function removeClasses(classString) {
+	          classString = digestClassCounts(split(classString), -1);
+	          attr.$removeClass(classString);
+	        }
+
+	        function updateClasses(oldClassString, newClassString) {
+	          var oldClassArray = split(oldClassString);
+	          var newClassArray = split(newClassString);
+
+	          var toRemoveArray = arrayDifference(oldClassArray, newClassArray);
+	          var toAddArray = arrayDifference(newClassArray, oldClassArray);
+
+	          var toRemoveString = digestClassCounts(toRemoveArray, -1);
+	          var toAddString = digestClassCounts(toAddArray, 1);
+
+	          attr.$addClass(toAddString);
+	          attr.$removeClass(toRemoveString);
+	        }
+
+	        function digestClassCounts(classArray, count) {
 	          var classesToUpdate = [];
-	          forEach(classes, function(className) {
+
+	          forEach(classArray, function(className) {
 	            if (count > 0 || classCounts[className]) {
 	              classCounts[className] = (classCounts[className] || 0) + count;
 	              if (classCounts[className] === +(count > 0)) {
@@ -27314,77 +27376,106 @@ return /******/ (function(modules) { // webpackBootstrap
 	              }
 	            }
 	          });
-	          element.data('$classCounts', classCounts);
+
 	          return classesToUpdate.join(' ');
 	        }
 
-	        function updateClasses(oldClasses, newClasses) {
-	          var toAdd = arrayDifference(newClasses, oldClasses);
-	          var toRemove = arrayDifference(oldClasses, newClasses);
-	          toAdd = digestClassCounts(toAdd, 1);
-	          toRemove = digestClassCounts(toRemove, -1);
-	          if (toAdd && toAdd.length) {
-	            $animate.addClass(element, toAdd);
+	        function ngClassIndexWatchAction(newModulo) {
+	          // This watch-action should run before the `ngClass[OneTime]WatchAction()`, thus it
+	          // adds/removes `oldClassString`. If the `ngClass` expression has changed as well, the
+	          // `ngClass[OneTime]WatchAction()` will update the classes.
+	          if (newModulo === selector) {
+	            addClasses(oldClassString);
+	          } else {
+	            removeClasses(oldClassString);
 	          }
-	          if (toRemove && toRemove.length) {
-	            $animate.removeClass(element, toRemove);
+
+	          oldModulo = newModulo;
+	        }
+
+	        function ngClassOneTimeWatchAction(newClassValue) {
+	          var newClassString = toClassString(newClassValue);
+
+	          if (newClassString !== oldClassString) {
+	            ngClassWatchAction(newClassString);
 	          }
 	        }
 
-	        function ngClassWatchAction(newVal) {
-	          // eslint-disable-next-line no-bitwise
-	          if (selector === true || (scope.$index & 1) === selector) {
-	            var newClasses = arrayClasses(newVal || []);
-	            if (!oldVal) {
-	              addClasses(newClasses);
-	            } else if (!equals(newVal,oldVal)) {
-	              var oldClasses = arrayClasses(oldVal);
-	              updateClasses(oldClasses, newClasses);
-	            }
+	        function ngClassWatchAction(newClassString) {
+	          if (oldModulo === selector) {
+	            updateClasses(oldClassString, newClassString);
 	          }
-	          if (isArray(newVal)) {
-	            oldVal = newVal.map(function(v) { return shallowCopy(v); });
-	          } else {
-	            oldVal = shallowCopy(newVal);
-	          }
+
+	          oldClassString = newClassString;
 	        }
 	      }
 	    };
-
-	    function arrayDifference(tokens1, tokens2) {
-	      var values = [];
-
-	      outer:
-	      for (var i = 0; i < tokens1.length; i++) {
-	        var token = tokens1[i];
-	        for (var j = 0; j < tokens2.length; j++) {
-	          if (token === tokens2[j]) continue outer;
-	        }
-	        values.push(token);
-	      }
-	      return values;
-	    }
-
-	    function arrayClasses(classVal) {
-	      var classes = [];
-	      if (isArray(classVal)) {
-	        forEach(classVal, function(v) {
-	          classes = classes.concat(arrayClasses(v));
-	        });
-	        return classes;
-	      } else if (isString(classVal)) {
-	        return classVal.split(' ');
-	      } else if (isObject(classVal)) {
-	        forEach(classVal, function(v, k) {
-	          if (v) {
-	            classes = classes.concat(k.split(' '));
-	          }
-	        });
-	        return classes;
-	      }
-	      return classVal;
-	    }
 	  }];
+
+	  // Helpers
+	  function arrayDifference(tokens1, tokens2) {
+	    if (!tokens1 || !tokens1.length) return [];
+	    if (!tokens2 || !tokens2.length) return tokens1;
+
+	    var values = [];
+
+	    outer:
+	    for (var i = 0; i < tokens1.length; i++) {
+	      var token = tokens1[i];
+	      for (var j = 0; j < tokens2.length; j++) {
+	        if (token === tokens2[j]) continue outer;
+	      }
+	      values.push(token);
+	    }
+
+	    return values;
+	  }
+
+	  function split(classString) {
+	    return classString && classString.split(' ');
+	  }
+
+	  function toClassString(classValue) {
+	    var classString = classValue;
+
+	    if (isArray(classValue)) {
+	      classString = classValue.map(toClassString).join(' ');
+	    } else if (isObject(classValue)) {
+	      classString = Object.keys(classValue).
+	        filter(function(key) { return classValue[key]; }).
+	        join(' ');
+	    }
+
+	    return classString;
+	  }
+
+	  function toFlatValue(classValue) {
+	    var flatValue = classValue;
+
+	    if (isArray(classValue)) {
+	      flatValue = classValue.map(toFlatValue);
+	    } else if (isObject(classValue)) {
+	      var hasUndefined = false;
+
+	      flatValue = Object.keys(classValue).filter(function(key) {
+	        var value = classValue[key];
+
+	        if (!hasUndefined && isUndefined(value)) {
+	          hasUndefined = true;
+	        }
+
+	        return value;
+	      });
+
+	      if (hasUndefined) {
+	        // Prevent the `oneTimeLiteralWatchInterceptor` from unregistering
+	        // the watcher, by including at least one `undefined` value.
+	        flatValue.push(undefined);
+	      }
+	    }
+
+	    return flatValue;
+	  }
 	}
 
 	/**
@@ -30774,19 +30865,27 @@ return /******/ (function(modules) { // webpackBootstrap
 	 *
 	 */
 	var ngModelOptionsDirective = function() {
+	  NgModelOptionsController.$inject = ['$attrs', '$scope'];
+	  function NgModelOptionsController($attrs, $scope) {
+	    this.$$attrs = $attrs;
+	    this.$$scope = $scope;
+	  }
+	  NgModelOptionsController.prototype = {
+	    $onInit: function() {
+	      var parentOptions = this.parentCtrl ? this.parentCtrl.$options : defaultModelOptions;
+	      var modelOptionsDefinition = this.$$scope.$eval(this.$$attrs.ngModelOptions);
+
+	      this.$options = parentOptions.createChild(modelOptionsDefinition);
+	    }
+	  };
+
 	  return {
 	    restrict: 'A',
 	    // ngModelOptions needs to run before ngModel and input directives
 	    priority: 10,
-	    require: ['ngModelOptions', '?^^ngModelOptions'],
-	    controller: function NgModelOptionsController() {},
-	    link: {
-	      pre: function ngModelOptionsPreLinkFn(scope, element, attrs, ctrls) {
-	        var optionsCtrl = ctrls[0];
-	        var parentOptions = ctrls[1] ? ctrls[1].$options : defaultModelOptions;
-	        optionsCtrl.$options = parentOptions.createChild(scope.$eval(attrs.ngModelOptions));
-	      }
-	    }
+	    require: {parentCtrl: '?^^ngModelOptions'},
+	    bindToController: true,
+	    controller: NgModelOptionsController
 	  };
 	};
 
@@ -31339,17 +31438,17 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	      } else {
 
-	        selectCtrl.writeValue = function writeNgOptionsMultiple(value) {
-	          options.items.forEach(function(option) {
-	            option.element.selected = false;
-	          });
+	        selectCtrl.writeValue = function writeNgOptionsMultiple(values) {
+	          // Only set `<option>.selected` if necessary, in order to prevent some browsers from
+	          // scrolling to `<option>` elements that are outside the `<select>` element's viewport.
 
-	          if (value) {
-	            value.forEach(function(item) {
-	              var option = options.getOptionFromViewValue(item);
-	              if (option) option.element.selected = true;
-	            });
-	          }
+	          var selectedOptions = values && values.map(getAndUpdateSelectedOption) || [];
+
+	          options.items.forEach(function(option) {
+	            if (option.element.selected && !includes(selectedOptions, option)) {
+	              option.element.selected = false;
+	            }
+	          });
 	        };
 
 
@@ -31439,6 +31538,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	        updateOptionElement(option, optionElement);
 	      }
 
+	      function getAndUpdateSelectedOption(viewValue) {
+	        var option = options.getOptionFromViewValue(viewValue);
+	        var element = option && option.element;
+
+	        if (element && !element.selected) element.selected = true;
+
+	        return option;
+	      }
 
 	      function updateOptionElement(option, element) {
 	        option.element = element;
@@ -34613,7 +34720,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports) {
 
 	/**
-	 * @license AngularJS v1.6.0
+	 * @license AngularJS v1.6.1
 	 * (c) 2010-2016 Google, Inc. http://angularjs.org
 	 * License: MIT
 	 */

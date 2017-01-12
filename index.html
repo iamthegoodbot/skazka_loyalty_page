@@ -20,10 +20,11 @@
   <script src="dist/dev/sailplay-magic.js"></script>
   <script src="dist/dev/sailplay-magic-widgets.js"></script>
 
-  <script src="dist/dev/sailplay-magic-migrator.js"></script>
-
   <!-- prod -->
   <!--<script src="dist/prod/sailplay-magic.js"></script>-->
+
+  <!-- migrator -->
+  <script src="dist/migrator/sailplay-magic-migrator.js"></script>
 
 
   <style>
@@ -48,7 +49,8 @@
 
       partner_id: params.partner_id || 1,
       domain: params.domain || "https://sailplay.net",
-      lang:  params.lang || "en"
+      lang:  params.lang || "en",
+      config: params.config || "default"
 
     });
 

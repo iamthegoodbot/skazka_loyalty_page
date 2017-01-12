@@ -27,6 +27,12 @@ return webpackJsonp([0],[
 
 	var _createClass3 = _interopRequireDefault(_createClass2);
 
+	var _class, _temp;
+	// import NgLocale from 'angular-i18n';
+
+	//import theme styles
+
+
 	var _sailplayHub = __webpack_require__(29);
 
 	var _sailplayHub2 = _interopRequireDefault(_sailplayHub);
@@ -56,6 +62,8 @@ return webpackJsonp([0],[
 	var _tools = __webpack_require__(104);
 
 	var _tools2 = _interopRequireDefault(_tools);
+
+	var _widget = __webpack_require__(101);
 
 	__webpack_require__(129);
 
@@ -169,12 +177,7 @@ return webpackJsonp([0],[
 	});
 
 	//define magic class
-
-	// import NgLocale from 'angular-i18n';
-
-	//import theme styles
-
-	var Magic = function () {
+	var Magic = (_temp = _class = function () {
 	  function Magic(config) {
 	    (0, _classCallCheck3.default)(this, Magic);
 	    this.module = magic;
@@ -186,13 +189,22 @@ return webpackJsonp([0],[
 
 	    _sailplayHub2.default.on('init.success', function (res) {
 
-	      if (!res.partner.loyalty_page_config || !res.partner.loyalty_page_config.$MAGIC) return;
+	      _sailplayHub2.default.send('magic.config', config.config);
+	    });
 
-	      _core.Core.constant('MAGIC_CONFIG', res.partner.loyalty_page_config.$MAGIC);
+	    _sailplayHub2.default.on('magic.config.success', function (res_config) {
+
+	      if (!res_config.config || !res_config.config.config.$MAGIC) return;
+
+	      _core.Core.constant('MAGIC_CONFIG', res_config.config.config.$MAGIC);
 
 	      var app_container = config.root || document.getElementsByTagName('sailplay-magic')[0];
 
 	      app_container && _angular2.default.bootstrap(app_container, [magic.name]);
+	    });
+
+	    _sailplayHub2.default.on('magic.config.error', function () {
+	      alert('Cannot load config with name: ' + config.config);
 	    });
 	  }
 
@@ -205,15 +217,11 @@ return webpackJsonp([0],[
 
 	    //public method for authorize
 	    value: function authorize() {}
-	  }], [{
-	    key: 'Migrator',
-	    value: function Migrator() {}
 	  }]);
 	  return Magic;
-	}();
+	}(), _class.Widget = _widget.WidgetRegister, _temp);
 
 	//extend SAILPLAY with Magic class
-
 
 	exports.default = Magic;
 	_sailplayHub2.default.Magic = _sailplayHub2.default.Magic || Magic;

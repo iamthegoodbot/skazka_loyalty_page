@@ -55,6 +55,7 @@ MagicMigrator.create({
   down: (config) => {
 
     //redo status widget
+
     let status_widgets = config.$MAGIC.widgets.filter(function (widget) {
       return widget.id === 'statuses';
     });

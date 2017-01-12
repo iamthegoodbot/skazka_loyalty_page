@@ -1,6 +1,6 @@
 <div class="bon_profile_wrap container" data-ng-show="widget.enabled" data-ng-cloak>
 
-  <div class="bon_profile_info" data-sailplay-profile>
+  <div class="bon_profile_info" data-sailplay-profile data-sailplay-gifts>
     <div class="bon_profile_top clearfix">
       <div class="bon_profile_top_left">
         <h3>
@@ -44,7 +44,7 @@
         </span>
         <a class="button_link history_button" href="#" data-ng-click="$event.preventDefault(); profile.history = true;">{{ widget.texts.history_button }}</a>
       </div>
-      <div class="bps_right progress_block clearfix" data-sailplay-gifts data-ng-if="progress">
+      <div class="bps_right progress_block clearfix" data-ng-if="progress">
         <div class="progress_line_main">
           <div class="progress_line_bg progress_bar progress_bar_border"></div>
           <div class="progress_line progress_bar_filled" data-procent="0" data-ng-style="{ width: progress.plenum + '%' }">

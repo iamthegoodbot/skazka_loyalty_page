@@ -4,7 +4,7 @@ import server from 'gulp-connect';
 import run from 'run-sequence';
 
 import webpack from 'webpack';
-import webpack_config, { production } from './webpack.config.babel'; // <-- Contains ES6+
+import { development, production, migrator } from './webpack.config.babel'; // <-- Contains ES6+
 
 const paths = {
   src: './src/**/*',
@@ -14,16 +14,24 @@ const paths = {
 };
 
 gulp.task('default', (callback) => {
-  run("build", "server", "watch", callback);
+  run("server", "watch", callback);
 });
 
 gulp.task('dev', (callback) => {
-  run("build", "watch", callback);
+  run("watch", callback);
 });
 
-gulp.task('build', (callback) => {
+gulp.task('build.magic', (callback) => {
 
-  let bundler = webpack(webpack_config);
+  let bundler = webpack(development);
+
+  bundler.run(callback);
+
+});
+
+gulp.task('build.migrator', (callback) => {
+
+  let bundler = webpack(migrator);
 
   bundler.run(callback);
 
@@ -38,9 +46,14 @@ gulp.task('deploy', (callback) => {
 });
 
 gulp.task('watch', () => {
-  return watch([ paths.src, paths.widgets, paths.migrator ], () => {
-    gulp.start('build');
-  })
+  return Promise.all([
+    watch([ paths.src, paths.widgets ], () => {
+      gulp.start('build.magic');
+    }),
+    watch([ paths.migrator ], () => {
+      gulp.start('build.migrator');
+    }),
+  ])
 });
 
 gulp.task('server', () => {

@@ -50,20 +50,18 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	return __webpack_require__(0);
 /******/ })
 /************************************************************************/
-/******/ ({
-
-/***/ 0:
+/******/ ([
+/* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(179);
-	__webpack_require__(180);
-	__webpack_require__(181);
-	module.exports = __webpack_require__(182);
+	__webpack_require__(1);
+	__webpack_require__(2);
+	__webpack_require__(3);
+	module.exports = __webpack_require__(4);
 
 
 /***/ },
-
-/***/ 179:
+/* 1 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -71,17 +69,103 @@ return /******/ (function(modules) { // webpackBootstrap
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	function migration_steps(version_from, version_to) {}
+	function compare_versions(v1, v2, options) {
+	  var lexicographical = options && options.lexicographical,
+	      zeroExtend = options && options.zeroExtend,
+	      v1parts = v1.split('.'),
+	      v2parts = v2.split('.');
+
+	  function isValidPart(x) {
+	    return (lexicographical ? /^\d+[A-Za-z]*$/ : /^\d+$/).test(x);
+	  }
+
+	  if (!v1parts.every(isValidPart) || !v2parts.every(isValidPart)) {
+	    return NaN;
+	  }
+
+	  if (zeroExtend) {
+	    while (v1parts.length < v2parts.length) {
+	      v1parts.push("0");
+	    }while (v2parts.length < v1parts.length) {
+	      v2parts.push("0");
+	    }
+	  }
+
+	  if (!lexicographical) {
+	    v1parts = v1parts.map(Number);
+	    v2parts = v2parts.map(Number);
+	  }
+
+	  for (var i = 0; i < v1parts.length; ++i) {
+	    if (v2parts.length == i) {
+	      return 1;
+	    }
+
+	    if (v1parts[i] == v2parts[i]) {
+	      continue;
+	    } else if (v1parts[i] > v2parts[i]) {
+	      return 1;
+	    } else {
+	      return -1;
+	    }
+	  }
+
+	  if (v1parts.length != v2parts.length) {
+	    return -1;
+	  }
+
+	  return 0;
+	}
 
 	var Migrator = {
 
 	  migrations: [],
 
-	  migrate: function migrate(config, to_version) {
+	  migrate: function migrate(config, version_from, version_to) {
 
-	    var migration_config = Migrator.migrations.filter(function (m_config) {
-	      return to_version === m_config.version;
-	    });
+	    console.log(config);
+
+	    console.log(version_from, version_to);
+
+	    var direction = compare_versions(version_to, version_from);
+	    console.log('direction: ', direction);
+
+	    var required_migrations = [];
+
+	    switch (direction) {
+	      case 1:
+	        required_migrations = Migrator.migrations.filter(function (migration) {
+	          return compare_versions(migration.version, version_from) > 0 && compare_versions(migration.version, version_to) <= 0;
+	        }).sort(function (migration_a, migration_b) {
+	          return compare_versions(migration_a.version, migration_b.version);
+	        });
+	        required_migrations.forEach(function (migration) {
+	          try {
+	            migration.up && migration.up(config);
+	          } catch (err) {
+	            console.log(err);
+	          }
+	        });
+	        break;
+	      case -1:
+	        required_migrations = Migrator.migrations.filter(function (migration) {
+	          return compare_versions(migration.version, version_from) <= 0 && compare_versions(migration.version, version_to) > 0;
+	        }).sort(function (migration_a, migration_b) {
+	          return compare_versions(migration_b.version, migration_a.version);
+	        });
+	        required_migrations.forEach(function (migration) {
+	          try {
+	            migration.down && migration.down(config);
+	          } catch (err) {
+	            console.log(err);
+	          }
+	        });
+	        break;
+	    }
+
+	    console.log(required_migrations);
+
+	    return config;
 	  },
 
 	  create: function create(config) {
@@ -100,13 +184,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = Migrator;
 
 /***/ },
-
-/***/ 180:
+/* 2 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _migrator = __webpack_require__(179);
+	var _migrator = __webpack_require__(1);
 
 	var _migrator2 = _interopRequireDefault(_migrator);
 
@@ -120,13 +203,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	});
 
 /***/ },
-
-/***/ 181:
+/* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _migrator = __webpack_require__(179);
+	var _migrator = __webpack_require__(1);
 
 	var _migrator2 = _interopRequireDefault(_migrator);
 
@@ -179,6 +261,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  down: function down(config) {
 
 	    //redo status widget
+
 	    var status_widgets = config.$MAGIC.widgets.filter(function (widget) {
 	      return widget.id === 'statuses';
 	    });
@@ -215,13 +298,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	});
 
 /***/ },
-
-/***/ 182:
+/* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _migrator = __webpack_require__(179);
+	var _migrator = __webpack_require__(1);
 
 	var _migrator2 = _interopRequireDefault(_migrator);
 
@@ -235,7 +317,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	});
 
 /***/ }
-
-/******/ })
+/******/ ])
 });
 ;

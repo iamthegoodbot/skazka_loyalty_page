@@ -6,6 +6,7 @@ import core, { Core } from './core/core';
 import Cookies from 'angular-cookie';
 import NgTouch from 'angular-touch';
 import Tools from './tools/tools';
+import { WidgetRegister } from '@core/widget'
 // import NgLocale from 'angular-i18n';
 
 //import theme styles
@@ -148,15 +149,25 @@ export default class Magic {
     SAILPLAY.send('init', config);
 
     SAILPLAY.on('init.success', (res) => {
+      
+      SAILPLAY.send('magic.config', config.config);
 
-      if(!res.partner.loyalty_page_config || !res.partner.loyalty_page_config.$MAGIC) return;
+    });
 
-      Core.constant('MAGIC_CONFIG', res.partner.loyalty_page_config.$MAGIC);
+    SAILPLAY.on('magic.config.success', (res_config) => {
+
+      if(!res_config.config || !res_config.config.config.$MAGIC) return;
+
+      Core.constant('MAGIC_CONFIG', res_config.config.config.$MAGIC);
 
       const app_container = config.root || document.getElementsByTagName('sailplay-magic')[0];
 
       app_container && angular.bootstrap(app_container, [ magic.name ]);
 
+    });
+
+    SAILPLAY.on('magic.config.error', () => {
+      alert(`Cannot load config with name: ${config.config}`);
     });
 
   }
@@ -169,6 +180,8 @@ export default class Magic {
 
 
   }
+
+  static Widget = WidgetRegister
 
 }
 
