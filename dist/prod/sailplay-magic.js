@@ -1272,8 +1272,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var params = {
 	        auth_hash: _config.auth_hash
 	      };
-	      if(p.include_rules) {
-	        params.include_rules = 1;
+	      if(p){
+	        if(p.include_rules) {
+	          params.include_rules = 1;
+	        }
 	      }
 	      JSONP.get(_config.DOMAIN + _config.urls.badges.list, params, function (res) {
 
@@ -1558,6 +1560,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	          sp.send('purchases.add.success', res);
 	        } else {
 	          sp.send('purchases.add.error', res);
+	        }
+	      });
+	    });
+
+	    sp.on('magic.config', function (name) {
+	      if (_config == {}) {
+	        initError();
+	        return;
+	      }
+	      JSONP.get(_config.DOMAIN + _config.urls.loyalty_page_config_by_name, { name: name || 'default' }, function (res) {
+	        if (res.status == 'ok') {
+	          sp.send('magic.config.success', res);
+	        } else {
+	          sp.send('magic.config.error', res);
 	        }
 	      });
 	    });
@@ -35243,27 +35259,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    return repair_pic_url(pic_url);
 	  };
-	}).filter('sailplay_events', function (SailPlayApi) {
-
-	  var exist = SailPlayApi.data('tags.exist');
-
-	  function check(events) {
-	    var array = events.filter(function (event) {
-	      return exist().tags.filter(function (exist_event) {
-	        return exist_event.name == event.name && exist_event.exist == event.exist;
-	      }).length;
-	    });
-	    return array.length == events.length;
-	  }
-
-	  return function (items) {
-
-	    if (!exist || !exist() || !items || !items.length) return false;
-
-	    return items.filter(function (item) {
-	      return check(item.events);
-	    });
-	  };
 	}).directive('sailplayRemoteLogin', function (SailPlay) {
 
 	  return {
@@ -38892,21 +38887,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	  });
 
 	  var TAGS = QuizService.getTags();
-
-	  // add events from widgets dependent of tags
-	  var event_messages = $rootScope.MAGIC_CONFIG.widgets.filter(function (widget) {
-	    return widget.id == 'event_message';
-	  });
-
-	  if (event_messages.length) {
-	    _angular2.default.forEach(event_messages, function (item) {
-	      _angular2.default.forEach(item.options.content, function (text) {
-	        _angular2.default.forEach(text.events, function (event) {
-	          TAGS.push(event.name);
-	        });
-	      });
-	    });
-	  }
 
 	  //wait for sailplay inited, then try to login by cookie (we need to see unauthorized content)
 	  SailPlay.authorize('cookie');
@@ -42612,37 +42592,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  self.years = arr.reverse();
 
-	  self.months = {
-	    en: {
-	      1: "January",
-	      2: "February",
-	      3: "March",
-	      4: "April",
-	      5: "May",
-	      6: "June",
-	      7: "July",
-	      8: "August",
-	      9: "September",
-	      10: "October",
-	      11: "November",
-	      12: "December"
-	    },
-	    ru: {
-	      1: "Январь",
-	      2: "Февраль",
-	      3: "Март",
-	      4: "Апрель",
-	      5: "Мая",
-	      6: "Июнь",
-	      7: "Июль",
-	      8: "Август",
-	      9: "Сентябрь",
-	      10: "Октябрь",
-	      11: "Ноябрь",
-	      12: "Декабрь"
-	    }
-	  };
-
 	  return this;
 	}).directive('datePicker', function (dateService) {
 	  return {
@@ -42657,7 +42606,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    link: function link(scope) {
 
 	      scope.days = dateService.days;
-	      scope.months = scope.lang ? dateService.months[scope.lang] || dateService.months['ru'] : dateService.months['ru'];
 	      scope.years = dateService.years;
 
 	      scope.range = function (start, end) {
@@ -42677,7 +42625,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 129 */
 /***/ function(module, exports) {
 
-	module.exports = "<div>\n\n  <div class=\"form_date form_date__day\">\n    <span data-ng-bind=\"model[0] || 'Day'\"></span>\n    <div class=\"form_date__popup\">\n      <a href=\"#\" data-ng-repeat=\"day in range(1, days[model[1] || 1])\" data-ng-bind=\"day\"\n         data-ng-click=\"$event.preventDefault();model[0] = day;\"></a>\n    </div>\n  </div>\n  <div class=\"form_date form_date__month\">\n    <span data-ng-bind=\"months[model[1]] || 'Month'\"></span>\n    <div class=\"form_date__popup\">\n      <a href=\"#\" data-ng-repeat=\"(key, value) in months track by $index\" data-ng-bind=\"value\"\n         data-ng-click=\"$event.preventDefault();model[1] = +key;\"></a>\n    </div>\n  </div>\n  <div class=\"form_date form_date__year\" >\n    <span data-ng-bind=\"model[2] || 'Year'\"></span>\n    <div class=\"form_date__popup\">\n      <a href=\"#\" data-ng-repeat=\"year in years\" data-ng-bind=\"year\"\n         data-ng-click=\"$event.preventDefault();model[2] = year;\"></a>\n    </div>\n  </div>\n\n</div>";
+	module.exports = "<div>\n\n  <div class=\"form_date form_date__day\">\n    <span data-ng-bind=\"model[0] || 'Day'\"></span>\n    <div class=\"form_date__popup\">\n      <a href=\"#\" data-ng-repeat=\"day in range(1, days[model[1] || 1])\" data-ng-bind=\"day\"\n         data-ng-click=\"$event.preventDefault();model[0] = day;\"></a>\n    </div>\n  </div>\n  <div class=\"form_date form_date__month\">\n    <span data-ng-bind=\"months[model[1]] || 'Month'\"></span>\n    <div class=\"form_date__popup\">\n      <a href=\"#\" data-ng-repeat=\"(key, value) in MAGIC_CONFIG.tools.date.month track by $index\" data-ng-bind=\"value\"\n         data-ng-click=\"$event.preventDefault();model[1] = +key;\"></a>\n    </div>\n  </div>\n  <div class=\"form_date form_date__year\" >\n    <span data-ng-bind=\"model[2] || 'Year'\"></span>\n    <div class=\"form_date__popup\">\n      <a href=\"#\" data-ng-repeat=\"year in years\" data-ng-bind=\"year\"\n         data-ng-click=\"$event.preventDefault();model[2] = year;\"></a>\n    </div>\n  </div>\n\n</div>";
 
 /***/ },
 /* 130 */
@@ -43102,8 +43050,48 @@ return /******/ (function(modules) { // webpackBootstrap
 	(0, _widget.WidgetRegister)({
 	  id: 'event_message',
 	  template: _event_message2.default,
-	  controller: function controller() {
-	    return function (scope) {};
+	  inject: ['SailPlayApi', 'SailPlay', '$rootScope'],
+	  controller: function controller(SailPlayApi, SailPlay, $rootScope) {
+	    return function (scope) {
+
+	      var tags = [];
+	      scope.exist = null;
+	      scope.messages = [];
+
+	      angular.forEach(scope.widget.options.content, function (text) {
+	        angular.forEach(text.events, function (event) {
+	          tags.push(event.name);
+	        });
+	      });
+
+	      if (tags.length) {
+	        SailPlay.send('tags.exist', { tags: tags }, function (res) {
+	          if (res && res.tags) {
+	            scope.exist = res.tags;
+	            scope.update();
+	            scope.$digest();
+	          }
+	        });
+	      }
+
+	      scope.update = function () {
+
+	        function check(events) {
+	          var array = events.filter(function (event) {
+	            return scope.exist.filter(function (exist_event) {
+	              return exist_event.name == event.name && exist_event.exist == event.exist;
+	            }).length;
+	          });
+	          return array.length == events.length;
+	        }
+
+	        scope.messages = scope.widget.options.content.filter(function (item) {
+	          return check(item.events);
+	        });
+
+	        console.log('scope.messages', scope.messages);
+	      };
+	    };
 	  }
 	});
 
@@ -43111,7 +43099,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 155 */
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"event_message__wrapper container\">\n\n    <div class=\"event_message\" data-ng-repeat=\"item in widget.options.content | sailplay_events\">\n\n        <img class=\"event_message__icon\" data-ng-src=\"{{ item.icon }}\" alt=\"{{ item.text }}\">\n        <span class=\"event_message__text\" data-ng-bind=\"item.text\"></span>\n\n    </div>\n\n</div>";
+	module.exports = "<div class=\"event_message__wrapper container\">\n\n    <div class=\"event_message\" data-ng-repeat=\"item in messages\">\n\n        <img class=\"event_message__icon\" data-ng-src=\"{{ item.icon }}\" alt=\"{{ item.text }}\">\n        <span class=\"event_message__text\" data-ng-bind=\"item.text\"></span>\n\n    </div>\n\n</div>";
 
 /***/ },
 /* 156 */
@@ -43659,7 +43647,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      scope.show_history = false;
 
 	      // Перенести в конфиг
-	      var PURCHASES_EVENT = 10000017;
+	      var PURCHASES_EVENT = scope.widget.options.event_id;
 
 	      if (scope.widget && scope.widget.options && scope.widget.options.badge_events && scope.widget.options.badge_events.length) {
 	        (function () {

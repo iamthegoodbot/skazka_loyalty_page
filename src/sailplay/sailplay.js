@@ -248,32 +248,6 @@ export let SailPlay = angular.module('sailplay', [
 
   })
 
-  .filter('sailplay_events', function (SailPlayApi) {
-
-    let exist = SailPlayApi.data('tags.exist');
-
-    function check(events) {
-      var array = events.filter(function (event) {
-        return exist().tags.filter(function (exist_event) {
-          return exist_event.name == event.name && exist_event.exist == event.exist
-        }).length
-      });
-      return array.length == events.length;
-    }
-
-    return function (items) {
-
-      if (!exist || !exist() || !items || !items.length) return false;
-
-      return items.filter(function (item) {
-        return check(item.events)
-      });
-
-    };
-
-  })
-
-
   .directive('sailplayRemoteLogin', function (SailPlay) {
 
     return {

@@ -761,27 +761,6 @@ return webpackJsonp([0],[
 
 	    return repair_pic_url(pic_url);
 	  };
-	}).filter('sailplay_events', function (SailPlayApi) {
-
-	  var exist = SailPlayApi.data('tags.exist');
-
-	  function check(events) {
-	    var array = events.filter(function (event) {
-	      return exist().tags.filter(function (exist_event) {
-	        return exist_event.name == event.name && exist_event.exist == event.exist;
-	      }).length;
-	    });
-	    return array.length == events.length;
-	  }
-
-	  return function (items) {
-
-	    if (!exist || !exist() || !items || !items.length) return false;
-
-	    return items.filter(function (item) {
-	      return check(item.events);
-	    });
-	  };
 	}).directive('sailplayRemoteLogin', function (SailPlay) {
 
 	  return {
@@ -4273,21 +4252,6 @@ return webpackJsonp([0],[
 	  });
 
 	  var TAGS = QuizService.getTags();
-
-	  // add events from widgets dependent of tags
-	  var event_messages = $rootScope.MAGIC_CONFIG.widgets.filter(function (widget) {
-	    return widget.id == 'event_message';
-	  });
-
-	  if (event_messages.length) {
-	    _angular2.default.forEach(event_messages, function (item) {
-	      _angular2.default.forEach(item.options.content, function (text) {
-	        _angular2.default.forEach(text.events, function (event) {
-	          TAGS.push(event.name);
-	        });
-	      });
-	    });
-	  }
 
 	  //wait for sailplay inited, then try to login by cookie (we need to see unauthorized content)
 	  SailPlay.authorize('cookie');

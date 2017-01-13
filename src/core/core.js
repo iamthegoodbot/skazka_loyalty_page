@@ -36,21 +36,6 @@ export let Core = angular.module('magic.core', [
 
   let TAGS = QuizService.getTags();
 
-  // add events from widgets dependent of tags
-  let event_messages = $rootScope.MAGIC_CONFIG.widgets.filter(function(widget){
-    return widget.id == 'event_message'
-  });
-
-  if (event_messages.length) {
-    angular.forEach(event_messages, function (item) {
-      angular.forEach(item.options.content, function (text) {
-        angular.forEach(text.events, function (event) {
-          TAGS.push(event.name);
-        });
-      });
-    });
-  }
-
   //wait for sailplay inited, then try to login by cookie (we need to see unauthorized content)
   SailPlay.authorize('cookie');
 

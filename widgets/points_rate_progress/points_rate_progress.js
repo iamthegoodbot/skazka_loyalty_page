@@ -15,7 +15,7 @@ WidgetRegister({
       scope.show_history = false;
 
       // Перенести в конфиг
-      const PURCHASES_EVENT = 10000017;
+      const PURCHASES_EVENT = scope.widget.options.event_id;
 
       if (scope.widget && scope.widget.options && scope.widget.options.badge_events && scope.widget.options.badge_events.length) {
         let tags = [];
