@@ -4214,6 +4214,10 @@ return webpackJsonp([0],[
 	        list: SailPlayApi.data('load.badges.list')
 	      };
 
+	      scope.sailplay.user = {
+	        info: SailPlayApi.data('load.user.info')
+	      };
+
 	      var user = SailPlayApi.data('load.user.info');
 	    }
 
@@ -4259,7 +4263,7 @@ return webpackJsonp([0],[
 	    SailPlay.set_auth_hash_cookie(false);
 	    console.log('reset');
 	    SailPlayApi.reset();
-	    SailPlayApi.call('load.badges.list');
+	    SailPlayApi.call('load.badges.list', { include_rules: 1 });
 	    SailPlayApi.call('load.actions.list');
 	    SailPlayApi.call('load.actions.custom.list');
 	    SailPlayApi.call('load.gifts.list');
@@ -4284,8 +4288,8 @@ return webpackJsonp([0],[
 	  //we need to save auth hash in cookies for authorize status tracking
 	  $rootScope.$on('sailplay-login-success', function (e, data) {
 	    SailPlay.set_auth_hash_cookie(SailPlay.config().auth_hash);
-	    SailPlayApi.call('load.user.info', { all: 1 });
-	    SailPlayApi.call('load.badges.list');
+	    SailPlayApi.call('load.user.info', { all: 1, purchases: 1 });
+	    SailPlayApi.call('load.badges.list', { include_rules: 1 });
 	    SailPlayApi.call('load.actions.list');
 	    SailPlayApi.call('load.actions.custom.list');
 	    SailPlayApi.call('load.user.history');
@@ -4316,7 +4320,7 @@ return webpackJsonp([0],[
 	  //also, we need update user info after gift purchase
 	  SailPlay.on('gifts.purchase.success', function (res) {
 
-	    SailPlayApi.call('load.user.info', { all: 1 });
+	    SailPlayApi.call('load.user.info', { all: 1, purchases: 1 });
 	    SailPlayApi.call('load.user.history');
 	    SailPlayApi.call('leaderboard.load');
 
@@ -5782,21 +5786,6 @@ return webpackJsonp([0],[
 
 	  self.years = arr.reverse();
 
-	  self.months = {
-	    1: "January",
-	    2: "February",
-	    3: "March",
-	    4: "April",
-	    5: "May",
-	    6: "June",
-	    7: "July",
-	    8: "August",
-	    9: "September",
-	    10: "October",
-	    11: "November",
-	    12: "December"
-	  };
-
 	  return this;
 	}).directive('datePicker', function (dateService) {
 	  return {
@@ -5805,12 +5794,12 @@ return webpackJsonp([0],[
 	    template: _datepicker2.default,
 	    scope: {
 	      model: '=',
+	      lang: '=?',
 	      disabled: '=?'
 	    },
 	    link: function link(scope) {
 
 	      scope.days = dateService.days;
-	      scope.months = dateService.months;
 	      scope.years = dateService.years;
 
 	      scope.range = function (start, end) {
@@ -5830,7 +5819,7 @@ return webpackJsonp([0],[
 /* 128 */
 /***/ function(module, exports) {
 
-	module.exports = "<div>\n\n  <div class=\"form_date form_date__day\">\n    <span data-ng-bind=\"model[0] || 'Day'\"></span>\n    <div class=\"form_date__popup\">\n      <a href=\"#\" data-ng-repeat=\"day in range(1, days[model[1] || 1])\" data-ng-bind=\"day\"\n         data-ng-click=\"$event.preventDefault();model[0] = day;\"></a>\n    </div>\n  </div>\n  <div class=\"form_date form_date__month\">\n    <span data-ng-bind=\"months[model[1]] || 'Month'\"></span>\n    <div class=\"form_date__popup\">\n      <a href=\"#\" data-ng-repeat=\"(key, value) in months track by $index\" data-ng-bind=\"value\"\n         data-ng-click=\"$event.preventDefault();model[1] = +key;\"></a>\n    </div>\n  </div>\n  <div class=\"form_date form_date__year\" >\n    <span data-ng-bind=\"model[2] || 'Year'\"></span>\n    <div class=\"form_date__popup\">\n      <a href=\"#\" data-ng-repeat=\"year in years\" data-ng-bind=\"year\"\n         data-ng-click=\"$event.preventDefault();model[2] = year;\"></a>\n    </div>\n  </div>\n\n</div>";
+	module.exports = "<div>\n\n  <div class=\"form_date form_date__day\">\n    <span data-ng-bind=\"model[0] || 'Day'\"></span>\n    <div class=\"form_date__popup\">\n      <a href=\"#\" data-ng-repeat=\"day in range(1, days[model[1] || 1])\" data-ng-bind=\"day\"\n         data-ng-click=\"$event.preventDefault();model[0] = day;\"></a>\n    </div>\n  </div>\n  <div class=\"form_date form_date__month\">\n    <span data-ng-bind=\"months[model[1]] || 'Month'\"></span>\n    <div class=\"form_date__popup\">\n      <a href=\"#\" data-ng-repeat=\"(key, value) in MAGIC_CONFIG.tools.date.month track by $index\" data-ng-bind=\"value\"\n         data-ng-click=\"$event.preventDefault();model[1] = +key;\"></a>\n    </div>\n  </div>\n  <div class=\"form_date form_date__year\" >\n    <span data-ng-bind=\"model[2] || 'Year'\"></span>\n    <div class=\"form_date__popup\">\n      <a href=\"#\" data-ng-repeat=\"year in years\" data-ng-bind=\"year\"\n         data-ng-click=\"$event.preventDefault();model[2] = year;\"></a>\n    </div>\n  </div>\n\n</div>";
 
 /***/ },
 /* 129 */
