@@ -6,6 +6,7 @@ import core, { Core } from './core/core';
 import Cookies from 'angular-cookie';
 import NgTouch from 'angular-touch';
 import Tools from './tools/tools';
+import { WidgetRegister } from '@core/widget'
 // import NgLocale from 'angular-i18n';
 
 //import theme styles
@@ -149,26 +150,48 @@ export default class Magic {
 
     SAILPLAY.on('init.success', (res) => {
 
-      if(!res.partner.loyalty_page_config || !res.partner.loyalty_page_config.$MAGIC) return;
+      if(this.inited) return;
 
-      Core.constant('MAGIC_CONFIG', res.partner.loyalty_page_config.$MAGIC);
+      SAILPLAY.send('magic.config', config.config);
+
+    });
+
+    SAILPLAY.on('magic.config.success', (res_config) => {
+
+      if(this.inited || !res_config.config || !res_config.config.config.$MAGIC) return;
+
+      Core.constant('MAGIC_CONFIG', res_config.config.config.$MAGIC);
 
       const app_container = config.root || document.getElementsByTagName('sailplay-magic')[0];
 
       app_container && angular.bootstrap(app_container, [ magic.name ]);
 
+      this.inited = true;
+
     });
 
-  }
+    SAILPLAY.on('magic.config.error', () => {
+      alert(`Cannot load config with name: ${config.config}`);
+    });
 
-  //public reference to main angular module
-  module = magic;
+    //public reference to main angular module
+    this.module = magic;
+
+    //store inited property for disable reinit
+    this.inited = false;
+
+  }
 
   //public method for authorize
   authorize() {
 
 
   }
+
+  static Widget = WidgetRegister;
+
+  //////////////// this variable will replace to package version when deploy
+  static version = '${MAGIC_VERSION}';
 
 }
 

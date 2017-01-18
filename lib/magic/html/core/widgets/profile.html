@@ -1,6 +1,6 @@
 <div class="{{ _config.name }} clearfix">
   <div class="bon_profile_wrap container" data-ng-show="_config.enabled" data-ng-cloak>
-    <style scoped data-widget-style="_config.styles" data-widget-name="_config.name"></style>
+    <style data-widget-style="_config.styles" data-widget-name="_config.name"></style>
     <div class="bon_profile_info" data-sailplay-profile>
       <div class="bon_profile_top clearfix">
         <div class="bon_profile_top_left">
@@ -18,8 +18,8 @@
           </div>
           <div class="user_info">
             <span class="user_name"  data-ng-bind="user().user.name || _config.texts.name_not_defined"></span>
-          </div>
-          <div class="user_info">
+            <span class="user_phone" data-ng-model="user().user.phone" data-ng-bind="user().user.phone | tel"></span>
+            <span class="user_email" data-ng-if="user().user.email"  data-ng-bind="user().user.email"></span>
             <a href="#" class="edit_profile_btn button_link" data-ng-click="$event.preventDefault();fill_profile(true);">{{ _config.texts.edit_profile_button }}</a>
           </div>
         </div>
@@ -27,9 +27,17 @@
           <button type="button" class="sp_btn button_primary login_reg_btn" data-ng-click="$event.preventDefault(); login('remote');">{{ _config.texts.login_reg }}</button>
         </div>
       </div>
+      <div class="status_block" data-ng-show="user()">
+        <span class="status_block_title" data-ng-bind="_config.texts.user_status"></span>
+        <img class="status_block_img" data-ng-src="{{ user().user_status.pic | sailplay_pic }}" alt="{{ user().user_status.name }}">
+        <span class="status_block_name" data-ng-bind="user().user_status.name || _config.texts.empty_status "></span>
+      </div>
       <div class="bon_profile_stat">
         <div class="bps_left clearfix" data-ng-class="{ transparent: !user() }">
-          <span class="points_confirmed" data-ng-bind="(user().user_points.confirmed | number)  + ' ' + (user().user_points.confirmed | sailplay_pluralize: _tools.points.texts.pluralize)"></span>
+          <span class="points_confirmed">
+            <span class="points_confirmed_value" data-ng-bind="user().user_points.confirmed | number"></span>
+            <span class="points_confirmed_name" data-ng-bind="user().user_points.confirmed | sailplay_pluralize: _tools.points.texts.pluralize"></span>
+          </span>
           <a class="button_link" href="#" data-ng-click="$event.preventDefault(); $parent.show_history = true;">{{ _config.texts.history_button }}</a>
         </div>
         <div class="bps_right clearfix" data-sailplay-gifts data-ng-show="progress">
@@ -101,7 +109,7 @@
           <span class="modal_profile_header">{{ _config.fill_profile.header }}</span>
         </div>
 
-        <form name="fill_profile" class="mb_popup_main mb_popup_main_mt" data-ng-submit="sailplay.fill_profile.submit(fill_profile);">
+        <form name="fill_profile" class="mb_popup_main mb_popup_main_mt" data-ng-submit="sailplay.fill_profile.submit(fill_profile, $parent.fill_profile);">
 
           <div class="form_field" data-ng-repeat="field in sailplay.fill_profile.form.fields" data-ng-switch="field.input">
 
@@ -116,7 +124,7 @@
 
             <div data-ng-switch-when="date" class="clearfix">
               <label class="form_label">{{ field.label }}</label>
-              <input class="form_input" type="text" placeholder="{{ field.placeholder }}" data-ng-model="field.value">
+              <date-picker data-model="field.value"></date-picker>
             </div>
 
             <div data-ng-switch-when="select" class="clearfix">

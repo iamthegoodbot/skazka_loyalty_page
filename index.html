@@ -23,6 +23,9 @@
   <!-- prod -->
   <!--<script src="dist/prod/sailplay-magic.js"></script>-->
 
+  <!-- migrator -->
+  <script src="dist/migrator/sailplay-magic-migrator.js"></script>
+
 
   <style>
     body {
@@ -38,13 +41,17 @@
   <sailplay-magic></sailplay-magic>
   <script>
 
+    console.log(SAILPLAY.MagicMigrator);
+
     var params = SAILPLAY.url_params();
 
     var magic = new SAILPLAY.Magic({
 
       partner_id: params.partner_id || 1,
+      dep_id: params.dep_id || '',
       domain: params.domain || "https://sailplay.net",
-      lang:  params.lang || "en"
+      lang:  params.lang || "en",
+      config: params.config || "default"
 
     });
 

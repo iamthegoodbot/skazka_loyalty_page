@@ -36,58 +36,63 @@ let widgets = get_file_list('./widgets/').filter((file) => {
 
 console.log(widgets);
 
-export default {
+//loaders
+let loaders = [
+  {
+    test: /\.js$/,
+    exclude: /node_modules/,
+    loader: 'ng-annotate'
+  },
+  {
+    test: /\.js$/,
+    exclude: /node_modules/,
+    loader: 'babel',
+    query: {
+      cacheDirectory: true,
+      plugins: ['transform-decorators-legacy', 'transform-runtime' ],
+      presets: ['es2015', 'es2017', 'es2016', 'stage-0']
+    }
+  },
+  {
+    test: /\.html$/,
+    loader: "html"
+  },
+  {
+    test: /\.less$/,
+    loader: "style-loader!css-loader!less-loader"
+  },
+  //fonts loaders
+  { test: /\.svg$/, loader: 'url?limit=65000&mimetype=image/svg+xml' },
+  { test: /\.woff$/, loader: 'url?limit=65000&mimetype=application/font-woff' },
+  { test: /\.woff2$/, loader: 'url?limit=65000&mimetype=application/font-woff2' },
+  { test: /\.[ot]tf$/, loader: 'url?limit=65000&mimetype=application/octet-stream' },
+  { test: /\.eot$/, loader: 'url?limit=65000&mimetype=application/vnd.ms-fontobject' },
+  //image loaders
+  {
+    test: /\.png/, loader: 'url?limit=65000&mimetype=image/png'
+  }
+];
+
+let resolve = {
+  alias: {
+    "@core": path.join(__dirname, 'src', 'core')
+  }
+};
+
+export let development = {
   entry: {
     'sailplay-magic': path.join(__dirname, 'src', app_name),
     'sailplay-magic-widgets': widgets,
     'sailplay-magic-vendor':  vendors
   },
-  resolve: {
-    alias: {
-      "@core": path.join(__dirname, 'src', 'core')
-    }
-  },
+  resolve: resolve,
   output: {
     path: path.join(__dirname, 'dist', 'dev'),
     filename: "[name].js",
     libraryTarget: 'umd'
   },
   module: {
-    loaders: [
-      {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        loader: 'ng-annotate'
-      },
-      {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        loader: 'babel',
-        query: {
-          cacheDirectory: true,
-          plugins: ['transform-decorators-legacy', 'transform-runtime' ],
-          presets: ['es2015', 'es2017', 'es2016', 'stage-0']
-        }
-      },
-      {
-        test: /\.html$/,
-        loader: "html"
-      },
-      {
-        test: /\.less$/,
-        loader: "style-loader!css-loader!less-loader"
-      },
-      //fonts loaders
-      { test: /\.svg$/, loader: 'url?limit=65000&mimetype=image/svg+xml' },
-      { test: /\.woff$/, loader: 'url?limit=65000&mimetype=application/font-woff' },
-      { test: /\.woff2$/, loader: 'url?limit=65000&mimetype=application/font-woff2' },
-      { test: /\.[ot]tf$/, loader: 'url?limit=65000&mimetype=application/octet-stream' },
-      { test: /\.eot$/, loader: 'url?limit=65000&mimetype=application/vnd.ms-fontobject' },
-      //image loaders
-      {
-        test: /\.png/, loader: 'url?limit=65000&mimetype=image/png'
-      }
-    ]
+    loaders: loaders
   },
   plugins: [
     new webpack.optimize.CommonsChunkPlugin('sailplay-magic-vendor', 'sailplay-magic-vendor.js', Infinity)
@@ -97,53 +102,41 @@ export default {
 export let production = {
 
   entry: {
-    'prod': [ path.join(__dirname, 'src', app_name) ].concat(widgets)
+    'sailplay-magic': [ path.join(__dirname, 'src', app_name) ].concat(widgets)
   },
-  resolve: {
-    alias: {
-      "@core": path.join(__dirname, 'src', 'core')
-    }
-  },
+  resolve: resolve,
   output: {
     path: path.join(__dirname, 'dist', 'prod'),
-    filename: "sailplay-magic.js",
+    filename: "[name].js",
     libraryTarget: 'umd'
   },
   module: {
-    loaders: [
-      {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        loader: 'ng-annotate'
-      },
-      {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        loader: 'babel',
-        query: {
-          cacheDirectory: true,
-          plugins: ['transform-decorators-legacy', 'transform-runtime' ],
-          presets: ['es2015', 'es2017', 'es2016', 'stage-0']
-        }
-      },
-      {
-        test: /\.html$/,
-        loader: "html"
-      },
-      {
-        test: /\.less$/,
-        loader: "style-loader!css-loader!less-loader"
-      },
-      //fonts loaders
-      { test: /\.svg$/, loader: 'url?limit=65000&mimetype=image/svg+xml' },
-      { test: /\.woff$/, loader: 'url?limit=65000&mimetype=application/font-woff' },
-      { test: /\.woff2$/, loader: 'url?limit=65000&mimetype=application/font-woff2' },
-      { test: /\.[ot]tf$/, loader: 'url?limit=65000&mimetype=application/octet-stream' },
-      { test: /\.eot$/, loader: 'url?limit=65000&mimetype=application/vnd.ms-fontobject' },
-      //image loaders
-      {
-        test: /\.png/, loader: 'url?limit=65000&mimetype=image/png'
-      }
-    ]
+    loaders: loaders
+  }
+};
+
+/*
+ load migrations
+ */
+let migrations = get_file_list('./migrator/migrations').filter((file) => {
+  return file.match(/.*\.js$/);
+}).map((file) => {
+  return './' + file;
+});
+
+console.log(migrations);
+
+export let migrator = {
+  entry: {
+    'sailplay-magic-migrator': [ path.join(__dirname, 'migrator', 'migrator.js') ].concat(migrations)
+  },
+  resolve: resolve,
+  output: {
+    path: path.join(__dirname, 'dist', 'migrator'),
+    filename: "[name].js",
+    libraryTarget: 'umd'
+  },
+  module: {
+    loaders: loaders
   }
 };
