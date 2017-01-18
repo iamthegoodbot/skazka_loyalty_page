@@ -10,7 +10,7 @@
   <div class="form_date form_date__month">
     <span data-ng-bind="months[model[1]] || 'Month'"></span>
     <div class="form_date__popup">
-      <a href="#" data-ng-repeat="(key, value) in months track by $index" data-ng-bind="value"
+      <a href="#" data-ng-repeat="(key, value) in MAGIC_CONFIG.tools.date.month track by $index" data-ng-bind="value"
          data-ng-click="$event.preventDefault();model[1] = +key;"></a>
     </div>
   </div>

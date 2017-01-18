@@ -17,7 +17,7 @@ export let Core = angular.module('magic.core', [
     SailPlay.set_auth_hash_cookie(false);
     console.log('reset');
     SailPlayApi.reset();
-    SailPlayApi.call('load.badges.list');
+    SailPlayApi.call('load.badges.list', {include_rules: 1});
     SailPlayApi.call('load.actions.list');
     SailPlayApi.call('load.actions.custom.list');
     SailPlayApi.call('load.gifts.list');
@@ -42,8 +42,8 @@ export let Core = angular.module('magic.core', [
   //we need to save auth hash in cookies for authorize status tracking
   $rootScope.$on('sailplay-login-success', function(e, data){
     SailPlay.set_auth_hash_cookie(SailPlay.config().auth_hash);
-    SailPlayApi.call('load.user.info', { all: 1 });
-    SailPlayApi.call('load.badges.list');
+    SailPlayApi.call('load.user.info', { all: 1, purchases: 1 });
+    SailPlayApi.call('load.badges.list', {include_rules: 1});
     SailPlayApi.call('load.actions.list');
     SailPlayApi.call('load.actions.custom.list');
     SailPlayApi.call('load.user.history');
@@ -74,7 +74,7 @@ export let Core = angular.module('magic.core', [
   //also, we need update user info after gift purchase
   SailPlay.on('gifts.purchase.success', function(res){
 
-    SailPlayApi.call('load.user.info', { all: 1 });
+    SailPlayApi.call('load.user.info', { all: 1, purchases: 1 });
     SailPlayApi.call('load.user.history');
     SailPlayApi.call('leaderboard.load');
 

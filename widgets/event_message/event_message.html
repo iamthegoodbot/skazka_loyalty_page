@@ -1,0 +1,10 @@
+<div class="event_message__wrapper container">
+
+    <div class="event_message" data-ng-repeat="item in messages">
+
+        <img class="event_message__icon" data-ng-src="{{ item.icon }}" alt="{{ item.text }}">
+        <span class="event_message__text" data-ng-bind="item.text"></span>
+
+    </div>
+
+</div>

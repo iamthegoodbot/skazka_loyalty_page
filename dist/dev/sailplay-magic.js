@@ -4207,6 +4207,10 @@ return webpackJsonp([0],[
 	        list: SailPlayApi.data('load.badges.list')
 	      };
 
+	      scope.sailplay.user = {
+	        info: SailPlayApi.data('load.user.info')
+	      };
+
 	      var user = SailPlayApi.data('load.user.info');
 	    }
 
@@ -4252,7 +4256,7 @@ return webpackJsonp([0],[
 	    SailPlay.set_auth_hash_cookie(false);
 	    console.log('reset');
 	    SailPlayApi.reset();
-	    SailPlayApi.call('load.badges.list');
+	    SailPlayApi.call('load.badges.list', { include_rules: 1 });
 	    SailPlayApi.call('load.actions.list');
 	    SailPlayApi.call('load.actions.custom.list');
 	    SailPlayApi.call('load.gifts.list');
@@ -4277,8 +4281,8 @@ return webpackJsonp([0],[
 	  //we need to save auth hash in cookies for authorize status tracking
 	  $rootScope.$on('sailplay-login-success', function (e, data) {
 	    SailPlay.set_auth_hash_cookie(SailPlay.config().auth_hash);
-	    SailPlayApi.call('load.user.info', { all: 1 });
-	    SailPlayApi.call('load.badges.list');
+	    SailPlayApi.call('load.user.info', { all: 1, purchases: 1 });
+	    SailPlayApi.call('load.badges.list', { include_rules: 1 });
 	    SailPlayApi.call('load.actions.list');
 	    SailPlayApi.call('load.actions.custom.list');
 	    SailPlayApi.call('load.user.history');
@@ -4309,7 +4313,7 @@ return webpackJsonp([0],[
 	  //also, we need update user info after gift purchase
 	  SailPlay.on('gifts.purchase.success', function (res) {
 
-	    SailPlayApi.call('load.user.info', { all: 1 });
+	    SailPlayApi.call('load.user.info', { all: 1, purchases: 1 });
 	    SailPlayApi.call('load.user.history');
 	    SailPlayApi.call('leaderboard.load');
 
@@ -5776,18 +5780,34 @@ return webpackJsonp([0],[
 	  self.years = arr.reverse();
 
 	  self.months = {
-	    1: "January",
-	    2: "February",
-	    3: "March",
-	    4: "April",
-	    5: "May",
-	    6: "June",
-	    7: "July",
-	    8: "August",
-	    9: "September",
-	    10: "October",
-	    11: "November",
-	    12: "December"
+	    en: {
+	      1: "January",
+	      2: "February",
+	      3: "March",
+	      4: "April",
+	      5: "May",
+	      6: "June",
+	      7: "July",
+	      8: "August",
+	      9: "September",
+	      10: "October",
+	      11: "November",
+	      12: "December"
+	    },
+	    ru: {
+	      1: "Январь",
+	      2: "Февраль",
+	      3: "Март",
+	      4: "Апрель",
+	      5: "Мая",
+	      6: "Июнь",
+	      7: "Июль",
+	      8: "Август",
+	      9: "Сентябрь",
+	      10: "Октябрь",
+	      11: "Ноябрь",
+	      12: "Декабрь"
+	    }
 	  };
 
 	  return this;
@@ -5798,12 +5818,13 @@ return webpackJsonp([0],[
 	    template: _datepicker2.default,
 	    scope: {
 	      model: '=',
+	      lang: '=?',
 	      disabled: '=?'
 	    },
 	    link: function link(scope) {
 
 	      scope.days = dateService.days;
-	      scope.months = dateService.months;
+	      scope.months = scope.lang ? dateService.months[scope.lang] || dateService.months['ru'] : dateService.months['ru'];
 	      scope.years = dateService.years;
 
 	      scope.range = function (start, end) {
