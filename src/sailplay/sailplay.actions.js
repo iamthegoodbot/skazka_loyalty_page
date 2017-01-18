@@ -101,7 +101,7 @@ export let SailPlayActions = angular.module('sailplay.actions', [])
 
     let tags = [];
 
-    if (MAGIC_CONFIG && MAGIC_CONFIG.data.quiz) {
+    if (MAGIC_CONFIG && MAGIC_CONFIG.data && MAGIC_CONFIG.data.quiz) {
 
       tags = tags.concat(MAGIC_CONFIG.data.quiz.map(function (item) {
         return item.tag;

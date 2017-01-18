@@ -16,15 +16,24 @@ export let magic = angular.module('magic', [ SailPlay, core, Cookies, Tools, NgT
 
 .config(function(SailPlayProvider, MAGIC_CONFIG, SailPlayHistoryProvider, SailPlayActionsDataProvider){
 
-  SailPlayActionsDataProvider.set_actions_data(MAGIC_CONFIG.data.actions);
+  //authorization configurations
+  if(MAGIC_CONFIG.auth) {
 
-  SailPlayProvider.set_auth_hash_id(MAGIC_CONFIG.auth.auth_hash_id);
+    SailPlayProvider.set_auth_hash_id(MAGIC_CONFIG.auth.auth_hash_id);
 
-  SailPlayProvider.set_remote_config(MAGIC_CONFIG.auth.config || {
-    background: 'transparent'
-  });
+    SailPlayProvider.set_remote_config(MAGIC_CONFIG.auth.config || {
+      background: 'transparent'
+    });
 
-  SailPlayHistoryProvider.set_dictionary(MAGIC_CONFIG.data.history);
+  }
+
+  //apply data from config
+  if(MAGIC_CONFIG.data) {
+
+    SailPlayActionsDataProvider.set_actions_data(MAGIC_CONFIG.data.actions);
+    SailPlayHistoryProvider.set_dictionary(MAGIC_CONFIG.data.history);
+
+  }
 
   //SailPlayProvider.set_auth_type(MAGIC_CONFIG.auth.type);
 

@@ -71,15 +71,22 @@ return webpackJsonp([0],[
 
 	var magic = exports.magic = _angular2.default.module('magic', [_sailplay2.default, _core2.default, _angularCookie2.default, _tools2.default, _angularTouch2.default]).config(function (SailPlayProvider, MAGIC_CONFIG, SailPlayHistoryProvider, SailPlayActionsDataProvider) {
 
-	  SailPlayActionsDataProvider.set_actions_data(MAGIC_CONFIG.data.actions);
+	  //authorization configurations
+	  if (MAGIC_CONFIG.auth) {
 
-	  SailPlayProvider.set_auth_hash_id(MAGIC_CONFIG.auth.auth_hash_id);
+	    SailPlayProvider.set_auth_hash_id(MAGIC_CONFIG.auth.auth_hash_id);
 
-	  SailPlayProvider.set_remote_config(MAGIC_CONFIG.auth.config || {
-	    background: 'transparent'
-	  });
+	    SailPlayProvider.set_remote_config(MAGIC_CONFIG.auth.config || {
+	      background: 'transparent'
+	    });
+	  }
 
-	  SailPlayHistoryProvider.set_dictionary(MAGIC_CONFIG.data.history);
+	  //apply data from config
+	  if (MAGIC_CONFIG.data) {
+
+	    SailPlayActionsDataProvider.set_actions_data(MAGIC_CONFIG.data.actions);
+	    SailPlayHistoryProvider.set_dictionary(MAGIC_CONFIG.data.history);
+	  }
 
 	  //SailPlayProvider.set_auth_type(MAGIC_CONFIG.auth.type);
 	}).directive('sailplayMagic', function (SailPlay, ipCookie, SailPlayApi, $document, $rootScope, MAGIC_CONFIG) {
@@ -3796,7 +3803,7 @@ return webpackJsonp([0],[
 
 	    var tags = [];
 
-	    if (MAGIC_CONFIG && MAGIC_CONFIG.data.quiz) {
+	    if (MAGIC_CONFIG && MAGIC_CONFIG.data && MAGIC_CONFIG.data.quiz) {
 
 	      tags = tags.concat(MAGIC_CONFIG.data.quiz.map(function (item) {
 	        return item.tag;
