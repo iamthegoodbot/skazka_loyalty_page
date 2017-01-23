@@ -18,21 +18,27 @@ WidgetRegister({
 
       scope.user = SailPlayApi.data('load.user.info');
 
+      scope.modals = {
+        confirmed_gift: false,
+        selected_gift: false,
+        no_points_error: false
+      };
+
       scope.gift_unconfirm = function(){
 
-        scope.confirmed_gift = scope.selected_gift = scope.no_points_error = false;
+        scope.modals.confirmed_gift = scope.modals.selected_gift = scope.modals.no_points_error = false;
 
       };
 
       scope.gift_unconfirm();
 
       scope.gift_select = function(gift){
-        scope.selected_gift = gift || false;
+        scope.modals.selected_gift = gift || false;
       };
 
       scope.gift_confirm = function(){
 
-        scope.confirmed_gift = scope.selected_gift;
+        scope.modals.confirmed_gift = scope.modals.selected_gift;
 
         if(!scope.user()){
 
@@ -40,14 +46,14 @@ WidgetRegister({
 
         }
 
-        else if(scope.user().user_points.confirmed < scope.confirmed_gift.points){
+        else if(scope.user().user_points.confirmed < scope.modals.confirmed_gift.points){
 
-          scope.confirmed_gift = false;
-          scope.no_points_error = true;
+          scope.modals.confirmed_gift = false;
+          scope.modals.no_points_error = true;
 
         }
 
-        scope.selected_gift = false;
+        scope.modals.selected_gift = false;
 
       };
 

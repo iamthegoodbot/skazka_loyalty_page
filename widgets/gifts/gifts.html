@@ -34,23 +34,23 @@
 
     </div>
 
-    <magic-modal class="bns_overlay_gift" data-ng-cloak data-show="$parent.selected_gift">
+    <magic-modal class="bns_overlay_gift" data-ng-cloak data-show="modals.selected_gift">
 
       <div class="modal_gift_container">
 
-        <img class="gift_more_img" data-ng-src="{{ selected_gift.thumbs.url_250x250 | sailplay_pic }}"
-             alt="{{ selected_gift.name }}">
+        <img class="gift_more_img" data-ng-src="{{ modals.selected_gift.thumbs.url_250x250 | sailplay_pic }}"
+             alt="{{ modals.selected_gift.name }}">
 
         <div class="gift_more_block">
 
-          <span class="gift_more_name modal_gift_name" data-ng-bind="selected_gift.name"></span>
+          <span class="gift_more_name modal_gift_name" data-ng-bind="modals.selected_gift.name"></span>
 
           <span class="gift_more_points modal_gift_points"
-                data-ng-bind="(selected_gift.points | number) + ' ' + (selected_gift.points | sailplay_pluralize:('points.texts.pluralize' | tools))"></span>
+                data-ng-bind="(modals.selected_gift.points | number) + ' ' + (modals.selected_gift.points | sailplay_pluralize:('points.texts.pluralize' | tools))"></span>
 
-          <p class="gift_more_descr modal_gift_description" data-ng-bind="selected_gift.descr"></p>
+          <p class="gift_more_descr modal_gift_description" data-ng-bind="modals.selected_gift.descr"></p>
 
-          <div class="modal_gift_type_block clearfix" data-gift-type data-types="widget.options.gift_types" data-gift="selected_gift"></div>
+          <div class="modal_gift_type_block clearfix" data-gift-type data-types="widget.options.gift_types" data-gift="modals.selected_gift"></div>
 
           <div class="modal_gift_buttons">
             <span class="alink button_primary" data-ng-click="gift_select(false);">{{ 'buttons.texts.close' | tools }}</span>
@@ -58,7 +58,7 @@
             <span class="alink button_primary"
                   style="margin-left: 5px;"
                   data-ng-click="gift_confirm();"
-                  data-ng-bind="gift_affordable(selected_gift) ? widget.texts.get : widget.texts.no_points_button_text">{{ widget.texts.get }}</span>
+                  data-ng-bind="gift_affordable(modals.selected_gift) ? widget.texts.get : widget.texts.no_points_button_text">{{ widget.texts.get }}</span>
           </div>
 
         </div>
@@ -66,7 +66,7 @@
 
     </magic-modal>
 
-    <magic-modal class="bns_overlay_gift_not_points" data-ng-cloak data-show="no_points_error">
+    <magic-modal class="bns_overlay_gift_not_points" data-ng-cloak data-show="modals.no_points_error">
       <div>
         <p class="modal_gift_description">
           {{ widget.texts.no_points_message }}
@@ -76,15 +76,15 @@
       </div>
     </magic-modal>
 
-    <magic-modal class="bns_overlay_gift_complete" data-ng-cloak data-show="confirmed_gift">
+    <magic-modal class="bns_overlay_gift_complete" data-ng-cloak data-show="modals.confirmed_gift">
       <div>
         <p class="modal_gift_description">
           {{ widget.texts.confirm_message_start }}
-          {{ (confirmed_gift.points | number) + ' ' + (confirmed_gift.points | sailplay_pluralize:('points.texts.pluralize' | tools)) }}.
+          {{ (modals.confirmed_gift.points | number) + ' ' + (modals.confirmed_gift.points | sailplay_pluralize:('points.texts.pluralize' | tools)) }}.
           {{ widget.texts.confirm_message_end }}
         </p>
         <span class="alink button_primary" data-ng-click="gift_unconfirm();">{{ 'buttons.texts.close' | tools }}</span>
-        <span class="alink button_primary" data-ng-click="gift_purchase(confirmed_gift);">{{ 'buttons.texts.get' | tools }}</span>
+        <span class="alink button_primary" data-ng-click="gift_purchase(modals.confirmed_gift);">{{ 'buttons.texts.get' | tools }}</span>
       </div>
     </magic-modal>
   </div>
