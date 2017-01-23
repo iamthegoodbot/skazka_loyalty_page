@@ -1,12 +1,35 @@
+@import (reference) "../../src/theme/mixins";
+@import (reference) "../../src/theme/helpers";
+@import (reference) "../../src/theme/colors";
+
 .spm_wrapper {
 
-  .widget.leaderboard {
+  .spm_tools_widget.leaderboard {
+
+    .container {
+
+      width: 100%;
+      padding: 80px 5% 40px 5%;
+      .box-sizing(border-box);
+
+    }
+
+    .bon_header {
+      color: @black;
+      font-size: 30px;
+      font-family: 'RotondaC';
+    }
+    .bon_sub_header {
+      font-size: 14px;
+      color: @black;
+      margin-top: 10px;
+    }
 
     ul li{
       list-style: none;
     }
 
-    &__list {
+    .leaderboard__list {
       max-width: 600px;
       box-sizing: border-box;
       padding: 0 10px;
