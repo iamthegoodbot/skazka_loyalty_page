@@ -1,0 +1,82 @@
+<div id="gifts_grid_widget" class="bon_choice_main container clearfix">
+
+    <h3 class="bon_header">
+        <span class="header" data-ng-bind="widget.texts.header"></span>
+    </h3>
+
+    <h4 class="bon_sub_header">
+        <span class="caption" data-ng-bind="widget.texts.caption"></span>
+    </h4>
+
+    <div class="gifts_grid__wrapper clearfix">
+
+        <div class="gifts_grid__blocks clearfix">
+
+            <div class="gifts_grid__block clearfix">
+
+                <div class="gifts_grid__item clearfix" data-ng-repeat="gift in blocks[state] track by $index">
+
+                    <span class="gifts_grid__item-name gift_name" data-ng-bind="gift.name"></span>
+
+                    <span class="gifts_grid__item-points gift_points"
+                          data-ng-bind="(gift.points | number) + ' ' + (gift.points | sailplay_pluralize:('points.texts.pluralize' | tools))"></span>
+
+                    <img class="gifts_grid__item-img gift_img"
+                         data-ng-src="{{ gift.thumbs.url_250x250 | sailplay_pic }}"
+                         alt="{{ gift.name }}">
+
+
+                    <a class="gifts_grid__item-button button_primary" href="#"
+                       data-ng-bind="widget.texts.get"
+                       data-ng-click="$parent.selected_gift = gift;$event.preventDefault();"></a>
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <a href="#" class="gifts_grid__arrow gifts_grid__arrow_l slider_arrow_left"
+           data-ng-if="state"
+           data-ng-click="$event.preventDefault(); move(-1);"></a>
+
+        <a href="#" class="gifts_grid__arrow gifts_grid__arrow_r slider_arrow_right"
+           data-ng-if="blocks.length && state != (blocks.length-1)"
+           data-ng-click="$event.preventDefault(); move(1);"></a>
+
+    </div>
+
+    <magic-modal class="bns_overlay_gift" data-show="selected_gift">
+
+        <div class="modal_gift_container">
+
+            <img class="gift_more_img" data-ng-src="{{ selected_gift.thumbs.url_250x250 | sailplay_pic }}"
+                 alt="{{ selected_gift.name }}">
+
+            <div class="gift_more_block">
+
+                <span data-ng-bind="selected_gift"></span>
+
+                <span class="gift_more_name modal_gift_name" data-ng-bind="selected_gift.name"></span>
+
+                <span class="gift_more_points modal_gift_points"
+                      data-ng-bind="(selected_gift.points | number) + ' ' + (selected_gift.points | sailplay_pluralize:('points.texts.pluralize' | tools))"></span>
+
+                <p class="gift_more_descr modal_gift_description" data-ng-bind="selected_gift.descr"></p>
+
+                <div class="modal_gift_buttons">
+
+                    <span class="alink button_primary" data-ng-click="$parent.$parent.selected_gift=null">{{ 'buttons.texts.close' | tools }}</span>
+
+                    <span class="alink button_primary"
+                          style="margin-left: 5px;"
+                          data-ng-click="gift_confirm(selected_gift);"
+                          data-ng-bind="widget.texts.get"></span>
+                </div>
+
+            </div>
+        </div>
+
+
+</div>

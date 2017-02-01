@@ -542,7 +542,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    });
 
 	    //USER INFO
-	    sp.on('load.user.info', function (p) {
+	    sp.on('load.user.info', function (p, callback) {
 	      if (_config == {}) {
 	        initError();
 	        return;
@@ -567,6 +567,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        params.auth_hash = _config.auth_hash;
 	      }
 	      JSONP.get(_config.DOMAIN + _config.urls.users.info, params, function (res) {
+	        callback && callback(res);
 	        if (res.status == 'ok') {
 	          sp.send('load.user.info.success', res);
 	        } else {
