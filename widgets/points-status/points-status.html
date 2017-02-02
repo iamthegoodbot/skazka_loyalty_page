@@ -2,24 +2,32 @@
 
     <div class="points-status__wrapper clearfix">
 
-        <div class="bps_left points_block clearfix" data-ng-if="user()">
-        <span class="points_confirmed">
-          <span class="points_confirmed_value" data-ng-bind="user().user_points.total | number"></span>
-          <span class="points_confirmed_name"
-                data-ng-bind="user().user_points.total | sailplay_pluralize: ('points.texts.pluralize' | tools)"></span>
-        </span>
+        <div class="points-status__left points_block clearfix" data-ng-if="user()">
+
+            <span class="points_confirmed">
+                <span class="points_confirmed_value" data-ng-bind="user().user_points.total | number"></span>
+                <span class="points_confirmed_name"
+                    data-ng-bind="user().user_points.total | sailplay_pluralize: ('points.texts.pluralize' | tools)"></span>
+            </span>
+
             <a class="button_primary history_button" href="#"
-               data-ng-click="$event.preventDefault(); $parent.history = true;" data-ng-bind="widget.texts.history_button"></a>
+               data-ng-click="$event.preventDefault(); $parent.history = true;"
+               data-ng-bind="widget.texts.history_button"></a>
+
         </div>
 
-        <div class="bps_right progress_block clearfix">
+        <div class="points-status__right progress_block clearfix">
+
             <div class="progress_line_main">
+
                 <div class="progress_line_bg progress_bar progress_bar_border"></div>
+
                 <div class="progress_line progress_bar_filled"
                      data-ng-style="{ width: getProgress(user().user_points.total, widget.options.status_list) }">
                 </div>
 
-                <div class="gift_item progress_bar_border" data-ng-repeat="item in widget.options.status_list track by $index"
+                <div class="gift_item progress_bar_border"
+                     data-ng-repeat="item in widget.options.status_list track by $index"
                      data-ng-class="{ act : item.points <= user().user_points.total, progress_bar_gift_filled: item.points <=user().user_points.total, progress_bar_gift: item.points > user().user_points.total}"
                      data-ng-style="{ left: (100/widget.options.status_list.length * ($index+1)) + '%', 'background-image': 'url(' + item.image +')' }">
 
@@ -28,6 +36,7 @@
                 </div>
 
             </div>
+
         </div>
 
     </div>
@@ -53,7 +62,8 @@
                         <span><b class="modal_history_content" data-ng-bind="item | history_item"></b></span>
                     </td>
                     <td>
-                        <span class="modal_history_points" data-ng-if="item.points_delta" data-ng-bind="((item.points_delta|number) || 0) + ' ' + (item.points_delta | sailplay_pluralize:('points.texts.pluralize' | tools))"></span>
+                        <span class="modal_history_points" data-ng-if="item.points_delta"
+                              data-ng-bind="((item.points_delta|number) || 0) + ' ' + (item.points_delta | sailplay_pluralize:('points.texts.pluralize' | tools))"></span>
                     </td>
                 </tr>
 
@@ -64,7 +74,6 @@
                                      data-template-url="points_status.history_pagination"
                                      data-auto-hide="true"></dir-pagination-controls>
         </div>
-
 
 
     </magic-modal>

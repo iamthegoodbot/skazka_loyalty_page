@@ -4,93 +4,101 @@
 
 .spm_wrapper {
 
-  #gifts_grid_widget {
+  .gifts_grid_widget {
 
-    .bon_header {
-      float: none;
-    }
+    .gifts_grid {
 
-    .bon_sub_header {
-      float: none;
-    }
-
-    .gifts_grid__wrapper {
-      width: 100%;
-      max-width: 1200px;
-      height: auto;
-      margin: 0 auto;
-      position: relative;
-    }
-
-    .gifts_grid__blocks {
-      display: block;
-      width: 100%;
-      padding: 0 50px;
-      box-sizing: border-box;
-      position: relative;
-    }
-
-    .gifts_grid__block {
-      display: block;
-      width: 100%;
-      height: auto;
-      float: left;
-    }
-
-    .gifts_grid__item {
-      width: 33.3%;
-      height: auto;
-      float: left;
-      box-sizing: border-box;
-      padding: 3%;
-      position: relative;
-
-      @media (max-width: 800px) {
-        width: 50%;
+      &__header {
+        width: 90%;
+        display: block;
+        margin: 0 auto;
       }
 
-      @media (max-width: 500px) {
+      &__caption {
+        width: 90%;
+        display: block;
+        margin: 0 auto;
+      }
+
+      &__wrapper {
         width: 100%;
+        max-width: 1200px;
+        height: auto;
+        margin: 0 auto;
+        position: relative;
       }
 
-      &-img {
-        display: inline-block;
+      &__blocks {
+        display: block;
         width: 100%;
+        padding: 0 50px;
+        box-sizing: border-box;
+        position: relative;
       }
 
-      &-name {
-        display: inline-block;
+      &__block {
+        display: block;
         width: 100%;
+        height: auto;
+        float: left;
       }
 
-      &-points {
-        display: inline-block;
-        width: 100%;
+      &__item {
+        width: 33.3%;
+        height: auto;
+        float: left;
+        box-sizing: border-box;
+        padding: 3%;
+        position: relative;
+
+        @media (max-width: 800px) {
+          width: 50%;
+        }
+
+        @media (max-width: 500px) {
+          width: 100%;
+        }
+
+        &-img {
+          display: inline-block;
+          width: 100%;
+        }
+
+        &-name {
+          display: inline-block;
+          width: 100%;
+        }
+
+        &-points {
+          display: inline-block;
+          width: 100%;
+        }
+
+        &-button {
+          display: inline-block;
+        }
+
       }
 
-      &-button {
-        display: inline-block;
-      }
+      &__arrow {
+        width: 50px;
+        height: 100px;
+        background-size: contain;
+        background-repeat: no-repeat;
+        display: block;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        margin: auto;
 
-    }
+        &_l {
+          left: 0;
+        }
 
-    .gifts_grid__arrow {
-      width: 50px;
-      height: 100px;
-      background-size: contain;
-      background-repeat: no-repeat;
-      display: block;
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      margin: auto;
+        &_r {
+          right: 0;
+        }
 
-      &_l {
-        left: 0;
-      }
-
-      &_r {
-        right: 0;
       }
 
     }
