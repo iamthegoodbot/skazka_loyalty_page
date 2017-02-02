@@ -91,6 +91,7 @@ WidgetRegister({
        */
       SailPlay.on('gifts.purchase.success', (res) => {
         $rootScope.$apply(() => {
+          scope.selected_gift = null;
           $rootScope.$broadcast('notifier:notify', {
             header: scope.widget.texts.purchase_success_header,
             body: (res.coupon_number && (scope.widget.texts.coupon_number + ' ' + res.coupon_number)) || res.success_message || scope.widget.texts.gift_received
@@ -103,6 +104,7 @@ WidgetRegister({
        */
       SailPlay.on('gift.purchase.error', (error) => {
         $rootScope.$apply(() => {
+          scope.selected_gift = null;
           $rootScope.$broadcast('notifier:notify', {
             header: scope.widget.texts.purchase_error_header,
             body: error.message || scope.widget.texts.gift_received_error

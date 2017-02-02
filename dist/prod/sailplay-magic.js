@@ -43706,6 +43706,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	       */
 	      SailPlay.on('gifts.purchase.success', function (res) {
 	        $rootScope.$apply(function () {
+	          scope.selected_gift = null;
 	          $rootScope.$broadcast('notifier:notify', {
 	            header: scope.widget.texts.purchase_success_header,
 	            body: res.coupon_number && scope.widget.texts.coupon_number + ' ' + res.coupon_number || res.success_message || scope.widget.texts.gift_received
@@ -43718,6 +43719,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	       */
 	      SailPlay.on('gift.purchase.error', function (error) {
 	        $rootScope.$apply(function () {
+	          scope.selected_gift = null;
 	          $rootScope.$broadcast('notifier:notify', {
 	            header: scope.widget.texts.purchase_error_header,
 	            body: error.message || scope.widget.texts.gift_received_error
