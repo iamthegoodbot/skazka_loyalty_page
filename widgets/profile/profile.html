@@ -140,7 +140,7 @@
 
           <div data-ng-switch-when="phone" class="clearfix">
             <label class="form_label">{{ field.label }}</label>
-            <input class="form_input" type="text" data-ui-mask="{{ field.placeholder }}" data-ng-model="field.value">
+            <input class="form_input" type="text" data-model-view-value="true" data-ui-mask="{{ field.placeholder }}" data-ng-model="field.value">
           </div>
 
           <div data-ng-switch-when="email" class="clearfix">

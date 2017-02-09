@@ -34,7 +34,7 @@ export let ToolsDatepicker = angular.module('ui.datepicker', [])
 
   })
 
-  .directive('datePicker', function (dateService) {
+  .directive('datePicker', function (dateService, $rootScope) {
     return {
       restrict: 'E',
       replace: true,
@@ -46,6 +46,7 @@ export let ToolsDatepicker = angular.module('ui.datepicker', [])
       },
       link: function (scope) {
 
+        scope.date = $rootScope.MAGIC_CONFIG.tools.date;
         scope.days = dateService.days;
         scope.years = dateService.years;
 
