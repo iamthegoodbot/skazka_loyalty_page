@@ -90,10 +90,10 @@ WidgetRegister({
               if(field.value) {
 
                 // If the phone matches the phone in user info
-                if(field.name == 'addPhone' && field.value == scope.user().user.phone) break;
+                if(field.name == 'addPhone' && scope.user().user.phone && field.value.replace(/\D/g,'') == scope.user().user.phone.replace(/\D/g,'')) break;
 
                 // If the email matches the email in user info
-                if(field.name == 'addEmail' && field.value == scope.user().user.email) break;
+                if(field.name == 'addEmail' && scope.user().user.email && field.value == scope.user().user.email) break;
 
                 data[field.name] = field.value;
 
@@ -118,7 +118,8 @@ WidgetRegister({
         // Update user info
         SailPlay.send('users.update', data, (res_user) => {
           if (res_user && res_user.status == 'ok') {
-
+            // Call user info for get actualy data
+            SailPlayApi.call('load.user.info', { all: 1, purchases: 1 });
             // Add custom variables
             SailPlay.send('vars.add', {custom_vars: vars}, (res_vars) => {
               if (res_vars && res_vars.status == 'ok') {

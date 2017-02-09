@@ -21,15 +21,10 @@ const ProfileWidget = {
         show_fill_profile: false,
         fill_profile: function(state){
 
-          console.log(state);
-
           scope.profile.show_fill_profile = state || false;
 
         }
       };
-
-      console.log('profile widget scope');
-      console.log(scope);
 
     }
 

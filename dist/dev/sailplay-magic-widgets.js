@@ -1051,10 +1051,10 @@ return webpackJsonp([2],[
 	                if (field.value) {
 
 	                  // If the phone matches the phone in user info
-	                  if (field.name == 'addPhone' && field.value == scope.user().user.phone) break;
+	                  if (field.name == 'addPhone' && scope.user().user.phone && field.value.replace(/\D/g, '') == scope.user().user.phone.replace(/\D/g, '')) break;
 
 	                  // If the email matches the email in user info
-	                  if (field.name == 'addEmail' && field.value == scope.user().user.email) break;
+	                  if (field.name == 'addEmail' && scope.user().user.email && field.value == scope.user().user.email) break;
 
 	                  data[field.name] = field.value;
 	                }
@@ -1078,7 +1078,8 @@ return webpackJsonp([2],[
 	        // Update user info
 	        SailPlay.send('users.update', data, function (res_user) {
 	          if (res_user && res_user.status == 'ok') {
-
+	            // Call user info for get actualy data
+	            SailPlayApi.call('load.user.info', { all: 1, purchases: 1 });
 	            // Add custom variables
 	            SailPlay.send('vars.add', { custom_vars: vars }, function (res_vars) {
 	              if (res_vars && res_vars.status == 'ok') {
@@ -2398,14 +2399,9 @@ return webpackJsonp([2],[
 	        show_fill_profile: false,
 	        fill_profile: function fill_profile(state) {
 
-	          console.log(state);
-
 	          scope.profile.show_fill_profile = state || false;
 	        }
 	      };
-
-	      console.log('profile widget scope');
-	      console.log(scope);
 	    };
 	  }
 
