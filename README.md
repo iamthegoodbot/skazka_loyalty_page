@@ -1,9 +1,13 @@
 # SailPlay Magic
 
 > And when you left alone, you left alone it was tragic
+>
 > But we, we both know now, we both know now it was magic
+>
 > And when you left alone, you left alone it was tragic
+>
 > But we, we both know now
+>
 > We both know now, this was magic, magic
 >
 > -- <cite>Wasted Penguinz</cite>
