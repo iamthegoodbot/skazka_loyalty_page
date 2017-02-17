@@ -44,7 +44,7 @@
         </span>
         <a class="button_link history_button" href="#" data-ng-click="$event.preventDefault(); profile.history = true;">{{ widget.texts.history_button }}</a>
       </div>
-      <div class="bps_right progress_block clearfix" data-ng-if="progress">
+      <div class="bps_right progress_block clearfix" data-ng-if="progress" ng-class="{'no-user': !user()}">
         <div class="progress_line_main">
           <div class="progress_line_bg progress_bar progress_bar_border"></div>
           <div class="progress_line progress_bar_filled" data-procent="0" data-ng-style="{ width: progress.plenum + '%' }">

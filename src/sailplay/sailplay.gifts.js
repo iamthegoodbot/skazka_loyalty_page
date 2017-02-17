@@ -25,6 +25,7 @@ export let SailPlayGifts = angular.module('sailplay.gifts', [])
 
       let user = SailPlayApi.data('load.user.info');
 
+      scope.user = user;
       scope.gift_purchase = function(gift){
 
         SailPlay.send('gifts.purchase', { gift: gift });

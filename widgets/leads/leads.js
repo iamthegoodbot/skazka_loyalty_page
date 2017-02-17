@@ -1,6 +1,6 @@
 import { WidgetRegister } from '@core/widget';
 import LeadsWidgetTemplate from './leads.html';
-import './leads.less';
+// import './leads.less';
 
 WidgetRegister({
   id: 'leads',

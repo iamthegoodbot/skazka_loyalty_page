@@ -14,7 +14,7 @@ window.SAILPLAY_MAGIC_CONFIG = {
           "background-position": "top center",
           "height": "684px",
           "background-color": "blue"
-        },
+        }
       }
     },
     {
@@ -165,6 +165,9 @@ window.SAILPLAY_MAGIC_CONFIG = {
         "container": {
           "background-color": "#EDEDED"
         },
+        "no-user": {
+          "display": "none"
+        },
         "badge": {
           "border": "none",
           "height": "auto",
@@ -244,6 +247,19 @@ window.SAILPLAY_MAGIC_CONFIG = {
     }
   ],
   "tools": {
+    "layout": {
+      "styles": {
+        "no-user": {
+          "display": "none"
+        },
+        "header.no-user": {
+          "display": "inline-block"
+        },
+        "profile.no-user": {
+          "display": "inline-block"
+        }
+      }
+    },
     "date": {
       "months": {
         "1": "January",

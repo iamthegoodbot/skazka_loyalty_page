@@ -1286,6 +1286,7 @@ return webpackJsonp([0],[
 
 	      var user = SailPlayApi.data('load.user.info');
 
+	      scope.user = user;
 	      scope.gift_purchase = function (gift) {
 
 	        SailPlay.send('gifts.purchase', { gift: gift });
@@ -5406,7 +5407,7 @@ return webpackJsonp([0],[
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var Widget = exports.Widget = _angular2.default.module('magic.tools.widget', []).directive('widget', function ($compile, MagicWidget, $injector) {
+	var Widget = exports.Widget = _angular2.default.module('magic.tools.widget', []).directive('widget', function ($compile, MagicWidget, $injector, SailPlayApi) {
 	  return {
 	    restrict: 'E',
 	    replace: true,
@@ -5415,7 +5416,6 @@ return webpackJsonp([0],[
 	    },
 	    template: _widget2.default,
 	    link: function link(scope, elm, attrs) {
-
 	      var widget_wrapper = _angular2.default.element(elm[0].querySelector('[data-widget-wrapper]'));
 	      console.dir(widget_wrapper);
 
@@ -5433,6 +5433,7 @@ return webpackJsonp([0],[
 
 	        var widget_scope = scope.$new();
 
+	        widget.user = SailPlayApi.data('load.user.info');
 	        widget_scope.widget = widget;
 
 	        WIDGET_CONFIG.controller.$inject = WIDGET_CONFIG.inject || [];
@@ -5481,7 +5482,7 @@ return webpackJsonp([0],[
 /* 116 */
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"spm_tools_widget {{ widget.id }}\" data-ng-show=\"widget.enabled\">\n  <widget-style data-widget=\"widget\"></widget-style>\n  <div data-widget-wrapper class=\"clearfix\"></div>\n</div>";
+	module.exports = "<div class=\"spm_tools_widget {{ widget.id }}\" data-ng-show=\"widget.enabled\" data-ng-class=\"{'no-user': !widget.user()}\">\n  <div>{{ widget.counter }}</div>\n  <widget-style data-widget=\"widget\"></widget-style>\n  <div data-widget-wrapper class=\"clearfix\"></div>\n</div>";
 
 /***/ },
 /* 117 */

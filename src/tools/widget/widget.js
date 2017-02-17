@@ -4,7 +4,7 @@ import './widget.less';
 
 export let Widget = angular.module('magic.tools.widget', [])
 
-.directive('widget', function ($compile, MagicWidget, $injector) {
+.directive('widget', function ($compile, MagicWidget, $injector, SailPlayApi) {
   return {
     restrict: 'E',
     replace: true,
@@ -13,7 +13,6 @@ export let Widget = angular.module('magic.tools.widget', [])
     },
     template: WidgetTemplate,
     link: (scope, elm, attrs) => {
-
       let widget_wrapper = angular.element(elm[0].querySelector('[data-widget-wrapper]'));
       console.dir(widget_wrapper);
 
@@ -31,6 +30,7 @@ export let Widget = angular.module('magic.tools.widget', [])
 
         let widget_scope = scope.$new();
 
+        widget.user = SailPlayApi.data('load.user.info');
         widget_scope.widget = widget;
 
         WIDGET_CONFIG.controller.$inject = WIDGET_CONFIG.inject || [];

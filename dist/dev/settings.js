@@ -15,12 +15,6 @@ return webpackJsonp([3],{
 
 	"use strict";
 
-	var _defineProperty2 = __webpack_require__(208);
-
-	var _defineProperty3 = _interopRequireDefault(_defineProperty2);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 	window.SAILPLAY_MAGIC_CONFIG = {
 	  "auth": {
 	    "type": "hybrid",
@@ -55,7 +49,7 @@ return webpackJsonp([3],{
 	      }
 	    },
 	    "images": {},
-	    "styles": __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"./css-to-json!less-loader!./profile.less\""); e.code = 'MODULE_NOT_FOUND'; throw e; }())),
+	    "styles": __webpack_require__(210),
 	    "fill_profile": {
 	      "header": "Update your profile",
 	      "config": {
@@ -161,159 +155,7 @@ return webpackJsonp([3],{
 	      "gift_received_error": "Sorry, we're unable to process your request at this time"
 	    },
 	    "images": {},
-	    "styles": (0, _defineProperty3.default)({
-	      "container": {
-	        "background-color": "#3e699e"
-	      },
-	      "bon_header": {
-	        "margin-top": "80px",
-	        "text-align": "center",
-	        "text-transform": "uppercase",
-	        "color": "white"
-	      },
-	      "bon_header .header": {
-	        "color": "white"
-	      },
-	      "bon_sub_header": {
-	        "text-align": "center",
-	        "color": "#fff",
-	        "margin-top": "0"
-	      },
-	      "bon_sub_header .caption": {
-	        "color": "#fff"
-	      },
-	      "header": {
-	        "color": "#142D61",
-	        "font-family": "helvetica,arial,nimbus sans l,sans-serif"
-	      },
-	      "caption": {
-	        "color": "#403C3C",
-	        "font-family": "helvetica,arial,nimbus sans l,sans-serif"
-	      },
-	      "gift": {
-	        "background-color": "white",
-	        "border-color": "#5386b1",
-	        "border-radius": "20px",
-	        "border-width": "12px",
-	        "margin-top": "10px",
-	        "margin-bottom": "10px",
-	        "position": "relative",
-	        "transition": "all .25s ease-out"
-	      },
-	      "gift:before": {
-	        "transition": "all .25s ease-out"
-	      },
-	      "gift_img": {
-	        "display": "inline"
-	      },
-	      "gift:hover": {
-	        "border-color": "#d72906"
-	      },
-	      "gift:hover:before": {
-	        "position": "absolute",
-	        "width": "100%",
-	        "height": "100%",
-	        "background": "rgba(255, 255, 255, .8)",
-	        "left": "0",
-	        "top": "0",
-	        "z-index": "10"
-	      },
-	      "gift:hover .bon_item_iner a.button_primary": {
-	        "visibility": "visible",
-	        "opacity": "1",
-	        "z-index": "11"
-	      },
-	      "gift .bon_item_iner .bon_item_name": {
-	        "visibility": "visible",
-	        "opacity": "1"
-	      },
-	      "gift .bon_item_iner .bon_tem_info": {
-	        "visibility": "visible",
-	        "opacity": "1"
-	      },
-	      "gift .bon_item_iner a.button_primary": {
-	        "width": "120px",
-	        "top": "50%",
-	        "bottom": "auto",
-	        "text-shadow": "none",
-	        "border": "none",
-	        "padding": "13px 30px",
-	        "-webkit-transform": "translateY(-50%)",
-	        "-moz-transform": "translateY(-50%)",
-	        "transform": "translateY(-50%)",
-	        "margin-left": "-60px"
-	      },
-	      "gift_name": {
-	        "color": "#333",
-	        "font-family": "helvetica,arial,nimbus sans l,sans-serif"
-	      },
-	      "gift_points": {
-	        "color": "#514D4D",
-	        "font-family": "helvetica,arial,nimbus sans l,sans-serif",
-	        "font-size": "16px",
-	        "font-weight": "bold",
-	        "opacity": "1"
-	      },
-	      "description": {
-	        "color": "#333",
-	        "font-family": "helvetica,arial,nimbus sans l,sans-serif",
-	        "font-size": "14px"
-	      },
-	      "bns_overlay_gift .modal_container": {
-	        "width": "500px"
-	      },
-	      "modal_gift_container": {
-	        "text-align": "center",
-	        "padding-top": "20px"
-
-	      },
-	      "modal_gift_container .gift_more_block": {
-	        "width": "100%",
-	        "text-align": "left",
-	        "margin-top": "30px",
-	        "background": "#dedede",
-	        "padding": "0 50px 40px"
-	      },
-	      "modal_gift_name": {
-	        "color": "#136AA1",
-	        "font-size": "30px",
-	        "font-family": "helvetica,arial,nimbus sans l,sans-serif",
-	        "margin-top": "30px"
-	      },
-	      "modal_gift_points": {
-	        "color": "#fa1100",
-	        "font-family": "helvetica,arial,nimbus sans l,sans-serif",
-	        "font-size": "20px",
-	        "opacity": "1"
-	      },
-	      "modal_gift_points:before": {
-	        "content": "'-'"
-	      },
-	      "modal_gift_description": {
-	        "color": "#403C3C",
-	        "font-family": "helvetica,arial,nimbus sans l,sans-serif",
-	        "font-size": "16px",
-	        "line-height": "24px",
-	        "margin-top": "32px",
-	        "margin-bottom": "34px"
-	      },
-	      "modal_gift_buttons .button_primary": {
-	        "width": "168px",
-	        "line-height": "39px",
-	        "font-weight": "bold",
-	        "text-align": "center",
-	        "padding": "0"
-	      },
-	      "modal_gift_buttons .button_primary:nth-child(1)": {
-	        "float": "right"
-	      },
-	      "bns_overlay_gift_complete .modal_container, .bns_overlay_notify .modal_container": {
-	        "width": "500px"
-	      }
-	    }, "bns_overlay_gift .modal_container", {
-	      "padding": "0",
-	      "width": "500px"
-	    })
+	    "styles": __webpack_require__(211)
 	  }, {
 	    "id": "badges",
 	    "enabled": true,
@@ -324,6 +166,9 @@ return webpackJsonp([3],{
 	    "styles": {
 	      "container": {
 	        "background-color": "#EDEDED"
+	      },
+	      "no-user": {
+	        "display": "none"
 	      },
 	      "badge": {
 	        "border": "none",
@@ -402,25 +247,38 @@ return webpackJsonp([3],{
 	    "styles": __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"./css-to-json!less-loader!./leaderboard.less\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()))
 	  }],
 	  "tools": {
+	    "layout": {
+	      "styles": {
+	        "no-user": {
+	          "display": "none"
+	        },
+	        "header.no-user": {
+	          "display": "inline-block"
+	        },
+	        "profile.no-user": {
+	          "display": "inline-block"
+	        }
+	      }
+	    },
 	    "date": {
 	      "months": {
-	        "1": "Январь",
-	        "2": "Февраль",
-	        "3": "Март",
-	        "4": "Апрель",
-	        "5": "Мая",
-	        "6": "Июнь",
-	        "7": "Июль",
-	        "8": "Август",
-	        "9": "Сентябрь",
-	        "10": "Октябрь",
-	        "11": "Ноябрь",
-	        "12": "Декабрь"
+	        "1": "January",
+	        "2": "February",
+	        "3": "March",
+	        "4": "April",
+	        "5": "May",
+	        "6": "June",
+	        "7": "July",
+	        "8": "August",
+	        "9": "September",
+	        "10": "October",
+	        "11": "November",
+	        "12": "December"
 	      },
 	      "placeholder": {
-	        "month": "Месяц",
-	        "day": "День",
-	        "year": "Год"
+	        "month": "Month",
+	        "day": "Day",
+	        "year": "Year"
 	      }
 	    },
 	    "modal": {
@@ -429,7 +287,7 @@ return webpackJsonp([3],{
 	      },
 	      "styles": {
 	        "modal_container": {
-	          "background-color": "#FFFFFF",
+	          "background-color": "#ededed",
 	          "box-shadow": "0px 0px 16px 0px rgba(50,50,50,0.75)"
 	        },
 	        "modal_container:before": {
@@ -940,333 +798,23 @@ return webpackJsonp([3],{
 	          }
 	        }
 	      }
-	    },
-	    "statuses": [{
-	      "color": "#339933",
-	      "status": "Green",
-	      "points": 0
-	    }, {
-	      "color": "#003399",
-	      "status": "Blue",
-	      "points": 2000
-	    }, {
-	      "color": "#F4A833",
-	      "status": "Gold",
-	      "points": 6000
-	    }]
-	  }
-	};
-
-/***/ },
-
-/***/ 11:
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = { "default": __webpack_require__(12), __esModule: true };
-
-/***/ },
-
-/***/ 12:
-/***/ function(module, exports, __webpack_require__) {
-
-	__webpack_require__(13);
-	var $Object = __webpack_require__(16).Object;
-	module.exports = function defineProperty(it, key, desc){
-	  return $Object.defineProperty(it, key, desc);
-	};
-
-/***/ },
-
-/***/ 13:
-/***/ function(module, exports, __webpack_require__) {
-
-	var $export = __webpack_require__(14);
-	// 19.1.2.4 / 15.2.3.6 Object.defineProperty(O, P, Attributes)
-	$export($export.S + $export.F * !__webpack_require__(24), 'Object', {defineProperty: __webpack_require__(20).f});
-
-/***/ },
-
-/***/ 14:
-/***/ function(module, exports, __webpack_require__) {
-
-	var global    = __webpack_require__(15)
-	  , core      = __webpack_require__(16)
-	  , ctx       = __webpack_require__(17)
-	  , hide      = __webpack_require__(19)
-	  , PROTOTYPE = 'prototype';
-
-	var $export = function(type, name, source){
-	  var IS_FORCED = type & $export.F
-	    , IS_GLOBAL = type & $export.G
-	    , IS_STATIC = type & $export.S
-	    , IS_PROTO  = type & $export.P
-	    , IS_BIND   = type & $export.B
-	    , IS_WRAP   = type & $export.W
-	    , exports   = IS_GLOBAL ? core : core[name] || (core[name] = {})
-	    , expProto  = exports[PROTOTYPE]
-	    , target    = IS_GLOBAL ? global : IS_STATIC ? global[name] : (global[name] || {})[PROTOTYPE]
-	    , key, own, out;
-	  if(IS_GLOBAL)source = name;
-	  for(key in source){
-	    // contains in native
-	    own = !IS_FORCED && target && target[key] !== undefined;
-	    if(own && key in exports)continue;
-	    // export native or passed
-	    out = own ? target[key] : source[key];
-	    // prevent global pollution for namespaces
-	    exports[key] = IS_GLOBAL && typeof target[key] != 'function' ? source[key]
-	    // bind timers to global for call from export context
-	    : IS_BIND && own ? ctx(out, global)
-	    // wrap global constructors for prevent change them in library
-	    : IS_WRAP && target[key] == out ? (function(C){
-	      var F = function(a, b, c){
-	        if(this instanceof C){
-	          switch(arguments.length){
-	            case 0: return new C;
-	            case 1: return new C(a);
-	            case 2: return new C(a, b);
-	          } return new C(a, b, c);
-	        } return C.apply(this, arguments);
-	      };
-	      F[PROTOTYPE] = C[PROTOTYPE];
-	      return F;
-	    // make static versions for prototype methods
-	    })(out) : IS_PROTO && typeof out == 'function' ? ctx(Function.call, out) : out;
-	    // export proto methods to core.%CONSTRUCTOR%.methods.%NAME%
-	    if(IS_PROTO){
-	      (exports.virtual || (exports.virtual = {}))[key] = out;
-	      // export proto methods to core.%CONSTRUCTOR%.prototype.%NAME%
-	      if(type & $export.R && expProto && !expProto[key])hide(expProto, key, out);
 	    }
 	  }
 	};
-	// type bitmap
-	$export.F = 1;   // forced
-	$export.G = 2;   // global
-	$export.S = 4;   // static
-	$export.P = 8;   // proto
-	$export.B = 16;  // bind
-	$export.W = 32;  // wrap
-	$export.U = 64;  // safe
-	$export.R = 128; // real proto method for `library` 
-	module.exports = $export;
 
 /***/ },
 
-/***/ 15:
+/***/ 210:
 /***/ function(module, exports) {
 
-	// https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
-	var global = module.exports = typeof window != 'undefined' && window.Math == Math
-	  ? window : typeof self != 'undefined' && self.Math == Math ? self : Function('return this')();
-	if(typeof __g == 'number')__g = global; // eslint-disable-line no-undef
+	module.exports = {"container":{"background":"transparent","margin-top":"-453px","padding":"0 5%"},"bon_profile_right":{"float":"left","margin-left":"15%"},"bon_profile_right .user_avatar":{"float":"none","width":"165px","max-width":"165px","box-shadow":"none","-webkit-box-shadow":"none","position":"relative","text-align":"center"},"bon_profile_right .user_avatar_image":{"-webkit-box-shadow":"none","box-shadow":"none"},"bon_profile_right .user_info":{"float":"none","width":"auto","margin-left":"-84px","margin-top":"2px","text-align":"center"},"bon_profile_right .edit_profile_btn":{"background":"none","color":"#cecece","text-decoration":"none"},"bon_profile_right .login_reg_btn":{"height":"165px","width":"165px","border-radius":"50%","padding":"0","margin":"0","float":"none"},"bon_profile_right .logout_btn":{"position":"absolute","bottom":"-105px","margin-left":"-15px","color":"#cecece","text-decoration":"none","background":"none"},"progress_line_main .gift_item":{"background-color":"rgba(255, 255, 255, .9)","background-image":"url(\"data:image/svg+xml,%3C!-- Generator: Adobe Illustrator 19.2.0, SVG Export Plug-In --%3E %3Csvg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:a='http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/' x='0px' y='0px' width='22.6px' height='24.7px' viewBox='0 0 22.6 24.7' style='enable-background:new 0 0 22.6 24.7' xml:space='preserve'%3E %3Cdefs%3E %3C/defs%3E %3Cg%3E %3Cpath fill='#FA1100' class='st0' d='M12.2,24.7h5.9c1.5,0,2.7-1.2,2.7-2.7v-9.2c0-0.4-0.4-0.8-0.8-0.8h-7.8V24.7z M12.2,24.7'/%3E %3Cpath fill='#FA1100' class='st0' d='M1.7,22c0,1.5,1.2,2.7,2.7,2.7h6.3V11.9H2.5c-0.5,0-0.8,0.4-0.8,0.8V22z M1.7,22'/%3E %3Cpath fill='#FA1100' class='st0' d='M0,9.6c0,0.4,0.4,0.8,0.8,0.8h9.9V5.8h-8C1.2,5.8,0,7.1,0,8.6V9.6z M0,9.6'/%3E %3Cpath fill='#FA1100' class='st0' d='M12.2,5.8v4.6h9.5c0.4,0,0.8-0.4,0.8-0.8v-1c0-1.5-1.2-2.7-2.7-2.7H12.2z M12.2,5.8'/%3E %3Cpath fill='#FA1100' class='st0' d='M19.3,3.9C19.3,1.6,18,0,16,0c-1.1,0-2.6,0.5-4.6,2.6C9.4,0.5,7.8,0,6.7,0c-2,0-3.4,1.6-3.4,3.9 c0,0.4,0.4,0.8,0.8,0.8h14.3C18.9,4.8,19.3,4.4,19.3,3.9L19.3,3.9z M5.1,3.1c0.2-0.8,0.7-1.5,1.6-1.5c0.8,0,1.9,0.6,2.9,1.5H5.1z M13.2,3.1c1.1-0.9,2.1-1.5,2.9-1.5c0.9,0,1.4,0.7,1.6,1.5H13.2z M13.2,3.1'/%3E %3C/g%3E %3C/svg%3E\")"},"progress_line_main .gift_item_hint":{"color":"#000","top":"-25px"},"progress_text.progress_bar_flag":{"display":"none"},"points_block":{"background-color":"#fff","padding":"30px 40px","text-align":"center"},"points_block .history_button":{"background-color":"#fa1100","color":"#fff","text-decoration":"none","text-transform":"uppercase","padding":"13px 30px","font-size":"12px","margin-top":"10px","display":"inline-block","font-weight":"300"},"bon_profile_stat":{"margin-top":"90px","margin-bottom":"0","float":"none"},"bon_profile_top_left":{"float":"none"},"progress_line_bg":{"background":"#e8e3e3"},"progress_line.progress_bar_filled":{"background":"#fa1100","border-radius":"10px","margin":"2px","height":"10px"},"progress_block":{"margin-top":"65px","width":"70%"},"points_confirmed span":{"color":"#fa1100","font-family":"Roboto","text-align":"center","line-height":"48px","vertical-align":"middle"},"points_confirmed_value":{"font-weight":"bold","font-size":"46px"},"points_confirmed_name":{"font-size":"26px","margin-left":"0"},"user_name":{"font-size":"50px","color":"#fff"},"before_gift":{"color":"#333"},"bns_hist_table td:after":{"display":"none"},"bns_hist_table td":{"padding-top":"15px","padding-bottom":"15px","border-bottom":"1px solid #E2E3E4"},"bns_hist_pager":{"float":"left","margin-top":"30px"},"bns_hist_pager a.active":{"font-size":"16px","color":"#132D61"},"modal_history_header":{"color":"#132D61","font-family":"Helvetica"},"modal_history_caption":{"color":"#333","font-family":"Helvetica","font-weight":"300"},"modal_history_date":{"color":"#333","font-family":"Helvetica"},"modal_history_content":{"color":"#222","font-weight":"normal","font-family":"Helvetica","font-size":"16px"},"modal_history_points":{"color":"#B2B1B2","font-family":"Helvetica","font-size":"18px"},"modal_profile_header":{"color":"#333","font-family":"Helvetica"},"user_phone":{"display":"none"},"user_email":{"display":"none"}}
 
 /***/ },
 
-/***/ 16:
+/***/ 211:
 /***/ function(module, exports) {
 
-	var core = module.exports = {version: '2.4.0'};
-	if(typeof __e == 'number')__e = core; // eslint-disable-line no-undef
-
-/***/ },
-
-/***/ 17:
-/***/ function(module, exports, __webpack_require__) {
-
-	// optional / simple context binding
-	var aFunction = __webpack_require__(18);
-	module.exports = function(fn, that, length){
-	  aFunction(fn);
-	  if(that === undefined)return fn;
-	  switch(length){
-	    case 1: return function(a){
-	      return fn.call(that, a);
-	    };
-	    case 2: return function(a, b){
-	      return fn.call(that, a, b);
-	    };
-	    case 3: return function(a, b, c){
-	      return fn.call(that, a, b, c);
-	    };
-	  }
-	  return function(/* ...args */){
-	    return fn.apply(that, arguments);
-	  };
-	};
-
-/***/ },
-
-/***/ 18:
-/***/ function(module, exports) {
-
-	module.exports = function(it){
-	  if(typeof it != 'function')throw TypeError(it + ' is not a function!');
-	  return it;
-	};
-
-/***/ },
-
-/***/ 19:
-/***/ function(module, exports, __webpack_require__) {
-
-	var dP         = __webpack_require__(20)
-	  , createDesc = __webpack_require__(28);
-	module.exports = __webpack_require__(24) ? function(object, key, value){
-	  return dP.f(object, key, createDesc(1, value));
-	} : function(object, key, value){
-	  object[key] = value;
-	  return object;
-	};
-
-/***/ },
-
-/***/ 20:
-/***/ function(module, exports, __webpack_require__) {
-
-	var anObject       = __webpack_require__(21)
-	  , IE8_DOM_DEFINE = __webpack_require__(23)
-	  , toPrimitive    = __webpack_require__(27)
-	  , dP             = Object.defineProperty;
-
-	exports.f = __webpack_require__(24) ? Object.defineProperty : function defineProperty(O, P, Attributes){
-	  anObject(O);
-	  P = toPrimitive(P, true);
-	  anObject(Attributes);
-	  if(IE8_DOM_DEFINE)try {
-	    return dP(O, P, Attributes);
-	  } catch(e){ /* empty */ }
-	  if('get' in Attributes || 'set' in Attributes)throw TypeError('Accessors not supported!');
-	  if('value' in Attributes)O[P] = Attributes.value;
-	  return O;
-	};
-
-/***/ },
-
-/***/ 21:
-/***/ function(module, exports, __webpack_require__) {
-
-	var isObject = __webpack_require__(22);
-	module.exports = function(it){
-	  if(!isObject(it))throw TypeError(it + ' is not an object!');
-	  return it;
-	};
-
-/***/ },
-
-/***/ 22:
-/***/ function(module, exports) {
-
-	module.exports = function(it){
-	  return typeof it === 'object' ? it !== null : typeof it === 'function';
-	};
-
-/***/ },
-
-/***/ 23:
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = !__webpack_require__(24) && !__webpack_require__(25)(function(){
-	  return Object.defineProperty(__webpack_require__(26)('div'), 'a', {get: function(){ return 7; }}).a != 7;
-	});
-
-/***/ },
-
-/***/ 24:
-/***/ function(module, exports, __webpack_require__) {
-
-	// Thank's IE8 for his funny defineProperty
-	module.exports = !__webpack_require__(25)(function(){
-	  return Object.defineProperty({}, 'a', {get: function(){ return 7; }}).a != 7;
-	});
-
-/***/ },
-
-/***/ 25:
-/***/ function(module, exports) {
-
-	module.exports = function(exec){
-	  try {
-	    return !!exec();
-	  } catch(e){
-	    return true;
-	  }
-	};
-
-/***/ },
-
-/***/ 26:
-/***/ function(module, exports, __webpack_require__) {
-
-	var isObject = __webpack_require__(22)
-	  , document = __webpack_require__(15).document
-	  // in old IE typeof document.createElement is 'object'
-	  , is = isObject(document) && isObject(document.createElement);
-	module.exports = function(it){
-	  return is ? document.createElement(it) : {};
-	};
-
-/***/ },
-
-/***/ 27:
-/***/ function(module, exports, __webpack_require__) {
-
-	// 7.1.1 ToPrimitive(input [, PreferredType])
-	var isObject = __webpack_require__(22);
-	// instead of the ES6 spec version, we didn't implement @@toPrimitive case
-	// and the second argument - flag - preferred type is a string
-	module.exports = function(it, S){
-	  if(!isObject(it))return it;
-	  var fn, val;
-	  if(S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it)))return val;
-	  if(typeof (fn = it.valueOf) == 'function' && !isObject(val = fn.call(it)))return val;
-	  if(!S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it)))return val;
-	  throw TypeError("Can't convert object to primitive value");
-	};
-
-/***/ },
-
-/***/ 28:
-/***/ function(module, exports) {
-
-	module.exports = function(bitmap, value){
-	  return {
-	    enumerable  : !(bitmap & 1),
-	    configurable: !(bitmap & 2),
-	    writable    : !(bitmap & 4),
-	    value       : value
-	  };
-	};
-
-/***/ },
-
-/***/ 208:
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	exports.__esModule = true;
-
-	var _defineProperty = __webpack_require__(11);
-
-	var _defineProperty2 = _interopRequireDefault(_defineProperty);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	exports.default = function (obj, key, value) {
-	  if (key in obj) {
-	    (0, _defineProperty2.default)(obj, key, {
-	      value: value,
-	      enumerable: true,
-	      configurable: true,
-	      writable: true
-	    });
-	  } else {
-	    obj[key] = value;
-	  }
-
-	  return obj;
-	};
+	module.exports = {"container":{"background-color":"#3e699e"},"bon_header":{"margin-top":"80px","text-align":"center","text-transform":"uppercase","color":"white"},"bon_header .header":{"color":"white"},"bon_sub_header":{"text-align":"center","color":"#fff","margin-top":"0"},"bon_sub_header .caption":{"color":"#fff"},"header":{"color":"#142D61","font-family":"helvetica, arial, nimbus sans l, sans-serif"},"caption":{"color":"#403C3C","font-family":"helvetica, arial, nimbus sans l, sans-serif"},"gift":{"background-color":"white","border-color":"#5386b1","border-radius":"20px","border-width":"12px","margin-top":"10px","margin-bottom":"10px","position":"relative","transition":"all .25s ease-out"},"gift:before":{"transition":"all .25s ease-out"},"gift_img":{"display":"inline"},"gift:hover":{"border-color":"#d72906"},"gift:hover:before":{"position":"absolute","width":"100%","height":"100%","background":"rgba(255, 255, 255, .8)","left":"0","top":"0","z-index":"10"},"gift:hover .bon_item_iner a.button_primary":{"visibility":"visible","opacity":"1","z-index":"11"},"gift .bon_item_iner .bon_item_name":{"visibility":"visible","opacity":"1"},"gift .bon_item_iner .bon_tem_info":{"visibility":"visible","opacity":"1"},"gift .bon_item_iner a.button_primary":{"width":"120px","top":"50%","bottom":"auto","text-shadow":"none","border":"none","padding":"13px 30px","-webkit-transform":"translateY(-50%)","-moz-transform":"translateY(-50%)","transform":"translateY(-50%)","margin-left":"-60px"},"gift_name":{"color":"#333","font-family":"helvetica, arial, nimbus sans l, sans-serif"},"gift_points":{"color":"#514D4D","font-family":"helvetica, arial, nimbus sans l, sans-serif","font-size":"16px","font-weight":"bold","opacity":"1"},"description":{"color":"#333","font-family":"helvetica, arial, nimbus sans l, sans-serif","font-size":"14px"},"bns_overlay_gift .modal_container":{"padding":"0","width":"500px"},"modal_gift_container":{"text-align":"center","padding-top":"20px","background-color":"white"},"modal_gift_container .gift_more_block":{"width":"100%","text-align":"left","margin-top":"30px","background":"#ededed","padding":"0 50px 40px"},"modal_gift_name":{"color":"#136AA1","font-size":"30px","font-family":"helvetica, arial, nimbus sans l, sans-serif","margin-top":"30px"},"modal_gift_points":{"color":"#fa1100","font-family":"helvetica, arial, nimbus sans l, sans-serif","font-size":"20px","opacity":"1"},"modal_gift_points:before":{"content":"'-'"},"modal_gift_description":{"color":"#403C3C","font-family":"helvetica, arial, nimbus sans l, sans-serif","font-size":"16px","line-height":"24px","margin-top":"32px","margin-bottom":"34px"},"modal_gift_buttons .button_primary":{"width":"168px","line-height":"39px","font-weight":"bold","text-align":"center","padding":"0"},"modal_gift_buttons .button_primary:nth-child(1)":{"float":"right"},"bns_overlay_gift_complete .modal_container,\n.bns_overlay_notify .modal_container":{"width":"500px"}}
 
 /***/ }
 
