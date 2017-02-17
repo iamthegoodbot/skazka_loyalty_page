@@ -7,7 +7,7 @@ import fs from 'fs';
 import replace from 'replace-in-file';
 
 import webpack from 'webpack';
-import { development, production, migrator } from './webpack.config.babel'; // <-- Contains ES6+
+import { development, production, migrator, config } from './webpack.config.babel'; // <-- Contains ES6+
 
 const PACKAGE = JSON.parse(fs.readFileSync('package.json', 'utf8'));
 
@@ -24,6 +24,14 @@ gulp.task('default', (callback) => {
 
 gulp.task('dev', (callback) => {
   run("watch", callback);
+});
+
+gulp.task('build.settings', (callback) => {
+   
+   let bundler = webpack(config);
+ 
+   bundler.run(callback)
+ 
 });
 
 gulp.task('build.magic', (callback) => {
@@ -44,6 +52,9 @@ gulp.task('build.migrator', (callback) => {
 
 gulp.task('watch', () => {
   return Promise.all([
+    watch([ './config/**/*' ], () => {
+       gulp.start('build.settings');
+    }),
     watch([ paths.src, paths.widgets ], () => {
       gulp.start('build.magic');
     }),

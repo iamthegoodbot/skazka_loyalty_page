@@ -1,0 +1,43 @@
+.container {
+  position: absolute;
+  top: -380px;  
+  background-color: transparent;
+}
+
+.edit_profile_btn, .logout_btn {
+  position: absolute;
+  left: 50%;
+  top: 80px;
+  -webkit-transform: translateX(-50%);
+  transform: translateX(-50%);
+  display: inline-block;
+  padding: 8px 20px;
+  background: #00679b;
+  border-radius: 20px;
+  font-size: 12px;
+  text-decoration: none;    
+}
+
+.logout_btn {
+  top: 120px;
+}
+
+.user_name {
+  display: none;
+}
+
+.user_phone {
+  display: none;
+}
+
+.user_avatar_image {
+  display: none;
+}
+
+.points_confirmed {
+  display: none;
+}
+
+.bon_profile_stat {
+  display: none;
+}

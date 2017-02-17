@@ -1,11 +1,21 @@
 <div class="header_wrapper container">
-
-  <h3 class="header_title">
+  <h3 class="header_title" data-ng-if="widget.flag.name_is_title && !widget.user()">
     {{ widget.texts.title }}
+  </h3>
+
+  <h3 class="header_title" data-ng-if="!widget.flag.name_is_title">
+    {{ widget.texts.title }}
+  </h3>
+  <h3 class="header_title" data-ng-if="widget.flag.name_is_title && widget.user()">
+    {{ widget.user().user.first_name }}
   </h3>
 
   <h2 class="header_sub_title">
     {{ widget.texts.sub_title }}
   </h2>
+
+  <ul class="header_static_keys">
+    <li data-ng-repeat="key in widget.texts.static_keys" data-ng-bind="key"></li>
+  </ul>
 
 </div>

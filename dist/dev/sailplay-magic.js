@@ -199,7 +199,15 @@ return webpackJsonp([0],[
 
 	      if (_this.inited) return;
 
-	      _sailplayHub2.default.send('magic.config', config.config);
+	      // -----------------------------
+	      if (window.SAILPLAY_MAGIC_CONFIG) {
+	        _core.Core.constant('MAGIC_CONFIG', window.SAILPLAY_MAGIC_CONFIG);
+	        var app_container = config.root || document.getElementsByTagName('sailplay-magic')[0];
+	        app_container && _angular2.default.bootstrap(app_container, [magic.name]);
+	        _this.inited = true;
+
+	        console.log('local config loaded');
+	      } else _sailplayHub2.default.send('magic.config', config.config);
 	    });
 
 	    _sailplayHub2.default.on('magic.config.success', function (res_config) {
@@ -5400,7 +5408,7 @@ return webpackJsonp([0],[
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var Widget = exports.Widget = _angular2.default.module('magic.tools.widget', []).directive('widget', function ($compile, MagicWidget, $injector) {
+	var Widget = exports.Widget = _angular2.default.module('magic.tools.widget', []).directive('widget', function ($compile, MagicWidget, $injector, SailPlayApi) {
 	  return {
 	    restrict: 'E',
 	    replace: true,
@@ -5427,6 +5435,7 @@ return webpackJsonp([0],[
 
 	        var widget_scope = scope.$new();
 
+	        widget.user = SailPlayApi.data('load.user.info');
 	        widget_scope.widget = widget;
 
 	        WIDGET_CONFIG.controller.$inject = WIDGET_CONFIG.inject || [];

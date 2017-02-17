@@ -7,8 +7,7 @@ WidgetRegister({
   template: HeaderWidgetTemplate,
   controller: () => {
 
-    return (scope) => {
-
+    return (scope) => {      
     };
 
   }

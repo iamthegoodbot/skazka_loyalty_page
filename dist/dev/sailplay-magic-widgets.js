@@ -1667,12 +1667,12 @@ return webpackJsonp([2],[
 	      scope.$watch(function () {
 	        return angular.toJson([SailPlayApi.data('load.gifts.list')()]);
 	      }, function (new_val, old_val) {
-
 	        if (new_val && new_val != old_val) {
 	          scope.blocks = [];
 	          len = Math.ceil(SailPlayApi.data('load.gifts.list')().length / block_size);
 	          i = 0;
 	          do {
+	            if (!len) break;
 	            if (i == len - 1) {
 	              page = SailPlayApi.data('load.gifts.list')().slice(block_size * i);
 	            } else {
@@ -1818,7 +1818,7 @@ return webpackJsonp([2],[
 /* 175 */
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"header_wrapper container\">\n\n  <h3 class=\"header_title\">\n    {{ widget.texts.title }}\n  </h3>\n\n  <h2 class=\"header_sub_title\">\n    {{ widget.texts.sub_title }}\n  </h2>\n\n</div>";
+	module.exports = "<div class=\"header_wrapper container\">\n  <h3 class=\"header_title\" data-ng-if=\"widget.flag.name_is_title && !widget.user()\">\n    {{ widget.texts.title }}\n  </h3>\n\n  <h3 class=\"header_title\" data-ng-if=\"!widget.flag.name_is_title\">\n    {{ widget.texts.title }}\n  </h3>\n  <h3 class=\"header_title\" data-ng-if=\"widget.flag.name_is_title && widget.user()\">\n    {{ widget.user().user.first_name }}\n  </h3>\n\n  <h2 class=\"header_sub_title\">\n    {{ widget.texts.sub_title }}\n  </h2>\n\n  <ul class=\"header_static_keys\">\n    <li data-ng-repeat=\"key in widget.texts.static_keys\" data-ng-bind=\"key\"></li>\n  </ul>\n\n</div>";
 
 /***/ },
 /* 176 */

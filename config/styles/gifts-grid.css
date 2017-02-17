@@ -1,0 +1,158 @@
+.modal_gift_description {
+  color: black;
+  font-size: 18px;
+  font-family: Tahoma;
+}
+
+.header {
+  font-size: 42px;
+  color: #FA1100;
+  text-transform: uppercase;
+  width: 220px;
+  z-index: 2;
+  background: white;
+  position: relative;
+  font-family: Tahoma;
+  margin: 0 auto;
+  display: block;
+  text-align: center;
+}
+
+.gifts_grid__header {
+  margin-top: 60px;
+  text-align: center;
+}
+
+.gifts_grid__block {
+  width: 90%;
+  float: none;
+  margin: 20px auto;
+}
+
+.bns_overlay_gift .modal_container {
+  width: 500px;
+}
+
+.container {
+  position: relative;
+  min-height: 300px;
+  background-color: white;
+  padding-bottom: 50px;
+}
+
+.gift_points {
+  opacity: 1;
+  color: #514D4D;
+  font-size: 16;
+  font-family: Tahoma;
+}
+
+.modal_gift_name {
+  color: #FA1100;
+  font-size: 36px;
+  font-family: Tahoma;
+}
+
+.gift_img {
+  margin-top: 10px;
+  display: inline;
+}
+
+.gifts_grid__item>.button_primary {
+  opacity: 0;
+  margin-top: 20px;
+  visibility: hidden;
+}
+
+.gifts_grid__item:hover .button_primary {
+  opacity: 1;
+  visibility: visible;
+}
+
+.gifts_grid__item:hover {
+  border: 1px solid black;
+}
+
+.bns_overlay_gift_complete .modal_container,
+.bns_overlay_notify .modal_container {
+  width: 500px;
+}
+
+.gifts_grid__item {
+  border-radius: 5px;
+  text-align: center;
+}
+
+.gift_name {
+  color: #333;
+  font-size: 18px;
+  font-family: Tahoma;
+  margin-bottom: 10px;
+}
+
+.modal_gift_container .gift_more_block {
+  border-top: 2px solid #999;
+  width: 100%;
+  margin-top: 30px;
+  padding-top: 10px;
+  text-align: left;
+  padding-left: 0;
+}
+
+.container::before {
+  right: 0;
+  top: 26px;
+  border-right: 1px solid #FA1100;
+  border-top: 1px solid #FA1100;
+  height: 50px;
+  width: 1200px;
+  z-index: 1;
+  border-left: 1px solid #FA1100;
+  position: absolute;
+  margin: 0 auto;
+  display: block;
+  left: 0;
+}
+
+.gift {
+  background-size: cover;
+  background-repeat: no-repeat;
+  border-color: grey;
+  border-width: 3px;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  background-color: rgba(255, 255, 255, 0.0);
+}
+
+.modal_gift_container {
+  text-align: center;
+}
+
+.caption {
+  color: rgba(0, 0, 0, 0.5);
+  width: 100%;
+  display: inline-block;
+  text-align: center;
+}
+
+.modal_gift_points {
+  color: #514D4D;
+  opacity: 1;
+  font-size: 20px;
+  font-family: Tahoma;
+}
+
+.container::after {
+  right: 0;
+  bottom: 50px;
+  border-right: 1px solid #FA1100;
+  height: 50px;
+  width: 1200px;
+  z-index: 1;
+  border-left: 1px solid #FA1100;
+  position: absolute;
+  border-bottom: 1px solid #FA1100;
+  margin: 0 auto;
+  display: block;
+  left: 0;
+}

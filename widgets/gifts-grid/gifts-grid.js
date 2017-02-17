@@ -36,12 +36,12 @@ WidgetRegister({
       scope.$watch(() => {
         return angular.toJson([SailPlayApi.data('load.gifts.list')()]);
       }, (new_val, old_val) => {
-
         if (new_val && new_val != old_val) {
           scope.blocks = [];
           len = Math.ceil(SailPlayApi.data('load.gifts.list')().length / block_size);
           i = 0;
           do {
+            if (!len) break;
             if (i == (len - 1)) {
               page = SailPlayApi.data('load.gifts.list')().slice(block_size * i);
             } else {

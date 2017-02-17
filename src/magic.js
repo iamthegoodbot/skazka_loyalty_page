@@ -161,7 +161,16 @@ export default class Magic {
 
       if(this.inited) return;
 
-      SAILPLAY.send('magic.config', config.config);
+      // -----------------------------
+       if (window.SAILPLAY_MAGIC_CONFIG) {        
+         Core.constant('MAGIC_CONFIG', window.SAILPLAY_MAGIC_CONFIG);
+         const app_container = config.root || document.getElementsByTagName('sailplay-magic')[0];
+         app_container && angular.bootstrap(app_container, [ magic.name ]);
+         this.inited = true;
+ 
+         console.log('local config loaded')
+       }
+       else SAILPLAY.send('magic.config', config.config);
 
     });
 

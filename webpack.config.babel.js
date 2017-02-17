@@ -79,8 +79,33 @@ let resolve = {
   }
 };
 
+ export let config = {
+    entry: {
+      'settings': path.join(__dirname, 'config', 'settings.js')
+    },
+  
+    resolve: resolve,
+    output: {
+      path: path.join(__dirname, 'dist', 'config'),
+      filename: "[name].js"
+    },
+    module: {
+      loaders: [
+        {
+          test: /\.js$/,
+          exclude: /node_modules/,
+          loader: 'babel',
+          query: {
+            presets: ['es2015']
+          }
+        }
+      ]    
+    }
+  }
+
 export let development = {
   entry: {
+    'settings': path.join(__dirname, 'config', 'settings.js'),
     'sailplay-magic': path.join(__dirname, 'src', app_name),
     'sailplay-magic-widgets': widgets,
     'sailplay-magic-vendor':  vendors

@@ -1,0 +1,27 @@
+.container {
+  height: 380px;
+  background-image: url(https://sailplays3.cdnvideo.ru/media/assets/assetfile/9b8ee7abe95c24fad2f209f806bed336.jpg);
+  background-size: cover;
+  background-position: top left;
+  background-repeat: no-repeat;  
+}
+
+.header_title {
+  font-size: 36px;
+  font-weight: bold;
+  color: black;
+  text-align: center;
+}
+
+.header_static_keys {
+  list-style: disc;
+  position: absolute;
+  width: 40%;
+  right: 5%;
+  bottom: 5%;
+  color: white;
+}
+
+.header_static_keys li {
+  margin-bottom: 1em;
+}
