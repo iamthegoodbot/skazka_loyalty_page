@@ -5,11 +5,13 @@ import Layout from './layout/layout';
 import Widget from './widget/widget';
 import Notifier from './notifier/notifier'
 import MagicModal from './modal/modal';
+import Fonts from './fonts/fonts';
 import DatePicker from './datepicker/datepicker';
 
 export let Tools = angular.module('magic.tools', [
   NgPagination,
   UIMask,
+  Fonts,
   Layout,
   Widget,
   Notifier,
