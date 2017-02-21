@@ -692,6 +692,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        params.auth_hash = _config.auth_hash;
 	      }
 
+	      params.lang = params.lang || _config.lang || 'ru';
+
 	      JSONP.get(_config.DOMAIN + _config.urls.gifts.list, params, function (res) {
 	        //      console.dir(res);
 	        if (res.status == 'ok') {
