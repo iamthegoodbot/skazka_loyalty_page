@@ -10,7 +10,6 @@
       <span class="header bon_second_header_value">501, 732</span>
       <span class="header">{{ widget.texts.header_2_suffix }}</span>
     </h3>
-
     <div class="progress-line-container">
       <div class="progress-hints">
         <span class="progress-hints__left">Earn 1 Soligent Buck per $ spent until you reach you threshold</span>
@@ -26,15 +25,21 @@
       <div class="current-quarter">
         <span class="current-quarter-text">Your Quarterly Threshold: $</span>
         <span class="current-quarter-value">30,000</span>
-        <div class="current-quarter-second-text">by the end of this quarter</div>        
+        <div class="current-quarter-second-text">by the end of this quarter</div>
       </div>
       <div class="spent-quarter">
         <span class="spent-quarter-prefix">$</span>
         <span class="spent-quarter-value">53,240</span>
         <span class="spent-quarter-suffix"> Spent this quarter</span>
       </div>
+      <div class="howdo_hint" data-ng-show="show_hint">
+        <div class="text" data-ng-click="hideHint()">Earn 1 Soligent Buck per dollar spent. If you spend more than your threshold, you’ll earn additional bonus points
+          on all additional dollars spent based on your status.</div>
+        <div class="triangle-bottom"></div>
+      </div>
       <div class="buttons-container">
-        
+        <a href="javascript:void(0)" class="button_primary">HISTORY</a>&nbsp;
+        <a href="javascript:void(0)" class="button_primary" data-ng-click="toggleHint()">HOW DO I EARN</a>
       </div>
     </div>
   </div>

@@ -1,13 +1,11 @@
 .spm_wrapper {
-  .spm_tools_widget.profile-progress {    
+  .spm_tools_widget.profile-progress {
     margin: -20px auto 0;
     max-width: 1200px;
     display: block;
-
     @media screen and (max-width: 1200px) {
       width: 95%;
     }
-
     .bon_header {
       margin-top: 40px;
       font-size: 40px;
@@ -22,37 +20,69 @@
     .bon_second_header_value {
       color: #006299;
     }
-
     .bon_choice_main {
       overflow: visible;
     }
-
+    .howdo_hint {
+      position: absolute;
+      border: 1px solid black;
+      font-size: 15px;
+      width: 300px;
+      background: white;
+      padding: 15px;
+      box-sizing: border-box;
+      right: 100px;
+      bottom: 100px;
+      .triangle-bottom {
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 22px 8.5px 0 8.5px;
+        border-color: #000 transparent transparent transparent;
+        position: absolute;
+        bottom: -22px;
+        right: 20px;
+        &:after {
+          content: '';
+          position: absolute;
+          left: -7px;
+          top: -22px;
+          width: 0;
+          height: 0;
+          border-style: solid;
+          border-width: 20px 7.5px 0 7.5px;
+          border-color: #ffffff transparent transparent transparent;
+        }
+      }
+    }
+    .buttons-container {
+      position: absolute;
+      right: 5%;
+      bottom: 10%;
+    }
     .progress-line-container {
       position: relative;
       margin-bottom: 42px;
       background: white;
       height: 300px;
       clear: both;
-      -webkit-box-shadow: 0 0 20px -10px rgba(0, 0, 0, .8);      
+      -webkit-box-shadow: 0 0 20px -10px rgba(0, 0, 0, .8);
       box-shadow: 0 0 20px -10px rgba(0, 0, 0, .8);
-
       .current-quarter {
         font-size: 20px;
         font-weight: bold;
         text-align: center;
         position: absolute;
         width: 100%;
-        top: 150px;        
+        top: 150px;
       }
-
       .spent-quarter {
         position: absolute;
         bottom: 10%;
         left: 5%;
-
         &-prefix {
           font-size: 36px;
-          font-weight: bold;          
+          font-weight: bold;
         }
         &-value {
           font-size: 36px;
@@ -63,41 +93,36 @@
           font-weight: bold;
         }
       }
-
       .progress-hints {
         left: 5%;
         right: 5%;
         top: 20px;
         position: absolute;
       }
-
       .progress-hints__left {
         font-size: 14px;
         color: #106299;
         float: left;
-        white-space: nowrap;    
+        white-space: nowrap;
       }
-
       .progress-hints__right {
         font-size: 14px;
         color: #FF9900;
         float: right;
-        white-space: nowrap;    
+        white-space: nowrap;
       }
-      
       .left-progress-ann {
         float: left;
         height: 15px;
-        width: 42.6%;        
+        width: 42.6%;
         border-width: 2px;
         border-style: solid;
         position: relative;
         top: 40px;
         border-color: #106299 #106299 transparent #106299;
-        margin-left: 5%;   
-        margin-right: 5px;     
+        margin-left: 5%;
+        margin-right: 5px;
       }
-
       .right-progress-ann {
         height: 15px;
         float: left;
@@ -105,11 +130,10 @@
         border-width: 2px;
         border-style: solid;
         position: relative;
-        top: 40px;        
+        top: 40px;
         border-color: #FF9900 #FF9900 transparent #FF9900;
         margin-right: 5%;
       }
-
       .progress-line {
         height: 30px;
         border-radius: 30px;
@@ -120,7 +144,6 @@
         top: 85px;
         -webkit-box-shadow: 0 -5px 0 0px rgb(0, 0, 0, .8);
         box-shadow: 0 -5px 0 0px rgb(0, 0, 0, .8);
-
         .fill {
           background: #106299;
           width: 50%;
@@ -132,21 +155,19 @@
           left: 2%;
           margin-top: -5px;
         }
-
         .delim {
           width: 12px;
           height: 60px;
           position: absolute;
           left: 48%;
           z-index: 10;
-          top: 50%;          
+          top: 50%;
           margin-left: -5px;
           margin-top: -30px;
           background: #FF9900;
-          -webkit-box-shadow: 0 0 10px -2px rgba(0, 0, 0, 0.8);          
-          box-shadow: 0 0 10px -2px rgba(0, 0, 0, 0.8);          
+          -webkit-box-shadow: 0 0 10px -2px rgba(0, 0, 0, 0.8);
+          box-shadow: 0 0 10px -2px rgba(0, 0, 0, 0.8);
         }
-
         .empty {
           background: #FF9900;
           width: 50%;
@@ -156,9 +177,9 @@
           position: absolute;
           top: 50%;
           right: 2%;
-          margin-top: -5px;          
+          margin-top: -5px;
         }
       }
-    }    
+    }
   }
-} 
+}
