@@ -91,6 +91,16 @@ window.SAILPLAY_MAGIC_CONFIG = {
       }
     },
     {
+      "id": "profile-progress",
+      "enabled": true,
+      "texts": {
+        "header_1_prefix": "Welcome, ",
+        "header_1_suffix": " Status Loyalty member!",
+        "header_2_prefix": "You have ",
+        "header_2_suffix": " Soligent Bucks in your account"
+      }
+    },
+    {
       "styles": require('./css-to-json!./styles/gifts-grid.css'),
       "texts": {
         "gift_received": "Your gift request has been received!",
@@ -125,6 +135,28 @@ window.SAILPLAY_MAGIC_CONFIG = {
     },
   ],
   "tools": {
-    "modal": {}
-  }
+    "modal": {},
+    "date": {
+      "months": {
+        "1": "January",
+        "2": "February",
+        "3": "March",
+        "4": "April",
+        "5": "May",
+        "6": "June",
+        "7": "July",
+        "8": "August",
+        "9": "September",
+        "10": "October",
+        "11": "November",
+        "12": "December"
+      },
+      "placeholder": {
+        "month": "Month",
+        "day": "Day",
+        "year": "Year"
+      }
+    },
+  },
+
 };

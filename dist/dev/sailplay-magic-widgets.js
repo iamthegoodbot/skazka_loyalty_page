@@ -27,7 +27,8 @@ return webpackJsonp([2],[
 	__webpack_require__(186);
 	__webpack_require__(191);
 	__webpack_require__(196);
-	module.exports = __webpack_require__(204);
+	__webpack_require__(204);
+	module.exports = __webpack_require__(208);
 
 
 /***/ },
@@ -2524,11 +2525,81 @@ return webpackJsonp([2],[
 
 	var _widget = __webpack_require__(101);
 
-	var _statuses = __webpack_require__(205);
+	var _profileProgress = __webpack_require__(205);
+
+	var _profileProgress2 = _interopRequireDefault(_profileProgress);
+
+	__webpack_require__(206);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	(0, _widget.WidgetRegister)({
+	  id: "profile-progress",
+	  template: _profileProgress2.default,
+	  controller: function controller() {
+	    return function (scope) {};
+	  }
+	});
+
+/***/ },
+/* 205 */
+/***/ function(module, exports) {
+
+	module.exports = "<div class=\"clearfix\">\n  <div class=\"bon_choice_main container\" data-ng-show=\"widget.enabled\" data-ng-cloak>\n    <h3 class=\"bon_header\">\n      <span class=\"header\">{{ widget.texts.header_1_prefix }}</span>\n      <span class=\"header\">Silver</span>\n      <span class=\"header\">{{ widget.texts.header_1_suffix }}</span>\n    </h3>\n    <h3 class=\"bon_header bon_second_header\">\n      <span class=\"header\">{{ widget.texts.header_2_prefix }}</span>\n      <span class=\"header bon_second_header_value\">501, 732</span>\n      <span class=\"header\">{{ widget.texts.header_2_suffix }}</span>\n    </h3>\n\n    <div class=\"progress-line-container\">\n      <div class=\"progress-hints\">\n        <span class=\"progress-hints__left\">Earn 1 Soligent Buck per $ spent until you reach you threshold</span>\n        <span class=\"progress-hints__right\">Earn multiplied Soligent Bucks for each $ spent past your threshold</span>\n      </div>\n      <div class=\"left-progress-ann\"></div>\n      <div class=\"right-progress-ann\"></div>\n      <div class=\"progress-line\">\n        <div class=\"fill\"></div>\n        <div class=\"delim\"></div>\n        <div class=\"empty\"></div>\n      </div>\n      <div class=\"current-quarter\">\n        <span class=\"current-quarter-text\">Your Quarterly Threshold: $</span>\n        <span class=\"current-quarter-value\">30,000</span>\n        <div class=\"current-quarter-second-text\">by the end of this quarter</div>        \n      </div>\n      <div class=\"spent-quarter\">\n        <span class=\"spent-quarter-prefix\">$</span>\n        <span class=\"spent-quarter-value\">53,240</span>\n        <span class=\"spent-quarter-suffix\"> Spent this quarter</span>\n      </div>\n      <div class=\"buttons-container\">\n        \n      </div>\n    </div>\n  </div>\n</div>";
+
+/***/ },
+/* 206 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(207);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(114)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./profile-progress.less", function() {
+				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./profile-progress.less");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 207 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(113)();
+	// imports
+
+
+	// module
+	exports.push([module.id, ".spm_wrapper .spm_tools_widget.profile-progress {\n  margin-top: -20px;\n}\n.spm_wrapper .spm_tools_widget.profile-progress .bon_header {\n  margin-top: 40px;\n  font-size: 40px;\n  font-weight: bold;\n}\n.spm_wrapper .spm_tools_widget.profile-progress .bon_second_header {\n  margin-top: 0;\n  margin-bottom: 40px;\n  font-size: 40px;\n  font-weight: bold;\n}\n.spm_wrapper .spm_tools_widget.profile-progress .bon_second_header_value {\n  color: #006299;\n}\n.spm_wrapper .spm_tools_widget.profile-progress .progress-line-container {\n  position: relative;\n  margin-left: 5%;\n  margin-right: 5%;\n  margin-bottom: 42px;\n  background: white;\n  height: 300px;\n  clear: both;\n  -webkit-box-shadow: 0 0 20px -10px rgba(0, 0, 0, 0.8);\n  box-shadow: 0 0 20px -10px rgba(0, 0, 0, 0.8);\n}\n.spm_wrapper .spm_tools_widget.profile-progress .progress-line-container .current-quarter {\n  font-size: 20px;\n  font-weight: bold;\n  text-align: center;\n  position: absolute;\n  width: 100%;\n  top: 150px;\n}\n.spm_wrapper .spm_tools_widget.profile-progress .progress-line-container .spent-quarter {\n  position: absolute;\n  bottom: 10%;\n  left: 5%;\n}\n.spm_wrapper .spm_tools_widget.profile-progress .progress-line-container .spent-quarter-prefix {\n  font-size: 36px;\n  font-weight: bold;\n}\n.spm_wrapper .spm_tools_widget.profile-progress .progress-line-container .spent-quarter-value {\n  font-size: 36px;\n  font-weight: bold;\n}\n.spm_wrapper .spm_tools_widget.profile-progress .progress-line-container .spent-quarter-suffix {\n  font-size: 28px;\n  font-weight: bold;\n}\n.spm_wrapper .spm_tools_widget.profile-progress .progress-line-container .progress-hints {\n  left: 5%;\n  right: 5%;\n  top: 20px;\n  position: absolute;\n}\n.spm_wrapper .spm_tools_widget.profile-progress .progress-line-container .progress-hints__left {\n  font-size: 14px;\n  color: #106299;\n  float: left;\n  white-space: nowrap;\n}\n.spm_wrapper .spm_tools_widget.profile-progress .progress-line-container .progress-hints__right {\n  font-size: 14px;\n  color: #FF9900;\n  float: right;\n  white-space: nowrap;\n}\n.spm_wrapper .spm_tools_widget.profile-progress .progress-line-container .left-progress-ann {\n  float: left;\n  height: 15px;\n  width: 42.6%;\n  border-width: 2px;\n  border-style: solid;\n  position: relative;\n  top: 40px;\n  border-color: #106299 #106299 transparent #106299;\n  margin-left: 5%;\n  margin-right: 5px;\n}\n.spm_wrapper .spm_tools_widget.profile-progress .progress-line-container .right-progress-ann {\n  height: 15px;\n  float: left;\n  width: 46%;\n  border-width: 2px;\n  border-style: solid;\n  position: relative;\n  top: 40px;\n  border-color: #FF9900 #FF9900 transparent #FF9900;\n  margin-right: 5%;\n}\n.spm_wrapper .spm_tools_widget.profile-progress .progress-line-container .progress-line {\n  height: 30px;\n  border-radius: 30px;\n  background: #E8E3E3;\n  position: relative;\n  margin-left: 5%;\n  margin-right: 5%;\n  top: 85px;\n  -webkit-box-shadow: 0 -5px 0 0px #000000;\n  box-shadow: 0 -5px 0 0px #000000;\n}\n.spm_wrapper .spm_tools_widget.profile-progress .progress-line-container .progress-line .fill {\n  background: #106299;\n  width: 50%;\n  height: 10px;\n  border-top-left-radius: 30px;\n  border-bottom-left-radius: 30px;\n  position: absolute;\n  top: 50%;\n  left: 2%;\n  margin-top: -5px;\n}\n.spm_wrapper .spm_tools_widget.profile-progress .progress-line-container .progress-line .delim {\n  width: 12px;\n  height: 60px;\n  position: absolute;\n  left: 48%;\n  z-index: 10;\n  top: 50%;\n  margin-left: -5px;\n  margin-top: -30px;\n  background: #FF9900;\n  -webkit-box-shadow: 0 0 10px -2px rgba(0, 0, 0, 0.8);\n  box-shadow: 0 0 10px -2px rgba(0, 0, 0, 0.8);\n}\n.spm_wrapper .spm_tools_widget.profile-progress .progress-line-container .progress-line .empty {\n  background: #FF9900;\n  width: 50%;\n  height: 10px;\n  border-top-right-radius: 30px;\n  border-bottom-right-radius: 30px;\n  position: absolute;\n  top: 50%;\n  right: 2%;\n  margin-top: -5px;\n}\n", ""]);
+
+	// exports
+
+
+/***/ },
+/* 208 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _widget = __webpack_require__(101);
+
+	var _statuses = __webpack_require__(209);
 
 	var _statuses2 = _interopRequireDefault(_statuses);
 
-	__webpack_require__(206);
+	__webpack_require__(210);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2576,19 +2647,19 @@ return webpackJsonp([2],[
 	});
 
 /***/ },
-/* 205 */
+/* 209 */
 /***/ function(module, exports) {
 
 	module.exports = "<div class=\"clearfix container\">\n\n  <div class=\"status-list\">\n\n    <div class=\"next_status_info\" data-ng-show=\"get_next_status().status\">\n\n      <div class=\"next_status_name\">\n        {{ widget.texts.next_status }} <span data-ng-style=\"{ color: get_next_status().status.color  }\">{{ get_next_status().status.status }}</span>\n      </div>\n\n      <div class=\"next_status_offset\">\n        {{ widget.texts.next_status_offset }} {{ get_next_status().offset }}\n      </div>\n\n    </div>\n\n    <div class=\"status-list__wrapper\" data-sailplay-statuses data-ng-cloak>\n\n      <div class=\"status-list__progress element-progress progress_line\"\n           data-ng-style=\"getProgress(user().user_points, _statuses)\"></div>\n\n      <div class=\"status-list__item element-item\"\n           data-ng-class=\"{ type_active : item.points <= user().user_points.confirmed + user().user_points.spent + user().user_points.spent_extra }\"\n           data-ng-repeat=\"item in _statuses\"\n           data-ng-style=\"generateOffset($index, _statuses)\">\n\n        <div class=\"status-list__item-point element-item-point\"></div>\n\n        <div class=\"element-item-point-inner\" data-ng-style=\"{ backgroundColor: item.color }\"></div>\n\n        <div class=\"status-list__item-name element-item-name\" data-ng-bind=\"item.name\"></div>\n        <div class=\"status-list__item-status element-item-status\" data-ng-if=\"item.status\" data-ng-bind=\"item.status\"\n             style=\"{{ (item.color) ? ('color: ' +  item.color) : '' }}\"></div>\n\n      </div>\n\n    </div>\n\n  </div>\n</div>";
 
 /***/ },
-/* 206 */
+/* 210 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(207);
+	var content = __webpack_require__(211);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(114)(content, {});
@@ -2608,7 +2679,7 @@ return webpackJsonp([2],[
 	}
 
 /***/ },
-/* 207 */
+/* 211 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(113)();
