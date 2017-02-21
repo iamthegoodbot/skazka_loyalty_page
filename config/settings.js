@@ -199,6 +199,24 @@ window.SAILPLAY_MAGIC_CONFIG = {
         "year": "Year"
       }
     },
+    "notifier": {
+      "styles": {
+        "notifier_body": {
+          "color": "black",
+          "font-family": "Tahome",
+          "font-weight": 300
+        },
+        "notifier_header": {
+          "color": "black",
+          "font-size": "26px",
+          "font-family": "Tahome"
+        }
+      },
+      "texts": {
+        "congratulations": "Congratulations!",
+        "error": "An error occurred"
+      }
+    },
     "modal": {}
   },
   "data": {
