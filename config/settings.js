@@ -207,7 +207,7 @@ window.SAILPLAY_MAGIC_CONFIG = {
         {
           "name": "Bronze",
           "icon": "https://sailplays3.cdnvideo.ru/media/assets/assetfile/9b8ee7abe95c24fad2f209f806bed336.jpg",
-          "sum": "0",
+          "sum": "50000",
           "texts": [
             'text 1',
             'text 2',
@@ -216,8 +216,8 @@ window.SAILPLAY_MAGIC_CONFIG = {
         },
         {
           "name": "Silver",
-          "icon": "https://sailplays3.cdnvideo.ru/media/assets/assetfile/9b8ee7abe95c24fad2f209f806bed336.jpg",
-          "sum": "200000",
+          "icon": "https://sailplays3pnp.cdnvideo.ru/media/assets/assetfile/9b8ee7abe95c24fad2f209f806bed336.jpg",
+          "sum": "100000",
           "texts": [
             'text 1',
             'text 2',
@@ -227,7 +227,7 @@ window.SAILPLAY_MAGIC_CONFIG = {
         {
           "name": "Gold",
           "icon": "https://sailplays3.cdnvideo.ru/media/assets/assetfile/9b8ee7abe95c24fad2f209f806bed336.jpg",
-          "sum": "100000",
+          "sum": "200000",
           "texts": [
             'text 1',
             'text 2',
