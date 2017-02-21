@@ -19,6 +19,9 @@ WidgetRegister({
       // User model
       scope.user = SailPlayApi.data('load.user.info');
 
+      // Account model
+      scope.variables = {};
+
       // Current status model
       scope.current_status = null;
 

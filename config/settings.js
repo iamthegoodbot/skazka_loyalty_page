@@ -91,6 +91,16 @@ window.SAILPLAY_MAGIC_CONFIG = {
       }
     },
     {
+      "id": "profile-progress",
+      "enabled": true,
+      "texts": {
+        "header_1_prefix": "Welcome, ",
+        "header_1_suffix": " Status Loyalty member!",
+        "header_2_prefix": "You have ",
+        "header_2_suffix": " Soligent Bucks in your account"
+      }
+    },
+    {
       "styles": require('./css-to-json!./styles/soligent-status-account.css'),
       "errors": {},
       "enabled": true,
@@ -153,6 +163,39 @@ window.SAILPLAY_MAGIC_CONFIG = {
     "points": {
       "texts": {
         "pluralize": "point,points,points"
+      }
+    },
+    "slider": {
+      "styles": {
+        "slider_arrow_right": {
+          "background-image": "url(https://sailplays3.cdnvideo.ru/media/assets/assetfile/a8e631688bd53c5af5a6ea03991307fb.png)",
+          "background-color": "transparent"
+        },
+        "slider_arrow_left": {
+          "background-image": "url(https://sailplays3.cdnvideo.ru/media/assets/assetfile/c607df6517b4947bb04766f430034152.png)",
+          "background-color": "transparent"
+        }
+      }
+    },
+    "date": {
+      "months": {
+        "1": "January",
+        "2": "February",
+        "3": "March",
+        "4": "April",
+        "5": "May",
+        "6": "June",
+        "7": "July",
+        "8": "August",
+        "9": "September",
+        "10": "October",
+        "11": "November",
+        "12": "December"
+      },
+      "placeholder": {
+        "month": "Month",
+        "day": "Day",
+        "year": "Year"
       }
     },
     "modal": {}

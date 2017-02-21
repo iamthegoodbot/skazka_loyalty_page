@@ -41,7 +41,7 @@
 .gift_points {
     opacity: 1;
     color: rgba(0, 0, 0, 0.5);
-    font-size: 16;
+    font-size: 16px;
     font-family: Tahoma;
 }
 
@@ -53,9 +53,9 @@
 
 .gift_img {
     position: absolute;
-    width: 200px;
+    width: 160px;
     height: auto;
-    top: 10px;
+    top: 40px;
     left: 0;
     right: 0;
     margin: auto;
@@ -85,6 +85,7 @@
     border-radius: 5px;
     padding-top: 230px;
     text-align: center;
+    border: 1px solid transparent;
 }
 
 .gift_name {

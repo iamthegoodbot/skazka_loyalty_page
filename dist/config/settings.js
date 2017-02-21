@@ -124,6 +124,15 @@
 	      }
 	    }
 	  }, {
+	    "id": "profile-progress",
+	    "enabled": true,
+	    "texts": {
+	      "header_1_prefix": "Welcome, ",
+	      "header_1_suffix": " Status Loyalty member!",
+	      "header_2_prefix": "You have ",
+	      "header_2_suffix": " Soligent Bucks in your account"
+	    }
+	  }, {
 	    "styles": __webpack_require__(3),
 	    "errors": {},
 	    "enabled": true,
@@ -179,6 +188,39 @@
 	    "points": {
 	      "texts": {
 	        "pluralize": "point,points,points"
+	      }
+	    },
+	    "slider": {
+	      "styles": {
+	        "slider_arrow_right": {
+	          "background-image": "url(https://sailplays3.cdnvideo.ru/media/assets/assetfile/a8e631688bd53c5af5a6ea03991307fb.png)",
+	          "background-color": "transparent"
+	        },
+	        "slider_arrow_left": {
+	          "background-image": "url(https://sailplays3.cdnvideo.ru/media/assets/assetfile/c607df6517b4947bb04766f430034152.png)",
+	          "background-color": "transparent"
+	        }
+	      }
+	    },
+	    "date": {
+	      "months": {
+	        "1": "January",
+	        "2": "February",
+	        "3": "March",
+	        "4": "April",
+	        "5": "May",
+	        "6": "June",
+	        "7": "July",
+	        "8": "August",
+	        "9": "September",
+	        "10": "October",
+	        "11": "November",
+	        "12": "December"
+	      },
+	      "placeholder": {
+	        "month": "Month",
+	        "day": "Day",
+	        "year": "Year"
 	      }
 	    },
 	    "modal": {}
@@ -332,7 +374,7 @@
 /* 4 */
 /***/ function(module, exports) {
 
-	module.exports = {"modal_gift_description":{"color":"black","font-size":"18px","font-family":"Tahoma"},"header":{"font-size":"42px","color":"black","width":"100%","text-transform":"uppercase","z-index":"2","position":"relative","font-family":"Tahoma","display":"block","text-align":"center"},"gifts_grid__header":{"margin-top":"60px","text-align":"center"},"gifts_grid__block":{"width":"90%","float":"none","margin":"20px auto"},"bns_overlay_gift .modal_container":{"width":"500px"},"container":{"position":"relative","min-height":"300px","background-color":"white","padding-bottom":"50px"},"gift_points":{"opacity":"1","color":"rgba(0, 0, 0, 0.5)","font-size":"16","font-family":"Tahoma"},"modal_gift_name":{"color":"black","font-size":"36px","font-family":"Tahoma"},"gift_img":{"position":"absolute","width":"200px","height":"auto","top":"10px","left":"0","right":"0","margin":"auto"},"gifts_grid__item > .button_primary":{"opacity":"0","margin-top":"20px","visibility":"hidden"},"gifts_grid__item:hover .button_primary":{"opacity":"1","visibility":"visible"},"gifts_grid__item:hover":{"border":"1px solid #136995"},"bns_overlay_gift_complete .modal_container,\n.bns_overlay_notify .modal_container":{"width":"500px"},"gifts_grid__item":{"border-radius":"5px","padding-top":"230px","text-align":"center"},"gift_name":{"color":"#333","font-size":"18px","font-family":"Tahoma","margin-bottom":"10px"},"modal_gift_container .gift_more_block":{"width":"100%","margin-top":"30px","padding-top":"10px","text-align":"left","padding-left":"0"},"gift":{"background-size":"cover","background-repeat":"no-repeat","margin-bottom":"10px","margin-top":"10px","background-color":"rgba(255, 255, 255, 0.0)"},"modal_gift_container":{"text-align":"center"},"modal_gift_points":{"color":"rgba(0, 0, 0, 0.5)","opacity":"1","font-size":"20px","font-family":"Tahoma"}}
+	module.exports = {"modal_gift_description":{"color":"black","font-size":"18px","font-family":"Tahoma"},"header":{"font-size":"42px","color":"black","width":"100%","text-transform":"uppercase","z-index":"2","position":"relative","font-family":"Tahoma","display":"block","text-align":"center"},"gifts_grid__header":{"margin-top":"60px","text-align":"center"},"gifts_grid__block":{"width":"90%","float":"none","margin":"20px auto"},"bns_overlay_gift .modal_container":{"width":"500px"},"container":{"position":"relative","min-height":"300px","background-color":"white","padding-bottom":"50px"},"gift_points":{"opacity":"1","color":"rgba(0, 0, 0, 0.5)","font-size":"16px","font-family":"Tahoma"},"modal_gift_name":{"color":"black","font-size":"36px","font-family":"Tahoma"},"gift_img":{"position":"absolute","width":"160px","height":"auto","top":"40px","left":"0","right":"0","margin":"auto"},"gifts_grid__item > .button_primary":{"opacity":"0","margin-top":"20px","visibility":"hidden"},"gifts_grid__item:hover .button_primary":{"opacity":"1","visibility":"visible"},"gifts_grid__item:hover":{"border":"1px solid #136995"},"bns_overlay_gift_complete .modal_container,\n.bns_overlay_notify .modal_container":{"width":"500px"},"gifts_grid__item":{"border-radius":"5px","padding-top":"230px","text-align":"center","border":"1px solid transparent"},"gift_name":{"color":"#333","font-size":"18px","font-family":"Tahoma","margin-bottom":"10px"},"modal_gift_container .gift_more_block":{"width":"100%","margin-top":"30px","padding-top":"10px","text-align":"left","padding-left":"0"},"gift":{"background-size":"cover","background-repeat":"no-repeat","margin-bottom":"10px","margin-top":"10px","background-color":"rgba(255, 255, 255, 0.0)"},"modal_gift_container":{"text-align":"center"},"modal_gift_points":{"color":"rgba(0, 0, 0, 0.5)","opacity":"1","font-size":"20px","font-family":"Tahoma"}}
 
 /***/ },
 /* 5 */

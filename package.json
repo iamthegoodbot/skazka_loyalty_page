@@ -27,6 +27,7 @@
     "babel-preset-es2017": "latest",
     "babel-preset-stage-0": "latest",
     "css-loader": "^0.26.1",
+    "cssjson": "^2.1.3",
     "gulp": "^3.9.1",
     "gulp-connect": "^5.0.0",
     "gulp-ngdocs": "^0.2.13",
