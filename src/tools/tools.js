@@ -25,6 +25,14 @@ export let Tools = angular.module('magic.tools', [
 
 })
 
+.filter('data', function (MAGIC_CONFIG, $parse) {
+
+  return function (key) {
+    return $parse(key)(MAGIC_CONFIG.data) || '';
+  }
+
+})
+
 .config(['uiMask.ConfigProvider', function (uiMaskConfigProvider) {
   uiMaskConfigProvider.maskDefinitions({'_': /[0-9]/});
   uiMaskConfigProvider.addDefaultPlaceholder(true);

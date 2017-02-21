@@ -5,14 +5,12 @@
 
 .header {
   font-size: 42px;
-  color: #FA1100;
+  color: black;
+  width: 100%;
   text-transform: uppercase;
-  width: 220px;
   z-index: 2;
-  background: #edf3f5;
   position: relative;
   font-family: Tahoma;
-  margin: 0 auto;
   display: block;
   text-align: center;
 }
@@ -36,7 +34,7 @@
   right: 0;
   bottom: 0;
   top: 0;
-  height: 50%;
+  height: 35%;
   width: auto;
   position: absolute;
   margin: auto;
@@ -50,7 +48,7 @@
 
 .container {
   position: relative;
-  background-color: #EDF3F5;
+  background-color: #F2F2F2;
   padding-bottom: 50px;
 }
 
@@ -94,24 +92,9 @@
 }
 
 .modal_action_name {
-  color: #FA1100;
+  color: black;
   font-size: 36px;
   font-family: Tahoma;
-}
-
-.container::before {
-  right: 0;
-  top: 83px;
-  border-right: 1px solid #FA1100;
-  border-top: 1px solid #FA1100;
-  height: 50px;
-  width: 1200px;
-  z-index: 1;
-  border-left: 1px solid #FA1100;
-  position: absolute;
-  margin: 0 auto;
-  display: block;
-  left: 0;
 }
 
 .card_quests_list {
@@ -157,21 +140,6 @@
 .actions_custom_selected_modal .modal_container {
   padding: 20px;
   width: 800px;
-}
-
-.container::after {
-  right: 0;
-  bottom: 50px;
-  border-right: 1px solid #FA1100;
-  height: 50px;
-  width: 1200px;
-  z-index: 1;
-  border-left: 1px solid #FA1100;
-  position: absolute;
-  border-bottom: 1px solid #FA1100;
-  margin: 0 auto;
-  display: block;
-  left: 0;
 }
 
 .actions_selected_modal .modal_container {

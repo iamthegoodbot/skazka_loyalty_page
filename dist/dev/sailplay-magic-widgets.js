@@ -27,7 +27,8 @@ return webpackJsonp([2],[
 	__webpack_require__(186);
 	__webpack_require__(191);
 	__webpack_require__(196);
-	module.exports = __webpack_require__(204);
+	__webpack_require__(204);
+	module.exports = __webpack_require__(208);
 
 
 /***/ },
@@ -2524,11 +2525,112 @@ return webpackJsonp([2],[
 
 	var _widget = __webpack_require__(101);
 
-	var _statuses = __webpack_require__(205);
+	var _soligentStatusAccount = __webpack_require__(205);
+
+	var _soligentStatusAccount2 = _interopRequireDefault(_soligentStatusAccount);
+
+	__webpack_require__(206);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	(0, _widget.WidgetRegister)({
+
+	  id: 'soligent-status-account',
+	  template: _soligentStatusAccount2.default,
+	  inject: ['SailPlayApi', 'SailPlay', '$rootScope', 'MAGIC_CONFIG'],
+	  controller: function controller(SailPlayApi, SailPlay, $rootScope, MAGIC_CONFIG) {
+
+	    return function (scope, elm, attrs) {
+
+	      // User model
+	      scope.user = SailPlayApi.data('load.user.info');
+
+	      // Current status model
+	      scope.current_status = null;
+
+	      // Next status model
+	      scope.next_status = MAGIC_CONFIG.data.status && MAGIC_CONFIG.data.status.list && MAGIC_CONFIG.data.status.list[0];
+
+	      scope.$watch(function () {
+	        return angular.toJson([scope.user()]);
+	      }, function (new_val, old_val) {
+	        if (new_val && new_val != old_val) {
+
+	          if (!MAGIC_CONFIG.data.status || !MAGIC_CONFIG.data.status.list || !scope.user().user_status || !scope.user().user_status.name) return false;
+
+	          for (var i = 0, len = MAGIC_CONFIG.data.status.length; i < len; i++) {
+	            if (MAGIC_CONFIG.data.status[i] == scope.user().user_status.name) {
+	              scope.current_status = MAGIC_CONFIG.data.status[i];
+	              scope.next_status = MAGIC_CONFIG.data.status[i + 1];
+	              break;
+	            }
+	          }
+	        }
+	      });
+	    };
+	  }
+
+	});
+
+/***/ },
+/* 205 */
+/***/ function(module, exports) {
+
+	module.exports = "<div class=\"bon_choice_main container clearfix soligent-sa-widget\" data-ng-if=\"user && user()\">\n\n    <div class=\"soligent-sa-wrapper clearfix\">\n\n        <div class=\"soligent-sa-block\" data-ng-if=\"current_status\">\n\n            <div class=\"soligent-sa-block__title\" data-ng-bind=\"'YOUR ' + current_status.name + ' BENEFITS'\"></div>\n\n            <div class=\"soligent-sa-block__icon\" style=\"background-image: {{ current_status.icon | background_image }}\"></div>\n\n            <ul class=\"soligent-sa-block-list\">\n\n                <li class=\"soligent-sa-block-list__item\" data-ng-repeat=\"text in current_status.texts track by $index\" data-ng-bind=\"text\"></li>\n\n            </ul>\n\n        </div>\n\n        <div class=\"soligent-sa-block\" data-ng-if=\"next_status\">\n\n            <div class=\"soligent-sa-block__title\" data-ng-bind=\"'SPEND $' + (next_status.sum | number) + ' THIS YEAR TO BECOME A ' + next_status.name + ' MEMBER'\"></div>\n\n            <div class=\"soligent-sa-block__icon\" style=\"background-image: {{ next_status.icon | background_image }}\"></div>\n\n            <ul class=\"soligent-sa-block-list\">\n\n                <li class=\"soligent-sa-block-list__item\" data-ng-repeat=\"text in next_status.texts track by $index\" data-ng-bind=\"text\"></li>\n\n            </ul>\n\n        </div>\n\n        <div class=\"soligent-sa-block\" data-ng-if=\"$parent.widget.options.monthly_special\">\n\n            <div class=\"soligent-sa-block__title\">MONTHLY SPECIAL</div>\n\n            <div class=\"soligent-sa-block__icon\" style=\"background-image: {{ $parent.widget.options.monthly_special.icon | background_image }}\"></div>\n\n            <ul class=\"soligent-sa-block-list\">\n\n                <li class=\"soligent-sa-block-list__item\" data-ng-repeat=\"text in $parent.widget.options.monthly_special.texts track by $index\" data-ng-bind=\"text\"></li>\n\n            </ul>\n\n        </div>\n\n        <div class=\"soligent-sa-block\" data-ng-if=\"variables\">\n\n            <div class=\"soligent-sa-block__title\">YOUR ACCOUNT EXECUTIVE:</div>\n\n            <div class=\"soligent-sa-block__info\" data-ng-bind=\"variables.sales_rep || 'Name N/A'\"></div>\n\n            <div class=\"soligent-sa-block__info\" data-ng-bind=\"variables.sales_rep_phone || 'Phone N/A'\"></div>\n\n            <div class=\"soligent-sa-block__info\"  data-ng-bind=\"variables.sales_rep_email || 'Email N/A'\"></div>\n\n            <div class=\"soligent-sa-block__info\">\n                <span class=\"soligent-sa-block__info_black\">ACCOUNT #:</span>\n                <span data-ng-bind=\"$parent.user().user.origin_user_id || 'N/A'\"></span>\n            </div>\n\n        </div>\n\n    </div>\n\n</div>";
+
+/***/ },
+/* 206 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(207);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(114)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./soligent-status-account.less", function() {
+				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./soligent-status-account.less");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 207 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(113)();
+	// imports
+
+
+	// module
+	exports.push([module.id, ".spm_wrapper .soligent-sa {\n  font-family: Tahoma;\n}\n.spm_wrapper .soligent-sa-wrapper {\n  width: 1000px;\n  padding: 50px 0;\n  margin: 0 auto;\n}\n@media (max-width: 1000px) {\n  .spm_wrapper .soligent-sa-wrapper {\n    width: 95%;\n  }\n}\n.spm_wrapper .soligent-sa-block {\n  width: 48.5%;\n  float: left;\n  min-height: 250px;\n  box-sizing: border-box;\n  margin-bottom: 1.5%;\n  padding: 20px;\n  font-size: 0;\n  box-shadow: 0 0 20px -10px rgba(0, 0, 0, 0.8);\n}\n@media (max-width: 650px) {\n  .spm_wrapper .soligent-sa-block {\n    width: 100%;\n  }\n}\n.spm_wrapper .soligent-sa-block:nth-child(odd) {\n  margin-right: 1.5%;\n}\n@media (max-width: 650px) {\n  .spm_wrapper .soligent-sa-block:nth-child(odd) {\n    margin-left: 0;\n  }\n}\n.spm_wrapper .soligent-sa-block:nth-child(even) {\n  margin-left: 1.5%;\n}\n@media (max-width: 650px) {\n  .spm_wrapper .soligent-sa-block:nth-child(even) {\n    margin-left: 0;\n  }\n}\n.spm_wrapper .soligent-sa-block__title {\n  text-transform: uppercase;\n  font-size: 28px;\n  margin-bottom: 20px;\n  font-weight: bold;\n  line-height: 1;\n}\n.spm_wrapper .soligent-sa-block__icon {\n  display: inline-block;\n  width: 100px;\n  height: 100px;\n  vertical-align: middle;\n  background-position: center center;\n  background-repeat: no-repeat;\n  background-size: contain;\n  border: 1px solid black;\n}\n.spm_wrapper .soligent-sa-block__info {\n  margin-bottom: 15px;\n  color: grey;\n  font-weight: bold;\n  font-size: 22px;\n}\n.spm_wrapper .soligent-sa-block__info:last-child {\n  margin-bottom: 0;\n}\n.spm_wrapper .soligent-sa-block__info_black {\n  color: black;\n}\n.spm_wrapper .soligent-sa-block-list {\n  width: 70%;\n  display: inline-block;\n  vertical-align: middle;\n  font-size: 14px;\n  margin-left: 20px;\n}\n@media (max-width: 1000px) {\n  .spm_wrapper .soligent-sa-block-list {\n    width: 100%;\n    margin-top: 10px;\n    margin-left: 0;\n  }\n}\n.spm_wrapper .soligent-sa-block-list__item {\n  margin-top: 10px;\n}\n.spm_wrapper .soligent-sa-block-list__item:first-child {\n  margin-top: 0;\n}\n", ""]);
+
+	// exports
+
+
+/***/ },
+/* 208 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _widget = __webpack_require__(101);
+
+	var _statuses = __webpack_require__(209);
 
 	var _statuses2 = _interopRequireDefault(_statuses);
 
-	__webpack_require__(206);
+	__webpack_require__(210);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2576,19 +2678,19 @@ return webpackJsonp([2],[
 	});
 
 /***/ },
-/* 205 */
+/* 209 */
 /***/ function(module, exports) {
 
 	module.exports = "<div class=\"clearfix container\">\n\n  <div class=\"status-list\">\n\n    <div class=\"next_status_info\" data-ng-show=\"get_next_status().status\">\n\n      <div class=\"next_status_name\">\n        {{ widget.texts.next_status }} <span data-ng-style=\"{ color: get_next_status().status.color  }\">{{ get_next_status().status.status }}</span>\n      </div>\n\n      <div class=\"next_status_offset\">\n        {{ widget.texts.next_status_offset }} {{ get_next_status().offset }}\n      </div>\n\n    </div>\n\n    <div class=\"status-list__wrapper\" data-sailplay-statuses data-ng-cloak>\n\n      <div class=\"status-list__progress element-progress progress_line\"\n           data-ng-style=\"getProgress(user().user_points, _statuses)\"></div>\n\n      <div class=\"status-list__item element-item\"\n           data-ng-class=\"{ type_active : item.points <= user().user_points.confirmed + user().user_points.spent + user().user_points.spent_extra }\"\n           data-ng-repeat=\"item in _statuses\"\n           data-ng-style=\"generateOffset($index, _statuses)\">\n\n        <div class=\"status-list__item-point element-item-point\"></div>\n\n        <div class=\"element-item-point-inner\" data-ng-style=\"{ backgroundColor: item.color }\"></div>\n\n        <div class=\"status-list__item-name element-item-name\" data-ng-bind=\"item.name\"></div>\n        <div class=\"status-list__item-status element-item-status\" data-ng-if=\"item.status\" data-ng-bind=\"item.status\"\n             style=\"{{ (item.color) ? ('color: ' +  item.color) : '' }}\"></div>\n\n      </div>\n\n    </div>\n\n  </div>\n</div>";
 
 /***/ },
-/* 206 */
+/* 210 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(207);
+	var content = __webpack_require__(211);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(114)(content, {});
@@ -2608,7 +2710,7 @@ return webpackJsonp([2],[
 	}
 
 /***/ },
-/* 207 */
+/* 211 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(113)();
