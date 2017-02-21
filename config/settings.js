@@ -31,18 +31,26 @@ window.SAILPLAY_MAGIC_CONFIG = {
         "header": "Update your profile",
         "config": {
           "tag": "Client filled profile",
-          "fields": [{
-            "type": "system",
-            "name": "firstName",
-            "label": "Your name",
-            "placeholder": "Enter your name",
-            "input": "text"
-          },
+          "fields": [
+            {
+              "type": "system",
+              "name": "firstName",
+              "label": "Company name",
+              "placeholder": "Enter company name",
+              "input": "text"
+            },
             {
               "type": "system",
               "name": "lastName",
-              "label": "Your last name",
-              "placeholder": "Enter your last name",
+              "label": "Primary contact",
+              "placeholder": "Enter primary contact",
+              "input": "text"
+            },
+            {
+              "type": "system",
+              "name": "middleName",
+              "label": "Title",
+              "placeholder": "Enter title",
               "input": "text"
             },
             {
@@ -58,13 +66,6 @@ window.SAILPLAY_MAGIC_CONFIG = {
               "label": "Your E-Mail",
               "placeholder": "your@address.com",
               "input": "email"
-            },
-            {
-              "type": "system",
-              "name": "birthDate",
-              "label": "Your birth date",
-              "placeholder": "Enter your birth date",
-              "input": "date"
             },
             {
               "type": "system",
