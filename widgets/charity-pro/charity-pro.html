@@ -6,11 +6,24 @@
 
             <a class="sp_cp-widget__btn sp_cp-widget__search-btn button_primary"
                data-ng-bind="widget.texts.button_search"
+               data-ng-if="widget.options.search_link"
                data-ng-href="{{ widget.options.search_link }}" target="_blank"></a>
+
+            <a href="#" class="sp_cp-widget__btn sp_cp-widget__form-btn button_primary"
+               data-ng-bind="widget.texts.button_subscriptions"
+               data-ng-if="widget.options.subscriptions_link"
+               data-ng-href="{{ widget.options.subscriptions_link }}" target="_blank"></a>
+
 
             <a href="#" class="sp_cp-widget__btn sp_cp-widget__form-btn button_primary"
                data-ng-bind="widget.texts.button_form"
                data-ng-click="$event.preventDefault();show_form=true;"></a>
+
+
+            <a href="#" class="sp_cp-widget__btn sp_cp-widget__form-btn button_primary"
+               data-ng-if="widget.options.payments_link"
+               data-ng-bind="widget.texts.button_payments"
+               data-ng-href="{{ widget.options.payments_link }}" target="_blank"></a>
 
         </div>
 
