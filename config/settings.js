@@ -4,40 +4,41 @@ window.SAILPLAY_MAGIC_CONFIG = {
     "auth_hash_id": "sailplay_magic_auth_hash"
   },
   "widgets": [{
-    "id": "header",
-    "enabled": true,
-    "styles": require('./css-to-json!./styles/header.css'),
-    "texts": {
-      "title": "LOYALTY PAGE",
-      "static_keys": [
-        'Earn Soligent Bucks for every dollar you spend and bonus bucks for certain action taken.',
-        'Earn status levels based on spending for valuable benefits.',
-        'Earn many times more each quarter you exceed your threshold.'
-      ]
+      "id": "header",
+      "enabled": true,
+      "styles": require('./css-to-json!./styles/header.css'),
+      "texts": {
+        "title": "LOYALTY PAGE",
+        "static_keys": [
+          'Earn Soligent Bucks for every dollar you spend and bonus bucks for certain action taken.',
+          'Earn status levels based on spending for valuable benefits.',
+          'Earn many times more each quarter you exceed your threshold.'
+        ]
+      },
+      "flag": {
+        "name_is_title": true
+      }
     },
-    "flag": {
-      "name_is_title": true
-    }
-  },
     {
       "id": "profile",
       "enabled": true,
       "styles": require('./css-to-json!./styles/profile.css'),
       "texts": {
         "edit_profile_button": "EDIT PROFILE",
-        "logout": "LOG OUT"
+        "logout": "LOG OUT",
+        "login_reg": "LOGIN / REGISTER"
       },
       "fill_profile": {
         "header": "Update your profile",
         "config": {
           "tag": "Client filled profile",
           "fields": [{
-            "type": "system",
-            "name": "firstName",
-            "label": "Your name",
-            "placeholder": "Enter your name",
-            "input": "text"
-          },
+              "type": "system",
+              "name": "firstName",
+              "label": "Your name",
+              "placeholder": "Enter your name",
+              "input": "text"
+            },
             {
               "type": "system",
               "name": "lastName",
@@ -73,9 +74,9 @@ window.SAILPLAY_MAGIC_CONFIG = {
               "placeholder": "Enter your last name",
               "input": "select",
               "data": [{
-                "value": "",
-                "text": "Not defined"
-              },
+                  "value": "",
+                  "text": "Not defined"
+                },
                 {
                   "value": 1,
                   "text": "Male"
@@ -203,8 +204,7 @@ window.SAILPLAY_MAGIC_CONFIG = {
   },
   "data": {
     "status": {
-      "list": [
-        {
+      "list": [{
           "name": "Bronze",
           "icon": "https://sailplays3.cdnvideo.ru/media/assets/assetfile/9b8ee7abe95c24fad2f209f806bed336.jpg",
           "sum": "50000",
@@ -340,6 +340,22 @@ window.SAILPLAY_MAGIC_CONFIG = {
           }
         }
       }
+    },
+    "history": {
+      "purchase": "Purchase",
+      "gift_purchase": "Gift",
+      "badge": "Badge",
+      "registration": "Sign up",
+      "referral": "Invite friend",
+      "referred": "Registration from friend's invite",
+      "referred_purchase": "Friend's purchase",
+      "promocode": "Promocode activation",
+      "enter_group": "Joined our group on ",
+      "share_purchase": "Shared a purchase on ",
+      "social_share": "Shared our website on ",
+      "share_badge": "Shared a badge on ",
+      "earn_badge": "Earn badge ",
+      "custom_action": "Custom action"
     },
   }
 };

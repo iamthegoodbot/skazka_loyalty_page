@@ -1,13 +1,13 @@
 <div class="clearfix">
-  <div class="bon_choice_main container" data-ng-show="widget.enabled" data-ng-cloak>
+  <div class="bon_choice_main container" data-ng-show="widget.enabled" data-ng-cloak data-ng-if="user && user()">
     <h3 class="bon_header">
       <span class="header">{{ widget.texts.header_1_prefix }}</span>
-      <span class="header">Silver</span>
+      <span class="header">{{ user().user_status }}</span>
       <span class="header">{{ widget.texts.header_1_suffix }}</span>
     </h3>
     <h3 class="bon_header bon_second_header">
       <span class="header">{{ widget.texts.header_2_prefix }}</span>
-      <span class="header bon_second_header_value">501, 732</span>
+      <span class="header bon_second_header_value">{{ toLocaleString(user().user_points.confirmed) }}</span>
       <span class="header">{{ widget.texts.header_2_suffix }}</span>
     </h3>
     <div class="progress-line-container">
@@ -18,18 +18,18 @@
       <div class="left-progress-ann"></div>
       <div class="right-progress-ann"></div>
       <div class="progress-line">
-        <div class="fill"></div>
+        <div class="fill" data-ng-style="{width: leftBarWidth}"></div>
         <div class="delim"></div>
-        <div class="empty"></div>
+        <div class="empty" data-ng-style="{width: rightBarWidth}"></div>
       </div>
       <div class="current-quarter">
         <span class="current-quarter-text">Your Quarterly Threshold: $</span>
-        <span class="current-quarter-value">30,000</span>
+        <span class="current-quarter-value">{{ toLocaleString(lineData().threshold) }}</span>
         <div class="current-quarter-second-text">by the end of this quarter</div>
       </div>
       <div class="spent-quarter">
         <span class="spent-quarter-prefix">$</span>
-        <span class="spent-quarter-value">53,240</span>
+        <span class="spent-quarter-value">{{ toLocaleString(lineData().quarter_revenue) }}</span>
         <span class="spent-quarter-suffix"> Spent this quarter</span>
       </div>
       <div class="howdo_hint" data-ng-show="show_hint">
@@ -38,7 +38,7 @@
         <div class="triangle-bottom"></div>
       </div>
       <div class="buttons-container">
-        <a href="javascript:void(0)" class="button_primary">HISTORY</a>&nbsp;
+        <a href="javascript:void(0)" class="button_primary" data-ng-click="showHistory()">HISTORY</a>&nbsp;
         <a href="javascript:void(0)" class="button_primary" data-ng-click="toggleHint()">HOW DO I EARN</a>
       </div>
     </div>

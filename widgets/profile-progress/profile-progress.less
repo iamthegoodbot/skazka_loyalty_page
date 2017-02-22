@@ -104,17 +104,23 @@
         color: #106299;
         float: left;
         white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 45%;
       }
       .progress-hints__right {
         font-size: 14px;
         color: #FF9900;
         float: right;
         white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 45%;
       }
       .left-progress-ann {
         float: left;
         height: 15px;
-        width: 42.6%;
+        width: ~"calc(45% - 7px)";
         border-width: 2px;
         border-style: solid;
         position: relative;
@@ -126,7 +132,7 @@
       .right-progress-ann {
         height: 15px;
         float: left;
-        width: 46%;
+        width: ~"calc(45% - 7px)";
         border-width: 2px;
         border-style: solid;
         position: relative;
@@ -146,7 +152,7 @@
         box-shadow: 0 -5px 0 0px rgb(0, 0, 0, .8);
         .fill {
           background: #106299;
-          width: 50%;
+          width: 48%;
           height: 10px;
           border-top-left-radius: 30px;
           border-bottom-left-radius: 30px;
@@ -159,10 +165,10 @@
           width: 12px;
           height: 60px;
           position: absolute;
-          left: 48%;
+          left: 50%;
           z-index: 10;
           top: 50%;
-          margin-left: -5px;
+          margin-left: -8px;
           margin-top: -30px;
           background: #FF9900;
           -webkit-box-shadow: 0 0 10px -2px rgba(0, 0, 0, 0.8);
@@ -170,13 +176,13 @@
         }
         .empty {
           background: #FF9900;
-          width: 50%;
+          width: 48%; 
           height: 10px;
           border-top-right-radius: 30px;
           border-bottom-right-radius: 30px;
           position: absolute;
           top: 50%;
-          right: 2%;
+          left: 50%;
           margin-top: -5px;
         }
       }
