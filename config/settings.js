@@ -32,20 +32,12 @@ window.SAILPLAY_MAGIC_CONFIG = {
         "header": "Update your profile",
         "config": {
           "tag": "Client filled profile",
-<<<<<<< HEAD
-          "fields": [{
-              "type": "system",
-              "name": "firstName",
-              "label": "Your name",
-              "placeholder": "Enter your name",
-=======
           "fields": [
             {
               "type": "system",
               "name": "firstName",
               "label": "Company name",
               "placeholder": "Enter company name",
->>>>>>> f9ffe6640e286c6b21dda8b544a4d4b8b55aa315
               "input": "text"
             },
             {

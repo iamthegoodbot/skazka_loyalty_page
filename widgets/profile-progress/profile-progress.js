@@ -14,20 +14,23 @@ WidgetRegister({
         $rootScope.$broadcast('showHistory')
       }
       
-      scope.lineData = function(){
-        return {"status": "ok", "threshold": "200000", "quarter_revenue": "53240"};
-      }
+      SailPlayApi.send("vars.batch", ['threshold', 'quarter_revenue'], (res) => {
+        for (let i in res.vars) { scope[res.vars[i].name] = res.vars[i].value } 
 
-      var maxLinePercent = 96,
-          maxLine = scope.lineData().threshold * 2,
-          percent = scope.lineData().quarter_revenue / maxLine * maxLinePercent;
+        var maxLinePercent = 96,
+            maxLine = scope.threshold * 2,
+            percent = scope.quarter_revenue / maxLine * maxLinePercent;
+        
+        scope.leftBarWidth = percent < 48 ? `${percent}%` : '48%';
+        scope.rightBarWidth = percent < 48 ? "0" : `${percent - 48}%`
+        scope.$apply();        
+      })
+
           
       scope.toLocaleString = (data_string) => {
         var int = parseInt(data_string);
         return int.toLocaleString('en').replace(/ /g, ', ')        
       }          
-      scope.leftBarWidth = percent < 48 ? `${percent}%` : '48%';
-      scope.rightBarWidth = percent < 48 ? "0" : `${percent - 48}%`
       scope.user = SailPlayApi.data('load.user.info');
       scope.show_hint = false;
       scope.toggleHint = () => {
