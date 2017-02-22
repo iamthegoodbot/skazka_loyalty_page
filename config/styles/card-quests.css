@@ -41,6 +41,10 @@
   left: 0;
 }
 
+.quest_card_container_custom-action .quest_card_image img {
+  height: 100%;
+}
+
 .actions_selected_modal .action_tools {
   padding: 30px;
   width: 100%;
