@@ -692,6 +692,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        params.auth_hash = _config.auth_hash;
 	      }
 
+	      params.lang = params.lang || _config.lang || 'ru';
+
 	      JSONP.get(_config.DOMAIN + _config.urls.gifts.list, params, function (res) {
 	        //      console.dir(res);
 	        if (res.status == 'ok') {
@@ -798,7 +800,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return;
 	      }
 	      var params = {
-	        auth_hash: _config.auth_hash
+	        auth_hash: _config.auth_hash,
+	        lang: p && p.lang || _config.lang || 'ru'
 	      };
 	      if(p){
 	        if(p.include_rules) {
