@@ -99,7 +99,8 @@ window.SAILPLAY_MAGIC_CONFIG = {
         "header_1_prefix": "Welcome, ",
         "header_1_suffix": " Status Loyalty member!",
         "header_2_prefix": "You have ",
-        "header_2_suffix": " Soligent Bucks in your account"
+        "header_2_suffix": " Soligent Bucks in your account",
+        "default_status_string": "Bronze"
       },
       "styles": require('./css-to-json!./styles/profile-progress.css')
     },

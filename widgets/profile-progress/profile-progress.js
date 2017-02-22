@@ -14,12 +14,12 @@ WidgetRegister({
         $rootScope.$broadcast('showHistory')
       }
       
-      SailPlayApi.send("vars.batch", ['threshold', 'quarter_revenue'], (res) => {
+      SailPlayApi.call("vars.batch", ['threshold', 'quarter_revenue'], (res) => {
         for (let i in res.vars) { scope[res.vars[i].name] = res.vars[i].value } 
 
         var maxLinePercent = 96,
-            maxLine = scope.threshold * 2,
-            percent = scope.quarter_revenue / maxLine * maxLinePercent;
+            maxLine = (parseInt(scope.threshold) || 0) * 2,
+            percent = (parseInt(scope.quarter_revenue) || 0) / maxLine * maxLinePercent;
         
         scope.leftBarWidth = percent < 48 ? `${percent}%` : '48%';
         scope.rightBarWidth = percent < 48 ? "0" : `${percent - 48}%`
