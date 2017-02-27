@@ -6,11 +6,13 @@
 
             <div class="soligent-sa-block__title" data-ng-bind="'YOUR ' + current_status.name + ' BENEFITS'"></div>
 
-            <div class="soligent-sa-block__icon" style="background-image: {{ current_status.icon | background_image }}"></div>
+            <div class="soligent-sa-block__icon"
+                 style="background-image: {{ current_status.icon | background_image }}"></div>
 
             <ul class="soligent-sa-block-list">
 
-                <li class="soligent-sa-block-list__item" data-ng-repeat="text in current_status.texts track by $index" data-ng-bind="text"></li>
+                <li class="soligent-sa-block-list__item" data-ng-repeat="text in current_status.texts track by $index"
+                    data-ng-bind="text"></li>
 
             </ul>
 
@@ -18,27 +20,40 @@
 
         <div class="soligent-sa-block soligent-sa-block_next" data-ng-if="next_status">
 
-            <div class="soligent-sa-block__title" data-ng-bind="'SPEND $' + (next_status.sum | number) + ' THIS YEAR TO BECOME A ' + next_status.name + ' MEMBER'"></div>
+            <div class="soligent-sa-block__title"
+                 data-ng-bind="'SPEND $' + (next_status.sum | number) + ' THIS YEAR TO BECOME A ' + next_status.name + ' MEMBER'"></div>
 
-            <div class="soligent-sa-block__icon" style="background-image: {{ next_status.icon | background_image }}"></div>
+            <div class="soligent-sa-block__icon"
+                 style="background-image: {{ next_status.icon | background_image }}"></div>
 
             <ul class="soligent-sa-block-list">
 
-                <li class="soligent-sa-block-list__item" data-ng-repeat="text in next_status.texts track by $index" data-ng-bind="text"></li>
+                <li class="soligent-sa-block-list__item" data-ng-repeat="text in next_status.texts track by $index"
+                    data-ng-bind="text"></li>
 
             </ul>
 
+            <a class="soligent-sa-block-link"
+               target="_blank"
+               data-ng-if="widget.options.next_status_link"
+               data-ng-href="{{ widget.options.next_status_link.href }}"
+               data-ng-bind="widget.options.next_status_link.title"></a>
+
         </div>
 
-        <div class="soligent-sa-block soligent-sa-block_monthly_special" data-ng-if="$parent.widget.options.monthly_special">
+        <div class="soligent-sa-block soligent-sa-block_monthly_special"
+             data-ng-if="$parent.widget.options.monthly_special">
 
             <div class="soligent-sa-block__title">MONTHLY SPECIAL</div>
 
-            <div class="soligent-sa-block__icon" style="background-image: {{ $parent.widget.options.monthly_special.icon | background_image }}"></div>
+            <div class="soligent-sa-block__icon"
+                 style="background-image: {{ $parent.widget.options.monthly_special.icon | background_image }}"></div>
 
             <ul class="soligent-sa-block-list">
 
-                <li class="soligent-sa-block-list__item" data-ng-repeat="text in $parent.widget.options.monthly_special.texts track by $index" data-ng-bind="text"></li>
+                <li class="soligent-sa-block-list__item"
+                    data-ng-repeat="text in $parent.widget.options.monthly_special.texts track by $index"
+                    data-ng-bind="text"></li>
 
             </ul>
 
@@ -52,7 +67,7 @@
 
             <div class="soligent-sa-block__info" data-ng-bind="variables.sales_rep_phone || 'Phone N/A'"></div>
 
-            <div class="soligent-sa-block__info"  data-ng-bind="variables.sales_rep_email || 'Email N/A'"></div>
+            <div class="soligent-sa-block__info" data-ng-bind="variables.sales_rep_email || 'Email N/A'"></div>
 
             <div class="soligent-sa-block__info">
                 <span class="soligent-sa-block__info_black">ACCOUNT #:</span>

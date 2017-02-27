@@ -168,7 +168,6 @@ export default class Magic {
          app_container && angular.bootstrap(app_container, [ magic.name ]);
          this.inited = true;
  
-         console.log('local config loaded')
        }
        else SAILPLAY.send('magic.config', config.config);
 

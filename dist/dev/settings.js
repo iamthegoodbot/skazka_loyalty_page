@@ -18,7 +18,11 @@ return webpackJsonp([3],{
 	window.SAILPLAY_MAGIC_CONFIG = {
 	  "auth": {
 	    "type": "hybrid",
-	    "auth_hash_id": "sailplay_magic_auth_hash"
+	    "auth_hash_id": "sailplay_magic_auth_hash",
+	    "config": {
+	      "background": "transparent",
+	      "disabled_options": ["socials"]
+	    }
 	  },
 	  "widgets": [{
 	    "id": "header",
@@ -37,7 +41,8 @@ return webpackJsonp([3],{
 	    "styles": __webpack_require__(217),
 	    "texts": {
 	      "edit_profile_button": "EDIT PROFILE",
-	      "logout": "LOG OUT"
+	      "logout": "LOG OUT",
+	      "login_reg": "LOGIN / REGISTER"
 	    },
 	    "fill_profile": {
 	      "header": "Update your profile",
@@ -46,14 +51,20 @@ return webpackJsonp([3],{
 	        "fields": [{
 	          "type": "system",
 	          "name": "firstName",
-	          "label": "Your name",
-	          "placeholder": "Enter your name",
+	          "label": "Company name",
+	          "placeholder": "Enter company name",
 	          "input": "text"
 	        }, {
 	          "type": "system",
 	          "name": "lastName",
-	          "label": "Your last name",
-	          "placeholder": "Enter your last name",
+	          "label": "Primary contact",
+	          "placeholder": "Enter primary contact",
+	          "input": "text"
+	        }, {
+	          "type": "system",
+	          "name": "middleName",
+	          "label": "Title",
+	          "placeholder": "Enter title",
 	          "input": "text"
 	        }, {
 	          "type": "system",
@@ -67,12 +78,6 @@ return webpackJsonp([3],{
 	          "label": "Your E-Mail",
 	          "placeholder": "your@address.com",
 	          "input": "email"
-	        }, {
-	          "type": "system",
-	          "name": "birthDate",
-	          "label": "Your birth date",
-	          "placeholder": "Enter your birth date",
-	          "input": "date"
 	        }, {
 	          "type": "system",
 	          "name": "sex",
@@ -99,7 +104,8 @@ return webpackJsonp([3],{
 	      "header_1_prefix": "Welcome, ",
 	      "header_1_suffix": " Status Loyalty member!",
 	      "header_2_prefix": "You have ",
-	      "header_2_suffix": " Soligent Bucks in your account"
+	      "header_2_suffix": " Soligent Bucks in your account",
+	      "default_status_string": "Bronze"
 	    },
 	    "styles": __webpack_require__(218)
 	  }, {
@@ -109,6 +115,10 @@ return webpackJsonp([3],{
 	    "texts": {},
 	    "images": {},
 	    "options": {
+	      "next_status_link": {
+	        "title": "Link",
+	        "href": "http://sailplay.net"
+	      },
 	      "monthly_special": {
 	        "icon": "https://sailplays3.cdnvideo.ru/media/assets/assetfile/9b8ee7abe95c24fad2f209f806bed336.jpg",
 	        "texts": ['text 1', 'text 2', 'text 3']
@@ -217,7 +227,7 @@ return webpackJsonp([3],{
 	    "status": {
 	      "list": [{
 	        "name": "Bronze",
-	        "icon": "https://sailplays3.cdnvideo.ru/media/assets/assetfile/9b8ee7abe95c24fad2f209f806bed336.jpg",
+	        "icon": "https://sailplays3pnp.cdnvideo.ru/media/assets/assetfile/9b8ee7abe95c24fad2f209f806bed336.jpg",
 	        "sum": "50000",
 	        "texts": ['text 1', 'text 2', 'text 3']
 	      }, {
@@ -227,7 +237,7 @@ return webpackJsonp([3],{
 	        "texts": ['text 1', 'text 2', 'text 3']
 	      }, {
 	        "name": "Gold",
-	        "icon": "https://sailplays3.cdnvideo.ru/media/assets/assetfile/9b8ee7abe95c24fad2f209f806bed336.jpg",
+	        "icon": "https://sailplays3pnp.cdnvideo.ru/media/assets/assetfile/9b8ee7abe95c24fad2f209f806bed336.jpg",
 	        "sum": "200000",
 	        "texts": ['text 1', 'text 2', 'text 3']
 	      }]
@@ -336,6 +346,22 @@ return webpackJsonp([3],{
 	          }
 	        }
 	      }
+	    },
+	    "history": {
+	      "purchase": "Purchase",
+	      "gift_purchase": "Gift",
+	      "badge": "Badge",
+	      "registration": "Sign up",
+	      "referral": "Invite friend",
+	      "referred": "Registration from friend's invite",
+	      "referred_purchase": "Friend's purchase",
+	      "promocode": "Promocode activation",
+	      "enter_group": "Joined our group on ",
+	      "share_purchase": "Shared a purchase on ",
+	      "social_share": "Shared our website on ",
+	      "share_badge": "Shared a badge on ",
+	      "earn_badge": "Earn badge ",
+	      "custom_action": "Custom action"
 	    }
 	  }
 	};
@@ -352,7 +378,7 @@ return webpackJsonp([3],{
 /***/ 217:
 /***/ function(module, exports) {
 
-	module.exports = {"container":{"position":"absolute","top":"-380px","background-color":"transparent"},"edit_profile_btn, .logout_btn":{"position":"absolute","left":"50%","top":"80px","-webkit-transform":"translateX(-50%)","transform":"translateX(-50%)","display":"inline-block","padding":"8px 20px","background":"#00679b","border-radius":"20px","font-size":"12px","text-decoration":"none"},"logout_btn":{"top":"120px"},"user_name":{"display":"none"},"user_phone":{"display":"none"},"user_avatar_image":{"display":"none"},"points_confirmed":{"display":"none"},"bon_profile_stat":{"display":"none"}}
+	module.exports = {"container":{"position":"absolute","top":"-380px","background-color":"transparent"},"edit_profile_btn, .logout_btn":{"position":"absolute","left":"50%","top":"80px","-webkit-transform":"translateX(-50%)","transform":"translateX(-50%)","display":"inline-block","padding":"8px 20px","background":"#00679b","border-radius":"20px","font-size":"12px","text-decoration":"none"},"logout_btn":{"top":"120px"},"bon_profile_right":{"float":"none","margin":"50px auto 0"},"user_name":{"display":"none"},"user_phone":{"display":"none"},"user_avatar_image":{"display":"none"},"points_confirmed":{"display":"none"},"bon_profile_stat":{"display":"none"}}
 
 /***/ },
 
@@ -366,7 +392,7 @@ return webpackJsonp([3],{
 /***/ 219:
 /***/ function(module, exports) {
 
-	module.exports = {}
+	module.exports = {"soligent-sa-block-link":{"color":"#00679b"},"soligent-sa-block-link:hover":{"text-decoration":"none"}}
 
 /***/ },
 

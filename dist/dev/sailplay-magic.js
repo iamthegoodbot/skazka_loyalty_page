@@ -205,8 +205,6 @@ return webpackJsonp([0],[
 	        var app_container = config.root || document.getElementsByTagName('sailplay-magic')[0];
 	        app_container && _angular2.default.bootstrap(app_container, [magic.name]);
 	        _this.inited = true;
-
-	        console.log('local config loaded');
 	      } else _sailplayHub2.default.send('magic.config', config.config);
 	    });
 
@@ -5195,7 +5193,7 @@ return webpackJsonp([0],[
 			};
 		},
 		isOldIE = memoize(function() {
-			return /msie [6-9]\b/.test(window.navigator.userAgent.toLowerCase());
+			return /msie [6-9]\b/.test(self.navigator.userAgent.toLowerCase());
 		}),
 		getHeadElement = memoize(function () {
 			return document.head || document.getElementsByTagName("head")[0];

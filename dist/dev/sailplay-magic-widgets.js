@@ -46,21 +46,245 @@ return webpackJsonp([2],[
 /* 11 */,
 /* 12 */,
 /* 13 */,
-/* 14 */,
-/* 15 */,
-/* 16 */,
-/* 17 */,
-/* 18 */,
-/* 19 */,
-/* 20 */,
-/* 21 */,
-/* 22 */,
-/* 23 */,
-/* 24 */,
-/* 25 */,
-/* 26 */,
-/* 27 */,
-/* 28 */,
+/* 14 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var global    = __webpack_require__(15)
+	  , core      = __webpack_require__(16)
+	  , ctx       = __webpack_require__(17)
+	  , hide      = __webpack_require__(19)
+	  , PROTOTYPE = 'prototype';
+
+	var $export = function(type, name, source){
+	  var IS_FORCED = type & $export.F
+	    , IS_GLOBAL = type & $export.G
+	    , IS_STATIC = type & $export.S
+	    , IS_PROTO  = type & $export.P
+	    , IS_BIND   = type & $export.B
+	    , IS_WRAP   = type & $export.W
+	    , exports   = IS_GLOBAL ? core : core[name] || (core[name] = {})
+	    , expProto  = exports[PROTOTYPE]
+	    , target    = IS_GLOBAL ? global : IS_STATIC ? global[name] : (global[name] || {})[PROTOTYPE]
+	    , key, own, out;
+	  if(IS_GLOBAL)source = name;
+	  for(key in source){
+	    // contains in native
+	    own = !IS_FORCED && target && target[key] !== undefined;
+	    if(own && key in exports)continue;
+	    // export native or passed
+	    out = own ? target[key] : source[key];
+	    // prevent global pollution for namespaces
+	    exports[key] = IS_GLOBAL && typeof target[key] != 'function' ? source[key]
+	    // bind timers to global for call from export context
+	    : IS_BIND && own ? ctx(out, global)
+	    // wrap global constructors for prevent change them in library
+	    : IS_WRAP && target[key] == out ? (function(C){
+	      var F = function(a, b, c){
+	        if(this instanceof C){
+	          switch(arguments.length){
+	            case 0: return new C;
+	            case 1: return new C(a);
+	            case 2: return new C(a, b);
+	          } return new C(a, b, c);
+	        } return C.apply(this, arguments);
+	      };
+	      F[PROTOTYPE] = C[PROTOTYPE];
+	      return F;
+	    // make static versions for prototype methods
+	    })(out) : IS_PROTO && typeof out == 'function' ? ctx(Function.call, out) : out;
+	    // export proto methods to core.%CONSTRUCTOR%.methods.%NAME%
+	    if(IS_PROTO){
+	      (exports.virtual || (exports.virtual = {}))[key] = out;
+	      // export proto methods to core.%CONSTRUCTOR%.prototype.%NAME%
+	      if(type & $export.R && expProto && !expProto[key])hide(expProto, key, out);
+	    }
+	  }
+	};
+	// type bitmap
+	$export.F = 1;   // forced
+	$export.G = 2;   // global
+	$export.S = 4;   // static
+	$export.P = 8;   // proto
+	$export.B = 16;  // bind
+	$export.W = 32;  // wrap
+	$export.U = 64;  // safe
+	$export.R = 128; // real proto method for `library` 
+	module.exports = $export;
+
+/***/ },
+/* 15 */
+/***/ function(module, exports) {
+
+	// https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
+	var global = module.exports = typeof window != 'undefined' && window.Math == Math
+	  ? window : typeof self != 'undefined' && self.Math == Math ? self : Function('return this')();
+	if(typeof __g == 'number')__g = global; // eslint-disable-line no-undef
+
+/***/ },
+/* 16 */
+/***/ function(module, exports) {
+
+	var core = module.exports = {version: '2.4.0'};
+	if(typeof __e == 'number')__e = core; // eslint-disable-line no-undef
+
+/***/ },
+/* 17 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// optional / simple context binding
+	var aFunction = __webpack_require__(18);
+	module.exports = function(fn, that, length){
+	  aFunction(fn);
+	  if(that === undefined)return fn;
+	  switch(length){
+	    case 1: return function(a){
+	      return fn.call(that, a);
+	    };
+	    case 2: return function(a, b){
+	      return fn.call(that, a, b);
+	    };
+	    case 3: return function(a, b, c){
+	      return fn.call(that, a, b, c);
+	    };
+	  }
+	  return function(/* ...args */){
+	    return fn.apply(that, arguments);
+	  };
+	};
+
+/***/ },
+/* 18 */
+/***/ function(module, exports) {
+
+	module.exports = function(it){
+	  if(typeof it != 'function')throw TypeError(it + ' is not a function!');
+	  return it;
+	};
+
+/***/ },
+/* 19 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var dP         = __webpack_require__(20)
+	  , createDesc = __webpack_require__(28);
+	module.exports = __webpack_require__(24) ? function(object, key, value){
+	  return dP.f(object, key, createDesc(1, value));
+	} : function(object, key, value){
+	  object[key] = value;
+	  return object;
+	};
+
+/***/ },
+/* 20 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var anObject       = __webpack_require__(21)
+	  , IE8_DOM_DEFINE = __webpack_require__(23)
+	  , toPrimitive    = __webpack_require__(27)
+	  , dP             = Object.defineProperty;
+
+	exports.f = __webpack_require__(24) ? Object.defineProperty : function defineProperty(O, P, Attributes){
+	  anObject(O);
+	  P = toPrimitive(P, true);
+	  anObject(Attributes);
+	  if(IE8_DOM_DEFINE)try {
+	    return dP(O, P, Attributes);
+	  } catch(e){ /* empty */ }
+	  if('get' in Attributes || 'set' in Attributes)throw TypeError('Accessors not supported!');
+	  if('value' in Attributes)O[P] = Attributes.value;
+	  return O;
+	};
+
+/***/ },
+/* 21 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var isObject = __webpack_require__(22);
+	module.exports = function(it){
+	  if(!isObject(it))throw TypeError(it + ' is not an object!');
+	  return it;
+	};
+
+/***/ },
+/* 22 */
+/***/ function(module, exports) {
+
+	module.exports = function(it){
+	  return typeof it === 'object' ? it !== null : typeof it === 'function';
+	};
+
+/***/ },
+/* 23 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = !__webpack_require__(24) && !__webpack_require__(25)(function(){
+	  return Object.defineProperty(__webpack_require__(26)('div'), 'a', {get: function(){ return 7; }}).a != 7;
+	});
+
+/***/ },
+/* 24 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// Thank's IE8 for his funny defineProperty
+	module.exports = !__webpack_require__(25)(function(){
+	  return Object.defineProperty({}, 'a', {get: function(){ return 7; }}).a != 7;
+	});
+
+/***/ },
+/* 25 */
+/***/ function(module, exports) {
+
+	module.exports = function(exec){
+	  try {
+	    return !!exec();
+	  } catch(e){
+	    return true;
+	  }
+	};
+
+/***/ },
+/* 26 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var isObject = __webpack_require__(22)
+	  , document = __webpack_require__(15).document
+	  // in old IE typeof document.createElement is 'object'
+	  , is = isObject(document) && isObject(document.createElement);
+	module.exports = function(it){
+	  return is ? document.createElement(it) : {};
+	};
+
+/***/ },
+/* 27 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// 7.1.1 ToPrimitive(input [, PreferredType])
+	var isObject = __webpack_require__(22);
+	// instead of the ES6 spec version, we didn't implement @@toPrimitive case
+	// and the second argument - flag - preferred type is a string
+	module.exports = function(it, S){
+	  if(!isObject(it))return it;
+	  var fn, val;
+	  if(S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it)))return val;
+	  if(typeof (fn = it.valueOf) == 'function' && !isObject(val = fn.call(it)))return val;
+	  if(!S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it)))return val;
+	  throw TypeError("Can't convert object to primitive value");
+	};
+
+/***/ },
+/* 28 */
+/***/ function(module, exports) {
+
+	module.exports = function(bitmap, value){
+	  return {
+	    enumerable  : !(bitmap & 1),
+	    configurable: !(bitmap & 2),
+	    writable    : !(bitmap & 4),
+	    value       : value
+	  };
+	};
+
+/***/ },
 /* 29 */,
 /* 30 */,
 /* 31 */,
@@ -78,33 +302,211 @@ return webpackJsonp([2],[
 /* 43 */,
 /* 44 */,
 /* 45 */,
-/* 46 */,
-/* 47 */,
+/* 46 */
+/***/ function(module, exports) {
+
+	// 7.1.4 ToInteger
+	var ceil  = Math.ceil
+	  , floor = Math.floor;
+	module.exports = function(it){
+	  return isNaN(it = +it) ? 0 : (it > 0 ? floor : ceil)(it);
+	};
+
+/***/ },
+/* 47 */
+/***/ function(module, exports) {
+
+	// 7.2.1 RequireObjectCoercible(argument)
+	module.exports = function(it){
+	  if(it == undefined)throw TypeError("Can't call method on  " + it);
+	  return it;
+	};
+
+/***/ },
 /* 48 */,
 /* 49 */,
 /* 50 */,
-/* 51 */,
+/* 51 */
+/***/ function(module, exports) {
+
+	var hasOwnProperty = {}.hasOwnProperty;
+	module.exports = function(it, key){
+	  return hasOwnProperty.call(it, key);
+	};
+
+/***/ },
 /* 52 */,
 /* 53 */,
 /* 54 */,
 /* 55 */,
-/* 56 */,
-/* 57 */,
-/* 58 */,
-/* 59 */,
-/* 60 */,
-/* 61 */,
-/* 62 */,
-/* 63 */,
-/* 64 */,
-/* 65 */,
-/* 66 */,
-/* 67 */,
+/* 56 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// 19.1.2.14 / 15.2.3.14 Object.keys(O)
+	var $keys       = __webpack_require__(57)
+	  , enumBugKeys = __webpack_require__(67);
+
+	module.exports = Object.keys || function keys(O){
+	  return $keys(O, enumBugKeys);
+	};
+
+/***/ },
+/* 57 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var has          = __webpack_require__(51)
+	  , toIObject    = __webpack_require__(58)
+	  , arrayIndexOf = __webpack_require__(61)(false)
+	  , IE_PROTO     = __webpack_require__(64)('IE_PROTO');
+
+	module.exports = function(object, names){
+	  var O      = toIObject(object)
+	    , i      = 0
+	    , result = []
+	    , key;
+	  for(key in O)if(key != IE_PROTO)has(O, key) && result.push(key);
+	  // Don't enum bug & hidden keys
+	  while(names.length > i)if(has(O, key = names[i++])){
+	    ~arrayIndexOf(result, key) || result.push(key);
+	  }
+	  return result;
+	};
+
+/***/ },
+/* 58 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// to indexed object, toObject with fallback for non-array-like ES3 strings
+	var IObject = __webpack_require__(59)
+	  , defined = __webpack_require__(47);
+	module.exports = function(it){
+	  return IObject(defined(it));
+	};
+
+/***/ },
+/* 59 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// fallback for non-array-like ES3 and non-enumerable old V8 strings
+	var cof = __webpack_require__(60);
+	module.exports = Object('z').propertyIsEnumerable(0) ? Object : function(it){
+	  return cof(it) == 'String' ? it.split('') : Object(it);
+	};
+
+/***/ },
+/* 60 */
+/***/ function(module, exports) {
+
+	var toString = {}.toString;
+
+	module.exports = function(it){
+	  return toString.call(it).slice(8, -1);
+	};
+
+/***/ },
+/* 61 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// false -> Array#indexOf
+	// true  -> Array#includes
+	var toIObject = __webpack_require__(58)
+	  , toLength  = __webpack_require__(62)
+	  , toIndex   = __webpack_require__(63);
+	module.exports = function(IS_INCLUDES){
+	  return function($this, el, fromIndex){
+	    var O      = toIObject($this)
+	      , length = toLength(O.length)
+	      , index  = toIndex(fromIndex, length)
+	      , value;
+	    // Array#includes uses SameValueZero equality algorithm
+	    if(IS_INCLUDES && el != el)while(length > index){
+	      value = O[index++];
+	      if(value != value)return true;
+	    // Array#toIndex ignores holes, Array#includes - not
+	    } else for(;length > index; index++)if(IS_INCLUDES || index in O){
+	      if(O[index] === el)return IS_INCLUDES || index || 0;
+	    } return !IS_INCLUDES && -1;
+	  };
+	};
+
+/***/ },
+/* 62 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// 7.1.15 ToLength
+	var toInteger = __webpack_require__(46)
+	  , min       = Math.min;
+	module.exports = function(it){
+	  return it > 0 ? min(toInteger(it), 0x1fffffffffffff) : 0; // pow(2, 53) - 1 == 9007199254740991
+	};
+
+/***/ },
+/* 63 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var toInteger = __webpack_require__(46)
+	  , max       = Math.max
+	  , min       = Math.min;
+	module.exports = function(index, length){
+	  index = toInteger(index);
+	  return index < 0 ? max(index + length, 0) : min(index, length);
+	};
+
+/***/ },
+/* 64 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var shared = __webpack_require__(65)('keys')
+	  , uid    = __webpack_require__(66);
+	module.exports = function(key){
+	  return shared[key] || (shared[key] = uid(key));
+	};
+
+/***/ },
+/* 65 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var global = __webpack_require__(15)
+	  , SHARED = '__core-js_shared__'
+	  , store  = global[SHARED] || (global[SHARED] = {});
+	module.exports = function(key){
+	  return store[key] || (store[key] = {});
+	};
+
+/***/ },
+/* 66 */
+/***/ function(module, exports) {
+
+	var id = 0
+	  , px = Math.random();
+	module.exports = function(key){
+	  return 'Symbol('.concat(key === undefined ? '' : key, ')_', (++id + px).toString(36));
+	};
+
+/***/ },
+/* 67 */
+/***/ function(module, exports) {
+
+	// IE 8- don't enum bug keys
+	module.exports = (
+	  'constructor,hasOwnProperty,isPrototypeOf,propertyIsEnumerable,toLocaleString,toString,valueOf'
+	).split(',');
+
+/***/ },
 /* 68 */,
 /* 69 */,
 /* 70 */,
 /* 71 */,
-/* 72 */,
+/* 72 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// 7.1.13 ToObject(argument)
+	var defined = __webpack_require__(47);
+	module.exports = function(it){
+	  return Object(defined(it));
+	};
+
+/***/ },
 /* 73 */,
 /* 74 */,
 /* 75 */,
@@ -125,10 +527,48 @@ return webpackJsonp([2],[
 /* 90 */,
 /* 91 */,
 /* 92 */,
-/* 93 */,
-/* 94 */,
-/* 95 */,
-/* 96 */,
+/* 93 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = { "default": __webpack_require__(94), __esModule: true };
+
+/***/ },
+/* 94 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(95);
+	module.exports = __webpack_require__(16).Object.keys;
+
+/***/ },
+/* 95 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// 19.1.2.14 Object.keys(O)
+	var toObject = __webpack_require__(72)
+	  , $keys    = __webpack_require__(56);
+
+	__webpack_require__(96)('keys', function(){
+	  return function keys(it){
+	    return $keys(toObject(it));
+	  };
+	});
+
+/***/ },
+/* 96 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// most Object methods by ES6 should accept primitives
+	var $export = __webpack_require__(14)
+	  , core    = __webpack_require__(16)
+	  , fails   = __webpack_require__(25);
+	module.exports = function(KEY, exec){
+	  var fn  = (core.Object || {})[KEY] || Object[KEY]
+	    , exp = {};
+	  exp[KEY] = exec(fn);
+	  $export($export.S + $export.F * fails(function(){ fn(1); }), 'Object', exp);
+	};
+
+/***/ },
 /* 97 */,
 /* 98 */,
 /* 99 */,
@@ -277,7 +717,7 @@ return webpackJsonp([2],[
 			};
 		},
 		isOldIE = memoize(function() {
-			return /msie [6-9]\b/.test(window.navigator.userAgent.toLowerCase());
+			return /msie [6-9]\b/.test(self.navigator.userAgent.toLowerCase());
 		}),
 		getHeadElement = memoize(function () {
 			return document.head || document.getElementsByTagName("head")[0];
@@ -2386,14 +2826,17 @@ return webpackJsonp([2],[
 
 	  id: 'profile',
 	  template: _profile2.default,
-	  controller: function controller() {
+	  inject: ['$rootScope'],
+	  controller: function controller($rootScope) {
 
 	    return function (scope, elm, attrs) {
 
 	      // scope._tools = MAGIC_CONFIG.tools;
 
 	      scope.default_avatar = _avatar_default2.default;
-
+	      $rootScope.$on('showHistory', function () {
+	        return scope.profile.history = true;
+	      });
 	      scope.profile = {
 	        history: false,
 	        show_fill_profile: false,
@@ -2535,11 +2978,34 @@ return webpackJsonp([2],[
 	(0, _widget.WidgetRegister)({
 	  id: "profile-progress",
 	  template: _profileProgress2.default,
-	  inject: ['$timeout'],
-	  controller: function controller($timeout) {
+	  inject: ['$timeout', '$rootScope', 'SailPlayApi'],
+	  controller: function controller($timeout, $rootScope, SailPlayApi) {
 	    return function (scope) {
 	      var hint_hide_timeout;
 
+	      scope.showHistory = function () {
+	        $rootScope.$broadcast('showHistory');
+	      };
+
+	      SailPlayApi.call("vars.batch", { names: ['threshold', 'quarter_revenue'] }, function (res) {
+	        for (var i in res.vars) {
+	          scope[res.vars[i].name] = res.vars[i].value;
+	        }
+
+	        var maxLinePercent = 96,
+	            maxLine = (parseInt(scope.threshold) || 0) * 2,
+	            percent = (parseInt(scope.quarter_revenue) || 0) / maxLine * maxLinePercent;
+
+	        scope.leftBarWidth = percent < 48 ? percent + '%' : '48%';
+	        scope.rightBarWidth = percent < 48 ? "0" : percent - 48 + '%';
+	        scope.$apply();
+	      });
+
+	      scope.toLocaleString = function (data_string) {
+	        var int = parseInt(data_string);
+	        return int.toLocaleString('en').replace(/ /g, ', ');
+	      };
+	      scope.user = SailPlayApi.data('load.user.info');
 	      scope.show_hint = false;
 	      scope.toggleHint = function () {
 	        scope.show_hint = !scope.show_hint;
@@ -2560,7 +3026,7 @@ return webpackJsonp([2],[
 /* 205 */
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"clearfix\">\n  <div class=\"bon_choice_main container\" data-ng-show=\"widget.enabled\" data-ng-cloak>\n    <h3 class=\"bon_header\">\n      <span class=\"header\">{{ widget.texts.header_1_prefix }}</span>\n      <span class=\"header\">Silver</span>\n      <span class=\"header\">{{ widget.texts.header_1_suffix }}</span>\n    </h3>\n    <h3 class=\"bon_header bon_second_header\">\n      <span class=\"header\">{{ widget.texts.header_2_prefix }}</span>\n      <span class=\"header bon_second_header_value\">501, 732</span>\n      <span class=\"header\">{{ widget.texts.header_2_suffix }}</span>\n    </h3>\n    <div class=\"progress-line-container\">\n      <div class=\"progress-hints\">\n        <span class=\"progress-hints__left\">Earn 1 Soligent Buck per $ spent until you reach you threshold</span>\n        <span class=\"progress-hints__right\">Earn multiplied Soligent Bucks for each $ spent past your threshold</span>\n      </div>\n      <div class=\"left-progress-ann\"></div>\n      <div class=\"right-progress-ann\"></div>\n      <div class=\"progress-line\">\n        <div class=\"fill\"></div>\n        <div class=\"delim\"></div>\n        <div class=\"empty\"></div>\n      </div>\n      <div class=\"current-quarter\">\n        <span class=\"current-quarter-text\">Your Quarterly Threshold: $</span>\n        <span class=\"current-quarter-value\">30,000</span>\n        <div class=\"current-quarter-second-text\">by the end of this quarter</div>\n      </div>\n      <div class=\"spent-quarter\">\n        <span class=\"spent-quarter-prefix\">$</span>\n        <span class=\"spent-quarter-value\">53,240</span>\n        <span class=\"spent-quarter-suffix\"> Spent this quarter</span>\n      </div>\n      <div class=\"howdo_hint\" data-ng-show=\"show_hint\">\n        <div class=\"text\" data-ng-click=\"hideHint()\">Earn 1 Soligent Buck per dollar spent. If you spend more than your threshold, you’ll earn additional bonus points\n          on all additional dollars spent based on your status.</div>\n        <div class=\"triangle-bottom\"></div>\n      </div>\n      <div class=\"buttons-container\">\n        <a href=\"javascript:void(0)\" class=\"button_primary\">HISTORY</a>&nbsp;\n        <a href=\"javascript:void(0)\" class=\"button_primary\" data-ng-click=\"toggleHint()\">HOW DO I EARN</a>\n      </div>\n    </div>\n  </div>\n</div>";
+	module.exports = "<div class=\"clearfix\">\n  <div class=\"bon_choice_main container\" data-ng-show=\"widget.enabled\" data-ng-cloak data-ng-if=\"user && user()\">\n    <h3 class=\"bon_header\">\n      <span class=\"header\">{{ widget.texts.header_1_prefix }}</span>\n      <span class=\"header\">{{ user().user_status.name || widget.texts.default_status_string }}</span>\n      <span class=\"header\">{{ widget.texts.header_1_suffix }}</span>\n    </h3>\n    <h3 class=\"bon_header bon_second_header\">\n      <span class=\"header\">{{ widget.texts.header_2_prefix }}</span>\n      <span class=\"header bon_second_header_value\">{{ toLocaleString(user().user_points.confirmed || 0) }}</span>\n      <span class=\"header\">{{ widget.texts.header_2_suffix }}</span>\n    </h3>\n    <div class=\"progress-line-container\">\n      <div class=\"progress-hints\">\n        <span class=\"progress-hints__left\">Earn 1 Soligent Buck per $ spent until you reach you threshold</span>\n        <span class=\"progress-hints__right\">Earn multiplied Soligent Bucks for each $ spent past your threshold</span>\n      </div>\n      <div class=\"left-progress-ann\"></div>\n      <div class=\"right-progress-ann\"></div>\n      <div class=\"progress-line\">\n        <div class=\"fill\" data-ng-style=\"{width: leftBarWidth}\"></div>\n        <div class=\"delim\"></div>\n        <div class=\"empty\" data-ng-style=\"{width: rightBarWidth}\"></div>\n      </div>\n      <div class=\"current-quarter\">\n        <span class=\"current-quarter-text\">Your Quarterly Threshold: $</span>\n        <span class=\"current-quarter-value\">{{ toLocaleString(threshold || 0) }}</span>\n        <div class=\"current-quarter-second-text\">by the end of this quarter</div>\n      </div>\n      <div class=\"spent-quarter\">\n        <span class=\"spent-quarter-prefix\">$</span>\n        <span class=\"spent-quarter-value\">{{ toLocaleString(quarter_revenue || 0) }}</span>\n        <span class=\"spent-quarter-suffix\"> Spent this quarter</span>\n      </div>\n      <div class=\"howdo_hint\" data-ng-show=\"show_hint\">\n        <div class=\"text\" data-ng-click=\"hideHint()\">Earn 1 Soligent Buck per dollar spent. If you spend more than your threshold, you’ll earn additional bonus points\n          on all additional dollars spent based on your status.</div>\n        <div class=\"triangle-bottom\"></div>\n      </div>\n      <div class=\"buttons-container\">\n        <a href=\"javascript:void(0)\" class=\"button_primary\" data-ng-click=\"showHistory()\">HISTORY</a>&nbsp;\n        <a href=\"javascript:void(0)\" class=\"button_primary\" data-ng-click=\"toggleHint()\">HOW DO I EARN</a>\n      </div>\n    </div>\n  </div>\n</div>";
 
 /***/ },
 /* 206 */
@@ -2597,7 +3063,7 @@ return webpackJsonp([2],[
 
 
 	// module
-	exports.push([module.id, ".spm_wrapper .spm_tools_widget.profile-progress {\n  margin: -20px auto 0;\n  max-width: 1200px;\n  display: block;\n}\n@media screen and (max-width: 1200px) {\n  .spm_wrapper .spm_tools_widget.profile-progress {\n    width: 95%;\n  }\n}\n.spm_wrapper .spm_tools_widget.profile-progress .bon_header {\n  margin-top: 40px;\n  font-size: 40px;\n  font-weight: bold;\n}\n.spm_wrapper .spm_tools_widget.profile-progress .bon_second_header {\n  margin-top: 0;\n  margin-bottom: 40px;\n  font-size: 40px;\n  font-weight: bold;\n}\n.spm_wrapper .spm_tools_widget.profile-progress .bon_second_header_value {\n  color: #006299;\n}\n.spm_wrapper .spm_tools_widget.profile-progress .bon_choice_main {\n  overflow: visible;\n}\n.spm_wrapper .spm_tools_widget.profile-progress .howdo_hint {\n  position: absolute;\n  border: 1px solid black;\n  font-size: 15px;\n  width: 300px;\n  background: white;\n  padding: 15px;\n  box-sizing: border-box;\n  right: 100px;\n  bottom: 100px;\n}\n.spm_wrapper .spm_tools_widget.profile-progress .howdo_hint .triangle-bottom {\n  width: 0;\n  height: 0;\n  border-style: solid;\n  border-width: 22px 8.5px 0 8.5px;\n  border-color: #000 transparent transparent transparent;\n  position: absolute;\n  bottom: -22px;\n  right: 20px;\n}\n.spm_wrapper .spm_tools_widget.profile-progress .howdo_hint .triangle-bottom:after {\n  content: '';\n  position: absolute;\n  left: -7px;\n  top: -22px;\n  width: 0;\n  height: 0;\n  border-style: solid;\n  border-width: 20px 7.5px 0 7.5px;\n  border-color: #ffffff transparent transparent transparent;\n}\n.spm_wrapper .spm_tools_widget.profile-progress .buttons-container {\n  position: absolute;\n  right: 5%;\n  bottom: 10%;\n}\n.spm_wrapper .spm_tools_widget.profile-progress .progress-line-container {\n  position: relative;\n  margin-bottom: 42px;\n  background: white;\n  height: 300px;\n  clear: both;\n  -webkit-box-shadow: 0 0 20px -10px rgba(0, 0, 0, 0.8);\n  box-shadow: 0 0 20px -10px rgba(0, 0, 0, 0.8);\n}\n.spm_wrapper .spm_tools_widget.profile-progress .progress-line-container .current-quarter {\n  font-size: 20px;\n  font-weight: bold;\n  text-align: center;\n  position: absolute;\n  width: 100%;\n  top: 150px;\n}\n.spm_wrapper .spm_tools_widget.profile-progress .progress-line-container .spent-quarter {\n  position: absolute;\n  bottom: 10%;\n  left: 5%;\n}\n.spm_wrapper .spm_tools_widget.profile-progress .progress-line-container .spent-quarter-prefix {\n  font-size: 36px;\n  font-weight: bold;\n}\n.spm_wrapper .spm_tools_widget.profile-progress .progress-line-container .spent-quarter-value {\n  font-size: 36px;\n  font-weight: bold;\n}\n.spm_wrapper .spm_tools_widget.profile-progress .progress-line-container .spent-quarter-suffix {\n  font-size: 28px;\n  font-weight: bold;\n}\n.spm_wrapper .spm_tools_widget.profile-progress .progress-line-container .progress-hints {\n  left: 5%;\n  right: 5%;\n  top: 20px;\n  position: absolute;\n}\n.spm_wrapper .spm_tools_widget.profile-progress .progress-line-container .progress-hints__left {\n  font-size: 14px;\n  color: #106299;\n  float: left;\n  white-space: nowrap;\n}\n.spm_wrapper .spm_tools_widget.profile-progress .progress-line-container .progress-hints__right {\n  font-size: 14px;\n  color: #FF9900;\n  float: right;\n  white-space: nowrap;\n}\n.spm_wrapper .spm_tools_widget.profile-progress .progress-line-container .left-progress-ann {\n  float: left;\n  height: 15px;\n  width: 42.6%;\n  border-width: 2px;\n  border-style: solid;\n  position: relative;\n  top: 40px;\n  border-color: #106299 #106299 transparent #106299;\n  margin-left: 5%;\n  margin-right: 5px;\n}\n.spm_wrapper .spm_tools_widget.profile-progress .progress-line-container .right-progress-ann {\n  height: 15px;\n  float: left;\n  width: 46%;\n  border-width: 2px;\n  border-style: solid;\n  position: relative;\n  top: 40px;\n  border-color: #FF9900 #FF9900 transparent #FF9900;\n  margin-right: 5%;\n}\n.spm_wrapper .spm_tools_widget.profile-progress .progress-line-container .progress-line {\n  height: 30px;\n  border-radius: 30px;\n  background: #E8E3E3;\n  position: relative;\n  margin-left: 5%;\n  margin-right: 5%;\n  top: 85px;\n  -webkit-box-shadow: 0 -5px 0 0px #000000;\n  box-shadow: 0 -5px 0 0px #000000;\n}\n.spm_wrapper .spm_tools_widget.profile-progress .progress-line-container .progress-line .fill {\n  background: #106299;\n  width: 50%;\n  height: 10px;\n  border-top-left-radius: 30px;\n  border-bottom-left-radius: 30px;\n  position: absolute;\n  top: 50%;\n  left: 2%;\n  margin-top: -5px;\n}\n.spm_wrapper .spm_tools_widget.profile-progress .progress-line-container .progress-line .delim {\n  width: 12px;\n  height: 60px;\n  position: absolute;\n  left: 48%;\n  z-index: 10;\n  top: 50%;\n  margin-left: -5px;\n  margin-top: -30px;\n  background: #FF9900;\n  -webkit-box-shadow: 0 0 10px -2px rgba(0, 0, 0, 0.8);\n  box-shadow: 0 0 10px -2px rgba(0, 0, 0, 0.8);\n}\n.spm_wrapper .spm_tools_widget.profile-progress .progress-line-container .progress-line .empty {\n  background: #FF9900;\n  width: 50%;\n  height: 10px;\n  border-top-right-radius: 30px;\n  border-bottom-right-radius: 30px;\n  position: absolute;\n  top: 50%;\n  right: 2%;\n  margin-top: -5px;\n}\n", ""]);
+	exports.push([module.id, ".spm_wrapper .spm_tools_widget.profile-progress {\n  margin: -20px auto 0;\n  max-width: 1200px;\n  display: block;\n}\n@media screen and (max-width: 1200px) {\n  .spm_wrapper .spm_tools_widget.profile-progress {\n    width: 95%;\n  }\n}\n.spm_wrapper .spm_tools_widget.profile-progress .bon_header {\n  margin-top: 40px;\n  font-size: 40px;\n  font-weight: bold;\n}\n.spm_wrapper .spm_tools_widget.profile-progress .bon_second_header {\n  margin-top: 0;\n  margin-bottom: 40px;\n  font-size: 40px;\n  font-weight: bold;\n}\n.spm_wrapper .spm_tools_widget.profile-progress .bon_second_header_value {\n  color: #006299;\n}\n.spm_wrapper .spm_tools_widget.profile-progress .bon_choice_main {\n  overflow: visible;\n}\n.spm_wrapper .spm_tools_widget.profile-progress .howdo_hint {\n  position: absolute;\n  border: 1px solid black;\n  font-size: 15px;\n  width: 300px;\n  background: white;\n  padding: 15px;\n  box-sizing: border-box;\n  right: 100px;\n  bottom: 100px;\n}\n.spm_wrapper .spm_tools_widget.profile-progress .howdo_hint .triangle-bottom {\n  width: 0;\n  height: 0;\n  border-style: solid;\n  border-width: 22px 8.5px 0 8.5px;\n  border-color: #000 transparent transparent transparent;\n  position: absolute;\n  bottom: -22px;\n  right: 20px;\n}\n.spm_wrapper .spm_tools_widget.profile-progress .howdo_hint .triangle-bottom:after {\n  content: '';\n  position: absolute;\n  left: -7px;\n  top: -22px;\n  width: 0;\n  height: 0;\n  border-style: solid;\n  border-width: 20px 7.5px 0 7.5px;\n  border-color: #ffffff transparent transparent transparent;\n}\n.spm_wrapper .spm_tools_widget.profile-progress .buttons-container {\n  position: absolute;\n  right: 5%;\n  bottom: 10%;\n}\n.spm_wrapper .spm_tools_widget.profile-progress .progress-line-container {\n  position: relative;\n  margin-bottom: 42px;\n  background: white;\n  height: 300px;\n  clear: both;\n  -webkit-box-shadow: 0 0 20px -10px rgba(0, 0, 0, 0.8);\n  box-shadow: 0 0 20px -10px rgba(0, 0, 0, 0.8);\n}\n.spm_wrapper .spm_tools_widget.profile-progress .progress-line-container .current-quarter {\n  font-size: 20px;\n  font-weight: bold;\n  text-align: center;\n  position: absolute;\n  width: 100%;\n  top: 150px;\n}\n.spm_wrapper .spm_tools_widget.profile-progress .progress-line-container .spent-quarter {\n  position: absolute;\n  bottom: 10%;\n  left: 5%;\n}\n.spm_wrapper .spm_tools_widget.profile-progress .progress-line-container .spent-quarter-prefix {\n  font-size: 36px;\n  font-weight: bold;\n}\n.spm_wrapper .spm_tools_widget.profile-progress .progress-line-container .spent-quarter-value {\n  font-size: 36px;\n  font-weight: bold;\n}\n.spm_wrapper .spm_tools_widget.profile-progress .progress-line-container .spent-quarter-suffix {\n  font-size: 28px;\n  font-weight: bold;\n}\n.spm_wrapper .spm_tools_widget.profile-progress .progress-line-container .progress-hints {\n  left: 5%;\n  right: 5%;\n  top: 20px;\n  position: absolute;\n}\n.spm_wrapper .spm_tools_widget.profile-progress .progress-line-container .progress-hints__left {\n  font-size: 14px;\n  color: #106299;\n  float: left;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  max-width: 45%;\n}\n.spm_wrapper .spm_tools_widget.profile-progress .progress-line-container .progress-hints__right {\n  font-size: 14px;\n  color: #FF9900;\n  float: right;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  max-width: 45%;\n}\n.spm_wrapper .spm_tools_widget.profile-progress .progress-line-container .left-progress-ann {\n  float: left;\n  height: 15px;\n  width: calc(45% - 7px);\n  border-width: 2px;\n  border-style: solid;\n  position: relative;\n  top: 40px;\n  border-color: #106299 #106299 transparent #106299;\n  margin-left: 5%;\n  margin-right: 5px;\n}\n.spm_wrapper .spm_tools_widget.profile-progress .progress-line-container .right-progress-ann {\n  height: 15px;\n  float: left;\n  width: calc(45% - 7px);\n  border-width: 2px;\n  border-style: solid;\n  position: relative;\n  top: 40px;\n  border-color: #FF9900 #FF9900 transparent #FF9900;\n  margin-right: 5%;\n}\n.spm_wrapper .spm_tools_widget.profile-progress .progress-line-container .progress-line {\n  height: 30px;\n  border-radius: 30px;\n  background: #E8E3E3;\n  position: relative;\n  margin-left: 5%;\n  margin-right: 5%;\n  top: 85px;\n  -webkit-box-shadow: 0 -5px 0 0px #000000;\n  box-shadow: 0 -5px 0 0px #000000;\n}\n.spm_wrapper .spm_tools_widget.profile-progress .progress-line-container .progress-line .fill {\n  background: #106299;\n  width: 0;\n  height: 10px;\n  border-top-left-radius: 30px;\n  border-bottom-left-radius: 30px;\n  position: absolute;\n  top: 50%;\n  left: 2%;\n  margin-top: -5px;\n}\n.spm_wrapper .spm_tools_widget.profile-progress .progress-line-container .progress-line .delim {\n  width: 12px;\n  height: 60px;\n  position: absolute;\n  left: 50%;\n  z-index: 10;\n  top: 50%;\n  margin-left: -8px;\n  margin-top: -30px;\n  background: #FF9900;\n  -webkit-box-shadow: 0 0 10px -2px rgba(0, 0, 0, 0.8);\n  box-shadow: 0 0 10px -2px rgba(0, 0, 0, 0.8);\n}\n.spm_wrapper .spm_tools_widget.profile-progress .progress-line-container .progress-line .empty {\n  background: #FF9900;\n  width: 0;\n  height: 10px;\n  border-top-right-radius: 30px;\n  border-bottom-right-radius: 30px;\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  margin-top: -5px;\n}\n", ""]);
 
 	// exports
 
@@ -2607,6 +3073,10 @@ return webpackJsonp([2],[
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
+
+	var _keys = __webpack_require__(93);
+
+	var _keys2 = _interopRequireDefault(_keys);
 
 	var _widget = __webpack_require__(101);
 
@@ -2631,7 +3101,11 @@ return webpackJsonp([2],[
 	      scope.user = SailPlayApi.data('load.user.info');
 
 	      // Account model
-	      scope.variables = {};
+	      scope.variables = {
+	        sales_rep: '',
+	        sales_rep_phone: '',
+	        sales_rep_email: ''
+	      };
 
 	      // Current status model
 	      scope.current_status = null;
@@ -2639,6 +3113,7 @@ return webpackJsonp([2],[
 	      // Next status model
 	      scope.next_status = MAGIC_CONFIG.data.status && MAGIC_CONFIG.data.status.list && MAGIC_CONFIG.data.status.list[0];
 
+	      // Watch user data
 	      scope.$watch(function () {
 	        return angular.toJson([scope.user()]);
 	      }, function (new_val, old_val) {
@@ -2646,14 +3121,24 @@ return webpackJsonp([2],[
 
 	          if (!MAGIC_CONFIG.data.status || !MAGIC_CONFIG.data.status.list || !scope.user().user_status || !scope.user().user_status.name) return false;
 
-	          for (var i = 0, len = MAGIC_CONFIG.data.status.length; i < len; i++) {
-	            if (MAGIC_CONFIG.data.status[i] == scope.user().user_status.name) {
-	              scope.current_status = MAGIC_CONFIG.data.status[i];
-	              scope.next_status = MAGIC_CONFIG.data.status[i + 1];
+	          for (var i = 0, len = MAGIC_CONFIG.data.status.list.length; i < len; i++) {
+	            if (MAGIC_CONFIG.data.status.list[i].name.toLowerCase() == scope.user().user_status.name.toLowerCase()) {
+	              scope.current_status = MAGIC_CONFIG.data.status.list[i];
+	              scope.next_status = MAGIC_CONFIG.data.status.list[i + 1];
 	              break;
 	            }
 	          }
 	        }
+	      });
+
+	      // Get users variables
+	      SailPlay.send('vars.batch', {
+	        names: (0, _keys2.default)(scope.variables)
+	      }, function (res) {
+	        res.vars.forEach(function (item) {
+	          scope.variables[item.name] = item.value;
+	        });
+	        scope.$digest();
 	      });
 	    };
 	  }
@@ -2664,7 +3149,7 @@ return webpackJsonp([2],[
 /* 209 */
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"container clearfix soligent-sa-widget\" data-ng-if=\"user && user()\">\n\n    <div class=\"soligent-sa-wrapper clearfix\">\n\n        <div class=\"soligent-sa-block soligent-sa-block_current\" data-ng-if=\"current_status\">\n\n            <div class=\"soligent-sa-block__title\" data-ng-bind=\"'YOUR ' + current_status.name + ' BENEFITS'\"></div>\n\n            <div class=\"soligent-sa-block__icon\" style=\"background-image: {{ current_status.icon | background_image }}\"></div>\n\n            <ul class=\"soligent-sa-block-list\">\n\n                <li class=\"soligent-sa-block-list__item\" data-ng-repeat=\"text in current_status.texts track by $index\" data-ng-bind=\"text\"></li>\n\n            </ul>\n\n        </div>\n\n        <div class=\"soligent-sa-block soligent-sa-block_next\" data-ng-if=\"next_status\">\n\n            <div class=\"soligent-sa-block__title\" data-ng-bind=\"'SPEND $' + (next_status.sum | number) + ' THIS YEAR TO BECOME A ' + next_status.name + ' MEMBER'\"></div>\n\n            <div class=\"soligent-sa-block__icon\" style=\"background-image: {{ next_status.icon | background_image }}\"></div>\n\n            <ul class=\"soligent-sa-block-list\">\n\n                <li class=\"soligent-sa-block-list__item\" data-ng-repeat=\"text in next_status.texts track by $index\" data-ng-bind=\"text\"></li>\n\n            </ul>\n\n        </div>\n\n        <div class=\"soligent-sa-block soligent-sa-block_monthly_special\" data-ng-if=\"$parent.widget.options.monthly_special\">\n\n            <div class=\"soligent-sa-block__title\">MONTHLY SPECIAL</div>\n\n            <div class=\"soligent-sa-block__icon\" style=\"background-image: {{ $parent.widget.options.monthly_special.icon | background_image }}\"></div>\n\n            <ul class=\"soligent-sa-block-list\">\n\n                <li class=\"soligent-sa-block-list__item\" data-ng-repeat=\"text in $parent.widget.options.monthly_special.texts track by $index\" data-ng-bind=\"text\"></li>\n\n            </ul>\n\n        </div>\n\n        <div class=\"soligent-sa-block monthly_special_account\" data-ng-if=\"variables\">\n\n            <div class=\"soligent-sa-block__title\">YOUR ACCOUNT EXECUTIVE:</div>\n\n            <div class=\"soligent-sa-block__info\" data-ng-bind=\"variables.sales_rep || 'Name N/A'\"></div>\n\n            <div class=\"soligent-sa-block__info\" data-ng-bind=\"variables.sales_rep_phone || 'Phone N/A'\"></div>\n\n            <div class=\"soligent-sa-block__info\"  data-ng-bind=\"variables.sales_rep_email || 'Email N/A'\"></div>\n\n            <div class=\"soligent-sa-block__info\">\n                <span class=\"soligent-sa-block__info_black\">ACCOUNT #:</span>\n                <span data-ng-bind=\"$parent.user().user.origin_user_id || 'N/A'\"></span>\n            </div>\n\n        </div>\n\n    </div>\n\n</div>";
+	module.exports = "<div class=\"container clearfix soligent-sa-widget\" data-ng-if=\"user && user()\">\n\n    <div class=\"soligent-sa-wrapper clearfix\">\n\n        <div class=\"soligent-sa-block soligent-sa-block_current\" data-ng-if=\"current_status\">\n\n            <div class=\"soligent-sa-block__title\" data-ng-bind=\"'YOUR ' + current_status.name + ' BENEFITS'\"></div>\n\n            <div class=\"soligent-sa-block__icon\"\n                 style=\"background-image: {{ current_status.icon | background_image }}\"></div>\n\n            <ul class=\"soligent-sa-block-list\">\n\n                <li class=\"soligent-sa-block-list__item\" data-ng-repeat=\"text in current_status.texts track by $index\"\n                    data-ng-bind=\"text\"></li>\n\n            </ul>\n\n        </div>\n\n        <div class=\"soligent-sa-block soligent-sa-block_next\" data-ng-if=\"next_status\">\n\n            <div class=\"soligent-sa-block__title\"\n                 data-ng-bind=\"'SPEND $' + (next_status.sum | number) + ' THIS YEAR TO BECOME A ' + next_status.name + ' MEMBER'\"></div>\n\n            <div class=\"soligent-sa-block__icon\"\n                 style=\"background-image: {{ next_status.icon | background_image }}\"></div>\n\n            <ul class=\"soligent-sa-block-list\">\n\n                <li class=\"soligent-sa-block-list__item\" data-ng-repeat=\"text in next_status.texts track by $index\"\n                    data-ng-bind=\"text\"></li>\n\n            </ul>\n\n            <a class=\"soligent-sa-block-link\"\n               target=\"_blank\"\n               data-ng-if=\"widget.options.next_status_link\"\n               data-ng-href=\"{{ widget.options.next_status_link.href }}\"\n               data-ng-bind=\"widget.options.next_status_link.title\"></a>\n\n        </div>\n\n        <div class=\"soligent-sa-block soligent-sa-block_monthly_special\"\n             data-ng-if=\"$parent.widget.options.monthly_special\">\n\n            <div class=\"soligent-sa-block__title\">MONTHLY SPECIAL</div>\n\n            <div class=\"soligent-sa-block__icon\"\n                 style=\"background-image: {{ $parent.widget.options.monthly_special.icon | background_image }}\"></div>\n\n            <ul class=\"soligent-sa-block-list\">\n\n                <li class=\"soligent-sa-block-list__item\"\n                    data-ng-repeat=\"text in $parent.widget.options.monthly_special.texts track by $index\"\n                    data-ng-bind=\"text\"></li>\n\n            </ul>\n\n        </div>\n\n        <div class=\"soligent-sa-block monthly_special_account\" data-ng-if=\"variables\">\n\n            <div class=\"soligent-sa-block__title\">YOUR ACCOUNT EXECUTIVE:</div>\n\n            <div class=\"soligent-sa-block__info\" data-ng-bind=\"variables.sales_rep || 'Name N/A'\"></div>\n\n            <div class=\"soligent-sa-block__info\" data-ng-bind=\"variables.sales_rep_phone || 'Phone N/A'\"></div>\n\n            <div class=\"soligent-sa-block__info\" data-ng-bind=\"variables.sales_rep_email || 'Email N/A'\"></div>\n\n            <div class=\"soligent-sa-block__info\">\n                <span class=\"soligent-sa-block__info_black\">ACCOUNT #:</span>\n                <span data-ng-bind=\"$parent.user().user.origin_user_id || 'N/A'\"></span>\n            </div>\n\n        </div>\n\n    </div>\n\n</div>";
 
 /***/ },
 /* 210 */
@@ -2701,7 +3186,7 @@ return webpackJsonp([2],[
 
 
 	// module
-	exports.push([module.id, ".spm_wrapper .soligent-sa {\n  font-family: Tahoma;\n}\n.spm_wrapper .soligent-sa-wrapper {\n  width: 1200px;\n  padding: 50px 0;\n  margin: 0 auto;\n  box-sizing: border-box;\n}\n@media (max-width: 1200px) {\n  .spm_wrapper .soligent-sa-wrapper {\n    width: 95%;\n  }\n}\n.spm_wrapper .soligent-sa-block {\n  width: 48.5%;\n  float: left;\n  min-height: 250px;\n  box-sizing: border-box;\n  margin-bottom: 1.5%;\n  padding: 20px;\n  font-size: 0;\n  box-shadow: 0 0 20px -10px rgba(0, 0, 0, 0.8);\n}\n@media (max-width: 650px) {\n  .spm_wrapper .soligent-sa-block {\n    width: 100%;\n  }\n}\n.spm_wrapper .soligent-sa-block:nth-child(odd) {\n  margin-right: 1.5%;\n}\n@media (max-width: 650px) {\n  .spm_wrapper .soligent-sa-block:nth-child(odd) {\n    margin-left: 0;\n  }\n}\n.spm_wrapper .soligent-sa-block:nth-child(even) {\n  margin-left: 1.5%;\n}\n@media (max-width: 650px) {\n  .spm_wrapper .soligent-sa-block:nth-child(even) {\n    margin-left: 0;\n  }\n}\n.spm_wrapper .soligent-sa-block__title {\n  text-transform: uppercase;\n  font-size: 28px;\n  margin-bottom: 20px;\n  font-weight: bold;\n  line-height: 1;\n}\n.spm_wrapper .soligent-sa-block__icon {\n  display: inline-block;\n  width: 100px;\n  height: 100px;\n  vertical-align: middle;\n  background-position: center center;\n  background-repeat: no-repeat;\n  background-size: contain;\n  border: 1px solid black;\n}\n.spm_wrapper .soligent-sa-block__info {\n  margin-bottom: 15px;\n  color: grey;\n  font-weight: bold;\n  font-size: 22px;\n}\n.spm_wrapper .soligent-sa-block__info:last-child {\n  margin-bottom: 0;\n}\n.spm_wrapper .soligent-sa-block__info_black {\n  color: black;\n}\n.spm_wrapper .soligent-sa-block-list {\n  width: 70%;\n  display: inline-block;\n  vertical-align: middle;\n  font-size: 14px;\n  margin-left: 20px;\n}\n@media (max-width: 1000px) {\n  .spm_wrapper .soligent-sa-block-list {\n    width: 100%;\n    margin-top: 10px;\n    margin-left: 0;\n  }\n}\n.spm_wrapper .soligent-sa-block-list__item {\n  margin-top: 10px;\n}\n.spm_wrapper .soligent-sa-block-list__item:first-child {\n  margin-top: 0;\n}\n", ""]);
+	exports.push([module.id, ".spm_wrapper .soligent-sa {\n  font-family: Tahoma;\n}\n.spm_wrapper .soligent-sa-wrapper {\n  width: 1200px;\n  padding: 50px 0;\n  margin: 0 auto;\n  box-sizing: border-box;\n}\n@media (max-width: 1200px) {\n  .spm_wrapper .soligent-sa-wrapper {\n    width: 95%;\n  }\n}\n.spm_wrapper .soligent-sa-block {\n  width: 48.5%;\n  float: left;\n  min-height: 250px;\n  box-sizing: border-box;\n  margin-bottom: 1.5%;\n  padding: 20px;\n  font-size: 0;\n  box-shadow: 0 0 20px -10px rgba(0, 0, 0, 0.8);\n}\n.spm_wrapper .soligent-sa-block-link {\n  font-size: 18px;\n  margin-top: 10px;\n  display: block;\n  color: blue;\n}\n@media (max-width: 650px) {\n  .spm_wrapper .soligent-sa-block {\n    width: 100%;\n  }\n}\n.spm_wrapper .soligent-sa-block:nth-child(odd) {\n  margin-right: 1.5%;\n}\n@media (max-width: 650px) {\n  .spm_wrapper .soligent-sa-block:nth-child(odd) {\n    margin-left: 0;\n  }\n}\n.spm_wrapper .soligent-sa-block:nth-child(even) {\n  margin-left: 1.5%;\n}\n@media (max-width: 650px) {\n  .spm_wrapper .soligent-sa-block:nth-child(even) {\n    margin-left: 0;\n  }\n}\n.spm_wrapper .soligent-sa-block__title {\n  text-transform: uppercase;\n  font-size: 28px;\n  margin-bottom: 20px;\n  font-weight: bold;\n  line-height: 1;\n}\n.spm_wrapper .soligent-sa-block__icon {\n  display: inline-block;\n  width: 100px;\n  height: 100px;\n  vertical-align: middle;\n  background-position: center center;\n  background-repeat: no-repeat;\n  background-size: contain;\n  border: 1px solid black;\n}\n.spm_wrapper .soligent-sa-block__info {\n  margin-bottom: 15px;\n  color: grey;\n  font-weight: bold;\n  font-size: 22px;\n}\n.spm_wrapper .soligent-sa-block__info:last-child {\n  margin-bottom: 0;\n}\n.spm_wrapper .soligent-sa-block__info_black {\n  color: black;\n}\n.spm_wrapper .soligent-sa-block-list {\n  width: 70%;\n  display: inline-block;\n  vertical-align: middle;\n  font-size: 14px;\n  margin-left: 20px;\n}\n@media (max-width: 1000px) {\n  .spm_wrapper .soligent-sa-block-list {\n    width: 100%;\n    margin-top: 10px;\n    margin-left: 0;\n  }\n}\n.spm_wrapper .soligent-sa-block-list__item {\n  margin-top: 10px;\n}\n.spm_wrapper .soligent-sa-block-list__item:first-child {\n  margin-top: 0;\n}\n", ""]);
 
 	// exports
 

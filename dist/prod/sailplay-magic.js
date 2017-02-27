@@ -70,7 +70,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	__webpack_require__(187);
 	__webpack_require__(192);
 	__webpack_require__(197);
-	module.exports = __webpack_require__(205);
+	__webpack_require__(205);
+	__webpack_require__(209);
+	module.exports = __webpack_require__(213);
 
 
 /***/ },
@@ -272,7 +274,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	      if (_this.inited) return;
 
-	      _sailplayHub2.default.send('magic.config', config.config);
+	      // -----------------------------
+	      if (window.SAILPLAY_MAGIC_CONFIG) {
+	        _core.Core.constant('MAGIC_CONFIG', window.SAILPLAY_MAGIC_CONFIG);
+	        var app_container = config.root || document.getElementsByTagName('sailplay-magic')[0];
+	        app_container && _angular2.default.bootstrap(app_container, [magic.name]);
+	        _this.inited = true;
+	      } else _sailplayHub2.default.send('magic.config', config.config);
 	    });
 
 	    _sailplayHub2.default.on('magic.config.success', function (res_config) {
@@ -310,7 +318,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  }]);
 	  return Magic;
-	}(), _class.Widget = _widget.WidgetRegister, _class.version = '2.1.3', _temp);
+	}(), _class.Widget = _widget.WidgetRegister, _class.version = '2.1.4', _temp);
 
 	//extend SAILPLAY with Magic class
 
@@ -858,6 +866,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	      params.dep_id = _config.dep_id || '';
 	      params.background = opts.background || '';
 	      params.partner_info = opts.partner_info || 0;
+	      if(opts.reg_match_email_oid) {
+	        params.reg_match_email_oid = opts.reg_match_email_oid;
+	      }
+	      if(opts.css_link) {
+	        params.css_link = opts.css_link;
+	      }
 	      if (opts.lang) {
 	        params.lang = opts.lang;
 	      }
@@ -1199,6 +1213,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        params.auth_hash = _config.auth_hash;
 	      }
 
+	      params.lang = params.lang || _config.lang || 'ru';
+
 	      JSONP.get(_config.DOMAIN + _config.urls.gifts.list, params, function (res) {
 	        //      console.dir(res);
 	        if (res.status == 'ok') {
@@ -1305,7 +1321,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return;
 	      }
 	      var params = {
-	        auth_hash: _config.auth_hash
+	        auth_hash: _config.auth_hash,
+	        lang: p && p.lang || _config.lang || 'ru'
 	      };
 	      if(p){
 	        if(p.include_rules) {
@@ -1493,33 +1510,80 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    });
 
-	    //ADD CUSTOM VARIABLES
+	    /**
+	     * Add variables to user
+	     * @object data {custom_vars:{}, user: {}}
+	     * @function callback
+	     */
 	    sp.on('vars.add', function (data, callback) {
+
 	      if (_config == {}) {
 	        initError();
 	        return;
 	      }
+
 	      if (_config.auth_hash || data.user) {
+
 	        var obj = data.custom_vars;
-	        if (data.user) {
-	          for (var p in data.user) {
-	            obj[p] = data.user[p];
-	          }
-	        }
-	        else {
+
+	        if (data.user)
+	          for (var p in data.user) obj[p] = data.user[p];
+	        else
 	          obj.auth_hash = _config.auth_hash;
-	        }
-	        JSONP.get(_config.DOMAIN + '/js-api/' + _config.partner.id + '/users/custom-variables/add/', obj, function (res) {
-	          if (res.status == 'ok') {
+
+	        obj.lang = data.lang || _config.lang || 'ru';
+
+	        JSONP.get(_config.DOMAIN + _config.urls.users.custom_variables.add, obj, function (res) {
+	          if (res.status == 'ok')
 	            sp.send('vars.add.success', res);
-	          } else {
+	          else
 	            sp.send('vars.add.error', res);
-	          }
 	          callback && callback(res);
 	        });
+
 	      } else {
 	        sp.send('vars.add.auth.error', data);
 	      }
+
+	    });
+
+	    /**
+	     * Get user variables
+	     * @object data {names: [], user: {}}
+	     * @function callback
+	     */
+	    sp.on("vars.batch", function (data, callback) {
+
+	      if (_config == {}) {
+	        initError();
+	        return;
+	      }
+
+	      if (_config.auth_hash || data.user) {
+
+	        var obj = {
+	          names: JSON.stringify(data.names)
+	        };
+
+	        if (data.user)
+	          for (var p in data.user) obj[p] = data.user[p];
+	        else
+	          obj.auth_hash = _config.auth_hash;
+
+	        obj.lang = data.lang || _config.lang || 'ru';
+
+	        JSONP.get(_config.DOMAIN + _config.urls.users.custom_variables.batch_get, obj, function (res) {
+	          if (res.status == 'ok')
+	            sp.send('vars.batch.success', res);
+	          else
+	            sp.send('vars.batch.error', res);
+	          callback && callback(res);
+	        });
+
+	      } else {
+	        sp.send('vars.batch.auth.error', data);
+	      }
+
 	    });
 
 	    //LEADERBOARD SECTION
@@ -36370,90 +36434,34 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return doneResult();
 	      }
 
+	      context.method = method;
+	      context.arg = arg;
+
 	      while (true) {
 	        var delegate = context.delegate;
 	        if (delegate) {
-	          if (method === "return" ||
-	              (method === "throw" && delegate.iterator[method] === undefined)) {
-	            // A return or throw (when the delegate iterator has no throw
-	            // method) always terminates the yield* loop.
-	            context.delegate = null;
-
-	            // If the delegate iterator has a return method, give it a
-	            // chance to clean up.
-	            var returnMethod = delegate.iterator["return"];
-	            if (returnMethod) {
-	              var record = tryCatch(returnMethod, delegate.iterator, arg);
-	              if (record.type === "throw") {
-	                // If the return method threw an exception, let that
-	                // exception prevail over the original return or throw.
-	                method = "throw";
-	                arg = record.arg;
-	                continue;
-	              }
-	            }
-
-	            if (method === "return") {
-	              // Continue with the outer return, now that the delegate
-	              // iterator has been terminated.
-	              continue;
-	            }
+	          var delegateResult = maybeInvokeDelegate(delegate, context);
+	          if (delegateResult) {
+	            if (delegateResult === ContinueSentinel) continue;
+	            return delegateResult;
 	          }
-
-	          var record = tryCatch(
-	            delegate.iterator[method],
-	            delegate.iterator,
-	            arg
-	          );
-
-	          if (record.type === "throw") {
-	            context.delegate = null;
-
-	            // Like returning generator.throw(uncaught), but without the
-	            // overhead of an extra function call.
-	            method = "throw";
-	            arg = record.arg;
-	            continue;
-	          }
-
-	          // Delegate generator ran and handled its own exceptions so
-	          // regardless of what the method was, we continue as if it is
-	          // "next" with an undefined arg.
-	          method = "next";
-	          arg = undefined;
-
-	          var info = record.arg;
-	          if (info.done) {
-	            context[delegate.resultName] = info.value;
-	            context.next = delegate.nextLoc;
-	          } else {
-	            state = GenStateSuspendedYield;
-	            return info;
-	          }
-
-	          context.delegate = null;
 	        }
 
-	        if (method === "next") {
+	        if (context.method === "next") {
 	          // Setting context._sent for legacy support of Babel's
 	          // function.sent implementation.
-	          context.sent = context._sent = arg;
+	          context.sent = context._sent = context.arg;
 
-	        } else if (method === "throw") {
+	        } else if (context.method === "throw") {
 	          if (state === GenStateSuspendedStart) {
 	            state = GenStateCompleted;
-	            throw arg;
+	            throw context.arg;
 	          }
 
-	          if (context.dispatchException(arg)) {
-	            // If the dispatched exception was caught by a catch block,
-	            // then let that catch block handle the exception normally.
-	            method = "next";
-	            arg = undefined;
-	          }
+	          context.dispatchException(context.arg);
 
-	        } else if (method === "return") {
-	          context.abrupt("return", arg);
+	        } else if (context.method === "return") {
+	          context.abrupt("return", context.arg);
 	        }
 
 	        state = GenStateExecuting;
@@ -36466,30 +36474,106 @@ return /******/ (function(modules) { // webpackBootstrap
 	            ? GenStateCompleted
 	            : GenStateSuspendedYield;
 
-	          var info = {
+	          if (record.arg === ContinueSentinel) {
+	            continue;
+	          }
+
+	          return {
 	            value: record.arg,
 	            done: context.done
 	          };
 
-	          if (record.arg === ContinueSentinel) {
-	            if (context.delegate && method === "next") {
-	              // Deliberately forget the last sent value so that we don't
-	              // accidentally pass it on to the delegate.
-	              arg = undefined;
-	            }
-	          } else {
-	            return info;
-	          }
-
 	        } else if (record.type === "throw") {
 	          state = GenStateCompleted;
 	          // Dispatch the exception by looping back around to the
-	          // context.dispatchException(arg) call above.
-	          method = "throw";
-	          arg = record.arg;
+	          // context.dispatchException(context.arg) call above.
+	          context.method = "throw";
+	          context.arg = record.arg;
 	        }
 	      }
 	    };
+	  }
+
+	  // Call delegate.iterator[context.method](context.arg) and handle the
+	  // result, either by returning a { value, done } result from the
+	  // delegate iterator, or by modifying context.method and context.arg,
+	  // setting context.delegate to null, and returning the ContinueSentinel.
+	  function maybeInvokeDelegate(delegate, context) {
+	    var method = delegate.iterator[context.method];
+	    if (method === undefined) {
+	      // A .throw or .return when the delegate iterator has no .throw
+	      // method always terminates the yield* loop.
+	      context.delegate = null;
+
+	      if (context.method === "throw") {
+	        if (delegate.iterator.return) {
+	          // If the delegate iterator has a return method, give it a
+	          // chance to clean up.
+	          context.method = "return";
+	          context.arg = undefined;
+	          maybeInvokeDelegate(delegate, context);
+
+	          if (context.method === "throw") {
+	            // If maybeInvokeDelegate(context) changed context.method from
+	            // "return" to "throw", let that override the TypeError below.
+	            return ContinueSentinel;
+	          }
+	        }
+
+	        context.method = "throw";
+	        context.arg = new TypeError(
+	          "The iterator does not provide a 'throw' method");
+	      }
+
+	      return ContinueSentinel;
+	    }
+
+	    var record = tryCatch(method, delegate.iterator, context.arg);
+
+	    if (record.type === "throw") {
+	      context.method = "throw";
+	      context.arg = record.arg;
+	      context.delegate = null;
+	      return ContinueSentinel;
+	    }
+
+	    var info = record.arg;
+
+	    if (! info) {
+	      context.method = "throw";
+	      context.arg = new TypeError("iterator result is not an object");
+	      context.delegate = null;
+	      return ContinueSentinel;
+	    }
+
+	    if (info.done) {
+	      // Assign the result of the finished delegate to the temporary
+	      // variable specified by delegate.resultName (see delegateYield).
+	      context[delegate.resultName] = info.value;
+
+	      // Resume execution at the desired location (see delegateYield).
+	      context.next = delegate.nextLoc;
+
+	      // If context.method was "throw" but the delegate handled the
+	      // exception, let the outer generator proceed normally. If
+	      // context.method was "next", forget context.arg since it has been
+	      // "consumed" by the delegate iterator. If context.method was
+	      // "return", allow the original .return call to continue in the
+	      // outer generator.
+	      if (context.method !== "return") {
+	        context.method = "next";
+	        context.arg = undefined;
+	      }
+
+	    } else {
+	      // Re-yield the result returned by the delegate method.
+	      return info;
+	    }
+
+	    // The delegate iterator is finished, so forget it and continue with
+	    // the outer generator.
+	    context.delegate = null;
+	    return ContinueSentinel;
 	  }
 
 	  // Define Generator.prototype.{next,throw,return} in terms of the
@@ -36612,6 +36696,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	      this.done = false;
 	      this.delegate = null;
 
+	      this.method = "next";
+	      this.arg = undefined;
+
 	      this.tryEntries.forEach(resetTryEntry);
 
 	      if (!skipTempReset) {
@@ -36648,7 +36735,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	        record.type = "throw";
 	        record.arg = exception;
 	        context.next = loc;
-	        return !!caught;
+
+	        if (caught) {
+	          // If the dispatched exception was caught by a catch block,
+	          // then let that catch block handle the exception normally.
+	          context.method = "next";
+	          context.arg = undefined;
+	        }
+
+	        return !! caught;
 	      }
 
 	      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
@@ -36716,12 +36811,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	      record.arg = arg;
 
 	      if (finallyEntry) {
+	        this.method = "next";
 	        this.next = finallyEntry.finallyLoc;
-	      } else {
-	        this.complete(record);
+	        return ContinueSentinel;
 	      }
 
-	      return ContinueSentinel;
+	      return this.complete(record);
 	    },
 
 	    complete: function(record, afterLoc) {
@@ -36733,11 +36828,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	          record.type === "continue") {
 	        this.next = record.arg;
 	      } else if (record.type === "return") {
-	        this.rval = record.arg;
+	        this.rval = this.arg = record.arg;
+	        this.method = "return";
 	        this.next = "end";
 	      } else if (record.type === "normal" && afterLoc) {
 	        this.next = afterLoc;
 	      }
+
+	      return ContinueSentinel;
 	    },
 
 	    finish: function(finallyLoc) {
@@ -36775,6 +36873,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	        resultName: resultName,
 	        nextLoc: nextLoc
 	      };
+
+	      if (this.method === "next") {
+	        // Deliberately forget the last sent value so that we don't
+	        // accidentally pass it on to the delegate.
+	        this.arg = undefined;
+	      }
 
 	      return ContinueSentinel;
 	    }
@@ -40000,6 +40104,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	  return function (key) {
 	    return $parse(key)(MAGIC_CONFIG.tools) || '';
 	  };
+	}).filter('data', function (MAGIC_CONFIG, $parse) {
+
+	  return function (key) {
+	    return $parse(key)(MAGIC_CONFIG.data) || '';
+	  };
 	}).config(['uiMask.ConfigProvider', function (uiMaskConfigProvider) {
 	  uiMaskConfigProvider.maskDefinitions({ '_': /[0-9]/ });
 	  uiMaskConfigProvider.addDefaultPlaceholder(true);
@@ -42039,8 +42148,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/less-loader/index.js!./layout.less", function() {
-				var newContent = require("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/less-loader/index.js!./layout.less");
+			module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/index.js!./layout.less", function() {
+				var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/index.js!./layout.less");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -42136,7 +42245,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			};
 		},
 		isOldIE = memoize(function() {
-			return /msie [6-9]\b/.test(window.navigator.userAgent.toLowerCase());
+			return /msie [6-9]\b/.test(self.navigator.userAgent.toLowerCase());
 		}),
 		getHeadElement = memoize(function () {
 			return document.head || document.getElementsByTagName("head")[0];
@@ -42394,7 +42503,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var Widget = exports.Widget = _angular2.default.module('magic.tools.widget', []).directive('widget', function ($compile, MagicWidget, $injector) {
+	var Widget = exports.Widget = _angular2.default.module('magic.tools.widget', []).directive('widget', function ($compile, MagicWidget, $injector, SailPlayApi) {
 	  return {
 	    restrict: 'E',
 	    replace: true,
@@ -42421,6 +42530,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	        var widget_scope = scope.$new();
 
+	        widget.user = SailPlayApi.data('load.user.info');
 	        widget_scope.widget = widget;
 
 	        WIDGET_CONFIG.controller.$inject = WIDGET_CONFIG.inject || [];
@@ -42487,8 +42597,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/less-loader/index.js!./widget.less", function() {
-				var newContent = require("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/less-loader/index.js!./widget.less");
+			module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/index.js!./widget.less", function() {
+				var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/index.js!./widget.less");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -42597,8 +42707,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/less-loader/index.js!./notifier.less", function() {
-				var newContent = require("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/less-loader/index.js!./notifier.less");
+			module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/index.js!./notifier.less", function() {
+				var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/index.js!./notifier.less");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -42708,8 +42818,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/less-loader/index.js!./modal.less", function() {
-				var newContent = require("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/less-loader/index.js!./modal.less");
+			module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/index.js!./modal.less", function() {
+				var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/index.js!./modal.less");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -42832,8 +42942,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./theme.less", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./theme.less");
+			module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./theme.less", function() {
+				var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./theme.less");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -42985,8 +43095,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./actions.less", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./actions.less");
+			module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./actions.less", function() {
+				var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./actions.less");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -43126,8 +43236,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./badges.less", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./badges.less");
+			module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./badges.less", function() {
+				var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./badges.less");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -43196,8 +43306,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./banner.less", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./banner.less");
+			module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./banner.less", function() {
+				var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./banner.less");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -43281,7 +43391,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 155 */
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"container clearfix\" id=\"magic_actions\">\n\n  <div class=\"card_quests\">\n\n    <h3 class=\"card_quests_header\">\n      <span class=\"header\">{{ widget.texts.header }}</span>\n    </h3>\n\n    <h4 class=\"card_quests_caption\">\n      <span class=\"caption\">{{ widget.texts.caption }}</span>\n    </h4>\n\n    <div data-sailplay-actions class=\"card_quests_list clearfix\">\n\n      <div class=\"spm_row clearfix\">\n\n          <div class=\"spm_col quest_card_container\" data-ng-repeat=\"action in actions().actions\">\n\n            <div class=\"quest_card\" title=\"{{ action_data(action).name }}\">\n\n              <div class=\"quest_card_image\">\n                <img data-ng-src=\"{{ action_data(action).pic | sailplay_pic }}\" alt=\"\">\n              </div>\n\n              <div class=\"quest_card_tools\">\n\n                <div class=\"quest_card_info\">\n                  <span class=\"quest_card_name ellipsis\" data-ng-bind=\"action_data(action).name\"></span>\n                  <span class=\"quest_card_points ellipsis\" data-ng-show=\"action.points\" data-ng-bind=\"((action.points || 0) | number) + ' ' + (action.points | sailplay_pluralize:( 'points.texts.pluralize' | tools ))\"></span>\n                </div>\n\n                <div class=\"quest_card_buttons\">\n                  <a class=\"button_primary\" data-ng-click=\"action_select(action)\">{{ action_data(action).button_text }}</a>\n                </div>\n\n              </div>\n\n            </div>\n\n          </div>\n\n          <div class=\"spm_col quest_card_container\" data-ng-repeat=\"action in actions_custom()\">\n\n            <div class=\"quest_card\" title=\"{{ action.name }}\">\n\n              <div class=\"quest_card_image\">\n                <img data-ng-src=\"{{ action.icon | sailplay_pic }}\" alt=\"\">\n              </div>\n\n              <div class=\"quest_card_tools\">\n\n                <div class=\"quest_card_info\">\n                  <span class=\"quest_card_name ellipsis\" data-ng-bind=\"action.name\"></span>\n                  <span class=\"quest_card_points ellipsis\" data-ng-show=\"action.points\" data-ng-bind=\"((action.points || 0) | number) + ' ' + (action.points | sailplay_pluralize:( 'points.texts.pluralize' | tools ))\"></span>\n                </div>\n\n                <div class=\"quest_card_buttons\">\n                  <a class=\"button_primary\" data-ng-click=\"action_custom_select(action)\">{{ action.button_text }}</a>\n                </div>\n\n              </div>\n\n            </div>\n\n          </div>\n\n        </div>\n\n\n      <magic-modal class=\"actions_selected_modal\" data-ng-cloak data-show=\"$parent.action_selected\">\n\n        <div>\n\n          <div class=\"action_image\">\n            <img class=\"gift_more_img\" data-ng-src=\"{{ action_data(action_selected).pic | sailplay_pic }}\"\n                 alt=\"{{ action_data(action_selected).name }}\">\n          </div>\n\n          <div class=\"action_tools\">\n\n            <p>\n              <span class=\"modal_action_name\" data-ng-bind=\"action_data(action_selected).name\"></span>\n            </p>\n\n            <p style=\"margin-top: 10px;\">\n              <span class=\"modal_action_points\" data-ng-bind=\"(action_selected.points | number) + ' ' + (selected_gift.points | sailplay_pluralize:( 'points.texts.pluralize' | tools ))\"></span>\n            </p>\n\n            <p style=\"margin-top: 10px;\">\n              <span class=\"modal_action_description\" data-ng-bind=\"action_data(action_selected).description\"></span>\n            </p>\n\n\n            <p class=\"action_buttons\">\n            <span data-sailplay-action\n                  data-styles=\"{{ action_styles(action_data(action_selected)) }}\"\n                  data-action=\"action_selected\"\n                  data-text=\"{{ action_data(action_selected).button_text }}\">\n              <span class=\"sp_btn button_primary\">{{ action_data(action_selected).button_text }}</span>\n            </span>\n            </p>\n\n          </div>\n\n        </div>\n\n      </magic-modal>\n\n      <magic-modal class=\"actions_custom_selected_modal\" data-ng-cloak data-show=\"$parent.action_custom_selected\">\n\n        <div data-sailplay-action-custom data-action=\"action_custom_selected\"></div>\n\n      </magic-modal>\n\n    </div>\n\n  </div>\n</div>";
+	module.exports = "<div class=\"container clearfix\" id=\"magic_actions\">\n\n  <div class=\"card_quests\">\n\n    <h3 class=\"card_quests_header\">\n      <span class=\"header\">{{ widget.texts.header }}</span>\n    </h3>\n\n    <h4 class=\"card_quests_caption\">\n      <span class=\"caption\">{{ widget.texts.caption }}</span>\n    </h4>\n\n    <div data-sailplay-actions class=\"card_quests_list clearfix\">\n\n      <div class=\"spm_row clearfix\">\n\n          <div class=\"spm_col quest_card_container quest_card_container_action\" data-ng-repeat=\"action in actions().actions\">\n\n            <div class=\"quest_card\" title=\"{{ action_data(action).name }}\">\n\n              <div class=\"quest_card_image\">\n                <img data-ng-src=\"{{ action_data(action).pic | sailplay_pic }}\" alt=\"\">\n              </div>\n\n              <div class=\"quest_card_tools\">\n\n                <div class=\"quest_card_info\">\n                  <span class=\"quest_card_name ellipsis\" data-ng-bind=\"action_data(action).name\"></span>\n                  <span class=\"quest_card_points ellipsis\" data-ng-show=\"action.points\" data-ng-bind=\"((action.points || 0) | number) + ' ' + (action.points | sailplay_pluralize:( 'points.texts.pluralize' | tools ))\"></span>\n                </div>\n\n                <div class=\"quest_card_buttons\">\n                  <a class=\"button_primary\" data-ng-click=\"action_select(action)\">{{ action_data(action).button_text }}</a>\n                </div>\n\n              </div>\n\n            </div>\n\n          </div>\n\n          <div class=\"spm_col quest_card_container quest_card_container_custom-action\" data-ng-repeat=\"action in actions_custom()\">\n\n            <div class=\"quest_card\" title=\"{{ action.name }}\">\n\n              <div class=\"quest_card_image\">\n                <img data-ng-src=\"{{ action.icon | sailplay_pic }}\" alt=\"\">\n              </div>\n\n              <div class=\"quest_card_tools\">\n\n                <div class=\"quest_card_info\">\n                  <span class=\"quest_card_name ellipsis\" data-ng-bind=\"action.name\"></span>\n                  <span class=\"quest_card_points ellipsis\" data-ng-show=\"action.points\" data-ng-bind=\"((action.points || 0) | number) + ' ' + (action.points | sailplay_pluralize:( 'points.texts.pluralize' | tools ))\"></span>\n                </div>\n\n                <div class=\"quest_card_buttons\">\n                  <a class=\"button_primary\" data-ng-click=\"action_custom_select(action)\">{{ action.button_text }}</a>\n                </div>\n\n              </div>\n\n            </div>\n\n          </div>\n\n        </div>\n\n\n      <magic-modal class=\"actions_selected_modal\" data-ng-cloak data-show=\"$parent.action_selected\">\n\n        <div>\n\n          <div class=\"action_image\">\n            <img class=\"gift_more_img\" data-ng-src=\"{{ action_data(action_selected).pic | sailplay_pic }}\"\n                 alt=\"{{ action_data(action_selected).name }}\">\n          </div>\n\n          <div class=\"action_tools\">\n\n            <p>\n              <span class=\"modal_action_name\" data-ng-bind=\"action_data(action_selected).name\"></span>\n            </p>\n\n            <p style=\"margin-top: 10px;\">\n              <span class=\"modal_action_points\" data-ng-bind=\"(action_selected.points | number) + ' ' + (selected_gift.points | sailplay_pluralize:( 'points.texts.pluralize' | tools ))\"></span>\n            </p>\n\n            <p style=\"margin-top: 10px;\">\n              <span class=\"modal_action_description\" data-ng-bind=\"action_data(action_selected).description\"></span>\n            </p>\n\n\n            <p class=\"action_buttons\">\n            <span data-sailplay-action\n                  data-styles=\"{{ action_styles(action_data(action_selected)) }}\"\n                  data-action=\"action_selected\"\n                  data-text=\"{{ action_data(action_selected).button_text }}\">\n              <span class=\"sp_btn button_primary\">{{ action_data(action_selected).button_text }}</span>\n            </span>\n            </p>\n\n          </div>\n\n        </div>\n\n      </magic-modal>\n\n      <magic-modal class=\"actions_custom_selected_modal\" data-ng-cloak data-show=\"$parent.action_custom_selected\">\n\n        <div data-sailplay-action-custom data-action=\"action_custom_selected\"></div>\n\n      </magic-modal>\n\n    </div>\n\n  </div>\n</div>";
 
 /***/ },
 /* 156 */
@@ -43299,8 +43409,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./card-quests.less", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./card-quests.less");
+			module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./card-quests.less", function() {
+				var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./card-quests.less");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -43527,8 +43637,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./charity-pro.less", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./charity-pro.less");
+			module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./charity-pro.less", function() {
+				var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./charity-pro.less");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -43637,8 +43747,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./event_message.less", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./event_message.less");
+			module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./event_message.less", function() {
+				var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./event_message.less");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -43906,8 +44016,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./gifts.less", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./gifts.less");
+			module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./gifts.less", function() {
+				var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./gifts.less");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -44039,12 +44149,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	      scope.$watch(function () {
 	        return angular.toJson([SailPlayApi.data('load.gifts.list')()]);
 	      }, function (new_val, old_val) {
-
 	        if (new_val && new_val != old_val) {
 	          scope.blocks = [];
 	          len = Math.ceil(SailPlayApi.data('load.gifts.list')().length / block_size);
 	          i = 0;
 	          do {
+	            if (!len) break;
 	            if (i == len - 1) {
 	              page = SailPlayApi.data('load.gifts.list')().slice(block_size * i);
 	            } else {
@@ -44136,8 +44246,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./gifts-grid.less", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./gifts-grid.less");
+			module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./gifts-grid.less", function() {
+				var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./gifts-grid.less");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -44190,7 +44300,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 176 */
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"header_wrapper container\">\n\n  <h3 class=\"header_title\">\n    {{ widget.texts.title }}\n  </h3>\n\n  <h2 class=\"header_sub_title\">\n    {{ widget.texts.sub_title }}\n  </h2>\n\n</div>";
+	module.exports = "<div class=\"header_wrapper container\">\n  <h3 class=\"header_title\" data-ng-if=\"widget.flag.name_is_title && !widget.user()\">\n    {{ widget.texts.title }}\n  </h3>\n\n  <h3 class=\"header_title\" data-ng-if=\"!widget.flag.name_is_title\">\n    {{ widget.texts.title }}\n  </h3>\n  <h3 class=\"header_title\" data-ng-if=\"widget.flag.name_is_title && widget.user()\">\n    {{ widget.user().user.first_name }}\n  </h3>\n\n  <h2 class=\"header_sub_title\">\n    {{ widget.texts.sub_title }}\n  </h2>\n\n  <ul class=\"header_static_keys\">\n    <li data-ng-repeat=\"key in widget.texts.static_keys\" data-ng-bind=\"key\"></li>\n  </ul>\n\n</div>";
 
 /***/ },
 /* 177 */
@@ -44208,8 +44318,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./header.less", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./header.less");
+			module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./header.less", function() {
+				var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./header.less");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -44324,8 +44434,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./image-statuses.less", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./image-statuses.less");
+			module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./image-statuses.less", function() {
+				var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./image-statuses.less");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -44398,8 +44508,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./leaderboard.less", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./leaderboard.less");
+			module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./leaderboard.less", function() {
+				var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./leaderboard.less");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -44536,8 +44646,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./points-status.less", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./points-status.less");
+			module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./points-status.less", function() {
+				var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./points-status.less");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -44593,29 +44703,27 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var PURCHASES_EVENT = scope.widget.options.event_id;
 
 	      if (scope.widget && scope.widget.options && scope.widget.options.badge_events && scope.widget.options.badge_events.length) {
-	        (function () {
-	          var tags = [];
-	          var position = 0;
-	          angular.forEach(scope.widget.options.badge_events, function (array) {
-	            angular.forEach(array.events, function (event) {
-	              tags.push(event.name);
-	            });
+	        var tags = [];
+	        var position = 0;
+	        angular.forEach(scope.widget.options.badge_events, function (array) {
+	          angular.forEach(array.events, function (event) {
+	            tags.push(event.name);
 	          });
-	          SailPlayApi.call('tags.exist', { tags: tags }, function (res) {
-	            if (res && res.tags) {
-	              var badge_events = scope.widget.options.badge_events.filter(function (array) {
-	                return array.events.filter(function (event) {
-	                  return res.tags.filter(function (tag) {
-	                    return tag.name == event.name && tag.exist == event.exist;
-	                  }).length;
-	                }).length == array.events.length;
-	              })[0];
-	              position = badge_events && badge_events.position || 0;
-	              scope.badges_list = scope.sailplay.badges.list().multilevel_badges[position];
-	            }
-	            scope.$apply();
-	          });
-	        })();
+	        });
+	        SailPlayApi.call('tags.exist', { tags: tags }, function (res) {
+	          if (res && res.tags) {
+	            var badge_events = scope.widget.options.badge_events.filter(function (array) {
+	              return array.events.filter(function (event) {
+	                return res.tags.filter(function (tag) {
+	                  return tag.name == event.name && tag.exist == event.exist;
+	                }).length;
+	              }).length == array.events.length;
+	            })[0];
+	            position = badge_events && badge_events.position || 0;
+	            scope.badges_list = scope.sailplay.badges.list().multilevel_badges[position];
+	          }
+	          scope.$apply();
+	        });
 	      }
 
 	      scope.badges_list = null;
@@ -44706,8 +44814,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./points_rate_progress.less", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./points_rate_progress.less");
+			module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./points_rate_progress.less", function() {
+				var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./points_rate_progress.less");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -44758,14 +44866,17 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  id: 'profile',
 	  template: _profile2.default,
-	  controller: function controller() {
+	  inject: ['$rootScope'],
+	  controller: function controller($rootScope) {
 
 	    return function (scope, elm, attrs) {
 
 	      // scope._tools = MAGIC_CONFIG.tools;
 
 	      scope.default_avatar = _avatar_default2.default;
-
+	      $rootScope.$on('showHistory', function () {
+	        return scope.profile.history = true;
+	      });
 	      scope.profile = {
 	        history: false,
 	        show_fill_profile: false,
@@ -44846,8 +44957,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./profile.less", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./profile.less");
+			module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./profile.less", function() {
+				var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./profile.less");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -44896,11 +45007,243 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _widget = __webpack_require__(102);
 
-	var _statuses = __webpack_require__(206);
+	var _profileProgress = __webpack_require__(206);
+
+	var _profileProgress2 = _interopRequireDefault(_profileProgress);
+
+	__webpack_require__(207);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	(0, _widget.WidgetRegister)({
+	  id: "profile-progress",
+	  template: _profileProgress2.default,
+	  inject: ['$timeout', '$rootScope', 'SailPlayApi'],
+	  controller: function controller($timeout, $rootScope, SailPlayApi) {
+	    return function (scope) {
+	      var hint_hide_timeout;
+
+	      scope.showHistory = function () {
+	        $rootScope.$broadcast('showHistory');
+	      };
+
+	      SailPlayApi.call("vars.batch", { names: ['threshold', 'quarter_revenue'] }, function (res) {
+	        for (var i in res.vars) {
+	          scope[res.vars[i].name] = res.vars[i].value;
+	        }
+
+	        var maxLinePercent = 96,
+	            maxLine = (parseInt(scope.threshold) || 0) * 2,
+	            percent = (parseInt(scope.quarter_revenue) || 0) / maxLine * maxLinePercent;
+
+	        scope.leftBarWidth = percent < 48 ? percent + '%' : '48%';
+	        scope.rightBarWidth = percent < 48 ? "0" : percent - 48 + '%';
+	        scope.$apply();
+	      });
+
+	      scope.toLocaleString = function (data_string) {
+	        var int = parseInt(data_string);
+	        return int.toLocaleString('en').replace(/ /g, ', ');
+	      };
+	      scope.user = SailPlayApi.data('load.user.info');
+	      scope.show_hint = false;
+	      scope.toggleHint = function () {
+	        scope.show_hint = !scope.show_hint;
+	        if (hint_hide_timeout) $timeout.cancel(hint_hide_timeout);
+	        hint_hide_timeout = $timeout(function () {
+	          return scope.show_hint = false;
+	        }, 10000);
+	      };
+	      scope.hideHint = function () {
+	        scope.show_hint = false;
+	        $timeout.cancel(hint_hide_timeout);
+	      };
+	    };
+	  }
+	});
+
+/***/ },
+/* 206 */
+/***/ function(module, exports) {
+
+	module.exports = "<div class=\"clearfix\">\n  <div class=\"bon_choice_main container\" data-ng-show=\"widget.enabled\" data-ng-cloak data-ng-if=\"user && user()\">\n    <h3 class=\"bon_header\">\n      <span class=\"header\">{{ widget.texts.header_1_prefix }}</span>\n      <span class=\"header\">{{ user().user_status.name || widget.texts.default_status_string }}</span>\n      <span class=\"header\">{{ widget.texts.header_1_suffix }}</span>\n    </h3>\n    <h3 class=\"bon_header bon_second_header\">\n      <span class=\"header\">{{ widget.texts.header_2_prefix }}</span>\n      <span class=\"header bon_second_header_value\">{{ toLocaleString(user().user_points.confirmed || 0) }}</span>\n      <span class=\"header\">{{ widget.texts.header_2_suffix }}</span>\n    </h3>\n    <div class=\"progress-line-container\">\n      <div class=\"progress-hints\">\n        <span class=\"progress-hints__left\">Earn 1 Soligent Buck per $ spent until you reach you threshold</span>\n        <span class=\"progress-hints__right\">Earn multiplied Soligent Bucks for each $ spent past your threshold</span>\n      </div>\n      <div class=\"left-progress-ann\"></div>\n      <div class=\"right-progress-ann\"></div>\n      <div class=\"progress-line\">\n        <div class=\"fill\" data-ng-style=\"{width: leftBarWidth}\"></div>\n        <div class=\"delim\"></div>\n        <div class=\"empty\" data-ng-style=\"{width: rightBarWidth}\"></div>\n      </div>\n      <div class=\"current-quarter\">\n        <span class=\"current-quarter-text\">Your Quarterly Threshold: $</span>\n        <span class=\"current-quarter-value\">{{ toLocaleString(threshold || 0) }}</span>\n        <div class=\"current-quarter-second-text\">by the end of this quarter</div>\n      </div>\n      <div class=\"spent-quarter\">\n        <span class=\"spent-quarter-prefix\">$</span>\n        <span class=\"spent-quarter-value\">{{ toLocaleString(quarter_revenue || 0) }}</span>\n        <span class=\"spent-quarter-suffix\"> Spent this quarter</span>\n      </div>\n      <div class=\"howdo_hint\" data-ng-show=\"show_hint\">\n        <div class=\"text\" data-ng-click=\"hideHint()\">Earn 1 Soligent Buck per dollar spent. If you spend more than your threshold, you’ll earn additional bonus points\n          on all additional dollars spent based on your status.</div>\n        <div class=\"triangle-bottom\"></div>\n      </div>\n      <div class=\"buttons-container\">\n        <a href=\"javascript:void(0)\" class=\"button_primary\" data-ng-click=\"showHistory()\">HISTORY</a>&nbsp;\n        <a href=\"javascript:void(0)\" class=\"button_primary\" data-ng-click=\"toggleHint()\">HOW DO I EARN</a>\n      </div>\n    </div>\n  </div>\n</div>";
+
+/***/ },
+/* 207 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(208);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(115)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./profile-progress.less", function() {
+				var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./profile-progress.less");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 208 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(114)();
+	// imports
+
+
+	// module
+	exports.push([module.id, ".spm_wrapper .spm_tools_widget.profile-progress {\n  margin: -20px auto 0;\n  max-width: 1200px;\n  display: block;\n}\n@media screen and (max-width: 1200px) {\n  .spm_wrapper .spm_tools_widget.profile-progress {\n    width: 95%;\n  }\n}\n.spm_wrapper .spm_tools_widget.profile-progress .bon_header {\n  margin-top: 40px;\n  font-size: 40px;\n  font-weight: bold;\n}\n.spm_wrapper .spm_tools_widget.profile-progress .bon_second_header {\n  margin-top: 0;\n  margin-bottom: 40px;\n  font-size: 40px;\n  font-weight: bold;\n}\n.spm_wrapper .spm_tools_widget.profile-progress .bon_second_header_value {\n  color: #006299;\n}\n.spm_wrapper .spm_tools_widget.profile-progress .bon_choice_main {\n  overflow: visible;\n}\n.spm_wrapper .spm_tools_widget.profile-progress .howdo_hint {\n  position: absolute;\n  border: 1px solid black;\n  font-size: 15px;\n  width: 300px;\n  background: white;\n  padding: 15px;\n  box-sizing: border-box;\n  right: 100px;\n  bottom: 100px;\n}\n.spm_wrapper .spm_tools_widget.profile-progress .howdo_hint .triangle-bottom {\n  width: 0;\n  height: 0;\n  border-style: solid;\n  border-width: 22px 8.5px 0 8.5px;\n  border-color: #000 transparent transparent transparent;\n  position: absolute;\n  bottom: -22px;\n  right: 20px;\n}\n.spm_wrapper .spm_tools_widget.profile-progress .howdo_hint .triangle-bottom:after {\n  content: '';\n  position: absolute;\n  left: -7px;\n  top: -22px;\n  width: 0;\n  height: 0;\n  border-style: solid;\n  border-width: 20px 7.5px 0 7.5px;\n  border-color: #ffffff transparent transparent transparent;\n}\n.spm_wrapper .spm_tools_widget.profile-progress .buttons-container {\n  position: absolute;\n  right: 5%;\n  bottom: 10%;\n}\n.spm_wrapper .spm_tools_widget.profile-progress .progress-line-container {\n  position: relative;\n  margin-bottom: 42px;\n  background: white;\n  height: 300px;\n  clear: both;\n  -webkit-box-shadow: 0 0 20px -10px rgba(0, 0, 0, 0.8);\n  box-shadow: 0 0 20px -10px rgba(0, 0, 0, 0.8);\n}\n.spm_wrapper .spm_tools_widget.profile-progress .progress-line-container .current-quarter {\n  font-size: 20px;\n  font-weight: bold;\n  text-align: center;\n  position: absolute;\n  width: 100%;\n  top: 150px;\n}\n.spm_wrapper .spm_tools_widget.profile-progress .progress-line-container .spent-quarter {\n  position: absolute;\n  bottom: 10%;\n  left: 5%;\n}\n.spm_wrapper .spm_tools_widget.profile-progress .progress-line-container .spent-quarter-prefix {\n  font-size: 36px;\n  font-weight: bold;\n}\n.spm_wrapper .spm_tools_widget.profile-progress .progress-line-container .spent-quarter-value {\n  font-size: 36px;\n  font-weight: bold;\n}\n.spm_wrapper .spm_tools_widget.profile-progress .progress-line-container .spent-quarter-suffix {\n  font-size: 28px;\n  font-weight: bold;\n}\n.spm_wrapper .spm_tools_widget.profile-progress .progress-line-container .progress-hints {\n  left: 5%;\n  right: 5%;\n  top: 20px;\n  position: absolute;\n}\n.spm_wrapper .spm_tools_widget.profile-progress .progress-line-container .progress-hints__left {\n  font-size: 14px;\n  color: #106299;\n  float: left;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  max-width: 45%;\n}\n.spm_wrapper .spm_tools_widget.profile-progress .progress-line-container .progress-hints__right {\n  font-size: 14px;\n  color: #FF9900;\n  float: right;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  max-width: 45%;\n}\n.spm_wrapper .spm_tools_widget.profile-progress .progress-line-container .left-progress-ann {\n  float: left;\n  height: 15px;\n  width: calc(45% - 7px);\n  border-width: 2px;\n  border-style: solid;\n  position: relative;\n  top: 40px;\n  border-color: #106299 #106299 transparent #106299;\n  margin-left: 5%;\n  margin-right: 5px;\n}\n.spm_wrapper .spm_tools_widget.profile-progress .progress-line-container .right-progress-ann {\n  height: 15px;\n  float: left;\n  width: calc(45% - 7px);\n  border-width: 2px;\n  border-style: solid;\n  position: relative;\n  top: 40px;\n  border-color: #FF9900 #FF9900 transparent #FF9900;\n  margin-right: 5%;\n}\n.spm_wrapper .spm_tools_widget.profile-progress .progress-line-container .progress-line {\n  height: 30px;\n  border-radius: 30px;\n  background: #E8E3E3;\n  position: relative;\n  margin-left: 5%;\n  margin-right: 5%;\n  top: 85px;\n  -webkit-box-shadow: 0 -5px 0 0px #000000;\n  box-shadow: 0 -5px 0 0px #000000;\n}\n.spm_wrapper .spm_tools_widget.profile-progress .progress-line-container .progress-line .fill {\n  background: #106299;\n  width: 0;\n  height: 10px;\n  border-top-left-radius: 30px;\n  border-bottom-left-radius: 30px;\n  position: absolute;\n  top: 50%;\n  left: 2%;\n  margin-top: -5px;\n}\n.spm_wrapper .spm_tools_widget.profile-progress .progress-line-container .progress-line .delim {\n  width: 12px;\n  height: 60px;\n  position: absolute;\n  left: 50%;\n  z-index: 10;\n  top: 50%;\n  margin-left: -8px;\n  margin-top: -30px;\n  background: #FF9900;\n  -webkit-box-shadow: 0 0 10px -2px rgba(0, 0, 0, 0.8);\n  box-shadow: 0 0 10px -2px rgba(0, 0, 0, 0.8);\n}\n.spm_wrapper .spm_tools_widget.profile-progress .progress-line-container .progress-line .empty {\n  background: #FF9900;\n  width: 0;\n  height: 10px;\n  border-top-right-radius: 30px;\n  border-bottom-right-radius: 30px;\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  margin-top: -5px;\n}\n", ""]);
+
+	// exports
+
+
+/***/ },
+/* 209 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _keys = __webpack_require__(94);
+
+	var _keys2 = _interopRequireDefault(_keys);
+
+	var _widget = __webpack_require__(102);
+
+	var _soligentStatusAccount = __webpack_require__(210);
+
+	var _soligentStatusAccount2 = _interopRequireDefault(_soligentStatusAccount);
+
+	__webpack_require__(211);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	(0, _widget.WidgetRegister)({
+
+	  id: 'soligent-status-account',
+	  template: _soligentStatusAccount2.default,
+	  inject: ['SailPlayApi', 'SailPlay', '$rootScope', 'MAGIC_CONFIG'],
+	  controller: function controller(SailPlayApi, SailPlay, $rootScope, MAGIC_CONFIG) {
+
+	    return function (scope, elm, attrs) {
+
+	      // User model
+	      scope.user = SailPlayApi.data('load.user.info');
+
+	      // Account model
+	      scope.variables = {
+	        sales_rep: '',
+	        sales_rep_phone: '',
+	        sales_rep_email: ''
+	      };
+
+	      // Current status model
+	      scope.current_status = null;
+
+	      // Next status model
+	      scope.next_status = MAGIC_CONFIG.data.status && MAGIC_CONFIG.data.status.list && MAGIC_CONFIG.data.status.list[0];
+
+	      // Watch user data
+	      scope.$watch(function () {
+	        return angular.toJson([scope.user()]);
+	      }, function (new_val, old_val) {
+	        if (new_val && new_val != old_val) {
+
+	          if (!MAGIC_CONFIG.data.status || !MAGIC_CONFIG.data.status.list || !scope.user().user_status || !scope.user().user_status.name) return false;
+
+	          for (var i = 0, len = MAGIC_CONFIG.data.status.list.length; i < len; i++) {
+	            if (MAGIC_CONFIG.data.status.list[i].name.toLowerCase() == scope.user().user_status.name.toLowerCase()) {
+	              scope.current_status = MAGIC_CONFIG.data.status.list[i];
+	              scope.next_status = MAGIC_CONFIG.data.status.list[i + 1];
+	              break;
+	            }
+	          }
+	        }
+	      });
+
+	      // Get users variables
+	      SailPlay.send('vars.batch', {
+	        names: (0, _keys2.default)(scope.variables)
+	      }, function (res) {
+	        res.vars.forEach(function (item) {
+	          scope.variables[item.name] = item.value;
+	        });
+	        scope.$digest();
+	      });
+	    };
+	  }
+
+	});
+
+/***/ },
+/* 210 */
+/***/ function(module, exports) {
+
+	module.exports = "<div class=\"container clearfix soligent-sa-widget\" data-ng-if=\"user && user()\">\n\n    <div class=\"soligent-sa-wrapper clearfix\">\n\n        <div class=\"soligent-sa-block soligent-sa-block_current\" data-ng-if=\"current_status\">\n\n            <div class=\"soligent-sa-block__title\" data-ng-bind=\"'YOUR ' + current_status.name + ' BENEFITS'\"></div>\n\n            <div class=\"soligent-sa-block__icon\"\n                 style=\"background-image: {{ current_status.icon | background_image }}\"></div>\n\n            <ul class=\"soligent-sa-block-list\">\n\n                <li class=\"soligent-sa-block-list__item\" data-ng-repeat=\"text in current_status.texts track by $index\"\n                    data-ng-bind=\"text\"></li>\n\n            </ul>\n\n        </div>\n\n        <div class=\"soligent-sa-block soligent-sa-block_next\" data-ng-if=\"next_status\">\n\n            <div class=\"soligent-sa-block__title\"\n                 data-ng-bind=\"'SPEND $' + (next_status.sum | number) + ' THIS YEAR TO BECOME A ' + next_status.name + ' MEMBER'\"></div>\n\n            <div class=\"soligent-sa-block__icon\"\n                 style=\"background-image: {{ next_status.icon | background_image }}\"></div>\n\n            <ul class=\"soligent-sa-block-list\">\n\n                <li class=\"soligent-sa-block-list__item\" data-ng-repeat=\"text in next_status.texts track by $index\"\n                    data-ng-bind=\"text\"></li>\n\n            </ul>\n\n            <a class=\"soligent-sa-block-link\"\n               target=\"_blank\"\n               data-ng-if=\"widget.options.next_status_link\"\n               data-ng-href=\"{{ widget.options.next_status_link.href }}\"\n               data-ng-bind=\"widget.options.next_status_link.title\"></a>\n\n        </div>\n\n        <div class=\"soligent-sa-block soligent-sa-block_monthly_special\"\n             data-ng-if=\"$parent.widget.options.monthly_special\">\n\n            <div class=\"soligent-sa-block__title\">MONTHLY SPECIAL</div>\n\n            <div class=\"soligent-sa-block__icon\"\n                 style=\"background-image: {{ $parent.widget.options.monthly_special.icon | background_image }}\"></div>\n\n            <ul class=\"soligent-sa-block-list\">\n\n                <li class=\"soligent-sa-block-list__item\"\n                    data-ng-repeat=\"text in $parent.widget.options.monthly_special.texts track by $index\"\n                    data-ng-bind=\"text\"></li>\n\n            </ul>\n\n        </div>\n\n        <div class=\"soligent-sa-block monthly_special_account\" data-ng-if=\"variables\">\n\n            <div class=\"soligent-sa-block__title\">YOUR ACCOUNT EXECUTIVE:</div>\n\n            <div class=\"soligent-sa-block__info\" data-ng-bind=\"variables.sales_rep || 'Name N/A'\"></div>\n\n            <div class=\"soligent-sa-block__info\" data-ng-bind=\"variables.sales_rep_phone || 'Phone N/A'\"></div>\n\n            <div class=\"soligent-sa-block__info\" data-ng-bind=\"variables.sales_rep_email || 'Email N/A'\"></div>\n\n            <div class=\"soligent-sa-block__info\">\n                <span class=\"soligent-sa-block__info_black\">ACCOUNT #:</span>\n                <span data-ng-bind=\"$parent.user().user.origin_user_id || 'N/A'\"></span>\n            </div>\n\n        </div>\n\n    </div>\n\n</div>";
+
+/***/ },
+/* 211 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(212);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(115)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./soligent-status-account.less", function() {
+				var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./soligent-status-account.less");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 212 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(114)();
+	// imports
+
+
+	// module
+	exports.push([module.id, ".spm_wrapper .soligent-sa {\n  font-family: Tahoma;\n}\n.spm_wrapper .soligent-sa-wrapper {\n  width: 1200px;\n  padding: 50px 0;\n  margin: 0 auto;\n  box-sizing: border-box;\n}\n@media (max-width: 1200px) {\n  .spm_wrapper .soligent-sa-wrapper {\n    width: 95%;\n  }\n}\n.spm_wrapper .soligent-sa-block {\n  width: 48.5%;\n  float: left;\n  min-height: 250px;\n  box-sizing: border-box;\n  margin-bottom: 1.5%;\n  padding: 20px;\n  font-size: 0;\n  box-shadow: 0 0 20px -10px rgba(0, 0, 0, 0.8);\n}\n.spm_wrapper .soligent-sa-block-link {\n  font-size: 18px;\n  margin-top: 10px;\n  display: block;\n  color: blue;\n}\n@media (max-width: 650px) {\n  .spm_wrapper .soligent-sa-block {\n    width: 100%;\n  }\n}\n.spm_wrapper .soligent-sa-block:nth-child(odd) {\n  margin-right: 1.5%;\n}\n@media (max-width: 650px) {\n  .spm_wrapper .soligent-sa-block:nth-child(odd) {\n    margin-left: 0;\n  }\n}\n.spm_wrapper .soligent-sa-block:nth-child(even) {\n  margin-left: 1.5%;\n}\n@media (max-width: 650px) {\n  .spm_wrapper .soligent-sa-block:nth-child(even) {\n    margin-left: 0;\n  }\n}\n.spm_wrapper .soligent-sa-block__title {\n  text-transform: uppercase;\n  font-size: 28px;\n  margin-bottom: 20px;\n  font-weight: bold;\n  line-height: 1;\n}\n.spm_wrapper .soligent-sa-block__icon {\n  display: inline-block;\n  width: 100px;\n  height: 100px;\n  vertical-align: middle;\n  background-position: center center;\n  background-repeat: no-repeat;\n  background-size: contain;\n  border: 1px solid black;\n}\n.spm_wrapper .soligent-sa-block__info {\n  margin-bottom: 15px;\n  color: grey;\n  font-weight: bold;\n  font-size: 22px;\n}\n.spm_wrapper .soligent-sa-block__info:last-child {\n  margin-bottom: 0;\n}\n.spm_wrapper .soligent-sa-block__info_black {\n  color: black;\n}\n.spm_wrapper .soligent-sa-block-list {\n  width: 70%;\n  display: inline-block;\n  vertical-align: middle;\n  font-size: 14px;\n  margin-left: 20px;\n}\n@media (max-width: 1000px) {\n  .spm_wrapper .soligent-sa-block-list {\n    width: 100%;\n    margin-top: 10px;\n    margin-left: 0;\n  }\n}\n.spm_wrapper .soligent-sa-block-list__item {\n  margin-top: 10px;\n}\n.spm_wrapper .soligent-sa-block-list__item:first-child {\n  margin-top: 0;\n}\n", ""]);
+
+	// exports
+
+
+/***/ },
+/* 213 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _widget = __webpack_require__(102);
+
+	var _statuses = __webpack_require__(214);
 
 	var _statuses2 = _interopRequireDefault(_statuses);
 
-	__webpack_require__(207);
+	__webpack_require__(215);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -44948,19 +45291,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	});
 
 /***/ },
-/* 206 */
+/* 214 */
 /***/ function(module, exports) {
 
 	module.exports = "<div class=\"clearfix container\">\n\n  <div class=\"status-list\">\n\n    <div class=\"next_status_info\" data-ng-show=\"get_next_status().status\">\n\n      <div class=\"next_status_name\">\n        {{ widget.texts.next_status }} <span data-ng-style=\"{ color: get_next_status().status.color  }\">{{ get_next_status().status.status }}</span>\n      </div>\n\n      <div class=\"next_status_offset\">\n        {{ widget.texts.next_status_offset }} {{ get_next_status().offset }}\n      </div>\n\n    </div>\n\n    <div class=\"status-list__wrapper\" data-sailplay-statuses data-ng-cloak>\n\n      <div class=\"status-list__progress element-progress progress_line\"\n           data-ng-style=\"getProgress(user().user_points, _statuses)\"></div>\n\n      <div class=\"status-list__item element-item\"\n           data-ng-class=\"{ type_active : item.points <= user().user_points.confirmed + user().user_points.spent + user().user_points.spent_extra }\"\n           data-ng-repeat=\"item in _statuses\"\n           data-ng-style=\"generateOffset($index, _statuses)\">\n\n        <div class=\"status-list__item-point element-item-point\"></div>\n\n        <div class=\"element-item-point-inner\" data-ng-style=\"{ backgroundColor: item.color }\"></div>\n\n        <div class=\"status-list__item-name element-item-name\" data-ng-bind=\"item.name\"></div>\n        <div class=\"status-list__item-status element-item-status\" data-ng-if=\"item.status\" data-ng-bind=\"item.status\"\n             style=\"{{ (item.color) ? ('color: ' +  item.color) : '' }}\"></div>\n\n      </div>\n\n    </div>\n\n  </div>\n</div>";
 
 /***/ },
-/* 207 */
+/* 215 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(208);
+	var content = __webpack_require__(216);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(115)(content, {});
@@ -44969,8 +45312,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./statuses.less", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./statuses.less");
+			module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./statuses.less", function() {
+				var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./statuses.less");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -44980,7 +45323,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ },
-/* 208 */
+/* 216 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(114)();

@@ -1,7 +1,11 @@
 window.SAILPLAY_MAGIC_CONFIG = {
   "auth": {
     "type": "hybrid",
-    "auth_hash_id": "sailplay_magic_auth_hash"
+    "auth_hash_id": "sailplay_magic_auth_hash",
+    "config": {
+      "background": "transparent",
+      "disabled_options": ["socials"]
+    }
   },
   "widgets": [{
       "id": "header",
@@ -111,6 +115,10 @@ window.SAILPLAY_MAGIC_CONFIG = {
       "texts": {},
       "images": {},
       "options": {
+        "next_status_link": {
+          "title": "Link",
+          "href": "http://sailplay.net"
+        },
         "monthly_special": {
           "icon": "https://sailplays3.cdnvideo.ru/media/assets/assetfile/9b8ee7abe95c24fad2f209f806bed336.jpg",
           "texts": [
@@ -226,7 +234,7 @@ window.SAILPLAY_MAGIC_CONFIG = {
     "status": {
       "list": [{
           "name": "Bronze",
-          "icon": "https://sailplays3.cdnvideo.ru/media/assets/assetfile/9b8ee7abe95c24fad2f209f806bed336.jpg",
+          "icon": "https://sailplays3pnp.cdnvideo.ru/media/assets/assetfile/9b8ee7abe95c24fad2f209f806bed336.jpg",
           "sum": "50000",
           "texts": [
             'text 1',
@@ -246,7 +254,7 @@ window.SAILPLAY_MAGIC_CONFIG = {
         },
         {
           "name": "Gold",
-          "icon": "https://sailplays3.cdnvideo.ru/media/assets/assetfile/9b8ee7abe95c24fad2f209f806bed336.jpg",
+          "icon": "https://sailplays3pnp.cdnvideo.ru/media/assets/assetfile/9b8ee7abe95c24fad2f209f806bed336.jpg",
           "sum": "200000",
           "texts": [
             'text 1',
