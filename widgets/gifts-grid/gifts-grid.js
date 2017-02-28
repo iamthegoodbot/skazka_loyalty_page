@@ -33,21 +33,24 @@ WidgetRegister({
       /**
        * Watch gift list, and prepare it for grid
        */
-      SailPlayApi.observe('load.gifts.list').then((gifts) => {
-        scope.blocks = [];
-        if (!gifts) return
-        len = Math.ceil(gifts.length / block_size);
-        i = 0;
-        do {
-          if (i == (len - 1)) {
-            page = gifts.slice(block_size * i);
-          } else {
-            page = gifts.slice(block_size * i, block_size);
-          }
-          scope.blocks.push(page);
-          i++;
-        } while (i != len);
-      });
+      (function observeGifts(){
+        SailPlayApi.observe('load.gifts.list').then((gifts) => {
+          scope.blocks = [];
+          if (!gifts) return
+          len = Math.ceil(gifts.length / block_size);
+          i = 0;
+          do {
+            if (i == (len - 1)) {
+              page = gifts.slice(block_size * i);
+            } else {
+              page = gifts.slice(block_size * i, block_size + (block_size * i));
+            }
+            scope.blocks.push(page);
+            i++;
+          } while (i != len);
+          console.log('BLOCKS', scope.blocks)
+        });
+      }())
 
       /**
        * Change grid page

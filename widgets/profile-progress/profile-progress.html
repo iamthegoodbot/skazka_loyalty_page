@@ -1,5 +1,5 @@
 <div class="clearfix">
-  <div class="bon_choice_main container" data-ng-show="widget.enabled" data-ng-cloak data-ng-if="user && user()">
+  <div class="bon_choice_main container" data-ng-show="user && user()">
     <h3 class="bon_header">
       <span class="header">{{ widget.texts.header_1_prefix }}</span>
       <span class="header">{{ user().user_status.name || widget.texts.default_status_string }}</span>
