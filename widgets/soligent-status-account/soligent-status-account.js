@@ -33,23 +33,24 @@ WidgetRegister({
       scope.next_status = MAGIC_CONFIG.data.status && MAGIC_CONFIG.data.status.list && MAGIC_CONFIG.data.status.list[0];
 
       // Watch user data
-      scope.$watch(() => {
-        return angular.toJson([scope.user()]);
-      }, (new_val, old_val) => {
-        if (new_val && new_val != old_val) {
+      (function observeUser(){
+        SailPlayApi.observe('load.user.info').then((user) => {          
+            if (!MAGIC_CONFIG.data.status || !MAGIC_CONFIG.data.status.list || !scope.user().user_status || !scope.user().user_status.name) return false;
 
-          if (!MAGIC_CONFIG.data.status || !MAGIC_CONFIG.data.status.list || !scope.user().user_status || !scope.user().user_status.name) return false;
-
-          for (let i = 0, len = MAGIC_CONFIG.data.status.list.length; i < len; i++) {
-            if (MAGIC_CONFIG.data.status.list[i].name.toLowerCase() == scope.user().user_status.name.toLowerCase()) {
-              scope.current_status = MAGIC_CONFIG.data.status.list[i];
-              scope.next_status = MAGIC_CONFIG.data.status.list[i + 1];
-              break;
+            for (let i = 0, len = MAGIC_CONFIG.data.status.list.length; i < len; i++) {
+              if (MAGIC_CONFIG.data.status.list[i].name.toLowerCase() == scope.user().user_status.name.toLowerCase()) {
+                scope.current_status = MAGIC_CONFIG.data.status.list[i];
+                scope.next_status = MAGIC_CONFIG.data.status.list[i + 1];
+                break;
+              }
             }
-          }
 
-        }
-      });
+            if (scope.$root.$$phase != '$digest')
+              scope.$digest();
+
+            observeUser();  
+        });
+      }())
 
       // Get users variables
       SailPlay.send('vars.batch', {

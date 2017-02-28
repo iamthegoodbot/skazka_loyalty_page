@@ -143,58 +143,62 @@ export let SailPlay = angular.module('sailplay', [
 
   })
 
-  .service('SailPlayApi', function ($q, SailPlay, $rootScope) {
+  .service('SailPlayApi', function ($q, SailPlay, $rootScope, $timeout) {
 
     var self = this;
 
     var data = {};
 
+    var observers = {};
+
     var points = [
 
       'load.user.info',
-      'load.gifts.list',
       'leaderboard.load',
       'load.user.history',
       'load.actions.list',
       'load.actions.custom.list',
       'load.badges.list',
       'tags.exist',
-      'tags.add'
+      'tags.add',
+      'load.gifts.list'
 
     ];
 
     self.points = [];
+    self.observe = function(name) {
+      return observers[name].promise;
+    }
 
     angular.forEach(points, function (point) {
+      observers[point] = $q.defer();
 
       SailPlay.on(point + '.success', function (res) {
-
-        $rootScope.$apply(function () {
           self.data(point, res);
+          observers[point].resolve(res)
+          observers[point] = $q.defer()
           console.log('sailplay.api:' + point + '.success');
           console.dir(self.data(point)());
           //console.log(JSON.stringify(self.data(point)()));
-
-        });
-
       });
 
       SailPlay.on(point + '.error', function (res) {
-        $rootScope.$apply(function () {
+
           console.log('sailplay.api:' + point + '.error');
           console.dir(res);
           self.data(point, null);
-        });
+          observers[point].resolve(null)
+          observers[point] = $q.defer()          
+
       });
 
     });
 
+
     self.data = function (key, value) {
 
       if (typeof value !== 'undefined') {
-
         data[key] = angular.copy(value);
-
       }
 
       return function () {

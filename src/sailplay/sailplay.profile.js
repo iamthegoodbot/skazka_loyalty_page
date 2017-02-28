@@ -207,83 +207,78 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
 
         var saved_form = false;
 
-        scope.$watch(function () {
-          return angular.toJson([SailPlayApi.data('load.user.info')()]);
-        }, function () {
+        (function observeUser() {
+          SailPlayApi.observe('load.user.info').then((user) => {
+            if (!user) return;
+            var form = scope.sailplay.fill_profile.form;
+            form.fields = config.fields.map(function (field) {
 
-          var user = SailPlayApi.data('load.user.info')();
+              var form_field = new SailPlayFillProfile.Field(field);
 
-          if (!user) return;
+              //we need to assign received values to form
+              switch (form_field.type) {
 
-          var form = scope.sailplay.fill_profile.form;
+                //we need define type
+                case 'system':
 
-          form.fields = config.fields.map(function (field) {
+                  //bind different values to form field
+                  switch (form_field.name) {
 
-            var form_field = new SailPlayFillProfile.Field(field);
+                    case 'firstName':
 
-            //we need to assign received values to form
-            switch (form_field.type) {
+                      form_field.value = user.user.first_name || '';
+                      break;
 
-              //we need define type
-              case 'system':
+                    case 'lastName':
 
-                //bind different values to form field
-                switch (form_field.name) {
+                      form_field.value = user.user.last_name || '';
+                      break;
 
-                  case 'firstName':
+                    case 'middleName':
 
-                    form_field.value = user.user.first_name || '';
-                    break;
+                      form_field.value = user.user.middle_name || '';
+                      break;
 
-                  case 'lastName':
+                    case 'birthDate':
 
-                    form_field.value = user.user.last_name || '';
-                    break;
+                      var bd = user.user.birth_date && user.user.birth_date.split('-');
+                      form_field.value = bd ? [parseInt(bd[2]), parseInt(bd[1]), parseInt(bd[0])] : [null, null, null];
+                      break;
 
-                  case 'middleName':
+                    case 'addPhone':
 
-                    form_field.value = user.user.middle_name || '';
-                    break;
+                      form_field.value = user.user.phone || '';
+                      break;
 
-                  case 'birthDate':
+                    case 'addEmail':
 
-                    var bd = user.user.birth_date && user.user.birth_date.split('-');
-                    form_field.value = bd ? [parseInt(bd[2]), parseInt(bd[1]), parseInt(bd[0])] : [null, null, null];
-                    break;
+                      form_field.value = user.user.email || '';
+                      break;
 
-                  case 'addPhone':
+                    case 'sex':
 
-                    form_field.value = user.user.phone || '';
-                    break;
+                      form_field.value = user.user.sex || '';
+                      break;
 
-                  case 'addEmail':
+                  }
 
-                    form_field.value = user.user.email || '';
-                    break;
+                  break;
 
-                  case 'sex':
+              }
 
-                    form_field.value = user.user.sex || '';
-                    break;
+              return form_field;
+            });
 
-                }
-
-                break;
-
-            }
-
-            return form_field;
+            form.auth_hash = SailPlay.config().auth_hash;
+            //angular.extend(scope.profile_form.user, user.user);
+            //if(ipCookie(FillProfile.cookie_name) && SailPlay.config().auth_hash === ipCookie(FillProfile.cookie_name).user.auth_hash ){
+            //  angular.extend(scope.profile_form, ipCookie(FillProfile.cookie_name));
+            //}
+            console.dir(form);
+            saved_form = angular.copy(form);                        
+            observeUser();            
           });
-
-          form.auth_hash = SailPlay.config().auth_hash;
-          //angular.extend(scope.profile_form.user, user.user);
-          //if(ipCookie(FillProfile.cookie_name) && SailPlay.config().auth_hash === ipCookie(FillProfile.cookie_name).user.auth_hash ){
-          //  angular.extend(scope.profile_form, ipCookie(FillProfile.cookie_name));
-          //}
-          console.dir(form);
-          saved_form = angular.copy(form);
-
-        });
+        }());
 
         scope.revert_profile_form = function (form) {
           if (form) {
