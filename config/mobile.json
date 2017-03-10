@@ -1,0 +1,575 @@
+{
+  "$MOBILE": {
+    "routes": [
+      {
+        "styles": {
+          ".top_icon span img": {
+            "width": "400px",
+            "margin": "20px",
+            "height": "auto"
+          }
+        },
+        "id": "login",
+        "options": {
+          "logo": "https://www.spreadshirt.com/image-server/v1/designs/11923303,width=178,height=178/satan.png"
+        }
+      },
+      {
+        "styles": {
+          "": {
+            "height": "100vh"
+          },
+          ".profile_stat": {
+            "display": "none"
+          },
+          ".inact_point": {
+            "display": "none"
+          },
+          ".act_point": {
+            "top": "0"
+          },
+          ".profile_top_inner a .text": {
+            "color": "#252525"
+          },
+          ".profile_gift": {
+            "margin-top": "60px"
+          }
+        },
+        "id": "dashboard",
+        "options": {}
+      },
+      {
+        "styles": {
+          "": {},
+          ".qust_point": {
+            "color": "#804340"
+          }
+        },
+        "id": "quests.list",
+        "options": {}
+      },
+      {
+        "styles": {
+          "": {},
+          ".edit_form input[type=submit]": {
+            "height": "100px"
+          }
+        },
+        "id": "profile",
+        "options": {}
+      },
+      {
+        "styles": {
+          ".hist_point": {
+            "color": "#804340"
+          }
+        },
+        "id": "history",
+        "options": {}
+      }
+    ],
+    "tools": {
+      "menu": {
+        "styles": {
+          "": {
+            "background": "#e7ded5"
+          },
+          ".menu_logo img": {
+            "width": "350px"
+          },
+          ".menu_list a": {
+            "color": "#252525",
+            "border-top": "1px solid rgba(37, 37, 37, 0.2)"
+          }
+        },
+        "options": {
+          "logo": "https://www.spreadshirt.com/image-server/v1/designs/11923303,width=178,height=178/satan.png",
+          "items": [
+            "quests",
+            "history",
+            "gifts",
+            "profile"
+          ]
+        }
+      },
+      "layout": {
+        "styles": {
+          "": {
+            "background": "#e1d5c3"
+          },
+          ".body_background": {
+            "background": "darkblue"
+          }
+        }
+      },
+      "button.disabled": {
+        "styles": {
+          "": {
+            "border-radius": "0",
+            "box-shadow": "1px 2px 1px 1px rgba(0,0,0,.5)",
+            "color": "#fff",
+            "height": "auto",
+            "cursor": "pointer",
+            "border": "none"
+          }
+        }
+      },
+      "button.primary": {
+        "styles": {
+          "": {
+            "border-radius": "0",
+            "box-shadow": "1px 2px 1px 1px rgba(0,0,0,.5)",
+            "color": "#fff",
+            "height": "auto",
+            "cursor": "pointer",
+            "border": "none",
+            "background-color": "#824242"
+          }
+        }
+      }
+    },
+    "data": {
+      "feed": [
+        {
+          "url": "#/",
+          "image": "https://sailplays3.cdnvideo.ru/media/assets/assetfile/651404a798666bf0fbc1bc381d906670.png",
+          "points": 300,
+          "description": "Join us in Rio this weekend!",
+          "title": "Arbor Hotels Conference Rio"
+        },
+        {
+          "url": "#/",
+          "image": "https://sailplays3.cdnvideo.ru/media/assets/assetfile/5c728786975c78112372e38e6a067370.png",
+          "description": "October 31 - November 2, 2016",
+          "title": "Integrative and Holistic Medicine Conference"
+        },
+        {
+          "url": "#/gifts",
+          "image": "https://sailplays3.cdnvideo.ru/media/assets/assetfile/c2ec7f1fa6095cd8f5f36b0b76617714.png",
+          "description": "#NaturezaGeraBeleza",
+          "title": "New Ekos Products released"
+        }
+      ],
+      "quiz": [
+        {
+          "name": "Arbor Hotels Survey",
+          "points": 1000,
+          "button_text": "Pass Quiz",
+          "tag": "Quiz 1",
+          "data": [
+            {
+              "type": "many",
+              "name": "What is your favorite Arbor Hotels Product?",
+              "answers": [
+                {
+                  "text": "PÓS BANHO",
+                  "tag": "Question1 - PÓS BANHO"
+                },
+                {
+                  "text": "MASSAGEM",
+                  "tag": "Question1 - MASSAGEM"
+                }
+              ]
+            },
+            {
+              "type": "one",
+              "name": "How often do you visit our website?",
+              "answers": [
+                {
+                  "text": "Less than once a month",
+                  "tag": "Question2 - Less than once a month"
+                },
+                {
+                  "text": "Once or twice per month",
+                  "tag": "Question2 - Once or twice per month"
+                },
+                {
+                  "text": "Once per week",
+                  "tag": "Question2 - Once per week"
+                },
+                {
+                  "text": "Every day",
+                  "tag": "Question2 - Every day"
+                }
+              ]
+            },
+            {
+              "type": "one",
+              "name": "Have you ever redeemed your bonus points for a gift?",
+              "answers": [
+                {
+                  "text": "Yes",
+                  "tag": "Question3 - Yes",
+                  "my_version": "var_question_3"
+                },
+                {
+                  "text": "No",
+                  "tag": "Question3 - No",
+                  "my_version": "var_question_3"
+                }
+              ]
+            }
+          ],
+          "id": 1,
+          "icon": "https://sailplays3.cdnvideo.ru/media/actions/customaction/3731baacddfc84a8cbf74c05cf4ba5ae.png"
+        }
+      ],
+      "actions": {
+        "system": {
+          "emailBinding": {
+            "pic": "https://d3sailplay.cdnvideo.ru/media/assets/assetfile/f56a3fe6291372e5b4d178508136c47d.png",
+            "description": "Earn 10 points for updating your email address",
+            "name": "Add your email address",
+            "button_text": "Bind E-Mail"
+          },
+          "fillProfile": {
+            "pic": "https://d3sailplay.cdnvideo.ru/media/assets/assetfile/f56a3fe6291372e5b4d178508136c47d.png",
+            "description": "Earn 10 points for updating your profile",
+            "name": "Update your profile",
+            "button_text": "Fill profile"
+          },
+          "inviteFriend": {
+            "pic": "https://d3sailplay.cdnvideo.ru/media/assets/assetfile/a212622efce628a4e0fa90548746b2f6.png",
+            "description": "Earn 10 points for inviting a friend to Arbor Hotels",
+            "name": "Invite a friend",
+            "button_text": "Invite friend"
+          }
+        },
+        "social": {
+          "tw": {
+            "partner_page": {
+              "pic": "https://d3sailplay.cdnvideo.ru/media/assets/assetfile/945cb8deb99c96043747b5c59b3f9b79.png",
+              "description": "Earn 10 points for mentioning @ArborInnLBKK on Twitter!",
+              "name": "Share Arbor Hotels on Twitter",
+              "button_text": "Share"
+            },
+            "purchase": {
+              "pic": "https://d3sailplay.cdnvideo.ru/media/assets/assetfile/945cb8deb99c96043747b5c59b3f9b79.png",
+              "description": "Earn 10 points for sharing your stay at Arbor Hotels using Twitter!",
+              "name": "Share your Arbor Hotels  purchase on Twitter",
+              "button_text": "Share"
+            }
+          },
+          "fb": {
+            "partner_page": {
+              "styles": {
+                "fb_share_btn": {
+                  "font-size": "14px",
+                  "color": "#ddd",
+                  "cursor": "pointer",
+                  "width": "140px",
+                  "background": "#333",
+                  "font-family": "helvetica,arial,nimbus sans l,sans-serif",
+                  "line-height": "35px",
+                  "text-align": "center"
+                },
+                "fb_share_btn:hover": {
+                  "background": "#111"
+                }
+              },
+              "pic": "https://d3sailplay.cdnvideo.ru/media/assets/assetfile/ec06873d95084786de9fe50e549c2419.png",
+              "description": "Earn 10 points for Sharing Arbor Hotels on Facebook",
+              "name": "Share Arbor Hotels on Facebook",
+              "button_text": "Share"
+            },
+            "purchase": {
+              "styles": {
+                "fb_share_btn": {
+                  "font-size": "14px",
+                  "color": "#ddd",
+                  "cursor": "pointer",
+                  "width": "140px",
+                  "background": "#333",
+                  "font-family": "helvetica,arial,nimbus sans l,sans-serif",
+                  "line-height": "35px",
+                  "text-align": "center"
+                },
+                "fb_share_btn:hover": {
+                  "background": "#111"
+                }
+              },
+              "pic": "https://d3sailplay.cdnvideo.ru/media/assets/assetfile/ec06873d95084786de9fe50e549c2419.png",
+              "description": "Earn 10 points by sharing your recent purchase on Facebook",
+              "name": "Share your recent purchase on Facebook",
+              "button_text": "Share"
+            },
+            "like": {
+              "styles": {
+                "fb_share_btn": {
+                  "font-size": "14px",
+                  "color": "#ddd",
+                  "cursor": "pointer",
+                  "width": "140px",
+                  "background": "#333",
+                  "font-family": "helvetica,arial,nimbus sans l,sans-serif",
+                  "line-height": "35px",
+                  "text-align": "center"
+                },
+                "fb_share_btn:hover": {
+                  "background": "#111"
+                }
+              },
+              "pic": "https://d3sailplay.cdnvideo.ru/media/assets/assetfile/ec06873d95084786de9fe50e549c2419.png",
+              "description": "Earn 10 points for joining our Facebook group",
+              "name": "Join the Facebook group",
+              "button_text": "Like us"
+            }
+          },
+          "vk": {
+            "partner_page": {
+              "styles": {
+                "vk_share_btn:hover": {
+                  "background": "#111"
+                },
+                "vk_share_btn": {
+                  "font-size": "14px",
+                  "color": "#ddd",
+                  "cursor": "pointer",
+                  "width": "140px",
+                  "background": "#333",
+                  "font-family": "helvetica,arial,nimbus sans l,sans-serif",
+                  "line-height": "35px",
+                  "text-align": "center"
+                }
+              },
+              "pic": "http://saike.ru/sailplay-magic/lib/magic/img/actions/data/icon_vk.png",
+              "description": "Some description for action here",
+              "name": "Рассказать о нашем магазине в VK",
+              "button_text": "Share"
+            },
+            "purchase": {
+              "styles": {
+                "vk_share_btn:hover": {
+                  "background": "#111"
+                },
+                "vk_share_btn": {
+                  "font-size": "14px",
+                  "color": "#ddd",
+                  "cursor": "pointer",
+                  "width": "140px",
+                  "background": "#333",
+                  "font-family": "helvetica,arial,nimbus sans l,sans-serif",
+                  "line-height": "35px",
+                  "text-align": "center"
+                }
+              },
+              "pic": "http://saike.ru/sailplay-magic/lib/magic/img/actions/data/icon_vk.png",
+              "description": "Some description for action here",
+              "name": "Поделитесь вашей покупкой в VK",
+              "button_text": "Share"
+            },
+            "like": {
+              "styles": {
+                "vk_share_btn:hover": {
+                  "background": "#111"
+                },
+                "vk_share_btn": {
+                  "font-size": "14px",
+                  "color": "#ddd",
+                  "cursor": "pointer",
+                  "width": "140px",
+                  "background": "#333",
+                  "font-family": "helvetica,arial,nimbus sans l,sans-serif",
+                  "line-height": "35px",
+                  "text-align": "center"
+                }
+              },
+              "pic": "http://saike.ru/sailplay-magic/lib/magic/img/actions/data/icon_vk.png",
+              "description": "Some description for action here",
+              "name": "Вступите в группу VK",
+              "button_text": "Join VK group"
+            }
+          },
+          "ok": {
+            "partner_page": {
+              "styles": {
+                "ok_share_btn:hover": {
+                  "background": "#111"
+                },
+                "ok_share_btn": {
+                  "font-size": "14px",
+                  "color": "#ddd",
+                  "cursor": "pointer",
+                  "width": "140px",
+                  "background": "#333",
+                  "font-family": "helvetica,arial,nimbus sans l,sans-serif",
+                  "line-height": "35px",
+                  "text-align": "center"
+                }
+              },
+              "pic": "http://saike.ru/sailplay-magic/lib/magic/img/actions/data/icon_ok.png",
+              "description": "Some description for action here",
+              "name": "Рассказать о нашем магазине в Одноклассники",
+              "button_text": "Share"
+            },
+            "purchase": {
+              "styles": {
+                "ok_share_btn:hover": {
+                  "background": "#111"
+                },
+                "ok_share_btn": {
+                  "font-size": "14px",
+                  "color": "#ddd",
+                  "cursor": "pointer",
+                  "width": "140px",
+                  "background": "#333",
+                  "font-family": "helvetica,arial,nimbus sans l,sans-serif",
+                  "line-height": "35px",
+                  "text-align": "center"
+                }
+              },
+              "pic": "http://saike.ru/sailplay-magic/lib/magic/img/actions/data/icon_ok.png",
+              "description": "Some description for action here",
+              "name": "Поделитесь вашей покупкой в Одноклассники",
+              "button_text": "Share"
+            },
+            "like": {
+              "styles": {
+                "ok_share_btn:hover": {
+                  "background": "#111"
+                },
+                "ok_share_btn": {
+                  "font-size": "14px",
+                  "color": "#ddd",
+                  "cursor": "pointer",
+                  "width": "140px",
+                  "background": "#333",
+                  "font-family": "helvetica,arial,nimbus sans l,sans-serif",
+                  "line-height": "35px",
+                  "text-align": "center"
+                }
+              },
+              "pic": "http://saike.ru/sailplay-magic/lib/magic/img/actions/data/icon_ok.png",
+              "description": "Some description for action here",
+              "name": "Вступите в группу Одноклассники",
+              "button_text": "Like"
+            }
+          },
+          "gp": {
+            "partner_page": {
+              "styles": {
+                "gp_share_btn": {
+                  "font-size": "14px",
+                  "color": "#ddd",
+                  "cursor": "pointer",
+                  "width": "140px",
+                  "background": "#333",
+                  "font-family": "helvetica,arial,nimbus sans l,sans-serif",
+                  "line-height": "35px",
+                  "text-align": "center"
+                },
+                "gp_share_btn:hover": {
+                  "background": "#111"
+                }
+              },
+              "pic": "https://d3sailplay.cdnvideo.ru/media/assets/assetfile/9f71487bf935bdc3c6ad5eeefd7b9a28.png",
+              "description": "Earn 10 points by telling your Google+ friends about Arbor Hotels",
+              "name": "Share our Google+ page with your friends",
+              "button_text": "Share"
+            },
+            "purchase": {
+              "styles": {
+                "gp_share_btn": {
+                  "font-size": "14px",
+                  "color": "#ddd",
+                  "cursor": "pointer",
+                  "width": "140px",
+                  "background": "#333",
+                  "font-family": "helvetica,arial,nimbus sans l,sans-serif",
+                  "line-height": "35px",
+                  "text-align": "center"
+                },
+                "gp_share_btn:hover": {
+                  "background": "#111"
+                }
+              },
+              "pic": "https://d3sailplay.cdnvideo.ru/media/assets/assetfile/9f71487bf935bdc3c6ad5eeefd7b9a28.png",
+              "description": "Earn 10 points by sharing your recent purchase on Google+",
+              "name": "Share your recent purchase on Google+",
+              "button_text": "Share"
+            },
+            "like": {
+              "styles": {
+                "gp_share_btn": {
+                  "font-size": "14px",
+                  "color": "#ddd",
+                  "cursor": "pointer",
+                  "width": "140px",
+                  "background": "#333",
+                  "font-family": "helvetica,arial,nimbus sans l,sans-serif",
+                  "line-height": "35px",
+                  "text-align": "center"
+                },
+                "gp_share_btn:hover": {
+                  "background": "#111"
+                }
+              },
+              "pic": "https://d3sailplay.cdnvideo.ru/media/assets/assetfile/9f71487bf935bdc3c6ad5eeefd7b9a28.png",
+              "description": "Earn 10 points by giving our Google+ page +1",
+              "name": "Like our Google+ page",
+              "button_text": "Like"
+            }
+          }
+        }
+      },
+      "history": {
+        "purchase": {
+          "text": "Purchase",
+          "icon": "https://cdn0.iconfinder.com/data/icons/hell/500/alchemical-512.png"
+        },
+        "referred_purchase": {
+          "text": "Friend's purchase",
+          "icon": "https://cdn0.iconfinder.com/data/icons/hell/500/alchemical-512.png"
+        },
+        "custom_action": {
+          "text": "Custom action",
+          "icon": "https://cdn0.iconfinder.com/data/icons/hell/500/alchemical-512.png"
+        },
+        "earn_badge": {
+          "text": "Earn badge ",
+          "icon": "https://cdn0.iconfinder.com/data/icons/hell/500/alchemical-512.png"
+        },
+        "gift_purchase": {
+          "text": "Gift",
+          "icon": "https://cdn0.iconfinder.com/data/icons/hell/500/alchemical-512.png"
+        },
+        "promocode": {
+          "text": "Promocode activation",
+          "icon": "https://cdn0.iconfinder.com/data/icons/hell/500/alchemical-512.png"
+        },
+        "enter_group": {
+          "text": "Joined our group on ",
+          "icon": "https://cdn0.iconfinder.com/data/icons/hell/500/alchemical-512.png"
+        },
+        "share_purchase": {
+          "text": "Shared a purchase on ",
+          "icon": "https://cdn0.iconfinder.com/data/icons/hell/500/alchemical-512.png"
+        },
+        "share_badge": {
+          "text": "Shared a badge on ",
+          "icon": "https://cdn0.iconfinder.com/data/icons/hell/500/alchemical-512.png"
+        },
+        "registration": {
+          "text": "Sign up",
+          "icon": "https://cdn0.iconfinder.com/data/icons/hell/500/alchemical-512.png"
+        },
+        "referral": {
+          "text": "Invite friend",
+          "icon": "https://cdn0.iconfinder.com/data/icons/hell/500/alchemical-512.png"
+        },
+        "badge": {
+          "text": "Badge",
+          "icon": "https://cdn0.iconfinder.com/data/icons/hell/500/alchemical-512.png"
+        },
+        "social_share": {
+          "text": "Shared our website on ",
+          "icon": "https://cdn0.iconfinder.com/data/icons/hell/500/alchemical-512.png"
+        },
+        "referred": {
+          "text": "Registration from friend's invite",
+          "icon": "https://cdn0.iconfinder.com/data/icons/hell/500/alchemical-512.png"
+        }
+      }
+    }
+  }
+}
