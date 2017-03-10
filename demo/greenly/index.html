@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+
+  <script src="https://cdn.rawgit.com/iamthegoodbot/skazka_loyalty_page/2.1.2/dist/prod/sailplay-magic.js"></script>
+  <sailplay-magic></sailplay-magic>
+  <script>
+
+    var magic = new SAILPLAY.Magic({
+
+      partner_id: "${Your partner id}",
+      domain: "https://sailplay.net",
+      lang:  "en",
+      config: "{name of config}"
+
+    });
+
+    SAILPLAY.on('magic.config.success', function () {
+      SAILPLAY.send('login', '{AUTH_HASH_FROM_SERVER_HERE}')
+    });
+
+
+  </script>
+
+</body>
+</html>

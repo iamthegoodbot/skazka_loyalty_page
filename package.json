@@ -4,6 +4,7 @@
   "description": "",
   "author": "saike",
   "license": "ISC",
+  "main": "./dist/prod/sailplay-magic.js",
   "scripts": {
     "bundle": "rm -rf node_modules/ && npm install"
   },

@@ -8,24 +8,24 @@
 
 .spm_wrapper {
 
-  .widget.badges {
+  .spm_tools_widget.badges {
     float: left;
     width: 100%;
     background-color: @main_lighter;
     overflow: hidden;
+
+    .container {
+      width: 100%;
+      padding: 80px 5% 40px 5%;
+      .box-sizing(border-box);
+    }
+
     .bon_header {
-      float: left;
-      width: 90%;
-      margin-left: 5%;
       color: @black;
       font-size: 30px;
       font-family: 'RotondaC', 'Roboto', sans-serif;
-      margin-top: 80px;
     }
     .bon_sub_header {
-      float: left;
-      width: 90%;
-      margin-left: 5%;
       font-size: 14px;
       color: @black;
       margin-top: 10px;
@@ -34,8 +34,6 @@
     .bon_slide_cat_item_wrap {
       float: left;
       width: 100%;
-      margin-left: 5%;
-      margin-right: 5%;
       margin-top: 30px;
       margin-bottom: 30px;
       position: relative;
