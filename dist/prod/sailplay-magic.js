@@ -57,20 +57,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	__webpack_require__(9);
 	__webpack_require__(140);
 	__webpack_require__(144);
-	__webpack_require__(150);
 	__webpack_require__(154);
-	__webpack_require__(158);
-	__webpack_require__(162);
-	__webpack_require__(166);
-	__webpack_require__(170);
-	__webpack_require__(171);
-	__webpack_require__(175);
-	__webpack_require__(179);
-	__webpack_require__(183);
-	__webpack_require__(187);
-	__webpack_require__(192);
+	__webpack_require__(160);
+	__webpack_require__(164);
+	__webpack_require__(168);
+	__webpack_require__(172);
+	__webpack_require__(176);
+	__webpack_require__(180);
+	__webpack_require__(181);
+	__webpack_require__(185);
+	__webpack_require__(189);
+	__webpack_require__(193);
 	__webpack_require__(197);
-	module.exports = __webpack_require__(205);
+	__webpack_require__(201);
+	__webpack_require__(206);
+	__webpack_require__(211);
+	module.exports = __webpack_require__(219);
 
 
 /***/ },
@@ -813,7 +815,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var data = {};
 
 	        var _domain = _config.DOMAIN.indexOf('http:') != -1 || _config.DOMAIN.indexOf('https:') != -1 ? _config.DOMAIN : 'http:' + _config.DOMAIN;
-
 	        if (messageEvent.origin == _domain) {
 	          try {
 	            data = JSON.parse(messageEvent.data);
@@ -850,12 +851,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	      function cancelLogin() {
 	        if (frame.created) {
-	          try {
-	            document.body.removeChild(frame)
-	          }
-	          catch (e) {
-
-	          }
+	          document.body.removeChild(frame);
+	          window.removeEventListener("message", onMessage, false);
+	          _remote_login_init = false;
 	        }
 	      }
 
@@ -864,6 +862,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	      params.dep_id = _config.dep_id || '';
 	      params.background = opts.background || '';
 	      params.partner_info = opts.partner_info || 0;
+	      if(opts.reg_match_email_oid) {
+	        params.reg_match_email_oid = opts.reg_match_email_oid;
+	      }
+	      if(opts.css_link) {
+	        params.css_link = opts.css_link;
+	      }
 	      if (opts.lang) {
 	        params.lang = opts.lang;
 	      }
@@ -901,15 +905,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	        lang: params.lang || 'ru',
 	        dep_id: (params.dep_id || '')
 	      }, function (response) {
-	        if (response && response.status == 'ok') {
-
+	        if (response && response.status == 'ok') {          
 	          _config = response.config;
 	          _config.DOMAIN = (params.domain || 'http://sailplay.ru');
 	          _config.dep_id = params.dep_id || '';
 	          _config.env.staticUrl = params.static_url || _config.env.staticUrl;
 	          _config.social_networks = ['fb', 'vk', 'tw', 'gp', 'ok'];
 	          _config.platform = params.platform || 'desktop';
-
+	          window._config = _config;
 	          //postmessage events init
 	          //1. bind action events
 	          function onActionMessage(messageEvent) {
@@ -1204,6 +1207,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	      if (_config.auth_hash) {
 	        params.auth_hash = _config.auth_hash;
 	      }
+
+	      params.lang = params.lang || _config.lang || 'ru';
 
 	      JSONP.get(_config.DOMAIN + _config.urls.gifts.list, params, function (res) {
 	        //      console.dir(res);
@@ -1500,37 +1505,149 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    });
 
-	    //ADD CUSTOM VARIABLES
+	    /**
+	     * Add variables to user
+	     * @object data {custom_vars:{}, user: {}}
+	     * @function callback
+	     */
 	    sp.on('vars.add', function (data, callback) {
+
 	      if (_config == {}) {
 	        initError();
 	        return;
 	      }
+
 	      if (_config.auth_hash || data.user) {
+
 	        var obj = data.custom_vars;
-	        if (data.user) {
-	          for (var p in data.user) {
-	            obj[p] = data.user[p];
-	          }
-	        }
-	        else {
+
+	        if (data.user)
+	          for (var p in data.user) obj[p] = data.user[p];
+	        else
 	          obj.auth_hash = _config.auth_hash;
-	        }
-	        JSONP.get(_config.DOMAIN + '/js-api/' + _config.partner.id + '/users/custom-variables/add/', obj, function (res) {
-	          if (res.status == 'ok') {
+
+	        obj.lang = data.lang || _config.lang || 'ru';
+
+	        JSONP.get(_config.DOMAIN + _config.urls.users.custom_variables.add, obj, function (res) {
+	          if (res.status == 'ok')
 	            sp.send('vars.add.success', res);
-	          } else {
+	          else
 	            sp.send('vars.add.error', res);
-	          }
 	          callback && callback(res);
 	        });
+
 	      } else {
 	        sp.send('vars.add.auth.error', data);
 	      }
+
 	    });
 
+	    /**
+	     * Get user variables
+	     * @object data {names: [], user: {}}
+	     * @function callback
+	     */
+	    sp.on("vars.batch", function (data, callback) {
+
+	      if (_config == {}) {
+	        initError();
+	        return;
+	      }
+
+	      if (_config.auth_hash || data.user) {
+
+	        var obj = {
+	          names: JSON.stringify(data.names)
+	        };
+
+	        if (data.user)
+	          for (var p in data.user) obj[p] = data.user[p];
+	        else
+	          obj.auth_hash = _config.auth_hash;
+
+	        obj.lang = data.lang || _config.lang || 'ru';
+
+	        JSONP.get(_config.DOMAIN + _config.urls.users.custom_variables.batch_get, obj, function (res) {
+	          if (res.status == 'ok')
+	            sp.send('vars.batch.success', res);
+	          else
+	            sp.send('vars.batch.error', res);
+	          callback && callback(res);
+	        });
+
+	      } else {
+	        sp.send('vars.batch.auth.error', data);
+	      }
+
+	    });
+
+	    /**
+	     * Add referral user
+	     * @object data { tag_type_2: "source tag", tag_type_3: "target tag", add_phone, add_email, add_first_name, add_second_name, add_moving_from, add_moving_from_zip, add_moving_to, add_move_date }
+	     * @function callback
+	     */
+	    sp.on('referral.add', function(data, callback) {
+	      if (_config == {}) {
+	        initError();
+	        return;
+	      }
+	      if (_config.auth_hash) {
+	        var obj = data.user_data
+	        obj.auth_hash = _config.auth_hash
+	        obj.tag_type_2 = data.tag_type_2
+	        obj.tag_type_3 = data.tag_type_3
+	        obj.lang = data.lang || _config.lang || 'ru';      
+
+	        var url = '/js-api/' + _config.partner.id + '/custom/referrals/add/'
+	        // _config.urls.referral.add
+	        JSONP.get(_config.DOMAIN + url, obj, function (res) {
+	          if (res.status == 'ok')
+	            sp.send('referral.add.success', res);
+	          else
+	            sp.send('referral.add.error', res);
+	            callback && callback(res);
+	        })
+	      } else {
+	        sp.send('referral.add.error', data);      
+	      }
+	    });
+
+
+	    /**
+	     * List referral user
+	     * @object data { tag_type_2: "source tag", tag_type_3: "target tag", add_phone, add_email, add_first_name, add_second_name, add_moving_from, add_moving_from_zip, add_moving_to, add_move_date }
+	     * @function callback
+	     */
+	    sp.on('referral.list', function(data, callback) {
+	      if (_config == {}) {
+	        initError();
+	        return;
+	      }
+	      if (_config.auth_hash) {
+	        var obj = {
+	          auth_hash: _config.auth_hash
+	        }
+	        
+	        obj.lang = data.lang || _config.lang || 'ru';
+	        if (data.names)
+	          obj.names = JSON.stringify(data.names)
+
+	        var url = '/js-api/' + _config.partner.id + '/custom/referrals/list/'
+	        // _config.urls.referral.list
+	        JSONP.get(_config.DOMAIN + url, obj, function (res) {
+	          if (res.status == 'ok')
+	            sp.send('referral.list.success', res);
+	          else
+	            sp.send('referral.list.error', res);
+	            callback && callback(res);
+	        })
+	      } else {
+	        sp.send('referral.list.error', data);      
+	      }
+	    });    
+
 	    //LEADERBOARD SECTION
-	    sp.on('leaderboard.load', function () {
+	    sp.on('leaderboard.load', function (data) {
 	      if (_config == {}) {
 	        initError();
 	        return;
@@ -1538,7 +1655,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var tagsObj = {
 	        auth_hash: _config.auth_hash
 	      };
-	      JSONP.get(_config.DOMAIN + _config.urls.leaderboard.data, tagsObj, function (res) {
+	      
+	      var url = '/js-api/' + _config.partner.id + '/custom/leaderboard/type-2/'
+	      tagsObj = Object.assign({}, tagsObj, data)
+	      console.log('какого хуя', tagsObj)
+	      JSONP.get(_config.DOMAIN + url, tagsObj, function (res) {
 	        if (res.status == 'ok') {
 	          sp.send('leaderboard.load.success', res.data);
 	        } else {
@@ -35248,15 +35369,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _sailplay2 = _interopRequireDefault(_sailplay);
 
-	var _sailplay3 = __webpack_require__(36);
+	var _sailplay3 = __webpack_require__(56);
 
 	var _sailplay4 = _interopRequireDefault(_sailplay3);
 
-	var _sailplay5 = __webpack_require__(92);
+	var _sailplay5 = __webpack_require__(96);
 
 	var _sailplay6 = _interopRequireDefault(_sailplay5);
 
-	var _sailplay7 = __webpack_require__(93);
+	var _sailplay7 = __webpack_require__(97);
 
 	var _sailplay8 = _interopRequireDefault(_sailplay7);
 
@@ -35522,7 +35643,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    }
 
-	    $window[0].open(share_url, '_blank', 'toolbar=0,status=0,width=626,height=436,location=no');
+	    $window.open(share_url, '_blank', 'toolbar=0,status=0,width=626,height=436,location=no');
 	  };
 	});
 
@@ -35538,6 +35659,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	  value: true
 	});
 	exports.SailPlayProfile = undefined;
+
+	var _keys = __webpack_require__(36);
+
+	var _keys2 = _interopRequireDefault(_keys);
 
 	var _angular = __webpack_require__(32);
 
@@ -35718,7 +35843,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * This directive extends parent scope with property: sailplay.fill_profile
 	 *
 	 */
-	.directive('sailplayFillProfile', function (SailPlay, $rootScope, $q, ipCookie, SailPlayApi, SailPlayFillProfile) {
+	.directive('sailplayFillProfile', function (SailPlay, $rootScope, $q, ipCookie, SailPlayApi, SailPlayFillProfile, MAGIC_CONFIG) {
 
 	  return {
 
@@ -35742,15 +35867,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return _angular2.default.toJson([SailPlayApi.data('load.user.info')()]);
 	      }, function () {
 
-	        var user = SailPlayApi.data('load.user.info')();
+	        SailPlay.send('tags.exist', { tags: [MAGIC_CONFIG.data.tag_type] }, function (res) {
+	          if (res.tags[0].name == MAGIC_CONFIG.data.tag_type && !res.tags[0].exist) {
+	            location.replace(MAGIC_CONFIG.data.redirect_to);
+	          }
+	        });
 
+	        var user = SailPlayApi.data('load.user.info')();
 	        if (!user) return;
 
+	        var custom_fields = [];
 	        var form = scope.sailplay.fill_profile.form;
 
 	        form.fields = config.fields.map(function (field) {
 
 	          var form_field = new SailPlayFillProfile.Field(field);
+	          if (field.type == 'variable') custom_fields.push(form_field);
 
 	          //we need to assign received values to form
 	          switch (form_field.type) {
@@ -35806,6 +35938,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	          return form_field;
 	        });
 
+	        if (custom_fields.length) {
+	          SailPlayApi.call("vars.batch", { names: custom_fields.map(function (field) {
+	              return field.name;
+	            }) }, function (res) {
+	            _angular2.default.forEach(res.vars, function (variable) {
+	              _angular2.default.forEach(custom_fields, function (field) {
+	                if (field.name == variable.name) field.value = variable.value;
+	              });
+	            });
+	          });
+	        }
+
 	        form.auth_hash = SailPlay.config().auth_hash;
 	        //angular.extend(scope.profile_form.user, user.user);
 	        //if(ipCookie(FillProfile.cookie_name) && SailPlay.config().auth_hash === ipCookie(FillProfile.cookie_name).user.auth_hash ){
@@ -35845,11 +35989,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 
 	        var data_user = SailPlayApi.data('load.user.info')() && SailPlayApi.data('load.user.info')().user;
-
-	        var req_user = {};
+	        var req_user = {},
+	            custom_user_vars = {};
 
 	        _angular2.default.forEach(scope.sailplay.fill_profile.form.fields, function (item) {
-	          req_user[item.name] = item.value;
+	          if (item.type == 'variable') {
+	            custom_user_vars[item.name] = item.value;
+	          } else req_user[item.name] = item.value;
 	        });
 
 	        if (req_user.addPhone && data_user && data_user.phone && data_user.phone.replace(/\D/g, '') == req_user.addPhone.replace(/\D/g, '')) {
@@ -35870,6 +36016,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	        SailPlay.send('users.update', req_user, function (user_res) {
 
 	          if (user_res.status === 'ok') {
+
+	            if ((0, _keys2.default)(custom_user_vars).length) {
+	              SailPlay.send('vars.add', { custom_vars: custom_user_vars }, function (res_vars) {
+	                if (!res_vars.status == 'ok') $rootScope.$broadcast('notifier:notify', {
+	                  body: res_vars.message
+	                });
+	              });
+	            }
 
 	            scope.$apply(function () {
 
@@ -35898,6 +36052,242 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 36 */
 /***/ function(module, exports, __webpack_require__) {
 
+	module.exports = { "default": __webpack_require__(37), __esModule: true };
+
+/***/ },
+/* 37 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(38);
+	module.exports = __webpack_require__(17).Object.keys;
+
+/***/ },
+/* 38 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// 19.1.2.14 Object.keys(O)
+	var toObject = __webpack_require__(39)
+	  , $keys    = __webpack_require__(41);
+
+	__webpack_require__(55)('keys', function(){
+	  return function keys(it){
+	    return $keys(toObject(it));
+	  };
+	});
+
+/***/ },
+/* 39 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// 7.1.13 ToObject(argument)
+	var defined = __webpack_require__(40);
+	module.exports = function(it){
+	  return Object(defined(it));
+	};
+
+/***/ },
+/* 40 */
+/***/ function(module, exports) {
+
+	// 7.2.1 RequireObjectCoercible(argument)
+	module.exports = function(it){
+	  if(it == undefined)throw TypeError("Can't call method on  " + it);
+	  return it;
+	};
+
+/***/ },
+/* 41 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// 19.1.2.14 / 15.2.3.14 Object.keys(O)
+	var $keys       = __webpack_require__(42)
+	  , enumBugKeys = __webpack_require__(54);
+
+	module.exports = Object.keys || function keys(O){
+	  return $keys(O, enumBugKeys);
+	};
+
+/***/ },
+/* 42 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var has          = __webpack_require__(43)
+	  , toIObject    = __webpack_require__(44)
+	  , arrayIndexOf = __webpack_require__(47)(false)
+	  , IE_PROTO     = __webpack_require__(51)('IE_PROTO');
+
+	module.exports = function(object, names){
+	  var O      = toIObject(object)
+	    , i      = 0
+	    , result = []
+	    , key;
+	  for(key in O)if(key != IE_PROTO)has(O, key) && result.push(key);
+	  // Don't enum bug & hidden keys
+	  while(names.length > i)if(has(O, key = names[i++])){
+	    ~arrayIndexOf(result, key) || result.push(key);
+	  }
+	  return result;
+	};
+
+/***/ },
+/* 43 */
+/***/ function(module, exports) {
+
+	var hasOwnProperty = {}.hasOwnProperty;
+	module.exports = function(it, key){
+	  return hasOwnProperty.call(it, key);
+	};
+
+/***/ },
+/* 44 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// to indexed object, toObject with fallback for non-array-like ES3 strings
+	var IObject = __webpack_require__(45)
+	  , defined = __webpack_require__(40);
+	module.exports = function(it){
+	  return IObject(defined(it));
+	};
+
+/***/ },
+/* 45 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// fallback for non-array-like ES3 and non-enumerable old V8 strings
+	var cof = __webpack_require__(46);
+	module.exports = Object('z').propertyIsEnumerable(0) ? Object : function(it){
+	  return cof(it) == 'String' ? it.split('') : Object(it);
+	};
+
+/***/ },
+/* 46 */
+/***/ function(module, exports) {
+
+	var toString = {}.toString;
+
+	module.exports = function(it){
+	  return toString.call(it).slice(8, -1);
+	};
+
+/***/ },
+/* 47 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// false -> Array#indexOf
+	// true  -> Array#includes
+	var toIObject = __webpack_require__(44)
+	  , toLength  = __webpack_require__(48)
+	  , toIndex   = __webpack_require__(50);
+	module.exports = function(IS_INCLUDES){
+	  return function($this, el, fromIndex){
+	    var O      = toIObject($this)
+	      , length = toLength(O.length)
+	      , index  = toIndex(fromIndex, length)
+	      , value;
+	    // Array#includes uses SameValueZero equality algorithm
+	    if(IS_INCLUDES && el != el)while(length > index){
+	      value = O[index++];
+	      if(value != value)return true;
+	    // Array#toIndex ignores holes, Array#includes - not
+	    } else for(;length > index; index++)if(IS_INCLUDES || index in O){
+	      if(O[index] === el)return IS_INCLUDES || index || 0;
+	    } return !IS_INCLUDES && -1;
+	  };
+	};
+
+/***/ },
+/* 48 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// 7.1.15 ToLength
+	var toInteger = __webpack_require__(49)
+	  , min       = Math.min;
+	module.exports = function(it){
+	  return it > 0 ? min(toInteger(it), 0x1fffffffffffff) : 0; // pow(2, 53) - 1 == 9007199254740991
+	};
+
+/***/ },
+/* 49 */
+/***/ function(module, exports) {
+
+	// 7.1.4 ToInteger
+	var ceil  = Math.ceil
+	  , floor = Math.floor;
+	module.exports = function(it){
+	  return isNaN(it = +it) ? 0 : (it > 0 ? floor : ceil)(it);
+	};
+
+/***/ },
+/* 50 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var toInteger = __webpack_require__(49)
+	  , max       = Math.max
+	  , min       = Math.min;
+	module.exports = function(index, length){
+	  index = toInteger(index);
+	  return index < 0 ? max(index + length, 0) : min(index, length);
+	};
+
+/***/ },
+/* 51 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var shared = __webpack_require__(52)('keys')
+	  , uid    = __webpack_require__(53);
+	module.exports = function(key){
+	  return shared[key] || (shared[key] = uid(key));
+	};
+
+/***/ },
+/* 52 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var global = __webpack_require__(16)
+	  , SHARED = '__core-js_shared__'
+	  , store  = global[SHARED] || (global[SHARED] = {});
+	module.exports = function(key){
+	  return store[key] || (store[key] = {});
+	};
+
+/***/ },
+/* 53 */
+/***/ function(module, exports) {
+
+	var id = 0
+	  , px = Math.random();
+	module.exports = function(key){
+	  return 'Symbol('.concat(key === undefined ? '' : key, ')_', (++id + px).toString(36));
+	};
+
+/***/ },
+/* 54 */
+/***/ function(module, exports) {
+
+	// IE 8- don't enum bug keys
+	module.exports = (
+	  'constructor,hasOwnProperty,isPrototypeOf,propertyIsEnumerable,toLocaleString,toString,valueOf'
+	).split(',');
+
+/***/ },
+/* 55 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// most Object methods by ES6 should accept primitives
+	var $export = __webpack_require__(15)
+	  , core    = __webpack_require__(17)
+	  , fails   = __webpack_require__(26);
+	module.exports = function(KEY, exec){
+	  var fn  = (core.Object || {})[KEY] || Object[KEY]
+	    , exp = {};
+	  exp[KEY] = exec(fn);
+	  $export($export.S + $export.F * fails(function(){ fn(1); }), 'Object', exp);
+	};
+
+/***/ },
+/* 56 */
+/***/ function(module, exports, __webpack_require__) {
+
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
@@ -35905,11 +36295,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	});
 	exports.SailPlayGifts = undefined;
 
-	var _regenerator = __webpack_require__(37);
+	var _regenerator = __webpack_require__(57);
 
 	var _regenerator2 = _interopRequireDefault(_regenerator);
 
-	var _asyncToGenerator2 = __webpack_require__(41);
+	var _asyncToGenerator2 = __webpack_require__(61);
 
 	var _asyncToGenerator3 = _interopRequireDefault(_asyncToGenerator2);
 
@@ -35944,6 +36334,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	      var user = SailPlayApi.data('load.user.info');
 
+	      scope.user = user;
 	      scope.gift_purchase = function (gift) {
 
 	        SailPlay.send('gifts.purchase', { gift: gift });
@@ -36063,14 +36454,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = SailPlayGifts.name;
 
 /***/ },
-/* 37 */
+/* 57 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(38);
+	module.exports = __webpack_require__(58);
 
 
 /***/ },
-/* 38 */
+/* 58 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {// This method of obtaining a reference to the global object needs to be
@@ -36091,7 +36482,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	// Force reevalutation of runtime.js.
 	g.regeneratorRuntime = undefined;
 
-	module.exports = __webpack_require__(39);
+	module.exports = __webpack_require__(59);
 
 	if (hadRuntime) {
 	  // Restore the original runtime.
@@ -36108,7 +36499,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 39 */
+/* 59 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global, process) {/**
@@ -36377,90 +36768,34 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return doneResult();
 	      }
 
+	      context.method = method;
+	      context.arg = arg;
+
 	      while (true) {
 	        var delegate = context.delegate;
 	        if (delegate) {
-	          if (method === "return" ||
-	              (method === "throw" && delegate.iterator[method] === undefined)) {
-	            // A return or throw (when the delegate iterator has no throw
-	            // method) always terminates the yield* loop.
-	            context.delegate = null;
-
-	            // If the delegate iterator has a return method, give it a
-	            // chance to clean up.
-	            var returnMethod = delegate.iterator["return"];
-	            if (returnMethod) {
-	              var record = tryCatch(returnMethod, delegate.iterator, arg);
-	              if (record.type === "throw") {
-	                // If the return method threw an exception, let that
-	                // exception prevail over the original return or throw.
-	                method = "throw";
-	                arg = record.arg;
-	                continue;
-	              }
-	            }
-
-	            if (method === "return") {
-	              // Continue with the outer return, now that the delegate
-	              // iterator has been terminated.
-	              continue;
-	            }
+	          var delegateResult = maybeInvokeDelegate(delegate, context);
+	          if (delegateResult) {
+	            if (delegateResult === ContinueSentinel) continue;
+	            return delegateResult;
 	          }
-
-	          var record = tryCatch(
-	            delegate.iterator[method],
-	            delegate.iterator,
-	            arg
-	          );
-
-	          if (record.type === "throw") {
-	            context.delegate = null;
-
-	            // Like returning generator.throw(uncaught), but without the
-	            // overhead of an extra function call.
-	            method = "throw";
-	            arg = record.arg;
-	            continue;
-	          }
-
-	          // Delegate generator ran and handled its own exceptions so
-	          // regardless of what the method was, we continue as if it is
-	          // "next" with an undefined arg.
-	          method = "next";
-	          arg = undefined;
-
-	          var info = record.arg;
-	          if (info.done) {
-	            context[delegate.resultName] = info.value;
-	            context.next = delegate.nextLoc;
-	          } else {
-	            state = GenStateSuspendedYield;
-	            return info;
-	          }
-
-	          context.delegate = null;
 	        }
 
-	        if (method === "next") {
+	        if (context.method === "next") {
 	          // Setting context._sent for legacy support of Babel's
 	          // function.sent implementation.
-	          context.sent = context._sent = arg;
+	          context.sent = context._sent = context.arg;
 
-	        } else if (method === "throw") {
+	        } else if (context.method === "throw") {
 	          if (state === GenStateSuspendedStart) {
 	            state = GenStateCompleted;
-	            throw arg;
+	            throw context.arg;
 	          }
 
-	          if (context.dispatchException(arg)) {
-	            // If the dispatched exception was caught by a catch block,
-	            // then let that catch block handle the exception normally.
-	            method = "next";
-	            arg = undefined;
-	          }
+	          context.dispatchException(context.arg);
 
-	        } else if (method === "return") {
-	          context.abrupt("return", arg);
+	        } else if (context.method === "return") {
+	          context.abrupt("return", context.arg);
 	        }
 
 	        state = GenStateExecuting;
@@ -36473,30 +36808,106 @@ return /******/ (function(modules) { // webpackBootstrap
 	            ? GenStateCompleted
 	            : GenStateSuspendedYield;
 
-	          var info = {
+	          if (record.arg === ContinueSentinel) {
+	            continue;
+	          }
+
+	          return {
 	            value: record.arg,
 	            done: context.done
 	          };
 
-	          if (record.arg === ContinueSentinel) {
-	            if (context.delegate && method === "next") {
-	              // Deliberately forget the last sent value so that we don't
-	              // accidentally pass it on to the delegate.
-	              arg = undefined;
-	            }
-	          } else {
-	            return info;
-	          }
-
 	        } else if (record.type === "throw") {
 	          state = GenStateCompleted;
 	          // Dispatch the exception by looping back around to the
-	          // context.dispatchException(arg) call above.
-	          method = "throw";
-	          arg = record.arg;
+	          // context.dispatchException(context.arg) call above.
+	          context.method = "throw";
+	          context.arg = record.arg;
 	        }
 	      }
 	    };
+	  }
+
+	  // Call delegate.iterator[context.method](context.arg) and handle the
+	  // result, either by returning a { value, done } result from the
+	  // delegate iterator, or by modifying context.method and context.arg,
+	  // setting context.delegate to null, and returning the ContinueSentinel.
+	  function maybeInvokeDelegate(delegate, context) {
+	    var method = delegate.iterator[context.method];
+	    if (method === undefined) {
+	      // A .throw or .return when the delegate iterator has no .throw
+	      // method always terminates the yield* loop.
+	      context.delegate = null;
+
+	      if (context.method === "throw") {
+	        if (delegate.iterator.return) {
+	          // If the delegate iterator has a return method, give it a
+	          // chance to clean up.
+	          context.method = "return";
+	          context.arg = undefined;
+	          maybeInvokeDelegate(delegate, context);
+
+	          if (context.method === "throw") {
+	            // If maybeInvokeDelegate(context) changed context.method from
+	            // "return" to "throw", let that override the TypeError below.
+	            return ContinueSentinel;
+	          }
+	        }
+
+	        context.method = "throw";
+	        context.arg = new TypeError(
+	          "The iterator does not provide a 'throw' method");
+	      }
+
+	      return ContinueSentinel;
+	    }
+
+	    var record = tryCatch(method, delegate.iterator, context.arg);
+
+	    if (record.type === "throw") {
+	      context.method = "throw";
+	      context.arg = record.arg;
+	      context.delegate = null;
+	      return ContinueSentinel;
+	    }
+
+	    var info = record.arg;
+
+	    if (! info) {
+	      context.method = "throw";
+	      context.arg = new TypeError("iterator result is not an object");
+	      context.delegate = null;
+	      return ContinueSentinel;
+	    }
+
+	    if (info.done) {
+	      // Assign the result of the finished delegate to the temporary
+	      // variable specified by delegate.resultName (see delegateYield).
+	      context[delegate.resultName] = info.value;
+
+	      // Resume execution at the desired location (see delegateYield).
+	      context.next = delegate.nextLoc;
+
+	      // If context.method was "throw" but the delegate handled the
+	      // exception, let the outer generator proceed normally. If
+	      // context.method was "next", forget context.arg since it has been
+	      // "consumed" by the delegate iterator. If context.method was
+	      // "return", allow the original .return call to continue in the
+	      // outer generator.
+	      if (context.method !== "return") {
+	        context.method = "next";
+	        context.arg = undefined;
+	      }
+
+	    } else {
+	      // Re-yield the result returned by the delegate method.
+	      return info;
+	    }
+
+	    // The delegate iterator is finished, so forget it and continue with
+	    // the outer generator.
+	    context.delegate = null;
+	    return ContinueSentinel;
 	  }
 
 	  // Define Generator.prototype.{next,throw,return} in terms of the
@@ -36619,6 +37030,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	      this.done = false;
 	      this.delegate = null;
 
+	      this.method = "next";
+	      this.arg = undefined;
+
 	      this.tryEntries.forEach(resetTryEntry);
 
 	      if (!skipTempReset) {
@@ -36655,7 +37069,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	        record.type = "throw";
 	        record.arg = exception;
 	        context.next = loc;
-	        return !!caught;
+
+	        if (caught) {
+	          // If the dispatched exception was caught by a catch block,
+	          // then let that catch block handle the exception normally.
+	          context.method = "next";
+	          context.arg = undefined;
+	        }
+
+	        return !! caught;
 	      }
 
 	      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
@@ -36723,12 +37145,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	      record.arg = arg;
 
 	      if (finallyEntry) {
+	        this.method = "next";
 	        this.next = finallyEntry.finallyLoc;
-	      } else {
-	        this.complete(record);
+	        return ContinueSentinel;
 	      }
 
-	      return ContinueSentinel;
+	      return this.complete(record);
 	    },
 
 	    complete: function(record, afterLoc) {
@@ -36740,11 +37162,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	          record.type === "continue") {
 	        this.next = record.arg;
 	      } else if (record.type === "return") {
-	        this.rval = record.arg;
+	        this.rval = this.arg = record.arg;
+	        this.method = "return";
 	        this.next = "end";
 	      } else if (record.type === "normal" && afterLoc) {
 	        this.next = afterLoc;
 	      }
+
+	      return ContinueSentinel;
 	    },
 
 	    finish: function(finallyLoc) {
@@ -36783,6 +37208,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	        nextLoc: nextLoc
 	      };
 
+	      if (this.method === "next") {
+	        // Deliberately forget the last sent value so that we don't
+	        // accidentally pass it on to the delegate.
+	        this.arg = undefined;
+	      }
+
 	      return ContinueSentinel;
 	    }
 	  };
@@ -36795,10 +37226,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	  typeof self === "object" ? self : this
 	);
 
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(40)))
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(60)))
 
 /***/ },
-/* 40 */
+/* 60 */
 /***/ function(module, exports) {
 
 	// shim for using process in browser
@@ -36984,14 +37415,14 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 41 */
+/* 61 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
 	exports.__esModule = true;
 
-	var _promise = __webpack_require__(42);
+	var _promise = __webpack_require__(62);
 
 	var _promise2 = _interopRequireDefault(_promise);
 
@@ -37027,36 +37458,36 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 42 */
+/* 62 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = { "default": __webpack_require__(43), __esModule: true };
+	module.exports = { "default": __webpack_require__(63), __esModule: true };
 
 /***/ },
-/* 43 */
+/* 63 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(44);
-	__webpack_require__(45);
-	__webpack_require__(74);
+	__webpack_require__(64);
+	__webpack_require__(65);
 	__webpack_require__(78);
+	__webpack_require__(82);
 	module.exports = __webpack_require__(17).Promise;
 
 /***/ },
-/* 44 */
+/* 64 */
 /***/ function(module, exports) {
 
 	
 
 /***/ },
-/* 45 */
+/* 65 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var $at  = __webpack_require__(46)(true);
+	var $at  = __webpack_require__(66)(true);
 
 	// 21.1.3.27 String.prototype[@@iterator]()
-	__webpack_require__(49)(String, 'String', function(iterated){
+	__webpack_require__(67)(String, 'String', function(iterated){
 	  this._t = String(iterated); // target
 	  this._i = 0;                // next index
 	// 21.1.5.2.1 %StringIteratorPrototype%.next()
@@ -37071,11 +37502,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	});
 
 /***/ },
-/* 46 */
+/* 66 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var toInteger = __webpack_require__(47)
-	  , defined   = __webpack_require__(48);
+	var toInteger = __webpack_require__(49)
+	  , defined   = __webpack_require__(40);
 	// true  -> String#at
 	// false -> String#codePointAt
 	module.exports = function(TO_STRING){
@@ -37093,41 +37524,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 47 */
-/***/ function(module, exports) {
-
-	// 7.1.4 ToInteger
-	var ceil  = Math.ceil
-	  , floor = Math.floor;
-	module.exports = function(it){
-	  return isNaN(it = +it) ? 0 : (it > 0 ? floor : ceil)(it);
-	};
-
-/***/ },
-/* 48 */
-/***/ function(module, exports) {
-
-	// 7.2.1 RequireObjectCoercible(argument)
-	module.exports = function(it){
-	  if(it == undefined)throw TypeError("Can't call method on  " + it);
-	  return it;
-	};
-
-/***/ },
-/* 49 */
+/* 67 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var LIBRARY        = __webpack_require__(50)
+	var LIBRARY        = __webpack_require__(68)
 	  , $export        = __webpack_require__(15)
-	  , redefine       = __webpack_require__(51)
+	  , redefine       = __webpack_require__(69)
 	  , hide           = __webpack_require__(20)
-	  , has            = __webpack_require__(52)
-	  , Iterators      = __webpack_require__(53)
-	  , $iterCreate    = __webpack_require__(54)
-	  , setToStringTag = __webpack_require__(70)
-	  , getPrototypeOf = __webpack_require__(72)
-	  , ITERATOR       = __webpack_require__(71)('iterator')
+	  , has            = __webpack_require__(43)
+	  , Iterators      = __webpack_require__(70)
+	  , $iterCreate    = __webpack_require__(71)
+	  , setToStringTag = __webpack_require__(75)
+	  , getPrototypeOf = __webpack_require__(77)
+	  , ITERATOR       = __webpack_require__(76)('iterator')
 	  , BUGGY          = !([].keys && 'next' in [].keys()) // Safari has buggy iterators w/o `next`
 	  , FF_ITERATOR    = '@@iterator'
 	  , KEYS           = 'keys'
@@ -37189,44 +37599,35 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 50 */
+/* 68 */
 /***/ function(module, exports) {
 
 	module.exports = true;
 
 /***/ },
-/* 51 */
+/* 69 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = __webpack_require__(20);
 
 /***/ },
-/* 52 */
-/***/ function(module, exports) {
-
-	var hasOwnProperty = {}.hasOwnProperty;
-	module.exports = function(it, key){
-	  return hasOwnProperty.call(it, key);
-	};
-
-/***/ },
-/* 53 */
+/* 70 */
 /***/ function(module, exports) {
 
 	module.exports = {};
 
 /***/ },
-/* 54 */
+/* 71 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var create         = __webpack_require__(55)
+	var create         = __webpack_require__(72)
 	  , descriptor     = __webpack_require__(29)
-	  , setToStringTag = __webpack_require__(70)
+	  , setToStringTag = __webpack_require__(75)
 	  , IteratorPrototype = {};
 
 	// 25.1.2.1.1 %IteratorPrototype%[@@iterator]()
-	__webpack_require__(20)(IteratorPrototype, __webpack_require__(71)('iterator'), function(){ return this; });
+	__webpack_require__(20)(IteratorPrototype, __webpack_require__(76)('iterator'), function(){ return this; });
 
 	module.exports = function(Constructor, NAME, next){
 	  Constructor.prototype = create(IteratorPrototype, {next: descriptor(1, next)});
@@ -37234,14 +37635,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 55 */
+/* 72 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
 	var anObject    = __webpack_require__(22)
-	  , dPs         = __webpack_require__(56)
-	  , enumBugKeys = __webpack_require__(68)
-	  , IE_PROTO    = __webpack_require__(65)('IE_PROTO')
+	  , dPs         = __webpack_require__(73)
+	  , enumBugKeys = __webpack_require__(54)
+	  , IE_PROTO    = __webpack_require__(51)('IE_PROTO')
 	  , Empty       = function(){ /* empty */ }
 	  , PROTOTYPE   = 'prototype';
 
@@ -37254,7 +37655,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    , gt     = '>'
 	    , iframeDocument;
 	  iframe.style.display = 'none';
-	  __webpack_require__(69).appendChild(iframe);
+	  __webpack_require__(74).appendChild(iframe);
 	  iframe.src = 'javascript:'; // eslint-disable-line no-script-url
 	  // createDict = iframe.contentWindow.Object;
 	  // html.removeChild(iframe);
@@ -37281,12 +37682,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 56 */
+/* 73 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var dP       = __webpack_require__(21)
 	  , anObject = __webpack_require__(22)
-	  , getKeys  = __webpack_require__(57);
+	  , getKeys  = __webpack_require__(41);
 
 	module.exports = __webpack_require__(25) ? Object.defineProperties : function defineProperties(O, Properties){
 	  anObject(O);
@@ -37299,183 +37700,29 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 57 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// 19.1.2.14 / 15.2.3.14 Object.keys(O)
-	var $keys       = __webpack_require__(58)
-	  , enumBugKeys = __webpack_require__(68);
-
-	module.exports = Object.keys || function keys(O){
-	  return $keys(O, enumBugKeys);
-	};
-
-/***/ },
-/* 58 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var has          = __webpack_require__(52)
-	  , toIObject    = __webpack_require__(59)
-	  , arrayIndexOf = __webpack_require__(62)(false)
-	  , IE_PROTO     = __webpack_require__(65)('IE_PROTO');
-
-	module.exports = function(object, names){
-	  var O      = toIObject(object)
-	    , i      = 0
-	    , result = []
-	    , key;
-	  for(key in O)if(key != IE_PROTO)has(O, key) && result.push(key);
-	  // Don't enum bug & hidden keys
-	  while(names.length > i)if(has(O, key = names[i++])){
-	    ~arrayIndexOf(result, key) || result.push(key);
-	  }
-	  return result;
-	};
-
-/***/ },
-/* 59 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// to indexed object, toObject with fallback for non-array-like ES3 strings
-	var IObject = __webpack_require__(60)
-	  , defined = __webpack_require__(48);
-	module.exports = function(it){
-	  return IObject(defined(it));
-	};
-
-/***/ },
-/* 60 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// fallback for non-array-like ES3 and non-enumerable old V8 strings
-	var cof = __webpack_require__(61);
-	module.exports = Object('z').propertyIsEnumerable(0) ? Object : function(it){
-	  return cof(it) == 'String' ? it.split('') : Object(it);
-	};
-
-/***/ },
-/* 61 */
-/***/ function(module, exports) {
-
-	var toString = {}.toString;
-
-	module.exports = function(it){
-	  return toString.call(it).slice(8, -1);
-	};
-
-/***/ },
-/* 62 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// false -> Array#indexOf
-	// true  -> Array#includes
-	var toIObject = __webpack_require__(59)
-	  , toLength  = __webpack_require__(63)
-	  , toIndex   = __webpack_require__(64);
-	module.exports = function(IS_INCLUDES){
-	  return function($this, el, fromIndex){
-	    var O      = toIObject($this)
-	      , length = toLength(O.length)
-	      , index  = toIndex(fromIndex, length)
-	      , value;
-	    // Array#includes uses SameValueZero equality algorithm
-	    if(IS_INCLUDES && el != el)while(length > index){
-	      value = O[index++];
-	      if(value != value)return true;
-	    // Array#toIndex ignores holes, Array#includes - not
-	    } else for(;length > index; index++)if(IS_INCLUDES || index in O){
-	      if(O[index] === el)return IS_INCLUDES || index || 0;
-	    } return !IS_INCLUDES && -1;
-	  };
-	};
-
-/***/ },
-/* 63 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// 7.1.15 ToLength
-	var toInteger = __webpack_require__(47)
-	  , min       = Math.min;
-	module.exports = function(it){
-	  return it > 0 ? min(toInteger(it), 0x1fffffffffffff) : 0; // pow(2, 53) - 1 == 9007199254740991
-	};
-
-/***/ },
-/* 64 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var toInteger = __webpack_require__(47)
-	  , max       = Math.max
-	  , min       = Math.min;
-	module.exports = function(index, length){
-	  index = toInteger(index);
-	  return index < 0 ? max(index + length, 0) : min(index, length);
-	};
-
-/***/ },
-/* 65 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var shared = __webpack_require__(66)('keys')
-	  , uid    = __webpack_require__(67);
-	module.exports = function(key){
-	  return shared[key] || (shared[key] = uid(key));
-	};
-
-/***/ },
-/* 66 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var global = __webpack_require__(16)
-	  , SHARED = '__core-js_shared__'
-	  , store  = global[SHARED] || (global[SHARED] = {});
-	module.exports = function(key){
-	  return store[key] || (store[key] = {});
-	};
-
-/***/ },
-/* 67 */
-/***/ function(module, exports) {
-
-	var id = 0
-	  , px = Math.random();
-	module.exports = function(key){
-	  return 'Symbol('.concat(key === undefined ? '' : key, ')_', (++id + px).toString(36));
-	};
-
-/***/ },
-/* 68 */
-/***/ function(module, exports) {
-
-	// IE 8- don't enum bug keys
-	module.exports = (
-	  'constructor,hasOwnProperty,isPrototypeOf,propertyIsEnumerable,toLocaleString,toString,valueOf'
-	).split(',');
-
-/***/ },
-/* 69 */
+/* 74 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = __webpack_require__(16).document && document.documentElement;
 
 /***/ },
-/* 70 */
+/* 75 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var def = __webpack_require__(21).f
-	  , has = __webpack_require__(52)
-	  , TAG = __webpack_require__(71)('toStringTag');
+	  , has = __webpack_require__(43)
+	  , TAG = __webpack_require__(76)('toStringTag');
 
 	module.exports = function(it, tag, stat){
 	  if(it && !has(it = stat ? it : it.prototype, TAG))def(it, TAG, {configurable: true, value: tag});
 	};
 
 /***/ },
-/* 71 */
+/* 76 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var store      = __webpack_require__(66)('wks')
-	  , uid        = __webpack_require__(67)
+	var store      = __webpack_require__(52)('wks')
+	  , uid        = __webpack_require__(53)
 	  , Symbol     = __webpack_require__(16).Symbol
 	  , USE_SYMBOL = typeof Symbol == 'function';
 
@@ -37487,13 +37734,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	$exports.store = store;
 
 /***/ },
-/* 72 */
+/* 77 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// 19.1.2.9 / 15.2.3.2 Object.getPrototypeOf(O)
-	var has         = __webpack_require__(52)
-	  , toObject    = __webpack_require__(73)
-	  , IE_PROTO    = __webpack_require__(65)('IE_PROTO')
+	var has         = __webpack_require__(43)
+	  , toObject    = __webpack_require__(39)
+	  , IE_PROTO    = __webpack_require__(51)('IE_PROTO')
 	  , ObjectProto = Object.prototype;
 
 	module.exports = Object.getPrototypeOf || function(O){
@@ -37505,24 +37752,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 73 */
+/* 78 */
 /***/ function(module, exports, __webpack_require__) {
 
-	// 7.1.13 ToObject(argument)
-	var defined = __webpack_require__(48);
-	module.exports = function(it){
-	  return Object(defined(it));
-	};
-
-/***/ },
-/* 74 */
-/***/ function(module, exports, __webpack_require__) {
-
-	__webpack_require__(75);
+	__webpack_require__(79);
 	var global        = __webpack_require__(16)
 	  , hide          = __webpack_require__(20)
-	  , Iterators     = __webpack_require__(53)
-	  , TO_STRING_TAG = __webpack_require__(71)('toStringTag');
+	  , Iterators     = __webpack_require__(70)
+	  , TO_STRING_TAG = __webpack_require__(76)('toStringTag');
 
 	for(var collections = ['NodeList', 'DOMTokenList', 'MediaList', 'StyleSheetList', 'CSSRuleList'], i = 0; i < 5; i++){
 	  var NAME       = collections[i]
@@ -37533,20 +37770,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ },
-/* 75 */
+/* 79 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var addToUnscopables = __webpack_require__(76)
-	  , step             = __webpack_require__(77)
-	  , Iterators        = __webpack_require__(53)
-	  , toIObject        = __webpack_require__(59);
+	var addToUnscopables = __webpack_require__(80)
+	  , step             = __webpack_require__(81)
+	  , Iterators        = __webpack_require__(70)
+	  , toIObject        = __webpack_require__(44);
 
 	// 22.1.3.4 Array.prototype.entries()
 	// 22.1.3.13 Array.prototype.keys()
 	// 22.1.3.29 Array.prototype.values()
 	// 22.1.3.30 Array.prototype[@@iterator]()
-	module.exports = __webpack_require__(49)(Array, 'Array', function(iterated, kind){
+	module.exports = __webpack_require__(67)(Array, 'Array', function(iterated, kind){
 	  this._t = toIObject(iterated); // target
 	  this._i = 0;                   // next index
 	  this._k = kind;                // kind
@@ -37572,13 +37809,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	addToUnscopables('entries');
 
 /***/ },
-/* 76 */
+/* 80 */
 /***/ function(module, exports) {
 
 	module.exports = function(){ /* empty */ };
 
 /***/ },
-/* 77 */
+/* 81 */
 /***/ function(module, exports) {
 
 	module.exports = function(done, value){
@@ -37586,22 +37823,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 78 */
+/* 82 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var LIBRARY            = __webpack_require__(50)
+	var LIBRARY            = __webpack_require__(68)
 	  , global             = __webpack_require__(16)
 	  , ctx                = __webpack_require__(18)
-	  , classof            = __webpack_require__(79)
+	  , classof            = __webpack_require__(83)
 	  , $export            = __webpack_require__(15)
 	  , isObject           = __webpack_require__(23)
 	  , aFunction          = __webpack_require__(19)
-	  , anInstance         = __webpack_require__(80)
-	  , forOf              = __webpack_require__(81)
-	  , speciesConstructor = __webpack_require__(85)
-	  , task               = __webpack_require__(86).set
-	  , microtask          = __webpack_require__(88)()
+	  , anInstance         = __webpack_require__(84)
+	  , forOf              = __webpack_require__(85)
+	  , speciesConstructor = __webpack_require__(89)
+	  , task               = __webpack_require__(90).set
+	  , microtask          = __webpack_require__(92)()
 	  , PROMISE            = 'Promise'
 	  , TypeError          = global.TypeError
 	  , process            = global.process
@@ -37615,7 +37852,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  try {
 	    // correct subclassing with @@species support
 	    var promise     = $Promise.resolve(1)
-	      , FakePromise = (promise.constructor = {})[__webpack_require__(71)('species')] = function(exec){ exec(empty, empty); };
+	      , FakePromise = (promise.constructor = {})[__webpack_require__(76)('species')] = function(exec){ exec(empty, empty); };
 	    // unhandled rejections tracking support, NodeJS Promise without it fails @@species test
 	    return (isNode || typeof PromiseRejectionEvent == 'function') && promise.then(empty) instanceof FakePromise;
 	  } catch(e){ /* empty */ }
@@ -37793,7 +38030,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this._h = 0;              // <- rejection state, 0 - default, 1 - handled, 2 - unhandled
 	    this._n = false;          // <- notify
 	  };
-	  Internal.prototype = __webpack_require__(89)($Promise.prototype, {
+	  Internal.prototype = __webpack_require__(93)($Promise.prototype, {
 	    // 25.4.5.3 Promise.prototype.then(onFulfilled, onRejected)
 	    then: function then(onFulfilled, onRejected){
 	      var reaction    = newPromiseCapability(speciesConstructor(this, $Promise));
@@ -37819,8 +38056,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 	$export($export.G + $export.W + $export.F * !USE_NATIVE, {Promise: $Promise});
-	__webpack_require__(70)($Promise, PROMISE);
-	__webpack_require__(90)(PROMISE);
+	__webpack_require__(75)($Promise, PROMISE);
+	__webpack_require__(94)(PROMISE);
 	Wrapper = __webpack_require__(17)[PROMISE];
 
 	// statics
@@ -37844,7 +38081,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return capability.promise;
 	  }
 	});
-	$export($export.S + $export.F * !(USE_NATIVE && __webpack_require__(91)(function(iter){
+	$export($export.S + $export.F * !(USE_NATIVE && __webpack_require__(95)(function(iter){
 	  $Promise.all(iter)['catch'](empty);
 	})), PROMISE, {
 	  // 25.4.4.1 Promise.all(iterable)
@@ -37890,12 +38127,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	});
 
 /***/ },
-/* 79 */
+/* 83 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// getting tag from 19.1.3.6 Object.prototype.toString()
-	var cof = __webpack_require__(61)
-	  , TAG = __webpack_require__(71)('toStringTag')
+	var cof = __webpack_require__(46)
+	  , TAG = __webpack_require__(76)('toStringTag')
 	  // ES3 wrong here
 	  , ARG = cof(function(){ return arguments; }()) == 'Arguments';
 
@@ -37918,7 +38155,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 80 */
+/* 84 */
 /***/ function(module, exports) {
 
 	module.exports = function(it, Constructor, name, forbiddenField){
@@ -37928,15 +38165,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 81 */
+/* 85 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var ctx         = __webpack_require__(18)
-	  , call        = __webpack_require__(82)
-	  , isArrayIter = __webpack_require__(83)
+	  , call        = __webpack_require__(86)
+	  , isArrayIter = __webpack_require__(87)
 	  , anObject    = __webpack_require__(22)
-	  , toLength    = __webpack_require__(63)
-	  , getIterFn   = __webpack_require__(84)
+	  , toLength    = __webpack_require__(48)
+	  , getIterFn   = __webpack_require__(88)
 	  , BREAK       = {}
 	  , RETURN      = {};
 	var exports = module.exports = function(iterable, entries, fn, that, ITERATOR){
@@ -37958,7 +38195,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.RETURN = RETURN;
 
 /***/ },
-/* 82 */
+/* 86 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// call something on iterator step with safe closing on error
@@ -37975,12 +38212,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 83 */
+/* 87 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// check on default Array iterator
-	var Iterators  = __webpack_require__(53)
-	  , ITERATOR   = __webpack_require__(71)('iterator')
+	var Iterators  = __webpack_require__(70)
+	  , ITERATOR   = __webpack_require__(76)('iterator')
 	  , ArrayProto = Array.prototype;
 
 	module.exports = function(it){
@@ -37988,12 +38225,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 84 */
+/* 88 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var classof   = __webpack_require__(79)
-	  , ITERATOR  = __webpack_require__(71)('iterator')
-	  , Iterators = __webpack_require__(53);
+	var classof   = __webpack_require__(83)
+	  , ITERATOR  = __webpack_require__(76)('iterator')
+	  , Iterators = __webpack_require__(70);
 	module.exports = __webpack_require__(17).getIteratorMethod = function(it){
 	  if(it != undefined)return it[ITERATOR]
 	    || it['@@iterator']
@@ -38001,25 +38238,25 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 85 */
+/* 89 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// 7.3.20 SpeciesConstructor(O, defaultConstructor)
 	var anObject  = __webpack_require__(22)
 	  , aFunction = __webpack_require__(19)
-	  , SPECIES   = __webpack_require__(71)('species');
+	  , SPECIES   = __webpack_require__(76)('species');
 	module.exports = function(O, D){
 	  var C = anObject(O).constructor, S;
 	  return C === undefined || (S = anObject(C)[SPECIES]) == undefined ? D : aFunction(S);
 	};
 
 /***/ },
-/* 86 */
+/* 90 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var ctx                = __webpack_require__(18)
-	  , invoke             = __webpack_require__(87)
-	  , html               = __webpack_require__(69)
+	  , invoke             = __webpack_require__(91)
+	  , html               = __webpack_require__(74)
 	  , cel                = __webpack_require__(27)
 	  , global             = __webpack_require__(16)
 	  , process            = global.process
@@ -38056,7 +38293,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    delete queue[id];
 	  };
 	  // Node.js 0.8-
-	  if(__webpack_require__(61)(process) == 'process'){
+	  if(__webpack_require__(46)(process) == 'process'){
 	    defer = function(id){
 	      process.nextTick(ctx(run, id, 1));
 	    };
@@ -38094,7 +38331,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 87 */
+/* 91 */
 /***/ function(module, exports) {
 
 	// fast apply, http://jsperf.lnkit.com/fast-apply/5
@@ -38115,15 +38352,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 88 */
+/* 92 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var global    = __webpack_require__(16)
-	  , macrotask = __webpack_require__(86).set
+	  , macrotask = __webpack_require__(90).set
 	  , Observer  = global.MutationObserver || global.WebKitMutationObserver
 	  , process   = global.process
 	  , Promise   = global.Promise
-	  , isNode    = __webpack_require__(61)(process) == 'process';
+	  , isNode    = __webpack_require__(46)(process) == 'process';
 
 	module.exports = function(){
 	  var head, last, notify;
@@ -38188,7 +38425,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 89 */
+/* 93 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var hide = __webpack_require__(20);
@@ -38200,7 +38437,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 90 */
+/* 94 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -38208,7 +38445,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  , core        = __webpack_require__(17)
 	  , dP          = __webpack_require__(21)
 	  , DESCRIPTORS = __webpack_require__(25)
-	  , SPECIES     = __webpack_require__(71)('species');
+	  , SPECIES     = __webpack_require__(76)('species');
 
 	module.exports = function(KEY){
 	  var C = typeof core[KEY] == 'function' ? core[KEY] : global[KEY];
@@ -38219,10 +38456,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 91 */
+/* 95 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var ITERATOR     = __webpack_require__(71)('iterator')
+	var ITERATOR     = __webpack_require__(76)('iterator')
 	  , SAFE_CLOSING = false;
 
 	try {
@@ -38245,7 +38482,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 92 */
+/* 96 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -38355,7 +38592,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = SailPlayHistory.name;
 
 /***/ },
-/* 93 */
+/* 97 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -38365,7 +38602,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	});
 	exports.SailPlayActions = undefined;
 
-	var _keys = __webpack_require__(94);
+	var _keys = __webpack_require__(36);
 
 	var _keys2 = _interopRequireDefault(_keys);
 
@@ -38688,48 +38925,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	});
 
 	exports.default = SailPlayActions.name;
-
-/***/ },
-/* 94 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = { "default": __webpack_require__(95), __esModule: true };
-
-/***/ },
-/* 95 */
-/***/ function(module, exports, __webpack_require__) {
-
-	__webpack_require__(96);
-	module.exports = __webpack_require__(17).Object.keys;
-
-/***/ },
-/* 96 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// 19.1.2.14 Object.keys(O)
-	var toObject = __webpack_require__(73)
-	  , $keys    = __webpack_require__(57);
-
-	__webpack_require__(97)('keys', function(){
-	  return function keys(it){
-	    return $keys(toObject(it));
-	  };
-	});
-
-/***/ },
-/* 97 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// most Object methods by ES6 should accept primitives
-	var $export = __webpack_require__(15)
-	  , core    = __webpack_require__(17)
-	  , fails   = __webpack_require__(26);
-	module.exports = function(KEY, exec){
-	  var fn  = (core.Object || {})[KEY] || Object[KEY]
-	    , exp = {};
-	  exp[KEY] = exec(fn);
-	  $export($export.S + $export.F * fails(function(){ fn(1); }), 'Object', exp);
-	};
 
 /***/ },
 /* 98 */
@@ -39068,7 +39263,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    SailPlayApi.call('load.actions.list');
 	    SailPlayApi.call('load.actions.custom.list');
 	    SailPlayApi.call('load.gifts.list');
-	    SailPlayApi.call('leaderboard.load');
+	    SailPlayApi.call('leaderboard.load', MAGIC_CONFIG.data.leaderboard_data);
 	  }
 
 	  //when bad login
@@ -39096,7 +39291,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    SailPlayApi.call('load.user.history');
 	    SailPlayApi.call('tags.exist', { tags: TAGS });
 	    SailPlayApi.call('load.gifts.list');
-	    SailPlayApi.call('leaderboard.load');
+	    SailPlayApi.call('leaderboard.load', MAGIC_CONFIG.data.leaderboard_data);
 	  });
 
 	  //unfortunately, we need to update actions list after perform
@@ -39123,7 +39318,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    SailPlayApi.call('load.user.info', { all: 1, purchases: 1 });
 	    SailPlayApi.call('load.user.history');
-	    SailPlayApi.call('leaderboard.load');
+	    SailPlayApi.call('leaderboard.load', MAGIC_CONFIG.data.leaderboard_data);
 
 	    $rootScope.$apply();
 	  });
@@ -42046,8 +42241,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/less-loader/index.js!./layout.less", function() {
-				var newContent = require("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/less-loader/index.js!./layout.less");
+			module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/index.js!./layout.less", function() {
+				var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/index.js!./layout.less");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -42143,7 +42338,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			};
 		},
 		isOldIE = memoize(function() {
-			return /msie [6-9]\b/.test(window.navigator.userAgent.toLowerCase());
+			return /msie [6-9]\b/.test(self.navigator.userAgent.toLowerCase());
 		}),
 		getHeadElement = memoize(function () {
 			return document.head || document.getElementsByTagName("head")[0];
@@ -42401,7 +42596,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var Widget = exports.Widget = _angular2.default.module('magic.tools.widget', []).directive('widget', function ($compile, MagicWidget, $injector) {
+	var Widget = exports.Widget = _angular2.default.module('magic.tools.widget', []).directive('widget', function ($compile, MagicWidget, $injector, SailPlayApi) {
 	  return {
 	    restrict: 'E',
 	    replace: true,
@@ -42410,7 +42605,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    },
 	    template: _widget2.default,
 	    link: function link(scope, elm, attrs) {
-
 	      var widget_wrapper = _angular2.default.element(elm[0].querySelector('[data-widget-wrapper]'));
 	      console.dir(widget_wrapper);
 
@@ -42428,6 +42622,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	        var widget_scope = scope.$new();
 
+	        widget.user = SailPlayApi.data('load.user.info');
 	        widget_scope.widget = widget;
 
 	        WIDGET_CONFIG.controller.$inject = WIDGET_CONFIG.inject || [];
@@ -42476,7 +42671,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 117 */
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"spm_tools_widget {{ widget.id }}\" data-ng-show=\"widget.enabled\">\n  <widget-style data-widget=\"widget\"></widget-style>\n  <div data-widget-wrapper class=\"clearfix\"></div>\n</div>";
+	module.exports = "<div class=\"spm_tools_widget {{ widget.id }}\" data-ng-show=\"widget.enabled\" data-ng-class=\"{'no-user': !widget.user()}\">\n  <div>{{ widget.counter }}</div>\n  <widget-style data-widget=\"widget\"></widget-style>\n  <div data-widget-wrapper class=\"clearfix\"></div>\n</div>";
 
 /***/ },
 /* 118 */
@@ -42494,8 +42689,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/less-loader/index.js!./widget.less", function() {
-				var newContent = require("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/less-loader/index.js!./widget.less");
+			module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/index.js!./widget.less", function() {
+				var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/index.js!./widget.less");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -42566,6 +42761,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	        scope.data = data;
 	        scope.show_notifier = true;
+	        scope.$digest();
 	        console.log('notifier: ' + data.body);
 	      });
 
@@ -42604,8 +42800,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/less-loader/index.js!./notifier.less", function() {
-				var newContent = require("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/less-loader/index.js!./notifier.less");
+			module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/index.js!./notifier.less", function() {
+				var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/index.js!./notifier.less");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -42715,8 +42911,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/less-loader/index.js!./modal.less", function() {
-				var newContent = require("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/less-loader/index.js!./modal.less");
+			module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/index.js!./modal.less", function() {
+				var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/index.js!./modal.less");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -42800,6 +42996,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    },
 	    link: function link(scope) {
 
+	      console.log($rootScope);
 	      scope.date = $rootScope.MAGIC_CONFIG.tools.date;
 	      scope.days = dateService.days;
 	      scope.years = dateService.years;
@@ -42839,8 +43036,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./theme.less", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./theme.less");
+			module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./theme.less", function() {
+				var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./theme.less");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -42933,16 +43130,14 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  id: 'actions',
 	  template: _actions2.default,
-	  inject: ['tools', 'SailPlayApi', 'SailPlay'],
-	  controller: function controller(tools, SailPlayApi, SailPlay) {
+	  inject: ['tools', 'SailPlayApi', 'SailPlay', 'MAGIC_CONFIG'],
+	  controller: function controller(tools, SailPlayApi, SailPlay, MAGIC_CONFIG) {
 
 	    return function (scope, elm, attrs) {
 
 	      // scope._tools = MAGIC_CONFIG.tools;
-
 	      scope.action_selected = false;
 	      scope.action_custom_selected = false;
-
 	      scope.action_select = function (action) {
 
 	        if (!SailPlayApi.data('load.user.info')()) return SailPlay.authorize('remote');
@@ -42992,8 +43187,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./actions.less", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./actions.less");
+			module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./actions.less", function() {
+				var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./actions.less");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -43022,21 +43217,186 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
+	var _assign = __webpack_require__(145);
+
+	var _assign2 = _interopRequireDefault(_assign);
+
 	var _widget = __webpack_require__(102);
 
-	var _badges = __webpack_require__(145);
+	var _addLead = __webpack_require__(151);
+
+	var _addLead2 = _interopRequireDefault(_addLead);
+
+	__webpack_require__(152);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	(0, _widget.WidgetRegister)({
+	  id: 'add-lead',
+	  template: _addLead2.default,
+	  inject: ['SailPlayApi', 'SailPlay', 'MAGIC_CONFIG', '$rootScope'],
+	  controller: function controller(SailPlayApi, SailPlay, MAGIC_CONFIG, $rootScope) {
+	    return function (scope, elm, attrs) {
+	      scope.submit = function (fields) {
+	        var fields_obj = fields.reduce(function (obj, field) {
+	          obj[field.name] = field.value;
+	          return obj;
+	        }, {});
+	        SailPlay.send("referral.add", (0, _assign2.default)({}, { user_data: fields_obj }, { tag_type_2: MAGIC_CONFIG.data.tag_type, tag_type_3: MAGIC_CONFIG.data.invite_tag_type }), function (res) {
+	          if (res.status == 'ok') {
+	            scope.startNewLead = false;
+	            fields.map(function (field) {
+	              field.value = '';return field;
+	            });
+	            scope.$digest();
+	          } else {
+	            $rootScope.$broadcast('notifier:notify', { body: res.message });
+	          }
+	        });
+	      };
+	    };
+	  }
+	});
+
+/***/ },
+/* 145 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = { "default": __webpack_require__(146), __esModule: true };
+
+/***/ },
+/* 146 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(147);
+	module.exports = __webpack_require__(17).Object.assign;
+
+/***/ },
+/* 147 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// 19.1.3.1 Object.assign(target, source)
+	var $export = __webpack_require__(15);
+
+	$export($export.S + $export.F, 'Object', {assign: __webpack_require__(148)});
+
+/***/ },
+/* 148 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	// 19.1.2.1 Object.assign(target, source, ...)
+	var getKeys  = __webpack_require__(41)
+	  , gOPS     = __webpack_require__(149)
+	  , pIE      = __webpack_require__(150)
+	  , toObject = __webpack_require__(39)
+	  , IObject  = __webpack_require__(45)
+	  , $assign  = Object.assign;
+
+	// should work with symbols and should have deterministic property order (V8 bug)
+	module.exports = !$assign || __webpack_require__(26)(function(){
+	  var A = {}
+	    , B = {}
+	    , S = Symbol()
+	    , K = 'abcdefghijklmnopqrst';
+	  A[S] = 7;
+	  K.split('').forEach(function(k){ B[k] = k; });
+	  return $assign({}, A)[S] != 7 || Object.keys($assign({}, B)).join('') != K;
+	}) ? function assign(target, source){ // eslint-disable-line no-unused-vars
+	  var T     = toObject(target)
+	    , aLen  = arguments.length
+	    , index = 1
+	    , getSymbols = gOPS.f
+	    , isEnum     = pIE.f;
+	  while(aLen > index){
+	    var S      = IObject(arguments[index++])
+	      , keys   = getSymbols ? getKeys(S).concat(getSymbols(S)) : getKeys(S)
+	      , length = keys.length
+	      , j      = 0
+	      , key;
+	    while(length > j)if(isEnum.call(S, key = keys[j++]))T[key] = S[key];
+	  } return T;
+	} : $assign;
+
+/***/ },
+/* 149 */
+/***/ function(module, exports) {
+
+	exports.f = Object.getOwnPropertySymbols;
+
+/***/ },
+/* 150 */
+/***/ function(module, exports) {
+
+	exports.f = {}.propertyIsEnumerable;
+
+/***/ },
+/* 151 */
+/***/ function(module, exports) {
+
+	module.exports = "<div class=\"clearfix\">\n  <div class=\"container\">\n    <div class=\"header\">{{ widget.texts.header }}</div>\n    <div class=\"sub-header\">{{ widget.texts.subheader }}</div>\n    <div class=\"action\" data-ng-click=\"startNewLead = true\">\n      <div class=\"icon\"></div>\n      <div class=\"text\">\n        <div class=\"name\">{{ widget.texts.name }}</div>\n        <div class=\"points\" data-ng-bind=\"(widget.options.points) + ' points'\"></div>\n      </div>\n    </div>\n  </div>\n  <magic-modal class=\"add-lead-form\" data-ng-cloak data-show=\"startNewLead\">\n    <div class=\"mb_popup mb_popup_prof\">\n      <div class=\"mb_popup_top\">\n        <span>{{ widget.texts.form_header }}</span>\n      </div>\n      <form name=\"fill_profile_form\" class=\"mb_popup_main mb_popup_main_mt\" data-ng-submit=\"submit(widget.form_fields)\">\n        <div class=\"form_field\" data-ng-repeat=\"field in widget.form_fields\" data-ng-switch=\"field.input\">\n          <div data-ng-switch-when=\"image\" class=\"avatar_upload clearfix\">\n            <img width=\"160px\" data-ng-src=\"{{ (field.value | sailplay_pic) || 'http://saike.ru/sailplay-magic/dist/img/profile/avatar_default.png'}}\"\n              alt=\"\">\n          </div>\n          <div data-ng-switch-when=\"text\" class=\"clearfix\">\n            <label class=\"form_label\">{{ field.label }}</label>\n            <input class=\"form_input\" type=\"text\" placeholder=\"{{ field.placeholder }}\" data-ng-model=\"field.value\">\n          </div>\n          <div data-ng-switch-when=\"date\" class=\"clearfix\">\n            <label class=\"form_label\">{{ field.label }}</label>\n            <date-picker data-model=\"field.value\"></date-picker>\n          </div>\n          <div data-ng-switch-when=\"select\" class=\"clearfix\">\n            <label class=\"form_label\">{{ field.label }}</label>\n            <div class=\"magic_select form_input\">\n              <select data-ng-model=\"field.value\" ng-init=\"field.value = field.data[0].value\" data-ng-options=\"item.value as item.text for item in field.data\"></select>\n            </div>\n          </div>\n          <div data-ng-switch-when=\"phone\" class=\"clearfix\">\n            <label class=\"form_label\">{{ field.label }}</label>\n            <input class=\"form_input\" type=\"text\" data-model-view-value=\"true\" data-ui-mask=\"{{ field.placeholder }}\" data-ng-model=\"field.value\">\n          </div>\n          <div data-ng-switch-when=\"email\" class=\"clearfix\">\n            <label class=\"form_label\">{{ field.label }}</label>\n            <input class=\"form_input\" type=\"email\" placeholder=\"{{ field.placeholder }}\" data-ng-model=\"field.value\">\n          </div>\n        </div>\n        <div class=\"answ_left\">\n          <button type=\"submit\" class=\"sp_btn button_primary\">{{ widget.texts.submit }}</button>\n        </div>\n        <div class=\"answ_right\">\n          <button type=\"button\" class=\"sp_btn button_primary\" data-ng-click=\"$parent.$parent.startNewLead = false\">Back</button>\n        </div>\n      </form>\n    </div>\n  </magic-modal>\n</div>";
+
+/***/ },
+/* 152 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(153);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(115)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./add-lead.less", function() {
+				var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./add-lead.less");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 153 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(114)();
+	// imports
+
+
+	// module
+	exports.push([module.id, ".add-lead .header {\n  font-size: 42px;\n  text-align: center;\n  margin-top: 80px;\n}\n.add-lead .sub-header {\n  font-size: 14px;\n  text-align: center;\n  margin-bottom: 80px;\n}\n.add-lead .action {\n  width: 240px;\n  height: 104px;\n  border: 2px solid red;\n  border-radius: 3px;\n  margin: 0 auto;\n  box-sizing: border-box;\n  padding: 15px;\n  margin-bottom: 80px;\n  cursor: pointer;\n  transition: background .25s;\n  -webkit-trasition: background .25s;\n  position: relative;\n}\n.add-lead .action:after {\n  content: 'SUBMIT';\n  color: white;\n  width: 120px;\n  height: 40px;\n  left: 50%;\n  top: 50%;\n  margin-left: -60px;\n  margin-top: -20px;\n  display: block;\n  line-height: 40px;\n  position: absolute;\n  text-align: center;\n  background: red;\n  opacity: 0;\n  z-index: 2;\n  transition: opacity .25s;\n  -webkit-transition: opacity .25s;\n}\n.add-lead .action:before {\n  position: absolute;\n  left: 0;\n  top: 0;\n  width: 100%;\n  height: 100%;\n  background: white;\n  opacity: 0;\n  z-index: 1;\n  transition: opacity .25s;\n  -webkit-transition: opacity .25s;\n}\n.add-lead .action:hover:after {\n  opacity: 1;\n}\n.add-lead .action:hover:before {\n  opacity: .8;\n}\n.add-lead .action .icon {\n  float: left;\n  width: 30px;\n  height: 30px;\n  background-color: #f1f1f1;\n  border-radius: 50%;\n  position: relative;\n  padding: 20px;\n}\n.add-lead .action .text {\n  float: left;\n  margin-left: 10%;\n  margin-top: 8%;\n}\n.add-lead .action .text .name {\n  color: #3e699e;\n  font-weight: bold;\n}\n.add-lead .action .text .points {\n  color: red;\n  font-size: 14px;\n}\n.add-lead .add-lead-form .answ_left {\n  float: left;\n}\n.add-lead .add-lead-form .answ_right {\n  float: right;\n  margin-right: 0;\n}\n", ""]);
+
+	// exports
+
+
+/***/ },
+/* 154 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _widget = __webpack_require__(102);
+
+	var _badges = __webpack_require__(155);
 
 	var _badges2 = _interopRequireDefault(_badges);
 
-	var _badgesBadge = __webpack_require__(146);
+	var _badgesBadge = __webpack_require__(156);
 
 	var _badgesBadge2 = _interopRequireDefault(_badgesBadge);
 
-	var _badgesLine = __webpack_require__(147);
+	var _badgesLine = __webpack_require__(157);
 
 	var _badgesLine2 = _interopRequireDefault(_badgesLine);
 
-	__webpack_require__(148);
+	__webpack_require__(158);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -43100,31 +43460,31 @@ return /******/ (function(modules) { // webpackBootstrap
 	}]);
 
 /***/ },
-/* 145 */
+/* 155 */
 /***/ function(module, exports) {
 
 	module.exports = "<div class=\"widget {{ widget.id }} clearfix\">\n\n  <div class=\"container clearfix\" data-ng-show=\"widget.enabled\" data-ng-cloak>\n\n    <h3 class=\"bon_header\">\n      <span class=\"header\">{{ widget.texts.header }}</span>\n    </h3>\n    <h4 class=\"bon_sub_header\">\n      <span class=\"caption\">{{ widget.texts.caption }}</span>\n    </h4>\n\n    <div data-sailplay-badges class=\"badge_lines_container clearfix\">\n\n      <sailplay-magic-badge-line class=\"multi_level\" data-ng-repeat=\"line in sailplay.badges.list().multilevel_badges\" data-line=\"line\" data-config=\"widget\"></sailplay-magic-badge-line>\n\n      <sailplay-magic-badge-line class=\"one_level\" data-line=\"sailplay.badges.list().one_level_badges\" data-type=\"one_level\" data-config=\"widget\"></sailplay-magic-badge-line>\n\n    </div>\n\n\n  </div>\n\n</div>";
 
 /***/ },
-/* 146 */
+/* 156 */
 /***/ function(module, exports) {
 
 	module.exports = "<div class=\"badge\">\n  <div class=\"badge_iner\" data-ng-click=\"on_click(badge)\">\n    <div class=\"badge_pic\">\n      <img data-ng-src=\"{{ (badge.is_received ? badge.thumbs.url_250x250 : badge.thumbs.url_gs) | sailplay_pic }}\" alt=\"{{ badge.name }}\">\n    </div>\n    <span class=\"badge_name\" data-ng-bind=\"badge.name\"></span>\n    <!--<span class=\"bon_tem_info badge_points\" data-ng-bind=\"(badge.points | number) + ' ' + (gift.points | sailplay_pluralize:_tools.points.texts.pluralize)\"></span>-->\n  </div>\n  <div class=\"badge_arrow\">\n\n  </div>\n</div>";
 
 /***/ },
-/* 147 */
+/* 157 */
 /***/ function(module, exports) {
 
 	module.exports = "<div class=\"clearfix\">\n  <div class=\"bon_item_main clearfix\" data-ng-show=\"line.length\">\n\n    <div class=\"bon_slide_cat_item_wrap\" data-magic-gallery>\n      <div class=\"bon_slide_cat_item\">\n\n        <div class=\"bon_item_line\" data-ng-style=\"{left : left}\">\n\n          <sailplay-magic-badge data-magic-slide data-badge=\"badge\" data-on-click=\"badge_select(badge);\" data-ng-repeat=\"badge in line\" data-ng-class=\"{ last: $last }\"></sailplay-magic-badge>\n\n        </div>\n\n      </div>\n\n      <!--<a href=\"#\" class=\"arr_left arr_left slider_arrow_left\" data-ng-click=\"$event.preventDefault(); set_position('left');\" data-ng-show=\"show_left\"></a>-->\n      <!--<a href=\"#\" class=\"arr_right arr_right slider_arrow_right\" data-ng-click=\"$event.preventDefault(); set_position('right');\" data-ng-show=\"show_right\"></a>-->\n\n    </div>\n\n  </div>\n\n  <magic-modal class=\"modal_badge_selected\" data-ng-cloak data-show=\"badge_selected\">\n\n    <div>\n\n      <div class=\"modal_badge_image\">\n        <img class=\"gift_more_img\" data-ng-src=\"{{ badge_selected.thumbs.url_250x250 | sailplay_pic }}\"\n             alt=\"{{ badge_selected.name }}\">\n      </div>\n\n      <div class=\"modal_badge_tools\">\n\n        <p>\n          <span class=\"modal_badge_name\" data-ng-bind=\"badge_selected.name\"></span>\n        </p>\n\n        <!--<p style=\"margin-top: 10px;\">-->\n          <!--<span class=\"modal_badge_points\" data-ng-bind=\"(action_selected.points | number) + ' ' + (selected_gift.points | sailplay_pluralize:_tools.points.texts.pluralize)\"></span>-->\n        <!--</p>-->\n\n        <p style=\"margin-top: 10px;\">\n          <span class=\"modal_badge_description\" data-ng-bind=\"badge_selected.descr\"></span>\n        </p>\n\n        <p class=\"modal_badge_buttons\">\n          <span class=\"badge_share_button fb_icon\" data-ng-click=\"badge_share('fb', badge_selected)\">\n            {{ _config.texts.share_fb }}\n          </span>\n          <span class=\"badge_share_button tw_icon\" style=\"margin-right: 20px;\" data-ng-click=\"badge_share('tw', badge_selected)\">\n            {{ _config.texts.share_tw }}\n          </span>\n          <span class=\"sp_btn button_primary\" data-ng-click=\"badge_select(false);\">{{ _tools.buttons.texts.close }}</span>\n        </p>\n\n      </div>\n\n    </div>\n\n  </magic-modal>\n\n</div>";
 
 /***/ },
-/* 148 */
+/* 158 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(149);
+	var content = __webpack_require__(159);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(115)(content, {});
@@ -43133,8 +43493,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./badges.less", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./badges.less");
+			module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./badges.less", function() {
+				var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./badges.less");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -43144,7 +43504,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ },
-/* 149 */
+/* 159 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(114)();
@@ -43158,18 +43518,18 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 150 */
+/* 160 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var _widget = __webpack_require__(102);
 
-	var _banner = __webpack_require__(151);
+	var _banner = __webpack_require__(161);
 
 	var _banner2 = _interopRequireDefault(_banner);
 
-	__webpack_require__(152);
+	__webpack_require__(162);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -43182,19 +43542,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	});
 
 /***/ },
-/* 151 */
+/* 161 */
 /***/ function(module, exports) {
 
 	module.exports = "<div class=\"clearfix\">\n  <div class=\"bon_choice_main container block_images\" data-ng-cloak>\n    <img class=\"block_images__item\" data-ng-repeat=\"(key, value) in widget.images\" data-ng-src=\"{{ value }}\" alt=\"{{ key }}\">\n  </div>\n</div>\n";
 
 /***/ },
-/* 152 */
+/* 162 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(153);
+	var content = __webpack_require__(163);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(115)(content, {});
@@ -43203,8 +43563,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./banner.less", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./banner.less");
+			module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./banner.less", function() {
+				var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./banner.less");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -43214,7 +43574,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ },
-/* 153 */
+/* 163 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(114)();
@@ -43228,18 +43588,18 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 154 */
+/* 164 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var _widget = __webpack_require__(102);
 
-	var _cardQuests = __webpack_require__(155);
+	var _cardQuests = __webpack_require__(165);
 
 	var _cardQuests2 = _interopRequireDefault(_cardQuests);
 
-	__webpack_require__(156);
+	__webpack_require__(166);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -43285,19 +43645,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	});
 
 /***/ },
-/* 155 */
+/* 165 */
 /***/ function(module, exports) {
 
 	module.exports = "<div class=\"container clearfix\" id=\"magic_actions\">\n\n  <div class=\"card_quests\">\n\n    <h3 class=\"card_quests_header\">\n      <span class=\"header\">{{ widget.texts.header }}</span>\n    </h3>\n\n    <h4 class=\"card_quests_caption\">\n      <span class=\"caption\">{{ widget.texts.caption }}</span>\n    </h4>\n\n    <div data-sailplay-actions class=\"card_quests_list clearfix\">\n\n      <div class=\"spm_row clearfix\">\n\n          <div class=\"spm_col quest_card_container\" data-ng-repeat=\"action in actions().actions\">\n\n            <div class=\"quest_card\" title=\"{{ action_data(action).name }}\">\n\n              <div class=\"quest_card_image\">\n                <img data-ng-src=\"{{ action_data(action).pic | sailplay_pic }}\" alt=\"\">\n              </div>\n\n              <div class=\"quest_card_tools\">\n\n                <div class=\"quest_card_info\">\n                  <span class=\"quest_card_name ellipsis\" data-ng-bind=\"action_data(action).name\"></span>\n                  <span class=\"quest_card_points ellipsis\" data-ng-show=\"action.points\" data-ng-bind=\"((action.points || 0) | number) + ' ' + (action.points | sailplay_pluralize:( 'points.texts.pluralize' | tools ))\"></span>\n                </div>\n\n                <div class=\"quest_card_buttons\">\n                  <a class=\"button_primary\" data-ng-click=\"action_select(action)\">{{ action_data(action).button_text }}</a>\n                </div>\n\n              </div>\n\n            </div>\n\n          </div>\n\n          <div class=\"spm_col quest_card_container\" data-ng-repeat=\"action in actions_custom()\">\n\n            <div class=\"quest_card\" title=\"{{ action.name }}\">\n\n              <div class=\"quest_card_image\">\n                <img data-ng-src=\"{{ action.icon | sailplay_pic }}\" alt=\"\">\n              </div>\n\n              <div class=\"quest_card_tools\">\n\n                <div class=\"quest_card_info\">\n                  <span class=\"quest_card_name ellipsis\" data-ng-bind=\"action.name\"></span>\n                  <span class=\"quest_card_points ellipsis\" data-ng-show=\"action.points\" data-ng-bind=\"((action.points || 0) | number) + ' ' + (action.points | sailplay_pluralize:( 'points.texts.pluralize' | tools ))\"></span>\n                </div>\n\n                <div class=\"quest_card_buttons\">\n                  <a class=\"button_primary\" data-ng-click=\"action_custom_select(action)\">{{ action.button_text }}</a>\n                </div>\n\n              </div>\n\n            </div>\n\n          </div>\n\n        </div>\n\n\n      <magic-modal class=\"actions_selected_modal\" data-ng-cloak data-show=\"$parent.action_selected\">\n\n        <div>\n\n          <div class=\"action_image\">\n            <img class=\"gift_more_img\" data-ng-src=\"{{ action_data(action_selected).pic | sailplay_pic }}\"\n                 alt=\"{{ action_data(action_selected).name }}\">\n          </div>\n\n          <div class=\"action_tools\">\n\n            <p>\n              <span class=\"modal_action_name\" data-ng-bind=\"action_data(action_selected).name\"></span>\n            </p>\n\n            <p style=\"margin-top: 10px;\">\n              <span class=\"modal_action_points\" data-ng-bind=\"(action_selected.points | number) + ' ' + (selected_gift.points | sailplay_pluralize:( 'points.texts.pluralize' | tools ))\"></span>\n            </p>\n\n            <p style=\"margin-top: 10px;\">\n              <span class=\"modal_action_description\" data-ng-bind=\"action_data(action_selected).description\"></span>\n            </p>\n\n\n            <p class=\"action_buttons\">\n            <span data-sailplay-action\n                  data-styles=\"{{ action_styles(action_data(action_selected)) }}\"\n                  data-action=\"action_selected\"\n                  data-text=\"{{ action_data(action_selected).button_text }}\">\n              <span class=\"sp_btn button_primary\">{{ action_data(action_selected).button_text }}</span>\n            </span>\n            </p>\n\n          </div>\n\n        </div>\n\n      </magic-modal>\n\n      <magic-modal class=\"actions_custom_selected_modal\" data-ng-cloak data-show=\"$parent.action_custom_selected\">\n\n        <div data-sailplay-action-custom data-action=\"action_custom_selected\"></div>\n\n      </magic-modal>\n\n    </div>\n\n  </div>\n</div>";
 
 /***/ },
-/* 156 */
+/* 166 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(157);
+	var content = __webpack_require__(167);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(115)(content, {});
@@ -43306,8 +43666,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./card-quests.less", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./card-quests.less");
+			module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./card-quests.less", function() {
+				var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./card-quests.less");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -43317,7 +43677,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ },
-/* 157 */
+/* 167 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(114)();
@@ -43331,18 +43691,18 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 158 */
+/* 168 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var _widget = __webpack_require__(102);
 
-	var _charityPro = __webpack_require__(159);
+	var _charityPro = __webpack_require__(169);
 
 	var _charityPro2 = _interopRequireDefault(_charityPro);
 
-	__webpack_require__(160);
+	__webpack_require__(170);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -43513,19 +43873,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	});
 
 /***/ },
-/* 159 */
+/* 169 */
 /***/ function(module, exports) {
 
 	module.exports = "<div class=\"sp_cp-widget container clearfix\">\n\n    <div class=\"sp_cp-widget__wrap clearfix\">\n\n        <div class=\"sp_cp-widget__left\" data-ng-show=\"user && user()\">\n\n            <a class=\"sp_cp-widget__btn sp_cp-widget__search-btn button_primary\"\n               data-ng-bind=\"widget.texts.button_search\"\n               data-ng-href=\"{{ widget.options.search_link }}\" target=\"_blank\"></a>\n\n            <a href=\"#\" class=\"sp_cp-widget__btn sp_cp-widget__form-btn button_primary\"\n               data-ng-bind=\"widget.texts.button_form\"\n               data-ng-click=\"$event.preventDefault();show_form=true;\"></a>\n\n        </div>\n\n        <div class=\"sp_cp-widget__right\" data-ng-show=\"user && user()\">\n\n            <select class=\"sp_cp-widget__select\" data-ng-model=\"charity\"\n                    data-ng-disabled=\"disabled\"\n                    data-ng-change=\"charity_change()\"\n                    data-ng-options=\"item.tag as item.name for item in widget.options.charities\">\n                <option value=\"\" disabled selected ng-hide=\"charity\"\n                        data-ng-bind=\"widget.texts.select_charity\"></option>\n            </select>\n\n        </div>\n\n    </div>\n\n    <magic-modal class=\"sp_cp-widget__form\" data-show=\"show_form\">\n\n        <div class=\"sp_cp-widget__form-header\" data-ng-bind=\"widget.texts.request_charity_header\"></div>\n\n        <div class=\"sp_cp-widget__invalid-fields\" data-ng-if=\"!form\">Invalid form fields</div>\n\n        <form name=\"request_charity\" data-ng-submit=\"charity_form_submit(request_charity)\" data-ng-show=\"form\">\n\n            <div class=\"form_field\" data-ng-repeat=\"field in form\"\n                 data-ng-class=\"{type_full: field.full_width}\"\n                 data-ng-switch=\"field.input\">\n\n                <div data-ng-switch-when=\"image\" class=\"avatar_upload clearfix\">\n                    <img width=\"160px\"\n                         data-ng-src=\"{{ (field.value | sailplay_pic) || 'http://saike.ru/sailplay-magic/dist/img/profile/avatar_default.png'}}\"\n                         alt=\"\">\n                </div>\n\n                <div data-ng-switch-when=\"textarea\" class=\"clearfix\">\n                    <label class=\"form_label\" data-ng-bind-html=\"field.label | to_trusted\"></label>\n                    <textarea class=\"form_textarea\" placeholder=\"{{ field.placeholder }}\"\n                              data-ng-required=\"field.required\" data-ng-model=\"field.value\"></textarea>\n                </div>\n\n                <div data-ng-switch-when=\"text\" class=\"clearfix\">\n                    <label class=\"form_label\" data-ng-bind-html=\"field.label | to_trusted\"></label>\n                    <input class=\"form_input\" type=\"text\" placeholder=\"{{ field.placeholder }}\"\n                           data-ng-required=\"field.required\" data-ng-model=\"field.value\">\n                </div>\n\n                <div data-ng-switch-when=\"phone\" class=\"clearfix\">\n                    <label class=\"form_label\" data-ng-bind-html=\"field.label | to_trusted\"></label>\n                    <input class=\"form_input\" type=\"text\" data-ui-mask=\"{{ field.placeholder }}\"\n                           data-model-view-value=\"true\"\n                           data-ng-required=\"field.required\" data-ng-model=\"field.value\">\n                </div>\n\n                <div data-ng-switch-when=\"date\" class=\"clearfix\">\n                    <label class=\"form_label\" data-ng-bind-html=\"field.label | to_trusted\"></label>\n                    <date-picker data-model=\"field.value\"></date-picker>\n                </div>\n\n                <div data-ng-switch-when=\"select\" class=\"clearfix\">\n                    <label class=\"form_label\" data-ng-bind-html=\"field.label | to_trusted\"></label>\n                    <div class=\"magic_select form_input\">\n                        <select data-ng-model=\"field.value\"\n                                data-ng-required=\"field.required\"\n                                data-ng-options=\"item.value as item.text for item in field.data\"></select>\n                    </div>\n                </div>\n\n                <div data-ng-switch-when=\"email\" class=\"clearfix\">\n                    <label class=\"form_label\" data-ng-bind-html=\"field.label | to_trusted\"></label>\n                    <input class=\"form_input\" type=\"email\" placeholder=\"{{ field.placeholder }}\"\n                           data-ng-required=\"field.required\" data-ng-model=\"field.value\">\n                </div>\n\n            </div>\n\n            <div class=\"sp_cp-widget__form-submit_wrapper clearfix\">\n\n                <button type=\"submit\" class=\"sp_btn button_primary sp_cp-widget__form-submit_button\"\n                        data-ng-bind=\"widget.texts.request_charity_submit\"></button>\n\n                <button type=\"button\" class=\"sp_btn button_primary sp_cp-widget__form-back_button\"\n                        data-ng-bind=\"widget.texts.request_charity_back\"\n                        data-ng-click=\"charity_form_close(request_charity);\"></button>\n\n            </div>\n\n        </form>\n\n    </magic-modal>\n\n\n</div>";
 
 /***/ },
-/* 160 */
+/* 170 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(161);
+	var content = __webpack_require__(171);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(115)(content, {});
@@ -43534,8 +43894,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./charity-pro.less", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./charity-pro.less");
+			module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./charity-pro.less", function() {
+				var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./charity-pro.less");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -43545,7 +43905,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ },
-/* 161 */
+/* 171 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(114)();
@@ -43559,18 +43919,18 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 162 */
+/* 172 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var _widget = __webpack_require__(102);
 
-	var _event_message = __webpack_require__(163);
+	var _event_message = __webpack_require__(173);
 
 	var _event_message2 = _interopRequireDefault(_event_message);
 
-	__webpack_require__(164);
+	__webpack_require__(174);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -43623,19 +43983,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	});
 
 /***/ },
-/* 163 */
+/* 173 */
 /***/ function(module, exports) {
 
 	module.exports = "<div class=\"event_message__wrapper container\">\n\n    <div class=\"event_message\" data-ng-repeat=\"item in messages\">\n\n        <img class=\"event_message__icon\" data-ng-src=\"{{ item.icon }}\" alt=\"{{ item.text }}\">\n        <span class=\"event_message__text\" data-ng-bind=\"item.text\"></span>\n\n    </div>\n\n</div>";
 
 /***/ },
-/* 164 */
+/* 174 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(165);
+	var content = __webpack_require__(175);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(115)(content, {});
@@ -43644,8 +44004,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./event_message.less", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./event_message.less");
+			module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/index.js!./event_message.less", function() {
+				var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/index.js!./event_message.less");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -43655,7 +44015,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ },
-/* 165 */
+/* 175 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(114)();
@@ -43669,7 +44029,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 166 */
+/* 176 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -43681,11 +44041,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _widget = __webpack_require__(102);
 
-	var _gifts = __webpack_require__(167);
+	var _gifts = __webpack_require__(177);
 
 	var _gifts2 = _interopRequireDefault(_gifts);
 
-	__webpack_require__(168);
+	__webpack_require__(178);
 
 	var _angular = __webpack_require__(32);
 
@@ -43892,19 +44252,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	}]);
 
 /***/ },
-/* 167 */
+/* 177 */
 /***/ function(module, exports) {
 
 	module.exports = "<div class=\"bon_choice_main container\" data-ng-show=\"widget.enabled\" data-ng-cloak>\n  <h3 class=\"bon_header\">\n    <span class=\"header\">{{ widget.texts.header }}</span>\n  </h3>\n  <h4 class=\"bon_sub_header\">\n    <span class=\"caption\">{{ widget.texts.caption }}</span>\n  </h4>\n\n  <div data-sailplay-gifts class=\"clearfix\">\n    <div class=\"bon_item_main\" data-ng-show=\"gifts && gifts().length\" data-magic-slider>\n\n      <div class=\"bon_slide_cat_item_wrap\" data-magic-gallery>\n        <div class=\"bon_slide_cat_item\">\n\n          <div class=\"bon_item_line\" data-ng-style=\"{left : left}\">\n\n            <div class=\"bon_item gift\" data-magic-slide data-magic-gift data-ng-repeat=\"gift in gifts()\">\n              <div class=\"bon_item_iner\">\n                <img data-ng-src=\"{{ gift.thumbs.url_250x250 | sailplay_pic }}\" alt=\"{{ gift.name }}\">\n                <span class=\"bon_item_name gift_name\" data-ng-bind=\"gift.name\"></span>\n                <span class=\"bon_tem_info gift_points\" data-ng-bind=\"(gift.points | number) + ' ' + (gift.points | sailplay_pluralize:('points.texts.pluralize' | tools))\"></span>\n                <a href=\"#\" class=\"button_primary\" data-ng-click=\"gift_select(gift); $event.preventDefault();\">{{ widget.texts.get }}</a>\n              </div>\n            </div>\n\n          </div>\n\n        </div>\n\n        <a href=\"#\" class=\"arr_left arr_left slider_arrow_left\" data-ng-click=\"$event.preventDefault(); set_position('left');\" data-ng-show=\"show_left\"></a>\n        <a href=\"#\" class=\"arr_right arr_right slider_arrow_right\" data-ng-click=\"$event.preventDefault(); set_position('right');\" data-ng-show=\"show_right\"></a>\n\n      </div>\n\n    </div>\n\n    <magic-modal class=\"bns_overlay_gift\" data-ng-cloak data-show=\"$parent.selected_gift\">\n\n      <div class=\"modal_gift_container\">\n\n        <img class=\"gift_more_img\" data-ng-src=\"{{ selected_gift.thumbs.url_250x250 | sailplay_pic }}\"\n             alt=\"{{ selected_gift.name }}\">\n\n        <div class=\"gift_more_block\">\n\n          <span class=\"gift_more_name modal_gift_name\" data-ng-bind=\"selected_gift.name\"></span>\n\n          <span class=\"gift_more_points modal_gift_points\"\n                data-ng-bind=\"(selected_gift.points | number) + ' ' + (selected_gift.points | sailplay_pluralize:('points.texts.pluralize' | tools))\"></span>\n\n          <p class=\"gift_more_descr modal_gift_description\" data-ng-bind=\"selected_gift.descr\"></p>\n\n          <div class=\"modal_gift_type_block clearfix\" data-gift-type data-types=\"widget.options.gift_types\" data-gift=\"selected_gift\"></div>\n\n          <div class=\"modal_gift_buttons\">\n            <span class=\"alink button_primary\" data-ng-click=\"gift_select(false);\">{{ 'buttons.texts.close' | tools }}</span>\n\n            <span class=\"alink button_primary\"\n                  style=\"margin-left: 5px;\"\n                  data-ng-click=\"gift_confirm();\"\n                  data-ng-bind=\"gift_affordable(selected_gift) ? widget.texts.get : widget.texts.no_points_button_text\">{{ widget.texts.get }}</span>\n          </div>\n\n        </div>\n      </div>\n\n    </magic-modal>\n\n    <magic-modal class=\"bns_overlay_gift_not_points\" data-ng-cloak data-show=\"no_points_error\">\n      <div>\n        <p class=\"modal_gift_description\">\n          {{ widget.texts.no_points_message }}\n        </p>\n        <a class=\"alink button_primary earn_points_button\" href=\"#magic_actions\" data-ng-click=\"gift_unconfirm()\">{{ widget.texts.earn_points }}</a>\n        <a class=\"alink button_primary service_button\" target=\"_blank\" href=\"{{ widget.texts.partner_service_url }}\" data-ng-click=\"gift_unconfirm()\">{{ widget.texts.service }}</a>\n      </div>\n    </magic-modal>\n\n    <magic-modal class=\"bns_overlay_gift_complete\" data-ng-cloak data-show=\"confirmed_gift\">\n      <div>\n        <p class=\"modal_gift_description\">\n          {{ widget.texts.confirm_message_start }}\n          {{ (confirmed_gift.points | number) + ' ' + (confirmed_gift.points | sailplay_pluralize:('points.texts.pluralize' | tools)) }}.\n          {{ widget.texts.confirm_message_end }}\n        </p>\n        <span class=\"alink button_primary\" data-ng-click=\"gift_unconfirm();\">{{ 'buttons.texts.close' | tools }}</span>\n        <span class=\"alink button_primary\" data-ng-click=\"gift_purchase(confirmed_gift);\">{{ 'buttons.texts.get' | tools }}</span>\n      </div>\n    </magic-modal>\n  </div>\n\n\n</div>";
 
 /***/ },
-/* 168 */
+/* 178 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(169);
+	var content = __webpack_require__(179);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(115)(content, {});
@@ -43913,8 +44273,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./gifts.less", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./gifts.less");
+			module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./gifts.less", function() {
+				var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./gifts.less");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -43924,7 +44284,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ },
-/* 169 */
+/* 179 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(114)();
@@ -43938,12 +44298,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 170 */
+/* 180 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _gifts = __webpack_require__(166);
+	var _gifts = __webpack_require__(176);
 
 	var _angular = __webpack_require__(32);
 
@@ -43999,18 +44359,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	});
 
 /***/ },
-/* 171 */
+/* 181 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var _widget = __webpack_require__(102);
 
-	var _giftsGrid = __webpack_require__(172);
+	var _giftsGrid = __webpack_require__(182);
 
 	var _giftsGrid2 = _interopRequireDefault(_giftsGrid);
 
-	__webpack_require__(173);
+	__webpack_require__(183);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -44122,19 +44482,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	});
 
 /***/ },
-/* 172 */
+/* 182 */
 /***/ function(module, exports) {
 
 	module.exports = "<div class=\"bon_choice_main container clearfix gifts_grid_widget\">\n\n    <h3 class=\"gifts_grid___header\">\n        <span class=\"header\" data-ng-bind=\"widget.texts.header\"></span>\n    </h3>\n\n    <h4 class=\"gifts_grid___caption\">\n        <span class=\"caption\" data-ng-bind=\"widget.texts.caption\"></span>\n    </h4>\n\n    <div class=\"gifts_grid__wrapper clearfix\">\n\n        <div class=\"gifts_grid__blocks clearfix\">\n\n            <div class=\"gifts_grid__block clearfix\">\n\n                <div class=\"gifts_grid__item clearfix\" data-ng-repeat=\"gift in blocks[state] track by $index\">\n\n                    <span class=\"gifts_grid__item-name gift_name\" data-ng-bind=\"gift.name\"></span>\n\n                    <span class=\"gifts_grid__item-points gift_points\"\n                          data-ng-bind=\"(gift.points | number) + ' ' + (gift.points | sailplay_pluralize:('points.texts.pluralize' | tools))\"></span>\n\n                    <img class=\"gifts_grid__item-img gift_img\"\n                         data-ng-src=\"{{ gift.thumbs.url_250x250 | sailplay_pic }}\"\n                         alt=\"{{ gift.name }}\">\n\n\n                    <a class=\"gifts_grid__item-button button_primary\" href=\"#\"\n                       data-ng-bind=\"widget.texts.get\"\n                       data-ng-click=\"$parent.selected_gift = gift;$event.preventDefault();\"></a>\n\n\n                </div>\n\n            </div>\n\n        </div>\n\n        <a href=\"#\" class=\"gifts_grid__arrow gifts_grid__arrow_l slider_arrow_left\"\n           data-ng-if=\"state\"\n           data-ng-click=\"$event.preventDefault(); move(-1);\"></a>\n\n        <a href=\"#\" class=\"gifts_grid__arrow gifts_grid__arrow_r slider_arrow_right\"\n           data-ng-if=\"blocks.length && state != (blocks.length-1)\"\n           data-ng-click=\"$event.preventDefault(); move(1);\"></a>\n\n    </div>\n\n    <magic-modal class=\"bns_overlay_gift\" data-show=\"selected_gift\">\n\n        <div class=\"modal_gift_container\">\n\n            <img class=\"gift_more_img\" data-ng-src=\"{{ selected_gift.thumbs.url_250x250 | sailplay_pic }}\"\n                 alt=\"{{ selected_gift.name }}\">\n\n            <div class=\"gift_more_block\">\n\n                <span data-ng-bind=\"selected_gift\"></span>\n\n                <span class=\"gift_more_name modal_gift_name\" data-ng-bind=\"selected_gift.name\"></span>\n\n                <span class=\"gift_more_points modal_gift_points\"\n                      data-ng-bind=\"(selected_gift.points | number) + ' ' + (selected_gift.points | sailplay_pluralize:('points.texts.pluralize' | tools))\"></span>\n\n                <p class=\"gift_more_descr modal_gift_description\" data-ng-bind=\"selected_gift.descr\"></p>\n\n                <div class=\"modal_gift_buttons\">\n\n                    <span class=\"alink button_primary\" data-ng-click=\"$parent.$parent.selected_gift=null\">{{ 'buttons.texts.close' | tools }}</span>\n\n                    <span class=\"alink button_primary\"\n                          style=\"margin-left: 5px;\"\n                          data-ng-click=\"gift_confirm(selected_gift);\"\n                          data-ng-bind=\"widget.texts.get\"></span>\n                </div>\n\n            </div>\n        </div>\n\n\n</div>";
 
 /***/ },
-/* 173 */
+/* 183 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(174);
+	var content = __webpack_require__(184);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(115)(content, {});
@@ -44143,8 +44503,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./gifts-grid.less", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./gifts-grid.less");
+			module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./gifts-grid.less", function() {
+				var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./gifts-grid.less");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -44154,7 +44514,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ },
-/* 174 */
+/* 184 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(114)();
@@ -44168,18 +44528,18 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 175 */
+/* 185 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var _widget = __webpack_require__(102);
 
-	var _header = __webpack_require__(176);
+	var _header = __webpack_require__(186);
 
 	var _header2 = _interopRequireDefault(_header);
 
-	__webpack_require__(177);
+	__webpack_require__(187);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -44194,19 +44554,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	});
 
 /***/ },
-/* 176 */
+/* 186 */
 /***/ function(module, exports) {
 
 	module.exports = "<div class=\"header_wrapper container\">\n\n  <h3 class=\"header_title\">\n    {{ widget.texts.title }}\n  </h3>\n\n  <h2 class=\"header_sub_title\">\n    {{ widget.texts.sub_title }}\n  </h2>\n\n</div>";
 
 /***/ },
-/* 177 */
+/* 187 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(178);
+	var content = __webpack_require__(188);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(115)(content, {});
@@ -44215,8 +44575,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./header.less", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./header.less");
+			module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./header.less", function() {
+				var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./header.less");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -44226,7 +44586,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ },
-/* 178 */
+/* 188 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(114)();
@@ -44240,18 +44600,18 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 179 */
+/* 189 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var _widget = __webpack_require__(102);
 
-	var _imageStatuses = __webpack_require__(180);
+	var _imageStatuses = __webpack_require__(190);
 
 	var _imageStatuses2 = _interopRequireDefault(_imageStatuses);
 
-	__webpack_require__(181);
+	__webpack_require__(191);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -44310,19 +44670,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	});
 
 /***/ },
-/* 180 */
+/* 190 */
 /***/ function(module, exports) {
 
 	module.exports = "<div class=\"clearfix container\">\n\n  <div class=\"image-status-list\">\n\n    <div class=\"next_status_info\" data-ng-show=\"get_next_status().status\">\n\n      <div class=\"next_status_name\">\n        {{ widget.texts.next_status }} <span data-ng-style=\"{ color: get_next_status().status.color  }\">{{ get_next_status().status.status }}</span>\n      </div>\n\n      <div class=\"next_status_offset\">\n        {{ widget.texts.next_status_offset }} {{ get_next_status().offset }}\n      </div>\n\n    </div>\n\n    <div class=\"image-status-list__wrapper\" data-sailplay-statuses data-ng-cloak>\n\n      <div class=\"image-status-list__progress element-progress progress_line\"\n           data-ng-style=\"getProgress(user().user_points, _statuses)\"></div>\n\n      <div class=\"image-status-list__item element-item\"\n           data-ng-class=\"{ type_active : is_active_status(item) }\"\n           data-ng-repeat=\"item in _statuses\"\n           data-ng-style=\"generateOffset($index, _statuses)\">\n\n        <!--<div class=\"image-status-list__item-point element-item-point\"></div>-->\n\n        <div class=\"element-item-point-inner\">\n          <img class=\"status_image\" data-ng-src=\"{{ get_status_image(item) }}\" alt=\"\">\n        </div>\n\n      </div>\n\n    </div>\n\n  </div>\n</div>";
 
 /***/ },
-/* 181 */
+/* 191 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(182);
+	var content = __webpack_require__(192);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(115)(content, {});
@@ -44331,8 +44691,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./image-statuses.less", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./image-statuses.less");
+			module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./image-statuses.less", function() {
+				var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./image-statuses.less");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -44342,7 +44702,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ },
-/* 182 */
+/* 192 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(114)();
@@ -44356,18 +44716,18 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 183 */
+/* 193 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var _widget = __webpack_require__(102);
 
-	var _leaderboard = __webpack_require__(184);
+	var _leaderboard = __webpack_require__(194);
 
 	var _leaderboard2 = _interopRequireDefault(_leaderboard);
 
-	__webpack_require__(185);
+	__webpack_require__(195);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -44384,19 +44744,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	});
 
 /***/ },
-/* 184 */
+/* 194 */
 /***/ function(module, exports) {
 
 	module.exports = "<div class=\"clearfix\">\n    <div class=\"bon_choice_main container\" data-ng-show=\"widget.enabled\" data-ng-cloak>\n\n        <h3 class=\"bon_header\">\n            <span class=\"header\">{{ widget.texts.header }}</span>\n        </h3>\n        <h4 class=\"bon_sub_header\">\n            <span class=\"caption\">{{ widget.texts.caption }}</span>\n        </h4>\n\n        <ul class=\"leaderboard__list\" data-ng-if=\"data && data()\">\n\n            <li class=\"leaderboard__list-item type_headers\">\n\n                <span class=\"leaderboard__list-item__rank rows headers\">{{ widget.texts.rank }}</span>\n\n                <span class=\"leaderboard__list-item__name rows headers\">{{ widget.texts.full_name }}</span>\n\n                <span class=\"leaderboard__list-item__score rows headers\">{{ widget.texts.score }}</span>\n\n            </li>\n\n            <li class=\"leaderboard__list-item\" data-ng-repeat=\"member in $parent.data().members.members\"\n                data-ng-class=\"{ type_current : member.is_current_user }\">\n\n                <span class=\"leaderboard__list-item__rank rank rows\" data-ng-bind=\"member.rank\"></span>\n\n                <span class=\"leaderboard__list-item__name full_name rows\">\n\n                    <img class=\"leaderboard__list-item__photo photo\" data-ng-if=\"member.pic\"\n                         data-ng-src=\"{{ $parent.member.pic | sailplay_pic }}\"\n                         alt=\"{{ $parent.member.full_name || 'n/a' }}\">\n\n                    {{ member.full_name || 'n/a' }}\n\n                </span>\n\n                <span class=\"leaderboard__list-item__score score rows\" data-ng-bind=\"member.score\"></span>\n            </li>\n\n        </ul>\n\n\n    </div>\n</div>\n\n";
 
 /***/ },
-/* 185 */
+/* 195 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(186);
+	var content = __webpack_require__(196);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(115)(content, {});
@@ -44405,8 +44765,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./leaderboard.less", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./leaderboard.less");
+			module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./leaderboard.less", function() {
+				var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./leaderboard.less");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -44416,7 +44776,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ },
-/* 186 */
+/* 196 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(114)();
@@ -44430,22 +44790,95 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 187 */
+/* 197 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var _widget = __webpack_require__(102);
 
-	var _pointsStatus = __webpack_require__(188);
+	var _leads = __webpack_require__(198);
+
+	var _leads2 = _interopRequireDefault(_leads);
+
+	__webpack_require__(199);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	(0, _widget.WidgetRegister)({
+	  id: 'leads',
+	  template: _leads2.default,
+	  inject: ['SailPlayApi'],
+	  controller: function controller(SailPlayApi) {
+	    return function (scope, elm, attrs) {
+	      SailPlayApi.call('referral.list', { names: [] });
+	    };
+	  }
+	});
+
+/***/ },
+/* 198 */
+/***/ function(module, exports) {
+
+	module.exports = "<div class=\"clearfix\">\n  <div class=\"bon_choice_main container\" data-ng-show=\"widget.enabled\">\n    <h3 class=\"bon_header\">\n      <span class=\"header\">{{ widget.texts.header }}</span>\n    </h3>\n    <h4 class=\"bon_sub_header\">\n      <span class=\"caption\">{{ widget.texts.caption }}</span>\n    </h4>\n    <div class=\"lead\">\n      <div class=\"lead_info\">\n        <p>Jane Doe</p>\n        <p>Jane`s Company</p>\n        <p>1234567890</p>\n        <p>jane@company.net</p>\n      </div>\n      <div class=\"lead_partners\">\n        <div class=\"lead_partner_item\">\n          <div class=\"field\">\n            <div class=\"caption\">Name</div>\n            <div class=\"value\">Jonh Doe</div>\n          </div>\n        </div>\n        <div class=\"lead_partner_item\">\n          <div class=\"status\"></div>\n          <div class=\"name\"></div>\n          <div class=\"email\"></div>\n          <div class=\"phone\"></div>\n          <div class=\"from\"></div>\n          <div class=\"to\"></div>\n          <div class=\"when\"></div>\n        </div>\n        <div class=\"lead_partner_item\">\n          <div class=\"status\"></div>\n          <div class=\"name\"></div>\n          <div class=\"email\"></div>\n          <div class=\"phone\"></div>\n          <div class=\"from\"></div>\n          <div class=\"to\"></div>\n          <div class=\"when\"></div>\n        </div>\n        <div class=\"lead_partner_item\">\n          <div class=\"status\"></div>\n          <div class=\"name\"></div>\n          <div class=\"email\"></div>\n          <div class=\"phone\"></div>\n          <div class=\"from\"></div>\n          <div class=\"to\"></div>\n          <div class=\"when\"></div>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>";
+
+/***/ },
+/* 199 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(200);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(115)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./leads.less", function() {
+				var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./leads.less");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 200 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(114)();
+	// imports
+
+
+	// module
+	exports.push([module.id, ".leads .container {\n  background: white;\n}\n.leads .lead {\n  display: table;\n  width: 80%;\n  margin: 0 auto;\n  height: 400px;\n}\n.leads .lead_info {\n  display: table-cell;\n  width: 20%;\n  text-align: left;\n  font-size: 22px;\n  vertical-align: top;\n  box-sizing: border-box;\n  line-height: 1.5em;\n}\n.leads .lead_partners {\n  display: table-cell;\n  text-align: center;\n  vertical-align: top;\n  width: 80%;\n}\n.leads .lead_partner_item {\n  height: 250px;\n  width: 250px;\n  display: inline-block;\n  border: 3px solid #3e699e;\n  border-radius: 25px;\n  margin-right: 1%;\n  margin-bottom: 1%;\n}\n.leads .lead_partner_item:last-child {\n  margin-right: 0;\n}\n.leads .lead_partner_item .field .caption {\n  float: left;\n  width: 80px;\n  color: #bbb;\n}\n.leads .lead_partner_item .field .value {\n  float: left;\n  color: #3e699e;\n}\n", ""]);
+
+	// exports
+
+
+/***/ },
+/* 201 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _widget = __webpack_require__(102);
+
+	var _pointsStatus = __webpack_require__(202);
 
 	var _pointsStatus2 = _interopRequireDefault(_pointsStatus);
 
-	var _history_pagination = __webpack_require__(189);
+	var _history_pagination = __webpack_require__(203);
 
 	var _history_pagination2 = _interopRequireDefault(_history_pagination);
 
-	__webpack_require__(190);
+	__webpack_require__(204);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -44516,25 +44949,25 @@ return /******/ (function(modules) { // webpackBootstrap
 	}]);
 
 /***/ },
-/* 188 */
+/* 202 */
 /***/ function(module, exports) {
 
 	module.exports = "<div id=\"points-status\" class=\"bon_choice_main container clearfix\">\n\n    <div class=\"points-status__wrapper clearfix\">\n\n        <div class=\"points-status__left points_block clearfix\" data-ng-if=\"user()\">\n\n            <span class=\"points_confirmed\">\n                <span class=\"points_confirmed_value\" data-ng-bind=\"user().user_points.total | number\"></span>\n                <span class=\"points_confirmed_name\"\n                    data-ng-bind=\"user().user_points.total | sailplay_pluralize: ('points.texts.pluralize' | tools)\"></span>\n            </span>\n\n            <a class=\"button_primary history_button\" href=\"#\"\n               data-ng-click=\"$event.preventDefault(); $parent.history = true;\"\n               data-ng-bind=\"widget.texts.history_button\"></a>\n\n        </div>\n\n        <div class=\"points-status__right progress_block clearfix\">\n\n            <div class=\"progress_line_main\">\n\n                <div class=\"progress_line_bg progress_bar progress_bar_border\"></div>\n\n                <div class=\"progress_line progress_bar_filled\"\n                     data-ng-style=\"{ width: getProgress(user().user_points.total, widget.options.status_list) }\">\n                </div>\n\n                <div class=\"gift_item progress_bar_border\"\n                     data-ng-repeat=\"item in widget.options.status_list track by $index\"\n                     data-ng-class=\"{ act : item.points <= user().user_points.total, progress_bar_gift_filled: item.points <=user().user_points.total, progress_bar_gift: item.points > user().user_points.total}\"\n                     data-ng-style=\"{ left: (100/widget.options.status_list.length * ($index+1)) + '%', 'background-image': 'url(' + item.image +')' }\">\n\n                    <span class=\"gift_item_hint\" data-ng-bind=\"item.points | number\"></span>\n\n                </div>\n\n            </div>\n\n        </div>\n\n    </div>\n\n    <magic-modal class=\"bns_overlay_hist\" data-show=\"history\">\n\n        <div data-sailplay-history data-sailplay-profile>\n\n            <h3>\n                <span class=\"modal_history_header\" data-ng-bind=\"widget.texts.history.header\"></span>\n            </h3>\n            <h4 class=\"modal_history_caption\" data-ng-bind=\"widget.texts.history.caption\"></h4>\n\n            <table class=\"bns_hist_table\">\n\n                <tbody>\n\n                <tr data-dir-paginate=\"item in history() | itemsPerPage:10\" data-pagination-id=\"history_pages\">\n                    <td>\n                        <span class=\"modal_history_date\" data-ng-bind=\"item.action_date | date:'d/MM/yyyy'\"></span>\n                    </td>\n                    <td>\n                        <span><b class=\"modal_history_content\" data-ng-bind=\"item | history_item\"></b></span>\n                    </td>\n                    <td>\n                        <span class=\"modal_history_points\" data-ng-if=\"item.points_delta\"\n                              data-ng-bind=\"((item.points_delta|number) || 0) + ' ' + (item.points_delta | sailplay_pluralize:('points.texts.pluralize' | tools))\"></span>\n                    </td>\n                </tr>\n\n                </tbody>\n            </table>\n\n            <dir-pagination-controls data-max-size=\"7\" data-pagination-id=\"history_pages\"\n                                     data-template-url=\"points_status.history_pagination\"\n                                     data-auto-hide=\"true\"></dir-pagination-controls>\n        </div>\n\n\n    </magic-modal>\n\n</div>";
 
 /***/ },
-/* 189 */
+/* 203 */
 /***/ function(module, exports) {
 
 	module.exports = "<div class=\"bns_hist_pager\" data-ng-if=\"1 < pages.length || !autoHide\">\n\n  <a data-ng-if=\"directionLinks\" data-ng-class=\"{ disabled : pagination.current == 1 }\" href=\"\" data-ng-click=\"setCurrent(pagination.current - 1)\">\n    &lsaquo;\n  </a>\n  <a data-ng-repeat=\"pageNumber in pages track by tracker(pageNumber, $index)\" data-ng-class=\"{ active : pagination.current == pageNumber, disabled : pageNumber == '...' }\" href=\"\" data-ng-click=\"setCurrent(pageNumber)\">\n    {{ pageNumber }}\n  </a>\n\n  <a data-ng-if=\"directionLinks\" data-ng-class=\"{ disabled : pagination.current == pagination.last }\" href=\"\" data-ng-click=\"setCurrent(pagination.current + 1)\">\n    &rsaquo;\n  </a>\n\n</div>";
 
 /***/ },
-/* 190 */
+/* 204 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(191);
+	var content = __webpack_require__(205);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(115)(content, {});
@@ -44543,8 +44976,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./points-status.less", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./points-status.less");
+			module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./points-status.less", function() {
+				var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./points-status.less");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -44554,7 +44987,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ },
-/* 191 */
+/* 205 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(114)();
@@ -44568,22 +45001,22 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 192 */
+/* 206 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var _widget = __webpack_require__(102);
 
-	var _points_rate_progress = __webpack_require__(193);
+	var _points_rate_progress = __webpack_require__(207);
 
 	var _points_rate_progress2 = _interopRequireDefault(_points_rate_progress);
 
-	var _history_pagination = __webpack_require__(194);
+	var _history_pagination = __webpack_require__(208);
 
 	var _history_pagination2 = _interopRequireDefault(_history_pagination);
 
-	__webpack_require__(195);
+	__webpack_require__(209);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -44600,29 +45033,27 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var PURCHASES_EVENT = scope.widget.options.event_id;
 
 	      if (scope.widget && scope.widget.options && scope.widget.options.badge_events && scope.widget.options.badge_events.length) {
-	        (function () {
-	          var tags = [];
-	          var position = 0;
-	          angular.forEach(scope.widget.options.badge_events, function (array) {
-	            angular.forEach(array.events, function (event) {
-	              tags.push(event.name);
-	            });
+	        var tags = [];
+	        var position = 0;
+	        angular.forEach(scope.widget.options.badge_events, function (array) {
+	          angular.forEach(array.events, function (event) {
+	            tags.push(event.name);
 	          });
-	          SailPlayApi.call('tags.exist', { tags: tags }, function (res) {
-	            if (res && res.tags) {
-	              var badge_events = scope.widget.options.badge_events.filter(function (array) {
-	                return array.events.filter(function (event) {
-	                  return res.tags.filter(function (tag) {
-	                    return tag.name == event.name && tag.exist == event.exist;
-	                  }).length;
-	                }).length == array.events.length;
-	              })[0];
-	              position = badge_events && badge_events.position || 0;
-	              scope.badges_list = scope.sailplay.badges.list().multilevel_badges[position];
-	            }
-	            scope.$apply();
-	          });
-	        })();
+	        });
+	        SailPlayApi.call('tags.exist', { tags: tags }, function (res) {
+	          if (res && res.tags) {
+	            var badge_events = scope.widget.options.badge_events.filter(function (array) {
+	              return array.events.filter(function (event) {
+	                return res.tags.filter(function (tag) {
+	                  return tag.name == event.name && tag.exist == event.exist;
+	                }).length;
+	              }).length == array.events.length;
+	            })[0];
+	            position = badge_events && badge_events.position || 0;
+	            scope.badges_list = scope.sailplay.badges.list().multilevel_badges[position];
+	          }
+	          scope.$apply();
+	        });
 	      }
 
 	      scope.badges_list = null;
@@ -44686,25 +45117,25 @@ return /******/ (function(modules) { // webpackBootstrap
 	}]);
 
 /***/ },
-/* 193 */
+/* 207 */
 /***/ function(module, exports) {
 
 	module.exports = "<div class=\"points_rate_progress__wrapper container\" data-sailplay-badges>\n\n    <div class=\"points_rate_progress__points points_rate_progress__blocks\" data-ng-if=\"sailplay.user.info()\">\n        <span class=\"points_rate_progress__points-confirmed\">\n          <span class=\"points_rate_progress__points-confirmed-value\"\n                data-ng-bind=\"sailplay.user.info().user_points.confirmed | number\"></span>\n          <span class=\"points_rate_progress__points-confirmed-name\"\n                data-ng-bind=\"sailplay.user.info().user_points.confirmed | sailplay_pluralize: ('points.texts.pluralize' | tools)\"></span>\n        </span>\n        <a class=\"points_rate_progress__points-history button_link history_button\" href=\"#\"\n           data-ng-click=\"$event.preventDefault();$parent.show_history = true;\">{{ widget.texts.history_button }}</a>\n    </div>\n\n    <div class=\"points_rate_progress__progress points_rate_progress__blocks\"\n         data-ng-if=\"sailplay.user.info() && badges_list\">\n\n        <p class=\"points_rate_progress__progress-offset\">\n            <span class=\"points_rate_progress__progress-offset-text\" data-ng-bind=\"widget.texts.to_text_status\"></span>\n            <span class=\"points_rate_progress__progress-offset-value\">\n                {{ get_offset(sailplay.user.info().purchases.sum, badges_list) | number }}\n                {{ get_offset(sailplay.user.info().purchases.sum, badges_list) | sailplay_pluralize: ('rub.texts.pluralize' | tools) }}\n            </span>\n        </p>\n\n        <div class=\"points_rate_progress__progress-block\">\n            <div class=\"points_rate_progress__progress-block-line\" data-ng-style=\"get_progress(sailplay.user.info().purchases.sum, badges_list)\"></div>\n            <div class=\"points_rate_progress__progress-block-text\" data-ng-bind=\"get_next_status(sailplay.user.info().purchases.sum, badges_list).descr\"></div>\n            <!--<img class=\"points_rate_progress__progress-block-img\" data-ng-src=\"{{ get_next_status(sailplay.user.info().purchases.sum, badges_list).thumbs.url_100x100 | sailplay_pic }}\" alt=\"{{ get_next_status(sailplay.user.info().purchases.sum, badges_list).name }}\">-->\n        </div>\n\n    </div>\n\n    <div class=\"points_rate_progress__rate points_rate_progress__blocks\"\n         data-ng-if=\"sailplay.user.info() && badges_list\">\n\n        <span class=\"points_rate_progress__rate-value\" data-ng-bind=\"(get_current_status(sailplay.user.info().purchases.sum, badges_list).descr || '0%')\"></span>\n        <span class=\"points_rate_progress__rate-text\" data-ng-bind=\"widget.texts.points_rate\"></span>\n\n    </div>\n\n    <magic-modal class=\"bns_overlay_hist\" data-show=\"show_history\">\n\n        <div data-sailplay-history data-sailplay-profile>\n\n            <h3>\n                <span class=\"modal_history_header\">{{ widget.texts.history.header }}</span>\n                <!--<b>У вас {{ user().user_points.confirmed + ' ' + (user().user_points.confirmed | sailplay_pluralize:_tools.points.texts.pluralize) }}</b>-->\n            </h3>\n            <h4 class=\"modal_history_caption\">{{ widget.texts.history.caption }}</h4>\n\n            <table class=\"bns_hist_table\">\n\n                <tbody>\n\n                <tr data-dir-paginate=\"item in history() | itemsPerPage:10\" data-pagination-id=\"history_pages\">\n                    <td>\n                        <span class=\"modal_history_date\" data-ng-bind=\"item.action_date | date:'d/MM/yyyy'\"></span>\n                    </td>\n                    <td>\n                        <span><b class=\"modal_history_content\" data-ng-bind=\"item | history_item\"></b></span>\n                    </td>\n                    <td>\n                        <span class=\"modal_history_points\" data-ng-if=\"item.points_delta\" data-ng-bind=\"((item.points_delta|number) || 0) + ' ' + (item.points_delta | sailplay_pluralize:('points.texts.pluralize' | tools))\"></span>\n                    </td>\n                </tr>\n\n                </tbody>\n            </table>\n\n            <dir-pagination-controls data-max-size=\"7\" data-pagination-id=\"history_pages\"\n                                     data-template-url=\"points_rate_progress.history_pagination\"\n                                     data-auto-hide=\"true\"></dir-pagination-controls>\n        </div>\n\n\n\n    </magic-modal>\n\n</div>";
 
 /***/ },
-/* 194 */
+/* 208 */
 /***/ function(module, exports) {
 
 	module.exports = "<div class=\"bns_hist_pager\" data-ng-if=\"1 < pages.length || !autoHide\">\n\n  <a data-ng-if=\"directionLinks\" data-ng-class=\"{ disabled : pagination.current == 1 }\" href=\"\" data-ng-click=\"setCurrent(pagination.current - 1)\">\n    &lsaquo;\n  </a>\n  <a data-ng-repeat=\"pageNumber in pages track by tracker(pageNumber, $index)\" data-ng-class=\"{ active : pagination.current == pageNumber, disabled : pageNumber == '...' }\" href=\"\" data-ng-click=\"setCurrent(pageNumber)\">\n    {{ pageNumber }}\n  </a>\n\n  <a data-ng-if=\"directionLinks\" data-ng-class=\"{ disabled : pagination.current == pagination.last }\" href=\"\" data-ng-click=\"setCurrent(pagination.current + 1)\">\n    &rsaquo;\n  </a>\n\n</div>";
 
 /***/ },
-/* 195 */
+/* 209 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(196);
+	var content = __webpack_require__(210);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(115)(content, {});
@@ -44713,8 +45144,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./points_rate_progress.less", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./points_rate_progress.less");
+			module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./points_rate_progress.less", function() {
+				var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./points_rate_progress.less");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -44724,7 +45155,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ },
-/* 196 */
+/* 210 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(114)();
@@ -44738,24 +45169,24 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 197 */
+/* 211 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var _widget = __webpack_require__(102);
 
-	var _profile = __webpack_require__(198);
+	var _profile = __webpack_require__(212);
 
 	var _profile2 = _interopRequireDefault(_profile);
 
-	var _history_pagination = __webpack_require__(199);
+	var _history_pagination = __webpack_require__(213);
 
 	var _history_pagination2 = _interopRequireDefault(_history_pagination);
 
-	__webpack_require__(200);
+	__webpack_require__(214);
 
-	var _avatar_default = __webpack_require__(204);
+	var _avatar_default = __webpack_require__(218);
 
 	var _avatar_default2 = _interopRequireDefault(_avatar_default);
 
@@ -44826,25 +45257,25 @@ return /******/ (function(modules) { // webpackBootstrap
 	// });
 
 /***/ },
-/* 198 */
+/* 212 */
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"bon_profile_wrap container\" data-ng-show=\"widget.enabled\" data-ng-cloak>\n\n  <div class=\"bon_profile_info\" data-sailplay-profile data-sailplay-gifts>\n    <div class=\"bon_profile_top clearfix\">\n      <div class=\"bon_profile_top_left\">\n        <h3>\n          <span class=\"header\">{{ widget.texts.header }}</span>\n        </h3>\n        <h4>\n          <span class=\"caption\">{{ widget.texts.spoiler }}</span>\n        </h4>\n      </div>\n      <div class=\"bon_profile_right clearfix\" data-ng-if=\"user()\">\n        <div class=\"user_avatar\">\n          <img class=\"user_avatar_image\" data-ng-src=\"{{ (user().user.pic | sailplay_pic) || default_avatar}}\" alt=\"You\">\n          <a href=\"#\" class=\"logout_btn button_link\" data-ng-click=\"$event.preventDefault(); logout();\">{{ widget.texts.logout }}</a>\n        </div>\n        <div class=\"user_info\">\n          <span class=\"user_name\"  data-ng-bind=\"user().user.name || widget.texts.name_not_defined\"></span>\n          <span class=\"user_phone\" data-ng-if=\"user().user.phone\"  data-ng-bind=\"user().user.phone | tel\"></span>\n          <span class=\"user_email\" data-ng-if=\"user().user.email\"  data-ng-bind=\"user().user.email\"></span>\n        </div>\n        <div class=\"user_info\">\n          <a href=\"#\" class=\"edit_profile_btn button_link\" data-ng-click=\"$event.preventDefault(); profile.fill_profile(true);\">{{ widget.texts.edit_profile_button }}</a>\n        </div>\n      </div>\n      <div class=\"bon_profile_right clearfix\" data-ng-if=\"!user()\">\n        <button type=\"button\" class=\"sp_btn button_primary login_reg_btn\" data-ng-click=\"$event.preventDefault(); login('remote');\">{{ widget.texts.login_reg }}</button>\n      </div>\n    </div>\n\n    <!-- status -->\n    <div class=\"status_block\" data-ng-if=\"user() && user().user_status.name\">\n      <span class=\"status_block_title\" data-ng-bind=\"widget.texts.user_status\"></span>\n      <img class=\"status_block_img\" data-ng-src=\"{{ user().user_status.pic | sailplay_pic }}\" alt=\"{{ user().user_status.name }}\">\n      <span class=\"status_block_name\" data-ng-bind=\"user().user_status.name || widget.texts.empty_status \"></span>\n    </div>\n\n    <div class=\"bon_profile_stat\">\n      <div class=\"bps_left points_block clearfix\" data-ng-if=\"user()\">\n        <span class=\"points_confirmed\">\n          <span class=\"points_confirmed_value\" data-ng-bind=\"user().user_points.confirmed | number\"></span>\n          <span class=\"points_confirmed_name\" data-ng-bind=\"user().user_points.confirmed | sailplay_pluralize: ('points.texts.pluralize' | tools)\"></span>\n        </span>\n        <a class=\"button_link history_button\" href=\"#\" data-ng-click=\"$event.preventDefault(); profile.history = true;\">{{ widget.texts.history_button }}</a>\n      </div>\n      <div class=\"bps_right progress_block clearfix\" data-ng-if=\"progress\">\n        <div class=\"progress_line_main\">\n          <div class=\"progress_line_bg progress_bar progress_bar_border\"></div>\n          <div class=\"progress_line progress_bar_filled\" data-procent=\"0\" data-ng-style=\"{ width: progress.plenum + '%' }\">\n            <div class=\"progress_text progress_bar_flag\" data-ng-show=\"progress.next.item\" data-ng-class=\"{ right_position: progress.plenum < 50 }\">\n              <span class=\"progress_bar_flag_text\" data-ng-bind=\"progress.next.offset + ' ' + (progress.next.offset | sailplay_pluralize:('points.texts.pluralize' | tools)) + ' ' + widget.texts.before_gift\"></span>\n            </div>\n          </div>\n\n          <div class=\"gift_item progress_bar_border\" data-ng-repeat=\"item in progress.items track by $index\"\n               data-ng-class=\"{ act : item.reached, progress_bar_gift_filled: item.reached, progress_bar_gift: !item.reached}\"\n               data-ng-style=\"{ left: item.get_left() }\">\n\n            <span class=\"gift_item_hint\" data-ng-bind=\"item.gifts[0].points\"></span>\n\n          </div>\n\n        </div>\n      </div>\n    </div>\n  </div>\n\n  <magic-modal class=\"bns_overlay_hist\" data-show=\"profile.history\">\n\n    <div data-sailplay-history data-sailplay-profile>\n\n      <h3>\n        <span class=\"modal_history_header\">{{ widget.texts.history.header }}</span>\n        <!--<b>У вас {{ user().user_points.confirmed + ' ' + (user().user_points.confirmed | sailplay_pluralize:_tools.points.texts.pluralize) }}</b>-->\n      </h3>\n      <h4 class=\"modal_history_caption\">{{ widget.texts.history.caption }}</h4>\n\n      <table class=\"bns_hist_table\">\n\n        <tbody>\n\n        <tr data-dir-paginate=\"item in history() | itemsPerPage:10\" data-pagination-id=\"history_pages\">\n          <td>\n            <span class=\"modal_history_date\" data-ng-bind=\"item.action_date | date:'d/MM/yyyy'\"></span>\n          </td>\n          <td>\n            <span><b class=\"modal_history_content\" data-ng-bind=\"item | history_item\"></b></span>\n          </td>\n          <td>\n            <span class=\"modal_history_points\" data-ng-if=\"item.points_delta\" data-ng-bind=\"((item.points_delta|number) || 0) + ' ' + (item.points_delta | sailplay_pluralize:('points.texts.pluralize' | tools))\"></span>\n          </td>\n        </tr>\n\n        </tbody>\n      </table>\n\n      <dir-pagination-controls data-max-size=\"7\" data-pagination-id=\"history_pages\"\n                               data-template-url=\"profile.history_pagination\"\n                               data-auto-hide=\"true\"></dir-pagination-controls>\n    </div>\n\n\n\n  </magic-modal>\n\n  <!--profile edit section-->\n  <magic-modal class=\"fill_profile_modal\" data-show=\"profile.show_fill_profile\">\n\n    <div class=\"mb_popup mb_popup_prof\" data-sailplay-fill-profile data-config=\"widget.fill_profile.config\">\n\n      <div class=\"mb_popup_top\">\n        <span class=\"modal_profile_header\">{{ widget.fill_profile.header }}</span>\n      </div>\n\n      <form name=\"fill_profile_form\" class=\"mb_popup_main mb_popup_main_mt\" data-ng-submit=\"sailplay.fill_profile.submit(fill_profile_form, profile.fill_profile);\">\n\n        <div class=\"form_field\" data-ng-repeat=\"field in sailplay.fill_profile.form.fields\" data-ng-switch=\"field.input\">\n\n          <div data-ng-switch-when=\"image\" class=\"avatar_upload clearfix\">\n            <img width=\"160px\" data-ng-src=\"{{ (field.value | sailplay_pic) || 'http://saike.ru/sailplay-magic/dist/img/profile/avatar_default.png'}}\" alt=\"\">\n          </div>\n\n          <div data-ng-switch-when=\"text\" class=\"clearfix\">\n            <label class=\"form_label\">{{ field.label }}</label>\n            <input class=\"form_input\" type=\"text\" placeholder=\"{{ field.placeholder }}\" data-ng-model=\"field.value\">\n          </div>\n\n          <div data-ng-switch-when=\"date\" class=\"clearfix\">\n            <label class=\"form_label\">{{ field.label }}</label>\n            <date-picker data-model=\"field.value\"></date-picker>\n          </div>\n\n          <div data-ng-switch-when=\"select\" class=\"clearfix\">\n            <label class=\"form_label\">{{ field.label }}</label>\n            <div class=\"magic_select form_input\">\n              <select data-ng-model=\"field.value\" data-ng-options=\"item.value as item.text for item in field.data\"></select>\n            </div>\n          </div>\n\n          <div data-ng-switch-when=\"phone\" class=\"clearfix\">\n            <label class=\"form_label\">{{ field.label }}</label>\n            <input class=\"form_input\" type=\"text\" data-model-view-value=\"true\" data-ui-mask=\"{{ field.placeholder }}\" data-ng-model=\"field.value\">\n          </div>\n\n          <div data-ng-switch-when=\"email\" class=\"clearfix\">\n            <label class=\"form_label\">{{ field.label }}</label>\n            <input class=\"form_input\" type=\"email\" placeholder=\"{{ field.placeholder }}\" data-ng-model=\"field.value\">\n          </div>\n\n        </div>\n\n        <div class=\"answ_text\">\n          <button type=\"submit\" class=\"sp_btn button_primary\">{{ 'buttons.texts.save' | tools }}</button>\n        </div>\n      </form>\n    </div>\n  </magic-modal>\n\n</div>";
+	module.exports = "<div class=\"bon_profile_wrap container\" data-ng-show=\"widget.enabled\" data-ng-cloak>\n\n  <div class=\"bon_profile_info\" data-sailplay-profile data-sailplay-gifts>\n    <div class=\"bon_profile_top clearfix\">\n      <div class=\"bon_profile_top_left\">\n        <h3>\n          <span class=\"header\">{{ widget.texts.header }}</span>\n        </h3>\n        <h4>\n          <span class=\"caption\">{{ widget.texts.spoiler }}</span>\n        </h4>\n      </div>\n      <div class=\"bon_profile_right clearfix\" data-ng-if=\"user()\">\n        <div class=\"user_avatar\">\n          <img class=\"user_avatar_image\" data-ng-src=\"{{ (user().user.pic | sailplay_pic) || default_avatar}}\" alt=\"You\">\n          <a href=\"#\" class=\"logout_btn button_link\" data-ng-click=\"$event.preventDefault(); logout();\">{{ widget.texts.logout }}</a>\n        </div>\n        <div class=\"user_info\">\n          <span class=\"user_name\"  data-ng-bind=\"user().user.name || widget.texts.name_not_defined\"></span>\n          <span class=\"user_phone\" data-ng-if=\"user().user.phone\"  data-ng-bind=\"user().user.phone | tel\"></span>\n          <span class=\"user_email\" data-ng-if=\"user().user.email\"  data-ng-bind=\"user().user.email\"></span>\n        </div>\n        <div class=\"user_info\">\n          <a href=\"#\" class=\"edit_profile_btn button_link\" data-ng-click=\"$event.preventDefault(); profile.fill_profile(true);\">{{ widget.texts.edit_profile_button }}</a>\n        </div>\n      </div>\n      <div class=\"bon_profile_right clearfix\" data-ng-if=\"!user()\">\n        <button type=\"button\" class=\"sp_btn button_primary login_reg_btn\" data-ng-click=\"$event.preventDefault(); login('remote');\">{{ widget.texts.login_reg }}</button>\n      </div>\n    </div>\n\n    <!-- status -->\n    <div class=\"status_block\" data-ng-if=\"user() && user().user_status.name\">\n      <span class=\"status_block_title\" data-ng-bind=\"widget.texts.user_status\"></span>\n      <img class=\"status_block_img\" data-ng-src=\"{{ user().user_status.pic | sailplay_pic }}\" alt=\"{{ user().user_status.name }}\">\n      <span class=\"status_block_name\" data-ng-bind=\"user().user_status.name || widget.texts.empty_status \"></span>\n    </div>\n\n    <div class=\"bon_profile_stat\">\n      <div class=\"bps_left points_block clearfix\" data-ng-if=\"user()\">\n        <span class=\"points_confirmed\">\n          <span class=\"points_confirmed_value\" data-ng-bind=\"user().user_points.confirmed | number\"></span>\n          <span class=\"points_confirmed_name\" data-ng-bind=\"user().user_points.confirmed | sailplay_pluralize: ('points.texts.pluralize' | tools)\"></span>\n        </span>\n        <a class=\"button_link history_button\" href=\"#\" data-ng-click=\"$event.preventDefault(); profile.history = true;\">{{ widget.texts.history_button }}</a>\n      </div>\n      <div class=\"bps_right progress_block clearfix\" data-ng-if=\"progress\" ng-class=\"{'no-user': !user()}\">\n        <div class=\"progress_line_main\">\n          <div class=\"progress_line_bg progress_bar progress_bar_border\"></div>\n          <div class=\"progress_line progress_bar_filled\" data-procent=\"0\" data-ng-style=\"{ width: progress.plenum + '%' }\">\n            <div class=\"progress_text progress_bar_flag\" data-ng-show=\"progress.next.item\" data-ng-class=\"{ right_position: progress.plenum < 50 }\">\n              <span class=\"progress_bar_flag_text\" data-ng-bind=\"progress.next.offset + ' ' + (progress.next.offset | sailplay_pluralize:('points.texts.pluralize' | tools)) + ' ' + widget.texts.before_gift\"></span>\n            </div>\n          </div>\n\n          <div class=\"gift_item progress_bar_border\" data-ng-repeat=\"item in progress.items track by $index\"\n               data-ng-class=\"{ act : item.reached, progress_bar_gift_filled: item.reached, progress_bar_gift: !item.reached}\"\n               data-ng-style=\"{ left: item.get_left() }\">\n\n            <span class=\"gift_item_hint\" data-ng-bind=\"item.gifts[0].points\"></span>\n\n          </div>\n\n        </div>\n      </div>\n    </div>\n  </div>\n\n  <magic-modal class=\"bns_overlay_hist\" data-show=\"profile.history\">\n\n    <div data-sailplay-history data-sailplay-profile>\n\n      <h3>\n        <span class=\"modal_history_header\">{{ widget.texts.history.header }}</span>\n        <!--<b>У вас {{ user().user_points.confirmed + ' ' + (user().user_points.confirmed | sailplay_pluralize:_tools.points.texts.pluralize) }}</b>-->\n      </h3>\n      <h4 class=\"modal_history_caption\">{{ widget.texts.history.caption }}</h4>\n\n      <table class=\"bns_hist_table\">\n\n        <tbody>\n\n        <tr data-dir-paginate=\"item in history() | itemsPerPage:10\" data-pagination-id=\"history_pages\">\n          <td>\n            <span class=\"modal_history_date\" data-ng-bind=\"item.action_date | date:'d/MM/yyyy'\"></span>\n          </td>\n          <td>\n            <span><b class=\"modal_history_content\" data-ng-bind=\"item | history_item\"></b></span>\n          </td>\n          <td>\n            <span class=\"modal_history_points\" data-ng-if=\"item.points_delta\" data-ng-bind=\"((item.points_delta|number) || 0) + ' ' + (item.points_delta | sailplay_pluralize:('points.texts.pluralize' | tools))\"></span>\n          </td>\n        </tr>\n\n        </tbody>\n      </table>\n\n      <dir-pagination-controls data-max-size=\"7\" data-pagination-id=\"history_pages\"\n                               data-template-url=\"profile.history_pagination\"\n                               data-auto-hide=\"true\"></dir-pagination-controls>\n    </div>\n\n\n\n  </magic-modal>\n\n  <!--profile edit section-->\n  <magic-modal class=\"fill_profile_modal\" data-show=\"profile.show_fill_profile\">\n\n    <div class=\"mb_popup mb_popup_prof\" data-sailplay-fill-profile data-config=\"widget.fill_profile.config\">\n\n      <div class=\"mb_popup_top\">\n        <span class=\"modal_profile_header\">{{ widget.fill_profile.header }}</span>\n      </div>\n\n      <form name=\"fill_profile_form\" class=\"mb_popup_main mb_popup_main_mt\" data-ng-submit=\"sailplay.fill_profile.submit(fill_profile_form, profile.fill_profile);\">\n\n        <div class=\"form_field\" data-ng-repeat=\"field in sailplay.fill_profile.form.fields\" data-ng-switch=\"field.input\">\n\n          <div data-ng-switch-when=\"image\" class=\"avatar_upload clearfix\">\n            <img width=\"160px\" data-ng-src=\"{{ (field.value | sailplay_pic) || 'http://saike.ru/sailplay-magic/dist/img/profile/avatar_default.png'}}\" alt=\"\">\n          </div>\n\n          <div data-ng-switch-when=\"text\" class=\"clearfix\">\n            <label class=\"form_label\">{{ field.label }}</label>\n            <input class=\"form_input\" type=\"text\" placeholder=\"{{ field.placeholder }}\" data-ng-model=\"field.value\">\n          </div>\n\n          <div data-ng-switch-when=\"date\" class=\"clearfix\">\n            <label class=\"form_label\">{{ field.label }}</label>\n            <date-picker data-model=\"field.value\"></date-picker>\n          </div>\n\n          <div data-ng-switch-when=\"select\" class=\"clearfix\">\n            <label class=\"form_label\">{{ field.label }}</label>\n            <div class=\"magic_select form_input\">\n              <select data-ng-model=\"field.value\" data-ng-options=\"item.value as item.text for item in field.data\"></select>\n            </div>\n          </div>\n\n          <div data-ng-switch-when=\"phone\" class=\"clearfix\">\n            <label class=\"form_label\">{{ field.label }}</label>\n            <input class=\"form_input\" type=\"text\" data-model-view-value=\"true\" data-ui-mask=\"{{ field.placeholder }}\" data-ng-model=\"field.value\">\n          </div>\n\n          <div data-ng-switch-when=\"email\" class=\"clearfix\">\n            <label class=\"form_label\">{{ field.label }}</label>\n            <input class=\"form_input\" type=\"email\" placeholder=\"{{ field.placeholder }}\" data-ng-model=\"field.value\">\n          </div>\n\n        </div>\n\n        <div class=\"answ_left\">\n          <button type=\"submit\" class=\"sp_btn button_primary\">{{ 'buttons.texts.save' | tools }}</button>\n        </div>\n        <div class=\"answ_right\">\n          <button type=\"button\" class=\"sp_btn button_primary\" data-ng-click=\"profile.show_fill_profile = false\">Back</button>\n        </div>\n      </form>\n    </div>\n  </magic-modal>\n\n</div>";
 
 /***/ },
-/* 199 */
+/* 213 */
 /***/ function(module, exports) {
 
 	module.exports = "<div class=\"bns_hist_pager\" data-ng-if=\"1 < pages.length || !autoHide\">\n\n  <a data-ng-if=\"directionLinks\" data-ng-class=\"{ disabled : pagination.current == 1 }\" href=\"\" data-ng-click=\"setCurrent(pagination.current - 1)\">\n    &lsaquo;\n  </a>\n  <a data-ng-repeat=\"pageNumber in pages track by tracker(pageNumber, $index)\" data-ng-class=\"{ active : pagination.current == pageNumber, disabled : pageNumber == '...' }\" href=\"\" data-ng-click=\"setCurrent(pageNumber)\">\n    {{ pageNumber }}\n  </a>\n\n  <a data-ng-if=\"directionLinks\" data-ng-class=\"{ disabled : pagination.current == pagination.last }\" href=\"\" data-ng-click=\"setCurrent(pagination.current + 1)\">\n    &rsaquo;\n  </a>\n\n</div>";
 
 /***/ },
-/* 200 */
+/* 214 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(201);
+	var content = __webpack_require__(215);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(115)(content, {});
@@ -44853,8 +45284,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./profile.less", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./profile.less");
+			module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./profile.less", function() {
+				var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./profile.less");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -44864,7 +45295,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ },
-/* 201 */
+/* 215 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(114)();
@@ -44872,42 +45303,42 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	// module
-	exports.push([module.id, ".spm_wrapper .bon_profile_wrap {\n  float: left;\n  width: 100%;\n  padding: 0 5%;\n  -webkit-box-sizing: border-box;\n  -moz-box-sizing: border-box;\n  box-sizing: border-box;\n  background-color: #888888;\n  position: relative;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info {\n  width: 100%;\n  float: left;\n  position: relative;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_top_left {\n  float: left;\n  width: 580px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_top_left h3 {\n  float: left;\n  width: 100%;\n  font-size: 30px;\n  color: #ffffff;\n  font-family: 'RotondaC';\n  margin-top: 50px;\n  margin-bottom: 10px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_top_left h4 {\n  float: left;\n  width: 100%;\n  color: #ffffff;\n  font-size: 14px;\n  font-weight: 400;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right {\n  float: right;\n  width: 265px;\n  margin-top: 50px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right img {\n  border-radius: 100%;\n  -webkit-box-shadow: 0 2px 7px 1px rgba(0, 0, 0, 0.2);\n  box-shadow: 0 2px 7px 1px rgba(0, 0, 0, 0.2);\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right span {\n  font-size: 16px;\n  font-weight: 700;\n  margin-top: 18px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right .login_reg_btn {\n  float: right;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right .logout_btn {\n  width: auto;\n  font-size: 14px;\n  margin-top: 9px;\n  color: #ffffff;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right .edit_profile_btn {\n  font-size: 14px;\n  margin-top: 9px;\n  color: #ffffff;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right .user_avatar {\n  max-width: 81px;\n  float: right;\n  text-align: center;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right .user_info {\n  text-align: right;\n  float: left;\n  width: 165px;\n  color: #ffffff;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right .user_info span {\n  word-wrap: break-word;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right .user_avatar_image {\n  width: 100%;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat {\n  float: left;\n  width: 100%;\n  margin-top: 50px;\n  margin-bottom: 78px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .points_confirmed span {\n  color: inherit;\n  font-family: inherit;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .points_confirmed_name {\n  margin-left: 2px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_left {\n  float: left;\n  width: auto;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_left > span {\n  color: #ffffff;\n  display: block;\n  font-size: 33px;\n  font-family: 'RotondaC bold';\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_left > a {\n  font-size: 14px;\n  color: #ffffff;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right {\n  float: right;\n  width: 70%;\n  margin-top: 12px;\n  margin-right: 20px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main {\n  position: relative;\n  float: left;\n  width: 100%;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .progress_line_bg {\n  height: 14px;\n  border-top: 3px solid #000000;\n  background-color: #ffffff;\n  background-image: url(" + __webpack_require__(202) + ");\n  border-radius: 20px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .progress_line {\n  position: absolute;\n  left: 0px;\n  top: 3px;\n  width: 0%;\n  background-color: #ffffff;\n  height: 14px;\n  border-radius: 20px 0px 0px 20px;\n  -webkit-transition: all 1000ms ease;\n  -moz-transition: all 1000ms ease;\n  -ms-transition: all 1000ms ease;\n  -o-transition: all 1000ms ease;\n  transition: all 1000ms ease;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .progress_line .progress_text {\n  min-width: 100px;\n  position: absolute;\n  right: 0px;\n  padding-top: 32px;\n  border-right: 1px solid #fff;\n  top: 0px;\n  z-index: 1;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .progress_line .progress_text.right_position {\n  right: auto;\n  left: 100%;\n  border-left: 1px solid #fff;\n  border-right: none;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .progress_line .progress_text.right_position span {\n  border-radius: 0px 5px 5px 0px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .progress_line .progress_text span {\n  float: right;\n  line-height: 30px;\n  background-color: rgba(255, 255, 255, 0.2);\n  color: #ffffff;\n  font-size: 14px;\n  font-family: 'RotondaC';\n  border-radius: 5px 0px 0px 5px;\n  padding-left: 10px;\n  padding-right: 10px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .gift_item {\n  position: absolute;\n  top: 50%;\n  width: 36px;\n  height: 36px;\n  margin-top: -19px;\n  margin-left: -19px;\n  background-color: #cccccc;\n  border-radius: 6px;\n  -webkit-background-size: 20px 22px;\n  background-size: 20px 22px;\n  background-repeat: no-repeat;\n  background-position: center center;\n  border-top: 3px solid #000000;\n  background-image: url(" + __webpack_require__(203) + ");\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .gift_item.act {\n  background-color: #ffffff;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .gift_item_hint {\n  opacity: 0;\n  visibility: hidden;\n  display: inline-block;\n  position: absolute;\n  left: 0;\n  text-align: center;\n  width: 100%;\n  top: 0;\n  font-weight: bold;\n  transition: .3s ease;\n  color: white;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .gift_item:hover .gift_item_hint {\n  visibility: visible;\n  opacity: 1;\n  top: -20px;\n}\n.spm_wrapper .bon_profile_wrap .status_block {\n  width: 30%;\n  display: inline-block;\n}\n@media screen and (max-width: 650px) {\n  .spm_wrapper .bon_profile_wrap .status_block {\n    width: 100%;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_stat .bps_left {\n    text-align: left;\n  }\n}\n@media only screen and (min-width: 1129px) {\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right {\n    width: 100%;\n    margin-top: 30px;\n    margin-right: 0px;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_top_left {\n    width: 60%;\n  }\n}\n@media only screen and (min-width: 950px) and (max-width: 1128px) {\n  .spm_wrapper .bon_profile_wrap .progress_line_main .progress_text {\n    border: none !important;\n  }\n  .spm_wrapper .bon_profile_wrap .progress_line_main .progress_text:before {\n    content: '';\n    width: 1px;\n    background: white;\n    right: 0;\n    top: 0;\n    position: absolute;\n    height: 17px;\n    display: block;\n  }\n  .spm_wrapper .bon_profile_wrap .progress_line_main .progress_text span {\n    position: relative;\n    left: 50%;\n    border-radius: 5px !important;\n  }\n}\n@media only screen and (min-width: 530px) and (max-width: 949px) {\n  .spm_wrapper .bon_profile_wrap .bon_profile_info {\n    width: 100%;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right {\n    width: 265px;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_top_left {\n    width: 80%;\n    float: left;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right {\n    float: left;\n    width: 100%;\n    margin-top: 30px;\n    margin-bottom: 12px;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main {\n    float: left;\n    width: 95%;\n  }\n}\n@media only screen and (max-width: 529px) {\n  .spm_wrapper .bon_profile_wrap .bon_profile_info {\n    width: 100%;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right {\n    width: 265px;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_top_left {\n    width: 80%;\n    float: left;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right {\n    float: left;\n    width: 100%;\n    margin-top: 30px;\n    margin-bottom: 12px;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main {\n    float: left;\n    width: 95%;\n  }\n}\n.spm_wrapper .bns_hist_table {\n  float: left;\n  width: 100%;\n  margin-top: 12px;\n}\n.spm_wrapper .bns_hist_table td {\n  vertical-align: text-top;\n  padding: 5px 11px;\n}\n.spm_wrapper .bns_hist_table td:nth-child(1) {\n  color: #888888;\n  font-size: 13px;\n  line-height: 19px;\n  padding-right: 0px;\n  padding-left: 0px;\n  white-space: nowrap;\n}\n.spm_wrapper .bns_hist_table td:nth-child(2) {\n  color: #000000;\n  font-size: 12px;\n  font-weight: 200;\n  line-height: 19px;\n  position: relative;\n  padding-left: 0px;\n  width: 570px;\n}\n.spm_wrapper .bns_hist_table td:nth-child(2)::after {\n  position: absolute;\n  left: 0px;\n  width: 100%;\n  border-top: 1px dotted #444444;\n  top: 14px;\n  content: '';\n  display: block;\n}\n.spm_wrapper .bns_hist_table td:nth-child(2) span {\n  display: block;\n  position: relative;\n  z-index: 1;\n  font-size: 13px;\n  color: #222222;\n}\n.spm_wrapper .bns_hist_table td:nth-child(2) span b {\n  background-color: #ffffff;\n  padding-right: 15px;\n  padding-left: 11px;\n  font-weight: 200;\n}\n.spm_wrapper .bns_hist_table td:nth-child(2) span:first-child {\n  color: #000000;\n}\n.spm_wrapper .bns_hist_table td:nth-child(3) {\n  color: #444444;\n  font-size: 14px;\n  font-weight: bold;\n  text-align: right;\n  line-height: 19px;\n}\n.spm_wrapper .bns_hist_table td:nth-child(3) span {\n  display: block;\n  white-space: nowrap;\n  font-size: 13px;\n}\n.spm_wrapper .bns_hist_pager {\n  float: right;\n  font-size: 13px;\n}\n.spm_wrapper .bns_hist_pager a {\n  text-decoration: none;\n  color: #000;\n  margin-right: 4px;\n}\n.spm_wrapper .bns_hist_pager a.active {\n  font-weight: bold;\n}\n", ""]);
+	exports.push([module.id, ".spm_wrapper .bon_profile_wrap {\n  float: left;\n  width: 100%;\n  padding: 0 5%;\n  -webkit-box-sizing: border-box;\n  -moz-box-sizing: border-box;\n  box-sizing: border-box;\n  background-color: #888888;\n  position: relative;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info {\n  width: 100%;\n  float: left;\n  position: relative;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_top_left {\n  float: left;\n  width: 580px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_top_left h3 {\n  float: left;\n  width: 100%;\n  font-size: 30px;\n  color: #ffffff;\n  font-family: 'RotondaC';\n  margin-top: 50px;\n  margin-bottom: 10px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_top_left h4 {\n  float: left;\n  width: 100%;\n  color: #ffffff;\n  font-size: 14px;\n  font-weight: 400;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right {\n  float: right;\n  width: 265px;\n  margin-top: 50px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right img {\n  border-radius: 100%;\n  -webkit-box-shadow: 0 2px 7px 1px rgba(0, 0, 0, 0.2);\n  box-shadow: 0 2px 7px 1px rgba(0, 0, 0, 0.2);\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right span {\n  font-size: 16px;\n  font-weight: 700;\n  margin-top: 18px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right .login_reg_btn {\n  float: right;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right .logout_btn {\n  width: auto;\n  font-size: 14px;\n  margin-top: 9px;\n  color: #ffffff;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right .edit_profile_btn {\n  font-size: 14px;\n  margin-top: 9px;\n  color: #ffffff;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right .user_avatar {\n  max-width: 81px;\n  float: right;\n  text-align: center;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right .user_info {\n  text-align: right;\n  float: left;\n  width: 165px;\n  color: #ffffff;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right .user_info span {\n  word-wrap: break-word;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right .user_avatar_image {\n  width: 100%;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat {\n  float: left;\n  width: 100%;\n  margin-top: 50px;\n  margin-bottom: 78px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .points_confirmed span {\n  color: inherit;\n  font-family: inherit;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .points_confirmed_name {\n  margin-left: 2px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_left {\n  float: left;\n  width: auto;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_left > span {\n  color: #ffffff;\n  display: block;\n  font-size: 33px;\n  font-family: 'RotondaC bold';\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_left > a {\n  font-size: 14px;\n  color: #ffffff;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right {\n  float: right;\n  width: 70%;\n  margin-top: 12px;\n  margin-right: 20px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main {\n  position: relative;\n  float: left;\n  width: 100%;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .progress_line_bg {\n  height: 14px;\n  border-top: 3px solid #000000;\n  background-color: #ffffff;\n  background-image: url(" + __webpack_require__(216) + ");\n  border-radius: 20px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .progress_line {\n  position: absolute;\n  left: 0px;\n  top: 3px;\n  width: 0%;\n  background-color: #ffffff;\n  height: 14px;\n  border-radius: 20px 0px 0px 20px;\n  -webkit-transition: all 1000ms ease;\n  -moz-transition: all 1000ms ease;\n  -ms-transition: all 1000ms ease;\n  -o-transition: all 1000ms ease;\n  transition: all 1000ms ease;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .progress_line .progress_text {\n  min-width: 100px;\n  position: absolute;\n  right: 0px;\n  padding-top: 32px;\n  border-right: 1px solid #fff;\n  top: 0px;\n  z-index: 1;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .progress_line .progress_text.right_position {\n  right: auto;\n  left: 100%;\n  border-left: 1px solid #fff;\n  border-right: none;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .progress_line .progress_text.right_position span {\n  border-radius: 0px 5px 5px 0px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .progress_line .progress_text span {\n  float: right;\n  line-height: 30px;\n  background-color: rgba(255, 255, 255, 0.2);\n  color: #ffffff;\n  font-size: 14px;\n  font-family: 'RotondaC';\n  border-radius: 5px 0px 0px 5px;\n  padding-left: 10px;\n  padding-right: 10px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .gift_item {\n  position: absolute;\n  top: 50%;\n  width: 36px;\n  height: 36px;\n  margin-top: -19px;\n  margin-left: -19px;\n  background-color: #cccccc;\n  border-radius: 6px;\n  -webkit-background-size: 20px 22px;\n  background-size: 20px 22px;\n  background-repeat: no-repeat;\n  background-position: center center;\n  border-top: 3px solid #000000;\n  background-image: url(" + __webpack_require__(217) + ");\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .gift_item.act {\n  background-color: #ffffff;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .gift_item_hint {\n  opacity: 0;\n  visibility: hidden;\n  display: inline-block;\n  position: absolute;\n  left: 0;\n  text-align: center;\n  width: 100%;\n  top: 0;\n  font-weight: bold;\n  transition: .3s ease;\n  color: white;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .gift_item:hover .gift_item_hint {\n  visibility: visible;\n  opacity: 1;\n  top: -20px;\n}\n.spm_wrapper .bon_profile_wrap .status_block {\n  width: 30%;\n  display: inline-block;\n}\n@media screen and (max-width: 650px) {\n  .spm_wrapper .bon_profile_wrap .status_block {\n    width: 100%;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_stat .bps_left {\n    text-align: left;\n  }\n}\n@media only screen and (min-width: 1129px) {\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right {\n    width: 100%;\n    margin-top: 30px;\n    margin-right: 0px;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_top_left {\n    width: 60%;\n  }\n}\n@media only screen and (min-width: 950px) and (max-width: 1128px) {\n  .spm_wrapper .bon_profile_wrap .progress_line_main .progress_text {\n    border: none !important;\n  }\n  .spm_wrapper .bon_profile_wrap .progress_line_main .progress_text:before {\n    content: '';\n    width: 1px;\n    background: white;\n    right: 0;\n    top: 0;\n    position: absolute;\n    height: 17px;\n    display: block;\n  }\n  .spm_wrapper .bon_profile_wrap .progress_line_main .progress_text span {\n    position: relative;\n    left: 50%;\n    border-radius: 5px !important;\n  }\n}\n@media only screen and (min-width: 530px) and (max-width: 949px) {\n  .spm_wrapper .bon_profile_wrap .bon_profile_info {\n    width: 100%;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right {\n    width: 265px;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_top_left {\n    width: 80%;\n    float: left;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right {\n    float: left;\n    width: 100%;\n    margin-top: 30px;\n    margin-bottom: 12px;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main {\n    float: left;\n    width: 95%;\n  }\n}\n@media only screen and (max-width: 529px) {\n  .spm_wrapper .bon_profile_wrap .bon_profile_info {\n    width: 100%;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right {\n    width: 265px;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_top_left {\n    width: 80%;\n    float: left;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right {\n    float: left;\n    width: 100%;\n    margin-top: 30px;\n    margin-bottom: 12px;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main {\n    float: left;\n    width: 95%;\n  }\n}\n.spm_wrapper .bns_hist_table {\n  float: left;\n  width: 100%;\n  margin-top: 12px;\n}\n.spm_wrapper .bns_hist_table td {\n  vertical-align: text-top;\n  padding: 5px 11px;\n}\n.spm_wrapper .bns_hist_table td:nth-child(1) {\n  color: #888888;\n  font-size: 13px;\n  line-height: 19px;\n  padding-right: 0px;\n  padding-left: 0px;\n  white-space: nowrap;\n}\n.spm_wrapper .bns_hist_table td:nth-child(2) {\n  color: #000000;\n  font-size: 12px;\n  font-weight: 200;\n  line-height: 19px;\n  position: relative;\n  padding-left: 0px;\n  width: 570px;\n}\n.spm_wrapper .bns_hist_table td:nth-child(2)::after {\n  position: absolute;\n  left: 0px;\n  width: 100%;\n  border-top: 1px dotted #444444;\n  top: 14px;\n  content: '';\n  display: block;\n}\n.spm_wrapper .bns_hist_table td:nth-child(2) span {\n  display: block;\n  position: relative;\n  z-index: 1;\n  font-size: 13px;\n  color: #222222;\n}\n.spm_wrapper .bns_hist_table td:nth-child(2) span b {\n  background-color: #ffffff;\n  padding-right: 15px;\n  padding-left: 11px;\n  font-weight: 200;\n}\n.spm_wrapper .bns_hist_table td:nth-child(2) span:first-child {\n  color: #000000;\n}\n.spm_wrapper .bns_hist_table td:nth-child(3) {\n  color: #444444;\n  font-size: 14px;\n  font-weight: bold;\n  text-align: right;\n  line-height: 19px;\n}\n.spm_wrapper .bns_hist_table td:nth-child(3) span {\n  display: block;\n  white-space: nowrap;\n  font-size: 13px;\n}\n.spm_wrapper .bns_hist_pager {\n  float: right;\n  font-size: 13px;\n}\n.spm_wrapper .bns_hist_pager a {\n  text-decoration: none;\n  color: #000;\n  margin-right: 4px;\n}\n.spm_wrapper .bns_hist_pager a.active {\n  font-weight: bold;\n}\n", ""]);
 
 	// exports
 
 
 /***/ },
-/* 202 */
+/* 216 */
 /***/ function(module, exports) {
 
 	module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEUAAAAOCAYAAAB5EtGGAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAO5JREFUeNrslrEKwjAQhptD6tSpTl0UhD6HD6BP6wvkOQqCLk5m6mQnL+WC1xwmZu4FaqQ/+fzvK0LNcX/oKlq3x/0ZvuP9Frdt9V1vzB3Lu2q5XphPlDW4NTzMsEfMR8pq3HYF7LhXETvqNbM3+HGme5aFPW4ndtYXurLcZz3LhwCnUhe8apan2C6wqbQ/2/7JjnuVsm0kc2ZDCPGHh5SQ8DR+CLEpIQm2I/aUEGJTQlivUjbvtWCDCpFsk/vLrE2IP2tUiGQbFSLZoELkzKBC5MygQuTMoELkzKBC5Mwm8+q+OiG+l1EhstdHgAEAt8yVBryjUM8AAAAASUVORK5CYII="
 
 /***/ },
-/* 203 */
+/* 217 */
 /***/ function(module, exports) {
 
 	module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABkAAAAcCAYAAACUJBTQAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAR9JREFUeNrsVt0NgjAYLIQB6ga4gS4gjsAG6gTKk88++iROIBuAE4BO4AiMwAjeZz6SLw2/EYwPXHJpUq69a/u1QakGnFfhGnRVC6BZEOu+WzWDLmgOoisHg+PzkAiNZs0e1EK3gy5rNKkwkCCTHUiru4FV6QtwCaO87LANAy0MThBSiDkYcZ8PpszS4ATOWJvwqrZyXsdIIZN5ME2NhNrQUFqPtUpsm9dkIrFW7XCZjag6k22XgS2I5JlYZami2XScPOD20kF7J0MHBnSYcY+Uusd2fsLbHRN9g4U9wP63wlY/AJVwWHNz61Bwm/XUjwtL3I9YVM5QJXylR1XeeH+EEn7Qe/aTg59MJpPJ5A9Nxngtc9MkGNjgxf9h6i3AANemSGniswSTAAAAAElFTkSuQmCC"
 
 /***/ },
-/* 204 */
+/* 218 */
 /***/ function(module, exports) {
 
 	module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFEAAABRCAYAAACqj0o2AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAACiFJREFUeNrsnV1sVMcVx8/cfPERKku1iVQSYqM2CeajmwawG6qyNoaEUMVrUuWjSmNv1IdQGjBN0qrtQ8hLSvISqKK+2hAIqRTCkoZGIk5YXkJtInlFwOYFvFS2hM1DnTohffFOz9yd+zH3Y+/uvTPXu9BjzV7brO/e+e3/nDN3Zs4CUOX2bHO6Dluymq+RVAGkBB5Ya8S2AVsd/znIsvx4GluOtUMjffmbAiJTFh5S2DqxJTk0WZbncI+zI0KdvqEgIrweDi4V43vWz4AizEzNQuSq68W2S7Liwij0NYTZXzMQqwie05h775YNkyhy27eqDJ6XMtMIM1tVEBEey659PFlENBpXVzIcZqQEpEkCyFx3OBpAajYq/FRec/5UprEkN4bXn5ozJfLYx1y3J6rqaGQlWt0h4bq3DxW5O1aIHOCpMgfGZcBzg6M0GCYhRCbMUO5NQgJMcIB1YQF6wTOgUV81Up9LJvpv3UBJGJDs7qetEpAkXoDe6rPg2X8WQVMfnRmPBkAdGxHhqQapzQ1AKgBkXwVawO8LeJzVv5/l3y+9/26Yd+c8KBRm9bb0/ntgFo+z+vNm+fOKz2V/j2cqHs1QQB3JpyzT+8lDljwl8hOORXdhOzz+e73zVP/dmo1rYGv3o3B+aATaujZAw5IGyI/m9SOzhd9ZaJ5xaOAsZI+dhrMDX+hKJKiJ4pEIR9WKJBUAjJRESgEsMHgdD8GCRfNhx5+3V3z2Ux9k4cSBj+HKxSsITWMo9aM/yIqiWAYhdpV6wi3lnGV1w4NHwo8BqSvjGgAL3O22PPcIwnsB1nWsDfUKTcsbYf3Wh+G2O27TFQxCfHRm8YpBPoD9J+eu5bKhIfKBdG/0+w/x0QC4ZuOPYMfe7RDVbr/jdljRsgKmJqZgbHSMq5DDIpHVmESQpxFkvmJ35olkOAo+txtbLly/5Lvw5rG9GOcWSL0xfqnzd+ja/wKNuTZvEtyaxcUmr/gYlJ37ZHXMCZApsfsPv5QOkNnV8atWtuaKNxJXBKvz46EFuHFClgoFkDgMeQwzcNgYGGQzX80AH+yYX/6D/Yos5bXeo5XIxq9KVyFXQ/336iH9x25l81zt29q44rkKjeYBM4T1lavE3mjzgdRjcGt1JNn1U6WThb1v7oSV61ZwzRt3P7Ts+/EAa+Rzpv4Q+bygfBVSMO9M1ipyY7uxTC0qUIoKDXs1SIk9kvB5aJPqANm4TrWxOxvrNpC/iQ6XpuFhCmrUPGLhrqjwHE5sKoJlZZWx0G6tHS3Wa8t3abBzcioxBRLXRsTZmWInFi5aEAvEu+5eDCI+KvslEkam1vzoyrViJ9i9cZzW2fO4LR7r72rUWOi0bgEiTygJWdDMCS9bPGLjQvssjGprWt5kgeP37CZQOZZyKjGlQoFCsF+0MFYlTo5PeixmeR3D38WwRS47xE45bguO4G0NtBtjyMrOuOheBXTOpkeGucEOMamiI9QGEuQH9+BhjgOfgitIajweJtV1hZqHxUsWxwrxzMl/2uKhsjcxYSgxoQSfzyA3LlvW3ATUFf7kX4cB8YdqU8rc2LLmZeDcUaHi6gyIjfLxiattbduSsdzuCYkFw8eq1lUiPgXvriYvqdCSQNsRYpxjxGJ2vgtWt6y0rsXIyFQNROUuXA3urco0fqfyf4uoxFggXhi8MCcdvDwyFgvEWGxq4tqcQJycmILiqh6x1qNJFUMknr8p7kK4MDgSP8BxvgZtYeQA5VK8VS5C6nG0lPj69jfw/vle+MXOp5XC+/o/38Ch/YfhPIYQIizeE1Cx11+ZOxv7BYuNLaATGBoYgiN/eU9XiEr7/OTnkOk7zlVIgC/dm18qIOZUdojYnZpvMDo/eF4pxHODX1qvZ9v9IOxZJCH2QPhBVFW6JbqPfaubBgMffKbUldnEQxGeZnqDfU+Oe4sdqSZ3Jq5drPZOGNvdWKyaUuTSZ06egesz1/XwoRECxMOVieT0bEDMqlMjmB0wYhPrnCo1fnJ0wFK98ZrEUqRbh0QaxLyqgY4Vm4rNUMeH/R9JB3hp5LItHmriRk8ggQOyqBCvyB8vEk81Gh1kLvfpUblqPNaXMc+v2bVIwGPXrDyQSt1ZVKMLJbyLw51vMBHIUeEl+OR9y5XNJELAU4VEdkyUVSjop0ZrWAFmdiT6AHwKBo5+KuX1Du47JKQP+9AKFCUUbjl7dlaqRs/BIz60bmqVcsr1mx92jFjUxUCHZe0Qj8s8c+BSJP7TqpaVfFkzum3++Sa4s+S6ttdOWSmznKftEDOy8AkbmsydB7ZFK/6EZ3Y+JVUSqedTfLuIdR3BO2UjgZxmH41gQuSf5JELrzt7KZlzzwF1fbE1l1Xm1L0c60p3wrLlTcJONOdOWf9Kq1AwM153LPvDwPPaqmFspTMrpqi16f3FvTtg1xsvSg9ObA3n7Y/2Q/u2dr5fu2Dbt13wBBkR5gH2INSxrG54kKnxBWzzKot4XgU/BswiOL1D+P1v9v5aX7RSaT/e1AKTE5MwNpoXMrQ5l0isK/YaN5LyElLeqI8WIJ67lvsvgmT735Lh4VlBnNrq9hjA9J+64ZFnNscyAGhFkJdHx2Di8gT41q0Q9y2qN0xPkLuRV85vAqI/GKBjKZzXpVh1KmJjFaGPPbcFfta9FeK0XgwZzeuaeTVqsSrVrEK1H6EYeipw87z9E01cZWlIdxrVyHbLtgZlM9FtqbC917jAZNcG+P1fX4GfbF0PcRsrVdv4RDusxATG3Ftfb6HuKhZqE5yfmztUaarQV6diWW6Joh5qG0ToF1cM3vVL6nV4LAMv5iW21WBspvvv/Sf0Et/rM99aU2XmxC2Yc5Duan7TxVGF/U1lRc1iRRV9ywnQyrhixmMFPms71ug1ynHvQwxjgwNDOkzWvkWgIsySNdNtCDFb9r3Qs809w1TfMUYdAI0CRwS38SG9uKcWwPkDPQtn9fYFn9DVPIvQ2bjw8MgBV+3zrQEDmTQ+DhsubACcv2g+vPz2bzFoL4cbwVo61uqN2YkD/4D+1w/qADVSwC5rxsLlNIJMe/19yXrnL6/lrq5uSHyFAB+1V4j+as/zuuveiHZf4gc6sQus+FwcW255d/TgxVLzib6G8t2H+DLGrROrUVZdmzfXlsSEOCuW+b52ZPSdbNCkbOn7E0rTeKIcG7SwGHijGxtR3PvAUuOTTjJ/u3h4T+CkbJC9d/HQNILswndmmg1ebwZjMRJHH0w4aaknfuK+JxMz01//m94ENn5pfPjx73fJ/Vwcm2tH/IirmjD983AwG08rgXgTgKwIYNkx0UWeEPZCTaB4H88cWKZSgKEhcpDshdr8Z31qzvZhn7oqBSjN0L17sdVqwmHXnaqKt5HFSWynagzgMWzVF9drRJVjVaO+EiDrsO2pQpjsenprKlJXEUymvJ6qdN0KgfbwGBSn9cXhtmQu1Anq/xcM9t+LZOIarvxPgAEABz4fqCBZ1lYAAAAASUVORK5CYII="
 
 /***/ },
-/* 205 */
+/* 219 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var _widget = __webpack_require__(102);
 
-	var _statuses = __webpack_require__(206);
+	var _statuses = __webpack_require__(220);
 
 	var _statuses2 = _interopRequireDefault(_statuses);
 
-	__webpack_require__(207);
+	__webpack_require__(221);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -44955,19 +45386,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	});
 
 /***/ },
-/* 206 */
+/* 220 */
 /***/ function(module, exports) {
 
 	module.exports = "<div class=\"clearfix container\">\n\n  <div class=\"status-list\">\n\n    <div class=\"next_status_info\" data-ng-show=\"get_next_status().status\">\n\n      <div class=\"next_status_name\">\n        {{ widget.texts.next_status }} <span data-ng-style=\"{ color: get_next_status().status.color  }\">{{ get_next_status().status.status }}</span>\n      </div>\n\n      <div class=\"next_status_offset\">\n        {{ widget.texts.next_status_offset }} {{ get_next_status().offset }}\n      </div>\n\n    </div>\n\n    <div class=\"status-list__wrapper\" data-sailplay-statuses data-ng-cloak>\n\n      <div class=\"status-list__progress element-progress progress_line\"\n           data-ng-style=\"getProgress(user().user_points, _statuses)\"></div>\n\n      <div class=\"status-list__item element-item\"\n           data-ng-class=\"{ type_active : item.points <= user().user_points.confirmed + user().user_points.spent + user().user_points.spent_extra }\"\n           data-ng-repeat=\"item in _statuses\"\n           data-ng-style=\"generateOffset($index, _statuses)\">\n\n        <div class=\"status-list__item-point element-item-point\"></div>\n\n        <div class=\"element-item-point-inner\" data-ng-style=\"{ backgroundColor: item.color }\"></div>\n\n        <div class=\"status-list__item-name element-item-name\" data-ng-bind=\"item.name\"></div>\n        <div class=\"status-list__item-status element-item-status\" data-ng-if=\"item.status\" data-ng-bind=\"item.status\"\n             style=\"{{ (item.color) ? ('color: ' +  item.color) : '' }}\"></div>\n\n      </div>\n\n    </div>\n\n  </div>\n</div>";
 
 /***/ },
-/* 207 */
+/* 221 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(208);
+	var content = __webpack_require__(222);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(115)(content, {});
@@ -44976,8 +45407,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./statuses.less", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./statuses.less");
+			module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./statuses.less", function() {
+				var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./statuses.less");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -44987,7 +45418,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ },
-/* 208 */
+/* 222 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(114)();

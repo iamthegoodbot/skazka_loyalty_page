@@ -1,0 +1,103 @@
+.add-lead {
+  .header {
+    font-size: 42px;
+    text-align: center;
+    margin-top: 80px;
+  }
+  .sub-header {
+    font-size: 14px;
+    text-align: center;
+    margin-bottom: 80px;
+  }
+  
+  .action {
+    width: 240px;
+    height: 104px;
+    border: 2px solid red;
+    border-radius: 3px;
+    margin: 0 auto;
+    box-sizing: border-box;
+    padding: 15px;
+    margin-bottom: 80px;
+    cursor: pointer;
+    transition: background .25s;
+    -webkit-trasition: background .25s; 
+    position: relative;
+
+    &:after {
+      content: 'SUBMIT';
+      color: white;
+      width: 120px;
+      height: 40px;
+      left: 50%;
+      top: 50%;
+      margin-left: -60px;
+      margin-top: -20px;
+      display: block;
+      line-height: 40px;
+      position: absolute;
+      text-align: center;
+      background: red;
+      opacity: 0;
+      z-index: 2;
+      transition: opacity .25s;
+      -webkit-transition: opacity .25s;      
+    }
+
+    &:before {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: white;
+      opacity: 0;
+      z-index: 1;
+      transition: opacity .25s;
+      -webkit-transition: opacity .25s;
+    }
+
+    &:hover {
+      &:after {
+        opacity: 1;
+      }
+      &:before {
+        opacity: .8;  
+      }
+    }
+
+    .icon {
+      float: left;
+      width: 30px;
+      height: 30px;
+      background-color: #f1f1f1;
+      border-radius: 50%;
+      position: relative;
+      padding: 20px;
+    }
+    .text {
+      float: left;
+      margin-left: 10%;
+      margin-top: 8%;
+      .name {
+        color: #3e699e;
+        font-weight: bold;
+      }
+      .points {
+        color: red;
+        font-size: 14px;        
+      }
+    }
+  }
+  
+  .add-lead-form {
+    .answ_left {
+      float: left;
+    }
+
+    .answ_right {
+      float: right;
+      margin-right: 0;
+    }
+  }
+}

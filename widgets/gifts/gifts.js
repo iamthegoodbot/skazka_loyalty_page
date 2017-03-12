@@ -98,7 +98,7 @@ Widget.provider('GiftsWidget', function () {
 
   return {
     register: function (config) {
-
+ 
       const unique = !get_gift_type_config(config.id);
       unique && gift_types.push(config);
       console.log('registered gift types: ', gift_types);

@@ -9,17 +9,16 @@ WidgetRegister({
   inject: [
     'tools',
     'SailPlayApi',
-    'SailPlay'
+    'SailPlay',
+    'MAGIC_CONFIG'
   ],
-  controller: function (tools, SailPlayApi, SailPlay) {
+  controller: function (tools, SailPlayApi, SailPlay, MAGIC_CONFIG) {
 
     return function (scope, elm, attrs) {
 
       // scope._tools = MAGIC_CONFIG.tools;
-
       scope.action_selected = false;
-      scope.action_custom_selected = false;
-
+      scope.action_custom_selected = false;      
       scope.action_select = function (action) {
 
         if(!SailPlayApi.data('load.user.info')()) return SailPlay.authorize('remote');

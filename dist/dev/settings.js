@@ -49,57 +49,41 @@ return webpackJsonp([3],{
 	      }
 	    },
 	    "images": {},
-	    "styles": __webpack_require__(210),
+	    "styles": __webpack_require__(222),
 	    "fill_profile": {
-	      "header": "Update your profile",
+	      "header": "PARTNER PROFILE",
 	      "config": {
 	        "tag": "Client filled profile",
 	        "fields": [{
 	          "type": "system",
 	          "name": "firstName",
-	          "label": "Your name",
+	          "label": "First Name",
 	          "placeholder": "Enter your name",
 	          "input": "text"
 	        }, {
 	          "type": "system",
 	          "name": "lastName",
-	          "label": "Your last name",
+	          "label": "Last Name",
 	          "placeholder": "Enter your last name",
 	          "input": "text"
 	        }, {
 	          "type": "system",
-	          "name": "addPhone",
-	          "label": "Your phone number",
-	          "placeholder": "9 (999) 999-99-99",
-	          "input": "phone"
-	        }, {
-	          "type": "system",
 	          "name": "addEmail",
-	          "label": "Your E-Mail",
+	          "label": "Email",
 	          "placeholder": "your@address.com",
 	          "input": "email"
 	        }, {
 	          "type": "system",
-	          "name": "birthDate",
-	          "label": "Your birth date",
-	          "placeholder": "Enter your birth date",
-	          "input": "date"
+	          "name": "addPhone",
+	          "label": "Phone",
+	          "placeholder": "9 (999) 999-99-99",
+	          "input": "phone"
 	        }, {
-	          "type": "system",
-	          "name": "sex",
-	          "label": "Gender",
-	          "placeholder": "Enter your last name",
-	          "input": "select",
-	          "data": [{
-	            "value": "",
-	            "text": "Not defined"
-	          }, {
-	            "value": 1,
-	            "text": "Male"
-	          }, {
-	            "value": 2,
-	            "text": "Female"
-	          }]
+	          "type": "variable",
+	          "name": "companyName",
+	          "label": "Company Name",
+	          "placeholder": "Your company here",
+	          "input": "text"
 	        }]
 	      }
 	    }
@@ -155,7 +139,88 @@ return webpackJsonp([3],{
 	      "gift_received_error": "Sorry, we're unable to process your request at this time"
 	    },
 	    "images": {},
-	    "styles": __webpack_require__(211)
+	    "styles": __webpack_require__(223)
+	  }, {
+	    "id": "add-lead",
+	    "enabled": true,
+	    "texts": {
+	      "header": "SUBMIT A NEW LEAD",
+	      "subheader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+	      "name": "Submit Lead",
+	      "form_header": "NEW LEAD",
+	      "submit": "SUBMIT"
+	    },
+	    "options": {
+	      "points": 10
+	    },
+	    "form_fields": [{
+	      "type": "system",
+	      "name": "add_first_name",
+	      "label": "First Name",
+	      "placeholder": "Enter name",
+	      "input": "text"
+	    }, {
+	      "type": "system",
+	      "name": "add_second_name",
+	      "label": "Last Name",
+	      "placeholder": "Enter last name",
+	      "input": "text"
+	    }, {
+	      "type": "system",
+	      "name": "add_email",
+	      "label": "Email",
+	      "placeholder": "address@domain.com",
+	      "input": "email"
+	    }, {
+	      "type": "system",
+	      "name": "add_phone",
+	      "label": "Phone",
+	      "placeholder": "9 (999) 999-99-99",
+	      "input": "phone"
+	    }, {
+	      "type": "variable",
+	      "name": "add_moving_from",
+	      "label": "Moving From",
+	      "placeholder": "Address line 1",
+	      "input": "text"
+	    }, {
+	      "type": "variable",
+	      "name": "add_moving_from_zip",
+	      "mod": "small",
+	      "placeholder": "Zip",
+	      "input": "text"
+	    }, {
+	      "type": "variable",
+	      "name": "add_moving_to",
+	      "label": "Moving To",
+	      "mod": "small",
+	      "placeholder": "Zip",
+	      "input": "text"
+	    }, {
+	      "type": "variable",
+	      "name": "add_move_date",
+	      "label": "Move Date",
+	      "placeholder": "",
+	      "input": "select",
+	      "data": [{
+	        "value": 1,
+	        "text": "This Week",
+	        "$$hashKey": "object:194"
+	      }, {
+	        "value": 2,
+	        "text": "Within 1-2 weeks",
+	        "$$hashKey": "object:195"
+	      }, {
+	        "value": 3,
+	        "text": "Within 3-4 weeks",
+	        "$$hashKey": "object:196"
+	      }, {
+	        "value": 4,
+	        "text": "Within >3-4 weeks",
+	        "$$hashKey": "object:197"
+	      }]
+	    }],
+	    "styles": __webpack_require__(224)
 	  }, {
 	    "id": "badges",
 	    "enabled": true,
@@ -243,8 +308,7 @@ return webpackJsonp([3],{
 	    "texts": {
 	      "header": "leaderboard",
 	      "suffix": "bonus"
-	    },
-	    "styles": __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"./css-to-json!less-loader!./leaderboard.less\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()))
+	    }
 	  }],
 	  "tools": {
 	    "layout": {
@@ -288,7 +352,8 @@ return webpackJsonp([3],{
 	      "styles": {
 	        "modal_container": {
 	          "background-color": "#ededed",
-	          "box-shadow": "0px 0px 16px 0px rgba(50,50,50,0.75)"
+	          "width": "500px",
+	          "box-shadow": "0px -15px 16px 0px rgba(50,50,50,0.75), 0px 0px 16px 0px rgba(50,50,50,0.75)"
 	        },
 	        "modal_container:before": {
 	          "content": "''",
@@ -298,6 +363,14 @@ return webpackJsonp([3],{
 	          "left": "0",
 	          "top": "-20px",
 	          "position": "absolute"
+	        },
+	        "mb_popup_top": {
+	          "text-align": "center"
+	        },
+	        "mb_popup_top span": {
+	          "color": "#136AA1",
+	          "float": "none",
+	          "font-weight": "bold"
 	        },
 	        "close_overlay": {
 	          "display": "none"
@@ -397,49 +470,34 @@ return webpackJsonp([3],{
 	          "color": "#190042",
 	          "font-family": "helvetica,arial,nimbus sans l,sans-serif",
 	          "font-size": "16px",
+	          "font-weight": "bold",
 	          "margin-bottom": "4px"
 	        },
 	        "form_input": {
-	          "border": "2px solid #020707",
-	          "border-radius": "0",
-	          "color": "#333",
-	          "font-family": "helvetica,arial,nimbus sans l,sans-serif",
-	          "font-weight": 300,
-	          "height": "44px",
-	          "line-height": "44px",
-	          "padding-left": "15px"
-	        },
-	        "form_date": {
-	          "font-family": "helvetica,arial,nimbus sans l,sans-serif",
-	          "font-weight": 300
+	          "border-top": "none"
 	        },
 	        "form_date span": {
-	          "color": "#333",
-	          "border": "2px solid #020707",
-	          "border-radius": "0",
-	          "background": "white",
-	          "line-height": "44px",
-	          "height": "44px"
+	          "border": "none",
+	          "background-color": "white"
 	        },
-	        "form_date select": {
-	          "color": "#333",
-	          "border": "2px solid #020707",
-	          "border-radius": "0",
-	          "background": "white",
-	          "line-height": "44px",
-	          "height": "44px"
+	        "form_field": {
+	          "float": "none",
+	          "padding-right": "0",
+	          "width": "auto"
 	        },
-	        "form_date .form_date__popup": {
-	          "border": "2px solid #ccc",
-	          "background": "white"
-	        },
-	        "form_date .form_date__popup a": {
-	          "color": "#333"
+	        "answ_right button": {
+	          "margin-right": "0"
 	        }
 	      }
 	    }
 	  },
 	  "data": {
+	    "leaderboard_data": {
+	      "tag": "partner_type_2"
+	    },
+	    "tag_type_1": "partner_type_1",
+	    "tag_type_2": "partner_type_2",
+	    "tag_type_3": "partner_type_3",
 	    "history": {
 	      "purchase": "Purchase",
 	      "gift_purchase": "Gift",
@@ -804,17 +862,24 @@ return webpackJsonp([3],{
 
 /***/ },
 
-/***/ 210:
+/***/ 222:
 /***/ function(module, exports) {
 
-	module.exports = {"container":{"background":"transparent","margin-top":"-453px","padding":"0 5%"},"bon_profile_right":{"float":"left","margin-left":"15%"},"bon_profile_right .user_avatar":{"float":"none","width":"165px","max-width":"165px","box-shadow":"none","-webkit-box-shadow":"none","position":"relative","text-align":"center"},"bon_profile_right .user_avatar_image":{"-webkit-box-shadow":"none","box-shadow":"none"},"bon_profile_right .user_info":{"float":"none","width":"auto","margin-left":"-84px","margin-top":"2px","text-align":"center"},"bon_profile_right .edit_profile_btn":{"background":"none","color":"#cecece","text-decoration":"none"},"bon_profile_right .login_reg_btn":{"height":"165px","width":"165px","border-radius":"50%","padding":"0","margin":"0","float":"none"},"bon_profile_right .logout_btn":{"position":"absolute","bottom":"-105px","margin-left":"-15px","color":"#cecece","text-decoration":"none","background":"none"},"progress_line_main .gift_item":{"background-color":"rgba(255, 255, 255, .9)","background-image":"url(\"data:image/svg+xml,%3C!-- Generator: Adobe Illustrator 19.2.0, SVG Export Plug-In --%3E %3Csvg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:a='http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/' x='0px' y='0px' width='22.6px' height='24.7px' viewBox='0 0 22.6 24.7' style='enable-background:new 0 0 22.6 24.7' xml:space='preserve'%3E %3Cdefs%3E %3C/defs%3E %3Cg%3E %3Cpath fill='#FA1100' class='st0' d='M12.2,24.7h5.9c1.5,0,2.7-1.2,2.7-2.7v-9.2c0-0.4-0.4-0.8-0.8-0.8h-7.8V24.7z M12.2,24.7'/%3E %3Cpath fill='#FA1100' class='st0' d='M1.7,22c0,1.5,1.2,2.7,2.7,2.7h6.3V11.9H2.5c-0.5,0-0.8,0.4-0.8,0.8V22z M1.7,22'/%3E %3Cpath fill='#FA1100' class='st0' d='M0,9.6c0,0.4,0.4,0.8,0.8,0.8h9.9V5.8h-8C1.2,5.8,0,7.1,0,8.6V9.6z M0,9.6'/%3E %3Cpath fill='#FA1100' class='st0' d='M12.2,5.8v4.6h9.5c0.4,0,0.8-0.4,0.8-0.8v-1c0-1.5-1.2-2.7-2.7-2.7H12.2z M12.2,5.8'/%3E %3Cpath fill='#FA1100' class='st0' d='M19.3,3.9C19.3,1.6,18,0,16,0c-1.1,0-2.6,0.5-4.6,2.6C9.4,0.5,7.8,0,6.7,0c-2,0-3.4,1.6-3.4,3.9 c0,0.4,0.4,0.8,0.8,0.8h14.3C18.9,4.8,19.3,4.4,19.3,3.9L19.3,3.9z M5.1,3.1c0.2-0.8,0.7-1.5,1.6-1.5c0.8,0,1.9,0.6,2.9,1.5H5.1z M13.2,3.1c1.1-0.9,2.1-1.5,2.9-1.5c0.9,0,1.4,0.7,1.6,1.5H13.2z M13.2,3.1'/%3E %3C/g%3E %3C/svg%3E\")"},"progress_line_main .gift_item_hint":{"color":"#000","top":"-25px"},"progress_text.progress_bar_flag":{"display":"none"},"points_block":{"background-color":"#fff","padding":"30px 40px","text-align":"center"},"points_block .history_button":{"background-color":"#fa1100","color":"#fff","text-decoration":"none","text-transform":"uppercase","padding":"13px 30px","font-size":"12px","margin-top":"10px","display":"inline-block","font-weight":"300"},"bon_profile_stat":{"margin-top":"90px","margin-bottom":"0","float":"none"},"bon_profile_top_left":{"float":"none"},"progress_line_bg":{"background":"#e8e3e3"},"progress_line.progress_bar_filled":{"background":"#fa1100","border-radius":"10px","margin":"2px","height":"10px"},"progress_block":{"margin-top":"65px","width":"70%"},"points_confirmed span":{"color":"#fa1100","font-family":"Roboto","text-align":"center","line-height":"48px","vertical-align":"middle"},"points_confirmed_value":{"font-weight":"bold","font-size":"46px"},"points_confirmed_name":{"font-size":"26px","margin-left":"0"},"user_name":{"font-size":"50px","color":"#fff"},"before_gift":{"color":"#333"},"bns_hist_table td:after":{"display":"none"},"bns_hist_table td":{"padding-top":"15px","padding-bottom":"15px","border-bottom":"1px solid #E2E3E4"},"bns_hist_pager":{"float":"left","margin-top":"30px"},"bns_hist_pager a.active":{"font-size":"16px","color":"#132D61"},"modal_history_header":{"color":"#132D61","font-family":"Helvetica"},"modal_history_caption":{"color":"#333","font-family":"Helvetica","font-weight":"300"},"modal_history_date":{"color":"#333","font-family":"Helvetica"},"modal_history_content":{"color":"#222","font-weight":"normal","font-family":"Helvetica","font-size":"16px"},"modal_history_points":{"color":"#B2B1B2","font-family":"Helvetica","font-size":"18px"},"modal_profile_header":{"color":"#333","font-family":"Helvetica"},"user_phone":{"display":"none"},"user_email":{"display":"none"}}
+	module.exports = {"container":{"background":"transparent","margin-top":"-453px","padding":"0 5%"},"bon_profile_right":{"float":"left","margin-left":"15%"},"bon_profile_right .user_avatar":{"float":"none","width":"165px","max-width":"165px","box-shadow":"none","-webkit-box-shadow":"none","position":"relative","text-align":"center"},"bon_profile_right .user_avatar_image":{"-webkit-box-shadow":"none","box-shadow":"none"},"bon_profile_right .user_info":{"float":"none","width":"auto","margin-left":"-84px","margin-top":"2px","text-align":"center"},"bon_profile_right .edit_profile_btn":{"background":"none","color":"#cecece","text-decoration":"none"},"bon_profile_right .login_reg_btn":{"height":"165px","width":"165px","border-radius":"50%","padding":"0","margin":"0","float":"none"},"bon_profile_right .logout_btn":{"position":"absolute","bottom":"-105px","margin-left":"-15px","color":"#cecece","text-decoration":"none","background":"none"},"progress_line_main .gift_item":{"background-color":"rgba(255, 255, 255, .9)","background-image":"url(\"data:image/svg+xml,%3C!-- Generator: Adobe Illustrator 19.2.0, SVG Export Plug-In --%3E %3Csvg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:a='http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/' x='0px' y='0px' width='22.6px' height='24.7px' viewBox='0 0 22.6 24.7' style='enable-background:new 0 0 22.6 24.7' xml:space='preserve'%3E %3Cdefs%3E %3C/defs%3E %3Cg%3E %3Cpath fill='#FA1100' class='st0' d='M12.2,24.7h5.9c1.5,0,2.7-1.2,2.7-2.7v-9.2c0-0.4-0.4-0.8-0.8-0.8h-7.8V24.7z M12.2,24.7'/%3E %3Cpath fill='#FA1100' class='st0' d='M1.7,22c0,1.5,1.2,2.7,2.7,2.7h6.3V11.9H2.5c-0.5,0-0.8,0.4-0.8,0.8V22z M1.7,22'/%3E %3Cpath fill='#FA1100' class='st0' d='M0,9.6c0,0.4,0.4,0.8,0.8,0.8h9.9V5.8h-8C1.2,5.8,0,7.1,0,8.6V9.6z M0,9.6'/%3E %3Cpath fill='#FA1100' class='st0' d='M12.2,5.8v4.6h9.5c0.4,0,0.8-0.4,0.8-0.8v-1c0-1.5-1.2-2.7-2.7-2.7H12.2z M12.2,5.8'/%3E %3Cpath fill='#FA1100' class='st0' d='M19.3,3.9C19.3,1.6,18,0,16,0c-1.1,0-2.6,0.5-4.6,2.6C9.4,0.5,7.8,0,6.7,0c-2,0-3.4,1.6-3.4,3.9 c0,0.4,0.4,0.8,0.8,0.8h14.3C18.9,4.8,19.3,4.4,19.3,3.9L19.3,3.9z M5.1,3.1c0.2-0.8,0.7-1.5,1.6-1.5c0.8,0,1.9,0.6,2.9,1.5H5.1z M13.2,3.1c1.1-0.9,2.1-1.5,2.9-1.5c0.9,0,1.4,0.7,1.6,1.5H13.2z M13.2,3.1'/%3E %3C/g%3E %3C/svg%3E\")"},"progress_line_main .gift_item_hint":{"color":"#000","top":"-25px"},"progress_text.progress_bar_flag":{"display":"none"},"points_block":{"background-color":"#fff","padding":"30px 40px","text-align":"center"},"points_block .history_button":{"background-color":"#fa1100","color":"#fff","text-decoration":"none","text-transform":"uppercase","padding":"13px 30px","font-size":"12px","margin-top":"10px","display":"inline-block","font-weight":"300"},"bon_profile_stat":{"margin-top":"62px","margin-bottom":"0","float":"none"},"bon_profile_top_left":{"float":"none"},"progress_line_bg":{"background":"#e8e3e3"},"progress_line.progress_bar_filled":{"background":"#fa1100","border-radius":"10px","margin":"2px","height":"10px"},"progress_block":{"margin-top":"65px","width":"70%"},"points_confirmed span":{"color":"#fa1100","font-family":"Roboto","text-align":"center","line-height":"48px","vertical-align":"middle"},"points_confirmed_value":{"font-weight":"bold","font-size":"46px"},"points_confirmed_name":{"font-size":"26px","margin-left":"0"},"user_name":{"font-size":"50px","color":"#fff"},"before_gift":{"color":"#333"},"bns_hist_table td:after":{"display":"none"},"bns_hist_table td":{"padding-top":"15px","padding-bottom":"15px","border-bottom":"1px solid #E2E3E4"},"bns_hist_pager":{"float":"left","margin-top":"30px"},"bns_hist_pager a.active":{"font-size":"16px","color":"#132D61"},"modal_profile_header":{"float":"none","text-align":"center","font-weight":"bold"},"user_phone":{"display":"none"},"user_email":{"display":"none"},"answ_left":{"float":"left"},"answ_right":{"float":"right"}}
 
 /***/ },
 
-/***/ 211:
+/***/ 223:
 /***/ function(module, exports) {
 
 	module.exports = {"container":{"background-color":"#3e699e"},"bon_header":{"margin-top":"80px","text-align":"center","text-transform":"uppercase","color":"white"},"bon_header .header":{"color":"white"},"bon_sub_header":{"text-align":"center","color":"#fff","margin-top":"0"},"bon_sub_header .caption":{"color":"#fff"},"header":{"color":"#142D61","font-family":"helvetica, arial, nimbus sans l, sans-serif"},"caption":{"color":"#403C3C","font-family":"helvetica, arial, nimbus sans l, sans-serif"},"gift":{"background-color":"white","border-color":"#5386b1","border-radius":"20px","border-width":"12px","margin-top":"10px","margin-bottom":"10px","position":"relative","transition":"all .25s ease-out"},"gift:before":{"transition":"all .25s ease-out"},"gift_img":{"display":"inline"},"gift:hover":{"border-color":"#d72906"},"gift:hover:before":{"position":"absolute","width":"100%","height":"100%","background":"rgba(255, 255, 255, .8)","left":"0","top":"0","z-index":"10"},"gift:hover .bon_item_iner a.button_primary":{"visibility":"visible","opacity":"1","z-index":"11"},"gift .bon_item_iner .bon_item_name":{"visibility":"visible","opacity":"1"},"gift .bon_item_iner .bon_tem_info":{"visibility":"visible","opacity":"1"},"gift .bon_item_iner a.button_primary":{"width":"120px","top":"50%","bottom":"auto","text-shadow":"none","border":"none","padding":"13px 30px","-webkit-transform":"translateY(-50%)","-moz-transform":"translateY(-50%)","transform":"translateY(-50%)","margin-left":"-60px"},"gift_name":{"color":"#333","font-family":"helvetica, arial, nimbus sans l, sans-serif"},"gift_points":{"color":"#514D4D","font-family":"helvetica, arial, nimbus sans l, sans-serif","font-size":"16px","font-weight":"bold","opacity":"1"},"description":{"color":"#333","font-family":"helvetica, arial, nimbus sans l, sans-serif","font-size":"14px"},"bns_overlay_gift .modal_container":{"padding":"0","width":"500px"},"modal_gift_container":{"text-align":"center","padding-top":"20px","background-color":"white"},"modal_gift_container .gift_more_block":{"width":"100%","text-align":"left","margin-top":"30px","background":"#ededed","padding":"0 50px 40px"},"modal_gift_name":{"color":"#136AA1","font-size":"30px","font-family":"helvetica, arial, nimbus sans l, sans-serif","margin-top":"30px"},"modal_gift_points":{"color":"#fa1100","font-family":"helvetica, arial, nimbus sans l, sans-serif","font-size":"20px","opacity":"1"},"modal_gift_points:before":{"content":"'-'"},"modal_gift_description":{"color":"#403C3C","font-family":"helvetica, arial, nimbus sans l, sans-serif","font-size":"16px","line-height":"24px","margin-top":"32px","margin-bottom":"34px"},"modal_gift_buttons .button_primary":{"width":"168px","line-height":"39px","font-weight":"bold","text-align":"center","padding":"0"},"modal_gift_buttons .button_primary:nth-child(1)":{"float":"right"},"bns_overlay_gift_complete .modal_container,\n.bns_overlay_notify .modal_container":{"width":"500px"}}
+
+/***/ },
+
+/***/ 224:
+/***/ function(module, exports) {
+
+	module.exports = {"icon:after":{"content":"''","width":"100%","height":"100%","display":"block","background-size":"cover","background-repeat":"no-repeat","background-image":"url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' version='1.1' x='0px' y='0px' viewBox='0 0 1000 1000' enable-background='new 0 0 1000 1000' fill='red' xml:space='preserve'%3E %3Cmetadata%3E Svg Vector Icons : http://www.onlinewebfonts.com/icon %3C/metadata%3E %3Cg%3E%3Cpath d='M683.3,104.1l212.3,215l60.8-63.5c0,0,79.8-94.6-6.8-186.6C863.2-23,780.2,20.3,760.4,32C737,47.3,683.3,104.1,683.3,104.1z M636,151.5L72.2,715.3L10,988.4l277.2-59.5l561.1-565.2L636,151.5z M265.5,786.9l-55.4-52.7L638.7,307l54.1,52.7L265.5,786.9z'/%3E%3C/g%3E %3C/svg%3E\")"}}
 
 /***/ }
 

@@ -1,0 +1,56 @@
+<div class="clearfix">
+  <div class="container">
+    <div class="header">{{ widget.texts.header }}</div>
+    <div class="sub-header">{{ widget.texts.subheader }}</div>
+    <div class="action" data-ng-click="startNewLead = true">
+      <div class="icon"></div>
+      <div class="text">
+        <div class="name">{{ widget.texts.name }}</div>
+        <div class="points" data-ng-bind="(widget.options.points) + ' points'"></div>
+      </div>
+    </div>
+  </div>
+  <magic-modal class="add-lead-form" data-ng-cloak data-show="startNewLead">
+    <div class="mb_popup mb_popup_prof">
+      <div class="mb_popup_top">
+        <span>{{ widget.texts.form_header }}</span>
+      </div>
+      <form name="fill_profile_form" class="mb_popup_main mb_popup_main_mt" data-ng-submit="submit(widget.form_fields)">
+        <div class="form_field" data-ng-repeat="field in widget.form_fields" data-ng-switch="field.input">
+          <div data-ng-switch-when="image" class="avatar_upload clearfix">
+            <img width="160px" data-ng-src="{{ (field.value | sailplay_pic) || 'http://saike.ru/sailplay-magic/dist/img/profile/avatar_default.png'}}"
+              alt="">
+          </div>
+          <div data-ng-switch-when="text" class="clearfix"> 
+            <label class="form_label">{{ field.label }}</label>
+            <input class="form_input" type="text" placeholder="{{ field.placeholder }}" data-ng-model="field.value">
+          </div>
+          <div data-ng-switch-when="date" class="clearfix">
+            <label class="form_label">{{ field.label }}</label>
+            <date-picker data-model="field.value"></date-picker>
+          </div>
+          <div data-ng-switch-when="select" class="clearfix">
+            <label class="form_label">{{ field.label }}</label>
+            <div class="magic_select form_input">
+              <select data-ng-model="field.value" ng-init="field.value = field.data[0].value" data-ng-options="item.value as item.text for item in field.data"></select>
+            </div>
+          </div>
+          <div data-ng-switch-when="phone" class="clearfix">
+            <label class="form_label">{{ field.label }}</label>
+            <input class="form_input" type="text" data-model-view-value="true" data-ui-mask="{{ field.placeholder }}" data-ng-model="field.value">
+          </div>
+          <div data-ng-switch-when="email" class="clearfix">
+            <label class="form_label">{{ field.label }}</label>
+            <input class="form_input" type="email" placeholder="{{ field.placeholder }}" data-ng-model="field.value">
+          </div>
+        </div>
+        <div class="answ_left">
+          <button type="submit" class="sp_btn button_primary">{{ widget.texts.submit }}</button>
+        </div>
+        <div class="answ_right">
+          <button type="button" class="sp_btn button_primary" data-ng-click="$parent.$parent.startNewLead = false">Back</button>
+        </div>
+      </form>
+    </div>
+  </magic-modal>
+</div>

@@ -108,12 +108,12 @@ export let SailPlay = angular.module('sailplay', [
 
               break;
 
-            case 'cookie':
+            case 'cookie': 
 
               var auth_hash = ipCookie(auth_hash_id);
               if (auth_hash) {
                 sp.send('login', auth_hash);
-              }
+              } 
               else {
                 $rootScope.$broadcast('sailplay-login-error', {status: 'error', message: 'No auth_hash found'});
               }
@@ -323,7 +323,7 @@ export let SailPlay = angular.module('sailplay', [
 
       }
 
-      $window[0].open(share_url, '_blank', 'toolbar=0,status=0,width=626,height=436,location=no');
+      $window.open(share_url, '_blank', 'toolbar=0,status=0,width=626,height=436,location=no');
 
     }
   });

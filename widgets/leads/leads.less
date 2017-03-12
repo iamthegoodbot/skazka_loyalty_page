@@ -1,0 +1,50 @@
+.leads {
+  .container {
+    background: white;
+  }
+  .lead {
+    display: table;
+    width: 80%;
+    margin: 0 auto;
+    height: 400px;
+    &_info {
+      display: table-cell;
+      width: 20%;
+      text-align: left;
+      font-size: 22px;
+      vertical-align: top;
+      box-sizing: border-box; 
+      line-height: 1.5em;      
+    }
+    &_partners {
+      display: table-cell;
+      text-align: center;
+      vertical-align: top;
+      width: 80%;
+    }
+    &_partner_item {
+      height: 250px;
+      width: 250px;
+      display: inline-block;
+      border: 3px solid #3e699e;
+      border-radius: 25px;
+      margin-right: 1%;
+      margin-bottom: 1%;
+      &:last-child {
+        margin-right: 0;
+      }
+      
+      .field {
+        .caption {
+          float: left;
+          width: 80px;
+          color: #bbb;
+        }
+        .value {
+          float: left;
+          color: #3e699e;
+        }
+      }
+    }
+  }
+}

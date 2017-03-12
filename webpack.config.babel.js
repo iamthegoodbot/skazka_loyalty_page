@@ -119,6 +119,7 @@ export let development = {
   module: {
     loaders: loaders
   },
+  cache: true,
   plugins: [
     new webpack.optimize.CommonsChunkPlugin('sailplay-magic-vendor', 'sailplay-magic-vendor.js', Infinity)
   ]

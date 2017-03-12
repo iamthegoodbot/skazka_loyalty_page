@@ -21,7 +21,6 @@ export let Core = angular.module('magic.core', [
     SailPlayApi.call('load.actions.list');
     SailPlayApi.call('load.actions.custom.list');
     SailPlayApi.call('load.gifts.list');
-    SailPlayApi.call('leaderboard.load');
   }
 
   //when bad login
@@ -49,7 +48,6 @@ export let Core = angular.module('magic.core', [
     SailPlayApi.call('load.user.history');
     SailPlayApi.call('tags.exist', {tags: TAGS});
     SailPlayApi.call('load.gifts.list');
-    SailPlayApi.call('leaderboard.load');
   });
 
   //unfortunately, we need to update actions list after perform
@@ -76,7 +74,6 @@ export let Core = angular.module('magic.core', [
 
     SailPlayApi.call('load.user.info', { all: 1, purchases: 1 });
     SailPlayApi.call('load.user.history');
-    SailPlayApi.call('leaderboard.load');
 
     $rootScope.$apply();
 

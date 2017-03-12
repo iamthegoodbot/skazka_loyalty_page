@@ -300,7 +300,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var data = {};
 
 	        var _domain = _config.DOMAIN.indexOf('http:') != -1 || _config.DOMAIN.indexOf('https:') != -1 ? _config.DOMAIN : 'http:' + _config.DOMAIN;
-
 	        if (messageEvent.origin == _domain) {
 	          try {
 	            data = JSON.parse(messageEvent.data);
@@ -337,20 +336,24 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	      function cancelLogin() {
 	        if (frame.created) {
-	          try {
-	            document.body.removeChild(frame)
-	          }
-	          catch (e) {
-
-	          }
+	          document.body.removeChild(frame);
+	          window.removeEventListener("message", onMessage, false);
+	          _remote_login_init = false;
 	        }
 	      }
 
 	      var params = {};
 	      params.partner_id = _config.partner.id;
 	      params.dep_id = _config.dep_id || '';
+	      params.custom_invite_tag = ''
 	      params.background = opts.background || '';
 	      params.partner_info = opts.partner_info || 0;
+	      if(opts.reg_match_email_oid) {
+	        params.reg_match_email_oid = opts.reg_match_email_oid;
+	      }
+	      if(opts.css_link) {
+	        params.css_link = opts.css_link;
+	      }
 	      if (opts.lang) {
 	        params.lang = opts.lang;
 	      }
@@ -388,15 +391,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	        lang: params.lang || 'ru',
 	        dep_id: (params.dep_id || '')
 	      }, function (response) {
-	        if (response && response.status == 'ok') {
-
+	        if (response && response.status == 'ok') {          
 	          _config = response.config;
 	          _config.DOMAIN = (params.domain || 'http://sailplay.ru');
 	          _config.dep_id = params.dep_id || '';
 	          _config.env.staticUrl = params.static_url || _config.env.staticUrl;
 	          _config.social_networks = ['fb', 'vk', 'tw', 'gp', 'ok'];
 	          _config.platform = params.platform || 'desktop';
-
+	          window._config = _config;
 	          //postmessage events init
 	          //1. bind action events
 	          function onActionMessage(messageEvent) {
@@ -691,6 +693,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	      if (_config.auth_hash) {
 	        params.auth_hash = _config.auth_hash;
 	      }
+
+	      params.lang = params.lang || _config.lang || 'ru';
 
 	      JSONP.get(_config.DOMAIN + _config.urls.gifts.list, params, function (res) {
 	        //      console.dir(res);
@@ -987,52 +991,146 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    });
 
-	    //ADD CUSTOM VARIABLES
+	    /**
+	     * Add variables to user
+	     * @object data {custom_vars:{}, user: {}}
+	     * @function callback
+	     */
 	    sp.on('vars.add', function (data, callback) {
+
 	      if (_config == {}) {
 	        initError();
 	        return;
 	      }
+
 	      if (_config.auth_hash || data.user) {
+
 	        var obj = data.custom_vars;
-	        if (data.user) {
-	          for (var p in data.user) {
-	            obj[p] = data.user[p];
-	          }
-	        }
-	        else {
+
+	        if (data.user)
+	          for (var p in data.user) obj[p] = data.user[p];
+	        else
 	          obj.auth_hash = _config.auth_hash;
-	        }
-	        JSONP.get(_config.DOMAIN + '/js-api/' + _config.partner.id + '/users/custom-variables/add/', obj, function (res) {
-	          if (res.status == 'ok') {
+
+	        obj.lang = data.lang || _config.lang || 'ru';
+
+	        JSONP.get(_config.DOMAIN + _config.urls.users.custom_variables.add, obj, function (res) {
+	          if (res.status == 'ok')
 	            sp.send('vars.add.success', res);
-	          } else {
+	          else
 	            sp.send('vars.add.error', res);
-	          }
 	          callback && callback(res);
 	        });
+
 	      } else {
 	        sp.send('vars.add.auth.error', data);
 	      }
+
 	    });
 
-	    //LEADERBOARD SECTION
-	    sp.on('leaderboard.load', function () {
+	    /**
+	     * Get user variables
+	     * @object data {names: [], user: {}}
+	     * @function callback
+	     */
+	    sp.on("vars.batch", function (data, callback) {
+
 	      if (_config == {}) {
 	        initError();
 	        return;
 	      }
-	      var tagsObj = {
-	        auth_hash: _config.auth_hash
-	      };
-	      JSONP.get(_config.DOMAIN + _config.urls.leaderboard.data, tagsObj, function (res) {
-	        if (res.status == 'ok') {
-	          sp.send('leaderboard.load.success', res.data);
-	        } else {
-	          sp.send('leaderboard.load.error', res);
-	        }
-	      });
+
+	      if (_config.auth_hash || data.user) {
+
+	        var obj = {
+	          names: JSON.stringify(data.names)
+	        };
+
+	        if (data.user)
+	          for (var p in data.user) obj[p] = data.user[p];
+	        else
+	          obj.auth_hash = _config.auth_hash;
+
+	        obj.lang = data.lang || _config.lang || 'ru';
+
+	        JSONP.get(_config.DOMAIN + _config.urls.users.custom_variables.batch_get, obj, function (res) {
+	          if (res.status == 'ok')
+	            sp.send('vars.batch.success', res);
+	          else
+	            sp.send('vars.batch.error', res);
+	          callback && callback(res);
+	        });
+
+	      } else {
+	        sp.send('vars.batch.auth.error', data);
+	      }
+
 	    });
+
+	    /**
+	     * Add referral user
+	     * @object data { tag_type_2: "source tag", tag_type_3: "target tag", add_phone, add_email, add_first_name, add_second_name, add_moving_from, add_moving_from_zip, add_moving_to, add_move_date }
+	     * @function callback
+	     */
+	    sp.on('referral.add', function(data, callback) {
+	      if (_config == {}) {
+	        initError();
+	        return;
+	      }
+	      if (_config.auth_hash) {
+	        var obj = data.user_data
+	        obj.auth_hash = _config.auth_hash
+	        obj.tag_type_2 = data.tag_type_2
+	        obj.tag_type_3 = data.tag_type_3
+	        obj.lang = data.lang || _config.lang || 'ru';      
+
+	        var url = '/js-api/' + _config.partner.id + '/custom/referrals/add/'
+	        // _config.urls.referral.add
+	        JSONP.get(_config.DOMAIN + url, obj, function (res) {
+	          if (res.status == 'ok')
+	            sp.send('referral.add.success', res);
+	          else
+	            sp.send('referral.add.error', res);
+	            callback && callback(res);
+	        })
+	      } else {
+	        sp.send('referral.add.error', data);      
+	      }
+	    });
+
+
+	    /**
+	     * List referral user
+	     * @object data { tag_type_2: "source tag", tag_type_3: "target tag", add_phone, add_email, add_first_name, add_second_name, add_moving_from, add_moving_from_zip, add_moving_to, add_move_date }
+	     * @function callback
+	     */
+	    sp.on('referral.list', function(data, callback) {
+	      if (_config == {}) {
+	        initError();
+	        return;
+	      }
+	      if (_config.auth_hash) {
+	        var obj = {
+	          auth_hash: _config.auth_hash
+	        }
+	        
+	        obj.lang = data.lang || _config.lang || 'ru';
+	        if (data.names)
+	          obj.names = JSON.stringify(data.names)
+
+	        var url = '/js-api/' + _config.partner.id + '/custom/referrals/list/'
+	        // _config.urls.referral.list
+	        JSONP.get(_config.DOMAIN + url, obj, function (res) {
+	          if (res.status == 'ok')
+	            sp.send('referral.list.success', res);
+	          else
+	            sp.send('referral.list.error', res);
+	            callback && callback(res);
+	        })
+	      } else {
+	        sp.send('referral.list.error', data);      
+	      }
+	    });    
 
 	    //REVIEWS SECTION
 	    sp.on('load.reviews.list', function (data) {

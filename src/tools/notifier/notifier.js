@@ -29,6 +29,7 @@ export let Notifier = angular.module('magic.tools.notifier', [])
 
         scope.data = data;
         scope.show_notifier = true;
+        scope.$digest();
         console.log('notifier: ' + data.body);
 
       });

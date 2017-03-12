@@ -1,14 +1,17 @@
 import { WidgetRegister } from '@core/widget';
 import LeadsWidgetTemplate from './leads.html';
-// import './leads.less';
+import './leads.less';
 
 WidgetRegister({
   id: 'leads',
   template: LeadsWidgetTemplate,
-  inject: [
+  inject: [ 
     'SailPlayApi'
   ],
   controller: (SailPlayApi) => {
-    return (scope, elm, attrs) => {};
+    return (scope, elm, attrs) => {
+      SailPlayApi.call('referral.list', {names: []})
+    }; 
   }
-});
+}); 
+ 

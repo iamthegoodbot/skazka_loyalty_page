@@ -3,8 +3,7 @@ window.SAILPLAY_MAGIC_CONFIG = {
     "type": "hybrid",
     "auth_hash_id": "sailplay_magic_auth_hash"
   },
-  "widgets": [
-    {
+  "widgets": [{
       "id": "header",
       "enabled": true,
       "styles": {
@@ -34,65 +33,45 @@ window.SAILPLAY_MAGIC_CONFIG = {
         }
       },
       "images": {},
-      "styles": require('./css-to-json!./profile.css'),
+      "styles": require('./css-to-json!./styles/profile.css'),
       "fill_profile": {
-        "header": "Update your profile",
+        "header": "PARTNER PROFILE",
         "config": {
           "tag": "Client filled profile",
           "fields": [{
               "type": "system",
               "name": "firstName",
-              "label": "Your name",
+              "label": "First Name",
               "placeholder": "Enter your name",
               "input": "text"
             },
             {
               "type": "system",
               "name": "lastName",
-              "label": "Your last name",
+              "label": "Last Name",
               "placeholder": "Enter your last name",
               "input": "text"
             },
             {
               "type": "system",
-              "name": "addPhone",
-              "label": "Your phone number",
-              "placeholder": "9 (999) 999-99-99",
-              "input": "phone"
-            },
-            {
-              "type": "system",
               "name": "addEmail",
-              "label": "Your E-Mail",
+              "label": "Email",
               "placeholder": "your@address.com",
               "input": "email"
             },
             {
               "type": "system",
-              "name": "birthDate",
-              "label": "Your birth date",
-              "placeholder": "Enter your birth date",
-              "input": "date"
+              "name": "addPhone",
+              "label": "Phone",
+              "placeholder": "9 (999) 999-99-99",
+              "input": "phone"
             },
             {
-              "type": "system",
-              "name": "sex",
-              "label": "Gender",
-              "placeholder": "Enter your last name",
-              "input": "select",
-              "data": [{
-                  "value": "",
-                  "text": "Not defined"
-                },
-                {
-                  "value": 1,
-                  "text": "Male"
-                },
-                {
-                  "value": 2,
-                  "text": "Female"
-                }
-              ]
+              "type": "variable",
+              "name": "companyName",
+              "label": "Company Name",
+              "placeholder": "Your company here",
+              "input": "text",
             }
           ]
         }
@@ -152,7 +131,98 @@ window.SAILPLAY_MAGIC_CONFIG = {
         "gift_received_error": "Sorry, we're unable to process your request at this time"
       },
       "images": {},
-      "styles": require('./css-to-json!./gifts.css')
+      "styles": require('./css-to-json!./styles/gifts.css')
+    },
+    {
+      "id": "add-lead",
+      "enabled": true,
+      "texts": {
+        "header": "SUBMIT A NEW LEAD",
+        "subheader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+        "name": "Submit Lead",
+        "form_header": "NEW LEAD",
+        "submit": "SUBMIT"
+      },
+      "options": {
+        "points": 10
+      },
+      "form_fields": [{
+          "type": "system",
+          "name": "add_first_name",
+          "label": "First Name",
+          "placeholder": "Enter name",
+          "input": "text"
+        },
+        {
+          "type": "system",
+          "name": "add_second_name",
+          "label": "Last Name",
+          "placeholder": "Enter last name",
+          "input": "text"
+        },
+        {
+          "type": "system",
+          "name": "add_email",
+          "label": "Email",
+          "placeholder": "address@domain.com",
+          "input": "email"
+        },
+        {
+          "type": "system",
+          "name": "add_phone",
+          "label": "Phone",
+          "placeholder": "9 (999) 999-99-99",
+          "input": "phone"
+        },
+        {
+          "type": "variable",
+          "name": "add_moving_from",
+          "label": "Moving From",
+          "placeholder": "Address line 1",
+          "input": "text"
+        },
+        {
+          "type": "variable",
+          "name": "add_moving_from_zip",
+          "mod": "small",
+          "placeholder": "Zip",
+          "input": "text"
+        },
+        {
+          "type": "variable",
+          "name": "add_moving_to",
+          "label": "Moving To",          
+          "mod": "small",
+          "placeholder": "Zip",
+          "input": "text"
+        },
+        {
+          "type": "variable",
+          "name": "add_move_date",
+          "label": "Move Date",
+          "placeholder": "",
+          "input": "select",
+          "data": [{
+            "value": 1,
+            "text": "This Week",
+            "$$hashKey": "object:194"
+          }, {
+            "value": 2,
+            "text": "Within 1-2 weeks",
+            "$$hashKey": "object:195"
+          }, {
+            "value": 3,
+            "text": "Within 3-4 weeks",
+            "$$hashKey": "object:196"
+          },
+          {
+            "value": 4,
+            "text": "Within >3-4 weeks",
+            "$$hashKey": "object:197"
+          }]
+        }
+      ],
+      "styles": require('./css-to-json!./styles/add-lead.css')
     },
     {
       "id": "badges",
@@ -232,7 +302,7 @@ window.SAILPLAY_MAGIC_CONFIG = {
         "badge_name": {
           "color": "#1369AA",
           "font-weight": "600",
-          "margin-bottom": "84px" 
+          "margin-bottom": "84px"
         }
       }
     },
@@ -243,7 +313,6 @@ window.SAILPLAY_MAGIC_CONFIG = {
         "header": "leaderboard",
         "suffix": "bonus"
       },
-      "styles": require('./css-to-json!less-loader!./leaderboard.less')  
     }
   ],
   "tools": {
@@ -288,7 +357,8 @@ window.SAILPLAY_MAGIC_CONFIG = {
       "styles": {
         "modal_container": {
           "background-color": "#ededed",
-          "box-shadow": "0px 0px 16px 0px rgba(50,50,50,0.75)"
+          "width": "500px",
+          "box-shadow": "0px -15px 16px 0px rgba(50,50,50,0.75), 0px 0px 16px 0px rgba(50,50,50,0.75)"
         },
         "modal_container:before": {
           "content": "''",
@@ -297,7 +367,15 @@ window.SAILPLAY_MAGIC_CONFIG = {
           "height": "20px",
           "left": "0",
           "top": "-20px",
-          "position": "absolute"          
+          "position": "absolute"
+        },
+        "mb_popup_top": {
+          "text-align": "center"
+        },
+        "mb_popup_top span": {
+          "color": "#136AA1",
+          "float": "none",
+          "font-weight": "bold"
         },
         "close_overlay": {
           "display": "none"
@@ -327,7 +405,7 @@ window.SAILPLAY_MAGIC_CONFIG = {
           "background-repeat": "no-repeat",
           "background-color": "transparent",
           "background-position": "top left",
-          "transition": "transform .25s ease-out"          
+          "transition": "transform .25s ease-out"
         },
         "slider_arrow_right:hover": {
           "transform": "translateX(5px)"
@@ -349,7 +427,7 @@ window.SAILPLAY_MAGIC_CONFIG = {
           "text-transform": "uppercase",
           "padding": "13px 30px",
           "font-size": "12px",
-          "text-shadow": "none",          
+          "text-shadow": "none",
           "border": "1px solid transparent",
           "display": "inline-block",
           "font-weight": "300",
@@ -397,49 +475,34 @@ window.SAILPLAY_MAGIC_CONFIG = {
           "color": "#190042",
           "font-family": "helvetica,arial,nimbus sans l,sans-serif",
           "font-size": "16px",
+          "font-weight": "bold",
           "margin-bottom": "4px"
         },
         "form_input": {
-          "border": "2px solid #020707",
-          "border-radius": "0",
-          "color": "#333",
-          "font-family": "helvetica,arial,nimbus sans l,sans-serif",
-          "font-weight": 300,
-          "height": "44px",
-          "line-height": "44px",
-          "padding-left": "15px"
-        },
-        "form_date": {
-          "font-family": "helvetica,arial,nimbus sans l,sans-serif",
-          "font-weight": 300
+          "border-top": "none"
         },
         "form_date span": {
-          "color": "#333",
-          "border": "2px solid #020707",
-          "border-radius": "0",
-          "background": "white",
-          "line-height": "44px",
-          "height": "44px"
+          "border": "none",
+          "background-color": "white"
         },
-        "form_date select": {
-          "color": "#333",
-          "border": "2px solid #020707",
-          "border-radius": "0",
-          "background": "white",
-          "line-height": "44px",
-          "height": "44px"
+        "form_field": {
+          "float": "none",
+          "padding-right": "0",
+          "width": "auto"
         },
-        "form_date .form_date__popup": {
-          "border": "2px solid #ccc",
-          "background": "white"
-        },
-        "form_date .form_date__popup a": {
-          "color": "#333"
+        "answ_right button": {
+          "margin-right": "0"
         }
       }
     }
   },
   "data": {
+    "leaderboard_data": {
+      "tag": "partner_type_2"      
+    },
+    "tag_type_1": "partner_type_1",
+    "tag_type_2": "partner_type_2",
+    "tag_type_3": "partner_type_3",
     "history": {
       "purchase": "Purchase",
       "gift_purchase": "Gift",
