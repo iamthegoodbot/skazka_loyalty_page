@@ -237,7 +237,11 @@ return webpackJsonp([0],[
 
 	  }]);
 	  return Magic;
-	}(), _class.Widget = _widget.WidgetRegister, _class.version = '${MAGIC_VERSION}', _temp);
+<<<<<<< Updated upstream
+	}(), _class.Widget = _widget.WidgetRegister, _class.version = '2.1.6', _temp);
+=======
+	}(), _class.Widget = _widget.WidgetRegister, _class.version = '2.1.6', _temp);
+>>>>>>> Stashed changes
 
 	//extend SAILPLAY with Magic class
 
@@ -5146,7 +5150,7 @@ return webpackJsonp([0],[
 			};
 		},
 		isOldIE = memoize(function() {
-			return /msie [6-9]\b/.test(window.navigator.userAgent.toLowerCase());
+			return /msie [6-9]\b/.test(self.navigator.userAgent.toLowerCase());
 		}),
 		getHeadElement = memoize(function () {
 			return document.head || document.getElementsByTagName("head")[0];

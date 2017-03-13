@@ -6,7 +6,7 @@
 
             <a class="sp_cp-widget__btn sp_cp-widget__search-btn button_primary"
                data-ng-bind="widget.texts.button_search"
-               data-ng-if="widget.options.search_link"
+               data-ng-if="show_search_link && widget.options.search_link"
                data-ng-href="{{ widget.options.search_link }}" target="_blank"></a>
 
             <a href="#" class="sp_cp-widget__btn sp_cp-widget__form-btn button_primary"
@@ -17,7 +17,8 @@
 
             <a href="#" class="sp_cp-widget__btn sp_cp-widget__form-btn button_primary"
                data-ng-bind="widget.texts.button_form"
-               data-ng-click="$event.preventDefault();show_form=true;"></a>
+               data-ng-if="show_request_charity"
+               data-ng-click="$event.preventDefault();$parent.show_form=true;"></a>
 
 
             <a href="#" class="sp_cp-widget__btn sp_cp-widget__form-btn button_primary"

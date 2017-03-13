@@ -351,6 +351,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	      params.dep_id = _config.dep_id || '';
 	      params.background = opts.background || '';
 	      params.partner_info = opts.partner_info || 0;
+	      if(opts.reg_match_email_oid) {
+	        params.reg_match_email_oid = opts.reg_match_email_oid;
+	      }
+	      if(opts.css_link) {
+	        params.css_link = opts.css_link;
+	      }
 	      if (opts.lang) {
 	        params.lang = opts.lang;
 	      }
@@ -984,33 +990,80 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    });
 
-	    //ADD CUSTOM VARIABLES
+	    /**
+	     * Add variables to user
+	     * @object data {custom_vars:{}, user: {}}
+	     * @function callback
+	     */
 	    sp.on('vars.add', function (data, callback) {
+
 	      if (_config == {}) {
 	        initError();
 	        return;
 	      }
+
 	      if (_config.auth_hash || data.user) {
+
 	        var obj = data.custom_vars;
-	        if (data.user) {
-	          for (var p in data.user) {
-	            obj[p] = data.user[p];
-	          }
-	        }
-	        else {
+
+	        if (data.user)
+	          for (var p in data.user) obj[p] = data.user[p];
+	        else
 	          obj.auth_hash = _config.auth_hash;
-	        }
-	        JSONP.get(_config.DOMAIN + '/js-api/' + _config.partner.id + '/users/custom-variables/add/', obj, function (res) {
-	          if (res.status == 'ok') {
+
+	        obj.lang = data.lang || _config.lang || 'ru';
+
+	        JSONP.get(_config.DOMAIN + _config.urls.users.custom_variables.add, obj, function (res) {
+	          if (res.status == 'ok')
 	            sp.send('vars.add.success', res);
-	          } else {
+	          else
 	            sp.send('vars.add.error', res);
-	          }
 	          callback && callback(res);
 	        });
+
 	      } else {
 	        sp.send('vars.add.auth.error', data);
 	      }
+
+	    });
+
+	    /**
+	     * Get user variables
+	     * @object data {names: [], user: {}}
+	     * @function callback
+	     */
+	    sp.on("vars.batch", function (data, callback) {
+
+	      if (_config == {}) {
+	        initError();
+	        return;
+	      }
+
+	      if (_config.auth_hash || data.user) {
+
+	        var obj = {
+	          names: JSON.stringify(data.names)
+	        };
+
+	        if (data.user)
+	          for (var p in data.user) obj[p] = data.user[p];
+	        else
+	          obj.auth_hash = _config.auth_hash;
+
+	        obj.lang = data.lang || _config.lang || 'ru';
+
+	        JSONP.get(_config.DOMAIN + _config.urls.users.custom_variables.batch_get, obj, function (res) {
+	          if (res.status == 'ok')
+	            sp.send('vars.batch.success', res);
+	          else
+	            sp.send('vars.batch.error', res);
+	          callback && callback(res);
+	        });
+
+	      } else {
+	        sp.send('vars.batch.auth.error', data);
+	      }
+
 	    });
 
 	    //LEADERBOARD SECTION
