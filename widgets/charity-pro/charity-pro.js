@@ -33,19 +33,28 @@ WidgetRegister({
       scope.show_search_link = false;
       scope.show_request_charity = false;
 
-      SailPlay.send('tags.exist',
-        {tags: [scope.widget.options.show_search_link, scope.widget.options.show_request_charity]},
-        (tags_res) => {
-        scope.$apply(() => {
-          if (tags_res.status === 'ok') {
-            scope.show_search_link = tags_res.tags[0].exist;
-            scope.show_request_charity = tags_res.tags[1].exist;
-          }
-        });
-      });
-
       // User info
       scope.user = SailPlayApi.data('load.user.info');
+
+      console.log('user', scope.user());
+
+      scope.$watch(() => {
+        return angular.toJson([SailPlayApi.data('load.user.info')()]);
+      }, (new_val, old_val) => {
+
+
+        SailPlay.send('tags.exist',
+          {tags: [scope.widget.options.show_search_link, scope.widget.options.show_request_charity]},
+          (tags_res) => {
+            scope.$apply(() => {
+              if (tags_res.status === 'ok') {
+                scope.show_search_link = tags_res.tags[0].exist;
+                scope.show_request_charity = tags_res.tags[1].exist;
+              }
+            });
+          });
+
+      });
 
       // Method for existing tags, maybe need tranfer to some sailplay module
       scope.tags_exist = function (params, callback) {

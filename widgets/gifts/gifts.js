@@ -107,7 +107,6 @@ Widget.provider('GiftsWidget', function () {
 
       const unique = !get_gift_type_config(config.id);
       unique && gift_types.push(config);
-      console.log('registered gift types: ', gift_types);
 
     },
     $get: function () {
@@ -173,7 +172,6 @@ Widget.directive('giftType', function (GiftsWidget, $injector, $compile) {
 
         elm.append($compile(gift_type_config.template)(gift_type_scope));
 
-        console.log('gift type data', data);
       });
 
     }
@@ -218,7 +216,6 @@ Widget.directive('magicGift', function($timeout){
           _width = Math.floor(_wrap_width / _count_show);
 
           angular.forEach(slides, function (slide) {
-            console.log("SLIDE:", slide);
             slide.style.width = (_width - 30) + 'px';
           });
 

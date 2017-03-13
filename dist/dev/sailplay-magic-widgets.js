@@ -617,8 +617,8 @@ return webpackJsonp([2],[
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./actions.less", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./actions.less");
+			module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./actions.less", function() {
+				var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./actions.less");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -758,8 +758,8 @@ return webpackJsonp([2],[
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./badges.less", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./badges.less");
+			module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./badges.less", function() {
+				var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./badges.less");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -828,8 +828,8 @@ return webpackJsonp([2],[
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./banner.less", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./banner.less");
+			module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./banner.less", function() {
+				var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./banner.less");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -931,8 +931,8 @@ return webpackJsonp([2],[
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./card-quests.less", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./card-quests.less");
+			module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./card-quests.less", function() {
+				var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./card-quests.less");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -997,17 +997,24 @@ return webpackJsonp([2],[
 	      scope.show_search_link = false;
 	      scope.show_request_charity = false;
 
-	      SailPlay.send('tags.exist', { tags: [scope.widget.options.show_search_link, scope.widget.options.show_request_charity] }, function (tags_res) {
-	        scope.$apply(function () {
-	          if (tags_res.status === 'ok') {
-	            scope.show_search_link = tags_res.tags[0].exist;
-	            scope.show_request_charity = tags_res.tags[1].exist;
-	          }
-	        });
-	      });
-
 	      // User info
 	      scope.user = SailPlayApi.data('load.user.info');
+
+	      console.log('user', scope.user());
+
+	      scope.$watch(function () {
+	        return angular.toJson([SailPlayApi.data('load.user.info')()]);
+	      }, function (new_val, old_val) {
+
+	        SailPlay.send('tags.exist', { tags: [scope.widget.options.show_search_link, scope.widget.options.show_request_charity] }, function (tags_res) {
+	          scope.$apply(function () {
+	            if (tags_res.status === 'ok') {
+	              scope.show_search_link = tags_res.tags[0].exist;
+	              scope.show_request_charity = tags_res.tags[1].exist;
+	            }
+	          });
+	        });
+	      });
 
 	      // Method for existing tags, maybe need tranfer to some sailplay module
 	      scope.tags_exist = function (params, callback) {
@@ -1019,39 +1026,37 @@ return webpackJsonp([2],[
 	        var tags = params.tags || [];
 
 	        if (tags.length > 0) {
-	          (function () {
 
-	            var chunk = function chunk(array, chunkSize) {
-	              return [].concat.apply([], array.map(function (elem, i) {
-	                return i % chunkSize ? [] : [array.slice(i, i + chunkSize)];
-	              }));
-	            };
+	          var chunk = function chunk(array, chunkSize) {
+	            return [].concat.apply([], array.map(function (elem, i) {
+	              return i % chunkSize ? [] : [array.slice(i, i + chunkSize)];
+	            }));
+	          };
 
-	            var chunked_tags = chunk(tags, 10);
+	          var chunked_tags = chunk(tags, 10);
 
-	            var tag_promises = [];
+	          var tag_promises = [];
 
-	            angular.forEach(chunked_tags, function (chunk) {
+	          angular.forEach(chunked_tags, function (chunk) {
 
-	              var promise = $q(function (resolve, reject) {
+	            var promise = $q(function (resolve, reject) {
 
-	                SailPlay.send('tags.exist', { tags: chunk }, function (tags_res) {
-	                  if (tags_res.status === 'ok') {
-	                    response = response.concat(tags_res.tags);
-	                    resolve(tags_res);
-	                  } else {
-	                    reject(tags_res);
-	                  }
-	                });
+	              SailPlay.send('tags.exist', { tags: chunk }, function (tags_res) {
+	                if (tags_res.status === 'ok') {
+	                  response = response.concat(tags_res.tags);
+	                  resolve(tags_res);
+	                } else {
+	                  reject(tags_res);
+	                }
 	              });
-
-	              tag_promises.push(promise);
 	            });
 
-	            $q.all(tag_promises).then(function () {
-	              callback && callback(response);
-	            });
-	          })();
+	            tag_promises.push(promise);
+	          });
+
+	          $q.all(tag_promises).then(function () {
+	            callback && callback(response);
+	          });
 	        } else {
 	          callback && callback();
 	        }
@@ -1220,8 +1225,8 @@ return webpackJsonp([2],[
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./charity-pro.less", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./charity-pro.less");
+			module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./charity-pro.less", function() {
+				var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./charity-pro.less");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -1330,8 +1335,8 @@ return webpackJsonp([2],[
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./event_message.less", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./event_message.less");
+			module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./event_message.less", function() {
+				var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./event_message.less");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -1468,7 +1473,6 @@ return webpackJsonp([2],[
 
 	      var unique = !get_gift_type_config(config.id);
 	      unique && gift_types.push(config);
-	      console.log('registered gift types: ', gift_types);
 	    },
 	    $get: function $get() {
 
@@ -1529,8 +1533,6 @@ return webpackJsonp([2],[
 	        $injector.invoke(gift_type_config.controller)(gift_type_scope, elm);
 
 	        elm.append($compile(gift_type_config.template)(gift_type_scope));
-
-	        console.log('gift type data', data);
 	      });
 	    }
 	  };
@@ -1574,7 +1576,6 @@ return webpackJsonp([2],[
 	          _width = Math.floor(_wrap_width / _count_show);
 
 	          _angular2.default.forEach(slides, function (slide) {
-	            console.log("SLIDE:", slide);
 	            slide.style.width = _width - 30 + 'px';
 	          });
 	        }, 200);
@@ -1605,8 +1606,8 @@ return webpackJsonp([2],[
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./gifts.less", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./gifts.less");
+			module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./gifts.less", function() {
+				var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./gifts.less");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -1835,8 +1836,8 @@ return webpackJsonp([2],[
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./gifts-grid.less", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./gifts-grid.less");
+			module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./gifts-grid.less", function() {
+				var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./gifts-grid.less");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -1907,8 +1908,8 @@ return webpackJsonp([2],[
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./header.less", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./header.less");
+			module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./header.less", function() {
+				var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./header.less");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -2023,8 +2024,8 @@ return webpackJsonp([2],[
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./image-statuses.less", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./image-statuses.less");
+			module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./image-statuses.less", function() {
+				var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./image-statuses.less");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -2097,8 +2098,8 @@ return webpackJsonp([2],[
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./leaderboard.less", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./leaderboard.less");
+			module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./leaderboard.less", function() {
+				var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./leaderboard.less");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -2235,8 +2236,8 @@ return webpackJsonp([2],[
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./points-status.less", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./points-status.less");
+			module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./points-status.less", function() {
+				var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./points-status.less");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -2292,29 +2293,27 @@ return webpackJsonp([2],[
 	      var PURCHASES_EVENT = scope.widget.options.event_id;
 
 	      if (scope.widget && scope.widget.options && scope.widget.options.badge_events && scope.widget.options.badge_events.length) {
-	        (function () {
-	          var tags = [];
-	          var position = 0;
-	          angular.forEach(scope.widget.options.badge_events, function (array) {
-	            angular.forEach(array.events, function (event) {
-	              tags.push(event.name);
-	            });
+	        var tags = [];
+	        var position = 0;
+	        angular.forEach(scope.widget.options.badge_events, function (array) {
+	          angular.forEach(array.events, function (event) {
+	            tags.push(event.name);
 	          });
-	          SailPlayApi.call('tags.exist', { tags: tags }, function (res) {
-	            if (res && res.tags) {
-	              var badge_events = scope.widget.options.badge_events.filter(function (array) {
-	                return array.events.filter(function (event) {
-	                  return res.tags.filter(function (tag) {
-	                    return tag.name == event.name && tag.exist == event.exist;
-	                  }).length;
-	                }).length == array.events.length;
-	              })[0];
-	              position = badge_events && badge_events.position || 0;
-	              scope.badges_list = scope.sailplay.badges.list().multilevel_badges[position];
-	            }
-	            scope.$apply();
-	          });
-	        })();
+	        });
+	        SailPlayApi.call('tags.exist', { tags: tags }, function (res) {
+	          if (res && res.tags) {
+	            var badge_events = scope.widget.options.badge_events.filter(function (array) {
+	              return array.events.filter(function (event) {
+	                return res.tags.filter(function (tag) {
+	                  return tag.name == event.name && tag.exist == event.exist;
+	                }).length;
+	              }).length == array.events.length;
+	            })[0];
+	            position = badge_events && badge_events.position || 0;
+	            scope.badges_list = scope.sailplay.badges.list().multilevel_badges[position];
+	          }
+	          scope.$apply();
+	        });
 	      }
 
 	      scope.badges_list = null;
@@ -2405,8 +2404,8 @@ return webpackJsonp([2],[
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./points_rate_progress.less", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./points_rate_progress.less");
+			module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./points_rate_progress.less", function() {
+				var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./points_rate_progress.less");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -2545,8 +2544,8 @@ return webpackJsonp([2],[
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./profile.less", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./profile.less");
+			module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./profile.less", function() {
+				var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./profile.less");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -2668,8 +2667,8 @@ return webpackJsonp([2],[
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./statuses.less", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./statuses.less");
+			module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./statuses.less", function() {
+				var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./statuses.less");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
