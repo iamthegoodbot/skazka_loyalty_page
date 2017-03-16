@@ -1075,6 +1075,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        initError();
 	        return;
 	      }
+
 	      var tagsObj = {
 	        auth_hash: _config.auth_hash
 	      };

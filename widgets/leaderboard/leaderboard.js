@@ -9,18 +9,19 @@ WidgetRegister({
   id: 'leaderboard',
   template: LeaderboardWidgetTemplate,
   inject: [
+    'SailPlay',
     'SailPlayApi',
     'MAGIC_CONFIG'
   ],
-  controller: (SailPlayApi, MAGIC_CONFIG) => {
+  controller: (SailPlay, SailPlayApi, MAGIC_CONFIG) => {
     return (scope, elm, attrs) => {
 
       if (window._config == {}) {
         initError();
         return;
       }
-
-      var _config = window._config;
+      
+      var _config = SailPlay.config();
 
       var tagsObj = {
         auth_hash: _config.auth_hash

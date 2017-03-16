@@ -244,7 +244,7 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
                     form_field.value = user.user.first_name || '';
                     break;
 
-                  case 'lastName':
+                  case 'lastName': 
 
                     form_field.value = user.user.last_name || '';
                     break;
