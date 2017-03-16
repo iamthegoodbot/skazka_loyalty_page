@@ -212,4 +212,4 @@ export default class Magic {
 }
 
 //extend SAILPLAY with Magic class
-SAILPLAY.Magic = SAILPLAY.Magic || Magic;
+SAILPLAY.Magic = SAILPLAY.Magic || Magic; 

@@ -7,6 +7,13 @@
     width: 80%;
     margin: 0 auto;
     height: 400px;
+    &_status {
+      width: 60%;
+      
+      select {
+        height: auto;
+      }
+    }
     &_info {
       display: table-cell;
       width: 20%;
@@ -23,8 +30,10 @@
       width: 80%;
     }
     &_partner_item {
-      height: 250px;
-      width: 250px;
+      box-sizing: border-box;
+      padding: 20px;
+      height: 350px;
+      width: 350px;
       display: inline-block;
       border: 3px solid #3e699e;
       border-radius: 25px;
@@ -35,10 +44,13 @@
       }
       
       .field {
+        width: 100%;
+        height: 10%;
         .caption {
           float: left;
           width: 80px;
           color: #bbb;
+          text-align: left;
         }
         .value {
           float: left;
