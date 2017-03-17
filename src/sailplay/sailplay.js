@@ -120,7 +120,6 @@ export let SailPlay = angular.module('sailplay', [
               break;
 
             case 'remote':
-
               sp.send('login.remote', auth_options);
 
           }

@@ -590,15 +590,15 @@ return webpackJsonp([0],[
 
 	var _sailplay2 = _interopRequireDefault(_sailplay);
 
-	var _sailplay3 = __webpack_require__(35);
+	var _sailplay3 = __webpack_require__(55);
 
 	var _sailplay4 = _interopRequireDefault(_sailplay3);
 
-	var _sailplay5 = __webpack_require__(86);
+	var _sailplay5 = __webpack_require__(90);
 
 	var _sailplay6 = _interopRequireDefault(_sailplay5);
 
-	var _sailplay7 = __webpack_require__(87);
+	var _sailplay7 = __webpack_require__(91);
 
 	var _sailplay8 = _interopRequireDefault(_sailplay7);
 
@@ -703,7 +703,6 @@ return webpackJsonp([0],[
 	            break;
 
 	          case 'remote':
-
 	            sp.send('login.remote', auth_options);
 
 	        }
@@ -886,6 +885,10 @@ return webpackJsonp([0],[
 	});
 	exports.SailPlayProfile = undefined;
 
+	var _keys = __webpack_require__(35);
+
+	var _keys2 = _interopRequireDefault(_keys);
+
 	var _angular = __webpack_require__(31);
 
 	var _angular2 = _interopRequireDefault(_angular);
@@ -1038,6 +1041,9 @@ return webpackJsonp([0],[
 	        this.name = params.name;
 	        this.label = params.label;
 	        this.placeholder = params.placeholder;
+	        this.required = params.required;
+	        this.has_other = params.has_other;
+	        this.max = params.max;
 	        this.input = params.input || 'text';
 
 	        if (params.data) {
@@ -1085,78 +1091,110 @@ return webpackJsonp([0],[
 
 	      var saved_form = false;
 
-	      (function observeUser() {
-	        SailPlayApi.observe('load.user.info').then(function (user) {
-	          if (!user) return;
-	          var form = scope.sailplay.fill_profile.form;
-	          form.fields = config.fields.map(function (field) {
+	      scope.multiple_limit = function (field) {
+	        field.other = '';
+	        var valid = field.value.length <= field.max;
+	        scope.fill_profile_form[field.name].$setValidity('max', valid);
+	      };
 
-	            var form_field = new SailPlayFillProfile.Field(field);
+	      scope.check_error = function (field) {
+	        var valid = false;
+	        if (field.has_other && !field.value && !field.other) valid = false;else if (!field.has_other && !field.value) valid = false;else valid = true;
 
-	            //we need to assign received values to form
-	            switch (form_field.type) {
+	        scope.fill_profile_form[field.name].$setValidity('select_required', valid);
+	        return !valid;
+	      };
 
-	              //we need define type
-	              case 'system':
+	      scope.$watch(function () {
+	        return _angular2.default.toJson([SailPlayApi.data('load.user.info')()]);
+	      }, function () {
 
-	                //bind different values to form field
-	                switch (form_field.name) {
+	        var user = SailPlayApi.data('load.user.info')();
+	        if (!user) return;
 
-	                  case 'firstName':
+	        var custom_fields = [];
+	        var form = scope.sailplay.fill_profile.form;
 
-	                    form_field.value = user.user.first_name || '';
-	                    break;
+	        form.fields = config.fields.map(function (field) {
 
-	                  case 'lastName':
+	          var form_field = new SailPlayFillProfile.Field(field);
+	          if (field.type == 'variable') custom_fields.push(form_field);
 
-	                    form_field.value = user.user.last_name || '';
-	                    break;
+	          //we need to assign received values to form
+	          switch (form_field.type) {
 
-	                  case 'middleName':
+	            //we need define type
+	            case 'system':
 
-	                    form_field.value = user.user.middle_name || '';
-	                    break;
+	              //bind different values to form field
+	              switch (form_field.name) {
 
-	                  case 'birthDate':
+	                case 'firstName':
 
-	                    var bd = user.user.birth_date && user.user.birth_date.split('-');
-	                    form_field.value = bd ? [parseInt(bd[2]), parseInt(bd[1]), parseInt(bd[0])] : [null, null, null];
-	                    break;
+	                  form_field.value = user.user.first_name || '';
+	                  break;
 
-	                  case 'addPhone':
+	                case 'lastName':
 
-	                    form_field.value = user.user.phone || '';
-	                    break;
+	                  form_field.value = user.user.last_name || '';
+	                  break;
 
-	                  case 'addEmail':
+	                case 'middleName':
 
-	                    form_field.value = user.user.email || '';
-	                    break;
+	                  form_field.value = user.user.middle_name || '';
+	                  break;
 
-	                  case 'sex':
+	                case 'birthDate':
 
-	                    form_field.value = user.user.sex || '';
-	                    break;
+	                  var bd = user.user.birth_date && user.user.birth_date.split('-');
+	                  form_field.value = bd ? [parseInt(bd[2]), parseInt(bd[1]), parseInt(bd[0])] : [null, null, null];
+	                  break;
 
-	                }
+	                case 'addPhone':
 
-	                break;
+	                  form_field.value = user.user.phone || '';
+	                  break;
 
-	            }
+	                case 'addEmail':
 
-	            return form_field;
-	          });
+	                  form_field.value = user.user.email || '';
+	                  break;
 
-	          form.auth_hash = SailPlay.config().auth_hash;
-	          //angular.extend(scope.profile_form.user, user.user);
-	          //if(ipCookie(FillProfile.cookie_name) && SailPlay.config().auth_hash === ipCookie(FillProfile.cookie_name).user.auth_hash ){
-	          //  angular.extend(scope.profile_form, ipCookie(FillProfile.cookie_name));
-	          //}
-	          console.dir(form);
-	          saved_form = _angular2.default.copy(form);
-	          observeUser();
+	                case 'sex':
+
+	                  form_field.value = user.user.sex || '';
+	                  break;
+
+	              }
+
+	              break;
+
+	          }
+
+	          return form_field;
 	        });
-	      })();
+
+	        if (custom_fields.length) {
+	          SailPlayApi.call("vars.batch", { names: custom_fields.map(function (field) {
+	              return field.name;
+	            }) }, function (res) {
+	            _angular2.default.forEach(res.vars, function (variable) {
+	              _angular2.default.forEach(custom_fields, function (field) {
+	                if (field.name == variable.name) field.value = variable.value;
+	              });
+	            });
+	          });
+	        }
+
+	        form.auth_hash = SailPlay.config().auth_hash;
+	        //angular.extend(scope.profile_form.user, user.user);
+	        //if(ipCookie(FillProfile.cookie_name) && SailPlay.config().auth_hash === ipCookie(FillProfile.cookie_name).user.auth_hash ){
+	        //  angular.extend(scope.profile_form, ipCookie(FillProfile.cookie_name));
+	        //}
+	        console.dir(form);
+	        $rootScope.$broadcast('openProfile');
+	        saved_form = _angular2.default.copy(form);
+	      });
 
 	      scope.revert_profile_form = function (form) {
 	        if (form) {
@@ -1188,11 +1226,13 @@ return webpackJsonp([0],[
 	        }
 
 	        var data_user = SailPlayApi.data('load.user.info')() && SailPlayApi.data('load.user.info')().user;
-
-	        var req_user = {};
+	        var req_user = {},
+	            custom_user_vars = {};
 
 	        _angular2.default.forEach(scope.sailplay.fill_profile.form.fields, function (item) {
-	          req_user[item.name] = item.value;
+	          if (item.type == 'variable') {
+	            custom_user_vars[item.name] = item.value;
+	          } else req_user[item.name] = item.value;
 	        });
 
 	        if (req_user.addPhone && data_user && data_user.phone && data_user.phone.replace(/\D/g, '') == req_user.addPhone.replace(/\D/g, '')) {
@@ -1213,6 +1253,14 @@ return webpackJsonp([0],[
 	        SailPlay.send('users.update', req_user, function (user_res) {
 
 	          if (user_res.status === 'ok') {
+
+	            if ((0, _keys2.default)(custom_user_vars).length) {
+	              SailPlay.send('vars.add', { custom_vars: custom_user_vars }, function (res_vars) {
+	                if (!res_vars.status == 'ok') $rootScope.$broadcast('notifier:notify', {
+	                  body: res_vars.message
+	                });
+	              });
+	            }
 
 	            scope.$apply(function () {
 
@@ -1241,6 +1289,242 @@ return webpackJsonp([0],[
 /* 35 */
 /***/ function(module, exports, __webpack_require__) {
 
+	module.exports = { "default": __webpack_require__(36), __esModule: true };
+
+/***/ },
+/* 36 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(37);
+	module.exports = __webpack_require__(16).Object.keys;
+
+/***/ },
+/* 37 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// 19.1.2.14 Object.keys(O)
+	var toObject = __webpack_require__(38)
+	  , $keys    = __webpack_require__(40);
+
+	__webpack_require__(54)('keys', function(){
+	  return function keys(it){
+	    return $keys(toObject(it));
+	  };
+	});
+
+/***/ },
+/* 38 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// 7.1.13 ToObject(argument)
+	var defined = __webpack_require__(39);
+	module.exports = function(it){
+	  return Object(defined(it));
+	};
+
+/***/ },
+/* 39 */
+/***/ function(module, exports) {
+
+	// 7.2.1 RequireObjectCoercible(argument)
+	module.exports = function(it){
+	  if(it == undefined)throw TypeError("Can't call method on  " + it);
+	  return it;
+	};
+
+/***/ },
+/* 40 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// 19.1.2.14 / 15.2.3.14 Object.keys(O)
+	var $keys       = __webpack_require__(41)
+	  , enumBugKeys = __webpack_require__(53);
+
+	module.exports = Object.keys || function keys(O){
+	  return $keys(O, enumBugKeys);
+	};
+
+/***/ },
+/* 41 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var has          = __webpack_require__(42)
+	  , toIObject    = __webpack_require__(43)
+	  , arrayIndexOf = __webpack_require__(46)(false)
+	  , IE_PROTO     = __webpack_require__(50)('IE_PROTO');
+
+	module.exports = function(object, names){
+	  var O      = toIObject(object)
+	    , i      = 0
+	    , result = []
+	    , key;
+	  for(key in O)if(key != IE_PROTO)has(O, key) && result.push(key);
+	  // Don't enum bug & hidden keys
+	  while(names.length > i)if(has(O, key = names[i++])){
+	    ~arrayIndexOf(result, key) || result.push(key);
+	  }
+	  return result;
+	};
+
+/***/ },
+/* 42 */
+/***/ function(module, exports) {
+
+	var hasOwnProperty = {}.hasOwnProperty;
+	module.exports = function(it, key){
+	  return hasOwnProperty.call(it, key);
+	};
+
+/***/ },
+/* 43 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// to indexed object, toObject with fallback for non-array-like ES3 strings
+	var IObject = __webpack_require__(44)
+	  , defined = __webpack_require__(39);
+	module.exports = function(it){
+	  return IObject(defined(it));
+	};
+
+/***/ },
+/* 44 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// fallback for non-array-like ES3 and non-enumerable old V8 strings
+	var cof = __webpack_require__(45);
+	module.exports = Object('z').propertyIsEnumerable(0) ? Object : function(it){
+	  return cof(it) == 'String' ? it.split('') : Object(it);
+	};
+
+/***/ },
+/* 45 */
+/***/ function(module, exports) {
+
+	var toString = {}.toString;
+
+	module.exports = function(it){
+	  return toString.call(it).slice(8, -1);
+	};
+
+/***/ },
+/* 46 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// false -> Array#indexOf
+	// true  -> Array#includes
+	var toIObject = __webpack_require__(43)
+	  , toLength  = __webpack_require__(47)
+	  , toIndex   = __webpack_require__(49);
+	module.exports = function(IS_INCLUDES){
+	  return function($this, el, fromIndex){
+	    var O      = toIObject($this)
+	      , length = toLength(O.length)
+	      , index  = toIndex(fromIndex, length)
+	      , value;
+	    // Array#includes uses SameValueZero equality algorithm
+	    if(IS_INCLUDES && el != el)while(length > index){
+	      value = O[index++];
+	      if(value != value)return true;
+	    // Array#toIndex ignores holes, Array#includes - not
+	    } else for(;length > index; index++)if(IS_INCLUDES || index in O){
+	      if(O[index] === el)return IS_INCLUDES || index || 0;
+	    } return !IS_INCLUDES && -1;
+	  };
+	};
+
+/***/ },
+/* 47 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// 7.1.15 ToLength
+	var toInteger = __webpack_require__(48)
+	  , min       = Math.min;
+	module.exports = function(it){
+	  return it > 0 ? min(toInteger(it), 0x1fffffffffffff) : 0; // pow(2, 53) - 1 == 9007199254740991
+	};
+
+/***/ },
+/* 48 */
+/***/ function(module, exports) {
+
+	// 7.1.4 ToInteger
+	var ceil  = Math.ceil
+	  , floor = Math.floor;
+	module.exports = function(it){
+	  return isNaN(it = +it) ? 0 : (it > 0 ? floor : ceil)(it);
+	};
+
+/***/ },
+/* 49 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var toInteger = __webpack_require__(48)
+	  , max       = Math.max
+	  , min       = Math.min;
+	module.exports = function(index, length){
+	  index = toInteger(index);
+	  return index < 0 ? max(index + length, 0) : min(index, length);
+	};
+
+/***/ },
+/* 50 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var shared = __webpack_require__(51)('keys')
+	  , uid    = __webpack_require__(52);
+	module.exports = function(key){
+	  return shared[key] || (shared[key] = uid(key));
+	};
+
+/***/ },
+/* 51 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var global = __webpack_require__(15)
+	  , SHARED = '__core-js_shared__'
+	  , store  = global[SHARED] || (global[SHARED] = {});
+	module.exports = function(key){
+	  return store[key] || (store[key] = {});
+	};
+
+/***/ },
+/* 52 */
+/***/ function(module, exports) {
+
+	var id = 0
+	  , px = Math.random();
+	module.exports = function(key){
+	  return 'Symbol('.concat(key === undefined ? '' : key, ')_', (++id + px).toString(36));
+	};
+
+/***/ },
+/* 53 */
+/***/ function(module, exports) {
+
+	// IE 8- don't enum bug keys
+	module.exports = (
+	  'constructor,hasOwnProperty,isPrototypeOf,propertyIsEnumerable,toLocaleString,toString,valueOf'
+	).split(',');
+
+/***/ },
+/* 54 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// most Object methods by ES6 should accept primitives
+	var $export = __webpack_require__(14)
+	  , core    = __webpack_require__(16)
+	  , fails   = __webpack_require__(25);
+	module.exports = function(KEY, exec){
+	  var fn  = (core.Object || {})[KEY] || Object[KEY]
+	    , exp = {};
+	  exp[KEY] = exec(fn);
+	  $export($export.S + $export.F * fails(function(){ fn(1); }), 'Object', exp);
+	};
+
+/***/ },
+/* 55 */
+/***/ function(module, exports, __webpack_require__) {
+
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
@@ -1248,7 +1532,7 @@ return webpackJsonp([0],[
 	});
 	exports.SailPlayGifts = undefined;
 
-	var _promise = __webpack_require__(36);
+	var _promise = __webpack_require__(56);
 
 	var _promise2 = _interopRequireDefault(_promise);
 
@@ -1389,36 +1673,36 @@ return webpackJsonp([0],[
 	exports.default = SailPlayGifts.name;
 
 /***/ },
-/* 36 */
+/* 56 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = { "default": __webpack_require__(37), __esModule: true };
+	module.exports = { "default": __webpack_require__(57), __esModule: true };
 
 /***/ },
-/* 37 */
+/* 57 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(38);
-	__webpack_require__(39);
-	__webpack_require__(68);
+	__webpack_require__(58);
+	__webpack_require__(59);
 	__webpack_require__(72);
+	__webpack_require__(76);
 	module.exports = __webpack_require__(16).Promise;
 
 /***/ },
-/* 38 */
+/* 58 */
 /***/ function(module, exports) {
 
 	
 
 /***/ },
-/* 39 */
+/* 59 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var $at  = __webpack_require__(40)(true);
+	var $at  = __webpack_require__(60)(true);
 
 	// 21.1.3.27 String.prototype[@@iterator]()
-	__webpack_require__(43)(String, 'String', function(iterated){
+	__webpack_require__(61)(String, 'String', function(iterated){
 	  this._t = String(iterated); // target
 	  this._i = 0;                // next index
 	// 21.1.5.2.1 %StringIteratorPrototype%.next()
@@ -1433,11 +1717,11 @@ return webpackJsonp([0],[
 	});
 
 /***/ },
-/* 40 */
+/* 60 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var toInteger = __webpack_require__(41)
-	  , defined   = __webpack_require__(42);
+	var toInteger = __webpack_require__(48)
+	  , defined   = __webpack_require__(39);
 	// true  -> String#at
 	// false -> String#codePointAt
 	module.exports = function(TO_STRING){
@@ -1455,41 +1739,20 @@ return webpackJsonp([0],[
 	};
 
 /***/ },
-/* 41 */
-/***/ function(module, exports) {
-
-	// 7.1.4 ToInteger
-	var ceil  = Math.ceil
-	  , floor = Math.floor;
-	module.exports = function(it){
-	  return isNaN(it = +it) ? 0 : (it > 0 ? floor : ceil)(it);
-	};
-
-/***/ },
-/* 42 */
-/***/ function(module, exports) {
-
-	// 7.2.1 RequireObjectCoercible(argument)
-	module.exports = function(it){
-	  if(it == undefined)throw TypeError("Can't call method on  " + it);
-	  return it;
-	};
-
-/***/ },
-/* 43 */
+/* 61 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var LIBRARY        = __webpack_require__(44)
+	var LIBRARY        = __webpack_require__(62)
 	  , $export        = __webpack_require__(14)
-	  , redefine       = __webpack_require__(45)
+	  , redefine       = __webpack_require__(63)
 	  , hide           = __webpack_require__(19)
-	  , has            = __webpack_require__(46)
-	  , Iterators      = __webpack_require__(47)
-	  , $iterCreate    = __webpack_require__(48)
-	  , setToStringTag = __webpack_require__(64)
-	  , getPrototypeOf = __webpack_require__(66)
-	  , ITERATOR       = __webpack_require__(65)('iterator')
+	  , has            = __webpack_require__(42)
+	  , Iterators      = __webpack_require__(64)
+	  , $iterCreate    = __webpack_require__(65)
+	  , setToStringTag = __webpack_require__(69)
+	  , getPrototypeOf = __webpack_require__(71)
+	  , ITERATOR       = __webpack_require__(70)('iterator')
 	  , BUGGY          = !([].keys && 'next' in [].keys()) // Safari has buggy iterators w/o `next`
 	  , FF_ITERATOR    = '@@iterator'
 	  , KEYS           = 'keys'
@@ -1551,44 +1814,35 @@ return webpackJsonp([0],[
 	};
 
 /***/ },
-/* 44 */
+/* 62 */
 /***/ function(module, exports) {
 
 	module.exports = true;
 
 /***/ },
-/* 45 */
+/* 63 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = __webpack_require__(19);
 
 /***/ },
-/* 46 */
-/***/ function(module, exports) {
-
-	var hasOwnProperty = {}.hasOwnProperty;
-	module.exports = function(it, key){
-	  return hasOwnProperty.call(it, key);
-	};
-
-/***/ },
-/* 47 */
+/* 64 */
 /***/ function(module, exports) {
 
 	module.exports = {};
 
 /***/ },
-/* 48 */
+/* 65 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var create         = __webpack_require__(49)
+	var create         = __webpack_require__(66)
 	  , descriptor     = __webpack_require__(28)
-	  , setToStringTag = __webpack_require__(64)
+	  , setToStringTag = __webpack_require__(69)
 	  , IteratorPrototype = {};
 
 	// 25.1.2.1.1 %IteratorPrototype%[@@iterator]()
-	__webpack_require__(19)(IteratorPrototype, __webpack_require__(65)('iterator'), function(){ return this; });
+	__webpack_require__(19)(IteratorPrototype, __webpack_require__(70)('iterator'), function(){ return this; });
 
 	module.exports = function(Constructor, NAME, next){
 	  Constructor.prototype = create(IteratorPrototype, {next: descriptor(1, next)});
@@ -1596,14 +1850,14 @@ return webpackJsonp([0],[
 	};
 
 /***/ },
-/* 49 */
+/* 66 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
 	var anObject    = __webpack_require__(21)
-	  , dPs         = __webpack_require__(50)
-	  , enumBugKeys = __webpack_require__(62)
-	  , IE_PROTO    = __webpack_require__(59)('IE_PROTO')
+	  , dPs         = __webpack_require__(67)
+	  , enumBugKeys = __webpack_require__(53)
+	  , IE_PROTO    = __webpack_require__(50)('IE_PROTO')
 	  , Empty       = function(){ /* empty */ }
 	  , PROTOTYPE   = 'prototype';
 
@@ -1616,7 +1870,7 @@ return webpackJsonp([0],[
 	    , gt     = '>'
 	    , iframeDocument;
 	  iframe.style.display = 'none';
-	  __webpack_require__(63).appendChild(iframe);
+	  __webpack_require__(68).appendChild(iframe);
 	  iframe.src = 'javascript:'; // eslint-disable-line no-script-url
 	  // createDict = iframe.contentWindow.Object;
 	  // html.removeChild(iframe);
@@ -1643,12 +1897,12 @@ return webpackJsonp([0],[
 
 
 /***/ },
-/* 50 */
+/* 67 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var dP       = __webpack_require__(20)
 	  , anObject = __webpack_require__(21)
-	  , getKeys  = __webpack_require__(51);
+	  , getKeys  = __webpack_require__(40);
 
 	module.exports = __webpack_require__(24) ? Object.defineProperties : function defineProperties(O, Properties){
 	  anObject(O);
@@ -1661,183 +1915,29 @@ return webpackJsonp([0],[
 	};
 
 /***/ },
-/* 51 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// 19.1.2.14 / 15.2.3.14 Object.keys(O)
-	var $keys       = __webpack_require__(52)
-	  , enumBugKeys = __webpack_require__(62);
-
-	module.exports = Object.keys || function keys(O){
-	  return $keys(O, enumBugKeys);
-	};
-
-/***/ },
-/* 52 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var has          = __webpack_require__(46)
-	  , toIObject    = __webpack_require__(53)
-	  , arrayIndexOf = __webpack_require__(56)(false)
-	  , IE_PROTO     = __webpack_require__(59)('IE_PROTO');
-
-	module.exports = function(object, names){
-	  var O      = toIObject(object)
-	    , i      = 0
-	    , result = []
-	    , key;
-	  for(key in O)if(key != IE_PROTO)has(O, key) && result.push(key);
-	  // Don't enum bug & hidden keys
-	  while(names.length > i)if(has(O, key = names[i++])){
-	    ~arrayIndexOf(result, key) || result.push(key);
-	  }
-	  return result;
-	};
-
-/***/ },
-/* 53 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// to indexed object, toObject with fallback for non-array-like ES3 strings
-	var IObject = __webpack_require__(54)
-	  , defined = __webpack_require__(42);
-	module.exports = function(it){
-	  return IObject(defined(it));
-	};
-
-/***/ },
-/* 54 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// fallback for non-array-like ES3 and non-enumerable old V8 strings
-	var cof = __webpack_require__(55);
-	module.exports = Object('z').propertyIsEnumerable(0) ? Object : function(it){
-	  return cof(it) == 'String' ? it.split('') : Object(it);
-	};
-
-/***/ },
-/* 55 */
-/***/ function(module, exports) {
-
-	var toString = {}.toString;
-
-	module.exports = function(it){
-	  return toString.call(it).slice(8, -1);
-	};
-
-/***/ },
-/* 56 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// false -> Array#indexOf
-	// true  -> Array#includes
-	var toIObject = __webpack_require__(53)
-	  , toLength  = __webpack_require__(57)
-	  , toIndex   = __webpack_require__(58);
-	module.exports = function(IS_INCLUDES){
-	  return function($this, el, fromIndex){
-	    var O      = toIObject($this)
-	      , length = toLength(O.length)
-	      , index  = toIndex(fromIndex, length)
-	      , value;
-	    // Array#includes uses SameValueZero equality algorithm
-	    if(IS_INCLUDES && el != el)while(length > index){
-	      value = O[index++];
-	      if(value != value)return true;
-	    // Array#toIndex ignores holes, Array#includes - not
-	    } else for(;length > index; index++)if(IS_INCLUDES || index in O){
-	      if(O[index] === el)return IS_INCLUDES || index || 0;
-	    } return !IS_INCLUDES && -1;
-	  };
-	};
-
-/***/ },
-/* 57 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// 7.1.15 ToLength
-	var toInteger = __webpack_require__(41)
-	  , min       = Math.min;
-	module.exports = function(it){
-	  return it > 0 ? min(toInteger(it), 0x1fffffffffffff) : 0; // pow(2, 53) - 1 == 9007199254740991
-	};
-
-/***/ },
-/* 58 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var toInteger = __webpack_require__(41)
-	  , max       = Math.max
-	  , min       = Math.min;
-	module.exports = function(index, length){
-	  index = toInteger(index);
-	  return index < 0 ? max(index + length, 0) : min(index, length);
-	};
-
-/***/ },
-/* 59 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var shared = __webpack_require__(60)('keys')
-	  , uid    = __webpack_require__(61);
-	module.exports = function(key){
-	  return shared[key] || (shared[key] = uid(key));
-	};
-
-/***/ },
-/* 60 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var global = __webpack_require__(15)
-	  , SHARED = '__core-js_shared__'
-	  , store  = global[SHARED] || (global[SHARED] = {});
-	module.exports = function(key){
-	  return store[key] || (store[key] = {});
-	};
-
-/***/ },
-/* 61 */
-/***/ function(module, exports) {
-
-	var id = 0
-	  , px = Math.random();
-	module.exports = function(key){
-	  return 'Symbol('.concat(key === undefined ? '' : key, ')_', (++id + px).toString(36));
-	};
-
-/***/ },
-/* 62 */
-/***/ function(module, exports) {
-
-	// IE 8- don't enum bug keys
-	module.exports = (
-	  'constructor,hasOwnProperty,isPrototypeOf,propertyIsEnumerable,toLocaleString,toString,valueOf'
-	).split(',');
-
-/***/ },
-/* 63 */
+/* 68 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = __webpack_require__(15).document && document.documentElement;
 
 /***/ },
-/* 64 */
+/* 69 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var def = __webpack_require__(20).f
-	  , has = __webpack_require__(46)
-	  , TAG = __webpack_require__(65)('toStringTag');
+	  , has = __webpack_require__(42)
+	  , TAG = __webpack_require__(70)('toStringTag');
 
 	module.exports = function(it, tag, stat){
 	  if(it && !has(it = stat ? it : it.prototype, TAG))def(it, TAG, {configurable: true, value: tag});
 	};
 
 /***/ },
-/* 65 */
+/* 70 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var store      = __webpack_require__(60)('wks')
-	  , uid        = __webpack_require__(61)
+	var store      = __webpack_require__(51)('wks')
+	  , uid        = __webpack_require__(52)
 	  , Symbol     = __webpack_require__(15).Symbol
 	  , USE_SYMBOL = typeof Symbol == 'function';
 
@@ -1849,13 +1949,13 @@ return webpackJsonp([0],[
 	$exports.store = store;
 
 /***/ },
-/* 66 */
+/* 71 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// 19.1.2.9 / 15.2.3.2 Object.getPrototypeOf(O)
-	var has         = __webpack_require__(46)
-	  , toObject    = __webpack_require__(67)
-	  , IE_PROTO    = __webpack_require__(59)('IE_PROTO')
+	var has         = __webpack_require__(42)
+	  , toObject    = __webpack_require__(38)
+	  , IE_PROTO    = __webpack_require__(50)('IE_PROTO')
 	  , ObjectProto = Object.prototype;
 
 	module.exports = Object.getPrototypeOf || function(O){
@@ -1867,24 +1967,14 @@ return webpackJsonp([0],[
 	};
 
 /***/ },
-/* 67 */
+/* 72 */
 /***/ function(module, exports, __webpack_require__) {
 
-	// 7.1.13 ToObject(argument)
-	var defined = __webpack_require__(42);
-	module.exports = function(it){
-	  return Object(defined(it));
-	};
-
-/***/ },
-/* 68 */
-/***/ function(module, exports, __webpack_require__) {
-
-	__webpack_require__(69);
+	__webpack_require__(73);
 	var global        = __webpack_require__(15)
 	  , hide          = __webpack_require__(19)
-	  , Iterators     = __webpack_require__(47)
-	  , TO_STRING_TAG = __webpack_require__(65)('toStringTag');
+	  , Iterators     = __webpack_require__(64)
+	  , TO_STRING_TAG = __webpack_require__(70)('toStringTag');
 
 	for(var collections = ['NodeList', 'DOMTokenList', 'MediaList', 'StyleSheetList', 'CSSRuleList'], i = 0; i < 5; i++){
 	  var NAME       = collections[i]
@@ -1895,20 +1985,20 @@ return webpackJsonp([0],[
 	}
 
 /***/ },
-/* 69 */
+/* 73 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var addToUnscopables = __webpack_require__(70)
-	  , step             = __webpack_require__(71)
-	  , Iterators        = __webpack_require__(47)
-	  , toIObject        = __webpack_require__(53);
+	var addToUnscopables = __webpack_require__(74)
+	  , step             = __webpack_require__(75)
+	  , Iterators        = __webpack_require__(64)
+	  , toIObject        = __webpack_require__(43);
 
 	// 22.1.3.4 Array.prototype.entries()
 	// 22.1.3.13 Array.prototype.keys()
 	// 22.1.3.29 Array.prototype.values()
 	// 22.1.3.30 Array.prototype[@@iterator]()
-	module.exports = __webpack_require__(43)(Array, 'Array', function(iterated, kind){
+	module.exports = __webpack_require__(61)(Array, 'Array', function(iterated, kind){
 	  this._t = toIObject(iterated); // target
 	  this._i = 0;                   // next index
 	  this._k = kind;                // kind
@@ -1934,13 +2024,13 @@ return webpackJsonp([0],[
 	addToUnscopables('entries');
 
 /***/ },
-/* 70 */
+/* 74 */
 /***/ function(module, exports) {
 
 	module.exports = function(){ /* empty */ };
 
 /***/ },
-/* 71 */
+/* 75 */
 /***/ function(module, exports) {
 
 	module.exports = function(done, value){
@@ -1948,22 +2038,22 @@ return webpackJsonp([0],[
 	};
 
 /***/ },
-/* 72 */
+/* 76 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var LIBRARY            = __webpack_require__(44)
+	var LIBRARY            = __webpack_require__(62)
 	  , global             = __webpack_require__(15)
 	  , ctx                = __webpack_require__(17)
-	  , classof            = __webpack_require__(73)
+	  , classof            = __webpack_require__(77)
 	  , $export            = __webpack_require__(14)
 	  , isObject           = __webpack_require__(22)
 	  , aFunction          = __webpack_require__(18)
-	  , anInstance         = __webpack_require__(74)
-	  , forOf              = __webpack_require__(75)
-	  , speciesConstructor = __webpack_require__(79)
-	  , task               = __webpack_require__(80).set
-	  , microtask          = __webpack_require__(82)()
+	  , anInstance         = __webpack_require__(78)
+	  , forOf              = __webpack_require__(79)
+	  , speciesConstructor = __webpack_require__(83)
+	  , task               = __webpack_require__(84).set
+	  , microtask          = __webpack_require__(86)()
 	  , PROMISE            = 'Promise'
 	  , TypeError          = global.TypeError
 	  , process            = global.process
@@ -1977,7 +2067,7 @@ return webpackJsonp([0],[
 	  try {
 	    // correct subclassing with @@species support
 	    var promise     = $Promise.resolve(1)
-	      , FakePromise = (promise.constructor = {})[__webpack_require__(65)('species')] = function(exec){ exec(empty, empty); };
+	      , FakePromise = (promise.constructor = {})[__webpack_require__(70)('species')] = function(exec){ exec(empty, empty); };
 	    // unhandled rejections tracking support, NodeJS Promise without it fails @@species test
 	    return (isNode || typeof PromiseRejectionEvent == 'function') && promise.then(empty) instanceof FakePromise;
 	  } catch(e){ /* empty */ }
@@ -2155,7 +2245,7 @@ return webpackJsonp([0],[
 	    this._h = 0;              // <- rejection state, 0 - default, 1 - handled, 2 - unhandled
 	    this._n = false;          // <- notify
 	  };
-	  Internal.prototype = __webpack_require__(83)($Promise.prototype, {
+	  Internal.prototype = __webpack_require__(87)($Promise.prototype, {
 	    // 25.4.5.3 Promise.prototype.then(onFulfilled, onRejected)
 	    then: function then(onFulfilled, onRejected){
 	      var reaction    = newPromiseCapability(speciesConstructor(this, $Promise));
@@ -2181,8 +2271,8 @@ return webpackJsonp([0],[
 	}
 
 	$export($export.G + $export.W + $export.F * !USE_NATIVE, {Promise: $Promise});
-	__webpack_require__(64)($Promise, PROMISE);
-	__webpack_require__(84)(PROMISE);
+	__webpack_require__(69)($Promise, PROMISE);
+	__webpack_require__(88)(PROMISE);
 	Wrapper = __webpack_require__(16)[PROMISE];
 
 	// statics
@@ -2206,7 +2296,7 @@ return webpackJsonp([0],[
 	    return capability.promise;
 	  }
 	});
-	$export($export.S + $export.F * !(USE_NATIVE && __webpack_require__(85)(function(iter){
+	$export($export.S + $export.F * !(USE_NATIVE && __webpack_require__(89)(function(iter){
 	  $Promise.all(iter)['catch'](empty);
 	})), PROMISE, {
 	  // 25.4.4.1 Promise.all(iterable)
@@ -2252,12 +2342,12 @@ return webpackJsonp([0],[
 	});
 
 /***/ },
-/* 73 */
+/* 77 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// getting tag from 19.1.3.6 Object.prototype.toString()
-	var cof = __webpack_require__(55)
-	  , TAG = __webpack_require__(65)('toStringTag')
+	var cof = __webpack_require__(45)
+	  , TAG = __webpack_require__(70)('toStringTag')
 	  // ES3 wrong here
 	  , ARG = cof(function(){ return arguments; }()) == 'Arguments';
 
@@ -2280,7 +2370,7 @@ return webpackJsonp([0],[
 	};
 
 /***/ },
-/* 74 */
+/* 78 */
 /***/ function(module, exports) {
 
 	module.exports = function(it, Constructor, name, forbiddenField){
@@ -2290,15 +2380,15 @@ return webpackJsonp([0],[
 	};
 
 /***/ },
-/* 75 */
+/* 79 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var ctx         = __webpack_require__(17)
-	  , call        = __webpack_require__(76)
-	  , isArrayIter = __webpack_require__(77)
+	  , call        = __webpack_require__(80)
+	  , isArrayIter = __webpack_require__(81)
 	  , anObject    = __webpack_require__(21)
-	  , toLength    = __webpack_require__(57)
-	  , getIterFn   = __webpack_require__(78)
+	  , toLength    = __webpack_require__(47)
+	  , getIterFn   = __webpack_require__(82)
 	  , BREAK       = {}
 	  , RETURN      = {};
 	var exports = module.exports = function(iterable, entries, fn, that, ITERATOR){
@@ -2320,7 +2410,7 @@ return webpackJsonp([0],[
 	exports.RETURN = RETURN;
 
 /***/ },
-/* 76 */
+/* 80 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// call something on iterator step with safe closing on error
@@ -2337,12 +2427,12 @@ return webpackJsonp([0],[
 	};
 
 /***/ },
-/* 77 */
+/* 81 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// check on default Array iterator
-	var Iterators  = __webpack_require__(47)
-	  , ITERATOR   = __webpack_require__(65)('iterator')
+	var Iterators  = __webpack_require__(64)
+	  , ITERATOR   = __webpack_require__(70)('iterator')
 	  , ArrayProto = Array.prototype;
 
 	module.exports = function(it){
@@ -2350,12 +2440,12 @@ return webpackJsonp([0],[
 	};
 
 /***/ },
-/* 78 */
+/* 82 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var classof   = __webpack_require__(73)
-	  , ITERATOR  = __webpack_require__(65)('iterator')
-	  , Iterators = __webpack_require__(47);
+	var classof   = __webpack_require__(77)
+	  , ITERATOR  = __webpack_require__(70)('iterator')
+	  , Iterators = __webpack_require__(64);
 	module.exports = __webpack_require__(16).getIteratorMethod = function(it){
 	  if(it != undefined)return it[ITERATOR]
 	    || it['@@iterator']
@@ -2363,25 +2453,25 @@ return webpackJsonp([0],[
 	};
 
 /***/ },
-/* 79 */
+/* 83 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// 7.3.20 SpeciesConstructor(O, defaultConstructor)
 	var anObject  = __webpack_require__(21)
 	  , aFunction = __webpack_require__(18)
-	  , SPECIES   = __webpack_require__(65)('species');
+	  , SPECIES   = __webpack_require__(70)('species');
 	module.exports = function(O, D){
 	  var C = anObject(O).constructor, S;
 	  return C === undefined || (S = anObject(C)[SPECIES]) == undefined ? D : aFunction(S);
 	};
 
 /***/ },
-/* 80 */
+/* 84 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var ctx                = __webpack_require__(17)
-	  , invoke             = __webpack_require__(81)
-	  , html               = __webpack_require__(63)
+	  , invoke             = __webpack_require__(85)
+	  , html               = __webpack_require__(68)
 	  , cel                = __webpack_require__(26)
 	  , global             = __webpack_require__(15)
 	  , process            = global.process
@@ -2418,7 +2508,7 @@ return webpackJsonp([0],[
 	    delete queue[id];
 	  };
 	  // Node.js 0.8-
-	  if(__webpack_require__(55)(process) == 'process'){
+	  if(__webpack_require__(45)(process) == 'process'){
 	    defer = function(id){
 	      process.nextTick(ctx(run, id, 1));
 	    };
@@ -2456,7 +2546,7 @@ return webpackJsonp([0],[
 	};
 
 /***/ },
-/* 81 */
+/* 85 */
 /***/ function(module, exports) {
 
 	// fast apply, http://jsperf.lnkit.com/fast-apply/5
@@ -2477,15 +2567,15 @@ return webpackJsonp([0],[
 	};
 
 /***/ },
-/* 82 */
+/* 86 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var global    = __webpack_require__(15)
-	  , macrotask = __webpack_require__(80).set
+	  , macrotask = __webpack_require__(84).set
 	  , Observer  = global.MutationObserver || global.WebKitMutationObserver
 	  , process   = global.process
 	  , Promise   = global.Promise
-	  , isNode    = __webpack_require__(55)(process) == 'process';
+	  , isNode    = __webpack_require__(45)(process) == 'process';
 
 	module.exports = function(){
 	  var head, last, notify;
@@ -2550,7 +2640,7 @@ return webpackJsonp([0],[
 	};
 
 /***/ },
-/* 83 */
+/* 87 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var hide = __webpack_require__(19);
@@ -2562,7 +2652,7 @@ return webpackJsonp([0],[
 	};
 
 /***/ },
-/* 84 */
+/* 88 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2570,7 +2660,7 @@ return webpackJsonp([0],[
 	  , core        = __webpack_require__(16)
 	  , dP          = __webpack_require__(20)
 	  , DESCRIPTORS = __webpack_require__(24)
-	  , SPECIES     = __webpack_require__(65)('species');
+	  , SPECIES     = __webpack_require__(70)('species');
 
 	module.exports = function(KEY){
 	  var C = typeof core[KEY] == 'function' ? core[KEY] : global[KEY];
@@ -2581,10 +2671,10 @@ return webpackJsonp([0],[
 	};
 
 /***/ },
-/* 85 */
+/* 89 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var ITERATOR     = __webpack_require__(65)('iterator')
+	var ITERATOR     = __webpack_require__(70)('iterator')
 	  , SAFE_CLOSING = false;
 
 	try {
@@ -2607,7 +2697,7 @@ return webpackJsonp([0],[
 	};
 
 /***/ },
-/* 86 */
+/* 90 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2717,7 +2807,7 @@ return webpackJsonp([0],[
 	exports.default = SailPlayHistory.name;
 
 /***/ },
-/* 87 */
+/* 91 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2727,7 +2817,7 @@ return webpackJsonp([0],[
 	});
 	exports.SailPlayActions = undefined;
 
-	var _keys = __webpack_require__(88);
+	var _keys = __webpack_require__(35);
 
 	var _keys2 = _interopRequireDefault(_keys);
 
@@ -3050,48 +3140,6 @@ return webpackJsonp([0],[
 	});
 
 	exports.default = SailPlayActions.name;
-
-/***/ },
-/* 88 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = { "default": __webpack_require__(89), __esModule: true };
-
-/***/ },
-/* 89 */
-/***/ function(module, exports, __webpack_require__) {
-
-	__webpack_require__(90);
-	module.exports = __webpack_require__(16).Object.keys;
-
-/***/ },
-/* 90 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// 19.1.2.14 Object.keys(O)
-	var toObject = __webpack_require__(67)
-	  , $keys    = __webpack_require__(51);
-
-	__webpack_require__(91)('keys', function(){
-	  return function keys(it){
-	    return $keys(toObject(it));
-	  };
-	});
-
-/***/ },
-/* 91 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// most Object methods by ES6 should accept primitives
-	var $export = __webpack_require__(14)
-	  , core    = __webpack_require__(16)
-	  , fails   = __webpack_require__(25);
-	module.exports = function(KEY, exec){
-	  var fn  = (core.Object || {})[KEY] || Object[KEY]
-	    , exp = {};
-	  exp[KEY] = exec(fn);
-	  $export($export.S + $export.F * fails(function(){ fn(1); }), 'Object', exp);
-	};
 
 /***/ },
 /* 92 */
@@ -4891,7 +4939,7 @@ return webpackJsonp([0],[
 	exports.push([module.id, "@import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700);", ""]);
 
 	// module
-	exports.push([module.id, ".spm_wrapper {\n  /* Eric Meyer's CSS Reset */\n  /* HTML5 display-role reset for older browsers */\n  /* End of Eric Meyer's CSS Reset */\n}\n.spm_wrapper html,\n.spm_wrapper body,\n.spm_wrapper div,\n.spm_wrapper span,\n.spm_wrapper applet,\n.spm_wrapper object,\n.spm_wrapper iframe,\n.spm_wrapper h1,\n.spm_wrapper h2,\n.spm_wrapper h3,\n.spm_wrapper h4,\n.spm_wrapper h5,\n.spm_wrapper h6,\n.spm_wrapper p,\n.spm_wrapper blockquote,\n.spm_wrapper pre,\n.spm_wrapper a,\n.spm_wrapper abbr,\n.spm_wrapper acronym,\n.spm_wrapper address,\n.spm_wrapper big,\n.spm_wrapper cite,\n.spm_wrapper code,\n.spm_wrapper del,\n.spm_wrapper dfn,\n.spm_wrapper em,\n.spm_wrapper img,\n.spm_wrapper ins,\n.spm_wrapper kbd,\n.spm_wrapper q,\n.spm_wrapper s,\n.spm_wrapper samp,\n.spm_wrapper small,\n.spm_wrapper strike,\n.spm_wrapper strong,\n.spm_wrapper sub,\n.spm_wrapper sup,\n.spm_wrapper tt,\n.spm_wrapper var,\n.spm_wrapper b,\n.spm_wrapper u,\n.spm_wrapper i,\n.spm_wrapper center,\n.spm_wrapper dl,\n.spm_wrapper dt,\n.spm_wrapper dd,\n.spm_wrapper ol,\n.spm_wrapper ul,\n.spm_wrapper li,\n.spm_wrapper fieldset,\n.spm_wrapper form,\n.spm_wrapper label,\n.spm_wrapper legend,\n.spm_wrapper table,\n.spm_wrapper caption,\n.spm_wrapper tbody,\n.spm_wrapper tfoot,\n.spm_wrapper thead,\n.spm_wrapper tr,\n.spm_wrapper th,\n.spm_wrapper td,\n.spm_wrapper article,\n.spm_wrapper aside,\n.spm_wrapper canvas,\n.spm_wrapper details,\n.spm_wrapper embed,\n.spm_wrapper figure,\n.spm_wrapper figcaption,\n.spm_wrapper footer,\n.spm_wrapper header,\n.spm_wrapper hgroup,\n.spm_wrapper menu,\n.spm_wrapper nav,\n.spm_wrapper output,\n.spm_wrapper ruby,\n.spm_wrapper section,\n.spm_wrapper summary,\n.spm_wrapper time,\n.spm_wrapper mark,\n.spm_wrapper audio,\n.spm_wrapper video {\n  margin: 0;\n  padding: 0;\n  border: 0;\n  font-size: 100%;\n  font: inherit;\n  vertical-align: baseline;\n}\n.spm_wrapper article,\n.spm_wrapper aside,\n.spm_wrapper details,\n.spm_wrapper figcaption,\n.spm_wrapper figure,\n.spm_wrapper footer,\n.spm_wrapper header,\n.spm_wrapper hgroup,\n.spm_wrapper menu,\n.spm_wrapper nav,\n.spm_wrapper section {\n  display: block;\n}\n.spm_wrapper body {\n  line-height: 1;\n}\n.spm_wrapper ol,\n.spm_wrapper ul {\n  list-style: none;\n}\n.spm_wrapper blockquote,\n.spm_wrapper q {\n  quotes: none;\n}\n.spm_wrapper blockquote:before,\n.spm_wrapper blockquote:after,\n.spm_wrapper q:before,\n.spm_wrapper q:after {\n  content: '';\n  content: none;\n}\n.spm_wrapper table {\n  border-collapse: collapse;\n  border-spacing: 0;\n}\n.spm_wrapper article,\n.spm_wrapper aside,\n.spm_wrapper details,\n.spm_wrapper figcaption,\n.spm_wrapper figure,\n.spm_wrapper footer,\n.spm_wrapper header,\n.spm_wrapper hgroup,\n.spm_wrapper main,\n.spm_wrapper nav,\n.spm_wrapper section,\n.spm_wrapper summary {\n  display: block;\n}\n.spm_wrapper ::before,\n.spm_wrapper ::after {\n  content: '';\n}\n.spm_wrapper .button_primary {\n  -webkit-box-sizing: border-box;\n  -moz-box-sizing: border-box;\n  box-sizing: border-box;\n}\n.spm_wrapper .sp_btn {\n  display: inline-block;\n  outline: none;\n  width: auto;\n  line-height: 35px;\n  text-decoration: none;\n  color: #ffffff;\n  font-size: 14px;\n  font-weight: 500;\n  background-color: #888888;\n  border: 0;\n  border-bottom: 1px solid #000000;\n  text-shadow: 0 0 1px #000000;\n  margin-right: 45px;\n  margin-top: 12px;\n  white-space: nowrap;\n  padding-left: 20px;\n  padding-right: 20px;\n  cursor: pointer;\n}\n.spm_wrapper .sp_btn:hover {\n  background-color: #7b7b7b;\n}\n.spm_wrapper .sp_btn[disabled] {\n  opacity: .5;\n}\n.spm_wrapper .magic_select {\n  overflow: hidden;\n  width: 100%;\n  float: left;\n  height: 57px;\n  border: 0;\n  border-top: 2px solid #cccccc;\n  border-radius: 5px;\n  padding-left: 25px;\n  font-size: 18px;\n  outline: none;\n  box-sizing: border-box;\n  background-color: #ffffff;\n  position: relative;\n  display: inline-block;\n  background-image: url(https://d3sailplay.cdnvideo.ru/media/assets/assetfile/303e1f38393495b1a059952843abeeb0.png);\n  background-repeat: no-repeat;\n  background-position: right 10px center;\n  background-size: 10px;\n}\n.spm_wrapper .magic_select select {\n  position: absolute;\n  background: transparent;\n  border: none;\n  height: 100%;\n  width: 100%;\n  font-size: inherit;\n  font-weight: inherit;\n  font-family: inherit;\n  outline: none;\n  -webkit-appearance: none;\n  box-shadow: none;\n  background-image: none;\n}\n.spm_wrapper .form_field {\n  float: left;\n  width: 50%;\n  padding-bottom: 20px;\n  padding-right: 40px;\n  -webkit-box-sizing: border-box;\n  -moz-box-sizing: border-box;\n  box-sizing: border-box;\n  /* -------------------- Select Box Styles: stackoverflow.com Method */\n  /* -------------------- Source: http://stackoverflow.com/a/5809186 */\n}\n.spm_wrapper .form_field.type_full {\n  width: 100%;\n}\n.spm_wrapper .form_field .form_date {\n  float: left;\n  position: relative;\n  z-index: 1;\n}\n.spm_wrapper .form_field .form_date span {\n  color: #000000;\n  font-size: 18px;\n  float: left;\n  width: 100%;\n  box-sizing: border-box;\n  padding-left: 10px;\n  border: 2px solid #cccccc;\n  border-radius: 5px;\n  line-height: 57px;\n  height: 57px;\n  background-image: url('https://d3sailplay.cdnvideo.ru/media/assets/assetfile/303e1f38393495b1a059952843abeeb0.png');\n  background-repeat: no-repeat;\n  background-position: right 10px center;\n  background-size: 10px;\n}\n.spm_wrapper .form_field .form_date__popup {\n  display: none;\n  position: absolute;\n  top: 100%;\n  left: 0px;\n  right: 0px;\n  z-index: 2;\n  max-height: 100px;\n  overflow-x: hidden;\n  overflow-y: auto;\n  background-color: #ffffff;\n  border-radius: 0 0 3px 3px;\n  border: 1px solid #cccccc;\n  text-align: center;\n}\n.spm_wrapper .form_field .form_date__popup a {\n  float: left;\n  width: 100%;\n  line-height: 25px;\n  text-decoration: none;\n  color: #000000;\n  background: #ffffff;\n}\n.spm_wrapper .form_field .form_date__day {\n  width: 20%;\n}\n.spm_wrapper .form_field .form_date__month {\n  width: 48%;\n  margin: 0 1%;\n}\n.spm_wrapper .form_field .form_date__year {\n  width: 30%;\n}\n.spm_wrapper .form_field .form_date:hover .form_date__popup {\n  display: block;\n}\n.spm_wrapper .form_field .form_label {\n  width: 100%;\n  line-height: 100%;\n  color: #222222;\n  font-size: 16px;\n  float: left;\n}\n.spm_wrapper .form_field .form_textarea {\n  background-color: #ffffff;\n  float: left;\n  height: 100px;\n  resize: none;\n  border: 0;\n  border-top: 2px solid #cccccc;\n  border-radius: 5px;\n  padding-left: 25px;\n  width: 100%;\n  font-size: 18px;\n  outline: none;\n  box-sizing: border-box;\n}\n.spm_wrapper .form_field .form_input[type=\"text\"],\n.spm_wrapper .form_field .form_input[type=\"email\"] {\n  background-color: #ffffff;\n  float: left;\n  height: 57px;\n  border: 0;\n  border-top: 2px solid #cccccc;\n  border-radius: 5px;\n  padding-left: 25px;\n  width: 100%;\n  font-size: 18px;\n  outline: none;\n  box-sizing: border-box;\n}\n.spm_wrapper .form_field .form_select {\n  -webkit-appearance: button;\n  -webkit-border-radius: 2px;\n  -webkit-box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);\n  -webkit-padding-end: 20px;\n  -webkit-padding-start: 2px;\n  -webkit-user-select: none;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  color: #000000;\n  font-size: 18px;\n  float: left;\n  width: 100%;\n  box-sizing: border-box;\n  padding-left: 10px;\n  border: 2px solid #cccccc;\n  border-radius: 5px;\n  line-height: 57px;\n  height: 57px;\n  background-image: url('https://d3sailplay.cdnvideo.ru/media/assets/assetfile/303e1f38393495b1a059952843abeeb0.png');\n  background-repeat: no-repeat;\n  background-position: right 10px center;\n  background-size: 10px;\n  background-color: transparent;\n  outline: none;\n}\n@media only screen and (min-width: 530px) and (max-width: 949px), only screen and (max-width: 529px) {\n  .spm_wrapper .form_field {\n    width: 100%;\n    padding: 0 0 20px 0;\n  }\n}\n.spm_wrapper .overflow_hidden {\n  overflow: hidden;\n}\n.spm_wrapper .clearfix:after {\n  content: \"\";\n  display: table;\n  clear: both;\n}\n.spm_wrapper .transparent {\n  opacity: 0;\n}\n.spm_wrapper .spm_row {\n  -webkit-box-sizing: border-box;\n  -moz-box-sizing: border-box;\n  box-sizing: border-box;\n  margin-left: -15px;\n  margin-right: -15px;\n  display: block;\n  position: relative;\n}\n.spm_wrapper .spm_col {\n  padding-left: 15px;\n  padding-right: 15px;\n  -webkit-box-sizing: border-box;\n  -moz-box-sizing: border-box;\n  box-sizing: border-box;\n  min-height: 1px;\n  display: inline-block;\n  position: relative;\n  float: left;\n}\n.spm_wrapper .spm_col:after {\n  content: \"\";\n  display: table;\n  clear: both;\n}\n.spm_wrapper .ellipsis {\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  -o-text-overflow: ellipsis;\n}\n@font-face {\n  font-family: 'RotondaC bold';\n  src: url(" + __webpack_require__(126) + ");\n  src: url(" + __webpack_require__(126) + "?#iefix) format('embedded-opentype'), url(" + __webpack_require__(127) + ") format('woff2'), url(" + __webpack_require__(128) + ") format('woff'), url(" + __webpack_require__(129) + ") format('truetype');\n  font-weight: bold;\n  font-style: normal;\n}\n@font-face {\n  font-family: 'RotondaC';\n  src: url(" + __webpack_require__(130) + ");\n  src: url(" + __webpack_require__(130) + "?#iefix) format('embedded-opentype'), url(" + __webpack_require__(131) + ") format('woff2'), url(" + __webpack_require__(132) + ") format('woff'), url(" + __webpack_require__(133) + ") format('truetype');\n  font-weight: bold;\n  font-style: normal;\n}\n.spm_wrapper {\n  font-family: 'Roboto', sans-serif;\n}\n", ""]);
+	exports.push([module.id, ".spm_wrapper {\n  /* Eric Meyer's CSS Reset */\n  /* HTML5 display-role reset for older browsers */\n  /* End of Eric Meyer's CSS Reset */\n}\n.spm_wrapper html,\n.spm_wrapper body,\n.spm_wrapper div,\n.spm_wrapper span,\n.spm_wrapper applet,\n.spm_wrapper object,\n.spm_wrapper iframe,\n.spm_wrapper h1,\n.spm_wrapper h2,\n.spm_wrapper h3,\n.spm_wrapper h4,\n.spm_wrapper h5,\n.spm_wrapper h6,\n.spm_wrapper p,\n.spm_wrapper blockquote,\n.spm_wrapper pre,\n.spm_wrapper a,\n.spm_wrapper abbr,\n.spm_wrapper acronym,\n.spm_wrapper address,\n.spm_wrapper big,\n.spm_wrapper cite,\n.spm_wrapper code,\n.spm_wrapper del,\n.spm_wrapper dfn,\n.spm_wrapper em,\n.spm_wrapper img,\n.spm_wrapper ins,\n.spm_wrapper kbd,\n.spm_wrapper q,\n.spm_wrapper s,\n.spm_wrapper samp,\n.spm_wrapper small,\n.spm_wrapper strike,\n.spm_wrapper strong,\n.spm_wrapper sub,\n.spm_wrapper sup,\n.spm_wrapper tt,\n.spm_wrapper var,\n.spm_wrapper b,\n.spm_wrapper u,\n.spm_wrapper i,\n.spm_wrapper center,\n.spm_wrapper dl,\n.spm_wrapper dt,\n.spm_wrapper dd,\n.spm_wrapper ol,\n.spm_wrapper ul,\n.spm_wrapper li,\n.spm_wrapper fieldset,\n.spm_wrapper form,\n.spm_wrapper label,\n.spm_wrapper legend,\n.spm_wrapper table,\n.spm_wrapper caption,\n.spm_wrapper tbody,\n.spm_wrapper tfoot,\n.spm_wrapper thead,\n.spm_wrapper tr,\n.spm_wrapper th,\n.spm_wrapper td,\n.spm_wrapper article,\n.spm_wrapper aside,\n.spm_wrapper canvas,\n.spm_wrapper details,\n.spm_wrapper embed,\n.spm_wrapper figure,\n.spm_wrapper figcaption,\n.spm_wrapper footer,\n.spm_wrapper header,\n.spm_wrapper hgroup,\n.spm_wrapper menu,\n.spm_wrapper nav,\n.spm_wrapper output,\n.spm_wrapper ruby,\n.spm_wrapper section,\n.spm_wrapper summary,\n.spm_wrapper time,\n.spm_wrapper mark,\n.spm_wrapper audio,\n.spm_wrapper video {\n  margin: 0;\n  padding: 0;\n  border: 0;\n  font-size: 100%;\n  font: inherit;\n  vertical-align: baseline;\n}\n.spm_wrapper article,\n.spm_wrapper aside,\n.spm_wrapper details,\n.spm_wrapper figcaption,\n.spm_wrapper figure,\n.spm_wrapper footer,\n.spm_wrapper header,\n.spm_wrapper hgroup,\n.spm_wrapper menu,\n.spm_wrapper nav,\n.spm_wrapper section {\n  display: block;\n}\n.spm_wrapper body {\n  line-height: 1;\n}\n.spm_wrapper ol,\n.spm_wrapper ul {\n  list-style: none;\n}\n.spm_wrapper blockquote,\n.spm_wrapper q {\n  quotes: none;\n}\n.spm_wrapper blockquote:before,\n.spm_wrapper blockquote:after,\n.spm_wrapper q:before,\n.spm_wrapper q:after {\n  content: '';\n  content: none;\n}\n.spm_wrapper table {\n  border-collapse: collapse;\n  border-spacing: 0;\n}\n.spm_wrapper article,\n.spm_wrapper aside,\n.spm_wrapper details,\n.spm_wrapper figcaption,\n.spm_wrapper figure,\n.spm_wrapper footer,\n.spm_wrapper header,\n.spm_wrapper hgroup,\n.spm_wrapper main,\n.spm_wrapper nav,\n.spm_wrapper section,\n.spm_wrapper summary {\n  display: block;\n}\n.spm_wrapper ::before,\n.spm_wrapper ::after {\n  content: '';\n}\n.spm_wrapper .button_primary {\n  -webkit-box-sizing: border-box;\n  -moz-box-sizing: border-box;\n  box-sizing: border-box;\n}\n.spm_wrapper .sp_btn {\n  display: inline-block;\n  outline: none;\n  width: auto;\n  line-height: 35px;\n  text-decoration: none;\n  color: #ffffff;\n  font-size: 14px;\n  font-weight: 500;\n  background-color: #888888;\n  border: 0;\n  border-bottom: 1px solid #000000;\n  text-shadow: 0 0 1px #000000;\n  margin-right: 45px;\n  margin-top: 12px;\n  white-space: nowrap;\n  padding-left: 20px;\n  padding-right: 20px;\n  cursor: pointer;\n}\n.spm_wrapper .sp_btn:hover {\n  background-color: #7b7b7b;\n}\n.spm_wrapper .sp_btn[disabled] {\n  opacity: .5;\n}\n.spm_wrapper .multiple_select select {\n  border: 0;\n  border-top: 2px solid #ccc;\n  padding-top: 5px;\n  width: 100%;\n  outline: 0;\n}\n.spm_wrapper .magic_select {\n  overflow: hidden;\n  width: 100%;\n  float: left;\n  height: 57px;\n  border: 0;\n  border-top: 2px solid #cccccc;\n  border-radius: 5px;\n  padding-left: 25px;\n  font-size: 18px;\n  outline: none;\n  box-sizing: border-box;\n  background-color: #ffffff;\n  position: relative;\n  display: inline-block;\n  background-image: url(https://d3sailplay.cdnvideo.ru/media/assets/assetfile/303e1f38393495b1a059952843abeeb0.png);\n  background-repeat: no-repeat;\n  background-position: right 10px center;\n  background-size: 10px;\n}\n.spm_wrapper .magic_select select {\n  position: absolute;\n  background: transparent;\n  border: none;\n  height: 100%;\n  width: 100%;\n  font-size: inherit;\n  font-weight: inherit;\n  font-family: inherit;\n  outline: none;\n  -webkit-appearance: none;\n  box-shadow: none;\n  background-image: none;\n}\n.spm_wrapper .form_field {\n  float: left;\n  width: 50%;\n  padding-bottom: 20px;\n  padding-right: 40px;\n  -webkit-box-sizing: border-box;\n  -moz-box-sizing: border-box;\n  box-sizing: border-box;\n  /* -------------------- Select Box Styles: stackoverflow.com Method */\n  /* -------------------- Source: http://stackoverflow.com/a/5809186 */\n}\n.spm_wrapper .form_field.type_full {\n  width: 100%;\n}\n.spm_wrapper .form_field .form_date {\n  float: left;\n  position: relative;\n  z-index: 1;\n}\n.spm_wrapper .form_field .form_date span {\n  color: #000000;\n  font-size: 18px;\n  float: left;\n  width: 100%;\n  box-sizing: border-box;\n  padding-left: 10px;\n  border: 2px solid #cccccc;\n  border-radius: 5px;\n  line-height: 57px;\n  height: 57px;\n  background-image: url('https://d3sailplay.cdnvideo.ru/media/assets/assetfile/303e1f38393495b1a059952843abeeb0.png');\n  background-repeat: no-repeat;\n  background-position: right 10px center;\n  background-size: 10px;\n}\n.spm_wrapper .form_field .form_date__popup {\n  display: none;\n  position: absolute;\n  top: 100%;\n  left: 0px;\n  right: 0px;\n  z-index: 2;\n  max-height: 100px;\n  overflow-x: hidden;\n  overflow-y: auto;\n  background-color: #ffffff;\n  border-radius: 0 0 3px 3px;\n  border: 1px solid #cccccc;\n  text-align: center;\n}\n.spm_wrapper .form_field .form_date__popup a {\n  float: left;\n  width: 100%;\n  line-height: 25px;\n  text-decoration: none;\n  color: #000000;\n  background: #ffffff;\n}\n.spm_wrapper .form_field .form_date__day {\n  width: 20%;\n}\n.spm_wrapper .form_field .form_date__month {\n  width: 48%;\n  margin: 0 1%;\n}\n.spm_wrapper .form_field .form_date__year {\n  width: 30%;\n}\n.spm_wrapper .form_field .form_date:hover .form_date__popup {\n  display: block;\n}\n.spm_wrapper .form_field .form_label {\n  width: 100%;\n  line-height: 100%;\n  color: #222222;\n  font-size: 16px;\n  float: left;\n}\n.spm_wrapper .form_field .form_label_error {\n  color: red;\n}\n.spm_wrapper .form_field .form_textarea {\n  background-color: #ffffff;\n  float: left;\n  height: 100px;\n  resize: none;\n  border: 0;\n  border-top: 2px solid #cccccc;\n  border-radius: 5px;\n  padding-left: 25px;\n  width: 100%;\n  font-size: 18px;\n  outline: none;\n  box-sizing: border-box;\n}\n.spm_wrapper .form_field .form_input[type=\"text\"],\n.spm_wrapper .form_field .form_input[type=\"email\"] {\n  background-color: #ffffff;\n  float: left;\n  height: 57px;\n  border: 0;\n  border-top: 2px solid #cccccc;\n  border-radius: 5px;\n  padding-left: 25px;\n  width: 100%;\n  font-size: 18px;\n  outline: none;\n  box-sizing: border-box;\n}\n.spm_wrapper .form_field .form_input.other {\n  border-top: 0;\n  border-bottom: 2px solid #cccccc;\n}\n.spm_wrapper .form_field .form_input_error {\n  font-size: 12px;\n  margin-top: 2px;\n  color: red;\n}\n.spm_wrapper .form_field .form_select {\n  -webkit-appearance: button;\n  -webkit-border-radius: 2px;\n  -webkit-box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);\n  -webkit-padding-end: 20px;\n  -webkit-padding-start: 2px;\n  -webkit-user-select: none;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  color: #000000;\n  font-size: 18px;\n  float: left;\n  width: 100%;\n  box-sizing: border-box;\n  padding-left: 10px;\n  border: 2px solid #cccccc;\n  border-radius: 5px;\n  line-height: 57px;\n  height: 57px;\n  background-image: url('https://d3sailplay.cdnvideo.ru/media/assets/assetfile/303e1f38393495b1a059952843abeeb0.png');\n  background-repeat: no-repeat;\n  background-position: right 10px center;\n  background-size: 10px;\n  background-color: transparent;\n  outline: none;\n}\n@media only screen and (min-width: 530px) and (max-width: 949px), only screen and (max-width: 529px) {\n  .spm_wrapper .form_field {\n    width: 100%;\n    padding: 0 0 20px 0;\n  }\n}\n.spm_wrapper .overflow_hidden {\n  overflow: hidden;\n}\n.spm_wrapper .clearfix:after {\n  content: \"\";\n  display: table;\n  clear: both;\n}\n.spm_wrapper .transparent {\n  opacity: 0;\n}\n.spm_wrapper .spm_row {\n  -webkit-box-sizing: border-box;\n  -moz-box-sizing: border-box;\n  box-sizing: border-box;\n  margin-left: -15px;\n  margin-right: -15px;\n  display: block;\n  position: relative;\n}\n.spm_wrapper .spm_col {\n  padding-left: 15px;\n  padding-right: 15px;\n  -webkit-box-sizing: border-box;\n  -moz-box-sizing: border-box;\n  box-sizing: border-box;\n  min-height: 1px;\n  display: inline-block;\n  position: relative;\n  float: left;\n}\n.spm_wrapper .spm_col:after {\n  content: \"\";\n  display: table;\n  clear: both;\n}\n.spm_wrapper .ellipsis {\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  -o-text-overflow: ellipsis;\n}\n@font-face {\n  font-family: 'RotondaC bold';\n  src: url(" + __webpack_require__(126) + ");\n  src: url(" + __webpack_require__(126) + "?#iefix) format('embedded-opentype'), url(" + __webpack_require__(127) + ") format('woff2'), url(" + __webpack_require__(128) + ") format('woff'), url(" + __webpack_require__(129) + ") format('truetype');\n  font-weight: bold;\n  font-style: normal;\n}\n@font-face {\n  font-family: 'RotondaC';\n  src: url(" + __webpack_require__(130) + ");\n  src: url(" + __webpack_require__(130) + "?#iefix) format('embedded-opentype'), url(" + __webpack_require__(131) + ") format('woff2'), url(" + __webpack_require__(132) + ") format('woff'), url(" + __webpack_require__(133) + ") format('truetype');\n  font-weight: bold;\n  font-style: normal;\n}\n.spm_wrapper {\n  font-family: 'Roboto', sans-serif;\n}\n", ""]);
 
 	// exports
 

@@ -122,30 +122,44 @@
           </div>
 
           <div data-ng-switch-when="text" class="clearfix">
-            <label class="form_label">{{ field.label }}</label>
-            <input class="form_input" type="text" placeholder="{{ field.placeholder }}" data-ng-model="field.value">
+            <label class="form_label" ng-class="{'form_label_error': fill_profile_form[field.name].$error.required }">{{ field.label }}</label>         
+            <input name="{{ field.name }}" data-ng-required="{{ field.required }}" class="form_input" type="text" placeholder="{{ field.placeholder }}" data-ng-model="field.value">
           </div>
 
           <div data-ng-switch-when="date" class="clearfix">
-            <label class="form_label">{{ field.label }}</label>
+            <label class="form_label">{{ field.label }}</label>         
             <date-picker data-model="field.value"></date-picker>
           </div>
 
-          <div data-ng-switch-when="select" class="clearfix">
-            <label class="form_label">{{ field.label }}</label>
-            <div class="magic_select form_input">
-              <select data-ng-model="field.value" data-ng-options="item.value as item.text for item in field.data"></select>
+          <div data-ng-switch-when="multiple" class="clearfix">
+            <label class="form_label" ng-class="{'form_label_error': check_error(field) || fill_profile_form[field.name].$error.max }">{{ field.label }}</label>         
+            <div class="multiple_select form_input">
+              <select name="{{ field.name }}" data-ng-change="multiple_limit(field)" multiple="multiple" data-ng-model="field.value">
+                <option data-ng-repeat="item in field.data">{{ item.text }}</option>
+              </select>
+              <div class="form_input_error" ng-show="{{ 'fill_profile_form.' + field.name + '.$error.max' }}">Only select up to {{ field.max }}</div>
+              <input data-ng-change="field.value = ''" data-ng-if="field.has_other" class="form_input other" type="text" placeholder="Other" data-ng-model="field.other">     
             </div>
           </div>
 
+          <div data-ng-switch-when="select" class="clearfix">
+            <label class="form_label" ng-class="{'form_label_error': check_error(field)}">{{ field.label }}</label>         
+            <div class="magic_select form_input">
+              <select name="{{ field.name }}" data-ng-change="field.other = ''" data-ng-model="field.value" >
+                <option ng-repeat="item in field.data">{{ item.text }}</option>
+              </select>
+            </div>
+            <input data-ng-change="field.value = ''" data-ng-if="field.has_other" class="form_input other" type="text" placeholder="Other" data-ng-model="field.other">
+          </div>
+
           <div data-ng-switch-when="phone" class="clearfix">
-            <label class="form_label">{{ field.label }}</label>
-            <input class="form_input" type="text" data-model-view-value="true" data-ui-mask="{{ field.placeholder }}" data-ng-model="field.value">
+            <label class="form_label" ng-class="{'form_label_error': fill_profile_form[field.name].$error.required }">{{ field.label }}</label>         
+            <input name="{{ field.name }}" class="form_input" data-ng-required="{{ field.required }}" type="text" data-model-view-value="true" data-ui-mask="{{ field.placeholder }}" data-ng-model="field.value">
           </div>
 
           <div data-ng-switch-when="email" class="clearfix">
-            <label class="form_label">{{ field.label }}</label>
-            <input class="form_input" type="email" placeholder="{{ field.placeholder }}" data-ng-model="field.value">
+            <label class="form_label" ng-class="{'form_label_error': fill_profile_form[field.name].$error.required }">{{ field.label }}</label>         
+            <input name="{{ field.name }}" class="form_input" type="email" placeholder="{{ field.placeholder }}" data-ng-model="field.value">
           </div>
 
         </div>

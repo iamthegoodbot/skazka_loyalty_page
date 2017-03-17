@@ -53,7 +53,6 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
         scope.login = function (type) {
 
           SailPlay.authorize(type);
-
         };
 
         /**
@@ -157,6 +156,9 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
           this.name = params.name;
           this.label = params.label;
           this.placeholder = params.placeholder;
+          this.required = params.required;
+          this.has_other  = params.has_other;
+          this.max = params.max;
           this.input = params.input || 'text';
 
           if (params.data) {
@@ -207,78 +209,115 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
 
         var saved_form = false;
 
-        (function observeUser() {
-          SailPlayApi.observe('load.user.info').then((user) => {
-            if (!user) return;
-            var form = scope.sailplay.fill_profile.form;
-            form.fields = config.fields.map(function (field) {
+        scope.multiple_limit = function(field) {
+          field.other = '';
+          var valid = field.value.length <= field.max;
+          scope.fill_profile_form[field.name].$setValidity('max', valid)
+        }
 
-              var form_field = new SailPlayFillProfile.Field(field);
+        scope.check_error = function(field) {
+          var valid = false;
+          if (field.has_other && !field.value && !field.other)
+            valid = false;
+          else if (!field.has_other && !field.value) 
+            valid = false;
+          else
+            valid = true
 
-              //we need to assign received values to form
-              switch (form_field.type) {
+          scope.fill_profile_form[field.name].$setValidity('select_required', valid);
+          return !valid
+        }
 
-                //we need define type
-                case 'system':
+        scope.$watch(function () {
+          return angular.toJson([SailPlayApi.data('load.user.info')()]);
+        }, function () {
 
-                  //bind different values to form field
-                  switch (form_field.name) {
+          var user = SailPlayApi.data('load.user.info')();
+          if (!user) return;
 
-                    case 'firstName':
+          var custom_fields = [];
+          var form = scope.sailplay.fill_profile.form;
+          
+          form.fields = config.fields.map(function (field) {
 
-                      form_field.value = user.user.first_name || '';
-                      break;
+            var form_field = new SailPlayFillProfile.Field(field);
+            if (field.type == 'variable') 
+              custom_fields.push(form_field)
 
-                    case 'lastName':
+            //we need to assign received values to form
+            switch (form_field.type) {
 
-                      form_field.value = user.user.last_name || '';
-                      break;
+              //we need define type
+              case 'system':
 
-                    case 'middleName':
+                //bind different values to form field
+                switch (form_field.name) {
 
-                      form_field.value = user.user.middle_name || '';
-                      break;
+                  case 'firstName':
 
-                    case 'birthDate':
+                    form_field.value = user.user.first_name || '';
+                    break;
 
-                      var bd = user.user.birth_date && user.user.birth_date.split('-');
-                      form_field.value = bd ? [parseInt(bd[2]), parseInt(bd[1]), parseInt(bd[0])] : [null, null, null];
-                      break;
+                  case 'lastName':
 
-                    case 'addPhone':
+                    form_field.value = user.user.last_name || '';
+                    break;
 
-                      form_field.value = user.user.phone || '';
-                      break;
+                  case 'middleName':
 
-                    case 'addEmail':
+                    form_field.value = user.user.middle_name || '';
+                    break;
 
-                      form_field.value = user.user.email || '';
-                      break;
+                  case 'birthDate':
 
-                    case 'sex':
+                    var bd = user.user.birth_date && user.user.birth_date.split('-');
+                    form_field.value = bd ? [parseInt(bd[2]), parseInt(bd[1]), parseInt(bd[0])] : [null, null, null];
+                    break;
 
-                      form_field.value = user.user.sex || '';
-                      break;
+                  case 'addPhone':
 
-                  }
+                    form_field.value = user.user.phone || '';
+                    break;
 
-                  break;
+                  case 'addEmail':
 
-              }
+                    form_field.value = user.user.email || '';
+                    break;
 
-              return form_field;
-            });
+                  case 'sex':
 
-            form.auth_hash = SailPlay.config().auth_hash;
-            //angular.extend(scope.profile_form.user, user.user);
-            //if(ipCookie(FillProfile.cookie_name) && SailPlay.config().auth_hash === ipCookie(FillProfile.cookie_name).user.auth_hash ){
-            //  angular.extend(scope.profile_form, ipCookie(FillProfile.cookie_name));
-            //}
-            console.dir(form);
-            saved_form = angular.copy(form);                        
-            observeUser();            
+                    form_field.value = user.user.sex || '';
+                    break;
+
+                }
+
+                break;
+
+            }
+
+            return form_field;
           });
-        }());
+
+
+          if (custom_fields.length) {            
+            SailPlayApi.call("vars.batch", { names: custom_fields.map(field => { return field.name }) }, (res) => {
+              angular.forEach(res.vars, variable => {                
+                angular.forEach(custom_fields, field => {
+                  if (field.name == variable.name) field.value = variable.value;
+                })
+              })
+            })
+          }
+
+          form.auth_hash = SailPlay.config().auth_hash;
+          //angular.extend(scope.profile_form.user, user.user);
+          //if(ipCookie(FillProfile.cookie_name) && SailPlay.config().auth_hash === ipCookie(FillProfile.cookie_name).user.auth_hash ){
+          //  angular.extend(scope.profile_form, ipCookie(FillProfile.cookie_name));
+          //}
+          console.dir(form);
+          $rootScope.$broadcast('openProfile');
+          saved_form = angular.copy(form);
+        });
 
         scope.revert_profile_form = function (form) {
           if (form) {
@@ -312,12 +351,15 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
             return;
           }
 
-          var data_user = SailPlayApi.data('load.user.info')() && SailPlayApi.data('load.user.info')().user;
-
-          var req_user = {};
+          var data_user = SailPlayApi.data('load.user.info')() && SailPlayApi.data('load.user.info')().user;         
+          var req_user = {},
+            custom_user_vars = {};
 
           angular.forEach(scope.sailplay.fill_profile.form.fields, function (item) {
-            req_user[item.name] = item.value;
+            if (item.type == 'variable') {
+              custom_user_vars[item.name] = item.value
+            } else
+              req_user[item.name] = item.value;
           });
 
           if (req_user.addPhone && data_user && data_user.phone && data_user.phone.replace(/\D/g, '') == req_user.addPhone.replace(/\D/g, '')) {
@@ -338,6 +380,15 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
           SailPlay.send('users.update', req_user, function (user_res) {
 
             if (user_res.status === 'ok') {
+
+              if (Object.keys(custom_user_vars).length) {
+                SailPlay.send('vars.add', {custom_vars: custom_user_vars}, (res_vars) => {
+                  if (!res_vars.status == 'ok')
+                    $rootScope.$broadcast('notifier:notify', {
+                    body: res_vars.message
+                  });
+                })
+              }
 
               scope.$apply(function () {
 

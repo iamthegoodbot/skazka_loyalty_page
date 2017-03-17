@@ -1,6 +1,16 @@
 @import (reference) "colors";
 @import (reference) "mixins";
 
+.multiple_select {    
+  select {
+    border: 0;    
+    border-top: 2px solid #ccc;  
+    padding-top: 5px;
+    width: 100%;
+    outline: 0;
+  }
+}
+
 .magic_select {
 
   overflow: hidden;
@@ -127,6 +137,9 @@
     color: @main_darker;
     font-size: 16px;
     float: left;
+    &_error {
+      color: red; 
+    }
   }
 
   .form_textarea {
@@ -157,6 +170,15 @@
       font-size: 18px;
       outline: none;
       box-sizing: border-box;
+    }
+    &.other {
+      border-top: 0;
+      border-bottom: 2px solid @main_light;
+    }
+    &_error {
+      font-size: 12px;
+      margin-top: 2px;
+      color: red;
     }
   }
 

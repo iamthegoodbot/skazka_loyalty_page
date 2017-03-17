@@ -2149,7 +2149,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports) {
 
 	/**
-	 * @license AngularJS v1.6.2
+	 * @license AngularJS v1.6.3
 	 * (c) 2010-2017 Google, Inc. http://angularjs.org
 	 * License: MIT
 	 */
@@ -2188,31 +2188,29 @@ return /******/ (function(modules) { // webpackBootstrap
 	function minErr(module, ErrorConstructor) {
 	  ErrorConstructor = ErrorConstructor || Error;
 	  return function() {
-	    var SKIP_INDEXES = 2;
-
-	    var templateArgs = arguments,
-	      code = templateArgs[0],
+	    var code = arguments[0],
+	      template = arguments[1],
 	      message = '[' + (module ? module + ':' : '') + code + '] ',
-	      template = templateArgs[1],
+	      templateArgs = sliceArgs(arguments, 2).map(function(arg) {
+	        return toDebugString(arg, minErrConfig.objectMaxDepth);
+	      }),
 	      paramPrefix, i;
 
 	    message += template.replace(/\{\d+\}/g, function(match) {
-	      var index = +match.slice(1, -1),
-	        shiftedIndex = index + SKIP_INDEXES;
+	      var index = +match.slice(1, -1);
 
-	      if (shiftedIndex < templateArgs.length) {
-	        return toDebugString(templateArgs[shiftedIndex]);
+	      if (index < templateArgs.length) {
+	        return templateArgs[index];
 	      }
 
 	      return match;
 	    });
 
-	    message += '\nhttp://errors.angularjs.org/1.6.2/' +
+	    message += '\nhttp://errors.angularjs.org/1.6.3/' +
 	      (module ? module + '/' : '') + code;
 
-	    for (i = SKIP_INDEXES, paramPrefix = '?'; i < templateArgs.length; i++, paramPrefix = '&') {
-	      message += paramPrefix + 'p' + (i - SKIP_INDEXES) + '=' +
-	        encodeURIComponent(toDebugString(templateArgs[i]));
+	    for (i = 0, paramPrefix = '?'; i < templateArgs.length; i++, paramPrefix = '&') {
+	      message += paramPrefix + 'p' + i + '=' + encodeURIComponent(templateArgs[i]);
 	    }
 
 	    return new ErrorConstructor(message);
@@ -2229,6 +2227,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  splice,
 	  push,
 	  toString,
+	  minErrConfig,
+	  errorHandlingConfig,
+	  isValidObjectMaxDepth,
 	  ngMinErr,
 	  angularModule,
 	  uid,
@@ -2343,6 +2344,50 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	var hasOwnProperty = Object.prototype.hasOwnProperty;
+
+	var minErrConfig = {
+	  objectMaxDepth: 5
+	};
+
+	 /**
+	 * @ngdoc function
+	 * @name angular.errorHandlingConfig
+	 * @module ng
+	 * @kind function
+	 *
+	 * @description
+	 * Configure several aspects of error handling in AngularJS if used as a setter or return the
+	 * current configuration if used as a getter. The following options are supported:
+	 *
+	 * - **objectMaxDepth**: The maximum depth to which objects are traversed when stringified for error messages.
+	 *
+	 * Omitted or undefined options will leave the corresponding configuration values unchanged.
+	 *
+	 * @param {Object=} config - The configuration object. May only contain the options that need to be
+	 *     updated. Supported keys:
+	 *
+	 * * `objectMaxDepth`  **{Number}** - The max depth for stringifying objects. Setting to a
+	 *   non-positive or non-numeric value, removes the max depth limit.
+	 *   Default: 5
+	 */
+	function errorHandlingConfig(config) {
+	  if (isObject(config)) {
+	    if (isDefined(config.objectMaxDepth)) {
+	      minErrConfig.objectMaxDepth = isValidObjectMaxDepth(config.objectMaxDepth) ? config.objectMaxDepth : NaN;
+	    }
+	  } else {
+	    return minErrConfig;
+	  }
+	}
+
+	/**
+	 * @private
+	 * @param {Number} maxDepth
+	 * @return {boolean}
+	 */
+	function isValidObjectMaxDepth(maxDepth) {
+	  return isNumber(maxDepth) && maxDepth > 0;
+	}
 
 	/**
 	 * @ngdoc function
@@ -3066,9 +3111,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    </file>
 	  </example>
 	 */
-	function copy(source, destination) {
+	function copy(source, destination, maxDepth) {
 	  var stackSource = [];
 	  var stackDest = [];
+	  maxDepth = isValidObjectMaxDepth(maxDepth) ? maxDepth : NaN;
 
 	  if (destination) {
 	    if (isTypedArray(destination) || isArrayBuffer(destination)) {
@@ -3091,35 +3137,39 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    stackSource.push(source);
 	    stackDest.push(destination);
-	    return copyRecurse(source, destination);
+	    return copyRecurse(source, destination, maxDepth);
 	  }
 
-	  return copyElement(source);
+	  return copyElement(source, maxDepth);
 
-	  function copyRecurse(source, destination) {
+	  function copyRecurse(source, destination, maxDepth) {
+	    maxDepth--;
+	    if (maxDepth < 0) {
+	      return '...';
+	    }
 	    var h = destination.$$hashKey;
 	    var key;
 	    if (isArray(source)) {
 	      for (var i = 0, ii = source.length; i < ii; i++) {
-	        destination.push(copyElement(source[i]));
+	        destination.push(copyElement(source[i], maxDepth));
 	      }
 	    } else if (isBlankObject(source)) {
 	      // createMap() fast path --- Safe to avoid hasOwnProperty check because prototype chain is empty
 	      for (key in source) {
-	        destination[key] = copyElement(source[key]);
+	        destination[key] = copyElement(source[key], maxDepth);
 	      }
 	    } else if (source && typeof source.hasOwnProperty === 'function') {
 	      // Slow path, which must rely on hasOwnProperty
 	      for (key in source) {
 	        if (source.hasOwnProperty(key)) {
-	          destination[key] = copyElement(source[key]);
+	          destination[key] = copyElement(source[key], maxDepth);
 	        }
 	      }
 	    } else {
 	      // Slowest path --- hasOwnProperty can't be called as a method
 	      for (key in source) {
 	        if (hasOwnProperty.call(source, key)) {
-	          destination[key] = copyElement(source[key]);
+	          destination[key] = copyElement(source[key], maxDepth);
 	        }
 	      }
 	    }
@@ -3127,7 +3177,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return destination;
 	  }
 
-	  function copyElement(source) {
+	  function copyElement(source, maxDepth) {
 	    // Simple values
 	    if (!isObject(source)) {
 	      return source;
@@ -3156,7 +3206,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    stackDest.push(destination);
 
 	    return needsRecurse
-	      ? copyRecurse(source, destination)
+	      ? copyRecurse(source, destination, maxDepth)
 	      : destination;
 	  }
 
@@ -3699,33 +3749,50 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function allowAutoBootstrap(document) {
 	  var script = document.currentScript;
-	  var src = script && script.getAttribute('src');
 
-	  if (!src) {
+	  if (!script) {
+	    // IE does not have `document.currentScript`
 	    return true;
 	  }
 
-	  var link = document.createElement('a');
-	  link.href = src;
-
-	  if (document.location.origin === link.origin) {
-	    // Same-origin resources are always allowed, even for non-whitelisted schemes.
-	    return true;
+	  // If the `currentScript` property has been clobbered just return false, since this indicates a probable attack
+	  if (!(script instanceof window.HTMLScriptElement || script instanceof window.SVGScriptElement)) {
+	    return false;
 	  }
-	  // Disabled bootstrapping unless angular.js was loaded from a known scheme used on the web.
-	  // This is to prevent angular.js bundled with browser extensions from being used to bypass the
-	  // content security policy in web pages and other browser extensions.
-	  switch (link.protocol) {
-	    case 'http:':
-	    case 'https:':
-	    case 'ftp:':
-	    case 'blob:':
-	    case 'file:':
-	    case 'data:':
+
+	  var attributes = script.attributes;
+	  var srcs = [attributes.getNamedItem('src'), attributes.getNamedItem('href'), attributes.getNamedItem('xlink:href')];
+
+	  return srcs.every(function(src) {
+	    if (!src) {
 	      return true;
-	    default:
+	    }
+	    if (!src.value) {
 	      return false;
-	  }
+	    }
+
+	    var link = document.createElement('a');
+	    link.href = src.value;
+
+	    if (document.location.origin === link.origin) {
+	      // Same-origin resources are always allowed, even for non-whitelisted schemes.
+	      return true;
+	    }
+	    // Disabled bootstrapping unless angular.js was loaded from a known scheme used on the web.
+	    // This is to prevent angular.js bundled with browser extensions from being used to bypass the
+	    // content security policy in web pages and other browser extensions.
+	    switch (link.protocol) {
+	      case 'http:':
+	      case 'https:':
+	      case 'ftp:':
+	      case 'blob:':
+	      case 'file:':
+	      case 'data:':
+	        return true;
+	      default:
+	        return false;
+	    }
+	  });
 	}
 
 	// Cached as it has to run during loading so that document.currentScript is available.
@@ -4322,6 +4389,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * @returns {angular.Module} new module with the {@link angular.Module} api.
 	     */
 	    return function module(name, requires, configFn) {
+
+	      var info = {};
+
 	      var assertNotHasOwnProperty = function(name, context) {
 	        if (name === 'hasOwnProperty') {
 	          throw ngMinErr('badname', 'hasOwnProperty is not a valid {0} name', context);
@@ -4356,6 +4426,45 @@ return /******/ (function(modules) { // webpackBootstrap
 	          _invokeQueue: invokeQueue,
 	          _configBlocks: configBlocks,
 	          _runBlocks: runBlocks,
+
+	          /**
+	           * @ngdoc method
+	           * @name angular.Module#info
+	           * @module ng
+	           *
+	           * @param {Object=} info Information about the module
+	           * @returns {Object|Module} The current info object for this module if called as a getter,
+	           *                          or `this` if called as a setter.
+	           *
+	           * @description
+	           * Read and write custom information about this module.
+	           * For example you could put the version of the module in here.
+	           *
+	           * ```js
+	           * angular.module('myModule', []).info({ version: '1.0.0' });
+	           * ```
+	           *
+	           * The version could then be read back out by accessing the module elsewhere:
+	           *
+	           * ```
+	           * var version = angular.module('myModule').info().version;
+	           * ```
+	           *
+	           * You can also retrieve this information during runtime via the
+	           * {@link $injector#modules `$injector.modules`} property:
+	           *
+	           * ```js
+	           * var version = $injector.modules['myModule'].info().version;
+	           * ```
+	           */
+	          info: function(value) {
+	            if (isDefined(value)) {
+	              if (!isObject(value)) throw ngMinErr('aobj', 'Argument \'{0}\' must be an object', 'value');
+	              info = value;
+	              return this;
+	            }
+	            return info;
+	          },
 
 	          /**
 	           * @ngdoc property
@@ -4635,9 +4744,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/* global toDebugString: true */
 
-	function serializeObject(obj) {
+	function serializeObject(obj, maxDepth) {
 	  var seen = [];
 
+	  // There is no direct way to stringify object until reaching a specific depth
+	  // and a very deep object can cause a performance issue, so we copy the object
+	  // based on this specific depth and then stringify it.
+	  if (isValidObjectMaxDepth(maxDepth)) {
+	    obj = copy(obj, null, maxDepth);
+	  }
 	  return JSON.stringify(obj, function(key, val) {
 	    val = toJsonReplacer(key, val);
 	    if (isObject(val)) {
@@ -4650,13 +4765,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	  });
 	}
 
-	function toDebugString(obj) {
+	function toDebugString(obj, maxDepth) {
 	  if (typeof obj === 'function') {
 	    return obj.toString().replace(/ \{[\s\S]*$/, '');
 	  } else if (isUndefined(obj)) {
 	    return 'undefined';
 	  } else if (typeof obj !== 'string') {
-	    return serializeObject(obj);
+	    return serializeObject(obj, maxDepth);
 	  }
 	  return obj;
 	}
@@ -4777,16 +4892,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	var version = {
 	  // These placeholder strings will be replaced by grunt's `build` task.
 	  // They need to be double- or single-quoted.
-	  full: '1.6.2',
+	  full: '1.6.3',
 	  major: 1,
 	  minor: 6,
-	  dot: 2,
-	  codeName: 'llamacorn-lovehug'
+	  dot: 3,
+	  codeName: 'scriptalicious-bootstrapping'
 	};
 
 
 	function publishExternalAPI(angular) {
 	  extend(angular, {
+	    'errorHandlingConfig': errorHandlingConfig,
 	    'bootstrap': bootstrap,
 	    'copy': copy,
 	    'extend': extend,
@@ -4925,7 +5041,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        $$cookieReader: $$CookieReaderProvider
 	      });
 	    }
-	  ]);
+	  ])
+	  .info({ angularVersion: '1.6.3' });
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -6317,6 +6434,28 @@ return /******/ (function(modules) { // webpackBootstrap
 	 */
 
 	/**
+	 * @ngdoc property
+	 * @name $injector#modules
+	 * @type {Object}
+	 * @description
+	 * A hash containing all the modules that have been loaded into the
+	 * $injector.
+	 *
+	 * You can use this property to find out information about a module via the
+	 * {@link angular.Module#info `myModule.info(...)`} method.
+	 *
+	 * For example:
+	 *
+	 * ```
+	 * var info = $injector.modules['ngAnimate'].info();
+	 * ```
+	 *
+	 * **Do not use this property to attempt to modify the modules after the application
+	 * has been bootstrapped.**
+	 */
+
+
+	/**
 	 * @ngdoc method
 	 * @name $injector#get
 	 *
@@ -6809,6 +6948,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      instanceInjector = protoInstanceInjector;
 
 	  providerCache['$injector' + providerSuffix] = { $get: valueFn(protoInstanceInjector) };
+	  instanceInjector.modules = providerInjector.modules = createMap();
 	  var runBlocks = loadModules(modulesToLoad);
 	  instanceInjector = protoInstanceInjector.get('$injector');
 	  instanceInjector.strictDi = strictDi;
@@ -6904,6 +7044,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      try {
 	        if (isString(module)) {
 	          moduleFn = angularModule(module);
+	          instanceInjector.modules[module] = moduleFn;
 	          runBlocks = runBlocks.concat(loadModules(moduleFn.requires)).concat(moduleFn._runBlocks);
 	          runInvokeQueue(moduleFn._invokeQueue);
 	          runInvokeQueue(moduleFn._configBlocks);
@@ -7494,6 +7635,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 */
 	var $AnimateProvider = ['$provide', /** @this */ function($provide) {
 	  var provider = this;
+	  var classNameFilter = null;
 
 	  this.$$registeredAnimations = Object.create(null);
 
@@ -7562,15 +7704,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	   */
 	  this.classNameFilter = function(expression) {
 	    if (arguments.length === 1) {
-	      this.$$classNameFilter = (expression instanceof RegExp) ? expression : null;
-	      if (this.$$classNameFilter) {
-	        var reservedRegex = new RegExp('(\\s+|\\/)' + NG_ANIMATE_CLASSNAME + '(\\s+|\\/)');
-	        if (reservedRegex.test(this.$$classNameFilter.toString())) {
-	          throw $animateMinErr('nongcls','$animateProvider.classNameFilter(regex) prohibits accepting a regex value which matches/contains the "{0}" CSS class.', NG_ANIMATE_CLASSNAME);
+	      classNameFilter = (expression instanceof RegExp) ? expression : null;
+	      if (classNameFilter) {
+	        var reservedRegex = new RegExp('[(\\s|\\/)]' + NG_ANIMATE_CLASSNAME + '[(\\s|\\/)]');
+	        if (reservedRegex.test(classNameFilter.toString())) {
+	          classNameFilter = null;
+	          throw $animateMinErr('nongcls', '$animateProvider.classNameFilter(regex) prohibits accepting a regex value which matches/contains the "{0}" CSS class.', NG_ANIMATE_CLASSNAME);
 	        }
 	      }
 	    }
-	    return this.$$classNameFilter;
+	    return classNameFilter;
 	  };
 
 	  this.$get = ['$$animateQueue', function($$animateQueue) {
@@ -8488,8 +8631,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  self.onUrlChange = function(callback) {
 	    // TODO(vojta): refactor to use node's syntax for events
 	    if (!urlChangeInit) {
-	      // We listen on both (hashchange/popstate) when available, as some browsers (e.g. Opera)
-	      // don't fire popstate when user change the address bar and don't fire hashchange when url
+	      // We listen on both (hashchange/popstate) when available, as some browsers don't
+	      // fire popstate when user changes the address bar and don't fire hashchange when url
 	      // changed by push/replaceState
 
 	      // html5 history api - popstate event
@@ -9278,10 +9421,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * the directive's element. If multiple directives on the same element request a new scope,
 	 * only one new scope is created.
 	 *
-	 * * **`{...}` (an object hash):** A new "isolate" scope is created for the directive's element. The
-	 * 'isolate' scope differs from normal scope in that it does not prototypically inherit from its parent
-	 * scope. This is useful when creating reusable components, which should not accidentally read or modify
-	 * data in the parent scope.
+	 * * **`{...}` (an object hash):** A new "isolate" scope is created for the directive's template.
+	 * The 'isolate' scope differs from normal scope in that it does not prototypically
+	 * inherit from its parent scope. This is useful when creating reusable components, which should not
+	 * accidentally read or modify data in the parent scope. Note that an isolate scope
+	 * directive without a `template` or `templateUrl` will not apply the isolate scope
+	 * to its children elements.
 	 *
 	 * The 'isolate' scope object hash defines a set of local scope properties derived from attributes on the
 	 * directive's element. These local properties are useful for aliasing values for templates. The keys in
@@ -15249,8 +15394,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * how they vary compared to the requested url.
 	 */
 	var $jsonpCallbacksProvider = /** @this */ function() {
-	  this.$get = ['$window', function($window) {
-	    var callbacks = $window.angular.callbacks;
+	  this.$get = function() {
+	    var callbacks = angular.callbacks;
 	    var callbackMap = {};
 
 	    function createCallback(callbackId) {
@@ -15317,7 +15462,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        delete callbackMap[callbackPath];
 	      }
 	    };
-	  }];
+	  };
 	};
 
 	/**
@@ -16424,6 +16569,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	  };
 
 	  this.$get = ['$window', function($window) {
+	    // Support: IE 9-11, Edge 12-14+
+	    // IE/Edge display errors in such a way that it requires the user to click in 4 places
+	    // to see the stack trace. There is no way to feature-detect it so there's a chance
+	    // of the user agent sniffing to go wrong but since it's only about logging, this shouldn't
+	    // break apps. Other browsers display errors in a sensible way and some of them map stack
+	    // traces along source maps if available so it makes sense to let browsers display it
+	    // as they want.
+	    var formatStackTrace = msie || /\bEdge\//.test($window.navigator && $window.navigator.userAgent);
+
 	    return {
 	      /**
 	       * @ngdoc method
@@ -16481,7 +16635,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    function formatError(arg) {
 	      if (arg instanceof Error) {
-	        if (arg.stack) {
+	        if (arg.stack && formatStackTrace) {
 	          arg = (arg.message && arg.stack.indexOf(arg.message) === -1)
 	              ? 'Error: ' + arg.message + '\n' + arg.stack
 	              : arg.stack;
@@ -19969,12 +20123,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	          current = target;
 
 	          // It's safe for asyncQueuePosition to be a local variable here because this loop can't
-	          // be reentered recursively. Calling $digest from a function passed to $applyAsync would
+	          // be reentered recursively. Calling $digest from a function passed to $evalAsync would
 	          // lead to a '$digest already in progress' error.
 	          for (var asyncQueuePosition = 0; asyncQueuePosition < asyncQueue.length; asyncQueuePosition++) {
 	            try {
 	              asyncTask = asyncQueue[asyncQueuePosition];
-	              asyncTask.scope.$eval(asyncTask.expression, asyncTask.locals);
+	              fn = asyncTask.fn;
+	              fn(asyncTask.scope, asyncTask.locals);
 	            } catch (e) {
 	              $exceptionHandler(e);
 	            }
@@ -20208,7 +20363,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          });
 	        }
 
-	        asyncQueue.push({scope: this, expression: $parse(expr), locals: locals});
+	        asyncQueue.push({scope: this, fn: $parse(expr), locals: locals});
 	      },
 
 	      $$postDigest: function(fn) {
@@ -22176,7 +22331,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * URL will be resolved into an absolute URL in the context of the application document.
 	 * Parsing means that the anchor node's host, hostname, protocol, port, pathname and related
 	 * properties are all populated to reflect the normalized URL.  This approach has wide
-	 * compatibility - Safari 1+, Mozilla 1+, Opera 7+,e etc.  See
+	 * compatibility - Safari 1+, Mozilla 1+ etc.  See
 	 * http://www.aptana.com/reference/html/api/HTMLAnchorElement.html
 	 *
 	 * Implementation Notes for IE
@@ -22542,6 +22697,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * Selects a subset of items from `array` and returns it as a new array.
 	 *
 	 * @param {Array} array The source array.
+	 * <div class="alert alert-info">
+	 *   **Note**: If the array contains objects that reference themselves, filtering is not possible.
+	 * </div>
 	 * @param {string|Object|function()} expression The predicate to be used for selecting items from
 	 *   `array`.
 	 *
@@ -22759,7 +22917,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var key;
 	      if (matchAgainstAnyProp) {
 	        for (key in actual) {
-	          if ((key.charAt(0) !== '$') && deepCompare(actual[key], expected, comparator, anyPropertyKey, true)) {
+	          // Under certain, rare, circumstances, key may not be a string and `charAt` will be undefined
+	          // See: https://github.com/angular/angular.js/issues/15644
+	          if (key.charAt && (key.charAt(0) !== '$') &&
+	              deepCompare(actual[key], expected, comparator, anyPropertyKey, true)) {
 	            return true;
 	          }
 	        }
@@ -30036,32 +30197,57 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @property {*} $viewValue The actual value from the control's view. For `input` elements, this is a
 	 * String. See {@link ngModel.NgModelController#$setViewValue} for information about when the $viewValue
 	 * is set.
+	 *
 	 * @property {*} $modelValue The value in the model that the control is bound to.
+	 *
 	 * @property {Array.<Function>} $parsers Array of functions to execute, as a pipeline, whenever
-	       the control reads value from the DOM. The functions are called in array order, each passing
-	       its return value through to the next. The last return value is forwarded to the
-	       {@link ngModel.NgModelController#$validators `$validators`} collection.
+	 *  the control updates the ngModelController with a new {@link ngModel.NgModelController#$viewValue
+	    `$viewValue`} from the DOM, usually via user input.
+	    See {@link ngModel.NgModelController#$setViewValue `$setViewValue()`} for a detailed lifecycle explanation.
+	    Note that the `$parsers` are not called when the bound ngModel expression changes programmatically.
 
-	Parsers are used to sanitize / convert the {@link ngModel.NgModelController#$viewValue
-	`$viewValue`}.
+	  The functions are called in array order, each passing
+	    its return value through to the next. The last return value is forwarded to the
+	    {@link ngModel.NgModelController#$validators `$validators`} collection.
 
-	Returning `undefined` from a parser means a parse error occurred. In that case,
-	no {@link ngModel.NgModelController#$validators `$validators`} will run and the `ngModel`
-	will be set to `undefined` unless {@link ngModelOptions `ngModelOptions.allowInvalid`}
-	is set to `true`. The parse error is stored in `ngModel.$error.parse`.
+	  Parsers are used to sanitize / convert the {@link ngModel.NgModelController#$viewValue
+	    `$viewValue`}.
+
+	  Returning `undefined` from a parser means a parse error occurred. In that case,
+	    no {@link ngModel.NgModelController#$validators `$validators`} will run and the `ngModel`
+	    will be set to `undefined` unless {@link ngModelOptions `ngModelOptions.allowInvalid`}
+	    is set to `true`. The parse error is stored in `ngModel.$error.parse`.
+
+	  This simple example shows a parser that would convert text input value to lowercase:
+	 * ```js
+	 * function parse(value) {
+	 *   if (value) {
+	 *     return value.toLowerCase();
+	 *   }
+	 * }
+	 * ngModelController.$parsers.push(parse);
+	 * ```
 
 	 *
 	 * @property {Array.<Function>} $formatters Array of functions to execute, as a pipeline, whenever
-	       the model value changes. The functions are called in reverse array order, each passing the value through to the
-	       next. The last return value is used as the actual DOM value.
-	       Used to format / convert values for display in the control.
+	    the bound ngModel expression changes programmatically. The `$formatters` are not called when the
+	    value of the control is changed by user interaction.
+
+	  Formatters are used to format / convert the {@link ngModel.NgModelController#$modelValue
+	    `$modelValue`} for display in the control.
+
+	  The functions are called in reverse array order, each passing the value through to the
+	    next. The last return value is used as the actual DOM value.
+
+	  This simple example shows a formatter that would convert the model value to uppercase:
+
 	 * ```js
-	 * function formatter(value) {
+	 * function format(value) {
 	 *   if (value) {
 	 *     return value.toUpperCase();
 	 *   }
 	 * }
-	 * ngModel.$formatters.push(formatter);
+	 * ngModel.$formatters.push(format);
 	 * ```
 	 *
 	 * @property {Object.<string, function>} $validators A collection of validators that are applied
@@ -30769,9 +30955,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * When `$setViewValue` is called, the new `value` will be staged for committing through the `$parsers`
 	   * and `$validators` pipelines. If there are no special {@link ngModelOptions} specified then the staged
-	   * value sent directly for processing, finally to be applied to `$modelValue` and then the
-	   * **expression** specified in the `ng-model` attribute. Lastly, all the registered change listeners,
-	   * in the `$viewChangeListeners` list, are called.
+	   * value is sent directly for processing through the `$parsers` pipeline. After this, the `$validators` and
+	   * `$asyncValidators` are called and the value is applied to `$modelValue`.
+	   * Finally, the value is set to the **expression** specified in the `ng-model` attribute and
+	   * all the registered change listeners, in the `$viewChangeListeners` list are called.
 	   *
 	   * In case the {@link ng.directive:ngModelOptions ngModelOptions} directive is used with `updateOn`
 	   * and the `default` trigger is not listed, all those actions will remain pending until one of the
@@ -31698,13 +31885,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * is not matched against any `<option>` and the `<select>` appears as having no selected value.
 	 *
 	 *
-	 * @param {string} ngModel Assignable angular expression to data-bind to.
-	 * @param {string=} name Property name of the form under which the control is published.
-	 * @param {string=} required The control is considered valid only if value is entered.
-	 * @param {string=} ngRequired Adds `required` attribute and `required` validation constraint to
-	 *    the element when the ngRequired expression evaluates to true. Use `ngRequired` instead of
-	 *    `required` when you want to data-bind to the `required` attribute.
-	 * @param {comprehension_expression=} ngOptions in one of the following forms:
+	 * @param {string} ngModel Assignable AngularJS expression to data-bind to.
+	 * @param {comprehension_expression} ngOptions in one of the following forms:
 	 *
 	 *   * for array data sources:
 	 *     * `label` **`for`** `value` **`in`** `array`
@@ -31743,6 +31925,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	 *      used to identify the objects in the array. The `trackexpr` will most likely refer to the
 	 *     `value` variable (e.g. `value.propertyName`). With this the selection is preserved
 	 *      even when the options are recreated (e.g. reloaded from the server).
+	 * @param {string=} name Property name of the form under which the control is published.
+	 * @param {string=} required The control is considered valid only if value is entered.
+	 * @param {string=} ngRequired Adds `required` attribute and `required` validation constraint to
+	 *    the element when the ngRequired expression evaluates to true. Use `ngRequired` instead of
+	 *    `required` when you want to data-bind to the `required` attribute.
+	 * @param {string=} ngAttrSize sets the size of the select element dynamically. Uses the
+	 * {@link guide/interpolation#-ngattr-for-binding-to-arbitrary-attributes ngAttr} directive.
 	 *
 	 * @example
 	    <example module="selectExample" name="select">
@@ -32554,6 +32743,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @ngdoc directive
 	 * @name ngRepeat
 	 * @multiElement
+	 * @restrict A
 	 *
 	 * @description
 	 * The `ngRepeat` directive instantiates a template once per item from a collection. Each template
@@ -34078,6 +34268,18 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var noopNgModelController = { $setViewValue: noop, $render: noop };
 
+	function setOptionSelectedStatus(optionEl, value) {
+	  optionEl.prop('selected', value); // needed for IE
+	  /**
+	   * When unselecting an option, setting the property to null / false should be enough
+	   * However, screenreaders might react to the selected attribute instead, see
+	   * https://github.com/angular/angular.js/issues/14419
+	   * Note: "selected" is a boolean attr and will be removed when the "value" arg in attr() is false
+	   * or null
+	   */
+	  optionEl.attr('selected', value);
+	}
+
 	/**
 	 * @ngdoc type
 	 * @name  select.SelectController
@@ -34118,14 +34320,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var unknownVal = self.generateUnknownOptionValue(val);
 	    self.unknownOption.val(unknownVal);
 	    $element.prepend(self.unknownOption);
-	    setOptionAsSelected(self.unknownOption);
+	    setOptionSelectedStatus(self.unknownOption, true);
 	    $element.val(unknownVal);
 	  };
 
 	  self.updateUnknownOption = function(val) {
 	    var unknownVal = self.generateUnknownOptionValue(val);
 	    self.unknownOption.val(unknownVal);
-	    setOptionAsSelected(self.unknownOption);
+	    setOptionSelectedStatus(self.unknownOption, true);
 	    $element.val(unknownVal);
 	  };
 
@@ -34140,7 +34342,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  self.selectEmptyOption = function() {
 	    if (self.emptyOption) {
 	      $element.val('');
-	      setOptionAsSelected(self.emptyOption);
+	      setOptionSelectedStatus(self.emptyOption, true);
 	    }
 	  };
 
@@ -34176,7 +34378,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    // Make sure to remove the selected attribute from the previously selected option
 	    // Otherwise, screen readers might get confused
 	    var currentlySelectedOption = $element[0].options[$element[0].selectedIndex];
-	    if (currentlySelectedOption) currentlySelectedOption.removeAttribute('selected');
+	    if (currentlySelectedOption) setOptionSelectedStatus(jqLite(currentlySelectedOption), false);
 
 	    if (self.hasOption(value)) {
 	      self.removeUnknownOption();
@@ -34186,7 +34388,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	      // Set selected attribute and property on selected option for screen readers
 	      var selectedOption = $element[0].options[$element[0].selectedIndex];
-	      setOptionAsSelected(jqLite(selectedOption));
+	      setOptionSelectedStatus(jqLite(selectedOption), true);
 	    } else {
 	      if (value == null && self.emptyOption) {
 	        self.removeUnknownOption();
@@ -34366,11 +34568,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 	    });
 	  };
-
-	  function setOptionAsSelected(optionEl) {
-	    optionEl.prop('selected', true); // needed for IE
-	    optionEl.attr('selected', true);
-	  }
 	}];
 
 	/**
@@ -34440,6 +34637,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	 *    interaction with the select element.
 	 * @param {string=} ngOptions sets the options that the select is populated with and defines what is
 	 * set on the model on selection. See {@link ngOptions `ngOptions`}.
+	 * @param {string=} ngAttrSize sets the size of the select element dynamically. Uses the
+	 * {@link guide/interpolation#-ngattr-for-binding-to-arbitrary-attributes ngAttr} directive.
 	 *
 	 * @example
 	 * ### Simple `select` elements with static options
@@ -34681,8 +34880,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	        // Write value now needs to set the selected property of each matching option
 	        selectCtrl.writeValue = function writeMultipleValue(value) {
 	          forEach(element.find('option'), function(option) {
-	            option.selected = !!value && (includes(value, option.value) ||
-	                                          includes(value, selectCtrl.selectValueMap[option.value]));
+	            var shouldBeSelected = !!value && (includes(value, option.value) ||
+	                                               includes(value, selectCtrl.selectValueMap[option.value]));
+	            var currentlySelected = option.selected;
+
+	            // IE and Edge, adding options to the selection via shift+click/UP/DOWN,
+	            // will de-select already selected options if "selected" on those options was set
+	            // more than once (i.e. when the options were already selected)
+	            // So we only modify the selected property if neccessary.
+	            // Note: this behavior cannot be replicated via unit tests because it only shows in the
+	            // actual user interface.
+	            if (shouldBeSelected !== currentlySelected) {
+	              setOptionSelectedStatus(jqLite(option), shouldBeSelected);
+	            }
+
 	          });
 	        };
 
@@ -35302,15 +35513,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _sailplay2 = _interopRequireDefault(_sailplay);
 
-	var _sailplay3 = __webpack_require__(36);
+	var _sailplay3 = __webpack_require__(56);
 
 	var _sailplay4 = _interopRequireDefault(_sailplay3);
 
-	var _sailplay5 = __webpack_require__(87);
+	var _sailplay5 = __webpack_require__(91);
 
 	var _sailplay6 = _interopRequireDefault(_sailplay5);
 
-	var _sailplay7 = __webpack_require__(88);
+	var _sailplay7 = __webpack_require__(92);
 
 	var _sailplay8 = _interopRequireDefault(_sailplay7);
 
@@ -35415,7 +35626,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	            break;
 
 	          case 'remote':
-
 	            sp.send('login.remote', auth_options);
 
 	        }
@@ -35598,6 +35808,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	});
 	exports.SailPlayProfile = undefined;
 
+	var _keys = __webpack_require__(36);
+
+	var _keys2 = _interopRequireDefault(_keys);
+
 	var _angular = __webpack_require__(32);
 
 	var _angular2 = _interopRequireDefault(_angular);
@@ -35750,6 +35964,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.name = params.name;
 	        this.label = params.label;
 	        this.placeholder = params.placeholder;
+	        this.required = params.required;
+	        this.has_other = params.has_other;
+	        this.max = params.max;
 	        this.input = params.input || 'text';
 
 	        if (params.data) {
@@ -35797,78 +36014,110 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	      var saved_form = false;
 
-	      (function observeUser() {
-	        SailPlayApi.observe('load.user.info').then(function (user) {
-	          if (!user) return;
-	          var form = scope.sailplay.fill_profile.form;
-	          form.fields = config.fields.map(function (field) {
+	      scope.multiple_limit = function (field) {
+	        field.other = '';
+	        var valid = field.value.length <= field.max;
+	        scope.fill_profile_form[field.name].$setValidity('max', valid);
+	      };
 
-	            var form_field = new SailPlayFillProfile.Field(field);
+	      scope.check_error = function (field) {
+	        var valid = false;
+	        if (field.has_other && !field.value && !field.other) valid = false;else if (!field.has_other && !field.value) valid = false;else valid = true;
 
-	            //we need to assign received values to form
-	            switch (form_field.type) {
+	        scope.fill_profile_form[field.name].$setValidity('select_required', valid);
+	        return !valid;
+	      };
 
-	              //we need define type
-	              case 'system':
+	      scope.$watch(function () {
+	        return _angular2.default.toJson([SailPlayApi.data('load.user.info')()]);
+	      }, function () {
 
-	                //bind different values to form field
-	                switch (form_field.name) {
+	        var user = SailPlayApi.data('load.user.info')();
+	        if (!user) return;
 
-	                  case 'firstName':
+	        var custom_fields = [];
+	        var form = scope.sailplay.fill_profile.form;
 
-	                    form_field.value = user.user.first_name || '';
-	                    break;
+	        form.fields = config.fields.map(function (field) {
 
-	                  case 'lastName':
+	          var form_field = new SailPlayFillProfile.Field(field);
+	          if (field.type == 'variable') custom_fields.push(form_field);
 
-	                    form_field.value = user.user.last_name || '';
-	                    break;
+	          //we need to assign received values to form
+	          switch (form_field.type) {
 
-	                  case 'middleName':
+	            //we need define type
+	            case 'system':
 
-	                    form_field.value = user.user.middle_name || '';
-	                    break;
+	              //bind different values to form field
+	              switch (form_field.name) {
 
-	                  case 'birthDate':
+	                case 'firstName':
 
-	                    var bd = user.user.birth_date && user.user.birth_date.split('-');
-	                    form_field.value = bd ? [parseInt(bd[2]), parseInt(bd[1]), parseInt(bd[0])] : [null, null, null];
-	                    break;
+	                  form_field.value = user.user.first_name || '';
+	                  break;
 
-	                  case 'addPhone':
+	                case 'lastName':
 
-	                    form_field.value = user.user.phone || '';
-	                    break;
+	                  form_field.value = user.user.last_name || '';
+	                  break;
 
-	                  case 'addEmail':
+	                case 'middleName':
 
-	                    form_field.value = user.user.email || '';
-	                    break;
+	                  form_field.value = user.user.middle_name || '';
+	                  break;
 
-	                  case 'sex':
+	                case 'birthDate':
 
-	                    form_field.value = user.user.sex || '';
-	                    break;
+	                  var bd = user.user.birth_date && user.user.birth_date.split('-');
+	                  form_field.value = bd ? [parseInt(bd[2]), parseInt(bd[1]), parseInt(bd[0])] : [null, null, null];
+	                  break;
 
-	                }
+	                case 'addPhone':
 
-	                break;
+	                  form_field.value = user.user.phone || '';
+	                  break;
 
-	            }
+	                case 'addEmail':
 
-	            return form_field;
-	          });
+	                  form_field.value = user.user.email || '';
+	                  break;
 
-	          form.auth_hash = SailPlay.config().auth_hash;
-	          //angular.extend(scope.profile_form.user, user.user);
-	          //if(ipCookie(FillProfile.cookie_name) && SailPlay.config().auth_hash === ipCookie(FillProfile.cookie_name).user.auth_hash ){
-	          //  angular.extend(scope.profile_form, ipCookie(FillProfile.cookie_name));
-	          //}
-	          console.dir(form);
-	          saved_form = _angular2.default.copy(form);
-	          observeUser();
+	                case 'sex':
+
+	                  form_field.value = user.user.sex || '';
+	                  break;
+
+	              }
+
+	              break;
+
+	          }
+
+	          return form_field;
 	        });
-	      })();
+
+	        if (custom_fields.length) {
+	          SailPlayApi.call("vars.batch", { names: custom_fields.map(function (field) {
+	              return field.name;
+	            }) }, function (res) {
+	            _angular2.default.forEach(res.vars, function (variable) {
+	              _angular2.default.forEach(custom_fields, function (field) {
+	                if (field.name == variable.name) field.value = variable.value;
+	              });
+	            });
+	          });
+	        }
+
+	        form.auth_hash = SailPlay.config().auth_hash;
+	        //angular.extend(scope.profile_form.user, user.user);
+	        //if(ipCookie(FillProfile.cookie_name) && SailPlay.config().auth_hash === ipCookie(FillProfile.cookie_name).user.auth_hash ){
+	        //  angular.extend(scope.profile_form, ipCookie(FillProfile.cookie_name));
+	        //}
+	        console.dir(form);
+	        $rootScope.$broadcast('openProfile');
+	        saved_form = _angular2.default.copy(form);
+	      });
 
 	      scope.revert_profile_form = function (form) {
 	        if (form) {
@@ -35900,11 +36149,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 
 	        var data_user = SailPlayApi.data('load.user.info')() && SailPlayApi.data('load.user.info')().user;
-
-	        var req_user = {};
+	        var req_user = {},
+	            custom_user_vars = {};
 
 	        _angular2.default.forEach(scope.sailplay.fill_profile.form.fields, function (item) {
-	          req_user[item.name] = item.value;
+	          if (item.type == 'variable') {
+	            custom_user_vars[item.name] = item.value;
+	          } else req_user[item.name] = item.value;
 	        });
 
 	        if (req_user.addPhone && data_user && data_user.phone && data_user.phone.replace(/\D/g, '') == req_user.addPhone.replace(/\D/g, '')) {
@@ -35925,6 +36176,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	        SailPlay.send('users.update', req_user, function (user_res) {
 
 	          if (user_res.status === 'ok') {
+
+	            if ((0, _keys2.default)(custom_user_vars).length) {
+	              SailPlay.send('vars.add', { custom_vars: custom_user_vars }, function (res_vars) {
+	                if (!res_vars.status == 'ok') $rootScope.$broadcast('notifier:notify', {
+	                  body: res_vars.message
+	                });
+	              });
+	            }
 
 	            scope.$apply(function () {
 
@@ -35953,6 +36212,242 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 36 */
 /***/ function(module, exports, __webpack_require__) {
 
+	module.exports = { "default": __webpack_require__(37), __esModule: true };
+
+/***/ },
+/* 37 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(38);
+	module.exports = __webpack_require__(17).Object.keys;
+
+/***/ },
+/* 38 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// 19.1.2.14 Object.keys(O)
+	var toObject = __webpack_require__(39)
+	  , $keys    = __webpack_require__(41);
+
+	__webpack_require__(55)('keys', function(){
+	  return function keys(it){
+	    return $keys(toObject(it));
+	  };
+	});
+
+/***/ },
+/* 39 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// 7.1.13 ToObject(argument)
+	var defined = __webpack_require__(40);
+	module.exports = function(it){
+	  return Object(defined(it));
+	};
+
+/***/ },
+/* 40 */
+/***/ function(module, exports) {
+
+	// 7.2.1 RequireObjectCoercible(argument)
+	module.exports = function(it){
+	  if(it == undefined)throw TypeError("Can't call method on  " + it);
+	  return it;
+	};
+
+/***/ },
+/* 41 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// 19.1.2.14 / 15.2.3.14 Object.keys(O)
+	var $keys       = __webpack_require__(42)
+	  , enumBugKeys = __webpack_require__(54);
+
+	module.exports = Object.keys || function keys(O){
+	  return $keys(O, enumBugKeys);
+	};
+
+/***/ },
+/* 42 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var has          = __webpack_require__(43)
+	  , toIObject    = __webpack_require__(44)
+	  , arrayIndexOf = __webpack_require__(47)(false)
+	  , IE_PROTO     = __webpack_require__(51)('IE_PROTO');
+
+	module.exports = function(object, names){
+	  var O      = toIObject(object)
+	    , i      = 0
+	    , result = []
+	    , key;
+	  for(key in O)if(key != IE_PROTO)has(O, key) && result.push(key);
+	  // Don't enum bug & hidden keys
+	  while(names.length > i)if(has(O, key = names[i++])){
+	    ~arrayIndexOf(result, key) || result.push(key);
+	  }
+	  return result;
+	};
+
+/***/ },
+/* 43 */
+/***/ function(module, exports) {
+
+	var hasOwnProperty = {}.hasOwnProperty;
+	module.exports = function(it, key){
+	  return hasOwnProperty.call(it, key);
+	};
+
+/***/ },
+/* 44 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// to indexed object, toObject with fallback for non-array-like ES3 strings
+	var IObject = __webpack_require__(45)
+	  , defined = __webpack_require__(40);
+	module.exports = function(it){
+	  return IObject(defined(it));
+	};
+
+/***/ },
+/* 45 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// fallback for non-array-like ES3 and non-enumerable old V8 strings
+	var cof = __webpack_require__(46);
+	module.exports = Object('z').propertyIsEnumerable(0) ? Object : function(it){
+	  return cof(it) == 'String' ? it.split('') : Object(it);
+	};
+
+/***/ },
+/* 46 */
+/***/ function(module, exports) {
+
+	var toString = {}.toString;
+
+	module.exports = function(it){
+	  return toString.call(it).slice(8, -1);
+	};
+
+/***/ },
+/* 47 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// false -> Array#indexOf
+	// true  -> Array#includes
+	var toIObject = __webpack_require__(44)
+	  , toLength  = __webpack_require__(48)
+	  , toIndex   = __webpack_require__(50);
+	module.exports = function(IS_INCLUDES){
+	  return function($this, el, fromIndex){
+	    var O      = toIObject($this)
+	      , length = toLength(O.length)
+	      , index  = toIndex(fromIndex, length)
+	      , value;
+	    // Array#includes uses SameValueZero equality algorithm
+	    if(IS_INCLUDES && el != el)while(length > index){
+	      value = O[index++];
+	      if(value != value)return true;
+	    // Array#toIndex ignores holes, Array#includes - not
+	    } else for(;length > index; index++)if(IS_INCLUDES || index in O){
+	      if(O[index] === el)return IS_INCLUDES || index || 0;
+	    } return !IS_INCLUDES && -1;
+	  };
+	};
+
+/***/ },
+/* 48 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// 7.1.15 ToLength
+	var toInteger = __webpack_require__(49)
+	  , min       = Math.min;
+	module.exports = function(it){
+	  return it > 0 ? min(toInteger(it), 0x1fffffffffffff) : 0; // pow(2, 53) - 1 == 9007199254740991
+	};
+
+/***/ },
+/* 49 */
+/***/ function(module, exports) {
+
+	// 7.1.4 ToInteger
+	var ceil  = Math.ceil
+	  , floor = Math.floor;
+	module.exports = function(it){
+	  return isNaN(it = +it) ? 0 : (it > 0 ? floor : ceil)(it);
+	};
+
+/***/ },
+/* 50 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var toInteger = __webpack_require__(49)
+	  , max       = Math.max
+	  , min       = Math.min;
+	module.exports = function(index, length){
+	  index = toInteger(index);
+	  return index < 0 ? max(index + length, 0) : min(index, length);
+	};
+
+/***/ },
+/* 51 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var shared = __webpack_require__(52)('keys')
+	  , uid    = __webpack_require__(53);
+	module.exports = function(key){
+	  return shared[key] || (shared[key] = uid(key));
+	};
+
+/***/ },
+/* 52 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var global = __webpack_require__(16)
+	  , SHARED = '__core-js_shared__'
+	  , store  = global[SHARED] || (global[SHARED] = {});
+	module.exports = function(key){
+	  return store[key] || (store[key] = {});
+	};
+
+/***/ },
+/* 53 */
+/***/ function(module, exports) {
+
+	var id = 0
+	  , px = Math.random();
+	module.exports = function(key){
+	  return 'Symbol('.concat(key === undefined ? '' : key, ')_', (++id + px).toString(36));
+	};
+
+/***/ },
+/* 54 */
+/***/ function(module, exports) {
+
+	// IE 8- don't enum bug keys
+	module.exports = (
+	  'constructor,hasOwnProperty,isPrototypeOf,propertyIsEnumerable,toLocaleString,toString,valueOf'
+	).split(',');
+
+/***/ },
+/* 55 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// most Object methods by ES6 should accept primitives
+	var $export = __webpack_require__(15)
+	  , core    = __webpack_require__(17)
+	  , fails   = __webpack_require__(26);
+	module.exports = function(KEY, exec){
+	  var fn  = (core.Object || {})[KEY] || Object[KEY]
+	    , exp = {};
+	  exp[KEY] = exec(fn);
+	  $export($export.S + $export.F * fails(function(){ fn(1); }), 'Object', exp);
+	};
+
+/***/ },
+/* 56 */
+/***/ function(module, exports, __webpack_require__) {
+
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
@@ -35960,7 +36455,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	});
 	exports.SailPlayGifts = undefined;
 
-	var _promise = __webpack_require__(37);
+	var _promise = __webpack_require__(57);
 
 	var _promise2 = _interopRequireDefault(_promise);
 
@@ -36101,36 +36596,36 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = SailPlayGifts.name;
 
 /***/ },
-/* 37 */
+/* 57 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = { "default": __webpack_require__(38), __esModule: true };
+	module.exports = { "default": __webpack_require__(58), __esModule: true };
 
 /***/ },
-/* 38 */
+/* 58 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(39);
-	__webpack_require__(40);
-	__webpack_require__(69);
+	__webpack_require__(59);
+	__webpack_require__(60);
 	__webpack_require__(73);
+	__webpack_require__(77);
 	module.exports = __webpack_require__(17).Promise;
 
 /***/ },
-/* 39 */
+/* 59 */
 /***/ function(module, exports) {
 
 	
 
 /***/ },
-/* 40 */
+/* 60 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var $at  = __webpack_require__(41)(true);
+	var $at  = __webpack_require__(61)(true);
 
 	// 21.1.3.27 String.prototype[@@iterator]()
-	__webpack_require__(44)(String, 'String', function(iterated){
+	__webpack_require__(62)(String, 'String', function(iterated){
 	  this._t = String(iterated); // target
 	  this._i = 0;                // next index
 	// 21.1.5.2.1 %StringIteratorPrototype%.next()
@@ -36145,11 +36640,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	});
 
 /***/ },
-/* 41 */
+/* 61 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var toInteger = __webpack_require__(42)
-	  , defined   = __webpack_require__(43);
+	var toInteger = __webpack_require__(49)
+	  , defined   = __webpack_require__(40);
 	// true  -> String#at
 	// false -> String#codePointAt
 	module.exports = function(TO_STRING){
@@ -36167,41 +36662,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 42 */
-/***/ function(module, exports) {
-
-	// 7.1.4 ToInteger
-	var ceil  = Math.ceil
-	  , floor = Math.floor;
-	module.exports = function(it){
-	  return isNaN(it = +it) ? 0 : (it > 0 ? floor : ceil)(it);
-	};
-
-/***/ },
-/* 43 */
-/***/ function(module, exports) {
-
-	// 7.2.1 RequireObjectCoercible(argument)
-	module.exports = function(it){
-	  if(it == undefined)throw TypeError("Can't call method on  " + it);
-	  return it;
-	};
-
-/***/ },
-/* 44 */
+/* 62 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var LIBRARY        = __webpack_require__(45)
+	var LIBRARY        = __webpack_require__(63)
 	  , $export        = __webpack_require__(15)
-	  , redefine       = __webpack_require__(46)
+	  , redefine       = __webpack_require__(64)
 	  , hide           = __webpack_require__(20)
-	  , has            = __webpack_require__(47)
-	  , Iterators      = __webpack_require__(48)
-	  , $iterCreate    = __webpack_require__(49)
-	  , setToStringTag = __webpack_require__(65)
-	  , getPrototypeOf = __webpack_require__(67)
-	  , ITERATOR       = __webpack_require__(66)('iterator')
+	  , has            = __webpack_require__(43)
+	  , Iterators      = __webpack_require__(65)
+	  , $iterCreate    = __webpack_require__(66)
+	  , setToStringTag = __webpack_require__(70)
+	  , getPrototypeOf = __webpack_require__(72)
+	  , ITERATOR       = __webpack_require__(71)('iterator')
 	  , BUGGY          = !([].keys && 'next' in [].keys()) // Safari has buggy iterators w/o `next`
 	  , FF_ITERATOR    = '@@iterator'
 	  , KEYS           = 'keys'
@@ -36263,44 +36737,35 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 45 */
+/* 63 */
 /***/ function(module, exports) {
 
 	module.exports = true;
 
 /***/ },
-/* 46 */
+/* 64 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = __webpack_require__(20);
 
 /***/ },
-/* 47 */
-/***/ function(module, exports) {
-
-	var hasOwnProperty = {}.hasOwnProperty;
-	module.exports = function(it, key){
-	  return hasOwnProperty.call(it, key);
-	};
-
-/***/ },
-/* 48 */
+/* 65 */
 /***/ function(module, exports) {
 
 	module.exports = {};
 
 /***/ },
-/* 49 */
+/* 66 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var create         = __webpack_require__(50)
+	var create         = __webpack_require__(67)
 	  , descriptor     = __webpack_require__(29)
-	  , setToStringTag = __webpack_require__(65)
+	  , setToStringTag = __webpack_require__(70)
 	  , IteratorPrototype = {};
 
 	// 25.1.2.1.1 %IteratorPrototype%[@@iterator]()
-	__webpack_require__(20)(IteratorPrototype, __webpack_require__(66)('iterator'), function(){ return this; });
+	__webpack_require__(20)(IteratorPrototype, __webpack_require__(71)('iterator'), function(){ return this; });
 
 	module.exports = function(Constructor, NAME, next){
 	  Constructor.prototype = create(IteratorPrototype, {next: descriptor(1, next)});
@@ -36308,14 +36773,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 50 */
+/* 67 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
 	var anObject    = __webpack_require__(22)
-	  , dPs         = __webpack_require__(51)
-	  , enumBugKeys = __webpack_require__(63)
-	  , IE_PROTO    = __webpack_require__(60)('IE_PROTO')
+	  , dPs         = __webpack_require__(68)
+	  , enumBugKeys = __webpack_require__(54)
+	  , IE_PROTO    = __webpack_require__(51)('IE_PROTO')
 	  , Empty       = function(){ /* empty */ }
 	  , PROTOTYPE   = 'prototype';
 
@@ -36328,7 +36793,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    , gt     = '>'
 	    , iframeDocument;
 	  iframe.style.display = 'none';
-	  __webpack_require__(64).appendChild(iframe);
+	  __webpack_require__(69).appendChild(iframe);
 	  iframe.src = 'javascript:'; // eslint-disable-line no-script-url
 	  // createDict = iframe.contentWindow.Object;
 	  // html.removeChild(iframe);
@@ -36355,12 +36820,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 51 */
+/* 68 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var dP       = __webpack_require__(21)
 	  , anObject = __webpack_require__(22)
-	  , getKeys  = __webpack_require__(52);
+	  , getKeys  = __webpack_require__(41);
 
 	module.exports = __webpack_require__(25) ? Object.defineProperties : function defineProperties(O, Properties){
 	  anObject(O);
@@ -36373,183 +36838,29 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 52 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// 19.1.2.14 / 15.2.3.14 Object.keys(O)
-	var $keys       = __webpack_require__(53)
-	  , enumBugKeys = __webpack_require__(63);
-
-	module.exports = Object.keys || function keys(O){
-	  return $keys(O, enumBugKeys);
-	};
-
-/***/ },
-/* 53 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var has          = __webpack_require__(47)
-	  , toIObject    = __webpack_require__(54)
-	  , arrayIndexOf = __webpack_require__(57)(false)
-	  , IE_PROTO     = __webpack_require__(60)('IE_PROTO');
-
-	module.exports = function(object, names){
-	  var O      = toIObject(object)
-	    , i      = 0
-	    , result = []
-	    , key;
-	  for(key in O)if(key != IE_PROTO)has(O, key) && result.push(key);
-	  // Don't enum bug & hidden keys
-	  while(names.length > i)if(has(O, key = names[i++])){
-	    ~arrayIndexOf(result, key) || result.push(key);
-	  }
-	  return result;
-	};
-
-/***/ },
-/* 54 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// to indexed object, toObject with fallback for non-array-like ES3 strings
-	var IObject = __webpack_require__(55)
-	  , defined = __webpack_require__(43);
-	module.exports = function(it){
-	  return IObject(defined(it));
-	};
-
-/***/ },
-/* 55 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// fallback for non-array-like ES3 and non-enumerable old V8 strings
-	var cof = __webpack_require__(56);
-	module.exports = Object('z').propertyIsEnumerable(0) ? Object : function(it){
-	  return cof(it) == 'String' ? it.split('') : Object(it);
-	};
-
-/***/ },
-/* 56 */
-/***/ function(module, exports) {
-
-	var toString = {}.toString;
-
-	module.exports = function(it){
-	  return toString.call(it).slice(8, -1);
-	};
-
-/***/ },
-/* 57 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// false -> Array#indexOf
-	// true  -> Array#includes
-	var toIObject = __webpack_require__(54)
-	  , toLength  = __webpack_require__(58)
-	  , toIndex   = __webpack_require__(59);
-	module.exports = function(IS_INCLUDES){
-	  return function($this, el, fromIndex){
-	    var O      = toIObject($this)
-	      , length = toLength(O.length)
-	      , index  = toIndex(fromIndex, length)
-	      , value;
-	    // Array#includes uses SameValueZero equality algorithm
-	    if(IS_INCLUDES && el != el)while(length > index){
-	      value = O[index++];
-	      if(value != value)return true;
-	    // Array#toIndex ignores holes, Array#includes - not
-	    } else for(;length > index; index++)if(IS_INCLUDES || index in O){
-	      if(O[index] === el)return IS_INCLUDES || index || 0;
-	    } return !IS_INCLUDES && -1;
-	  };
-	};
-
-/***/ },
-/* 58 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// 7.1.15 ToLength
-	var toInteger = __webpack_require__(42)
-	  , min       = Math.min;
-	module.exports = function(it){
-	  return it > 0 ? min(toInteger(it), 0x1fffffffffffff) : 0; // pow(2, 53) - 1 == 9007199254740991
-	};
-
-/***/ },
-/* 59 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var toInteger = __webpack_require__(42)
-	  , max       = Math.max
-	  , min       = Math.min;
-	module.exports = function(index, length){
-	  index = toInteger(index);
-	  return index < 0 ? max(index + length, 0) : min(index, length);
-	};
-
-/***/ },
-/* 60 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var shared = __webpack_require__(61)('keys')
-	  , uid    = __webpack_require__(62);
-	module.exports = function(key){
-	  return shared[key] || (shared[key] = uid(key));
-	};
-
-/***/ },
-/* 61 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var global = __webpack_require__(16)
-	  , SHARED = '__core-js_shared__'
-	  , store  = global[SHARED] || (global[SHARED] = {});
-	module.exports = function(key){
-	  return store[key] || (store[key] = {});
-	};
-
-/***/ },
-/* 62 */
-/***/ function(module, exports) {
-
-	var id = 0
-	  , px = Math.random();
-	module.exports = function(key){
-	  return 'Symbol('.concat(key === undefined ? '' : key, ')_', (++id + px).toString(36));
-	};
-
-/***/ },
-/* 63 */
-/***/ function(module, exports) {
-
-	// IE 8- don't enum bug keys
-	module.exports = (
-	  'constructor,hasOwnProperty,isPrototypeOf,propertyIsEnumerable,toLocaleString,toString,valueOf'
-	).split(',');
-
-/***/ },
-/* 64 */
+/* 69 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = __webpack_require__(16).document && document.documentElement;
 
 /***/ },
-/* 65 */
+/* 70 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var def = __webpack_require__(21).f
-	  , has = __webpack_require__(47)
-	  , TAG = __webpack_require__(66)('toStringTag');
+	  , has = __webpack_require__(43)
+	  , TAG = __webpack_require__(71)('toStringTag');
 
 	module.exports = function(it, tag, stat){
 	  if(it && !has(it = stat ? it : it.prototype, TAG))def(it, TAG, {configurable: true, value: tag});
 	};
 
 /***/ },
-/* 66 */
+/* 71 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var store      = __webpack_require__(61)('wks')
-	  , uid        = __webpack_require__(62)
+	var store      = __webpack_require__(52)('wks')
+	  , uid        = __webpack_require__(53)
 	  , Symbol     = __webpack_require__(16).Symbol
 	  , USE_SYMBOL = typeof Symbol == 'function';
 
@@ -36561,13 +36872,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	$exports.store = store;
 
 /***/ },
-/* 67 */
+/* 72 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// 19.1.2.9 / 15.2.3.2 Object.getPrototypeOf(O)
-	var has         = __webpack_require__(47)
-	  , toObject    = __webpack_require__(68)
-	  , IE_PROTO    = __webpack_require__(60)('IE_PROTO')
+	var has         = __webpack_require__(43)
+	  , toObject    = __webpack_require__(39)
+	  , IE_PROTO    = __webpack_require__(51)('IE_PROTO')
 	  , ObjectProto = Object.prototype;
 
 	module.exports = Object.getPrototypeOf || function(O){
@@ -36579,24 +36890,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 68 */
+/* 73 */
 /***/ function(module, exports, __webpack_require__) {
 
-	// 7.1.13 ToObject(argument)
-	var defined = __webpack_require__(43);
-	module.exports = function(it){
-	  return Object(defined(it));
-	};
-
-/***/ },
-/* 69 */
-/***/ function(module, exports, __webpack_require__) {
-
-	__webpack_require__(70);
+	__webpack_require__(74);
 	var global        = __webpack_require__(16)
 	  , hide          = __webpack_require__(20)
-	  , Iterators     = __webpack_require__(48)
-	  , TO_STRING_TAG = __webpack_require__(66)('toStringTag');
+	  , Iterators     = __webpack_require__(65)
+	  , TO_STRING_TAG = __webpack_require__(71)('toStringTag');
 
 	for(var collections = ['NodeList', 'DOMTokenList', 'MediaList', 'StyleSheetList', 'CSSRuleList'], i = 0; i < 5; i++){
 	  var NAME       = collections[i]
@@ -36607,20 +36908,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ },
-/* 70 */
+/* 74 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var addToUnscopables = __webpack_require__(71)
-	  , step             = __webpack_require__(72)
-	  , Iterators        = __webpack_require__(48)
-	  , toIObject        = __webpack_require__(54);
+	var addToUnscopables = __webpack_require__(75)
+	  , step             = __webpack_require__(76)
+	  , Iterators        = __webpack_require__(65)
+	  , toIObject        = __webpack_require__(44);
 
 	// 22.1.3.4 Array.prototype.entries()
 	// 22.1.3.13 Array.prototype.keys()
 	// 22.1.3.29 Array.prototype.values()
 	// 22.1.3.30 Array.prototype[@@iterator]()
-	module.exports = __webpack_require__(44)(Array, 'Array', function(iterated, kind){
+	module.exports = __webpack_require__(62)(Array, 'Array', function(iterated, kind){
 	  this._t = toIObject(iterated); // target
 	  this._i = 0;                   // next index
 	  this._k = kind;                // kind
@@ -36646,13 +36947,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	addToUnscopables('entries');
 
 /***/ },
-/* 71 */
+/* 75 */
 /***/ function(module, exports) {
 
 	module.exports = function(){ /* empty */ };
 
 /***/ },
-/* 72 */
+/* 76 */
 /***/ function(module, exports) {
 
 	module.exports = function(done, value){
@@ -36660,22 +36961,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 73 */
+/* 77 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var LIBRARY            = __webpack_require__(45)
+	var LIBRARY            = __webpack_require__(63)
 	  , global             = __webpack_require__(16)
 	  , ctx                = __webpack_require__(18)
-	  , classof            = __webpack_require__(74)
+	  , classof            = __webpack_require__(78)
 	  , $export            = __webpack_require__(15)
 	  , isObject           = __webpack_require__(23)
 	  , aFunction          = __webpack_require__(19)
-	  , anInstance         = __webpack_require__(75)
-	  , forOf              = __webpack_require__(76)
-	  , speciesConstructor = __webpack_require__(80)
-	  , task               = __webpack_require__(81).set
-	  , microtask          = __webpack_require__(83)()
+	  , anInstance         = __webpack_require__(79)
+	  , forOf              = __webpack_require__(80)
+	  , speciesConstructor = __webpack_require__(84)
+	  , task               = __webpack_require__(85).set
+	  , microtask          = __webpack_require__(87)()
 	  , PROMISE            = 'Promise'
 	  , TypeError          = global.TypeError
 	  , process            = global.process
@@ -36689,7 +36990,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  try {
 	    // correct subclassing with @@species support
 	    var promise     = $Promise.resolve(1)
-	      , FakePromise = (promise.constructor = {})[__webpack_require__(66)('species')] = function(exec){ exec(empty, empty); };
+	      , FakePromise = (promise.constructor = {})[__webpack_require__(71)('species')] = function(exec){ exec(empty, empty); };
 	    // unhandled rejections tracking support, NodeJS Promise without it fails @@species test
 	    return (isNode || typeof PromiseRejectionEvent == 'function') && promise.then(empty) instanceof FakePromise;
 	  } catch(e){ /* empty */ }
@@ -36867,7 +37168,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this._h = 0;              // <- rejection state, 0 - default, 1 - handled, 2 - unhandled
 	    this._n = false;          // <- notify
 	  };
-	  Internal.prototype = __webpack_require__(84)($Promise.prototype, {
+	  Internal.prototype = __webpack_require__(88)($Promise.prototype, {
 	    // 25.4.5.3 Promise.prototype.then(onFulfilled, onRejected)
 	    then: function then(onFulfilled, onRejected){
 	      var reaction    = newPromiseCapability(speciesConstructor(this, $Promise));
@@ -36893,8 +37194,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 	$export($export.G + $export.W + $export.F * !USE_NATIVE, {Promise: $Promise});
-	__webpack_require__(65)($Promise, PROMISE);
-	__webpack_require__(85)(PROMISE);
+	__webpack_require__(70)($Promise, PROMISE);
+	__webpack_require__(89)(PROMISE);
 	Wrapper = __webpack_require__(17)[PROMISE];
 
 	// statics
@@ -36918,7 +37219,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return capability.promise;
 	  }
 	});
-	$export($export.S + $export.F * !(USE_NATIVE && __webpack_require__(86)(function(iter){
+	$export($export.S + $export.F * !(USE_NATIVE && __webpack_require__(90)(function(iter){
 	  $Promise.all(iter)['catch'](empty);
 	})), PROMISE, {
 	  // 25.4.4.1 Promise.all(iterable)
@@ -36964,12 +37265,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	});
 
 /***/ },
-/* 74 */
+/* 78 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// getting tag from 19.1.3.6 Object.prototype.toString()
-	var cof = __webpack_require__(56)
-	  , TAG = __webpack_require__(66)('toStringTag')
+	var cof = __webpack_require__(46)
+	  , TAG = __webpack_require__(71)('toStringTag')
 	  // ES3 wrong here
 	  , ARG = cof(function(){ return arguments; }()) == 'Arguments';
 
@@ -36992,7 +37293,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 75 */
+/* 79 */
 /***/ function(module, exports) {
 
 	module.exports = function(it, Constructor, name, forbiddenField){
@@ -37002,15 +37303,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 76 */
+/* 80 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var ctx         = __webpack_require__(18)
-	  , call        = __webpack_require__(77)
-	  , isArrayIter = __webpack_require__(78)
+	  , call        = __webpack_require__(81)
+	  , isArrayIter = __webpack_require__(82)
 	  , anObject    = __webpack_require__(22)
-	  , toLength    = __webpack_require__(58)
-	  , getIterFn   = __webpack_require__(79)
+	  , toLength    = __webpack_require__(48)
+	  , getIterFn   = __webpack_require__(83)
 	  , BREAK       = {}
 	  , RETURN      = {};
 	var exports = module.exports = function(iterable, entries, fn, that, ITERATOR){
@@ -37032,7 +37333,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.RETURN = RETURN;
 
 /***/ },
-/* 77 */
+/* 81 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// call something on iterator step with safe closing on error
@@ -37049,12 +37350,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 78 */
+/* 82 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// check on default Array iterator
-	var Iterators  = __webpack_require__(48)
-	  , ITERATOR   = __webpack_require__(66)('iterator')
+	var Iterators  = __webpack_require__(65)
+	  , ITERATOR   = __webpack_require__(71)('iterator')
 	  , ArrayProto = Array.prototype;
 
 	module.exports = function(it){
@@ -37062,12 +37363,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 79 */
+/* 83 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var classof   = __webpack_require__(74)
-	  , ITERATOR  = __webpack_require__(66)('iterator')
-	  , Iterators = __webpack_require__(48);
+	var classof   = __webpack_require__(78)
+	  , ITERATOR  = __webpack_require__(71)('iterator')
+	  , Iterators = __webpack_require__(65);
 	module.exports = __webpack_require__(17).getIteratorMethod = function(it){
 	  if(it != undefined)return it[ITERATOR]
 	    || it['@@iterator']
@@ -37075,25 +37376,25 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 80 */
+/* 84 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// 7.3.20 SpeciesConstructor(O, defaultConstructor)
 	var anObject  = __webpack_require__(22)
 	  , aFunction = __webpack_require__(19)
-	  , SPECIES   = __webpack_require__(66)('species');
+	  , SPECIES   = __webpack_require__(71)('species');
 	module.exports = function(O, D){
 	  var C = anObject(O).constructor, S;
 	  return C === undefined || (S = anObject(C)[SPECIES]) == undefined ? D : aFunction(S);
 	};
 
 /***/ },
-/* 81 */
+/* 85 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var ctx                = __webpack_require__(18)
-	  , invoke             = __webpack_require__(82)
-	  , html               = __webpack_require__(64)
+	  , invoke             = __webpack_require__(86)
+	  , html               = __webpack_require__(69)
 	  , cel                = __webpack_require__(27)
 	  , global             = __webpack_require__(16)
 	  , process            = global.process
@@ -37130,7 +37431,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    delete queue[id];
 	  };
 	  // Node.js 0.8-
-	  if(__webpack_require__(56)(process) == 'process'){
+	  if(__webpack_require__(46)(process) == 'process'){
 	    defer = function(id){
 	      process.nextTick(ctx(run, id, 1));
 	    };
@@ -37168,7 +37469,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 82 */
+/* 86 */
 /***/ function(module, exports) {
 
 	// fast apply, http://jsperf.lnkit.com/fast-apply/5
@@ -37189,15 +37490,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 83 */
+/* 87 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var global    = __webpack_require__(16)
-	  , macrotask = __webpack_require__(81).set
+	  , macrotask = __webpack_require__(85).set
 	  , Observer  = global.MutationObserver || global.WebKitMutationObserver
 	  , process   = global.process
 	  , Promise   = global.Promise
-	  , isNode    = __webpack_require__(56)(process) == 'process';
+	  , isNode    = __webpack_require__(46)(process) == 'process';
 
 	module.exports = function(){
 	  var head, last, notify;
@@ -37262,7 +37563,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 84 */
+/* 88 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var hide = __webpack_require__(20);
@@ -37274,7 +37575,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 85 */
+/* 89 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -37282,7 +37583,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  , core        = __webpack_require__(17)
 	  , dP          = __webpack_require__(21)
 	  , DESCRIPTORS = __webpack_require__(25)
-	  , SPECIES     = __webpack_require__(66)('species');
+	  , SPECIES     = __webpack_require__(71)('species');
 
 	module.exports = function(KEY){
 	  var C = typeof core[KEY] == 'function' ? core[KEY] : global[KEY];
@@ -37293,10 +37594,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 86 */
+/* 90 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var ITERATOR     = __webpack_require__(66)('iterator')
+	var ITERATOR     = __webpack_require__(71)('iterator')
 	  , SAFE_CLOSING = false;
 
 	try {
@@ -37319,7 +37620,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 87 */
+/* 91 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -37429,7 +37730,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = SailPlayHistory.name;
 
 /***/ },
-/* 88 */
+/* 92 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -37439,7 +37740,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	});
 	exports.SailPlayActions = undefined;
 
-	var _keys = __webpack_require__(89);
+	var _keys = __webpack_require__(36);
 
 	var _keys2 = _interopRequireDefault(_keys);
 
@@ -37762,48 +38063,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	});
 
 	exports.default = SailPlayActions.name;
-
-/***/ },
-/* 89 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = { "default": __webpack_require__(90), __esModule: true };
-
-/***/ },
-/* 90 */
-/***/ function(module, exports, __webpack_require__) {
-
-	__webpack_require__(91);
-	module.exports = __webpack_require__(17).Object.keys;
-
-/***/ },
-/* 91 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// 19.1.2.14 Object.keys(O)
-	var toObject = __webpack_require__(68)
-	  , $keys    = __webpack_require__(52);
-
-	__webpack_require__(92)('keys', function(){
-	  return function keys(it){
-	    return $keys(toObject(it));
-	  };
-	});
-
-/***/ },
-/* 92 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// most Object methods by ES6 should accept primitives
-	var $export = __webpack_require__(15)
-	  , core    = __webpack_require__(17)
-	  , fails   = __webpack_require__(26);
-	module.exports = function(KEY, exec){
-	  var fn  = (core.Object || {})[KEY] || Object[KEY]
-	    , exp = {};
-	  exp[KEY] = exec(fn);
-	  $export($export.S + $export.F * fails(function(){ fn(1); }), 'Object', exp);
-	};
 
 /***/ },
 /* 93 */
@@ -38283,7 +38542,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports) {
 
 	/**
-	 * @license AngularJS v1.6.2
+	 * @license AngularJS v1.6.3
 	 * (c) 2010-2017 Google, Inc. http://angularjs.org
 	 * License: MIT
 	 */
@@ -38312,6 +38571,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	// define ngTouch module
 	/* global -ngTouch */
 	var ngTouch = angular.module('ngTouch', []);
+
+	ngTouch.info({ angularVersion: '1.6.3' });
 
 	ngTouch.provider('$touch', $TouchProvider);
 
@@ -41940,7 +42201,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.push([module.id, "@import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700);", ""]);
 
 	// module
-	exports.push([module.id, ".spm_wrapper {\n  /* Eric Meyer's CSS Reset */\n  /* HTML5 display-role reset for older browsers */\n  /* End of Eric Meyer's CSS Reset */\n}\n.spm_wrapper html,\n.spm_wrapper body,\n.spm_wrapper div,\n.spm_wrapper span,\n.spm_wrapper applet,\n.spm_wrapper object,\n.spm_wrapper iframe,\n.spm_wrapper h1,\n.spm_wrapper h2,\n.spm_wrapper h3,\n.spm_wrapper h4,\n.spm_wrapper h5,\n.spm_wrapper h6,\n.spm_wrapper p,\n.spm_wrapper blockquote,\n.spm_wrapper pre,\n.spm_wrapper a,\n.spm_wrapper abbr,\n.spm_wrapper acronym,\n.spm_wrapper address,\n.spm_wrapper big,\n.spm_wrapper cite,\n.spm_wrapper code,\n.spm_wrapper del,\n.spm_wrapper dfn,\n.spm_wrapper em,\n.spm_wrapper img,\n.spm_wrapper ins,\n.spm_wrapper kbd,\n.spm_wrapper q,\n.spm_wrapper s,\n.spm_wrapper samp,\n.spm_wrapper small,\n.spm_wrapper strike,\n.spm_wrapper strong,\n.spm_wrapper sub,\n.spm_wrapper sup,\n.spm_wrapper tt,\n.spm_wrapper var,\n.spm_wrapper b,\n.spm_wrapper u,\n.spm_wrapper i,\n.spm_wrapper center,\n.spm_wrapper dl,\n.spm_wrapper dt,\n.spm_wrapper dd,\n.spm_wrapper ol,\n.spm_wrapper ul,\n.spm_wrapper li,\n.spm_wrapper fieldset,\n.spm_wrapper form,\n.spm_wrapper label,\n.spm_wrapper legend,\n.spm_wrapper table,\n.spm_wrapper caption,\n.spm_wrapper tbody,\n.spm_wrapper tfoot,\n.spm_wrapper thead,\n.spm_wrapper tr,\n.spm_wrapper th,\n.spm_wrapper td,\n.spm_wrapper article,\n.spm_wrapper aside,\n.spm_wrapper canvas,\n.spm_wrapper details,\n.spm_wrapper embed,\n.spm_wrapper figure,\n.spm_wrapper figcaption,\n.spm_wrapper footer,\n.spm_wrapper header,\n.spm_wrapper hgroup,\n.spm_wrapper menu,\n.spm_wrapper nav,\n.spm_wrapper output,\n.spm_wrapper ruby,\n.spm_wrapper section,\n.spm_wrapper summary,\n.spm_wrapper time,\n.spm_wrapper mark,\n.spm_wrapper audio,\n.spm_wrapper video {\n  margin: 0;\n  padding: 0;\n  border: 0;\n  font-size: 100%;\n  font: inherit;\n  vertical-align: baseline;\n}\n.spm_wrapper article,\n.spm_wrapper aside,\n.spm_wrapper details,\n.spm_wrapper figcaption,\n.spm_wrapper figure,\n.spm_wrapper footer,\n.spm_wrapper header,\n.spm_wrapper hgroup,\n.spm_wrapper menu,\n.spm_wrapper nav,\n.spm_wrapper section {\n  display: block;\n}\n.spm_wrapper body {\n  line-height: 1;\n}\n.spm_wrapper ol,\n.spm_wrapper ul {\n  list-style: none;\n}\n.spm_wrapper blockquote,\n.spm_wrapper q {\n  quotes: none;\n}\n.spm_wrapper blockquote:before,\n.spm_wrapper blockquote:after,\n.spm_wrapper q:before,\n.spm_wrapper q:after {\n  content: '';\n  content: none;\n}\n.spm_wrapper table {\n  border-collapse: collapse;\n  border-spacing: 0;\n}\n.spm_wrapper article,\n.spm_wrapper aside,\n.spm_wrapper details,\n.spm_wrapper figcaption,\n.spm_wrapper figure,\n.spm_wrapper footer,\n.spm_wrapper header,\n.spm_wrapper hgroup,\n.spm_wrapper main,\n.spm_wrapper nav,\n.spm_wrapper section,\n.spm_wrapper summary {\n  display: block;\n}\n.spm_wrapper ::before,\n.spm_wrapper ::after {\n  content: '';\n}\n.spm_wrapper .button_primary {\n  -webkit-box-sizing: border-box;\n  -moz-box-sizing: border-box;\n  box-sizing: border-box;\n}\n.spm_wrapper .sp_btn {\n  display: inline-block;\n  outline: none;\n  width: auto;\n  line-height: 35px;\n  text-decoration: none;\n  color: #ffffff;\n  font-size: 14px;\n  font-weight: 500;\n  background-color: #888888;\n  border: 0;\n  border-bottom: 1px solid #000000;\n  text-shadow: 0 0 1px #000000;\n  margin-right: 45px;\n  margin-top: 12px;\n  white-space: nowrap;\n  padding-left: 20px;\n  padding-right: 20px;\n  cursor: pointer;\n}\n.spm_wrapper .sp_btn:hover {\n  background-color: #7b7b7b;\n}\n.spm_wrapper .sp_btn[disabled] {\n  opacity: .5;\n}\n.spm_wrapper .magic_select {\n  overflow: hidden;\n  width: 100%;\n  float: left;\n  height: 57px;\n  border: 0;\n  border-top: 2px solid #cccccc;\n  border-radius: 5px;\n  padding-left: 25px;\n  font-size: 18px;\n  outline: none;\n  box-sizing: border-box;\n  background-color: #ffffff;\n  position: relative;\n  display: inline-block;\n  background-image: url(https://d3sailplay.cdnvideo.ru/media/assets/assetfile/303e1f38393495b1a059952843abeeb0.png);\n  background-repeat: no-repeat;\n  background-position: right 10px center;\n  background-size: 10px;\n}\n.spm_wrapper .magic_select select {\n  position: absolute;\n  background: transparent;\n  border: none;\n  height: 100%;\n  width: 100%;\n  font-size: inherit;\n  font-weight: inherit;\n  font-family: inherit;\n  outline: none;\n  -webkit-appearance: none;\n  box-shadow: none;\n  background-image: none;\n}\n.spm_wrapper .form_field {\n  float: left;\n  width: 50%;\n  padding-bottom: 20px;\n  padding-right: 40px;\n  -webkit-box-sizing: border-box;\n  -moz-box-sizing: border-box;\n  box-sizing: border-box;\n  /* -------------------- Select Box Styles: stackoverflow.com Method */\n  /* -------------------- Source: http://stackoverflow.com/a/5809186 */\n}\n.spm_wrapper .form_field.type_full {\n  width: 100%;\n}\n.spm_wrapper .form_field .form_date {\n  float: left;\n  position: relative;\n  z-index: 1;\n}\n.spm_wrapper .form_field .form_date span {\n  color: #000000;\n  font-size: 18px;\n  float: left;\n  width: 100%;\n  box-sizing: border-box;\n  padding-left: 10px;\n  border: 2px solid #cccccc;\n  border-radius: 5px;\n  line-height: 57px;\n  height: 57px;\n  background-image: url('https://d3sailplay.cdnvideo.ru/media/assets/assetfile/303e1f38393495b1a059952843abeeb0.png');\n  background-repeat: no-repeat;\n  background-position: right 10px center;\n  background-size: 10px;\n}\n.spm_wrapper .form_field .form_date__popup {\n  display: none;\n  position: absolute;\n  top: 100%;\n  left: 0px;\n  right: 0px;\n  z-index: 2;\n  max-height: 100px;\n  overflow-x: hidden;\n  overflow-y: auto;\n  background-color: #ffffff;\n  border-radius: 0 0 3px 3px;\n  border: 1px solid #cccccc;\n  text-align: center;\n}\n.spm_wrapper .form_field .form_date__popup a {\n  float: left;\n  width: 100%;\n  line-height: 25px;\n  text-decoration: none;\n  color: #000000;\n  background: #ffffff;\n}\n.spm_wrapper .form_field .form_date__day {\n  width: 20%;\n}\n.spm_wrapper .form_field .form_date__month {\n  width: 48%;\n  margin: 0 1%;\n}\n.spm_wrapper .form_field .form_date__year {\n  width: 30%;\n}\n.spm_wrapper .form_field .form_date:hover .form_date__popup {\n  display: block;\n}\n.spm_wrapper .form_field .form_label {\n  width: 100%;\n  line-height: 100%;\n  color: #222222;\n  font-size: 16px;\n  float: left;\n}\n.spm_wrapper .form_field .form_textarea {\n  background-color: #ffffff;\n  float: left;\n  height: 100px;\n  resize: none;\n  border: 0;\n  border-top: 2px solid #cccccc;\n  border-radius: 5px;\n  padding-left: 25px;\n  width: 100%;\n  font-size: 18px;\n  outline: none;\n  box-sizing: border-box;\n}\n.spm_wrapper .form_field .form_input[type=\"text\"],\n.spm_wrapper .form_field .form_input[type=\"email\"] {\n  background-color: #ffffff;\n  float: left;\n  height: 57px;\n  border: 0;\n  border-top: 2px solid #cccccc;\n  border-radius: 5px;\n  padding-left: 25px;\n  width: 100%;\n  font-size: 18px;\n  outline: none;\n  box-sizing: border-box;\n}\n.spm_wrapper .form_field .form_select {\n  -webkit-appearance: button;\n  -webkit-border-radius: 2px;\n  -webkit-box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);\n  -webkit-padding-end: 20px;\n  -webkit-padding-start: 2px;\n  -webkit-user-select: none;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  color: #000000;\n  font-size: 18px;\n  float: left;\n  width: 100%;\n  box-sizing: border-box;\n  padding-left: 10px;\n  border: 2px solid #cccccc;\n  border-radius: 5px;\n  line-height: 57px;\n  height: 57px;\n  background-image: url('https://d3sailplay.cdnvideo.ru/media/assets/assetfile/303e1f38393495b1a059952843abeeb0.png');\n  background-repeat: no-repeat;\n  background-position: right 10px center;\n  background-size: 10px;\n  background-color: transparent;\n  outline: none;\n}\n@media only screen and (min-width: 530px) and (max-width: 949px), only screen and (max-width: 529px) {\n  .spm_wrapper .form_field {\n    width: 100%;\n    padding: 0 0 20px 0;\n  }\n}\n.spm_wrapper .overflow_hidden {\n  overflow: hidden;\n}\n.spm_wrapper .clearfix:after {\n  content: \"\";\n  display: table;\n  clear: both;\n}\n.spm_wrapper .transparent {\n  opacity: 0;\n}\n.spm_wrapper .spm_row {\n  -webkit-box-sizing: border-box;\n  -moz-box-sizing: border-box;\n  box-sizing: border-box;\n  margin-left: -15px;\n  margin-right: -15px;\n  display: block;\n  position: relative;\n}\n.spm_wrapper .spm_col {\n  padding-left: 15px;\n  padding-right: 15px;\n  -webkit-box-sizing: border-box;\n  -moz-box-sizing: border-box;\n  box-sizing: border-box;\n  min-height: 1px;\n  display: inline-block;\n  position: relative;\n  float: left;\n}\n.spm_wrapper .spm_col:after {\n  content: \"\";\n  display: table;\n  clear: both;\n}\n.spm_wrapper .ellipsis {\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  -o-text-overflow: ellipsis;\n}\n@font-face {\n  font-family: 'RotondaC bold';\n  src: url(" + __webpack_require__(127) + ");\n  src: url(" + __webpack_require__(127) + "?#iefix) format('embedded-opentype'), url(" + __webpack_require__(128) + ") format('woff2'), url(" + __webpack_require__(129) + ") format('woff'), url(" + __webpack_require__(130) + ") format('truetype');\n  font-weight: bold;\n  font-style: normal;\n}\n@font-face {\n  font-family: 'RotondaC';\n  src: url(" + __webpack_require__(131) + ");\n  src: url(" + __webpack_require__(131) + "?#iefix) format('embedded-opentype'), url(" + __webpack_require__(132) + ") format('woff2'), url(" + __webpack_require__(133) + ") format('woff'), url(" + __webpack_require__(134) + ") format('truetype');\n  font-weight: bold;\n  font-style: normal;\n}\n.spm_wrapper {\n  font-family: 'Roboto', sans-serif;\n}\n", ""]);
+	exports.push([module.id, ".spm_wrapper {\n  /* Eric Meyer's CSS Reset */\n  /* HTML5 display-role reset for older browsers */\n  /* End of Eric Meyer's CSS Reset */\n}\n.spm_wrapper html,\n.spm_wrapper body,\n.spm_wrapper div,\n.spm_wrapper span,\n.spm_wrapper applet,\n.spm_wrapper object,\n.spm_wrapper iframe,\n.spm_wrapper h1,\n.spm_wrapper h2,\n.spm_wrapper h3,\n.spm_wrapper h4,\n.spm_wrapper h5,\n.spm_wrapper h6,\n.spm_wrapper p,\n.spm_wrapper blockquote,\n.spm_wrapper pre,\n.spm_wrapper a,\n.spm_wrapper abbr,\n.spm_wrapper acronym,\n.spm_wrapper address,\n.spm_wrapper big,\n.spm_wrapper cite,\n.spm_wrapper code,\n.spm_wrapper del,\n.spm_wrapper dfn,\n.spm_wrapper em,\n.spm_wrapper img,\n.spm_wrapper ins,\n.spm_wrapper kbd,\n.spm_wrapper q,\n.spm_wrapper s,\n.spm_wrapper samp,\n.spm_wrapper small,\n.spm_wrapper strike,\n.spm_wrapper strong,\n.spm_wrapper sub,\n.spm_wrapper sup,\n.spm_wrapper tt,\n.spm_wrapper var,\n.spm_wrapper b,\n.spm_wrapper u,\n.spm_wrapper i,\n.spm_wrapper center,\n.spm_wrapper dl,\n.spm_wrapper dt,\n.spm_wrapper dd,\n.spm_wrapper ol,\n.spm_wrapper ul,\n.spm_wrapper li,\n.spm_wrapper fieldset,\n.spm_wrapper form,\n.spm_wrapper label,\n.spm_wrapper legend,\n.spm_wrapper table,\n.spm_wrapper caption,\n.spm_wrapper tbody,\n.spm_wrapper tfoot,\n.spm_wrapper thead,\n.spm_wrapper tr,\n.spm_wrapper th,\n.spm_wrapper td,\n.spm_wrapper article,\n.spm_wrapper aside,\n.spm_wrapper canvas,\n.spm_wrapper details,\n.spm_wrapper embed,\n.spm_wrapper figure,\n.spm_wrapper figcaption,\n.spm_wrapper footer,\n.spm_wrapper header,\n.spm_wrapper hgroup,\n.spm_wrapper menu,\n.spm_wrapper nav,\n.spm_wrapper output,\n.spm_wrapper ruby,\n.spm_wrapper section,\n.spm_wrapper summary,\n.spm_wrapper time,\n.spm_wrapper mark,\n.spm_wrapper audio,\n.spm_wrapper video {\n  margin: 0;\n  padding: 0;\n  border: 0;\n  font-size: 100%;\n  font: inherit;\n  vertical-align: baseline;\n}\n.spm_wrapper article,\n.spm_wrapper aside,\n.spm_wrapper details,\n.spm_wrapper figcaption,\n.spm_wrapper figure,\n.spm_wrapper footer,\n.spm_wrapper header,\n.spm_wrapper hgroup,\n.spm_wrapper menu,\n.spm_wrapper nav,\n.spm_wrapper section {\n  display: block;\n}\n.spm_wrapper body {\n  line-height: 1;\n}\n.spm_wrapper ol,\n.spm_wrapper ul {\n  list-style: none;\n}\n.spm_wrapper blockquote,\n.spm_wrapper q {\n  quotes: none;\n}\n.spm_wrapper blockquote:before,\n.spm_wrapper blockquote:after,\n.spm_wrapper q:before,\n.spm_wrapper q:after {\n  content: '';\n  content: none;\n}\n.spm_wrapper table {\n  border-collapse: collapse;\n  border-spacing: 0;\n}\n.spm_wrapper article,\n.spm_wrapper aside,\n.spm_wrapper details,\n.spm_wrapper figcaption,\n.spm_wrapper figure,\n.spm_wrapper footer,\n.spm_wrapper header,\n.spm_wrapper hgroup,\n.spm_wrapper main,\n.spm_wrapper nav,\n.spm_wrapper section,\n.spm_wrapper summary {\n  display: block;\n}\n.spm_wrapper ::before,\n.spm_wrapper ::after {\n  content: '';\n}\n.spm_wrapper .button_primary {\n  -webkit-box-sizing: border-box;\n  -moz-box-sizing: border-box;\n  box-sizing: border-box;\n}\n.spm_wrapper .sp_btn {\n  display: inline-block;\n  outline: none;\n  width: auto;\n  line-height: 35px;\n  text-decoration: none;\n  color: #ffffff;\n  font-size: 14px;\n  font-weight: 500;\n  background-color: #888888;\n  border: 0;\n  border-bottom: 1px solid #000000;\n  text-shadow: 0 0 1px #000000;\n  margin-right: 45px;\n  margin-top: 12px;\n  white-space: nowrap;\n  padding-left: 20px;\n  padding-right: 20px;\n  cursor: pointer;\n}\n.spm_wrapper .sp_btn:hover {\n  background-color: #7b7b7b;\n}\n.spm_wrapper .sp_btn[disabled] {\n  opacity: .5;\n}\n.spm_wrapper .multiple_select select {\n  border: 0;\n  border-top: 2px solid #ccc;\n  padding-top: 5px;\n  width: 100%;\n  outline: 0;\n}\n.spm_wrapper .magic_select {\n  overflow: hidden;\n  width: 100%;\n  float: left;\n  height: 57px;\n  border: 0;\n  border-top: 2px solid #cccccc;\n  border-radius: 5px;\n  padding-left: 25px;\n  font-size: 18px;\n  outline: none;\n  box-sizing: border-box;\n  background-color: #ffffff;\n  position: relative;\n  display: inline-block;\n  background-image: url(https://d3sailplay.cdnvideo.ru/media/assets/assetfile/303e1f38393495b1a059952843abeeb0.png);\n  background-repeat: no-repeat;\n  background-position: right 10px center;\n  background-size: 10px;\n}\n.spm_wrapper .magic_select select {\n  position: absolute;\n  background: transparent;\n  border: none;\n  height: 100%;\n  width: 100%;\n  font-size: inherit;\n  font-weight: inherit;\n  font-family: inherit;\n  outline: none;\n  -webkit-appearance: none;\n  box-shadow: none;\n  background-image: none;\n}\n.spm_wrapper .form_field {\n  float: left;\n  width: 50%;\n  padding-bottom: 20px;\n  padding-right: 40px;\n  -webkit-box-sizing: border-box;\n  -moz-box-sizing: border-box;\n  box-sizing: border-box;\n  /* -------------------- Select Box Styles: stackoverflow.com Method */\n  /* -------------------- Source: http://stackoverflow.com/a/5809186 */\n}\n.spm_wrapper .form_field.type_full {\n  width: 100%;\n}\n.spm_wrapper .form_field .form_date {\n  float: left;\n  position: relative;\n  z-index: 1;\n}\n.spm_wrapper .form_field .form_date span {\n  color: #000000;\n  font-size: 18px;\n  float: left;\n  width: 100%;\n  box-sizing: border-box;\n  padding-left: 10px;\n  border: 2px solid #cccccc;\n  border-radius: 5px;\n  line-height: 57px;\n  height: 57px;\n  background-image: url('https://d3sailplay.cdnvideo.ru/media/assets/assetfile/303e1f38393495b1a059952843abeeb0.png');\n  background-repeat: no-repeat;\n  background-position: right 10px center;\n  background-size: 10px;\n}\n.spm_wrapper .form_field .form_date__popup {\n  display: none;\n  position: absolute;\n  top: 100%;\n  left: 0px;\n  right: 0px;\n  z-index: 2;\n  max-height: 100px;\n  overflow-x: hidden;\n  overflow-y: auto;\n  background-color: #ffffff;\n  border-radius: 0 0 3px 3px;\n  border: 1px solid #cccccc;\n  text-align: center;\n}\n.spm_wrapper .form_field .form_date__popup a {\n  float: left;\n  width: 100%;\n  line-height: 25px;\n  text-decoration: none;\n  color: #000000;\n  background: #ffffff;\n}\n.spm_wrapper .form_field .form_date__day {\n  width: 20%;\n}\n.spm_wrapper .form_field .form_date__month {\n  width: 48%;\n  margin: 0 1%;\n}\n.spm_wrapper .form_field .form_date__year {\n  width: 30%;\n}\n.spm_wrapper .form_field .form_date:hover .form_date__popup {\n  display: block;\n}\n.spm_wrapper .form_field .form_label {\n  width: 100%;\n  line-height: 100%;\n  color: #222222;\n  font-size: 16px;\n  float: left;\n}\n.spm_wrapper .form_field .form_label_error {\n  color: red;\n}\n.spm_wrapper .form_field .form_textarea {\n  background-color: #ffffff;\n  float: left;\n  height: 100px;\n  resize: none;\n  border: 0;\n  border-top: 2px solid #cccccc;\n  border-radius: 5px;\n  padding-left: 25px;\n  width: 100%;\n  font-size: 18px;\n  outline: none;\n  box-sizing: border-box;\n}\n.spm_wrapper .form_field .form_input[type=\"text\"],\n.spm_wrapper .form_field .form_input[type=\"email\"] {\n  background-color: #ffffff;\n  float: left;\n  height: 57px;\n  border: 0;\n  border-top: 2px solid #cccccc;\n  border-radius: 5px;\n  padding-left: 25px;\n  width: 100%;\n  font-size: 18px;\n  outline: none;\n  box-sizing: border-box;\n}\n.spm_wrapper .form_field .form_input.other {\n  border-top: 0;\n  border-bottom: 2px solid #cccccc;\n}\n.spm_wrapper .form_field .form_input_error {\n  font-size: 12px;\n  margin-top: 2px;\n  color: red;\n}\n.spm_wrapper .form_field .form_select {\n  -webkit-appearance: button;\n  -webkit-border-radius: 2px;\n  -webkit-box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);\n  -webkit-padding-end: 20px;\n  -webkit-padding-start: 2px;\n  -webkit-user-select: none;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  color: #000000;\n  font-size: 18px;\n  float: left;\n  width: 100%;\n  box-sizing: border-box;\n  padding-left: 10px;\n  border: 2px solid #cccccc;\n  border-radius: 5px;\n  line-height: 57px;\n  height: 57px;\n  background-image: url('https://d3sailplay.cdnvideo.ru/media/assets/assetfile/303e1f38393495b1a059952843abeeb0.png');\n  background-repeat: no-repeat;\n  background-position: right 10px center;\n  background-size: 10px;\n  background-color: transparent;\n  outline: none;\n}\n@media only screen and (min-width: 530px) and (max-width: 949px), only screen and (max-width: 529px) {\n  .spm_wrapper .form_field {\n    width: 100%;\n    padding: 0 0 20px 0;\n  }\n}\n.spm_wrapper .overflow_hidden {\n  overflow: hidden;\n}\n.spm_wrapper .clearfix:after {\n  content: \"\";\n  display: table;\n  clear: both;\n}\n.spm_wrapper .transparent {\n  opacity: 0;\n}\n.spm_wrapper .spm_row {\n  -webkit-box-sizing: border-box;\n  -moz-box-sizing: border-box;\n  box-sizing: border-box;\n  margin-left: -15px;\n  margin-right: -15px;\n  display: block;\n  position: relative;\n}\n.spm_wrapper .spm_col {\n  padding-left: 15px;\n  padding-right: 15px;\n  -webkit-box-sizing: border-box;\n  -moz-box-sizing: border-box;\n  box-sizing: border-box;\n  min-height: 1px;\n  display: inline-block;\n  position: relative;\n  float: left;\n}\n.spm_wrapper .spm_col:after {\n  content: \"\";\n  display: table;\n  clear: both;\n}\n.spm_wrapper .ellipsis {\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  -o-text-overflow: ellipsis;\n}\n@font-face {\n  font-family: 'RotondaC bold';\n  src: url(" + __webpack_require__(127) + ");\n  src: url(" + __webpack_require__(127) + "?#iefix) format('embedded-opentype'), url(" + __webpack_require__(128) + ") format('woff2'), url(" + __webpack_require__(129) + ") format('woff'), url(" + __webpack_require__(130) + ") format('truetype');\n  font-weight: bold;\n  font-style: normal;\n}\n@font-face {\n  font-family: 'RotondaC';\n  src: url(" + __webpack_require__(131) + ");\n  src: url(" + __webpack_require__(131) + "?#iefix) format('embedded-opentype'), url(" + __webpack_require__(132) + ") format('woff2'), url(" + __webpack_require__(133) + ") format('woff'), url(" + __webpack_require__(134) + ") format('truetype');\n  font-weight: bold;\n  font-style: normal;\n}\n.spm_wrapper {\n  font-family: 'Roboto', sans-serif;\n}\n", ""]);
 
 	// exports
 
@@ -43853,6 +44114,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	      $rootScope.$on('showHistory', function () {
 	        return scope.profile.history = true;
 	      });
+	      $rootScope.$on('openProfile', function () {
+	        return scope.profile.show_fill_profile = true;
+	      });
+
 	      scope.profile = {
 	        history: false,
 	        show_fill_profile: false,
@@ -43909,7 +44174,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 193 */
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"bon_profile_wrap container\" data-ng-show=\"widget.enabled\" data-ng-cloak>\n\n  <div class=\"bon_profile_info\" data-sailplay-profile data-sailplay-gifts>\n    <div class=\"bon_profile_top clearfix\">\n      <div class=\"bon_profile_top_left\">\n        <h3>\n          <span class=\"header\">{{ widget.texts.header }}</span>\n        </h3>\n        <h4>\n          <span class=\"caption\">{{ widget.texts.spoiler }}</span>\n        </h4>\n      </div>\n      <div class=\"bon_profile_right clearfix\" data-ng-if=\"user()\">\n        <div class=\"user_avatar\">\n          <img class=\"user_avatar_image\" data-ng-src=\"{{ (user().user.pic | sailplay_pic) || default_avatar}}\" alt=\"You\">\n          <a href=\"#\" class=\"logout_btn button_link\" data-ng-click=\"$event.preventDefault(); logout();\">{{ widget.texts.logout }}</a>\n        </div>\n        <div class=\"user_info\">\n          <span class=\"user_name\"  data-ng-bind=\"user().user.name || widget.texts.name_not_defined\"></span>\n          <span class=\"user_phone\" data-ng-if=\"user().user.phone\"  data-ng-bind=\"user().user.phone | tel\"></span>\n          <span class=\"user_email\" data-ng-if=\"user().user.email\"  data-ng-bind=\"user().user.email\"></span>\n        </div>\n        <div class=\"user_info\">\n          <a href=\"#\" class=\"edit_profile_btn button_link\" data-ng-click=\"$event.preventDefault(); profile.fill_profile(true);\">{{ widget.texts.edit_profile_button }}</a>\n        </div>\n      </div>\n      <div class=\"bon_profile_right clearfix\" data-ng-if=\"!user()\">\n        <button type=\"button\" class=\"sp_btn button_primary login_reg_btn\" data-ng-click=\"$event.preventDefault(); login('remote');\">{{ widget.texts.login_reg }}</button>\n      </div>\n    </div>\n\n    <!-- status -->\n    <div class=\"status_block\" data-ng-if=\"user() && user().user_status.name\">\n      <span class=\"status_block_title\" data-ng-bind=\"widget.texts.user_status\"></span>\n      <img class=\"status_block_img\" data-ng-src=\"{{ user().user_status.pic | sailplay_pic }}\" alt=\"{{ user().user_status.name }}\">\n      <span class=\"status_block_name\" data-ng-bind=\"user().user_status.name || widget.texts.empty_status \"></span>\n    </div>\n\n    <div class=\"bon_profile_stat\">\n      <div class=\"bps_left points_block clearfix\" data-ng-if=\"user()\">\n        <span class=\"points_confirmed\">\n          <span class=\"points_confirmed_value\" data-ng-bind=\"user().user_points.confirmed | number\"></span>\n          <span class=\"points_confirmed_name\" data-ng-bind=\"user().user_points.confirmed | sailplay_pluralize: ('points.texts.pluralize' | tools)\"></span>\n        </span>\n        <a class=\"button_link history_button\" href=\"#\" data-ng-click=\"$event.preventDefault(); profile.history = true;\">{{ widget.texts.history_button }}</a>\n      </div>\n      <div class=\"bps_right progress_block clearfix\" data-ng-if=\"progress\">\n        <div class=\"progress_line_main\">\n          <div class=\"progress_line_bg progress_bar progress_bar_border\"></div>\n          <div class=\"progress_line progress_bar_filled\" data-procent=\"0\" data-ng-style=\"{ width: progress.plenum + '%' }\">\n            <div class=\"progress_text progress_bar_flag\" data-ng-show=\"progress.next.item\" data-ng-class=\"{ right_position: progress.plenum < 50 }\">\n              <span class=\"progress_bar_flag_text\" data-ng-bind=\"progress.next.offset + ' ' + (progress.next.offset | sailplay_pluralize:('points.texts.pluralize' | tools)) + ' ' + widget.texts.before_gift\"></span>\n            </div>\n          </div>\n\n          <div class=\"gift_item progress_bar_border\" data-ng-repeat=\"item in progress.items track by $index\"\n               data-ng-class=\"{ act : item.reached, progress_bar_gift_filled: item.reached, progress_bar_gift: !item.reached}\"\n               data-ng-style=\"{ left: item.get_left() }\">\n\n            <span class=\"gift_item_hint\" data-ng-bind=\"item.gifts[0].points\"></span>\n\n          </div>\n\n        </div>\n      </div>\n    </div>\n  </div>\n\n  <magic-modal class=\"bns_overlay_hist\" data-show=\"profile.history\">\n\n    <div data-sailplay-history data-sailplay-profile>\n\n      <h3>\n        <span class=\"modal_history_header\">{{ widget.texts.history.header }}</span>\n        <!--<b>У вас {{ user().user_points.confirmed + ' ' + (user().user_points.confirmed | sailplay_pluralize:_tools.points.texts.pluralize) }}</b>-->\n      </h3>\n      <h4 class=\"modal_history_caption\">{{ widget.texts.history.caption }}</h4>\n\n      <table class=\"bns_hist_table\">\n\n        <tbody>\n\n        <tr data-dir-paginate=\"item in history() | itemsPerPage:10\" data-pagination-id=\"history_pages\">\n          <td>\n            <span class=\"modal_history_date\" data-ng-bind=\"item.action_date | date:'d/MM/yyyy'\"></span>\n          </td>\n          <td>\n            <span><b class=\"modal_history_content\" data-ng-bind=\"item | history_item\"></b></span>\n          </td>\n          <td>\n            <span class=\"modal_history_points\" data-ng-if=\"item.points_delta\" data-ng-bind=\"((item.points_delta|number) || 0) + ' ' + (item.points_delta | sailplay_pluralize:('points.texts.pluralize' | tools))\"></span>\n          </td>\n        </tr>\n\n        </tbody>\n      </table>\n\n      <dir-pagination-controls data-max-size=\"7\" data-pagination-id=\"history_pages\"\n                               data-template-url=\"profile.history_pagination\"\n                               data-auto-hide=\"true\"></dir-pagination-controls>\n    </div>\n\n\n\n  </magic-modal>\n\n  <!--profile edit section-->\n  <magic-modal class=\"fill_profile_modal\" data-show=\"profile.show_fill_profile\">\n\n    <div class=\"mb_popup mb_popup_prof\" data-sailplay-fill-profile data-config=\"widget.fill_profile.config\">\n\n      <div class=\"mb_popup_top\">\n        <span class=\"modal_profile_header\">{{ widget.fill_profile.header }}</span>\n      </div>\n\n      <form name=\"fill_profile_form\" class=\"mb_popup_main mb_popup_main_mt\" data-ng-submit=\"sailplay.fill_profile.submit(fill_profile_form, profile.fill_profile);\">\n\n        <div class=\"form_field\" data-ng-repeat=\"field in sailplay.fill_profile.form.fields\" data-ng-switch=\"field.input\">\n\n          <div data-ng-switch-when=\"image\" class=\"avatar_upload clearfix\">\n            <img width=\"160px\" data-ng-src=\"{{ (field.value | sailplay_pic) || 'http://saike.ru/sailplay-magic/dist/img/profile/avatar_default.png'}}\" alt=\"\">\n          </div>\n\n          <div data-ng-switch-when=\"text\" class=\"clearfix\">\n            <label class=\"form_label\">{{ field.label }}</label>\n            <input class=\"form_input\" type=\"text\" placeholder=\"{{ field.placeholder }}\" data-ng-model=\"field.value\">\n          </div>\n\n          <div data-ng-switch-when=\"date\" class=\"clearfix\">\n            <label class=\"form_label\">{{ field.label }}</label>\n            <date-picker data-model=\"field.value\"></date-picker>\n          </div>\n\n          <div data-ng-switch-when=\"select\" class=\"clearfix\">\n            <label class=\"form_label\">{{ field.label }}</label>\n            <div class=\"magic_select form_input\">\n              <select data-ng-model=\"field.value\" data-ng-options=\"item.value as item.text for item in field.data\"></select>\n            </div>\n          </div>\n\n          <div data-ng-switch-when=\"phone\" class=\"clearfix\">\n            <label class=\"form_label\">{{ field.label }}</label>\n            <input class=\"form_input\" type=\"text\" data-model-view-value=\"true\" data-ui-mask=\"{{ field.placeholder }}\" data-ng-model=\"field.value\">\n          </div>\n\n          <div data-ng-switch-when=\"email\" class=\"clearfix\">\n            <label class=\"form_label\">{{ field.label }}</label>\n            <input class=\"form_input\" type=\"email\" placeholder=\"{{ field.placeholder }}\" data-ng-model=\"field.value\">\n          </div>\n\n        </div>\n\n        <div class=\"answ_text\">\n          <button type=\"submit\" class=\"sp_btn button_primary\">{{ 'buttons.texts.save' | tools }}</button>\n        </div>\n      </form>\n    </div>\n  </magic-modal>\n\n</div>";
+	module.exports = "<div class=\"bon_profile_wrap container\" data-ng-show=\"widget.enabled\" data-ng-cloak>\n\n  <div class=\"bon_profile_info\" data-sailplay-profile data-sailplay-gifts>\n    <div class=\"bon_profile_top clearfix\">\n      <div class=\"bon_profile_top_left\">\n        <h3>\n          <span class=\"header\">{{ widget.texts.header }}</span>\n        </h3>\n        <h4>\n          <span class=\"caption\">{{ widget.texts.spoiler }}</span>\n        </h4>\n      </div>\n      <div class=\"bon_profile_right clearfix\" data-ng-if=\"user()\">\n        <div class=\"user_avatar\">\n          <img class=\"user_avatar_image\" data-ng-src=\"{{ (user().user.pic | sailplay_pic) || default_avatar}}\" alt=\"You\">\n          <a href=\"#\" class=\"logout_btn button_link\" data-ng-click=\"$event.preventDefault(); logout();\">{{ widget.texts.logout }}</a>\n        </div>\n        <div class=\"user_info\">\n          <span class=\"user_name\"  data-ng-bind=\"user().user.name || widget.texts.name_not_defined\"></span>\n          <span class=\"user_phone\" data-ng-if=\"user().user.phone\"  data-ng-bind=\"user().user.phone | tel\"></span>\n          <span class=\"user_email\" data-ng-if=\"user().user.email\"  data-ng-bind=\"user().user.email\"></span>\n        </div>\n        <div class=\"user_info\">\n          <a href=\"#\" class=\"edit_profile_btn button_link\" data-ng-click=\"$event.preventDefault(); profile.fill_profile(true);\">{{ widget.texts.edit_profile_button }}</a>\n        </div>\n      </div>\n      <div class=\"bon_profile_right clearfix\" data-ng-if=\"!user()\">\n        <button type=\"button\" class=\"sp_btn button_primary login_reg_btn\" data-ng-click=\"$event.preventDefault(); login('remote');\">{{ widget.texts.login_reg }}</button>\n      </div>\n    </div>\n\n    <!-- status -->\n    <div class=\"status_block\" data-ng-if=\"user() && user().user_status.name\">\n      <span class=\"status_block_title\" data-ng-bind=\"widget.texts.user_status\"></span>\n      <img class=\"status_block_img\" data-ng-src=\"{{ user().user_status.pic | sailplay_pic }}\" alt=\"{{ user().user_status.name }}\">\n      <span class=\"status_block_name\" data-ng-bind=\"user().user_status.name || widget.texts.empty_status \"></span>\n    </div>\n\n    <div class=\"bon_profile_stat\">\n      <div class=\"bps_left points_block clearfix\" data-ng-if=\"user()\">\n        <span class=\"points_confirmed\">\n          <span class=\"points_confirmed_value\" data-ng-bind=\"user().user_points.confirmed | number\"></span>\n          <span class=\"points_confirmed_name\" data-ng-bind=\"user().user_points.confirmed | sailplay_pluralize: ('points.texts.pluralize' | tools)\"></span>\n        </span>\n        <a class=\"button_link history_button\" href=\"#\" data-ng-click=\"$event.preventDefault(); profile.history = true;\">{{ widget.texts.history_button }}</a>\n      </div>\n      <div class=\"bps_right progress_block clearfix\" data-ng-if=\"progress\">\n        <div class=\"progress_line_main\">\n          <div class=\"progress_line_bg progress_bar progress_bar_border\"></div>\n          <div class=\"progress_line progress_bar_filled\" data-procent=\"0\" data-ng-style=\"{ width: progress.plenum + '%' }\">\n            <div class=\"progress_text progress_bar_flag\" data-ng-show=\"progress.next.item\" data-ng-class=\"{ right_position: progress.plenum < 50 }\">\n              <span class=\"progress_bar_flag_text\" data-ng-bind=\"progress.next.offset + ' ' + (progress.next.offset | sailplay_pluralize:('points.texts.pluralize' | tools)) + ' ' + widget.texts.before_gift\"></span>\n            </div>\n          </div>\n\n          <div class=\"gift_item progress_bar_border\" data-ng-repeat=\"item in progress.items track by $index\"\n               data-ng-class=\"{ act : item.reached, progress_bar_gift_filled: item.reached, progress_bar_gift: !item.reached}\"\n               data-ng-style=\"{ left: item.get_left() }\">\n\n            <span class=\"gift_item_hint\" data-ng-bind=\"item.gifts[0].points\"></span>\n\n          </div>\n\n        </div>\n      </div>\n    </div>\n  </div>\n\n  <magic-modal class=\"bns_overlay_hist\" data-show=\"profile.history\">\n\n    <div data-sailplay-history data-sailplay-profile>\n\n      <h3>\n        <span class=\"modal_history_header\">{{ widget.texts.history.header }}</span>\n        <!--<b>У вас {{ user().user_points.confirmed + ' ' + (user().user_points.confirmed | sailplay_pluralize:_tools.points.texts.pluralize) }}</b>-->\n      </h3>\n      <h4 class=\"modal_history_caption\">{{ widget.texts.history.caption }}</h4>\n\n      <table class=\"bns_hist_table\">\n\n        <tbody>\n\n        <tr data-dir-paginate=\"item in history() | itemsPerPage:10\" data-pagination-id=\"history_pages\">\n          <td>\n            <span class=\"modal_history_date\" data-ng-bind=\"item.action_date | date:'d/MM/yyyy'\"></span>\n          </td>\n          <td>\n            <span><b class=\"modal_history_content\" data-ng-bind=\"item | history_item\"></b></span>\n          </td>\n          <td>\n            <span class=\"modal_history_points\" data-ng-if=\"item.points_delta\" data-ng-bind=\"((item.points_delta|number) || 0) + ' ' + (item.points_delta | sailplay_pluralize:('points.texts.pluralize' | tools))\"></span>\n          </td>\n        </tr>\n\n        </tbody>\n      </table>\n\n      <dir-pagination-controls data-max-size=\"7\" data-pagination-id=\"history_pages\"\n                               data-template-url=\"profile.history_pagination\"\n                               data-auto-hide=\"true\"></dir-pagination-controls>\n    </div>\n\n\n\n  </magic-modal>\n\n  <!--profile edit section-->\n  <magic-modal class=\"fill_profile_modal\" data-show=\"profile.show_fill_profile\">\n\n    <div class=\"mb_popup mb_popup_prof\" data-sailplay-fill-profile data-config=\"widget.fill_profile.config\">\n\n      <div class=\"mb_popup_top\">\n        <span class=\"modal_profile_header\">{{ widget.fill_profile.header }}</span>\n      </div>\n\n      <form name=\"fill_profile_form\" class=\"mb_popup_main mb_popup_main_mt\" data-ng-submit=\"sailplay.fill_profile.submit(fill_profile_form, profile.fill_profile);\">\n\n        <div class=\"form_field\" data-ng-repeat=\"field in sailplay.fill_profile.form.fields\" data-ng-switch=\"field.input\">\n\n          <div data-ng-switch-when=\"image\" class=\"avatar_upload clearfix\">\n            <img width=\"160px\" data-ng-src=\"{{ (field.value | sailplay_pic) || 'http://saike.ru/sailplay-magic/dist/img/profile/avatar_default.png'}}\" alt=\"\">\n          </div>\n\n          <div data-ng-switch-when=\"text\" class=\"clearfix\">\n            <label class=\"form_label\" ng-class=\"{'form_label_error': fill_profile_form[field.name].$error.required }\">{{ field.label }}</label>         \n            <input name=\"{{ field.name }}\" data-ng-required=\"{{ field.required }}\" class=\"form_input\" type=\"text\" placeholder=\"{{ field.placeholder }}\" data-ng-model=\"field.value\">\n          </div>\n\n          <div data-ng-switch-when=\"date\" class=\"clearfix\">\n            <label class=\"form_label\">{{ field.label }}</label>         \n            <date-picker data-model=\"field.value\"></date-picker>\n          </div>\n\n          <div data-ng-switch-when=\"multiple\" class=\"clearfix\">\n            <label class=\"form_label\" ng-class=\"{'form_label_error': check_error(field) || fill_profile_form[field.name].$error.max }\">{{ field.label }}</label>         \n            <div class=\"multiple_select form_input\">\n              <select name=\"{{ field.name }}\" data-ng-change=\"multiple_limit(field)\" multiple=\"multiple\" data-ng-model=\"field.value\">\n                <option data-ng-repeat=\"item in field.data\">{{ item.text }}</option>\n              </select>\n              <div class=\"form_input_error\" ng-show=\"{{ 'fill_profile_form.' + field.name + '.$error.max' }}\">Only select up to {{ field.max }}</div>\n              <input data-ng-change=\"field.value = ''\" data-ng-if=\"field.has_other\" class=\"form_input other\" type=\"text\" placeholder=\"Other\" data-ng-model=\"field.other\">     \n            </div>\n          </div>\n\n          <div data-ng-switch-when=\"select\" class=\"clearfix\">\n            <label class=\"form_label\" ng-class=\"{'form_label_error': check_error(field)}\">{{ field.label }}</label>         \n            <div class=\"magic_select form_input\">\n              <select name=\"{{ field.name }}\" data-ng-change=\"field.other = ''\" data-ng-model=\"field.value\" >\n                <option ng-repeat=\"item in field.data\">{{ item.text }}</option>\n              </select>\n            </div>\n            <input data-ng-change=\"field.value = ''\" data-ng-if=\"field.has_other\" class=\"form_input other\" type=\"text\" placeholder=\"Other\" data-ng-model=\"field.other\">\n          </div>\n\n          <div data-ng-switch-when=\"phone\" class=\"clearfix\">\n            <label class=\"form_label\" ng-class=\"{'form_label_error': fill_profile_form[field.name].$error.required }\">{{ field.label }}</label>         \n            <input name=\"{{ field.name }}\" class=\"form_input\" data-ng-required=\"{{ field.required }}\" type=\"text\" data-model-view-value=\"true\" data-ui-mask=\"{{ field.placeholder }}\" data-ng-model=\"field.value\">\n          </div>\n\n          <div data-ng-switch-when=\"email\" class=\"clearfix\">\n            <label class=\"form_label\" ng-class=\"{'form_label_error': fill_profile_form[field.name].$error.required }\">{{ field.label }}</label>         \n            <input name=\"{{ field.name }}\" class=\"form_input\" type=\"email\" placeholder=\"{{ field.placeholder }}\" data-ng-model=\"field.value\">\n          </div>\n\n        </div>\n\n        <div class=\"answ_text\">\n          <button type=\"submit\" class=\"sp_btn button_primary\">{{ 'buttons.texts.save' | tools }}</button>\n        </div>\n      </form>\n    </div>\n  </magic-modal>\n\n</div>";
 
 /***/ },
 /* 194 */
@@ -44100,7 +44365,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var _keys = __webpack_require__(89);
+	var _keys = __webpack_require__(36);
 
 	var _keys2 = _interopRequireDefault(_keys);
 
