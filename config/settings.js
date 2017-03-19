@@ -6,8 +6,12 @@ window.SAILPLAY_MAGIC_CONFIG = {
       "texts": {
         "login": "Login",
         "email_and_oid_not_match": "Not match",
-        "reg_button": "Registration"
+        "reg_button": "Registration",
+        "email_code_notify": "To apply, we’ll need to verify your Soligent account. A confirmation code was just sent to your email. Please enter it in the field below.",
+        "done": "Continue",
+        "back": "Back"
       },
+      "css_link": "https://sailplays3.cdnvideo.ru/media/assets/assetfile/b5be6cce29e53682e0959c706016eb32.css",
       "reg_match_email_oid": true,
       "background": "transparent",
       "disabled_options": ["socials", "agreement", "reg"]
@@ -40,6 +44,8 @@ window.SAILPLAY_MAGIC_CONFIG = {
     },
     "fill_profile": {
       "header": "Update your profile",
+      "first_header": "Thank you for confirming your account. To complete your application for the Soligent Elite, please take less than 5 minutes to complete the remaining questions. If accepted into the Soligent Elite, this information will be used to help us craft a loyalty experience and program to better meet your needs.",
+      "terms_link": "http://yandex.ru",
       "config": {
         "tag": "Client filled profile",
         "fields": [
@@ -93,7 +99,7 @@ window.SAILPLAY_MAGIC_CONFIG = {
           {
             "type": "variable",
             "label": "Please select which best describes your primary role",
-            "name": "Role",
+            "name": "role",
             "required": "true",            
             "input": "select",
             "data": [{
@@ -127,7 +133,6 @@ window.SAILPLAY_MAGIC_CONFIG = {
           {
             "type": "variable",
             "name": "ship_suite",
-            "required": "true",            
             "placeholder": "Suite",
             "input": "text"
           },
@@ -155,7 +160,7 @@ window.SAILPLAY_MAGIC_CONFIG = {
           },
           {
             "type": "variable",
-            "name": "describeBusiness",
+            "name": "describe_business",
             "required": "true",            
             "label": "Which best describes your business?",
             "input": "select",
@@ -181,7 +186,7 @@ window.SAILPLAY_MAGIC_CONFIG = {
           },
           {
             "type": "variable",
-            "name": "residentialSolar",
+            "name": "residential_solar",
             "required": "true",            
             "label": "For the average month in the year, how many systems does your company install (per month)?",
             "placeholder": "Residential Solar",
@@ -189,14 +194,14 @@ window.SAILPLAY_MAGIC_CONFIG = {
           },
           {
             "type": "variable",
-            "name": "commercialSolar",
+            "name": "commercial_solar",
             "required": "true",            
             "placeholder": "Commercial Solar",
             "input": "text"
           },
           {
             "type": "variable",
-            "name": "describeCompany",
+            "name": "describe_company",
             "required": "true",            
             "label": "Which best describes your company?",
             "input": "select",
@@ -211,7 +216,7 @@ window.SAILPLAY_MAGIC_CONFIG = {
           },
           {
             "type": "variable",
-            "name": "mostFactor",
+            "name": "most_factor",
             "required": "true",            
             "label": "When you purchase solar equipment, which is the single most important factor?",
             "input": "select",
@@ -236,7 +241,7 @@ window.SAILPLAY_MAGIC_CONFIG = {
           },
           {
             "type": "variable",
-            "name": "moduleSuppliers",
+            "name": "module_suppliers",
             "required": "true",            
             "label": "Which are your top 2 preferred module suppliers?",
             "input": "multiple",
@@ -272,7 +277,7 @@ window.SAILPLAY_MAGIC_CONFIG = {
           },
           {
             "type": "variable",
-            "name": "inverterSuppliers",
+            "name": "inverter_suppliers",
             "required": "true",            
             "input": "multiple",
             "max": 2,            
@@ -300,7 +305,7 @@ window.SAILPLAY_MAGIC_CONFIG = {
           },
           {
             "type": "variable",
-            "name": "rackingSuppliers",
+            "name": "racking_suppliers",
             "required": "true",            
             "input": "multiple",
             "max": 2,            
@@ -322,7 +327,7 @@ window.SAILPLAY_MAGIC_CONFIG = {
           },
           {
             "type": "variable",
-            "name": "electricalBalance",
+            "name": "electrical_balance",
             "required": "true",            
             "label": "Where do you purchase most of your electrical balance of systems from?",
             "input": "select",
@@ -343,7 +348,7 @@ window.SAILPLAY_MAGIC_CONFIG = {
           },
           {
             "type": "variable",
-            "name": "whatAboutBusiness",
+            "name": "whatAbout_business",
             "required": "true",            
             "label": "What could Soligent do to earn more of your business?",
             "placeholder": "What about business",
@@ -371,7 +376,7 @@ window.SAILPLAY_MAGIC_CONFIG = {
           },
           {
             "type": "variable",
-            "name": "iphoneOrIpad",
+            "name": "iphone_or_ipad",
             "required": "true",            
             "label": "Do you or someone on your team have an iphone or ipad? (Soligent will be releasing a proprietary Suneye-alternative iOS shading app)",
             "input": "select",
@@ -459,7 +464,10 @@ window.SAILPLAY_MAGIC_CONFIG = {
     },
     "images": {},
     "enabled": true,
-    "id": "gifts-grid"
+    "id": "gifts-grid",
+    				"options": {
+					"hiddenAnonymous": "true"
+				}
   },
   {
     "styles": require('./css-to-json!./styles/card-quests.css'),
@@ -469,6 +477,9 @@ window.SAILPLAY_MAGIC_CONFIG = {
       "perform": "Share",
       "header": "Earn even more points"
     },
+    				"options": {
+					"hiddenAnonymous": "true"
+				},
     "images": {},
     "id": "card-quests"
   }

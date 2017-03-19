@@ -17,7 +17,6 @@ export let Modal = angular.module('magic.tools.modal', [])
     link: function(scope, elm, attrs){
 
       scope._modal_config = MAGIC_CONFIG.tools.modal;
-
       scope.show = false;
 
       scope.close = function(){
@@ -26,7 +25,7 @@ export let Modal = angular.module('magic.tools.modal', [])
       };
 
       elm.on('click', function(e){
-        if(e.target === elm[0]){
+        if(e.target === elm[0] && !scope.preventClose){
           scope.$apply(function () {
             scope.close();
           });

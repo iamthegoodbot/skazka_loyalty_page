@@ -38,6 +38,7 @@ WidgetRegister({
           scope.blocks = [];
           if (!gifts) return
           len = Math.ceil(gifts.length / block_size);
+          if (!len) return
           i = 0;
           do {
             if (i == (len - 1)) {
