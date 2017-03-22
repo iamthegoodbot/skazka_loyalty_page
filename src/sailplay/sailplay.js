@@ -143,58 +143,67 @@ export let SailPlay = angular.module('sailplay', [
 
   })
 
-  .service('SailPlayApi', function ($q, SailPlay, $rootScope) {
+  .service('SailPlayApi', function ($q, SailPlay, $rootScope, $timeout) {
 
     var self = this;
 
     var data = {};
 
+    var observers = {};
+
     var points = [
 
       'load.user.info',
-      'load.gifts.list',
       'leaderboard.load',
       'load.user.history',
       'load.actions.list',
       'load.actions.custom.list',
       'load.badges.list',
       'tags.exist',
-      'tags.add'
+      'tags.add',
+      'load.gifts.list'
 
     ];
 
     self.points = [];
+    self.observe = function(name, fn) {
+      if (!observers[name]) observers[name] = [];
+      let currentId = observers[name].length;
+      fn.id = currentId;
+      observers[name].push(fn);
+
+      return () => {
+        var fn = observers[name].find(obj => obj.id == currentId)      
+        observers[name].splice(fn.id, 1)
+      }
+    }
 
     angular.forEach(points, function (point) {
-
       SailPlay.on(point + '.success', function (res) {
-
-        $rootScope.$apply(function () {
           self.data(point, res);
+          if (observers[point] && observers[point].length)
+            observers[point].forEach(fn => fn(res))
           console.log('sailplay.api:' + point + '.success');
-          console.dir(self.data(point)());
           //console.log(JSON.stringify(self.data(point)()));
-
-        });
-
       });
 
       SailPlay.on(point + '.error', function (res) {
-        $rootScope.$apply(function () {
+
           console.log('sailplay.api:' + point + '.error');
           console.dir(res);
           self.data(point, null);
-        });
+          if (observers[point] && observers[point].length)
+            observers[point].forEach(fn => fn(null))         
+
       });
 
     });
 
+
     self.data = function (key, value) {
 
       if (typeof value !== 'undefined') {
-
         data[key] = angular.copy(value);
-
       }
 
       return function () {

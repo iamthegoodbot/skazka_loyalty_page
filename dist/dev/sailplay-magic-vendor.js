@@ -110,10 +110,10 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	__webpack_require__(31);
-	__webpack_require__(98);
-	__webpack_require__(102);
-	__webpack_require__(107);
-	__webpack_require__(105);
+	__webpack_require__(59);
+	__webpack_require__(63);
+	__webpack_require__(68);
+	__webpack_require__(66);
 	__webpack_require__(29);
 	module.exports = __webpack_require__(30);
 
@@ -318,6 +318,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          return;
 	        }
 	        if (data.name == 'login.check') {
+	          console.log(data)
 	          if (data.auth_hash == 'None') {
 	            sp.send('logout');
 	          }
@@ -1077,6 +1078,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        initError();
 	        return;
 	      }
+
 	      var tagsObj = {
 	        auth_hash: _config.auth_hash
 	      };
@@ -34987,16 +34989,16 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 
-/***/ 98:
+/***/ 59:
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(99);
+	__webpack_require__(60);
 	module.exports = 'ipCookie';
 
 
 /***/ },
 
-/***/ 99:
+/***/ 60:
 /***/ function(module, exports) {
 
 	/*
@@ -35128,16 +35130,16 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 
-/***/ 102:
+/***/ 63:
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(103);
+	__webpack_require__(64);
 	module.exports = 'ngTouch';
 
 
 /***/ },
 
-/***/ 103:
+/***/ 64:
 /***/ function(module, exports) {
 
 	/**
@@ -35893,16 +35895,16 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 
-/***/ 105:
+/***/ 66:
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(106);
+	__webpack_require__(67);
 	module.exports = 'angularUtils.directives.dirPagination';
 
 
 /***/ },
 
-/***/ 106:
+/***/ 67:
 /***/ function(module, exports) {
 
 	/**
@@ -36548,20 +36550,20 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 
-/***/ 107:
+/***/ 68:
 /***/ function(module, exports, __webpack_require__) {
 
 	//https://github.com/angular/angular.js/pull/10732
 
 	var angular = __webpack_require__(31);
-	var mask = __webpack_require__(108);
+	var mask = __webpack_require__(69);
 
 	module.exports = 'ui.mask';
 
 
 /***/ },
 
-/***/ 108:
+/***/ 69:
 /***/ function(module, exports) {
 
 	/*!
