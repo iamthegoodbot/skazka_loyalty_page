@@ -166,7 +166,7 @@
 
         </div>
 
-          <div class="clearfix">
+          <div class="clearfix" data-ng-if="$parent.reg_incomplete"> 
             <input ng-required="true" id="terms" type="checkbox" name="terms">            
             <label for="terms" class="form_label" ng-class="{'form_label_error': fill_profile_form.terms.$error.required }"> 
               I have read and agree to abide by all Soligent Distribution <a ng-href="{{ widget.fill_profile.terms_link }}">Terms & Conditions</a>. 

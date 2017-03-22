@@ -319,6 +319,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          return;
 	        }
 	        if (data.name == 'login.check') {
+	          console.log(data)
 	          if (data.auth_hash == 'None') {
 	            sp.send('logout');
 	          }
@@ -1074,6 +1075,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        initError();
 	        return;
 	      }
+
 	      var tagsObj = {
 	        auth_hash: _config.auth_hash
 	      };

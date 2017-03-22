@@ -300,32 +300,38 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
             return form_field;
           });
 
-
-          if (custom_fields.length) {            
-            SailPlayApi.call("vars.batch", { names: custom_fields.map(field => { return field.name }) }, (res) => {
-              angular.forEach(res.vars, variable => {                
-                angular.forEach(custom_fields, field => {
-                  if (field.name == variable.name) {
-                    field.value = variable.value;                    
-                    if (field.input == 'select') {
-                      if (/other_/.test(variable.value)) {
-                        field.value = '';
-                        field.other = variable.value.replace('other_', '')
+          if (custom_fields.length) {
+            var max_vars = 15, chunk = {}, i = 0, j,
+              names = custom_fields.map(field => { return field.name});
+              
+            for (i=0,j=names.length; i<j; i+=max_vars) {
+                SailPlayApi.call("vars.batch", { names: names.slice(i,i+max_vars) }, (res) => {
+                  angular.forEach(res.vars, variable => {                
+                    angular.forEach(custom_fields, field => {
+                      if (field.name == variable.name) {
+                        field.value = variable.value;                    
+                        if (field.input == 'select') {
+                          if (/other_/.test(variable.value)) {
+                            field.value = '';
+                            field.other = variable.value.replace('other_', '')
+                          }
+                        }
+                        if (field.input == 'multiple') {
+                          if (/other/.test(variable.value)) {
+                            field.value = '';
+                            field.other = variable.value.replace('other_', '')
+                          } else {
+                            field.value = JSON.parse(variable.value);
+                          }
+                        }
                       }
-                    }
-                    if (field.input == 'multiple') {
-                      if (/other/.test(variable.value)) {
-                        field.value = '';
-                        field.other = variable.value.replace('other_', '')
-                      } else {
-                        field.value = JSON.parse(variable.value);
-                      }
-                    }
-                    scope.$apply();                    
-                  }
+                    })
+                  })
                 })
-              })
-            })
+              }   
+
+            if(scope.$root.$$phase != '$digest')
+              scope.$digest();
           }
 
           form.auth_hash = SailPlay.config().auth_hash;
@@ -339,6 +345,7 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
             if (res && res.tags.length) {
               if (!res.tags[0].exist) {
                 $timeout(function(){
+                  scope.$parent.reg_incomplete = true;
                   scope.$parent.preventClose = true;
                   $rootScope.$broadcast('openProfile');
                 }, 10)
