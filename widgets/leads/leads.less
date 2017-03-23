@@ -1,4 +1,13 @@
 .leads {
+  .magic_select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    height: auto;
+    padding-left: 5%;
+    font-size: 14px;
+  }
+
   .container {
     background: white;
   }
@@ -55,7 +64,10 @@
         .value {
           float: left;
           color: #3e699e;
-        }
+          &.select {
+            width: ~"calc(100% - 80px)";
+          }
+        }        
       }
     }
   }

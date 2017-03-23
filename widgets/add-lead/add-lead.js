@@ -14,11 +14,22 @@ WidgetRegister({
   controller: (SailPlayApi, SailPlay, MAGIC_CONFIG, $rootScope) => {
     return (scope, elm, attrs) => {
       scope.submit = fields => { 
-        var fields_obj = fields.reduce((obj, field) => {
-          obj[field.name] = field.value
-          return obj
-        }, {})
-        SailPlay.send("referral.add", Object.assign({}, {user_data: fields_obj}, {tag_type_2: MAGIC_CONFIG.data.tag_type, tag_type_3: MAGIC_CONFIG.data.invite_tag_type}), (res) => {
+
+        var _config = SailPlay.config();
+
+        var lead_obj = {
+          auth_hash: _config.auth_hash,
+          tag_type_2: MAGIC_CONFIG.data.tag_type,
+          tag_type_3: MAGIC_CONFIG.data.new_lead_tag_type
+        }
+      
+        angular.forEach(fields, field => {
+          lead_obj[field.name] = field.value;
+        })
+
+        var url = '/js-api/' + _config.partner.id + '/custom/referrals/add/'
+
+        SAILPLAY.jsonp.get(_config.DOMAIN + url, lead_obj, (res) => {
           if (res.status == 'ok') {
             scope.startNewLead = false
             fields.map(field => { field.value = ''; return field })

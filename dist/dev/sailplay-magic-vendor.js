@@ -104,23 +104,49 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	return __webpack_require__(0);
 /******/ })
 /************************************************************************/
-/******/ ({
-
-/***/ 0:
+/******/ ([
+/* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
 	__webpack_require__(31);
-	__webpack_require__(98);
-	__webpack_require__(102);
-	__webpack_require__(107);
-	__webpack_require__(105);
+	__webpack_require__(36);
+	__webpack_require__(38);
+	__webpack_require__(43);
+	__webpack_require__(41);
 	__webpack_require__(29);
 	module.exports = __webpack_require__(30);
 
 
 /***/ },
-
-/***/ 29:
+/* 1 */,
+/* 2 */,
+/* 3 */,
+/* 4 */,
+/* 5 */,
+/* 6 */,
+/* 7 */,
+/* 8 */,
+/* 9 */,
+/* 10 */,
+/* 11 */,
+/* 12 */,
+/* 13 */,
+/* 14 */,
+/* 15 */,
+/* 16 */,
+/* 17 */,
+/* 18 */,
+/* 19 */,
+/* 20 */,
+/* 21 */,
+/* 22 */,
+/* 23 */,
+/* 24 */,
+/* 25 */,
+/* 26 */,
+/* 27 */,
+/* 28 */,
+/* 29 */
 /***/ function(module, exports, __webpack_require__) {
 
 	(function () {
@@ -319,13 +345,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	          return;
 	        }
 	        if (data.name == 'login.check') {
-	          console.log(data)
 	          if (data.auth_hash == 'None') {
 	            sp.send('logout');
 	          }
 	          else {
 	            cancelLogin();
-	            sp.send('login.do', data.auth_hash)
+	            console.log('DAAATAAAA', data)
+	            sp.send('login.do', data.auth_hash, data)
 	          }
 	          return;
 	        }
@@ -1075,7 +1101,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        initError();
 	        return;
 	      }
-
 	      var tagsObj = {
 	        auth_hash: _config.auth_hash
 	      };
@@ -1243,8 +1268,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-
-/***/ 30:
+/* 30 */
 /***/ function(module, exports) {
 
 	(function () {
@@ -1625,8 +1649,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-
-/***/ 31:
+/* 31 */
 /***/ function(module, exports, __webpack_require__) {
 
 	__webpack_require__(32);
@@ -1634,8 +1657,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-
-/***/ 32:
+/* 32 */
 /***/ function(module, exports) {
 
 	/**
@@ -34985,17 +35007,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	!window.angular.$$csp().noInlineStyle && window.angular.element(document.head).prepend('<style type="text/css">@charset "UTF-8";[ng\\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\\:form{display:block;}.ng-animate-shim{visibility:hidden;}.ng-anchor{position:absolute;}</style>');
 
 /***/ },
-
-/***/ 98:
+/* 33 */,
+/* 34 */,
+/* 35 */,
+/* 36 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(99);
+	__webpack_require__(37);
 	module.exports = 'ipCookie';
 
 
 /***/ },
-
-/***/ 99:
+/* 37 */
 /***/ function(module, exports) {
 
 	/*
@@ -35126,17 +35149,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-
-/***/ 102:
+/* 38 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(103);
+	__webpack_require__(39);
 	module.exports = 'ngTouch';
 
 
 /***/ },
-
-/***/ 103:
+/* 39 */
 /***/ function(module, exports) {
 
 	/**
@@ -35891,17 +35912,16 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-
-/***/ 105:
+/* 40 */,
+/* 41 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(106);
+	__webpack_require__(42);
 	module.exports = 'angularUtils.directives.dirPagination';
 
 
 /***/ },
-
-/***/ 106:
+/* 42 */
 /***/ function(module, exports) {
 
 	/**
@@ -36546,21 +36566,19 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-
-/***/ 107:
+/* 43 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//https://github.com/angular/angular.js/pull/10732
 
 	var angular = __webpack_require__(31);
-	var mask = __webpack_require__(108);
+	var mask = __webpack_require__(44);
 
 	module.exports = 'ui.mask';
 
 
 /***/ },
-
-/***/ 108:
+/* 44 */
 /***/ function(module, exports) {
 
 	/*!
@@ -37340,7 +37358,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	}());
 
 /***/ }
-
-/******/ })
+/******/ ])
 });
 ;

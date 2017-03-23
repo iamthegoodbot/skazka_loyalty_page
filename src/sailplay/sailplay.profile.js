@@ -12,7 +12,7 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
  * SailPlay profile directive used for rendering user's profile. =)
  *
  */
-  .directive('sailplayProfile', function (SailPlayApi, SailPlay, $q) {
+  .directive('sailplayProfile', function (SailPlayApi, SailPlay, $q, $rootScope, MAGIC_CONFIG) {
 
     return {
 
@@ -55,6 +55,13 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
           SailPlay.authorize(type);
 
         };
+
+        SailPlay.on('login.do', (auth_hash, data) => {
+          if (data.is_invited && MAGIC_CONFIG.data.invite_tag) {
+            $rootScope.tagShouldBeAdded = MAGIC_CONFIG.data.invite_tag ;
+            scope.tags_add({tags: [MAGIC_CONFIG.data.invite_tag]})
+          }
+        })
 
         /**
          * @ngdoc method
@@ -210,13 +217,13 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
         scope.$watch(function () {
           return angular.toJson([SailPlayApi.data('load.user.info')()]);
         }, function () {
-
-          SailPlay.send('tags.exist', {tags: [MAGIC_CONFIG.data.tag_type]}, res => {
-            if (res.tags[0].name == MAGIC_CONFIG.data.tag_type &&
-              !res.tags[0].exist) {
-                location.replace(MAGIC_CONFIG.data.redirect_to)
-              }
-          })
+          if ($rootScope.tagShouldBeAdded != MAGIC_CONFIG.data.tag_type)
+            SailPlay.send('tags.exist', {tags: [MAGIC_CONFIG.data.tag_type]}, res => {
+              if (res.tags[0].name == MAGIC_CONFIG.data.tag_type &&
+                !res.tags[0].exist) {
+                  location.replace(MAGIC_CONFIG.data.redirect_to)
+                }
+            })
 
           var user = SailPlayApi.data('load.user.info')();
           if (!user) return;

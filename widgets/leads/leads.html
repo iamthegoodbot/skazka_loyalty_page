@@ -7,7 +7,7 @@
       <span class="caption">{{ widget.texts.caption }}</span>
     </h4>
 
-    <div class="lead" data-ng-repeat="lead in leads">
+    <div class="lead" data-ng-repeat="lead in leads | chunk:2">
       <div class="lead_info">
         <p data-ng-bind="lead.name"></p>
         <p data-ng-bind="lead.company"></p>
@@ -18,8 +18,8 @@
         <div class="lead_partner_item" data-ng-repeat="partner in lead.partners">
           <div class="field">
             <div class="caption">STATUS</div>
-            <div class="value">
-              <select>
+            <div class="value select">
+              <select class="magic_select">
                 <option value="0">Closed</option>
                 <option value="1">Open</option>
                 <option value="2">Booked</option>
