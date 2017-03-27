@@ -5,132 +5,86 @@ import './leads.less';
 WidgetRegister({
   id: 'leads',
   template: LeadsWidgetTemplate,
-  inject: [ 
+  inject: [
     'SailPlayApi',
     'SailPlay',
     'MAGIC_CONFIG'
   ],
   controller: (SailPlayApi, SailPlay) => {
     return (scope, elm, attrs) => {
-      scope.leads = [
-        {
-          name: 'Jane Doe',
-          phone: '1234567890',
-          email: 'jade_doe@gmail.com',
-          company: 'Jane Doe `s company',
-          partners: [
-            {
-              fields: [
-                {
-                  caption: 'Name',
-                  value: 'John Doe',
-                },
-                {
-                  caption: 'Email',
-                  value: 'John@doe.org',
-                },
-                {
-                  caption: 'Phone',
-                  value: '14122306109',
-                },
-                {
-                  caption: 'From',
-                  value: '100 Street, 10001',
-                },
-                {
-                  caption: 'To',
-                  value: '10002',
-                },
-                {
-                  caption: 'When',
-                  value: '1/1/16 - 1/7/16',
-                }
-              ]
-            },
-            {
-              fields: [
-                {
-                  caption: 'Name',
-                  value: 'John Doe',
-                },
-                {
-                  caption: 'Email',
-                  value: 'John@doe.org',
-                },
-                {
-                  caption: 'Phone',
-                  value: '14122306109',
-                },
-                {
-                  caption: 'From',
-                  value: '100 Street, 10001',
-                },
-                {
-                  caption: 'To',
-                  value: '10002',
-                },
-                {
-                  caption: 'When',
-                  value: '1/1/16 - 1/7/16',
-                }
-              ]
-            },
-            {
-              fields: [
-                {
-                  caption: 'Name',
-                  value: 'John Doe',
-                },
-                {
-                  caption: 'Email',
-                  value: 'John@doe.org',
-                },
-                {
-                  caption: 'Phone',
-                  value: '14122306109',
-                },
-                {
-                  caption: 'From',
-                  value: '100 Street, 10001',
-                },
-                {
-                  caption: 'To',
-                  value: '10002',
-                },
-                {
-                  caption: 'When',
-                  value: '1/1/16 - 1/7/16',
-                }
-              ]
-            }                        
-          ]
+      var _config = SailPlay.config();      
+      var tagExist = '/js-api/' + _config.partner.id + '/tags/exist';     
+      var tagAdd = '/js-api/' + _config.partner.id + '/tags/add';
+      var tagDelete = '/js-api/' + _config.partner.id + '/tags/delete';
+
+      scope.setTag = (phone, tag) => {
+        var tag_obj_delete = {
+          phone: phone,
+          tags: ['Closed', 'Open', 'Booked'].join(',')
         }
-      ]
+
+        var tag_obj = {
+          phone: phone,
+          tags: tag.toUpperCase()
+        }
+        SAILPLAY.jsonp.get(_config.DOMAIN + tagDelete, tag_obj_delete, () => {
+          SAILPLAY.jsonp.get(_config.DOMAIN + tagAdd, tag_obj) 
+        });
+      }
 
       scope.$watch(function () {
         return angular.toJson([SailPlayApi.data('load.user.info')()]);
-      }, function () {      
-
-        var _config = SailPlay.config();
-
+      }, function () {
         var obj = {
           auth_hash: _config.auth_hash,
-          names: JSON.stringify(['move_date', 
-          'moving_from',
-          'moving_from_zip', 'moving_to'])
+          names: JSON.stringify(['companyName'])
         }
 
-        var url = '/js-api/' + _config.partner.id + '/custom/referrals/list/'      
+        scope.leads = [];
+        var url = '/js-api/' + _config.partner.id + '/custom/referrals/list/'
         SAILPLAY.jsonp.get(_config.DOMAIN + url, obj, function (res) {
-          angular.forEach(res.leads, lead => {
-            SAILPLAY.jsonp.get(_config.DOMAIN + url, obj, function (res) {
-
+          var _leads = res.leads
+          scope.leads = _leads;
+          angular.forEach(_leads, lead => {
+            var lead_obj = {
+              phone: lead.phone,
+              names: JSON.stringify(['move_date',
+                'moving_from',
+                'moving_from_zip', 'moving_to'])
+            }
+            SAILPLAY.jsonp.get(_config.DOMAIN + url, lead_obj, function (_res) {
+              lead.partners = _res.leads
+              angular.forEach(lead.partners, (_partner) => {
+                var tag_obj = {
+                  phone: _partner.phone,
+                  tags: JSON.stringify(['Closed','Open','Booked'])
+                }
+                SAILPLAY.jsonp.get(_config.DOMAIN + tagExist, tag_obj, res => {
+                  angular.forEach(res.tags, tag => {
+                    if (tag.exist)
+                      switch (tag.name) {
+                        case 'Closed':
+                          _partner.tag = 'closed';
+                          break;
+                        case 'Open':
+                          _partner.tag = 'open';
+                          break;
+                        case 'Booked':
+                          _partner.tag = 'booked';
+                          break;
+                        default:
+                          _partner.tag = 'open';  
+                      }
+                    scope.$digest();
+                  })
+                })                
+              })
+              scope.$digest();
             })
           })
         })
-      }); 
+      });
 
     }
   }
-}); 
- 
+});
