@@ -400,8 +400,9 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
               scope.$apply(function () {
 
                 if (typeof callback == 'function') callback();
-                SailPlay.send('tags.add', {tags: ['Registration completed']});
-                SailPlayApi.call('load.user.info', {all: 1});
+                SailPlay.send('tags.add', {tags: ['Registration completed']}, () => {
+                  SailPlayApi.call('load.user.info', {all: 1});
+                });
 
               });
 
