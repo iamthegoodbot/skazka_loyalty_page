@@ -17,6 +17,7 @@ WidgetRegister({
       var tagAdd = '/js-api/' + _config.partner.id + '/tags/add';
       var tagDelete = '/js-api/' + _config.partner.id + '/tags/delete';
 
+      scope.Math = window.Math;
       scope.setTag = (phone, tag) => {
         var tag_obj_delete = {
           phone: phone,
@@ -35,6 +36,10 @@ WidgetRegister({
       scope.$watch(function () {
         return angular.toJson([SailPlayApi.data('load.user.info')()]);
       }, function () {
+
+        var user = SailPlayApi.data('load.user.info')();
+        if (!user) return;
+
         var obj = {
           auth_hash: _config.auth_hash,
           names: JSON.stringify(['companyName'])
@@ -75,6 +80,7 @@ WidgetRegister({
                         default:
                           _partner.tag = 'open';  
                       }
+                    lead.partners = lead.partners.filter(obj => { return ['closed', 'booket'].indexOf(obj.tag) == -1 })                      
                     scope.$digest();
                   })
                 })                

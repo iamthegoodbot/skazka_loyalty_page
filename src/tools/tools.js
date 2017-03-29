@@ -6,7 +6,6 @@ import Widget from './widget/widget';
 import Notifier from './notifier/notifier'
 import MagicModal from './modal/modal';
 import DatePicker from './datepicker/datepicker';
-import SelectBox from './selectbox/angular-selectbox';
 
 export let Tools = angular.module('magic.tools', [
   NgPagination,
@@ -15,8 +14,7 @@ export let Tools = angular.module('magic.tools', [
   Widget,
   Notifier,
   MagicModal,
-  DatePicker,
-  SelectBox
+  DatePicker
 ])
 
 .filter('tools', function (MAGIC_CONFIG, $parse) {

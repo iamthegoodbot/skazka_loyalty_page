@@ -25,6 +25,8 @@ WidgetRegister({
         return angular.toJson([SailPlayApi.data('load.user.info')()]);
       }, function () {      
 
+        var user = SailPlayApi.data('load.user.info')();
+        if (!user) return;
         var _config = SailPlay.config();
 
         var tagsObj = {

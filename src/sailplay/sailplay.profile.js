@@ -217,16 +217,16 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
         scope.$watch(function () {
           return angular.toJson([SailPlayApi.data('load.user.info')()]);
         }, function () {
-          if ($rootScope.tagShouldBeAdded != MAGIC_CONFIG.data.tag_type)
-            SailPlay.send('tags.exist', {tags: [MAGIC_CONFIG.data.tag_type]}, res => {
-              if (res.tags[0].name == MAGIC_CONFIG.data.tag_type &&
-                !res.tags[0].exist) {
-                  location.replace(MAGIC_CONFIG.data.redirect_to)
-                }
-            })
-
           var user = SailPlayApi.data('load.user.info')();
           if (!user) return;
+
+          if ($rootScope.tagShouldBeAdded != MAGIC_CONFIG.data.tag_type)
+            SailPlay.send('tags.exist', {tags: [MAGIC_CONFIG.data.tag_type]}, res => {
+              // if (res.tags[0].name == MAGIC_CONFIG.data.tag_type &&
+              //   !res.tags[0].exist) {
+              //     location.replace(MAGIC_CONFIG.data.redirect_to)
+              //   }
+            })
 
           var custom_fields = [];
           var form = scope.sailplay.fill_profile.form;

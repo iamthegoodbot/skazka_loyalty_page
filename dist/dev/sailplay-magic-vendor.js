@@ -324,7 +324,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	          }
 	          else {
 	            cancelLogin();
-	            console.log('DAAATAAAA', data)
 	            sp.send('login.do', data.auth_hash, data)
 	          }
 	          return;
@@ -445,7 +444,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          window.addEventListener("message", onActionMessage, false);
 
 	          //2. recieve ref_hash info
-	          _config.ref_hash = sp.url_params().ref_hash || '';
+	          // _config.ref_hash = sp.url_params().ref_hash || '';
 	          //var cookie_frame = document.createElement('IFRAME');
 	          //cookie_frame.style.width = 0;
 	          //cookie_frame.style.height = 0;
