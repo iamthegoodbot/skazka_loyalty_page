@@ -207,28 +207,20 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
 
         var saved_form = false;
 
-        scope.$watch(function () {
-          return angular.toJson([SailPlayApi.data('load.user.info')()]);
-        }, function () {
-
-          var user = SailPlayApi.data('load.user.info')();
+        SailPlayApi.observe('load.user.info', user => {
           if (!user) return;
-
-          var custom_fields = [];
           var form = scope.sailplay.fill_profile.form;
-
+          var custom_fields = [];
           form.fields = config.fields.map(function (field) {
-
             var form_field = new SailPlayFillProfile.Field(field);
             if (field.type == 'variable') 
               custom_fields.push(form_field)
-
+            
             //we need to assign received values to form
             switch (form_field.type) {
 
               //we need define type
               case 'system':
-
                 //bind different values to form field
                 switch (form_field.name) {
 
@@ -277,6 +269,13 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
             return form_field;
           });
 
+          form.auth_hash = SailPlay.config().auth_hash;
+          //angular.extend(scope.profile_form.user, user.user);
+          //if(ipCookie(FillProfile.cookie_name) && SailPlay.config().auth_hash === ipCookie(FillProfile.cookie_name).user.auth_hash ){
+          //  angular.extend(scope.profile_form, ipCookie(FillProfile.cookie_name));
+          //}
+          console.dir(form);
+          saved_form = angular.copy(form);                        
 
           if (custom_fields.length) {            
             SailPlayApi.call("vars.batch", { names: custom_fields.map(field => { return field.name }) }, (res) => {
@@ -296,6 +295,8 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
           console.dir(form);
           saved_form = angular.copy(form);
 
+          if (scope.$root.$$phase != '$digest')
+            scope.$digest();
         });
 
         scope.revert_profile_form = function (form) {
