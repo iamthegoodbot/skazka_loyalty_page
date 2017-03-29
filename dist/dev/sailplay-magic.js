@@ -1071,7 +1071,7 @@ return webpackJsonp([0],[
 	 * This directive extends parent scope with property: sailplay.fill_profile
 	 *
 	 */
-	.directive('sailplayFillProfile', function (SailPlay, $rootScope, $q, ipCookie, SailPlayApi, SailPlayFillProfile, MAGIC_CONFIG) {
+	.directive('sailplayFillProfile', function (SailPlay, $rootScope, $q, ipCookie, SailPlayApi, SailPlayFillProfile, MAGIC_CONFIG, $timeout) {
 
 	  return {
 
@@ -1184,6 +1184,19 @@ return webpackJsonp([0],[
 	        //  angular.extend(scope.profile_form, ipCookie(FillProfile.cookie_name));
 	        //}
 	        console.dir(form);
+
+	        SailPlay.send('tags.exist', { tags: ['Registration completed'] }, function (res) {
+	          if (res && res.tags.length) {
+	            if (!res.tags[0].exist) {
+	              $timeout(function () {
+	                scope.$parent.reg_incomplete = true;
+	                scope.$parent.preventClose = true;
+	                $rootScope.$broadcast('openProfile');
+	              }, 10);
+	            }
+	          }
+	        });
+
 	        saved_form = _angular2.default.copy(form);
 	      });
 
@@ -1256,7 +1269,7 @@ return webpackJsonp([0],[
 	            scope.$apply(function () {
 
 	              if (typeof callback == 'function') callback();
-
+	              SailPlay.send('tags.add', { tags: ['Registration completed'] });
 	              SailPlayApi.call('load.user.info', { all: 1 });
 	            });
 	          } else {
@@ -5757,7 +5770,7 @@ return webpackJsonp([0],[
 	      };
 
 	      elm.on('click', function (e) {
-	        if (e.target === elm[0]) {
+	        if (e.target === elm[0] && !scope.preventClose) {
 	          scope.$apply(function () {
 	            scope.close();
 	          });
@@ -5781,7 +5794,7 @@ return webpackJsonp([0],[
 /* 124 */
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"bns_overlay\" data-ng-class=\"{ visible: show }\" tabindex=\"-1\" role=\"dialog\">\n\n  <div class=\"bns_overlay_iner modal_container\" data-ng-style=\"{ background: _modal_config.styles.background }\">\n    <a href=\"#\" class=\"close_overlay\" data-ng-click=\"$event.preventDefault(); close();\" data-ng-style=\"{ backgroundImage: (_modal_config.images.close | background_image) }\"></a>\n    <ng-transclude></ng-transclude>\n\n  </div>\n\n</div>";
+	module.exports = "<div class=\"bns_overlay\" data-ng-class=\"{ visible: show }\" tabindex=\"-1\" role=\"dialog\">\n\n  <div class=\"bns_overlay_iner modal_container\" data-ng-style=\"{ background: _modal_config.styles.background }\">\n    <a href=\"#\" class=\"close_overlay\" data-ng-click=\"$event.preventDefault(); close();\" data-ng-style=\"{ backgroundImage: (_modal_config.images.close | background_image) }\" ng-hide=\"preventClose\"></a>\n    <ng-transclude></ng-transclude>\n\n  </div>\n\n</div>";
 
 /***/ },
 /* 125 */

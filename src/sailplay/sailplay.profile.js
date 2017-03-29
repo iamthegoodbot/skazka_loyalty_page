@@ -194,7 +194,7 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
    * This directive extends parent scope with property: sailplay.fill_profile
    *
    */
-  .directive('sailplayFillProfile', function (SailPlay, $rootScope, $q, ipCookie, SailPlayApi, SailPlayFillProfile, MAGIC_CONFIG) {
+  .directive('sailplayFillProfile', function (SailPlay, $rootScope, $q, ipCookie, SailPlayApi, SailPlayFillProfile, MAGIC_CONFIG, $timeout) {
 
     return {
 
@@ -308,6 +308,19 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
           //  angular.extend(scope.profile_form, ipCookie(FillProfile.cookie_name));
           //}
           console.dir(form);
+
+          SailPlay.send('tags.exist', {tags: ['Registration completed']}, function (res) {
+            if (res && res.tags.length) {
+              if (!res.tags[0].exist) {
+                $timeout(function(){
+                  scope.$parent.reg_incomplete = true;
+                  scope.$parent.preventClose = true;
+                  $rootScope.$broadcast('openProfile');
+                }, 10)
+              }
+            }
+          });
+
           saved_form = angular.copy(form);
 
         });
@@ -386,7 +399,7 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
               scope.$apply(function () {
 
                 if (typeof callback == 'function') callback();
-
+                SailPlay.send('tags.add', {tags: ['Registration completed']});
                 SailPlayApi.call('load.user.info', {all: 1});
 
               });
