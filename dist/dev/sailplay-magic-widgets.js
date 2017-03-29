@@ -3037,7 +3037,7 @@ return webpackJsonp([2],[
 /* 202 */
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"clearfix\">\n  <div class=\"bon_choice_main container\" data-ng-show=\"user && user()\">\n    <h3 class=\"bon_header\">\n      <span class=\"header\">{{ widget.texts.header_1_prefix }}</span>\n      <span class=\"header\">{{ user().user_status.name || widget.texts.default_status_string }}</span>\n      <span class=\"header\">{{ widget.texts.header_1_suffix }}</span>\n    </h3>\n    <h3 class=\"bon_header bon_second_header\">\n      <span class=\"header\">{{ widget.texts.header_2_prefix }}</span>\n      <span class=\"header bon_second_header_value\">{{ toLocaleString(user().user_points.confirmed || 0) }}</span>\n      <span class=\"header\">{{ widget.texts.header_2_suffix }}</span>\n    </h3>\n    <div class=\"progress-line-container\">\n      <div class=\"progress-hints\">\n        <span class=\"progress-hints__left\">Earn 1 Soligent Buck per $ spent until you reach you threshold</span>\n        <span class=\"progress-hints__right\">Earn multiplied Soligent Bucks for each $ spent past your threshold</span>\n      </div>\n      <div class=\"left-progress-ann\"></div>\n      <div class=\"right-progress-ann\"></div>\n      <div class=\"progress-line\">\n        <div class=\"fill\" data-ng-style=\"{width: leftBarWidth}\"></div>\n        <div class=\"delim\"></div>\n        <div class=\"empty\" data-ng-style=\"{width: rightBarWidth}\"></div>\n      </div>\n      <div class=\"current-quarter\">\n        <span class=\"current-quarter-text\">Your Quarterly Threshold: $</span>\n        <span class=\"current-quarter-value\">{{ toLocaleString(threshold || 0) }}</span>\n        <div class=\"current-quarter-second-text\">by the end of this quarter</div>\n      </div>\n      <div class=\"spent-quarter\">\n        <span class=\"spent-quarter-prefix\">$</span>\n        <span class=\"spent-quarter-value\">{{ toLocaleString(quarter_revenue || 0) }}</span>\n        <span class=\"spent-quarter-suffix\"> Spent this quarter</span>\n      </div>\n      <div class=\"howdo_hint\" data-ng-show=\"show_hint\">\n        <div class=\"text\" data-ng-click=\"hideHint()\">Earn 1 Soligent Buck per dollar spent. If you spend more than your threshold, you’ll earn additional bonus points\n          on all additional dollars spent based on your status.</div>\n        <div class=\"triangle-bottom\"></div>\n      </div>\n      <div class=\"buttons-container\">\n        <a href=\"javascript:void(0)\" class=\"button_primary\" data-ng-click=\"showHistory()\">HISTORY</a>&nbsp;\n        <a href=\"javascript:void(0)\" class=\"button_primary\" data-ng-click=\"toggleHint()\">HOW DO I EARN</a>\n      </div>\n    </div>\n  </div>\n</div>";
+	module.exports = "<div class=\"clearfix\">\n  <div class=\"bon_choice_main container\" data-ng-show=\"user && user()\">\n    <h3 class=\"bon_header\">\n      <span class=\"header\">{{ widget.texts.header_1_prefix }}</span>\n      <span class=\"header\">{{ user().user_status.name || widget.texts.default_status_string }}</span>\n      <span class=\"header\">{{ widget.texts.header_1_suffix }}</span>\n    </h3>\n    <h3 class=\"bon_header bon_second_header\">\n      <span class=\"header\">{{ widget.texts.header_2_prefix }}</span>\n      <span class=\"header bon_second_header_value\">{{ toLocaleString(user().user_points.confirmed || 0) }}</span>\n      <span class=\"header\">{{ widget.texts.header_2_suffix }}</span>\n    </h3>\n    <div class=\"progress-line-container\">\n      <div class=\"progress-hints\">\n        <span class=\"progress-hints__left\">{{ widget.texts.left_line }}</span>\n        <span class=\"progress-hints__right\">{{ widget.texts.right_line }}</span>\n      </div>\n      <div class=\"left-progress-ann\"></div>\n      <div class=\"right-progress-ann\"></div>\n      <div class=\"progress-line\">\n        <div class=\"fill\" data-ng-style=\"{width: leftBarWidth}\"></div>\n        <div class=\"delim\"></div>\n        <div class=\"empty\" data-ng-style=\"{width: rightBarWidth}\"></div>\n      </div>\n      <div class=\"current-quarter\">\n        <span class=\"current-quarter-text\">Your Quarterly Threshold: $</span>\n        <span class=\"current-quarter-value\">{{ toLocaleString(threshold || 0) }}</span>\n        <div class=\"current-quarter-second-text\">by the end of this quarter</div>\n      </div>\n      <div class=\"spent-quarter\">\n        <span class=\"spent-quarter-prefix\">$</span>\n        <span class=\"spent-quarter-value\">{{ toLocaleString(quarter_revenue || 0) }}</span>\n        <span class=\"spent-quarter-suffix\"> Spent this quarter</span>\n      </div>\n      <div class=\"howdo_hint\" data-ng-show=\"show_hint\">\n        <div class=\"text\" data-ng-click=\"hideHint()\">Earn 1 Soligent Buck per dollar spent. If you spend more than your threshold, you’ll earn additional bonus points\n          on all additional dollars spent based on your status.</div>\n        <div class=\"triangle-bottom\"></div>\n      </div>\n      <div class=\"buttons-container\">\n        <a href=\"javascript:void(0)\" class=\"button_primary\" data-ng-click=\"showHistory()\">HISTORY</a>&nbsp;\n        <a href=\"javascript:void(0)\" class=\"button_primary\" data-ng-click=\"toggleHint()\">HOW DO I EARN?</a>\n      </div>\n    </div>\n  </div>\n</div>";
 
 /***/ },
 /* 203 */
@@ -3127,7 +3127,14 @@ return webpackJsonp([2],[
 	      // Watch user data
 	      (function observeUser() {
 	        SailPlayApi.observe('load.user.info').then(function (user) {
-	          if (!MAGIC_CONFIG.data.status || !MAGIC_CONFIG.data.status.list || !scope.user().user_status || !scope.user().user_status.name) return false;
+	          if (!MAGIC_CONFIG.data.status || !MAGIC_CONFIG.data.status.list || !scope.user().user_status || !scope.user().user_status.name) {
+	            observeUser();
+	            return false;
+	          }
+	          if (!user) {
+	            observeUser();
+	            return false;
+	          }
 
 	          for (var i = 0, len = MAGIC_CONFIG.data.status.list.length; i < len; i++) {
 	            if (MAGIC_CONFIG.data.status.list[i].name.toLowerCase() == scope.user().user_status.name.toLowerCase()) {
@@ -3137,21 +3144,20 @@ return webpackJsonp([2],[
 	            }
 	          }
 
+	          SailPlay.send('vars.batch', {
+	            names: (0, _keys2.default)(scope.variables)
+	          }, function (res) {
+	            res.vars.forEach(function (item) {
+	              scope.variables[item.name] = item.value;
+	            });
+	            scope.$digest();
+	          });
+
 	          if (scope.$root.$$phase != '$digest') scope.$digest();
 
 	          observeUser();
 	        });
 	      })();
-
-	      // Get users variables
-	      SailPlay.send('vars.batch', {
-	        names: (0, _keys2.default)(scope.variables)
-	      }, function (res) {
-	        res.vars.forEach(function (item) {
-	          scope.variables[item.name] = item.value;
-	        });
-	        scope.$digest();
-	      });
 	    };
 	  }
 

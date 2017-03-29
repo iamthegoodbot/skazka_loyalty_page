@@ -319,13 +319,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	          return;
 	        }
 	        if (data.name == 'login.check') {
-	          console.log(data)
 	          if (data.auth_hash == 'None') {
 	            sp.send('logout');
 	          }
 	          else {
 	            cancelLogin();
-	            sp.send('login.do', data.auth_hash)
+	            sp.send('login.do', data.auth_hash, data)
 	          }
 	          return;
 	        }
@@ -445,7 +444,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          window.addEventListener("message", onActionMessage, false);
 
 	          //2. recieve ref_hash info
-	          _config.ref_hash = sp.url_params().ref_hash || '';
+	          // _config.ref_hash = sp.url_params().ref_hash || '';
 	          //var cookie_frame = document.createElement('IFRAME');
 	          //cookie_frame.style.width = 0;
 	          //cookie_frame.style.height = 0;
@@ -1075,7 +1074,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        initError();
 	        return;
 	      }
-
 	      var tagsObj = {
 	        auth_hash: _config.auth_hash
 	      };

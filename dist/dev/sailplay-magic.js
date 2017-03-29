@@ -243,7 +243,7 @@ return webpackJsonp([0],[
 
 	  }]);
 	  return Magic;
-	}(), _class.Widget = _widget.WidgetRegister, _class.version = '2.1.4', _temp);
+	}(), _class.Widget = _widget.WidgetRegister, _class.version = '${MAGIC_VERSION}', _temp);
 
 	//extend SAILPLAY with Magic class
 
@@ -1114,7 +1114,6 @@ return webpackJsonp([0],[
 	      scope.$watch(function () {
 	        return _angular2.default.toJson([SailPlayApi.data('load.user.info')()]);
 	      }, function () {
-
 	        var user = SailPlayApi.data('load.user.info')();
 	        if (!user) return;
 
@@ -1321,8 +1320,9 @@ return webpackJsonp([0],[
 	            scope.$apply(function () {
 
 	              if (typeof callback == 'function') callback();
-	              SailPlay.send('tags.add', { tags: ['Registration completed'] });
-	              SailPlayApi.call('load.user.info', { all: 1 });
+	              SailPlay.send('tags.add', { tags: ['Registration completed'] }, function () {
+	                SailPlayApi.call('load.user.info', { all: 1 });
+	              });
 	            });
 	          } else {
 

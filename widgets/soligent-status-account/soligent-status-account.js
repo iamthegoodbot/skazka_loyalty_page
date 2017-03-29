@@ -35,7 +35,14 @@ WidgetRegister({
       // Watch user data
       (function observeUser(){
         SailPlayApi.observe('load.user.info').then((user) => {          
-            if (!MAGIC_CONFIG.data.status || !MAGIC_CONFIG.data.status.list || !scope.user().user_status || !scope.user().user_status.name) return false;
+            if (!MAGIC_CONFIG.data.status || !MAGIC_CONFIG.data.status.list || !scope.user().user_status || !scope.user().user_status.name) {
+              observeUser();             
+              return false;
+            }
+            if (!user) {
+              observeUser();
+              return false;              
+            }
 
             for (let i = 0, len = MAGIC_CONFIG.data.status.list.length; i < len; i++) {
               if (MAGIC_CONFIG.data.status.list[i].name.toLowerCase() == scope.user().user_status.name.toLowerCase()) {
@@ -45,23 +52,21 @@ WidgetRegister({
               }
             }
 
+            SailPlay.send('vars.batch', {
+              names: Object.keys(scope.variables)
+            }, res => {
+              res.vars.forEach(item => {
+                scope.variables[item.name] = item.value;
+              });
+              scope.$digest();
+            })
+
             if (scope.$root.$$phase != '$digest')
               scope.$digest();
 
             observeUser();  
         });
       }())
-
-      // Get users variables
-      SailPlay.send('vars.batch', {
-        names: Object.keys(scope.variables)
-      }, res => {
-        res.vars.forEach(item => {
-          scope.variables[item.name] = item.value;
-        });
-        scope.$digest();
-      })
-
     };
 
   }

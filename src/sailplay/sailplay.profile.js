@@ -233,7 +233,6 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
         scope.$watch(function () {
           return angular.toJson([SailPlayApi.data('load.user.info')()]);
         }, function () {
-
           var user = SailPlayApi.data('load.user.info')();
           if (!user) return;
 
@@ -440,8 +439,9 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
               scope.$apply(function () {
 
                 if (typeof callback == 'function') callback();
-                SailPlay.send('tags.add', {tags: ['Registration completed']});
-                SailPlayApi.call('load.user.info', {all: 1});
+                SailPlay.send('tags.add', {tags: ['Registration completed']}, () => {
+                  SailPlayApi.call('load.user.info', {all: 1});
+                });
 
               });
 
