@@ -222,10 +222,10 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
 
           if ($rootScope.tagShouldBeAdded != MAGIC_CONFIG.data.tag_type)
             SailPlay.send('tags.exist', {tags: [MAGIC_CONFIG.data.tag_type]}, res => {
-              // if (res.tags[0].name == MAGIC_CONFIG.data.tag_type &&
-              //   !res.tags[0].exist) {
-              //     location.replace(MAGIC_CONFIG.data.redirect_to)
-              //   }
+              if (res.tags[0].name == MAGIC_CONFIG.data.tag_type &&
+                !res.tags[0].exist) {
+                  location.replace(MAGIC_CONFIG.data.redirect_to)
+                }
             })
 
           var custom_fields = [];
@@ -309,16 +309,17 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
           //}
           console.dir(form);
 
-          SailPlay.send('tags.exist', {tags: ['Registration completed']}, function (res) {
-            if (res && res.tags.length) {
-              if (!res.tags[0].exist) {
-                $timeout(function(){
-                  scope.$parent.reg_incomplete = true;
-                  scope.$parent.preventClose = true;
-                  $rootScope.$broadcast('openProfile');
-                }, 10)
+          if (MAGIC_CONFIG.data.force_registration)
+            SailPlay.send('tags.exist', {tags: ['Registration completed']}, function (res) {
+              if (res && res.tags.length) {
+                if (!res.tags[0].exist) {
+                  $timeout(function(){
+                    scope.$parent.reg_incomplete = true;
+                    scope.$parent.preventClose = true;
+                    $rootScope.$broadcast('openProfile');
+                  }, 10)
+                }
               }
-            }
           });
 
           saved_form = angular.copy(form);

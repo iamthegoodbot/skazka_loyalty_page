@@ -8,13 +8,15 @@ const ProfileWidget = {
 
   id: 'profile',
   template: WidgetProfileTemplate,
-  controller: function () {
+  inject: ['$rootScope'],
+  controller: function ($rootScope) {
 
     return function (scope, elm, attrs) {
 
       // scope._tools = MAGIC_CONFIG.tools;
 
       scope.default_avatar = DefaultAvatarImage;
+      $rootScope.$on('openProfile', () => scope.profile.show_fill_profile = true);
 
       scope.profile = {
         history: false,

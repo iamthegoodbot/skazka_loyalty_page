@@ -26,7 +26,7 @@ WidgetRegister({
 
         var tag_obj = {
           phone: phone,
-          tags: tag.toUpperCase()
+          tags: tag[0].toUpperCase() + tag.slice(1)
         }
         SAILPLAY.jsonp.get(_config.DOMAIN + tagDelete, tag_obj_delete, () => {
           SAILPLAY.jsonp.get(_config.DOMAIN + tagAdd, tag_obj) 

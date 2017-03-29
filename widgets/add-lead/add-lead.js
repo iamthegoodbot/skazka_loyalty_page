@@ -16,6 +16,7 @@ WidgetRegister({
       scope.submit = fields => { 
 
         var _config = SailPlay.config();
+        var tagAdd = '/js-api/' + _config.partner.id + '/tags/add';
 
         var lead_obj = {
           auth_hash: _config.auth_hash,
@@ -31,7 +32,12 @@ WidgetRegister({
 
         SAILPLAY.jsonp.get(_config.DOMAIN + url, lead_obj, (res) => {
           if (res.status == 'ok') {
-            scope.startNewLead = false
+            var set_status = {
+              phone: lead_obj['phone'],
+              tags: ''
+            }
+            SAILPLAY.jsonp.get(_config.DOMAIN + tagAdd, tag_obj) 
+            scope.startNewLead = false;
             fields.map(field => { field.value = ''; return field })
             scope.$digest();
           } else {

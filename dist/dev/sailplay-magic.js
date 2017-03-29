@@ -243,7 +243,7 @@ return webpackJsonp([0],[
 
 	  }]);
 	  return Magic;
-	}(), _class.Widget = _widget.WidgetRegister, _class.version = '${MAGIC_VERSION}', _temp);
+	}(), _class.Widget = _widget.WidgetRegister, _class.version = '2.1.2', _temp);
 
 	//extend SAILPLAY with Magic class
 
@@ -1098,10 +1098,9 @@ return webpackJsonp([0],[
 	        if (!user) return;
 
 	        if ($rootScope.tagShouldBeAdded != MAGIC_CONFIG.data.tag_type) SailPlay.send('tags.exist', { tags: [MAGIC_CONFIG.data.tag_type] }, function (res) {
-	          // if (res.tags[0].name == MAGIC_CONFIG.data.tag_type &&
-	          //   !res.tags[0].exist) {
-	          //     location.replace(MAGIC_CONFIG.data.redirect_to)
-	          //   }
+	          if (res.tags[0].name == MAGIC_CONFIG.data.tag_type && !res.tags[0].exist) {
+	            location.replace(MAGIC_CONFIG.data.redirect_to);
+	          }
 	        });
 
 	        var custom_fields = [];
@@ -1185,7 +1184,7 @@ return webpackJsonp([0],[
 	        //}
 	        console.dir(form);
 
-	        SailPlay.send('tags.exist', { tags: ['Registration completed'] }, function (res) {
+	        if (MAGIC_CONFIG.data.force_registration) SailPlay.send('tags.exist', { tags: ['Registration completed'] }, function (res) {
 	          if (res && res.tags.length) {
 	            if (!res.tags[0].exist) {
 	              $timeout(function () {
