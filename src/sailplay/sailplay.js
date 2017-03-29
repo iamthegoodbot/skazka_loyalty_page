@@ -180,7 +180,10 @@ export let SailPlay = angular.module('sailplay', [
 
     angular.forEach(points, function (point) {
       SailPlay.on(point + '.success', function (res) {
-          self.data(point, res);
+          $rootScope.$apply(() => {
+            self.data(point, res);
+          })
+          
           if (observers[point] && observers[point].length)
             observers[point].forEach(fn => fn(res))
           console.log('sailplay.api:' + point + '.success');
@@ -188,10 +191,10 @@ export let SailPlay = angular.module('sailplay', [
       });
 
       SailPlay.on(point + '.error', function (res) {
+          $rootScope.$apply(() => {
+            self.data(point, null);
+          })
 
-          console.log('sailplay.api:' + point + '.error');
-          console.dir(res);
-          self.data(point, null);
           if (observers[point] && observers[point].length)
             observers[point].forEach(fn => fn(null))         
 
