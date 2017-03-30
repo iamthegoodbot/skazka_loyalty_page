@@ -37,14 +37,13 @@ export let SailPlayGifts = angular.module('sailplay.gifts', [])
 
       };
 
-      scope.$watch(function(){
-        return angular.toJson([ scope.gifts(), user() ]);
-      },async function(){
 
-        scope.progress = await build_progress(scope.gifts(), user());
-        scope.$digest();
-
-      });
+      SailPlayApi.observe('load.gifts.list', result => {
+        build_progress(result, user()).then(() => {
+          if(scope.$root.$$phase != '$digest')
+            scope.$digest();
+        })
+      })
 
       scope.progress = false;
 

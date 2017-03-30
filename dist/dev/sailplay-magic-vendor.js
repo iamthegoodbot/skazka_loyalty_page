@@ -110,10 +110,10 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	__webpack_require__(31);
-	__webpack_require__(98);
-	__webpack_require__(102);
-	__webpack_require__(107);
-	__webpack_require__(105);
+	__webpack_require__(59);
+	__webpack_require__(63);
+	__webpack_require__(68);
+	__webpack_require__(66);
 	__webpack_require__(29);
 	module.exports = __webpack_require__(30);
 
@@ -324,7 +324,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          }
 	          else {
 	            cancelLogin();
-	            sp.send('login.do', data.auth_hash)
+	            sp.send('login.do', data.auth_hash, data)
 	          }
 	          return;
 	        }
@@ -444,7 +444,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          window.addEventListener("message", onActionMessage, false);
 
 	          //2. recieve ref_hash info
-	          _config.ref_hash = sp.url_params().ref_hash || '';
+	          // _config.ref_hash = sp.url_params().ref_hash || '';
 	          //var cookie_frame = document.createElement('IFRAME');
 	          //cookie_frame.style.width = 0;
 	          //cookie_frame.style.height = 0;
@@ -34984,16 +34984,16 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 
-/***/ 98:
+/***/ 59:
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(99);
+	__webpack_require__(60);
 	module.exports = 'ipCookie';
 
 
 /***/ },
 
-/***/ 99:
+/***/ 60:
 /***/ function(module, exports) {
 
 	/*
@@ -35125,16 +35125,16 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 
-/***/ 102:
+/***/ 63:
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(103);
+	__webpack_require__(64);
 	module.exports = 'ngTouch';
 
 
 /***/ },
 
-/***/ 103:
+/***/ 64:
 /***/ function(module, exports) {
 
 	/**
@@ -35890,16 +35890,16 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 
-/***/ 105:
+/***/ 66:
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(106);
+	__webpack_require__(67);
 	module.exports = 'angularUtils.directives.dirPagination';
 
 
 /***/ },
 
-/***/ 106:
+/***/ 67:
 /***/ function(module, exports) {
 
 	/**
@@ -36545,20 +36545,20 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 
-/***/ 107:
+/***/ 68:
 /***/ function(module, exports, __webpack_require__) {
 
 	//https://github.com/angular/angular.js/pull/10732
 
 	var angular = __webpack_require__(31);
-	var mask = __webpack_require__(108);
+	var mask = __webpack_require__(69);
 
 	module.exports = 'ui.mask';
 
 
 /***/ },
 
-/***/ 108:
+/***/ 69:
 /***/ function(module, exports) {
 
 	/*!
