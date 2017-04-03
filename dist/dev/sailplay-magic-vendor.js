@@ -125,6 +125,16 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	(function () {
 
+	  function disableScroll() {
+	    window.document.body.style.top = -(document.body.scrollTop) + 'px';
+	    window.document.body.className += ' noscroll'
+	  }
+
+	  function enableScroll() {
+	    window.document.body.style.top = -(document.body.scrollTop) + 'px';
+	    window.document.body.className = window.document.body.className.replace(' noscroll', '')
+	  }  
+
 	  var SAILPLAY = (function () {
 
 	    //methods that not supported in old browsers
@@ -267,7 +277,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    function remoteLogin(opts) {
 
 	      var frame;
-
+	      disableScroll();
 	      opts = opts || {};
 
 	      if (opts.node && opts.node.nodeType == 1 && opts.node.tagName == 'IFRAME') {
@@ -288,6 +298,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        frame.style.margin = 'auto';
 	        frame.style.zIndex = '100000';
 	        document.body.appendChild(frame);
+
 	      }
 
 	      var frame_id = frame.id || 'sailplay_login_frame_' + new Date().getTime();
@@ -316,6 +327,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        if (data.name == 'login.cancel') {
 	          sp.send('login.cancel');
 	          cancelLogin();
+	          enableScroll();          
 	          return;
 	        }
 	        if (data.name == 'login.check') {
@@ -324,6 +336,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          }
 	          else {
 	            cancelLogin();
+	            enableScroll();            
 	            sp.send('login.do', data.auth_hash, data)
 	          }
 	          return;

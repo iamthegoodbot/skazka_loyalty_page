@@ -243,7 +243,7 @@ return webpackJsonp([0],[
 
 	  }]);
 	  return Magic;
-	}(), _class.Widget = _widget.WidgetRegister, _class.version = '${MAGIC_VERSION}', _temp);
+	}(), _class.Widget = _widget.WidgetRegister, _class.version = '2.1.4', _temp);
 
 	//extend SAILPLAY with Magic class
 
@@ -1224,17 +1224,23 @@ return webpackJsonp([0],[
 	        //}
 	        console.dir(form);
 
-	        SailPlay.send('tags.exist', { tags: ['Registration completed'] }, function (res) {
-	          if (res && res.tags.length) {
-	            if (!res.tags[0].exist) {
-	              $timeout(function () {
-	                scope.$parent.reg_incomplete = true;
-	                scope.$parent.preventClose = true;
-	                $rootScope.$broadcast('openProfile');
-	              }, 10);
+	        if (!scope.already_showed) {
+	          SailPlay.send('tags.exist', { tags: ['Registration completed'] }, function (res) {
+	            if (res && res.tags.length) {
+	              if (!res.tags[0].exist) {
+	                $timeout(function () {
+	                  scope.already_showed = true;
+	                  scope.$parent.reg_incomplete = true;
+	                  scope.$parent.preventClose = true;
+	                  $rootScope.$broadcast('openProfile');
+	                }, 10);
+	              }
 	            }
-	          }
-	        });
+	          });
+	        } else {
+	          scope.$parent.reg_incomplete = false;
+	          scope.$parent.preventClose = false;
+	        }
 	        saved_form = _angular2.default.copy(form);
 	      });
 

@@ -640,6 +640,16 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	(function () {
 
+	  function disableScroll() {
+	    window.document.body.style.top = -(document.body.scrollTop) + 'px';
+	    window.document.body.className += ' noscroll'
+	  }
+
+	  function enableScroll() {
+	    window.document.body.style.top = -(document.body.scrollTop) + 'px';
+	    window.document.body.className = window.document.body.className.replace(' noscroll', '')
+	  }  
+
 	  var SAILPLAY = (function () {
 
 	    //methods that not supported in old browsers
@@ -782,7 +792,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    function remoteLogin(opts) {
 
 	      var frame;
-
+	      disableScroll();
 	      opts = opts || {};
 
 	      if (opts.node && opts.node.nodeType == 1 && opts.node.tagName == 'IFRAME') {
@@ -803,6 +813,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        frame.style.margin = 'auto';
 	        frame.style.zIndex = '100000';
 	        document.body.appendChild(frame);
+
 	      }
 
 	      var frame_id = frame.id || 'sailplay_login_frame_' + new Date().getTime();
@@ -831,16 +842,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	        if (data.name == 'login.cancel') {
 	          sp.send('login.cancel');
 	          cancelLogin();
+	          enableScroll();          
 	          return;
 	        }
 	        if (data.name == 'login.check') {
-	          console.log(data)
 	          if (data.auth_hash == 'None') {
 	            sp.send('logout');
 	          }
 	          else {
 	            cancelLogin();
-	            sp.send('login.do', data.auth_hash)
+	            enableScroll();            
+	            sp.send('login.do', data.auth_hash, data)
 	          }
 	          return;
 	        }
@@ -960,7 +972,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          window.addEventListener("message", onActionMessage, false);
 
 	          //2. recieve ref_hash info
-	          _config.ref_hash = sp.url_params().ref_hash || '';
+	          // _config.ref_hash = sp.url_params().ref_hash || '';
 	          //var cookie_frame = document.createElement('IFRAME');
 	          //cookie_frame.style.width = 0;
 	          //cookie_frame.style.height = 0;
@@ -1590,7 +1602,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        initError();
 	        return;
 	      }
-
 	      var tagsObj = {
 	        auth_hash: _config.auth_hash
 	      };
@@ -36039,7 +36050,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	      scope.$watch(function () {
 	        return _angular2.default.toJson([SailPlayApi.data('load.user.info')()]);
 	      }, function () {
-
 	        var user = SailPlayApi.data('load.user.info')();
 	        if (!user) return;
 
@@ -36150,17 +36160,23 @@ return /******/ (function(modules) { // webpackBootstrap
 	        //}
 	        console.dir(form);
 
-	        SailPlay.send('tags.exist', { tags: ['Registration completed'] }, function (res) {
-	          if (res && res.tags.length) {
-	            if (!res.tags[0].exist) {
-	              $timeout(function () {
-	                scope.$parent.reg_incomplete = true;
-	                scope.$parent.preventClose = true;
-	                $rootScope.$broadcast('openProfile');
-	              }, 10);
+	        if (!scope.already_showed) {
+	          SailPlay.send('tags.exist', { tags: ['Registration completed'] }, function (res) {
+	            if (res && res.tags.length) {
+	              if (!res.tags[0].exist) {
+	                $timeout(function () {
+	                  scope.already_showed = true;
+	                  scope.$parent.reg_incomplete = true;
+	                  scope.$parent.preventClose = true;
+	                  $rootScope.$broadcast('openProfile');
+	                }, 10);
+	              }
 	            }
-	          }
-	        });
+	          });
+	        } else {
+	          scope.$parent.reg_incomplete = false;
+	          scope.$parent.preventClose = false;
+	        }
 	        saved_form = _angular2.default.copy(form);
 	      });
 
@@ -36246,8 +36262,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	            scope.$apply(function () {
 
 	              if (typeof callback == 'function') callback();
-	              SailPlay.send('tags.add', { tags: ['Registration completed'] });
-	              SailPlayApi.call('load.user.info', { all: 1 });
+	              SailPlay.send('tags.add', { tags: ['Registration completed'] }, function () {
+	                SailPlayApi.call('load.user.info', { all: 1 });
+	              });
 	            });
 	          } else {
 
@@ -44391,7 +44408,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 203 */
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"clearfix\">\n  <div class=\"bon_choice_main container\" data-ng-show=\"user && user()\">\n    <h3 class=\"bon_header\">\n      <span class=\"header\">{{ widget.texts.header_1_prefix }}</span>\n      <span class=\"header\">{{ user().user_status.name || widget.texts.default_status_string }}</span>\n      <span class=\"header\">{{ widget.texts.header_1_suffix }}</span>\n    </h3>\n    <h3 class=\"bon_header bon_second_header\">\n      <span class=\"header\">{{ widget.texts.header_2_prefix }}</span>\n      <span class=\"header bon_second_header_value\">{{ toLocaleString(user().user_points.confirmed || 0) }}</span>\n      <span class=\"header\">{{ widget.texts.header_2_suffix }}</span>\n    </h3>\n    <div class=\"progress-line-container\">\n      <div class=\"progress-hints\">\n        <span class=\"progress-hints__left\">Earn 1 Soligent Buck per $ spent until you reach you threshold</span>\n        <span class=\"progress-hints__right\">Earn multiplied Soligent Bucks for each $ spent past your threshold</span>\n      </div>\n      <div class=\"left-progress-ann\"></div>\n      <div class=\"right-progress-ann\"></div>\n      <div class=\"progress-line\">\n        <div class=\"fill\" data-ng-style=\"{width: leftBarWidth}\"></div>\n        <div class=\"delim\"></div>\n        <div class=\"empty\" data-ng-style=\"{width: rightBarWidth}\"></div>\n      </div>\n      <div class=\"current-quarter\">\n        <span class=\"current-quarter-text\">Your Quarterly Threshold: $</span>\n        <span class=\"current-quarter-value\">{{ toLocaleString(threshold || 0) }}</span>\n        <div class=\"current-quarter-second-text\">by the end of this quarter</div>\n      </div>\n      <div class=\"spent-quarter\">\n        <span class=\"spent-quarter-prefix\">$</span>\n        <span class=\"spent-quarter-value\">{{ toLocaleString(quarter_revenue || 0) }}</span>\n        <span class=\"spent-quarter-suffix\"> Spent this quarter</span>\n      </div>\n      <div class=\"howdo_hint\" data-ng-show=\"show_hint\">\n        <div class=\"text\" data-ng-click=\"hideHint()\">Earn 1 Soligent Buck per dollar spent. If you spend more than your threshold, you’ll earn additional bonus points\n          on all additional dollars spent based on your status.</div>\n        <div class=\"triangle-bottom\"></div>\n      </div>\n      <div class=\"buttons-container\">\n        <a href=\"javascript:void(0)\" class=\"button_primary\" data-ng-click=\"showHistory()\">HISTORY</a>&nbsp;\n        <a href=\"javascript:void(0)\" class=\"button_primary\" data-ng-click=\"toggleHint()\">HOW DO I EARN</a>\n      </div>\n    </div>\n  </div>\n</div>";
+	module.exports = "<div class=\"clearfix\">\n  <div class=\"bon_choice_main container\" data-ng-show=\"user && user()\">\n    <h3 class=\"bon_header\">\n      <span class=\"header\">{{ widget.texts.header_1_prefix }}</span>\n      <span class=\"header\">{{ user().user_status.name || widget.texts.default_status_string }}</span>\n      <span class=\"header\">{{ widget.texts.header_1_suffix }}</span>\n    </h3>\n    <h3 class=\"bon_header bon_second_header\">\n      <span class=\"header\">{{ widget.texts.header_2_prefix }}</span>\n      <span class=\"header bon_second_header_value\">{{ toLocaleString(user().user_points.confirmed || 0) }}</span>\n      <span class=\"header\">{{ widget.texts.header_2_suffix }}</span>\n    </h3>\n    <div class=\"progress-line-container\">\n      <div class=\"progress-hints\">\n        <span class=\"progress-hints__left\">{{ widget.texts.left_line }}</span>\n        <span class=\"progress-hints__right\">{{ widget.texts.right_line }}</span>\n      </div>\n      <div class=\"left-progress-ann\"></div>\n      <div class=\"right-progress-ann\"></div>\n      <div class=\"progress-line\">\n        <div class=\"fill\" data-ng-style=\"{width: leftBarWidth}\"></div>\n        <div class=\"delim\"></div>\n        <div class=\"empty\" data-ng-style=\"{width: rightBarWidth}\"></div>\n      </div>\n      <div class=\"current-quarter\">\n        <span class=\"current-quarter-text\">Your Quarterly Threshold: $</span>\n        <span class=\"current-quarter-value\">{{ toLocaleString(threshold || 0) }}</span>\n        <div class=\"current-quarter-second-text\">by the end of this quarter</div>\n      </div>\n      <div class=\"spent-quarter\">\n        <span class=\"spent-quarter-prefix\">$</span>\n        <span class=\"spent-quarter-value\">{{ toLocaleString(quarter_revenue || 0) }}</span>\n        <span class=\"spent-quarter-suffix\"> Spent this quarter</span>\n      </div>\n      <div class=\"howdo_hint\" data-ng-show=\"show_hint\">\n        <div class=\"text\" data-ng-click=\"hideHint()\">Earn 1 Soligent Buck per dollar spent. If you spend more than your threshold, you’ll earn additional bonus points\n          on all additional dollars spent based on your status.</div>\n        <div class=\"triangle-bottom\"></div>\n      </div>\n      <div class=\"buttons-container\">\n        <a href=\"javascript:void(0)\" class=\"button_primary\" data-ng-click=\"showHistory()\">HISTORY</a>&nbsp;\n        <a href=\"javascript:void(0)\" class=\"button_primary\" data-ng-click=\"toggleHint()\">HOW DO I EARN?</a>\n      </div>\n    </div>\n  </div>\n</div>";
 
 /***/ },
 /* 204 */
@@ -44481,7 +44498,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	      // Watch user data
 	      (function observeUser() {
 	        SailPlayApi.observe('load.user.info').then(function (user) {
-	          if (!MAGIC_CONFIG.data.status || !MAGIC_CONFIG.data.status.list || !scope.user().user_status || !scope.user().user_status.name) return false;
+	          if (!MAGIC_CONFIG.data.status || !MAGIC_CONFIG.data.status.list || !scope.user().user_status || !scope.user().user_status.name) {
+	            observeUser();
+	            return false;
+	          }
+	          if (!user) {
+	            observeUser();
+	            return false;
+	          }
 
 	          for (var i = 0, len = MAGIC_CONFIG.data.status.list.length; i < len; i++) {
 	            if (MAGIC_CONFIG.data.status.list[i].name.toLowerCase() == scope.user().user_status.name.toLowerCase()) {
@@ -44491,21 +44515,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	            }
 	          }
 
+	          SailPlay.send('vars.batch', {
+	            names: (0, _keys2.default)(scope.variables)
+	          }, function (res) {
+	            res.vars.forEach(function (item) {
+	              scope.variables[item.name] = item.value;
+	            });
+	            scope.$digest();
+	          });
+
 	          if (scope.$root.$$phase != '$digest') scope.$digest();
 
 	          observeUser();
 	        });
 	      })();
-
-	      // Get users variables
-	      SailPlay.send('vars.batch', {
-	        names: (0, _keys2.default)(scope.variables)
-	      }, function (res) {
-	        res.vars.forEach(function (item) {
-	          scope.variables[item.name] = item.value;
-	        });
-	        scope.$digest();
-	      });
 	    };
 	  }
 
