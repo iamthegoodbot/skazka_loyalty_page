@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>SailPlay MAGIC!</title>
+  <meta name="description" content="SailPlay Magic!">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="favicon.png" type="image/png">
+
+  <script src="dist/prod/sailplay-magic.js"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+    }
+  </style>
+
+</head>
+<body>
+
+  <sailplay-magic></sailplay-magic>
+  <script>
+
+    console.log(SAILPLAY.MagicMigrator);
+
+    var params = SAILPLAY.url_params();
+
+    var magic = new SAILPLAY.Magic({
+
+      partner_id: params.partner_id || 1,
+      dep_id: params.dep_id || '',
+      domain: params.domain || "https://sailplay.net",
+      lang:  params.lang || "en",
+      config: params.config || "default"
+
+    });
+
+  </script>
+
+</body>
+</html>
