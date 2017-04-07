@@ -54,6 +54,20 @@
     }
 
     .quest_card {
+      .quest_card_buttons {
+          position: absolute;
+          width: ~"calc(100% - 34px)";
+          height: ~"calc(100% - 4px)";
+          padding-top: 0 !important;
+          line-height: 132px;
+          text-align: center;  
+          z-index: 1000;
+          opacity: 0;
+          background: transparent !important;
+          font-size: 24px;
+          font-weight: bold;
+          font-style: italic;
+      }
 
       .quest_card_image {
 
@@ -68,13 +82,18 @@
       }
 
       &:hover {
+        .quest_card_image {
+          opacity: 0;
+        }
+        .quest_card_buttons {
+          opacity: 1;
+        }
         .quest_card_tools {
+          opacity: 0;
           .quest_card_info {
             opacity: 0;
           }
-          .quest_card_buttons {
-            opacity: 1;
-          }
+
         }
       }
 
@@ -116,7 +135,7 @@
           width: 100%;
           padding-top: 20px;
 
-          text-align: center;
+          text-align: center;        
         }
 
       }

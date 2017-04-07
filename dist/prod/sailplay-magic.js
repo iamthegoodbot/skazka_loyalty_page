@@ -632,14 +632,17 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	(function () {
 
+	  var last_scroll = 0;
 	  function disableScroll() {
-	    window.document.body.style.top = -(document.body.scrollTop) + 'px';
+	    last_scroll = document.body.scrollTop;
+	    window.document.body.style.top = -last_scroll + 'px';
 	    window.document.body.className += ' noscroll'
 	  }
 
 	  function enableScroll() {
-	    window.document.body.style.top = -(document.body.scrollTop) + 'px';
 	    window.document.body.className = window.document.body.className.replace(' noscroll', '')
+	    window.document.body.style.top = 0;    
+	    window.scrollTo(0, last_scroll)
 	  }  
 
 	  var SAILPLAY = (function () {

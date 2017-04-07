@@ -18,6 +18,10 @@
 
             <div class="quest_card" title="{{ action_data(action).name }}">
 
+              <div class="quest_card_buttons">
+                <a data-ng-click="action_select(action)">{{ action_data(action).button_text }}</a>
+              </div>
+
               <div class="quest_card_image">
                 <img data-ng-src="{{ action_data(action).pic | sailplay_pic }}" alt="">
               </div>
@@ -29,9 +33,7 @@
                   <span class="quest_card_points ellipsis" data-ng-show="action.points" data-ng-bind="((action.points || 0) | number) + ' ' + (action.points | sailplay_pluralize:( 'points.texts.pluralize' | tools ))"></span>
                 </div>
 
-                <div class="quest_card_buttons">
-                  <a class="button_primary" data-ng-click="action_select(action)">{{ action_data(action).button_text }}</a>
-                </div>
+
 
               </div>
 
@@ -43,6 +45,10 @@
 
             <div class="quest_card" title="{{ action.name }}">
 
+              <div class="quest_card_buttons">
+                <a data-ng-click="action_custom_select(action)">{{ action.button_text }}</a>
+              </div>
+
               <div class="quest_card_image">
                 <img data-ng-src="{{ action.icon | sailplay_pic }}" alt="">
               </div>
@@ -52,10 +58,6 @@
                 <div class="quest_card_info">
                   <span class="quest_card_name ellipsis" data-ng-bind="action.name"></span>
                   <span class="quest_card_points ellipsis" data-ng-show="action.points" data-ng-bind="((action.points || 0) | number) + ' ' + (action.points | sailplay_pluralize:( 'points.texts.pluralize' | tools ))"></span>
-                </div>
-
-                <div class="quest_card_buttons">
-                  <a class="button_primary" data-ng-click="action_custom_select(action)">{{ action.button_text }}</a>
                 </div>
 
               </div>
