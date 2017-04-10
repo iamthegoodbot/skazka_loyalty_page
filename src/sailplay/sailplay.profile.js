@@ -215,6 +215,28 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
 
           if (!user) return;
 
+          var last_login = window.localStorage.getItem('last_login');
+          var d = new Date();
+          d.setHours(0);
+          d.setMinutes(0);
+          d.setSeconds(0);
+          d.setMilliseconds(0);
+
+          if (!last_login) {
+            window.localStorage.setItem('last_login', d.getTime());
+            SailPlayApi.call('tags.add', {
+              tags: ['Logged into website']
+            })
+          } else {
+            if (last_login != d.getTime()) {
+              SailPlayApi.call('tags.add', {
+                 tags: ['Logged into website']
+               })
+             }
+           }
+ 
+ 
+
           var form = scope.sailplay.fill_profile.form;
 
           form.fields = config.fields.map(function (field) {

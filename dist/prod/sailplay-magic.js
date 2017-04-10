@@ -607,6 +607,19 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	(function () {
 
+	  var last_scroll = 0;
+	  function disableScroll() {
+	    last_scroll = document.body.scrollTop;
+	    window.document.body.style.top = -last_scroll + 'px';
+	    window.document.body.className += ' noscroll'
+	  }
+
+	  function enableScroll() {
+	    window.document.body.className = window.document.body.className.replace(' noscroll', '')
+	    window.document.body.style.top = 0;    
+	    window.scrollTo(0, last_scroll)
+	  }  
+
 	  var SAILPLAY = (function () {
 
 	    //methods that not supported in old browsers
@@ -749,7 +762,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    function remoteLogin(opts) {
 
 	      var frame;
-
+	      disableScroll();
 	      opts = opts || {};
 
 	      if (opts.node && opts.node.nodeType == 1 && opts.node.tagName == 'IFRAME') {
@@ -763,13 +776,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	        frame.style.left = '0';
 	        frame.style.bottom = '0';
 	        frame.style.right = '0';
-	        frame.style.width = '410px';
-	        frame.style.height = '510px';
+	        frame.style.width = '100%';
+	        frame.style.height = '100%';
 	        frame.created = true;
 	        frame.style.background = 'transparent';
-	        frame.style.margin = 'auto';
+	        frame.style.margin = '0 auto';
 	        frame.style.zIndex = '100000';
 	        document.body.appendChild(frame);
+
 	      }
 
 	      var frame_id = frame.id || 'sailplay_login_frame_' + new Date().getTime();
@@ -798,6 +812,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        if (data.name == 'login.cancel') {
 	          sp.send('login.cancel');
 	          cancelLogin();
+	          enableScroll();          
 	          return;
 	        }
 	        if (data.name == 'login.check') {
@@ -806,7 +821,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	          }
 	          else {
 	            cancelLogin();
-	            sp.send('login.do', data.auth_hash)
+	            enableScroll();            
+	            sp.send('login.do', data.auth_hash, data)
 	          }
 	          return;
 	        }
@@ -819,12 +835,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	      function cancelLogin() {
 	        if (frame.created) {
-	          try {
-	            document.body.removeChild(frame)
-	          }
-	          catch (e) {
-
-	          }
+	          document.body.removeChild(frame);
+	          window.removeEventListener("message", onMessage, false);
+	          _remote_login_init = false;
 	        }
 	      }
 
@@ -833,6 +846,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	      params.dep_id = _config.dep_id || '';
 	      params.background = opts.background || '';
 	      params.partner_info = opts.partner_info || 0;
+	      if(opts.reg_match_email_oid) {
+	        params.reg_match_email_oid = opts.reg_match_email_oid;
+	      }
+	      if(opts.css_link) {
+	        params.css_link = opts.css_link;
+	      }
 	      if (opts.lang) {
 	        params.lang = opts.lang;
 	      }
@@ -923,7 +942,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          window.addEventListener("message", onActionMessage, false);
 
 	          //2. recieve ref_hash info
-	          _config.ref_hash = sp.url_params().ref_hash || '';
+	          // _config.ref_hash = sp.url_params().ref_hash || '';
 	          //var cookie_frame = document.createElement('IFRAME');
 	          //cookie_frame.style.width = 0;
 	          //cookie_frame.style.height = 0;
@@ -1024,7 +1043,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    });
 
 	    //USER INFO
-	    sp.on('load.user.info', function (p) {
+	    sp.on('load.user.info', function (p, callback) {
 	      if (_config == {}) {
 	        initError();
 	        return;
@@ -1049,6 +1068,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        params.auth_hash = _config.auth_hash;
 	      }
 	      JSONP.get(_config.DOMAIN + _config.urls.users.info, params, function (res) {
+	        callback && callback(res);
 	        if (res.status == 'ok') {
 	          sp.send('load.user.info.success', res);
 	        } else {
@@ -1173,6 +1193,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        params.auth_hash = _config.auth_hash;
 	      }
 
+	      params.lang = params.lang || _config.lang || 'ru';
+
 	      JSONP.get(_config.DOMAIN + _config.urls.gifts.list, params, function (res) {
 	        //      console.dir(res);
 	        if (res.status == 'ok') {
@@ -1279,7 +1301,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return;
 	      }
 	      var params = {
-	        auth_hash: _config.auth_hash
+	        auth_hash: _config.auth_hash,
+	        lang: p && p.lang || _config.lang || 'ru'
 	      };
 	      if(p){
 	        if(p.include_rules) {
@@ -1404,7 +1427,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 	    });
 
-	    sp.on('tags.delete', function (data) {
+	    sp.on('tags.delete', function (data, callback) {
 	      if (_config == {}) {
 	        initError();
 	        return;
@@ -1422,6 +1445,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          tagsObj.auth_hash = _config.auth_hash;
 	        }
 	        JSONP.get(_config.DOMAIN + _config.urls.tags.delete, tagsObj, function (res) {
+	          callback && callback(res);
 	          if (res.status == 'ok') {
 	            sp.send('tags.delete.success', res);
 	          } else {
@@ -1466,33 +1490,80 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    });
 
-	    //ADD CUSTOM VARIABLES
+	    /**
+	     * Add variables to user
+	     * @object data {custom_vars:{}, user: {}}
+	     * @function callback
+	     */
 	    sp.on('vars.add', function (data, callback) {
+
 	      if (_config == {}) {
 	        initError();
 	        return;
 	      }
+
 	      if (_config.auth_hash || data.user) {
+
 	        var obj = data.custom_vars;
-	        if (data.user) {
-	          for (var p in data.user) {
-	            obj[p] = data.user[p];
-	          }
-	        }
-	        else {
+
+	        if (data.user)
+	          for (var p in data.user) obj[p] = data.user[p];
+	        else
 	          obj.auth_hash = _config.auth_hash;
-	        }
-	        JSONP.get(_config.DOMAIN + '/js-api/' + _config.partner.id + '/users/custom-variables/add/', obj, function (res) {
-	          if (res.status == 'ok') {
+
+	        obj.lang = data.lang || _config.lang || 'ru';
+
+	        JSONP.get(_config.DOMAIN + _config.urls.users.custom_variables.add, obj, function (res) {
+	          if (res.status == 'ok')
 	            sp.send('vars.add.success', res);
-	          } else {
+	          else
 	            sp.send('vars.add.error', res);
-	          }
 	          callback && callback(res);
 	        });
+
 	      } else {
 	        sp.send('vars.add.auth.error', data);
 	      }
+
+	    });
+
+	    /**
+	     * Get user variables
+	     * @object data {names: [], user: {}}
+	     * @function callback
+	     */
+	    sp.on("vars.batch", function (data, callback) {
+
+	      if (_config == {}) {
+	        initError();
+	        return;
+	      }
+
+	      if (_config.auth_hash || data.user) {
+
+	        var obj = {
+	          names: JSON.stringify(data.names)
+	        };
+
+	        if (data.user)
+	          for (var p in data.user) obj[p] = data.user[p];
+	        else
+	          obj.auth_hash = _config.auth_hash;
+
+	        obj.lang = data.lang || _config.lang || 'ru';
+
+	        JSONP.get(_config.DOMAIN + _config.urls.users.custom_variables.batch_get, obj, function (res) {
+	          if (res.status == 'ok')
+	            sp.send('vars.batch.success', res);
+	          else
+	            sp.send('vars.batch.error', res);
+	          callback && callback(res);
+	        });
+
+	      } else {
+	        sp.send('vars.batch.auth.error', data);
+	      }
+
 	    });
 
 	    //LEADERBOARD SECTION
@@ -2061,8 +2132,8 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports) {
 
 	/**
-	 * @license AngularJS v1.6.1
-	 * (c) 2010-2016 Google, Inc. http://angularjs.org
+	 * @license AngularJS v1.6.3
+	 * (c) 2010-2017 Google, Inc. http://angularjs.org
 	 * License: MIT
 	 */
 	(function(window) {'use strict';
@@ -2100,31 +2171,29 @@ return /******/ (function(modules) { // webpackBootstrap
 	function minErr(module, ErrorConstructor) {
 	  ErrorConstructor = ErrorConstructor || Error;
 	  return function() {
-	    var SKIP_INDEXES = 2;
-
-	    var templateArgs = arguments,
-	      code = templateArgs[0],
+	    var code = arguments[0],
+	      template = arguments[1],
 	      message = '[' + (module ? module + ':' : '') + code + '] ',
-	      template = templateArgs[1],
+	      templateArgs = sliceArgs(arguments, 2).map(function(arg) {
+	        return toDebugString(arg, minErrConfig.objectMaxDepth);
+	      }),
 	      paramPrefix, i;
 
 	    message += template.replace(/\{\d+\}/g, function(match) {
-	      var index = +match.slice(1, -1),
-	        shiftedIndex = index + SKIP_INDEXES;
+	      var index = +match.slice(1, -1);
 
-	      if (shiftedIndex < templateArgs.length) {
-	        return toDebugString(templateArgs[shiftedIndex]);
+	      if (index < templateArgs.length) {
+	        return templateArgs[index];
 	      }
 
 	      return match;
 	    });
 
-	    message += '\nhttp://errors.angularjs.org/1.6.1/' +
+	    message += '\nhttp://errors.angularjs.org/1.6.3/' +
 	      (module ? module + '/' : '') + code;
 
-	    for (i = SKIP_INDEXES, paramPrefix = '?'; i < templateArgs.length; i++, paramPrefix = '&') {
-	      message += paramPrefix + 'p' + (i - SKIP_INDEXES) + '=' +
-	        encodeURIComponent(toDebugString(templateArgs[i]));
+	    for (i = 0, paramPrefix = '?'; i < templateArgs.length; i++, paramPrefix = '&') {
+	      message += paramPrefix + 'p' + i + '=' + encodeURIComponent(templateArgs[i]);
 	    }
 
 	    return new ErrorConstructor(message);
@@ -2141,6 +2210,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  splice,
 	  push,
 	  toString,
+	  minErrConfig,
+	  errorHandlingConfig,
+	  isValidObjectMaxDepth,
 	  ngMinErr,
 	  angularModule,
 	  uid,
@@ -2255,6 +2327,50 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	var hasOwnProperty = Object.prototype.hasOwnProperty;
+
+	var minErrConfig = {
+	  objectMaxDepth: 5
+	};
+
+	 /**
+	 * @ngdoc function
+	 * @name angular.errorHandlingConfig
+	 * @module ng
+	 * @kind function
+	 *
+	 * @description
+	 * Configure several aspects of error handling in AngularJS if used as a setter or return the
+	 * current configuration if used as a getter. The following options are supported:
+	 *
+	 * - **objectMaxDepth**: The maximum depth to which objects are traversed when stringified for error messages.
+	 *
+	 * Omitted or undefined options will leave the corresponding configuration values unchanged.
+	 *
+	 * @param {Object=} config - The configuration object. May only contain the options that need to be
+	 *     updated. Supported keys:
+	 *
+	 * * `objectMaxDepth`  **{Number}** - The max depth for stringifying objects. Setting to a
+	 *   non-positive or non-numeric value, removes the max depth limit.
+	 *   Default: 5
+	 */
+	function errorHandlingConfig(config) {
+	  if (isObject(config)) {
+	    if (isDefined(config.objectMaxDepth)) {
+	      minErrConfig.objectMaxDepth = isValidObjectMaxDepth(config.objectMaxDepth) ? config.objectMaxDepth : NaN;
+	    }
+	  } else {
+	    return minErrConfig;
+	  }
+	}
+
+	/**
+	 * @private
+	 * @param {Number} maxDepth
+	 * @return {boolean}
+	 */
+	function isValidObjectMaxDepth(maxDepth) {
+	  return isNumber(maxDepth) && maxDepth > 0;
+	}
 
 	/**
 	 * @ngdoc function
@@ -2978,9 +3094,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    </file>
 	  </example>
 	 */
-	function copy(source, destination) {
+	function copy(source, destination, maxDepth) {
 	  var stackSource = [];
 	  var stackDest = [];
+	  maxDepth = isValidObjectMaxDepth(maxDepth) ? maxDepth : NaN;
 
 	  if (destination) {
 	    if (isTypedArray(destination) || isArrayBuffer(destination)) {
@@ -3003,35 +3120,39 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    stackSource.push(source);
 	    stackDest.push(destination);
-	    return copyRecurse(source, destination);
+	    return copyRecurse(source, destination, maxDepth);
 	  }
 
-	  return copyElement(source);
+	  return copyElement(source, maxDepth);
 
-	  function copyRecurse(source, destination) {
+	  function copyRecurse(source, destination, maxDepth) {
+	    maxDepth--;
+	    if (maxDepth < 0) {
+	      return '...';
+	    }
 	    var h = destination.$$hashKey;
 	    var key;
 	    if (isArray(source)) {
 	      for (var i = 0, ii = source.length; i < ii; i++) {
-	        destination.push(copyElement(source[i]));
+	        destination.push(copyElement(source[i], maxDepth));
 	      }
 	    } else if (isBlankObject(source)) {
 	      // createMap() fast path --- Safe to avoid hasOwnProperty check because prototype chain is empty
 	      for (key in source) {
-	        destination[key] = copyElement(source[key]);
+	        destination[key] = copyElement(source[key], maxDepth);
 	      }
 	    } else if (source && typeof source.hasOwnProperty === 'function') {
 	      // Slow path, which must rely on hasOwnProperty
 	      for (key in source) {
 	        if (source.hasOwnProperty(key)) {
-	          destination[key] = copyElement(source[key]);
+	          destination[key] = copyElement(source[key], maxDepth);
 	        }
 	      }
 	    } else {
 	      // Slowest path --- hasOwnProperty can't be called as a method
 	      for (key in source) {
 	        if (hasOwnProperty.call(source, key)) {
-	          destination[key] = copyElement(source[key]);
+	          destination[key] = copyElement(source[key], maxDepth);
 	        }
 	      }
 	    }
@@ -3039,7 +3160,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return destination;
 	  }
 
-	  function copyElement(source) {
+	  function copyElement(source, maxDepth) {
 	    // Simple values
 	    if (!isObject(source)) {
 	      return source;
@@ -3068,7 +3189,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    stackDest.push(destination);
 
 	    return needsRecurse
-	      ? copyRecurse(source, destination)
+	      ? copyRecurse(source, destination, maxDepth)
 	      : destination;
 	  }
 
@@ -3610,30 +3731,51 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 	function allowAutoBootstrap(document) {
-	  if (!document.currentScript) {
+	  var script = document.currentScript;
+
+	  if (!script) {
+	    // IE does not have `document.currentScript`
 	    return true;
 	  }
-	  var src = document.currentScript.getAttribute('src');
-	  var link = document.createElement('a');
-	  link.href = src;
-	  if (document.location.origin === link.origin) {
-	    // Same-origin resources are always allowed, even for non-whitelisted schemes.
-	    return true;
+
+	  // If the `currentScript` property has been clobbered just return false, since this indicates a probable attack
+	  if (!(script instanceof window.HTMLScriptElement || script instanceof window.SVGScriptElement)) {
+	    return false;
 	  }
-	  // Disabled bootstrapping unless angular.js was loaded from a known scheme used on the web.
-	  // This is to prevent angular.js bundled with browser extensions from being used to bypass the
-	  // content security policy in web pages and other browser extensions.
-	  switch (link.protocol) {
-	    case 'http:':
-	    case 'https:':
-	    case 'ftp:':
-	    case 'blob:':
-	    case 'file:':
-	    case 'data:':
+
+	  var attributes = script.attributes;
+	  var srcs = [attributes.getNamedItem('src'), attributes.getNamedItem('href'), attributes.getNamedItem('xlink:href')];
+
+	  return srcs.every(function(src) {
+	    if (!src) {
 	      return true;
-	    default:
+	    }
+	    if (!src.value) {
 	      return false;
-	  }
+	    }
+
+	    var link = document.createElement('a');
+	    link.href = src.value;
+
+	    if (document.location.origin === link.origin) {
+	      // Same-origin resources are always allowed, even for non-whitelisted schemes.
+	      return true;
+	    }
+	    // Disabled bootstrapping unless angular.js was loaded from a known scheme used on the web.
+	    // This is to prevent angular.js bundled with browser extensions from being used to bypass the
+	    // content security policy in web pages and other browser extensions.
+	    switch (link.protocol) {
+	      case 'http:':
+	      case 'https:':
+	      case 'ftp:':
+	      case 'blob:':
+	      case 'file:':
+	      case 'data:':
+	        return true;
+	      default:
+	        return false;
+	    }
+	  });
 	}
 
 	// Cached as it has to run during loading so that document.currentScript is available.
@@ -3997,7 +4139,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    extend(jQuery.fn, {
 	      scope: JQLitePrototype.scope,
 	      isolateScope: JQLitePrototype.isolateScope,
-	      controller: JQLitePrototype.controller,
+	      controller: /** @type {?} */ (JQLitePrototype).controller,
 	      injector: JQLitePrototype.injector,
 	      inheritedData: JQLitePrototype.inheritedData
 	    });
@@ -4230,6 +4372,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * @returns {angular.Module} new module with the {@link angular.Module} api.
 	     */
 	    return function module(name, requires, configFn) {
+
+	      var info = {};
+
 	      var assertNotHasOwnProperty = function(name, context) {
 	        if (name === 'hasOwnProperty') {
 	          throw ngMinErr('badname', 'hasOwnProperty is not a valid {0} name', context);
@@ -4264,6 +4409,45 @@ return /******/ (function(modules) { // webpackBootstrap
 	          _invokeQueue: invokeQueue,
 	          _configBlocks: configBlocks,
 	          _runBlocks: runBlocks,
+
+	          /**
+	           * @ngdoc method
+	           * @name angular.Module#info
+	           * @module ng
+	           *
+	           * @param {Object=} info Information about the module
+	           * @returns {Object|Module} The current info object for this module if called as a getter,
+	           *                          or `this` if called as a setter.
+	           *
+	           * @description
+	           * Read and write custom information about this module.
+	           * For example you could put the version of the module in here.
+	           *
+	           * ```js
+	           * angular.module('myModule', []).info({ version: '1.0.0' });
+	           * ```
+	           *
+	           * The version could then be read back out by accessing the module elsewhere:
+	           *
+	           * ```
+	           * var version = angular.module('myModule').info().version;
+	           * ```
+	           *
+	           * You can also retrieve this information during runtime via the
+	           * {@link $injector#modules `$injector.modules`} property:
+	           *
+	           * ```js
+	           * var version = $injector.modules['myModule'].info().version;
+	           * ```
+	           */
+	          info: function(value) {
+	            if (isDefined(value)) {
+	              if (!isObject(value)) throw ngMinErr('aobj', 'Argument \'{0}\' must be an object', 'value');
+	              info = value;
+	              return this;
+	            }
+	            return info;
+	          },
 
 	          /**
 	           * @ngdoc property
@@ -4543,9 +4727,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/* global toDebugString: true */
 
-	function serializeObject(obj) {
+	function serializeObject(obj, maxDepth) {
 	  var seen = [];
 
+	  // There is no direct way to stringify object until reaching a specific depth
+	  // and a very deep object can cause a performance issue, so we copy the object
+	  // based on this specific depth and then stringify it.
+	  if (isValidObjectMaxDepth(maxDepth)) {
+	    obj = copy(obj, null, maxDepth);
+	  }
 	  return JSON.stringify(obj, function(key, val) {
 	    val = toJsonReplacer(key, val);
 	    if (isObject(val)) {
@@ -4558,13 +4748,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	  });
 	}
 
-	function toDebugString(obj) {
+	function toDebugString(obj, maxDepth) {
 	  if (typeof obj === 'function') {
 	    return obj.toString().replace(/ \{[\s\S]*$/, '');
 	  } else if (isUndefined(obj)) {
 	    return 'undefined';
 	  } else if (typeof obj !== 'string') {
-	    return serializeObject(obj);
+	    return serializeObject(obj, maxDepth);
 	  }
 	  return obj;
 	}
@@ -4639,7 +4829,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	  $$ForceReflowProvider,
 	  $InterpolateProvider,
 	  $IntervalProvider,
-	  $$HashMapProvider,
 	  $HttpProvider,
 	  $HttpParamSerializerProvider,
 	  $HttpParamSerializerJQLikeProvider,
@@ -4648,6 +4837,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  $jsonpCallbacksProvider,
 	  $LocationProvider,
 	  $LogProvider,
+	  $$MapProvider,
 	  $ParseProvider,
 	  $RootScopeProvider,
 	  $QProvider,
@@ -4685,16 +4875,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	var version = {
 	  // These placeholder strings will be replaced by grunt's `build` task.
 	  // They need to be double- or single-quoted.
-	  full: '1.6.1',
+	  full: '1.6.3',
 	  major: 1,
 	  minor: 6,
-	  dot: 1,
-	  codeName: 'promise-rectification'
+	  dot: 3,
+	  codeName: 'scriptalicious-bootstrapping'
 	};
 
 
 	function publishExternalAPI(angular) {
 	  extend(angular, {
+	    'errorHandlingConfig': errorHandlingConfig,
 	    'bootstrap': bootstrap,
 	    'copy': copy,
 	    'extend': extend,
@@ -4829,11 +5020,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	        $window: $WindowProvider,
 	        $$rAF: $$RAFProvider,
 	        $$jqLite: $$jqLiteProvider,
-	        $$HashMap: $$HashMapProvider,
+	        $$Map: $$MapProvider,
 	        $$cookieReader: $$CookieReaderProvider
 	      });
 	    }
-	  ]);
+	  ])
+	  .info({ angularVersion: '1.6.3' });
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -5977,50 +6169,70 @@ return /******/ (function(modules) { // webpackBootstrap
 	  return key;
 	}
 
-	/**
-	 * HashMap which can use objects as keys
-	 */
-	function HashMap(array, isolatedUid) {
-	  if (isolatedUid) {
-	    var uid = 0;
-	    this.nextUid = function() {
-	      return ++uid;
-	    };
-	  }
-	  forEach(array, this.put, this);
+	// A minimal ES2015 Map implementation.
+	// Should be bug/feature equivalent to the native implementations of supported browsers
+	// (for the features required in Angular).
+	// See https://kangax.github.io/compat-table/es6/#test-Map
+	var nanKey = Object.create(null);
+	function NgMapShim() {
+	  this._keys = [];
+	  this._values = [];
+	  this._lastKey = NaN;
+	  this._lastIndex = -1;
 	}
-	HashMap.prototype = {
-	  /**
-	   * Store key value pair
-	   * @param key key to store can be any type
-	   * @param value value to store can be any type
-	   */
-	  put: function(key, value) {
-	    this[hashKey(key, this.nextUid)] = value;
+	NgMapShim.prototype = {
+	  _idx: function(key) {
+	    if (key === this._lastKey) {
+	      return this._lastIndex;
+	    }
+	    this._lastKey = key;
+	    this._lastIndex = this._keys.indexOf(key);
+	    return this._lastIndex;
 	  },
-
-	  /**
-	   * @param key
-	   * @returns {Object} the value for the key
-	   */
+	  _transformKey: function(key) {
+	    return isNumberNaN(key) ? nanKey : key;
+	  },
 	  get: function(key) {
-	    return this[hashKey(key, this.nextUid)];
+	    key = this._transformKey(key);
+	    var idx = this._idx(key);
+	    if (idx !== -1) {
+	      return this._values[idx];
+	    }
 	  },
+	  set: function(key, value) {
+	    key = this._transformKey(key);
+	    var idx = this._idx(key);
+	    if (idx === -1) {
+	      idx = this._lastIndex = this._keys.length;
+	    }
+	    this._keys[idx] = key;
+	    this._values[idx] = value;
 
-	  /**
-	   * Remove the key/value pair
-	   * @param key
-	   */
-	  remove: function(key) {
-	    var value = this[key = hashKey(key, this.nextUid)];
-	    delete this[key];
-	    return value;
+	    // Support: IE11
+	    // Do not `return this` to simulate the partial IE11 implementation
+	  },
+	  delete: function(key) {
+	    key = this._transformKey(key);
+	    var idx = this._idx(key);
+	    if (idx === -1) {
+	      return false;
+	    }
+	    this._keys.splice(idx, 1);
+	    this._values.splice(idx, 1);
+	    this._lastKey = NaN;
+	    this._lastIndex = -1;
+	    return true;
 	  }
 	};
 
-	var $$HashMapProvider = [/** @this */function() {
+	// For now, always use `NgMapShim`, even if `window.Map` is available. Some native implementations
+	// are still buggy (often in subtle ways) and can cause hard-to-debug failures. When native `Map`
+	// implementations get more stable, we can reconsider switching to `window.Map` (when available).
+	var NgMap = NgMapShim;
+
+	var $$MapProvider = [/** @this */function() {
 	  this.$get = [function() {
-	    return HashMap;
+	    return NgMap;
 	  }];
 	}];
 
@@ -6095,11 +6307,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var $injectorMinErr = minErr('$injector');
 
 	function stringifyFn(fn) {
-	  // Support: Chrome 50-51 only
-	  // Creating a new string by adding `' '` at the end, to hack around some bug in Chrome v50/51
-	  // (See https://github.com/angular/angular.js/issues/14487.)
-	  // TODO (gkalpak): Remove workaround when Chrome v52 is released
-	  return Function.prototype.toString.call(fn) + ' ';
+	  return Function.prototype.toString.call(fn);
 	}
 
 	function extractArgs(fn) {
@@ -6207,6 +6415,28 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * ## Inline
 	 * As an array of injection names, where the last item in the array is the function to call.
 	 */
+
+	/**
+	 * @ngdoc property
+	 * @name $injector#modules
+	 * @type {Object}
+	 * @description
+	 * A hash containing all the modules that have been loaded into the
+	 * $injector.
+	 *
+	 * You can use this property to find out information about a module via the
+	 * {@link angular.Module#info `myModule.info(...)`} method.
+	 *
+	 * For example:
+	 *
+	 * ```
+	 * var info = $injector.modules['ngAnimate'].info();
+	 * ```
+	 *
+	 * **Do not use this property to attempt to modify the modules after the application
+	 * has been bootstrapped.**
+	 */
+
 
 	/**
 	 * @ngdoc method
@@ -6673,7 +6903,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  var INSTANTIATING = {},
 	      providerSuffix = 'Provider',
 	      path = [],
-	      loadedModules = new HashMap([], true),
+	      loadedModules = new NgMap(),
 	      providerCache = {
 	        $provide: {
 	            provider: supportObject(provider),
@@ -6701,6 +6931,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      instanceInjector = protoInstanceInjector;
 
 	  providerCache['$injector' + providerSuffix] = { $get: valueFn(protoInstanceInjector) };
+	  instanceInjector.modules = providerInjector.modules = createMap();
 	  var runBlocks = loadModules(modulesToLoad);
 	  instanceInjector = protoInstanceInjector.get('$injector');
 	  instanceInjector.strictDi = strictDi;
@@ -6781,7 +7012,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var runBlocks = [], moduleFn;
 	    forEach(modulesToLoad, function(module) {
 	      if (loadedModules.get(module)) return;
-	      loadedModules.put(module, true);
+	      loadedModules.set(module, true);
 
 	      function runInvokeQueue(queue) {
 	        var i, ii;
@@ -6796,6 +7027,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      try {
 	        if (isString(module)) {
 	          moduleFn = angularModule(module);
+	          instanceInjector.modules[module] = moduleFn;
 	          runBlocks = runBlocks.concat(loadModules(moduleFn.requires)).concat(moduleFn._runBlocks);
 	          runInvokeQueue(moduleFn._invokeQueue);
 	          runInvokeQueue(moduleFn._configBlocks);
@@ -7267,7 +7499,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	// this is prefixed with Core since it conflicts with
 	// the animateQueueProvider defined in ngAnimate/animateQueue.js
 	var $$CoreAnimateQueueProvider = /** @this */ function() {
-	  var postDigestQueue = new HashMap();
+	  var postDigestQueue = new NgMap();
 	  var postDigestElements = [];
 
 	  this.$get = ['$$AnimateRunner', '$rootScope',
@@ -7346,7 +7578,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	              jqLiteRemoveClass(elm, toRemove);
 	            }
 	          });
-	          postDigestQueue.remove(element);
+	          postDigestQueue.delete(element);
 	        }
 	      });
 	      postDigestElements.length = 0;
@@ -7361,7 +7593,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	      if (classesAdded || classesRemoved) {
 
-	        postDigestQueue.put(element, data);
+	        postDigestQueue.set(element, data);
 	        postDigestElements.push(element);
 
 	        if (postDigestElements.length === 1) {
@@ -7386,6 +7618,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 */
 	var $AnimateProvider = ['$provide', /** @this */ function($provide) {
 	  var provider = this;
+	  var classNameFilter = null;
 
 	  this.$$registeredAnimations = Object.create(null);
 
@@ -7454,15 +7687,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	   */
 	  this.classNameFilter = function(expression) {
 	    if (arguments.length === 1) {
-	      this.$$classNameFilter = (expression instanceof RegExp) ? expression : null;
-	      if (this.$$classNameFilter) {
-	        var reservedRegex = new RegExp('(\\s+|\\/)' + NG_ANIMATE_CLASSNAME + '(\\s+|\\/)');
-	        if (reservedRegex.test(this.$$classNameFilter.toString())) {
-	          throw $animateMinErr('nongcls','$animateProvider.classNameFilter(regex) prohibits accepting a regex value which matches/contains the "{0}" CSS class.', NG_ANIMATE_CLASSNAME);
+	      classNameFilter = (expression instanceof RegExp) ? expression : null;
+	      if (classNameFilter) {
+	        var reservedRegex = new RegExp('[(\\s|\\/)]' + NG_ANIMATE_CLASSNAME + '[(\\s|\\/)]');
+	        if (reservedRegex.test(classNameFilter.toString())) {
+	          classNameFilter = null;
+	          throw $animateMinErr('nongcls', '$animateProvider.classNameFilter(regex) prohibits accepting a regex value which matches/contains the "{0}" CSS class.', NG_ANIMATE_CLASSNAME);
 	        }
 	      }
 	    }
-	    return this.$$classNameFilter;
+	    return classNameFilter;
 	  };
 
 	  this.$get = ['$$animateQueue', function($$animateQueue) {
@@ -8221,7 +8455,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	      };
 
 	  cacheState();
-	  lastHistoryState = cachedState;
 
 	  /**
 	   * @name $browser#url
@@ -8275,8 +8508,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	      if ($sniffer.history && (!sameBase || !sameState)) {
 	        history[replace ? 'replaceState' : 'pushState'](state, '', url);
 	        cacheState();
-	        // Do the assignment again so that those two variables are referentially identical.
-	        lastHistoryState = cachedState;
 	      } else {
 	        if (!sameBase) {
 	          pendingLocation = url;
@@ -8325,8 +8556,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  function cacheStateAndFireUrlChange() {
 	    pendingLocation = null;
-	    cacheState();
-	    fireUrlChange();
+	    fireStateOrUrlChange();
 	  }
 
 	  // This variable should be used *only* inside the cacheState function.
@@ -8340,11 +8570,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (equals(cachedState, lastCachedState)) {
 	      cachedState = lastCachedState;
 	    }
+
 	    lastCachedState = cachedState;
+	    lastHistoryState = cachedState;
 	  }
 
-	  function fireUrlChange() {
-	    if (lastBrowserUrl === self.url() && lastHistoryState === cachedState) {
+	  function fireStateOrUrlChange() {
+	    var prevLastHistoryState = lastHistoryState;
+	    cacheState();
+
+	    if (lastBrowserUrl === self.url() && prevLastHistoryState === cachedState) {
 	      return;
 	    }
 
@@ -8379,8 +8614,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  self.onUrlChange = function(callback) {
 	    // TODO(vojta): refactor to use node's syntax for events
 	    if (!urlChangeInit) {
-	      // We listen on both (hashchange/popstate) when available, as some browsers (e.g. Opera)
-	      // don't fire popstate when user change the address bar and don't fire hashchange when url
+	      // We listen on both (hashchange/popstate) when available, as some browsers don't
+	      // fire popstate when user changes the address bar and don't fire hashchange when url
 	      // changed by push/replaceState
 
 	      // html5 history api - popstate event
@@ -8410,7 +8645,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * Needs to be exported to be able to check for changes that have been done in sync,
 	   * as hashchange/popstate events fire in async.
 	   */
-	  self.$$checkUrlChange = fireUrlChange;
+	  self.$$checkUrlChange = fireStateOrUrlChange;
 
 	  //////////////////////////////////////////////////////////////
 	  // Misc API
@@ -9020,7 +9255,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * * `$onChanges(changesObj)` - Called whenever one-way (`<`) or interpolation (`@`) bindings are updated. The
 	 *   `changesObj` is a hash whose keys are the names of the bound properties that have changed, and the values are an
 	 *   object of the form `{ currentValue, previousValue, isFirstChange() }`. Use this hook to trigger updates within a
-	 *   component such as cloning the bound value to prevent accidental mutation of the outer value.
+	 *   component such as cloning the bound value to prevent accidental mutation of the outer value. Note that this will
+	 *   also be called when your bindings are initialized.
 	 * * `$doCheck()` - Called on each turn of the digest cycle. Provides an opportunity to detect and act on
 	 *   changes. Any actions that you wish to take in response to the changes that you detect must be
 	 *   invoked from this hook; implementing this has no effect on when `$onChanges` is called. For example, this hook
@@ -9168,10 +9404,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * the directive's element. If multiple directives on the same element request a new scope,
 	 * only one new scope is created.
 	 *
-	 * * **`{...}` (an object hash):** A new "isolate" scope is created for the directive's element. The
-	 * 'isolate' scope differs from normal scope in that it does not prototypically inherit from its parent
-	 * scope. This is useful when creating reusable components, which should not accidentally read or modify
-	 * data in the parent scope.
+	 * * **`{...}` (an object hash):** A new "isolate" scope is created for the directive's template.
+	 * The 'isolate' scope differs from normal scope in that it does not prototypically
+	 * inherit from its parent scope. This is useful when creating reusable components, which should not
+	 * accidentally read or modify data in the parent scope. Note that an isolate scope
+	 * directive without a `template` or `templateUrl` will not apply the isolate scope
+	 * to its children elements.
 	 *
 	 * The 'isolate' scope object hash defines a set of local scope properties derived from attributes on the
 	 * directive's element. These local properties are useful for aliasing values for templates. The keys in
@@ -9875,7 +10113,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  var bindingCache = createMap();
 
 	  function parseIsolateBindings(scope, directiveName, isController) {
-	    var LOCAL_REGEXP = /^\s*([@&<]|=(\*?))(\??)\s*(\w*)\s*$/;
+	    var LOCAL_REGEXP = /^\s*([@&<]|=(\*?))(\??)\s*([\w$]*)\s*$/;
 
 	    var bindings = createMap();
 
@@ -12047,7 +12285,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          if (error instanceof Error) {
 	            $exceptionHandler(error);
 	          }
-	        }).catch(noop);
+	        });
 
 	      return function delayedNodeLinkFn(ignoreChildLinkFn, scope, node, rootElement, boundTranscludeFn) {
 	        var childBoundTranscludeFn = boundTranscludeFn;
@@ -14179,7 +14417,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	      if ((config.cache || defaults.cache) && config.cache !== false &&
 	          (config.method === 'GET' || config.method === 'JSONP')) {
 	        cache = isObject(config.cache) ? config.cache
-	              : isObject(defaults.cache) ? defaults.cache
+	            : isObject(/** @type {?} */ (defaults).cache)
+	              ? /** @type {?} */ (defaults).cache
 	              : defaultCache;
 	      }
 
@@ -15138,8 +15377,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * how they vary compared to the requested url.
 	 */
 	var $jsonpCallbacksProvider = /** @this */ function() {
-	  this.$get = ['$window', function($window) {
-	    var callbacks = $window.angular.callbacks;
+	  this.$get = function() {
+	    var callbacks = angular.callbacks;
 	    var callbackMap = {};
 
 	    function createCallback(callbackId) {
@@ -15206,7 +15445,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        delete callbackMap[callbackPath];
 	      }
 	    };
-	  }];
+	  };
 	};
 
 	/**
@@ -15357,6 +15596,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    this.$$url = encodePath(this.$$path) + (search ? '?' + search : '') + hash;
 	    this.$$absUrl = appBaseNoFile + this.$$url.substr(1); // first char is always '/'
+
+	    this.$$urlUpdatedByLocation = true;
 	  };
 
 	  this.$$parseLinkUrl = function(url, relHref) {
@@ -15434,7 +15675,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        withoutHashUrl = '';
 	        if (isUndefined(withoutBaseUrl)) {
 	          appBase = url;
-	          this.replace();
+	          /** @type {?} */ (this).replace();
 	        }
 	      }
 	    }
@@ -15490,6 +15731,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    this.$$url = encodePath(this.$$path) + (search ? '?' + search : '') + hash;
 	    this.$$absUrl = appBase + (this.$$url ? hashPrefix + this.$$url : '');
+
+	    this.$$urlUpdatedByLocation = true;
 	  };
 
 	  this.$$parseLinkUrl = function(url, relHref) {
@@ -15547,6 +15790,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this.$$url = encodePath(this.$$path) + (search ? '?' + search : '') + hash;
 	    // include hashPrefix in $$absUrl when $$url is empty so IE9 does not reload page because of removal of '#'
 	    this.$$absUrl = appBase + hashPrefix + this.$$url;
+
+	    this.$$urlUpdatedByLocation = true;
 	  };
 
 	}
@@ -15876,6 +16121,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    // but we're changing the $$state reference to $browser.state() during the $digest
 	    // so the modification window is narrow.
 	    this.$$state = isUndefined(state) ? null : state;
+	    this.$$urlUpdatedByLocation = true;
 
 	    return this;
 	  };
@@ -16188,36 +16434,40 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    // update browser
 	    $rootScope.$watch(function $locationWatch() {
-	      var oldUrl = trimEmptyHash($browser.url());
-	      var newUrl = trimEmptyHash($location.absUrl());
-	      var oldState = $browser.state();
-	      var currentReplace = $location.$$replace;
-	      var urlOrStateChanged = oldUrl !== newUrl ||
-	        ($location.$$html5 && $sniffer.history && oldState !== $location.$$state);
+	      if (initializing || $location.$$urlUpdatedByLocation) {
+	        $location.$$urlUpdatedByLocation = false;
 
-	      if (initializing || urlOrStateChanged) {
-	        initializing = false;
+	        var oldUrl = trimEmptyHash($browser.url());
+	        var newUrl = trimEmptyHash($location.absUrl());
+	        var oldState = $browser.state();
+	        var currentReplace = $location.$$replace;
+	        var urlOrStateChanged = oldUrl !== newUrl ||
+	          ($location.$$html5 && $sniffer.history && oldState !== $location.$$state);
 
-	        $rootScope.$evalAsync(function() {
-	          var newUrl = $location.absUrl();
-	          var defaultPrevented = $rootScope.$broadcast('$locationChangeStart', newUrl, oldUrl,
-	              $location.$$state, oldState).defaultPrevented;
+	        if (initializing || urlOrStateChanged) {
+	          initializing = false;
 
-	          // if the location was changed by a `$locationChangeStart` handler then stop
-	          // processing this location change
-	          if ($location.absUrl() !== newUrl) return;
+	          $rootScope.$evalAsync(function() {
+	            var newUrl = $location.absUrl();
+	            var defaultPrevented = $rootScope.$broadcast('$locationChangeStart', newUrl, oldUrl,
+	                $location.$$state, oldState).defaultPrevented;
 
-	          if (defaultPrevented) {
-	            $location.$$parse(oldUrl);
-	            $location.$$state = oldState;
-	          } else {
-	            if (urlOrStateChanged) {
-	              setBrowserUrlWithFallback(newUrl, currentReplace,
-	                                        oldState === $location.$$state ? null : $location.$$state);
+	            // if the location was changed by a `$locationChangeStart` handler then stop
+	            // processing this location change
+	            if ($location.absUrl() !== newUrl) return;
+
+	            if (defaultPrevented) {
+	              $location.$$parse(oldUrl);
+	              $location.$$state = oldState;
+	            } else {
+	              if (urlOrStateChanged) {
+	                setBrowserUrlWithFallback(newUrl, currentReplace,
+	                                          oldState === $location.$$state ? null : $location.$$state);
+	              }
+	              afterLocationChange(oldUrl, oldState);
 	            }
-	            afterLocationChange(oldUrl, oldState);
-	          }
-	        });
+	          });
+	        }
 	      }
 
 	      $location.$$replace = false;
@@ -16295,13 +16545,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	  this.debugEnabled = function(flag) {
 	    if (isDefined(flag)) {
 	      debug = flag;
-	    return this;
+	      return this;
 	    } else {
 	      return debug;
 	    }
 	  };
 
 	  this.$get = ['$window', function($window) {
+	    // Support: IE 9-11, Edge 12-14+
+	    // IE/Edge display errors in such a way that it requires the user to click in 4 places
+	    // to see the stack trace. There is no way to feature-detect it so there's a chance
+	    // of the user agent sniffing to go wrong but since it's only about logging, this shouldn't
+	    // break apps. Other browsers display errors in a sensible way and some of them map stack
+	    // traces along source maps if available so it makes sense to let browsers display it
+	    // as they want.
+	    var formatStackTrace = msie || /\bEdge\//.test($window.navigator && $window.navigator.userAgent);
+
 	    return {
 	      /**
 	       * @ngdoc method
@@ -16359,7 +16618,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    function formatError(arg) {
 	      if (arg instanceof Error) {
-	        if (arg.stack) {
+	        if (arg.stack && formatStackTrace) {
 	          arg = (arg.message && arg.stack.indexOf(arg.message) === -1)
 	              ? 'Error: ' + arg.message + '\n' + arg.stack
 	              : arg.stack;
@@ -17117,6 +17376,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	      if (!property.value.constant) {
 	        argsToWatch.push.apply(argsToWatch, property.value.toWatch);
 	      }
+	      if (property.computed) {
+	        findConstantAndWatchExpressions(property.key, $filter);
+	        if (!property.key.constant) {
+	          argsToWatch.push.apply(argsToWatch, property.key.toWatch);
+	        }
+	      }
+
 	    });
 	    ast.constant = allConstants;
 	    ast.toWatch = argsToWatch;
@@ -18182,13 +18448,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 	    }
 
-	    function expressionInputDirtyCheck(newValue, oldValueOfValue) {
+	    function expressionInputDirtyCheck(newValue, oldValueOfValue, compareObjectIdentity) {
 
 	      if (newValue == null || oldValueOfValue == null) { // null/undefined
 	        return newValue === oldValueOfValue;
 	      }
 
-	      if (typeof newValue === 'object') {
+	      if (typeof newValue === 'object' && !compareObjectIdentity) {
 
 	        // attempt to convert the value to a primitive type
 	        // TODO(docs): add a note to docs that by implementing valueOf even objects and arrays can
@@ -18217,7 +18483,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        inputExpressions = inputExpressions[0];
 	        return scope.$watch(function expressionInputWatch(scope) {
 	          var newInputValue = inputExpressions(scope);
-	          if (!expressionInputDirtyCheck(newInputValue, oldInputValueOf)) {
+	          if (!expressionInputDirtyCheck(newInputValue, oldInputValueOf, parsedExpression.literal)) {
 	            lastResult = parsedExpression(scope, undefined, undefined, [newInputValue]);
 	            oldInputValueOf = newInputValue && getValueOf(newInputValue);
 	          }
@@ -18237,7 +18503,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	        for (var i = 0, ii = inputExpressions.length; i < ii; i++) {
 	          var newInputValue = inputExpressions[i](scope);
-	          if (changed || (changed = !expressionInputDirtyCheck(newInputValue, oldInputValueOfValues[i]))) {
+	          if (changed || (changed = !expressionInputDirtyCheck(newInputValue, oldInputValueOfValues[i], parsedExpression.literal))) {
 	            oldInputValues[i] = newInputValue;
 	            oldInputValueOfValues[i] = newInputValue && getValueOf(newInputValue);
 	          }
@@ -19840,12 +20106,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	          current = target;
 
 	          // It's safe for asyncQueuePosition to be a local variable here because this loop can't
-	          // be reentered recursively. Calling $digest from a function passed to $applyAsync would
+	          // be reentered recursively. Calling $digest from a function passed to $evalAsync would
 	          // lead to a '$digest already in progress' error.
 	          for (var asyncQueuePosition = 0; asyncQueuePosition < asyncQueue.length; asyncQueuePosition++) {
 	            try {
 	              asyncTask = asyncQueue[asyncQueuePosition];
-	              asyncTask.scope.$eval(asyncTask.expression, asyncTask.locals);
+	              fn = asyncTask.fn;
+	              fn(asyncTask.scope, asyncTask.locals);
 	            } catch (e) {
 	              $exceptionHandler(e);
 	            }
@@ -19930,6 +20197,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	          }
 	        }
 	        postDigestQueue.length = postDigestQueuePosition = 0;
+
+	        // Check for changes to browser url that happened during the $digest
+	        // (for which no event is fired; e.g. via `history.pushState()`)
+	        $browser.$$checkUrlChange();
 	      },
 
 
@@ -20075,7 +20346,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          });
 	        }
 
-	        asyncQueue.push({scope: this, expression: $parse(expr), locals: locals});
+	        asyncQueue.push({scope: this, fn: $parse(expr), locals: locals});
 	      },
 
 	      $$postDigest: function(fn) {
@@ -21635,7 +21906,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	        // (see https://developer.chrome.com/apps/api_index). If sandboxed, they can be detected by
 	        // the presence of an extension runtime ID and the absence of other Chrome runtime APIs
 	        // (see https://developer.chrome.com/apps/manifest/sandbox).
+	        // (NW.js apps have access to Chrome APIs, but do support `history`.)
+	        isNw = $window.nw && $window.nw.process,
 	        isChromePackagedApp =
+	            !isNw &&
 	            $window.chrome &&
 	            ($window.chrome.app && $window.chrome.app.runtime ||
 	                !$window.chrome.app && $window.chrome.runtime && $window.chrome.runtime.id),
@@ -22040,7 +22314,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * URL will be resolved into an absolute URL in the context of the application document.
 	 * Parsing means that the anchor node's host, hostname, protocol, port, pathname and related
 	 * properties are all populated to reflect the normalized URL.  This approach has wide
-	 * compatibility - Safari 1+, Mozilla 1+, Opera 7+,e etc.  See
+	 * compatibility - Safari 1+, Mozilla 1+ etc.  See
 	 * http://www.aptana.com/reference/html/api/HTMLAnchorElement.html
 	 *
 	 * Implementation Notes for IE
@@ -22406,6 +22680,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * Selects a subset of items from `array` and returns it as a new array.
 	 *
 	 * @param {Array} array The source array.
+	 * <div class="alert alert-info">
+	 *   **Note**: If the array contains objects that reference themselves, filtering is not possible.
+	 * </div>
 	 * @param {string|Object|function()} expression The predicate to be used for selecting items from
 	 *   `array`.
 	 *
@@ -22623,7 +22900,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var key;
 	      if (matchAgainstAnyProp) {
 	        for (key in actual) {
-	          if ((key.charAt(0) !== '$') && deepCompare(actual[key], expected, comparator, anyPropertyKey, true)) {
+	          // Under certain, rare, circumstances, key may not be a string and `charAt` will be undefined
+	          // See: https://github.com/angular/angular.js/issues/15644
+	          if (key.charAt && (key.charAt(0) !== '$') &&
+	              deepCompare(actual[key], expected, comparator, anyPropertyKey, true)) {
 	            return true;
 	          }
 	        }
@@ -24396,7 +24676,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	 *
 	 * @description
 	 *
-	 * This directive sets the `disabled` attribute on the element if the
+	 * This directive sets the `disabled` attribute on the element (typically a form control,
+	 * e.g. `input`, `button`, `select` etc.) if the
 	 * {@link guide/expression expression} inside `ngDisabled` evaluates to truthy.
 	 *
 	 * A special directive is necessary because we cannot use interpolation inside the `disabled`
@@ -26902,15 +27183,27 @@ return /******/ (function(modules) { // webpackBootstrap
 	  // and `viewValue` is expected to be a valid stringified number.
 	  var value = Number(viewValue);
 
+	  var isNonIntegerValue = !isNumberInteger(value);
+	  var isNonIntegerStepBase = !isNumberInteger(stepBase);
+	  var isNonIntegerStep = !isNumberInteger(step);
+
 	  // Due to limitations in Floating Point Arithmetic (e.g. `0.3 - 0.2 !== 0.1` or
 	  // `0.5 % 0.1 !== 0`), we need to convert all numbers to integers.
-	  if (!isNumberInteger(value) || !isNumberInteger(stepBase) || !isNumberInteger(step)) {
-	    var decimalCount = Math.max(countDecimals(value), countDecimals(stepBase), countDecimals(step));
+	  if (isNonIntegerValue || isNonIntegerStepBase || isNonIntegerStep) {
+	    var valueDecimals = isNonIntegerValue ? countDecimals(value) : 0;
+	    var stepBaseDecimals = isNonIntegerStepBase ? countDecimals(stepBase) : 0;
+	    var stepDecimals = isNonIntegerStep ? countDecimals(step) : 0;
+
+	    var decimalCount = Math.max(valueDecimals, stepBaseDecimals, stepDecimals);
 	    var multiplier = Math.pow(10, decimalCount);
 
 	    value = value * multiplier;
 	    stepBase = stepBase * multiplier;
 	    step = step * multiplier;
+
+	    if (isNonIntegerValue) value = Math.round(value);
+	    if (isNonIntegerStepBase) stepBase = Math.round(stepBase);
+	    if (isNonIntegerStep) step = Math.round(step);
 	  }
 
 	  return (value - stepBase) % step === 0;
@@ -27467,7 +27760,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *  makes it possible to use ngValue as a sort of one-way bind.
 	   */
 	  function updateElementValue(element, attr, value) {
-	    element.prop('value', value);
+	    // Support: IE9 only
+	    // In IE9 values are converted to string (e.g. `input.value = null` results in `input.value === 'null'`).
+	    var propValue = isDefined(value) ? value : (msie === 9) ? '' : null;
+	    element.prop('value', propValue);
 	    attr.$set('value', value);
 	  }
 
@@ -28795,15 +29091,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	      return {
 	        restrict: 'A',
 	        compile: function($element, attr) {
-	          // We expose the powerful $event object on the scope that provides access to the Window,
-	          // etc. that isn't protected by the fast paths in $parse.  We explicitly request better
-	          // checks at the cost of speed since event handler expressions are not executed as
-	          // frequently as regular change detection.
-	          var fn = $parse(attr[directiveName], /* interceptorFn */ null, /* expensiveChecks */ true);
+	          // NOTE:
+	          // We expose the powerful `$event` object on the scope that provides access to the Window,
+	          // etc. This is OK, because expressions are not sandboxed any more (and the expression
+	          // sandbox was never meant to be a security feature anyway).
+	          var fn = $parse(attr[directiveName]);
 	          return function ngEventHandler(scope, element) {
 	            element.on(eventName, function(event) {
 	              var callback = function() {
-	                fn(scope, {$event:event});
+	                fn(scope, {$event: event});
 	              };
 	              if (forceAsyncEvents[eventName] && $rootScope.$$phase) {
 	                scope.$evalAsync(callback);
@@ -29884,32 +30180,57 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @property {*} $viewValue The actual value from the control's view. For `input` elements, this is a
 	 * String. See {@link ngModel.NgModelController#$setViewValue} for information about when the $viewValue
 	 * is set.
+	 *
 	 * @property {*} $modelValue The value in the model that the control is bound to.
+	 *
 	 * @property {Array.<Function>} $parsers Array of functions to execute, as a pipeline, whenever
-	       the control reads value from the DOM. The functions are called in array order, each passing
-	       its return value through to the next. The last return value is forwarded to the
-	       {@link ngModel.NgModelController#$validators `$validators`} collection.
+	 *  the control updates the ngModelController with a new {@link ngModel.NgModelController#$viewValue
+	    `$viewValue`} from the DOM, usually via user input.
+	    See {@link ngModel.NgModelController#$setViewValue `$setViewValue()`} for a detailed lifecycle explanation.
+	    Note that the `$parsers` are not called when the bound ngModel expression changes programmatically.
 
-	Parsers are used to sanitize / convert the {@link ngModel.NgModelController#$viewValue
-	`$viewValue`}.
+	  The functions are called in array order, each passing
+	    its return value through to the next. The last return value is forwarded to the
+	    {@link ngModel.NgModelController#$validators `$validators`} collection.
 
-	Returning `undefined` from a parser means a parse error occurred. In that case,
-	no {@link ngModel.NgModelController#$validators `$validators`} will run and the `ngModel`
-	will be set to `undefined` unless {@link ngModelOptions `ngModelOptions.allowInvalid`}
-	is set to `true`. The parse error is stored in `ngModel.$error.parse`.
+	  Parsers are used to sanitize / convert the {@link ngModel.NgModelController#$viewValue
+	    `$viewValue`}.
+
+	  Returning `undefined` from a parser means a parse error occurred. In that case,
+	    no {@link ngModel.NgModelController#$validators `$validators`} will run and the `ngModel`
+	    will be set to `undefined` unless {@link ngModelOptions `ngModelOptions.allowInvalid`}
+	    is set to `true`. The parse error is stored in `ngModel.$error.parse`.
+
+	  This simple example shows a parser that would convert text input value to lowercase:
+	 * ```js
+	 * function parse(value) {
+	 *   if (value) {
+	 *     return value.toLowerCase();
+	 *   }
+	 * }
+	 * ngModelController.$parsers.push(parse);
+	 * ```
 
 	 *
 	 * @property {Array.<Function>} $formatters Array of functions to execute, as a pipeline, whenever
-	       the model value changes. The functions are called in reverse array order, each passing the value through to the
-	       next. The last return value is used as the actual DOM value.
-	       Used to format / convert values for display in the control.
+	    the bound ngModel expression changes programmatically. The `$formatters` are not called when the
+	    value of the control is changed by user interaction.
+
+	  Formatters are used to format / convert the {@link ngModel.NgModelController#$modelValue
+	    `$modelValue`} for display in the control.
+
+	  The functions are called in reverse array order, each passing the value through to the
+	    next. The last return value is used as the actual DOM value.
+
+	  This simple example shows a formatter that would convert the model value to uppercase:
+
 	 * ```js
-	 * function formatter(value) {
+	 * function format(value) {
 	 *   if (value) {
 	 *     return value.toUpperCase();
 	 *   }
 	 * }
-	 * ngModel.$formatters.push(formatter);
+	 * ngModel.$formatters.push(format);
 	 * ```
 	 *
 	 * @property {Object.<string, function>} $validators A collection of validators that are applied
@@ -30617,9 +30938,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * When `$setViewValue` is called, the new `value` will be staged for committing through the `$parsers`
 	   * and `$validators` pipelines. If there are no special {@link ngModelOptions} specified then the staged
-	   * value sent directly for processing, finally to be applied to `$modelValue` and then the
-	   * **expression** specified in the `ng-model` attribute. Lastly, all the registered change listeners,
-	   * in the `$viewChangeListeners` list, are called.
+	   * value is sent directly for processing through the `$parsers` pipeline. After this, the `$validators` and
+	   * `$asyncValidators` are called and the value is applied to `$modelValue`.
+	   * Finally, the value is set to the **expression** specified in the `ng-model` attribute and
+	   * all the registered change listeners, in the `$viewChangeListeners` list are called.
 	   *
 	   * In case the {@link ng.directive:ngModelOptions ngModelOptions} directive is used with `updateOn`
 	   * and the `default` trigger is not listed, all those actions will remain pending until one of the
@@ -30682,6 +31004,29 @@ return /******/ (function(modules) { // webpackBootstrap
 	        that.$commitViewValue();
 	      });
 	    }
+	  },
+
+	  /**
+	   * @ngdoc method
+	   *
+	   * @name ngModel.NgModelController#$overrideModelOptions
+	   *
+	   * @description
+	   *
+	   * Override the current model options settings programmatically.
+	   *
+	   * The previous `ModelOptions` value will not be modified. Instead, a
+	   * new `ModelOptions` object will inherit from the previous one overriding
+	   * or inheriting settings that are defined in the given parameter.
+	   *
+	   * See {@link ngModelOptions} for information about what options can be specified
+	   * and how model option inheritance works.
+	   *
+	   * @param {Object} options a hash of settings to override the previous options
+	   *
+	   */
+	  $overrideModelOptions: function(options) {
+	    this.$options = this.$options.createChild(options);
 	  }
 	};
 
@@ -31523,13 +31868,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * is not matched against any `<option>` and the `<select>` appears as having no selected value.
 	 *
 	 *
-	 * @param {string} ngModel Assignable angular expression to data-bind to.
-	 * @param {string=} name Property name of the form under which the control is published.
-	 * @param {string=} required The control is considered valid only if value is entered.
-	 * @param {string=} ngRequired Adds `required` attribute and `required` validation constraint to
-	 *    the element when the ngRequired expression evaluates to true. Use `ngRequired` instead of
-	 *    `required` when you want to data-bind to the `required` attribute.
-	 * @param {comprehension_expression=} ngOptions in one of the following forms:
+	 * @param {string} ngModel Assignable AngularJS expression to data-bind to.
+	 * @param {comprehension_expression} ngOptions in one of the following forms:
 	 *
 	 *   * for array data sources:
 	 *     * `label` **`for`** `value` **`in`** `array`
@@ -31568,6 +31908,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	 *      used to identify the objects in the array. The `trackexpr` will most likely refer to the
 	 *     `value` variable (e.g. `value.propertyName`). With this the selection is preserved
 	 *      even when the options are recreated (e.g. reloaded from the server).
+	 * @param {string=} name Property name of the form under which the control is published.
+	 * @param {string=} required The control is considered valid only if value is entered.
+	 * @param {string=} ngRequired Adds `required` attribute and `required` validation constraint to
+	 *    the element when the ngRequired expression evaluates to true. Use `ngRequired` instead of
+	 *    `required` when you want to data-bind to the `required` attribute.
+	 * @param {string=} ngAttrSize sets the size of the select element dynamically. Uses the
+	 * {@link guide/interpolation#-ngattr-for-binding-to-arbitrary-attributes ngAttr} directive.
 	 *
 	 * @example
 	    <example module="selectExample" name="select">
@@ -32379,6 +32726,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @ngdoc directive
 	 * @name ngRepeat
 	 * @multiElement
+	 * @restrict A
 	 *
 	 * @description
 	 * The `ngRepeat` directive instantiates a template once per item from a collection. Each template
@@ -32945,11 +33293,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @multiElement
 	 *
 	 * @description
-	 * The `ngShow` directive shows or hides the given HTML element based on the expression
-	 * provided to the `ngShow` attribute. The element is shown or hidden by removing or adding
-	 * the `.ng-hide` CSS class onto the element. The `.ng-hide` CSS class is predefined
-	 * in AngularJS and sets the display style to none (using an !important flag).
-	 * For CSP mode please add `angular-csp.css` to your html file (see {@link ng.directive:ngCsp ngCsp}).
+	 * The `ngShow` directive shows or hides the given HTML element based on the expression provided to
+	 * the `ngShow` attribute.
+	 *
+	 * The element is shown or hidden by removing or adding the `.ng-hide` CSS class onto the element.
+	 * The `.ng-hide` CSS class is predefined in AngularJS and sets the display style to none (using an
+	 * `!important` flag). For CSP mode please add `angular-csp.css` to your HTML file (see
+	 * {@link ng.directive:ngCsp ngCsp}).
 	 *
 	 * ```html
 	 * <!-- when $scope.myValue is truthy (element is visible) -->
@@ -32959,31 +33309,32 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * <div ng-show="myValue" class="ng-hide"></div>
 	 * ```
 	 *
-	 * When the `ngShow` expression evaluates to a falsy value then the `.ng-hide` CSS class is added to the class
-	 * attribute on the element causing it to become hidden. When truthy, the `.ng-hide` CSS class is removed
-	 * from the element causing the element not to appear hidden.
+	 * When the `ngShow` expression evaluates to a falsy value then the `.ng-hide` CSS class is added
+	 * to the class attribute on the element causing it to become hidden. When truthy, the `.ng-hide`
+	 * CSS class is removed from the element causing the element not to appear hidden.
 	 *
-	 * ## Why is !important used?
+	 * ## Why is `!important` used?
 	 *
-	 * You may be wondering why !important is used for the `.ng-hide` CSS class. This is because the `.ng-hide` selector
-	 * can be easily overridden by heavier selectors. For example, something as simple
-	 * as changing the display style on a HTML list item would make hidden elements appear visible.
-	 * This also becomes a bigger issue when dealing with CSS frameworks.
+	 * You may be wondering why `!important` is used for the `.ng-hide` CSS class. This is because the
+	 * `.ng-hide` selector can be easily overridden by heavier selectors. For example, something as
+	 * simple as changing the display style on a HTML list item would make hidden elements appear
+	 * visible. This also becomes a bigger issue when dealing with CSS frameworks.
 	 *
-	 * By using !important, the show and hide behavior will work as expected despite any clash between CSS selector
-	 * specificity (when !important isn't used with any conflicting styles). If a developer chooses to override the
-	 * styling to change how to hide an element then it is just a matter of using !important in their own CSS code.
+	 * By using `!important`, the show and hide behavior will work as expected despite any clash between
+	 * CSS selector specificity (when `!important` isn't used with any conflicting styles). If a
+	 * developer chooses to override the styling to change how to hide an element then it is just a
+	 * matter of using `!important` in their own CSS code.
 	 *
 	 * ### Overriding `.ng-hide`
 	 *
-	 * By default, the `.ng-hide` class will style the element with `display: none!important`. If you wish to change
-	 * the hide behavior with ngShow/ngHide then this can be achieved by restating the styles for the `.ng-hide`
-	 * class CSS. Note that the selector that needs to be used is actually `.ng-hide:not(.ng-hide-animate)` to cope
-	 * with extra animation classes that can be added.
+	 * By default, the `.ng-hide` class will style the element with `display: none !important`. If you
+	 * wish to change the hide behavior with `ngShow`/`ngHide`, you can simply overwrite the styles for
+	 * the `.ng-hide` CSS class. Note that the selector that needs to be used is actually
+	 * `.ng-hide:not(.ng-hide-animate)` to cope with extra animation classes that can be added.
 	 *
 	 * ```css
 	 * .ng-hide:not(.ng-hide-animate) {
-	 *   /&#42; this is just another form of hiding an element &#42;/
+	 *   /&#42; These are just alternative ways of hiding an element &#42;/
 	 *   display: block!important;
 	 *   position: absolute;
 	 *   top: -9999px;
@@ -32991,29 +33342,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * }
 	 * ```
 	 *
-	 * By default you don't need to override in CSS anything and the animations will work around the display style.
+	 * By default you don't need to override anything in CSS and the animations will work around the
+	 * display style.
 	 *
 	 * ## A note about animations with `ngShow`
 	 *
-	 * Animations in ngShow/ngHide work with the show and hide events that are triggered when the directive expression
-	 * is true and false. This system works like the animation system present with ngClass except that
-	 * you must also include the !important flag to override the display property
-	 * so that you can perform an animation when the element is hidden during the time of the animation.
+	 * Animations in `ngShow`/`ngHide` work with the show and hide events that are triggered when the
+	 * directive expression is true and false. This system works like the animation system present with
+	 * `ngClass` except that you must also include the `!important` flag to override the display
+	 * property so that the elements are not actually hidden during the animation.
 	 *
 	 * ```css
-	 * //
-	 * //a working example can be found at the bottom of this page
-	 * //
+	 * /&#42; A working example can be found at the bottom of this page. &#42;/
 	 * .my-element.ng-hide-add, .my-element.ng-hide-remove {
-	 *   /&#42; this is required as of 1.3x to properly
-	 *      apply all styling in a show/hide animation &#42;/
-	 *   transition: 0s linear all;
-	 * }
-	 *
-	 * .my-element.ng-hide-add-active,
-	 * .my-element.ng-hide-remove-active {
-	 *   /&#42; the transition is defined in the active class &#42;/
-	 *   transition: 1s linear all;
+	 *   transition: all 0.5s linear;
 	 * }
 	 *
 	 * .my-element.ng-hide-add { ... }
@@ -33022,76 +33364,108 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * .my-element.ng-hide-remove.ng-hide-remove-active { ... }
 	 * ```
 	 *
-	 * Keep in mind that, as of AngularJS version 1.3, there is no need to change the display
-	 * property to block during animation states--ngAnimate will handle the style toggling automatically for you.
+	 * Keep in mind that, as of AngularJS version 1.3, there is no need to change the display property
+	 * to block during animation states - ngAnimate will automatically handle the style toggling for you.
 	 *
 	 * @animations
-	 * | Animation                        | Occurs                              |
-	 * |----------------------------------|-------------------------------------|
-	 * | {@link $animate#addClass addClass} `.ng-hide`  | after the `ngShow` expression evaluates to a non truthy value and just before the contents are set to hidden |
-	 * | {@link $animate#removeClass removeClass}  `.ng-hide`  | after the `ngShow` expression evaluates to a truthy value and just before contents are set to visible |
+	 * | Animation                                           | Occurs                                                                                                        |
+	 * |-----------------------------------------------------|---------------------------------------------------------------------------------------------------------------|
+	 * | {@link $animate#addClass addClass} `.ng-hide`       | After the `ngShow` expression evaluates to a non truthy value and just before the contents are set to hidden. |
+	 * | {@link $animate#removeClass removeClass} `.ng-hide` | After the `ngShow` expression evaluates to a truthy value and just before contents are set to visible.        |
 	 *
 	 * @element ANY
-	 * @param {expression} ngShow If the {@link guide/expression expression} is truthy
-	 *     then the element is shown or hidden respectively.
+	 * @param {expression} ngShow If the {@link guide/expression expression} is truthy/falsy then the
+	 *                            element is shown/hidden respectively.
 	 *
 	 * @example
-	  <example module="ngAnimate" deps="angular-animate.js" animations="true" name="ng-show">
+	 * A simple example, animating the element's opacity:
+	 *
+	  <example module="ngAnimate" deps="angular-animate.js" animations="true" name="ng-show-simple">
 	    <file name="index.html">
-	      Click me: <input type="checkbox" ng-model="checked" aria-label="Toggle ngHide"><br/>
-	      <div>
-	        Show:
-	        <div class="check-element animate-show" ng-show="checked">
-	          <span class="glyphicon glyphicon-thumbs-up"></span> I show up when your checkbox is checked.
-	        </div>
+	      Show: <input type="checkbox" ng-model="checked" aria-label="Toggle ngShow"><br />
+	      <div class="check-element animate-show-hide" ng-show="checked">
+	        I show up when your checkbox is checked.
 	      </div>
-	      <div>
-	        Hide:
-	        <div class="check-element animate-show" ng-hide="checked">
-	          <span class="glyphicon glyphicon-thumbs-down"></span> I hide when your checkbox is checked.
-	        </div>
-	      </div>
-	    </file>
-	    <file name="glyphicons.css">
-	      @import url(../../components/bootstrap-3.1.1/css/bootstrap.css);
 	    </file>
 	    <file name="animations.css">
-	      .animate-show {
-	        line-height: 20px;
-	        opacity: 1;
-	        padding: 10px;
-	        border: 1px solid black;
-	        background: white;
+	      .animate-show-hide.ng-hide {
+	        opacity: 0;
 	      }
 
-	      .animate-show.ng-hide-add, .animate-show.ng-hide-remove {
+	      .animate-show-hide.ng-hide-add,
+	      .animate-show-hide.ng-hide-remove {
 	        transition: all linear 0.5s;
 	      }
 
-	      .animate-show.ng-hide {
-	        line-height: 0;
-	        opacity: 0;
-	        padding: 0 10px;
-	      }
-
 	      .check-element {
-	        padding: 10px;
 	        border: 1px solid black;
-	        background: white;
+	        opacity: 1;
+	        padding: 10px;
 	      }
 	    </file>
 	    <file name="protractor.js" type="protractor">
-	      var thumbsUp = element(by.css('span.glyphicon-thumbs-up'));
-	      var thumbsDown = element(by.css('span.glyphicon-thumbs-down'));
+	      it('should check ngShow', function() {
+	        var checkbox = element(by.model('checked'));
+	        var checkElem = element(by.css('.check-element'));
 
-	      it('should check ng-show / ng-hide', function() {
-	        expect(thumbsUp.isDisplayed()).toBeFalsy();
-	        expect(thumbsDown.isDisplayed()).toBeTruthy();
+	        expect(checkElem.isDisplayed()).toBe(false);
+	        checkbox.click();
+	        expect(checkElem.isDisplayed()).toBe(true);
+	      });
+	    </file>
+	  </example>
+	 *
+	 * <hr />
+	 * @example
+	 * A more complex example, featuring different show/hide animations:
+	 *
+	  <example module="ngAnimate" deps="angular-animate.js" animations="true" name="ng-show-complex">
+	    <file name="index.html">
+	      Show: <input type="checkbox" ng-model="checked" aria-label="Toggle ngShow"><br />
+	      <div class="check-element funky-show-hide" ng-show="checked">
+	        I show up when your checkbox is checked.
+	      </div>
+	    </file>
+	    <file name="animations.css">
+	      body {
+	        overflow: hidden;
+	        perspective: 1000px;
+	      }
 
-	        element(by.model('checked')).click();
+	      .funky-show-hide.ng-hide-add {
+	        transform: rotateZ(0);
+	        transform-origin: right;
+	        transition: all 0.5s ease-in-out;
+	      }
 
-	        expect(thumbsUp.isDisplayed()).toBeTruthy();
-	        expect(thumbsDown.isDisplayed()).toBeFalsy();
+	      .funky-show-hide.ng-hide-add.ng-hide-add-active {
+	        transform: rotateZ(-135deg);
+	      }
+
+	      .funky-show-hide.ng-hide-remove {
+	        transform: rotateY(90deg);
+	        transform-origin: left;
+	        transition: all 0.5s ease;
+	      }
+
+	      .funky-show-hide.ng-hide-remove.ng-hide-remove-active {
+	        transform: rotateY(0);
+	      }
+
+	      .check-element {
+	        border: 1px solid black;
+	        opacity: 1;
+	        padding: 10px;
+	      }
+	    </file>
+	    <file name="protractor.js" type="protractor">
+	      it('should check ngShow', function() {
+	        var checkbox = element(by.model('checked'));
+	        var checkElem = element(by.css('.check-element'));
+
+	        expect(checkElem.isDisplayed()).toBe(false);
+	        checkbox.click();
+	        expect(checkElem.isDisplayed()).toBe(true);
 	      });
 	    </file>
 	  </example>
@@ -33121,11 +33495,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @multiElement
 	 *
 	 * @description
-	 * The `ngHide` directive shows or hides the given HTML element based on the expression
-	 * provided to the `ngHide` attribute. The element is shown or hidden by removing or adding
-	 * the `ng-hide` CSS class onto the element. The `.ng-hide` CSS class is predefined
-	 * in AngularJS and sets the display style to none (using an !important flag).
-	 * For CSP mode please add `angular-csp.css` to your html file (see {@link ng.directive:ngCsp ngCsp}).
+	 * The `ngHide` directive shows or hides the given HTML element based on the expression provided to
+	 * the `ngHide` attribute.
+	 *
+	 * The element is shown or hidden by removing or adding the `.ng-hide` CSS class onto the element.
+	 * The `.ng-hide` CSS class is predefined in AngularJS and sets the display style to none (using an
+	 * `!important` flag). For CSP mode please add `angular-csp.css` to your HTML file (see
+	 * {@link ng.directive:ngCsp ngCsp}).
 	 *
 	 * ```html
 	 * <!-- when $scope.myValue is truthy (element is hidden) -->
@@ -33135,30 +33511,32 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * <div ng-hide="myValue"></div>
 	 * ```
 	 *
-	 * When the `ngHide` expression evaluates to a truthy value then the `.ng-hide` CSS class is added to the class
-	 * attribute on the element causing it to become hidden. When falsy, the `.ng-hide` CSS class is removed
-	 * from the element causing the element not to appear hidden.
+	 * When the `ngHide` expression evaluates to a truthy value then the `.ng-hide` CSS class is added
+	 * to the class attribute on the element causing it to become hidden. When falsy, the `.ng-hide`
+	 * CSS class is removed from the element causing the element not to appear hidden.
 	 *
-	 * ## Why is !important used?
+	 * ## Why is `!important` used?
 	 *
-	 * You may be wondering why !important is used for the `.ng-hide` CSS class. This is because the `.ng-hide` selector
-	 * can be easily overridden by heavier selectors. For example, something as simple
-	 * as changing the display style on a HTML list item would make hidden elements appear visible.
-	 * This also becomes a bigger issue when dealing with CSS frameworks.
+	 * You may be wondering why `!important` is used for the `.ng-hide` CSS class. This is because the
+	 * `.ng-hide` selector can be easily overridden by heavier selectors. For example, something as
+	 * simple as changing the display style on a HTML list item would make hidden elements appear
+	 * visible. This also becomes a bigger issue when dealing with CSS frameworks.
 	 *
-	 * By using !important, the show and hide behavior will work as expected despite any clash between CSS selector
-	 * specificity (when !important isn't used with any conflicting styles). If a developer chooses to override the
-	 * styling to change how to hide an element then it is just a matter of using !important in their own CSS code.
+	 * By using `!important`, the show and hide behavior will work as expected despite any clash between
+	 * CSS selector specificity (when `!important` isn't used with any conflicting styles). If a
+	 * developer chooses to override the styling to change how to hide an element then it is just a
+	 * matter of using `!important` in their own CSS code.
 	 *
 	 * ### Overriding `.ng-hide`
 	 *
-	 * By default, the `.ng-hide` class will style the element with `display: none!important`. If you wish to change
-	 * the hide behavior with ngShow/ngHide then this can be achieved by restating the styles for the `.ng-hide`
-	 * class in CSS:
+	 * By default, the `.ng-hide` class will style the element with `display: none !important`. If you
+	 * wish to change the hide behavior with `ngShow`/`ngHide`, you can simply overwrite the styles for
+	 * the `.ng-hide` CSS class. Note that the selector that needs to be used is actually
+	 * `.ng-hide:not(.ng-hide-animate)` to cope with extra animation classes that can be added.
 	 *
 	 * ```css
-	 * .ng-hide {
-	 *   /&#42; this is just another form of hiding an element &#42;/
+	 * .ng-hide:not(.ng-hide-animate) {
+	 *   /&#42; These are just alternative ways of hiding an element &#42;/
 	 *   display: block!important;
 	 *   position: absolute;
 	 *   top: -9999px;
@@ -33166,20 +33544,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * }
 	 * ```
 	 *
-	 * By default you don't need to override in CSS anything and the animations will work around the display style.
+	 * By default you don't need to override in CSS anything and the animations will work around the
+	 * display style.
 	 *
 	 * ## A note about animations with `ngHide`
 	 *
-	 * Animations in ngShow/ngHide work with the show and hide events that are triggered when the directive expression
-	 * is true and false. This system works like the animation system present with ngClass, except that the `.ng-hide`
-	 * CSS class is added and removed for you instead of your own CSS class.
+	 * Animations in `ngShow`/`ngHide` work with the show and hide events that are triggered when the
+	 * directive expression is true and false. This system works like the animation system present with
+	 * `ngClass` except that you must also include the `!important` flag to override the display
+	 * property so that the elements are not actually hidden during the animation.
 	 *
 	 * ```css
-	 * //
-	 * //a working example can be found at the bottom of this page
-	 * //
+	 * /&#42; A working example can be found at the bottom of this page. &#42;/
 	 * .my-element.ng-hide-add, .my-element.ng-hide-remove {
-	 *   transition: 0.5s linear all;
+	 *   transition: all 0.5s linear;
 	 * }
 	 *
 	 * .my-element.ng-hide-add { ... }
@@ -33188,74 +33566,109 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * .my-element.ng-hide-remove.ng-hide-remove-active { ... }
 	 * ```
 	 *
-	 * Keep in mind that, as of AngularJS version 1.3, there is no need to change the display
-	 * property to block during animation states--ngAnimate will handle the style toggling automatically for you.
+	 * Keep in mind that, as of AngularJS version 1.3, there is no need to change the display property
+	 * to block during animation states - ngAnimate will automatically handle the style toggling for you.
 	 *
 	 * @animations
-	 * | Animation                        | Occurs                              |
-	 * |----------------------------------|-------------------------------------|
-	 * | {@link $animate#addClass addClass} `.ng-hide`  | after the `ngHide` expression evaluates to a truthy value and just before the contents are set to hidden |
-	 * | {@link $animate#removeClass removeClass}  `.ng-hide`  | after the `ngHide` expression evaluates to a non truthy value and just before contents are set to visible |
+	 * | Animation                                           | Occurs                                                                                                     |
+	 * |-----------------------------------------------------|------------------------------------------------------------------------------------------------------------|
+	 * | {@link $animate#addClass addClass} `.ng-hide`       | After the `ngHide` expression evaluates to a truthy value and just before the contents are set to hidden.  |
+	 * | {@link $animate#removeClass removeClass} `.ng-hide` | After the `ngHide` expression evaluates to a non truthy value and just before contents are set to visible. |
 	 *
 	 *
 	 * @element ANY
-	 * @param {expression} ngHide If the {@link guide/expression expression} is truthy then
-	 *     the element is shown or hidden respectively.
+	 * @param {expression} ngHide If the {@link guide/expression expression} is truthy/falsy then the
+	 *                            element is hidden/shown respectively.
 	 *
 	 * @example
-	  <example module="ngAnimate" deps="angular-animate.js" animations="true" name="ng-hide">
+	 * A simple example, animating the element's opacity:
+	 *
+	  <example module="ngAnimate" deps="angular-animate.js" animations="true" name="ng-hide-simple">
 	    <file name="index.html">
-	      Click me: <input type="checkbox" ng-model="checked" aria-label="Toggle ngShow"><br/>
-	      <div>
-	        Show:
-	        <div class="check-element animate-hide" ng-show="checked">
-	          <span class="glyphicon glyphicon-thumbs-up"></span> I show up when your checkbox is checked.
-	        </div>
+	      Hide: <input type="checkbox" ng-model="checked" aria-label="Toggle ngHide"><br />
+	      <div class="check-element animate-show-hide" ng-hide="checked">
+	        I hide when your checkbox is checked.
 	      </div>
-	      <div>
-	        Hide:
-	        <div class="check-element animate-hide" ng-hide="checked">
-	          <span class="glyphicon glyphicon-thumbs-down"></span> I hide when your checkbox is checked.
-	        </div>
-	      </div>
-	    </file>
-	    <file name="glyphicons.css">
-	      @import url(../../components/bootstrap-3.1.1/css/bootstrap.css);
 	    </file>
 	    <file name="animations.css">
-	      .animate-hide {
-	        transition: all linear 0.5s;
-	        line-height: 20px;
-	        opacity: 1;
-	        padding: 10px;
-	        border: 1px solid black;
-	        background: white;
+	      .animate-show-hide.ng-hide {
+	        opacity: 0;
 	      }
 
-	      .animate-hide.ng-hide {
-	        line-height: 0;
-	        opacity: 0;
-	        padding: 0 10px;
+	      .animate-show-hide.ng-hide-add,
+	      .animate-show-hide.ng-hide-remove {
+	        transition: all linear 0.5s;
 	      }
 
 	      .check-element {
-	        padding: 10px;
 	        border: 1px solid black;
-	        background: white;
+	        opacity: 1;
+	        padding: 10px;
 	      }
 	    </file>
 	    <file name="protractor.js" type="protractor">
-	      var thumbsUp = element(by.css('span.glyphicon-thumbs-up'));
-	      var thumbsDown = element(by.css('span.glyphicon-thumbs-down'));
+	      it('should check ngHide', function() {
+	        var checkbox = element(by.model('checked'));
+	        var checkElem = element(by.css('.check-element'));
 
-	      it('should check ng-show / ng-hide', function() {
-	        expect(thumbsUp.isDisplayed()).toBeFalsy();
-	        expect(thumbsDown.isDisplayed()).toBeTruthy();
+	        expect(checkElem.isDisplayed()).toBe(true);
+	        checkbox.click();
+	        expect(checkElem.isDisplayed()).toBe(false);
+	      });
+	    </file>
+	  </example>
+	 *
+	 * <hr />
+	 * @example
+	 * A more complex example, featuring different show/hide animations:
+	 *
+	  <example module="ngAnimate" deps="angular-animate.js" animations="true" name="ng-hide-complex">
+	    <file name="index.html">
+	      Hide: <input type="checkbox" ng-model="checked" aria-label="Toggle ngHide"><br />
+	      <div class="check-element funky-show-hide" ng-hide="checked">
+	        I hide when your checkbox is checked.
+	      </div>
+	    </file>
+	    <file name="animations.css">
+	      body {
+	        overflow: hidden;
+	        perspective: 1000px;
+	      }
 
-	        element(by.model('checked')).click();
+	      .funky-show-hide.ng-hide-add {
+	        transform: rotateZ(0);
+	        transform-origin: right;
+	        transition: all 0.5s ease-in-out;
+	      }
 
-	        expect(thumbsUp.isDisplayed()).toBeTruthy();
-	        expect(thumbsDown.isDisplayed()).toBeFalsy();
+	      .funky-show-hide.ng-hide-add.ng-hide-add-active {
+	        transform: rotateZ(-135deg);
+	      }
+
+	      .funky-show-hide.ng-hide-remove {
+	        transform: rotateY(90deg);
+	        transform-origin: left;
+	        transition: all 0.5s ease;
+	      }
+
+	      .funky-show-hide.ng-hide-remove.ng-hide-remove-active {
+	        transform: rotateY(0);
+	      }
+
+	      .check-element {
+	        border: 1px solid black;
+	        opacity: 1;
+	        padding: 10px;
+	      }
+	    </file>
+	    <file name="protractor.js" type="protractor">
+	      it('should check ngHide', function() {
+	        var checkbox = element(by.model('checked'));
+	        var checkElem = element(by.css('.check-element'));
+
+	        expect(checkElem.isDisplayed()).toBe(true);
+	        checkbox.click();
+	        expect(checkElem.isDisplayed()).toBe(false);
 	      });
 	    </file>
 	  </example>
@@ -33838,6 +34251,18 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var noopNgModelController = { $setViewValue: noop, $render: noop };
 
+	function setOptionSelectedStatus(optionEl, value) {
+	  optionEl.prop('selected', value); // needed for IE
+	  /**
+	   * When unselecting an option, setting the property to null / false should be enough
+	   * However, screenreaders might react to the selected attribute instead, see
+	   * https://github.com/angular/angular.js/issues/14419
+	   * Note: "selected" is a boolean attr and will be removed when the "value" arg in attr() is false
+	   * or null
+	   */
+	  optionEl.attr('selected', value);
+	}
+
 	/**
 	 * @ngdoc type
 	 * @name  select.SelectController
@@ -33850,7 +34275,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        ['$element', '$scope', /** @this */ function($element, $scope) {
 
 	  var self = this,
-	      optionsMap = new HashMap();
+	      optionsMap = new NgMap();
 
 	  self.selectValueMap = {}; // Keys are the hashed values, values the original values
 
@@ -33878,14 +34303,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var unknownVal = self.generateUnknownOptionValue(val);
 	    self.unknownOption.val(unknownVal);
 	    $element.prepend(self.unknownOption);
-	    setOptionAsSelected(self.unknownOption);
+	    setOptionSelectedStatus(self.unknownOption, true);
 	    $element.val(unknownVal);
 	  };
 
 	  self.updateUnknownOption = function(val) {
 	    var unknownVal = self.generateUnknownOptionValue(val);
 	    self.unknownOption.val(unknownVal);
-	    setOptionAsSelected(self.unknownOption);
+	    setOptionSelectedStatus(self.unknownOption, true);
 	    $element.val(unknownVal);
 	  };
 
@@ -33900,7 +34325,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  self.selectEmptyOption = function() {
 	    if (self.emptyOption) {
 	      $element.val('');
-	      setOptionAsSelected(self.emptyOption);
+	      setOptionSelectedStatus(self.emptyOption, true);
 	    }
 	  };
 
@@ -33936,7 +34361,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    // Make sure to remove the selected attribute from the previously selected option
 	    // Otherwise, screen readers might get confused
 	    var currentlySelectedOption = $element[0].options[$element[0].selectedIndex];
-	    if (currentlySelectedOption) currentlySelectedOption.removeAttribute('selected');
+	    if (currentlySelectedOption) setOptionSelectedStatus(jqLite(currentlySelectedOption), false);
 
 	    if (self.hasOption(value)) {
 	      self.removeUnknownOption();
@@ -33946,7 +34371,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	      // Set selected attribute and property on selected option for screen readers
 	      var selectedOption = $element[0].options[$element[0].selectedIndex];
-	      setOptionAsSelected(jqLite(selectedOption));
+	      setOptionSelectedStatus(jqLite(selectedOption), true);
 	    } else {
 	      if (value == null && self.emptyOption) {
 	        self.removeUnknownOption();
@@ -33971,7 +34396,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      self.emptyOption = element;
 	    }
 	    var count = optionsMap.get(value) || 0;
-	    optionsMap.put(value, count + 1);
+	    optionsMap.set(value, count + 1);
 	    // Only render at the end of a digest. This improves render performance when many options
 	    // are added during a digest and ensures all relevant options are correctly marked as selected
 	    scheduleRender();
@@ -33982,13 +34407,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var count = optionsMap.get(value);
 	    if (count) {
 	      if (count === 1) {
-	        optionsMap.remove(value);
+	        optionsMap.delete(value);
 	        if (value === '') {
 	          self.hasEmptyOption = false;
 	          self.emptyOption = undefined;
 	        }
 	      } else {
-	        optionsMap.put(value, count - 1);
+	        optionsMap.set(value, count - 1);
 	      }
 	    }
 	  };
@@ -34115,7 +34540,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var removeValue = optionAttrs.value;
 
 	      self.removeOption(removeValue);
-	      self.ngModelCtrl.$render();
+	      scheduleRender();
 
 	      if (self.multiple && currentValue && currentValue.indexOf(removeValue) !== -1 ||
 	          currentValue === removeValue
@@ -34126,11 +34551,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 	    });
 	  };
-
-	  function setOptionAsSelected(optionEl) {
-	    optionEl.prop('selected', true); // needed for IE
-	    optionEl.attr('selected', true);
-	  }
 	}];
 
 	/**
@@ -34200,6 +34620,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	 *    interaction with the select element.
 	 * @param {string=} ngOptions sets the options that the select is populated with and defines what is
 	 * set on the model on selection. See {@link ngOptions `ngOptions`}.
+	 * @param {string=} ngAttrSize sets the size of the select element dynamically. Uses the
+	 * {@link guide/interpolation#-ngattr-for-binding-to-arbitrary-attributes ngAttr} directive.
 	 *
 	 * @example
 	 * ### Simple `select` elements with static options
@@ -34440,9 +34862,21 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	        // Write value now needs to set the selected property of each matching option
 	        selectCtrl.writeValue = function writeMultipleValue(value) {
-	          var items = new HashMap(value);
 	          forEach(element.find('option'), function(option) {
-	            option.selected = isDefined(items.get(option.value)) || isDefined(items.get(selectCtrl.selectValueMap[option.value]));
+	            var shouldBeSelected = !!value && (includes(value, option.value) ||
+	                                               includes(value, selectCtrl.selectValueMap[option.value]));
+	            var currentlySelected = option.selected;
+
+	            // IE and Edge, adding options to the selection via shift+click/UP/DOWN,
+	            // will de-select already selected options if "selected" on those options was set
+	            // more than once (i.e. when the options were already selected)
+	            // So we only modify the selected property if neccessary.
+	            // Note: this behavior cannot be replicated via unit tests because it only shows in the
+	            // actual user interface.
+	            if (shouldBeSelected !== currentlySelected) {
+	              setOptionSelectedStatus(jqLite(option), shouldBeSelected);
+	            }
+
 	          });
 	        };
 
@@ -35560,6 +35994,26 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	        if (!user) return;
 
+	        var last_login = window.localStorage.getItem('last_login');
+	        var d = new Date();
+	        d.setHours(0);
+	        d.setMinutes(0);
+	        d.setSeconds(0);
+	        d.setMilliseconds(0);
+
+	        if (!last_login) {
+	          window.localStorage.setItem('last_login', d.getTime());
+	          SailPlayApi.call('tags.add', {
+	            tags: ['Logged into website']
+	          });
+	        } else {
+	          if (last_login != d.getTime()) {
+	            SailPlayApi.call('tags.add', {
+	              tags: ['Logged into website']
+	            });
+	          }
+	        }
+
 	        var form = scope.sailplay.fill_profile.form;
 
 	        form.fields = config.fields.map(function (field) {
@@ -36191,90 +36645,34 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return doneResult();
 	      }
 
+	      context.method = method;
+	      context.arg = arg;
+
 	      while (true) {
 	        var delegate = context.delegate;
 	        if (delegate) {
-	          if (method === "return" ||
-	              (method === "throw" && delegate.iterator[method] === undefined)) {
-	            // A return or throw (when the delegate iterator has no throw
-	            // method) always terminates the yield* loop.
-	            context.delegate = null;
-
-	            // If the delegate iterator has a return method, give it a
-	            // chance to clean up.
-	            var returnMethod = delegate.iterator["return"];
-	            if (returnMethod) {
-	              var record = tryCatch(returnMethod, delegate.iterator, arg);
-	              if (record.type === "throw") {
-	                // If the return method threw an exception, let that
-	                // exception prevail over the original return or throw.
-	                method = "throw";
-	                arg = record.arg;
-	                continue;
-	              }
-	            }
-
-	            if (method === "return") {
-	              // Continue with the outer return, now that the delegate
-	              // iterator has been terminated.
-	              continue;
-	            }
+	          var delegateResult = maybeInvokeDelegate(delegate, context);
+	          if (delegateResult) {
+	            if (delegateResult === ContinueSentinel) continue;
+	            return delegateResult;
 	          }
-
-	          var record = tryCatch(
-	            delegate.iterator[method],
-	            delegate.iterator,
-	            arg
-	          );
-
-	          if (record.type === "throw") {
-	            context.delegate = null;
-
-	            // Like returning generator.throw(uncaught), but without the
-	            // overhead of an extra function call.
-	            method = "throw";
-	            arg = record.arg;
-	            continue;
-	          }
-
-	          // Delegate generator ran and handled its own exceptions so
-	          // regardless of what the method was, we continue as if it is
-	          // "next" with an undefined arg.
-	          method = "next";
-	          arg = undefined;
-
-	          var info = record.arg;
-	          if (info.done) {
-	            context[delegate.resultName] = info.value;
-	            context.next = delegate.nextLoc;
-	          } else {
-	            state = GenStateSuspendedYield;
-	            return info;
-	          }
-
-	          context.delegate = null;
 	        }
 
-	        if (method === "next") {
+	        if (context.method === "next") {
 	          // Setting context._sent for legacy support of Babel's
 	          // function.sent implementation.
-	          context.sent = context._sent = arg;
+	          context.sent = context._sent = context.arg;
 
-	        } else if (method === "throw") {
+	        } else if (context.method === "throw") {
 	          if (state === GenStateSuspendedStart) {
 	            state = GenStateCompleted;
-	            throw arg;
+	            throw context.arg;
 	          }
 
-	          if (context.dispatchException(arg)) {
-	            // If the dispatched exception was caught by a catch block,
-	            // then let that catch block handle the exception normally.
-	            method = "next";
-	            arg = undefined;
-	          }
+	          context.dispatchException(context.arg);
 
-	        } else if (method === "return") {
-	          context.abrupt("return", arg);
+	        } else if (context.method === "return") {
+	          context.abrupt("return", context.arg);
 	        }
 
 	        state = GenStateExecuting;
@@ -36287,30 +36685,106 @@ return /******/ (function(modules) { // webpackBootstrap
 	            ? GenStateCompleted
 	            : GenStateSuspendedYield;
 
-	          var info = {
+	          if (record.arg === ContinueSentinel) {
+	            continue;
+	          }
+
+	          return {
 	            value: record.arg,
 	            done: context.done
 	          };
 
-	          if (record.arg === ContinueSentinel) {
-	            if (context.delegate && method === "next") {
-	              // Deliberately forget the last sent value so that we don't
-	              // accidentally pass it on to the delegate.
-	              arg = undefined;
-	            }
-	          } else {
-	            return info;
-	          }
-
 	        } else if (record.type === "throw") {
 	          state = GenStateCompleted;
 	          // Dispatch the exception by looping back around to the
-	          // context.dispatchException(arg) call above.
-	          method = "throw";
-	          arg = record.arg;
+	          // context.dispatchException(context.arg) call above.
+	          context.method = "throw";
+	          context.arg = record.arg;
 	        }
 	      }
 	    };
+	  }
+
+	  // Call delegate.iterator[context.method](context.arg) and handle the
+	  // result, either by returning a { value, done } result from the
+	  // delegate iterator, or by modifying context.method and context.arg,
+	  // setting context.delegate to null, and returning the ContinueSentinel.
+	  function maybeInvokeDelegate(delegate, context) {
+	    var method = delegate.iterator[context.method];
+	    if (method === undefined) {
+	      // A .throw or .return when the delegate iterator has no .throw
+	      // method always terminates the yield* loop.
+	      context.delegate = null;
+
+	      if (context.method === "throw") {
+	        if (delegate.iterator.return) {
+	          // If the delegate iterator has a return method, give it a
+	          // chance to clean up.
+	          context.method = "return";
+	          context.arg = undefined;
+	          maybeInvokeDelegate(delegate, context);
+
+	          if (context.method === "throw") {
+	            // If maybeInvokeDelegate(context) changed context.method from
+	            // "return" to "throw", let that override the TypeError below.
+	            return ContinueSentinel;
+	          }
+	        }
+
+	        context.method = "throw";
+	        context.arg = new TypeError(
+	          "The iterator does not provide a 'throw' method");
+	      }
+
+	      return ContinueSentinel;
+	    }
+
+	    var record = tryCatch(method, delegate.iterator, context.arg);
+
+	    if (record.type === "throw") {
+	      context.method = "throw";
+	      context.arg = record.arg;
+	      context.delegate = null;
+	      return ContinueSentinel;
+	    }
+
+	    var info = record.arg;
+
+	    if (! info) {
+	      context.method = "throw";
+	      context.arg = new TypeError("iterator result is not an object");
+	      context.delegate = null;
+	      return ContinueSentinel;
+	    }
+
+	    if (info.done) {
+	      // Assign the result of the finished delegate to the temporary
+	      // variable specified by delegate.resultName (see delegateYield).
+	      context[delegate.resultName] = info.value;
+
+	      // Resume execution at the desired location (see delegateYield).
+	      context.next = delegate.nextLoc;
+
+	      // If context.method was "throw" but the delegate handled the
+	      // exception, let the outer generator proceed normally. If
+	      // context.method was "next", forget context.arg since it has been
+	      // "consumed" by the delegate iterator. If context.method was
+	      // "return", allow the original .return call to continue in the
+	      // outer generator.
+	      if (context.method !== "return") {
+	        context.method = "next";
+	        context.arg = undefined;
+	      }
+
+	    } else {
+	      // Re-yield the result returned by the delegate method.
+	      return info;
+	    }
+
+	    // The delegate iterator is finished, so forget it and continue with
+	    // the outer generator.
+	    context.delegate = null;
+	    return ContinueSentinel;
 	  }
 
 	  // Define Generator.prototype.{next,throw,return} in terms of the
@@ -36433,6 +36907,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	      this.done = false;
 	      this.delegate = null;
 
+	      this.method = "next";
+	      this.arg = undefined;
+
 	      this.tryEntries.forEach(resetTryEntry);
 
 	      if (!skipTempReset) {
@@ -36469,7 +36946,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	        record.type = "throw";
 	        record.arg = exception;
 	        context.next = loc;
-	        return !!caught;
+
+	        if (caught) {
+	          // If the dispatched exception was caught by a catch block,
+	          // then let that catch block handle the exception normally.
+	          context.method = "next";
+	          context.arg = undefined;
+	        }
+
+	        return !! caught;
 	      }
 
 	      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
@@ -36537,12 +37022,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	      record.arg = arg;
 
 	      if (finallyEntry) {
+	        this.method = "next";
 	        this.next = finallyEntry.finallyLoc;
-	      } else {
-	        this.complete(record);
+	        return ContinueSentinel;
 	      }
 
-	      return ContinueSentinel;
+	      return this.complete(record);
 	    },
 
 	    complete: function(record, afterLoc) {
@@ -36554,11 +37039,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	          record.type === "continue") {
 	        this.next = record.arg;
 	      } else if (record.type === "return") {
-	        this.rval = record.arg;
+	        this.rval = this.arg = record.arg;
+	        this.method = "return";
 	        this.next = "end";
 	      } else if (record.type === "normal" && afterLoc) {
 	        this.next = afterLoc;
 	      }
+
+	      return ContinueSentinel;
 	    },
 
 	    finish: function(finallyLoc) {
@@ -36596,6 +37084,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	        resultName: resultName,
 	        nextLoc: nextLoc
 	      };
+
+	      if (this.method === "next") {
+	        // Deliberately forget the last sent value so that we don't
+	        // accidentally pass it on to the delegate.
+	        this.arg = undefined;
+	      }
 
 	      return ContinueSentinel;
 	    }
@@ -39019,8 +39513,8 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports) {
 
 	/**
-	 * @license AngularJS v1.6.1
-	 * (c) 2010-2016 Google, Inc. http://angularjs.org
+	 * @license AngularJS v1.6.3
+	 * (c) 2010-2017 Google, Inc. http://angularjs.org
 	 * License: MIT
 	 */
 	(function(window, angular) {'use strict';
@@ -39048,6 +39542,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	// define ngTouch module
 	/* global -ngTouch */
 	var ngTouch = angular.module('ngTouch', []);
+
+	ngTouch.info({ angularVersion: '1.6.3' });
 
 	ngTouch.provider('$touch', $TouchProvider);
 
@@ -41856,8 +42352,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/less-loader/index.js!./layout.less", function() {
-				var newContent = require("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/less-loader/index.js!./layout.less");
+			module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/index.js!./layout.less", function() {
+				var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/index.js!./layout.less");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -41953,7 +42449,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			};
 		},
 		isOldIE = memoize(function() {
-			return /msie [6-9]\b/.test(window.navigator.userAgent.toLowerCase());
+			return /msie [6-9]\b/.test(self.navigator.userAgent.toLowerCase());
 		}),
 		getHeadElement = memoize(function () {
 			return document.head || document.getElementsByTagName("head")[0];
@@ -42304,8 +42800,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/less-loader/index.js!./widget.less", function() {
-				var newContent = require("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/less-loader/index.js!./widget.less");
+			module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/index.js!./widget.less", function() {
+				var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/index.js!./widget.less");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -42414,8 +42910,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/less-loader/index.js!./notifier.less", function() {
-				var newContent = require("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/less-loader/index.js!./notifier.less");
+			module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/index.js!./notifier.less", function() {
+				var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/index.js!./notifier.less");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -42525,8 +43021,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/less-loader/index.js!./modal.less", function() {
-				var newContent = require("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/less-loader/index.js!./modal.less");
+			module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/index.js!./modal.less", function() {
+				var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/index.js!./modal.less");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -42663,8 +43159,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./theme.less", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./theme.less");
+			module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./theme.less", function() {
+				var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./theme.less");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -42816,8 +43312,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./actions.less", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./actions.less");
+			module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./actions.less", function() {
+				var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./actions.less");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -42957,8 +43453,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./badges.less", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./badges.less");
+			module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./badges.less", function() {
+				var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./badges.less");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -43027,8 +43523,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./banner.less", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./banner.less");
+			module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./banner.less", function() {
+				var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./banner.less");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -43296,8 +43792,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./gifts.less", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./gifts.less");
+			module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./gifts.less", function() {
+				var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./gifts.less");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -43429,8 +43925,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./header.less", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./header.less");
+			module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./header.less", function() {
+				var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./header.less");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -43503,8 +43999,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./leaderboard.less", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./leaderboard.less");
+			module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./leaderboard.less", function() {
+				var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./leaderboard.less");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -43648,8 +44144,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./profile.less", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./profile.less");
+			module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./profile.less", function() {
+				var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./profile.less");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -43771,8 +44267,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./statuses.less", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./statuses.less");
+			module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./statuses.less", function() {
+				var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./statuses.less");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
