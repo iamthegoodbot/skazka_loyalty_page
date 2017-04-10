@@ -20,7 +20,7 @@ return webpackJsonp([2],[
 	__webpack_require__(158);
 	__webpack_require__(162);
 	__webpack_require__(166);
-	__webpack_require__(167);
+	__webpack_require__(170);
 	__webpack_require__(171);
 	__webpack_require__(175);
 	__webpack_require__(179);
@@ -1735,6 +1735,82 @@ return webpackJsonp([2],[
 
 	'use strict';
 
+	var _widget = __webpack_require__(98);
+
+	var _faq = __webpack_require__(163);
+
+	var _faq2 = _interopRequireDefault(_faq);
+
+	__webpack_require__(164);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	(0, _widget.WidgetRegister)({
+	  id: 'faq',
+	  template: _faq2.default,
+	  inject: ['SailPlayApi'],
+	  controller: function controller(SailPlayApi) {
+	    return function (scope, elm, attrs) {
+	      scope.faq = {
+	        show: false
+	      };
+	    };
+	  }
+
+	});
+
+/***/ },
+/* 163 */
+/***/ function(module, exports) {
+
+	module.exports = "<div class=\"container\">\n    <div class=\"sp-link\">\n        <a href=\"javascript:void(0)\" data-ng-click=\"faq.show = true\" data-ng-bind=\"widget.options.link_name\"></a>\n    </div>\n\n    <magic-modal data-width=\"widget.options.popup_width\" class=\"faq_overlay\" data-show=\"faq.show\">\n        <div class=\"faq_question\" data-ng-repeat=\"quest in widget.faq\">\n            <p class=\"faq_bold\" data-ng-bind=\"quest.question\"></p>\n            <p class=\"faq_italic\" data-ng-bind=\"quest.answer\"></p>\n        </div>\n    </magic-modal>\n</div>";
+
+/***/ },
+/* 164 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(165);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(111)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./faq.less", function() {
+				var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./faq.less");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 165 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(110)();
+	// imports
+
+
+	// module
+	exports.push([module.id, ".sp-link {\n  text-align: center;\n  margin-top: 60px !important;\n  margin-bottom: 60px !important;\n}\n.faq_question {\n  margin-bottom: 15px !important;\n}\n.faq_bold {\n  font-weight: 600 !important;\n}\n.faq_italic {\n  font-style: italic !important;\n}\n", ""]);
+
+	// exports
+
+
+/***/ },
+/* 166 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
@@ -1742,11 +1818,11 @@ return webpackJsonp([2],[
 
 	var _widget = __webpack_require__(98);
 
-	var _gifts = __webpack_require__(163);
+	var _gifts = __webpack_require__(167);
 
 	var _gifts2 = _interopRequireDefault(_gifts);
 
-	__webpack_require__(164);
+	__webpack_require__(168);
 
 	var _angular = __webpack_require__(31);
 
@@ -1953,19 +2029,19 @@ return webpackJsonp([2],[
 	}]);
 
 /***/ },
-/* 163 */
+/* 167 */
 /***/ function(module, exports) {
 
 	module.exports = "<div class=\"bon_choice_main container\" data-ng-show=\"widget.enabled\" data-ng-cloak>\n  <h3 class=\"bon_header\">\n    <span class=\"header\">{{ widget.texts.header }}</span>\n  </h3>\n  <h4 class=\"bon_sub_header\">\n    <span class=\"caption\">{{ widget.texts.caption }}</span>\n  </h4>\n\n  <div data-sailplay-gifts class=\"clearfix\">\n    <div class=\"bon_item_main\" data-ng-show=\"gifts && gifts().length\" data-magic-slider>\n\n      <div class=\"bon_slide_cat_item_wrap\" data-magic-gallery>\n        <div class=\"bon_slide_cat_item\">\n\n          <div class=\"bon_item_line\" data-ng-style=\"{left : left}\">\n\n            <div class=\"bon_item gift\" data-magic-slide data-magic-gift data-ng-repeat=\"gift in gifts()\">\n              <div class=\"bon_item_iner\">\n                <img data-ng-src=\"{{ gift.thumbs.url_250x250 | sailplay_pic }}\" alt=\"{{ gift.name }}\">\n                <span class=\"bon_item_name gift_name\" data-ng-bind=\"gift.name\"></span>\n                <span class=\"bon_tem_info gift_points\" data-ng-bind=\"(gift.points | number) + ' ' + (gift.points | sailplay_pluralize:('points.texts.pluralize' | tools))\"></span>\n                <a href=\"#\" class=\"button_primary\" data-ng-click=\"gift_select(gift); $event.preventDefault();\">{{ widget.texts.get }}</a>\n              </div>\n            </div>\n\n          </div>\n\n        </div>\n\n        <a href=\"#\" class=\"arr_left arr_left slider_arrow_left\" data-ng-click=\"$event.preventDefault(); set_position('left');\" data-ng-show=\"show_left\"></a>\n        <a href=\"#\" class=\"arr_right arr_right slider_arrow_right\" data-ng-click=\"$event.preventDefault(); set_position('right');\" data-ng-show=\"show_right\"></a>\n\n      </div>\n\n    </div>\n\n    <magic-modal class=\"bns_overlay_gift\" data-ng-cloak data-show=\"$parent.selected_gift\">\n\n      <div class=\"modal_gift_container\">\n\n        <img class=\"gift_more_img\" data-ng-src=\"{{ selected_gift.thumbs.url_250x250 | sailplay_pic }}\"\n             alt=\"{{ selected_gift.name }}\">\n\n        <div class=\"gift_more_block\">\n\n          <span class=\"gift_more_name modal_gift_name\" data-ng-bind=\"selected_gift.name\"></span>\n\n          <span class=\"gift_more_points modal_gift_points\"\n                data-ng-bind=\"(selected_gift.points | number) + ' ' + (selected_gift.points | sailplay_pluralize:('points.texts.pluralize' | tools))\"></span>\n\n          <p class=\"gift_more_descr modal_gift_description\" data-ng-bind=\"selected_gift.descr\"></p>\n\n          <div class=\"modal_gift_type_block clearfix\" data-gift-type data-types=\"widget.options.gift_types\" data-gift=\"selected_gift\"></div>\n\n          <div class=\"modal_gift_buttons\">\n            <span class=\"alink button_primary\" data-ng-click=\"gift_select(false);\">{{ 'buttons.texts.close' | tools }}</span>\n\n            <span class=\"alink button_primary\"\n                  style=\"margin-left: 5px;\"\n                  data-ng-click=\"gift_confirm();\"\n                  data-ng-bind=\"gift_affordable(selected_gift) ? widget.texts.get : widget.texts.no_points_button_text\">{{ widget.texts.get }}</span>\n          </div>\n\n        </div>\n      </div>\n\n    </magic-modal>\n\n    <magic-modal class=\"bns_overlay_gift_not_points\" data-ng-cloak data-show=\"no_points_error\">\n      <div>\n        <p class=\"modal_gift_description\">\n          {{ widget.texts.no_points_message }}\n        </p>\n        <a class=\"alink button_primary earn_points_button\" href=\"#magic_actions\" data-ng-click=\"gift_unconfirm()\">{{ widget.texts.earn_points }}</a>\n        <a class=\"alink button_primary service_button\" target=\"_blank\" href=\"{{ widget.texts.partner_service_url }}\" data-ng-click=\"gift_unconfirm()\">{{ widget.texts.service }}</a>\n      </div>\n    </magic-modal>\n\n    <magic-modal class=\"bns_overlay_gift_complete\" data-ng-cloak data-show=\"confirmed_gift\">\n      <div>\n        <p class=\"modal_gift_description\">\n          {{ widget.texts.confirm_message_start }}\n          {{ (confirmed_gift.points | number) + ' ' + (confirmed_gift.points | sailplay_pluralize:('points.texts.pluralize' | tools)) }}.\n          {{ widget.texts.confirm_message_end }}\n        </p>\n        <span class=\"alink button_primary\" data-ng-click=\"gift_unconfirm();\">{{ 'buttons.texts.close' | tools }}</span>\n        <span class=\"alink button_primary\" data-ng-click=\"gift_purchase(confirmed_gift);\">{{ 'buttons.texts.get' | tools }}</span>\n      </div>\n    </magic-modal>\n  </div>\n\n\n</div>";
 
 /***/ },
-/* 164 */
+/* 168 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(165);
+	var content = __webpack_require__(169);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(111)(content, {});
@@ -1985,7 +2061,7 @@ return webpackJsonp([2],[
 	}
 
 /***/ },
-/* 165 */
+/* 169 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(110)();
@@ -1999,12 +2075,12 @@ return webpackJsonp([2],[
 
 
 /***/ },
-/* 166 */
+/* 170 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _gifts = __webpack_require__(162);
+	var _gifts = __webpack_require__(166);
 
 	var _angular = __webpack_require__(31);
 
@@ -2060,18 +2136,18 @@ return webpackJsonp([2],[
 	});
 
 /***/ },
-/* 167 */
+/* 171 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var _widget = __webpack_require__(98);
 
-	var _giftsGrid = __webpack_require__(168);
+	var _giftsGrid = __webpack_require__(172);
 
 	var _giftsGrid2 = _interopRequireDefault(_giftsGrid);
 
-	__webpack_require__(169);
+	__webpack_require__(173);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2183,19 +2259,19 @@ return webpackJsonp([2],[
 	});
 
 /***/ },
-/* 168 */
+/* 172 */
 /***/ function(module, exports) {
 
 	module.exports = "<div class=\"bon_choice_main container clearfix gifts_grid_widget\">\n\n    <h3 class=\"gifts_grid___header\">\n        <span class=\"header\" data-ng-bind=\"widget.texts.header\"></span>\n    </h3>\n\n    <h4 class=\"gifts_grid___caption\">\n        <span class=\"caption\" data-ng-bind=\"widget.texts.caption\"></span>\n    </h4>\n\n    <div class=\"gifts_grid__wrapper clearfix\">\n\n        <div class=\"gifts_grid__blocks clearfix\">\n\n            <div class=\"gifts_grid__block clearfix\">\n\n                <div class=\"gifts_grid__item clearfix\" data-ng-repeat=\"gift in blocks[state] track by $index\">\n\n                    <span class=\"gifts_grid__item-name gift_name\" data-ng-bind=\"gift.name\"></span>\n\n                    <span class=\"gifts_grid__item-points gift_points\"\n                          data-ng-bind=\"(gift.points | number) + ' ' + (gift.points | sailplay_pluralize:('points.texts.pluralize' | tools))\"></span>\n\n                    <img class=\"gifts_grid__item-img gift_img\"\n                         data-ng-src=\"{{ gift.thumbs.url_250x250 | sailplay_pic }}\"\n                         alt=\"{{ gift.name }}\">\n\n\n                    <a class=\"gifts_grid__item-button button_primary\" href=\"#\"\n                       data-ng-bind=\"widget.texts.get\"\n                       data-ng-click=\"$parent.selected_gift = gift;$event.preventDefault();\"></a>\n\n\n                </div>\n\n            </div>\n\n        </div>\n\n        <a href=\"#\" class=\"gifts_grid__arrow gifts_grid__arrow_l slider_arrow_left\"\n           data-ng-if=\"state\"\n           data-ng-click=\"$event.preventDefault(); move(-1);\"></a>\n\n        <a href=\"#\" class=\"gifts_grid__arrow gifts_grid__arrow_r slider_arrow_right\"\n           data-ng-if=\"blocks.length && state != (blocks.length-1)\"\n           data-ng-click=\"$event.preventDefault(); move(1);\"></a>\n\n    </div>\n\n    <magic-modal class=\"bns_overlay_gift\" data-show=\"selected_gift\">\n\n        <div class=\"modal_gift_container\">\n\n            <img class=\"gift_more_img\" data-ng-src=\"{{ selected_gift.thumbs.url_250x250 | sailplay_pic }}\"\n                 alt=\"{{ selected_gift.name }}\">\n\n            <div class=\"gift_more_block\">\n\n                <span data-ng-bind=\"selected_gift\"></span>\n\n                <span class=\"gift_more_name modal_gift_name\" data-ng-bind=\"selected_gift.name\"></span>\n\n                <span class=\"gift_more_points modal_gift_points\"\n                      data-ng-bind=\"(selected_gift.points | number) + ' ' + (selected_gift.points | sailplay_pluralize:('points.texts.pluralize' | tools))\"></span>\n\n                <p class=\"gift_more_descr modal_gift_description\" data-ng-bind=\"selected_gift.descr\"></p>\n\n                <div class=\"modal_gift_buttons\">\n\n                    <span class=\"alink button_primary\" data-ng-click=\"$parent.$parent.selected_gift=null\">{{ 'buttons.texts.close' | tools }}</span>\n\n                    <span class=\"alink button_primary\"\n                          style=\"margin-left: 5px;\"\n                          data-ng-click=\"gift_confirm(selected_gift);\"\n                          data-ng-bind=\"widget.texts.get\"></span>\n                </div>\n\n            </div>\n        </div>\n\n\n</div>";
 
 /***/ },
-/* 169 */
+/* 173 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(170);
+	var content = __webpack_require__(174);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(111)(content, {});
@@ -2215,7 +2291,7 @@ return webpackJsonp([2],[
 	}
 
 /***/ },
-/* 170 */
+/* 174 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(110)();
@@ -2229,18 +2305,18 @@ return webpackJsonp([2],[
 
 
 /***/ },
-/* 171 */
+/* 175 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var _widget = __webpack_require__(98);
 
-	var _header = __webpack_require__(172);
+	var _header = __webpack_require__(176);
 
 	var _header2 = _interopRequireDefault(_header);
 
-	__webpack_require__(173);
+	__webpack_require__(177);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2255,19 +2331,19 @@ return webpackJsonp([2],[
 	});
 
 /***/ },
-/* 172 */
+/* 176 */
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"header_wrapper container\">\n  <h3 class=\"header_title\" data-ng-if=\"widget.flag.name_is_title && !widget.user()\">\n    {{ widget.texts.title }}\n  </h3>\n\n  <h3 class=\"header_title\" data-ng-if=\"!widget.flag.name_is_title\">\n    {{ widget.texts.title }}\n  </h3>\n  <h3 class=\"header_title\" data-ng-if=\"widget.flag.middle_name_is_title && widget.user()\">\n    {{ widget.user().user.middle_name }}\n  </h3>\n\n  <h2 class=\"header_sub_title\">\n    {{ widget.texts.sub_title }}\n  </h2>\n\n  <ul class=\"header_static_keys\">\n    <li data-ng-repeat=\"key in widget.texts.static_keys\" data-ng-bind=\"key\"></li>\n  </ul>\n\n</div>";
+	module.exports = "<div class=\"header_wrapper container\">\n  <h3 class=\"header_title\" data-ng-if=\"widget.flag.middle_name_is_title && !widget.user()\">\n    {{ widget.texts.title }}\n  </h3>\n\n  <h3 class=\"header_title\" data-ng-if=\"!widget.flag.middle_name_is_title\">\n    {{ widget.texts.title }}\n  </h3>\n  <h3 class=\"header_title\" data-ng-if=\"widget.flag.middle_name_is_title && widget.user()\">\n    {{ widget.user().user.middle_name }}\n  </h3>\n\n  <h2 class=\"header_sub_title\">\n    {{ widget.texts.sub_title }}\n  </h2>\n\n  <ul class=\"header_static_keys\">\n    <li data-ng-repeat=\"key in widget.texts.static_keys\" data-ng-bind=\"key\"></li>\n  </ul>\n\n</div>";
 
 /***/ },
-/* 173 */
+/* 177 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(174);
+	var content = __webpack_require__(178);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(111)(content, {});
@@ -2287,7 +2363,7 @@ return webpackJsonp([2],[
 	}
 
 /***/ },
-/* 174 */
+/* 178 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(110)();
@@ -2301,18 +2377,18 @@ return webpackJsonp([2],[
 
 
 /***/ },
-/* 175 */
+/* 179 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var _widget = __webpack_require__(98);
 
-	var _imageStatuses = __webpack_require__(176);
+	var _imageStatuses = __webpack_require__(180);
 
 	var _imageStatuses2 = _interopRequireDefault(_imageStatuses);
 
-	__webpack_require__(177);
+	__webpack_require__(181);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2371,19 +2447,19 @@ return webpackJsonp([2],[
 	});
 
 /***/ },
-/* 176 */
+/* 180 */
 /***/ function(module, exports) {
 
 	module.exports = "<div class=\"clearfix container\">\n\n  <div class=\"image-status-list\">\n\n    <div class=\"next_status_info\" data-ng-show=\"get_next_status().status\">\n\n      <div class=\"next_status_name\">\n        {{ widget.texts.next_status }} <span data-ng-style=\"{ color: get_next_status().status.color  }\">{{ get_next_status().status.status }}</span>\n      </div>\n\n      <div class=\"next_status_offset\">\n        {{ widget.texts.next_status_offset }} {{ get_next_status().offset }}\n      </div>\n\n    </div>\n\n    <div class=\"image-status-list__wrapper\" data-sailplay-statuses data-ng-cloak>\n\n      <div class=\"image-status-list__progress element-progress progress_line\"\n           data-ng-style=\"getProgress(user().user_points, _statuses)\"></div>\n\n      <div class=\"image-status-list__item element-item\"\n           data-ng-class=\"{ type_active : is_active_status(item) }\"\n           data-ng-repeat=\"item in _statuses\"\n           data-ng-style=\"generateOffset($index, _statuses)\">\n\n        <!--<div class=\"image-status-list__item-point element-item-point\"></div>-->\n\n        <div class=\"element-item-point-inner\">\n          <img class=\"status_image\" data-ng-src=\"{{ get_status_image(item) }}\" alt=\"\">\n        </div>\n\n      </div>\n\n    </div>\n\n  </div>\n</div>";
 
 /***/ },
-/* 177 */
+/* 181 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(178);
+	var content = __webpack_require__(182);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(111)(content, {});
@@ -2403,7 +2479,7 @@ return webpackJsonp([2],[
 	}
 
 /***/ },
-/* 178 */
+/* 182 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(110)();
@@ -2417,18 +2493,18 @@ return webpackJsonp([2],[
 
 
 /***/ },
-/* 179 */
+/* 183 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var _widget = __webpack_require__(98);
 
-	var _leaderboard = __webpack_require__(180);
+	var _leaderboard = __webpack_require__(184);
 
 	var _leaderboard2 = _interopRequireDefault(_leaderboard);
 
-	__webpack_require__(181);
+	__webpack_require__(185);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2445,19 +2521,19 @@ return webpackJsonp([2],[
 	});
 
 /***/ },
-/* 180 */
+/* 184 */
 /***/ function(module, exports) {
 
 	module.exports = "<div class=\"clearfix\">\n    <div class=\"bon_choice_main container\" data-ng-show=\"widget.enabled\" data-ng-cloak>\n\n        <h3 class=\"bon_header\">\n            <span class=\"header\">{{ widget.texts.header }}</span>\n        </h3>\n        <h4 class=\"bon_sub_header\">\n            <span class=\"caption\">{{ widget.texts.caption }}</span>\n        </h4>\n\n        <ul class=\"leaderboard__list\" data-ng-if=\"data && data()\">\n\n            <li class=\"leaderboard__list-item type_headers\">\n\n                <span class=\"leaderboard__list-item__rank rows headers\">{{ widget.texts.rank }}</span>\n\n                <span class=\"leaderboard__list-item__name rows headers\">{{ widget.texts.full_name }}</span>\n\n                <span class=\"leaderboard__list-item__score rows headers\">{{ widget.texts.score }}</span>\n\n            </li>\n\n            <li class=\"leaderboard__list-item\" data-ng-repeat=\"member in $parent.data().members.members\"\n                data-ng-class=\"{ type_current : member.is_current_user }\">\n\n                <span class=\"leaderboard__list-item__rank rank rows\" data-ng-bind=\"member.rank\"></span>\n\n                <span class=\"leaderboard__list-item__name full_name rows\">\n\n                    <img class=\"leaderboard__list-item__photo photo\" data-ng-if=\"member.pic\"\n                         data-ng-src=\"{{ $parent.member.pic | sailplay_pic }}\"\n                         alt=\"{{ $parent.member.full_name || 'n/a' }}\">\n\n                    {{ member.full_name || 'n/a' }}\n\n                </span>\n\n                <span class=\"leaderboard__list-item__score score rows\" data-ng-bind=\"member.score\"></span>\n\n            </li>\n\n        </ul>\n\n\n    </div>\n</div>\n\n";
 
 /***/ },
-/* 181 */
+/* 185 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(182);
+	var content = __webpack_require__(186);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(111)(content, {});
@@ -2477,78 +2553,6 @@ return webpackJsonp([2],[
 	}
 
 /***/ },
-/* 182 */
-/***/ function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(110)();
-	// imports
-
-
-	// module
-	exports.push([module.id, ".spm_wrapper .widget.leaderboard ul li {\n  list-style: none;\n}\n.spm_wrapper .widget.leaderboard__list {\n  max-width: 600px;\n  box-sizing: border-box;\n  padding: 0 10px;\n  margin: 0 auto 20px !important;\n  float: none;\n}\n.spm_wrapper .widget.leaderboard__list-item {\n  display: inline-block;\n  width: 100%;\n  position: relative;\n  box-sizing: border-box;\n  z-index: 1;\n  font-size: 0;\n  padding: 5px;\n}\n.spm_wrapper .widget.leaderboard__list-item.type_current {\n  background: #6385b5;\n}\n.spm_wrapper .widget.leaderboard__list-item.type_current span {\n  color: white;\n}\n.spm_wrapper .widget.leaderboard__list-item.type_headers {\n  margin-bottom: 5px;\n  margin-top: 20px;\n}\n.spm_wrapper .widget.leaderboard__list-item.type_headers span {\n  font-size: 18px;\n}\n.spm_wrapper .widget.leaderboard__list-item span {\n  display: inline-block;\n  vertical-align: middle;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  color: #676767;\n  white-space: nowrap;\n  line-height: 18px;\n}\n.spm_wrapper .widget.leaderboard__list-item__photo {\n  height: 18px;\n  display: inline-block;\n  vertical-align: top;\n}\n.spm_wrapper .widget.leaderboard__list-item__rank {\n  font-size: 18px;\n  width: 20%;\n  text-align: left;\n}\n.spm_wrapper .widget.leaderboard__list-item__name {\n  font-size: 14px;\n  width: 60%;\n  text-align: center;\n}\n.spm_wrapper .widget.leaderboard__list-item__score {\n  font-size: 18px;\n  width: 20%;\n  text-align: right;\n}\n", ""]);
-
-	// exports
-
-
-/***/ },
-/* 183 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var _widget = __webpack_require__(98);
-
-	var _link = __webpack_require__(184);
-
-	var _link2 = _interopRequireDefault(_link);
-
-	__webpack_require__(185);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	(0, _widget.WidgetRegister)({
-	  id: 'link',
-	  template: _link2.default,
-	  inject: ['SailPlayApi'],
-	  controller: function controller(SailPlayApi) {
-	    return function (scope, elm, attrs) {};
-	  }
-
-	});
-
-/***/ },
-/* 184 */
-/***/ function(module, exports) {
-
-	module.exports = "<div class=\"container\">\n    <div class=\"sp-link\">\n        <a href=\"{{ widget.options.link_href }}\" data-ng-bind=\"widget.options.link_name\"></a>\n    </div>\n</div>";
-
-/***/ },
-/* 185 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-
-	// load the styles
-	var content = __webpack_require__(186);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(111)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(false) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./link.less", function() {
-				var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./link.less");
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ },
 /* 186 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -2557,7 +2561,7 @@ return webpackJsonp([2],[
 
 
 	// module
-	exports.push([module.id, ".sp-link {\n  text-align: center;\n  margin-top: 60px !important;\n  margin-bottom: 60px !important;\n}\n", ""]);
+	exports.push([module.id, ".spm_wrapper .widget.leaderboard ul li {\n  list-style: none;\n}\n.spm_wrapper .widget.leaderboard__list {\n  max-width: 600px;\n  box-sizing: border-box;\n  padding: 0 10px;\n  margin: 0 auto 20px !important;\n  float: none;\n}\n.spm_wrapper .widget.leaderboard__list-item {\n  display: inline-block;\n  width: 100%;\n  position: relative;\n  box-sizing: border-box;\n  z-index: 1;\n  font-size: 0;\n  padding: 5px;\n}\n.spm_wrapper .widget.leaderboard__list-item.type_current {\n  background: #6385b5;\n}\n.spm_wrapper .widget.leaderboard__list-item.type_current span {\n  color: white;\n}\n.spm_wrapper .widget.leaderboard__list-item.type_headers {\n  margin-bottom: 5px;\n  margin-top: 20px;\n}\n.spm_wrapper .widget.leaderboard__list-item.type_headers span {\n  font-size: 18px;\n}\n.spm_wrapper .widget.leaderboard__list-item span {\n  display: inline-block;\n  vertical-align: middle;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  color: #676767;\n  white-space: nowrap;\n  line-height: 18px;\n}\n.spm_wrapper .widget.leaderboard__list-item__photo {\n  height: 18px;\n  display: inline-block;\n  vertical-align: top;\n}\n.spm_wrapper .widget.leaderboard__list-item__rank {\n  font-size: 18px;\n  width: 20%;\n  text-align: left;\n}\n.spm_wrapper .widget.leaderboard__list-item__name {\n  font-size: 14px;\n  width: 60%;\n  text-align: center;\n}\n.spm_wrapper .widget.leaderboard__list-item__score {\n  font-size: 18px;\n  width: 20%;\n  text-align: right;\n}\n", ""]);
 
 	// exports
 
@@ -3250,7 +3254,7 @@ return webpackJsonp([2],[
 /* 210 */
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"container clearfix soligent-sa-widget\" data-ng-show=\"user && user()\">\n\n    <div class=\"soligent-sa-wrapper clearfix\">\n\n        <div class=\"soligent-sa-block soligent-sa-block_current\" data-ng-if=\"current_status\">\n\n            <div class=\"soligent-sa-block__title\" data-ng-bind=\"'YOUR ' + current_status.name + ' BENEFITS'\"></div>\n\n            <div class=\"soligent-sa-block__icon\"\n                 style=\"background-image: {{ current_status.icon | background_image }}\"></div>\n\n            <ul class=\"soligent-sa-block-list\">\n\n                <li class=\"soligent-sa-block-list__item\" data-ng-repeat=\"text in current_status.texts track by $index\"\n                    data-ng-bind=\"text\"></li>\n\n            </ul>\n\n        </div>\n\n        <div class=\"soligent-sa-block soligent-sa-block_next\" data-ng-if=\"next_status\">\n\n            <div class=\"soligent-sa-block__title\"\n                 data-ng-bind=\"'SPEND $' + (next_status.sum | number) + ' THIS YEAR TO BECOME A ' + next_status.name + ' MEMBER'\"></div>\n\n            <div class=\"soligent-sa-block__icon\"\n                 style=\"background-image: {{ next_status.icon | background_image }}\"></div>\n\n            <ul class=\"soligent-sa-block-list\">\n\n                <li class=\"soligent-sa-block-list__item\" data-ng-repeat=\"text in next_status.texts track by $index\"\n                    data-ng-bind=\"text\"></li>\n\n            </ul>\n\n            <a class=\"soligent-sa-block-link\"\n               target=\"_blank\"\n               data-ng-click=\"soligent_status.show = true\"\n               data-ng-if=\"widget.options.next_status_link\"\n               data-ng-bind=\"widget.options.next_status_link.title\"></a>\n\n        </div>\n\n        <magic-modal data-width=\"widget.options.popup_width\", data-src=\"widget.options.popup_image\" class=\"soligent-sa_link-popup\" data-show=\"soligent_status.show\">\n            <img data-ng-src=\"{{ widget.options.popup_image }}\" alt=\"\">\n            <p data-ng-show=\"widget.options.popup_text\" data-ng-bind=\"widget.options.popup_text\"></p>\n        </magic-modal>\n\n        <div class=\"soligent-sa-block soligent-sa-block_monthly_special\"\n             data-ng-if=\"$parent.widget.options.monthly_special\">\n\n            <div class=\"soligent-sa-block__title\">MONTHLY SPECIAL</div>\n\n            <div class=\"soligent-sa-block__icon\"\n                 style=\"background-image: {{ $parent.widget.options.monthly_special.icon | background_image }}\"></div>\n\n            <ul class=\"soligent-sa-block-list\">\n\n                <li class=\"soligent-sa-block-list__item\"\n                    data-ng-repeat=\"text in $parent.widget.options.monthly_special.texts track by $index\"\n                    data-ng-bind=\"text\"></li>\n\n            </ul>\n\n        </div>\n\n        <div class=\"soligent-sa-block monthly_special_account\" data-ng-if=\"variables\">\n\n            <div class=\"soligent-sa-block__title\">YOUR ACCOUNT EXECUTIVE:</div>\n\n            <div class=\"soligent-sa-block__info\" data-ng-bind=\"variables.sales_rep || 'Name N/A'\"></div>\n\n            <div class=\"soligent-sa-block__info\" data-ng-bind=\"variables.sales_rep_phone || 'Phone N/A'\"></div>\n\n            <div class=\"soligent-sa-block__info\" data-ng-bind=\"variables.sales_rep_email || 'Email N/A'\"></div>\n\n            <div class=\"soligent-sa-block__info\">\n                <span class=\"soligent-sa-block__info_black\">ACCOUNT #:</span>\n                <span data-ng-bind=\"$parent.user().user.origin_user_id || 'N/A'\"></span>\n            </div>\n\n        </div>\n\n    </div>\n\n</div>";
+	module.exports = "<div class=\"container clearfix soligent-sa-widget\" data-ng-show=\"user && user()\">\n\n    <div class=\"soligent-sa-wrapper clearfix\">\n\n        <div class=\"soligent-sa-block soligent-sa-block_current\" data-ng-if=\"current_status\">\n\n            <div class=\"soligent-sa-block__title\" data-ng-bind=\"'YOUR ' + current_status.name + ' BENEFITS'\"></div>\n\n            <div class=\"soligent-sa-block__icon\"\n                 style=\"background-image: {{ current_status.icon | background_image }}\"></div>\n\n            <ul class=\"soligent-sa-block-list\">\n\n                <li class=\"soligent-sa-block-list__item\" data-ng-repeat=\"text in current_status.texts track by $index\"\n                    data-ng-bind=\"text\"></li>\n\n            </ul>\n\n        </div>\n\n        <div class=\"soligent-sa-block soligent-sa-block_next\" data-ng-if=\"next_status\">\n\n            <div class=\"soligent-sa-block__title\"\n                 data-ng-bind=\"'SPEND $' + (next_status.sum | number) + ' THIS YEAR TO BECOME A ' + next_status.name + ' MEMBER'\"></div>\n\n            <div class=\"soligent-sa-block__icon\"\n                 style=\"background-image: {{ next_status.icon | background_image }}\"></div>\n\n            <ul class=\"soligent-sa-block-list\">\n\n                <li class=\"soligent-sa-block-list__item\" data-ng-repeat=\"text in next_status.texts track by $index\"\n                    data-ng-bind=\"text\"></li>\n\n            </ul>\n\n            <a class=\"soligent-sa-block-link\"\n               href=\"javascript:void(0)\"\n               data-ng-click=\"soligent_status.show = true\"\n               data-ng-if=\"widget.options.next_status_link\"\n               data-ng-bind=\"widget.options.next_status_link.title\"></a>\n\n        </div>\n\n        <magic-modal data-width=\"widget.options.popup_width\", data-src=\"widget.options.popup_image\" class=\"soligent-sa_link-popup\" data-show=\"soligent_status.show\">\n            <img data-ng-src=\"{{ widget.options.popup_image }}\" alt=\"\">\n            <p data-ng-show=\"widget.options.popup_text\" data-ng-bind=\"widget.options.popup_text\"></p>\n        </magic-modal>\n\n        <div class=\"soligent-sa-block soligent-sa-block_monthly_special\"\n             data-ng-if=\"$parent.widget.options.monthly_special\">\n\n            <div class=\"soligent-sa-block__title\">MONTHLY SPECIAL</div>\n\n            <div class=\"soligent-sa-block__icon\"\n                 style=\"background-image: {{ $parent.widget.options.monthly_special.icon | background_image }}\"></div>\n\n            <ul class=\"soligent-sa-block-list\">\n\n                <li class=\"soligent-sa-block-list__item\"\n                    data-ng-repeat=\"text in $parent.widget.options.monthly_special.texts track by $index\"\n                    data-ng-bind=\"text\"></li>\n\n            </ul>\n\n        </div>\n\n        <div class=\"soligent-sa-block monthly_special_account\" data-ng-if=\"variables\">\n\n            <div class=\"soligent-sa-block__title\">YOUR ACCOUNT EXECUTIVE:</div>\n\n            <div class=\"soligent-sa-block__info\" data-ng-bind=\"variables.sales_rep || 'Name N/A'\"></div>\n\n            <div class=\"soligent-sa-block__info\" data-ng-bind=\"variables.sales_rep_phone || 'Phone N/A'\"></div>\n\n            <div class=\"soligent-sa-block__info\" data-ng-bind=\"variables.sales_rep_email || 'Email N/A'\"></div>\n\n            <div class=\"soligent-sa-block__info\">\n                <span class=\"soligent-sa-block__info_black\">ACCOUNT #:</span>\n                <span data-ng-bind=\"$parent.user().user.origin_user_id || 'N/A'\"></span>\n            </div>\n\n        </div>\n\n    </div>\n\n</div>";
 
 /***/ },
 /* 211 */
