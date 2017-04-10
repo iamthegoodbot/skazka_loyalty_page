@@ -1,0 +1,12 @@
+<div class="container">
+    <div class="sp-link">
+        <a href="javascript:void(0)" data-ng-click="faq.show = true" data-ng-bind="widget.options.link_name"></a>
+    </div>
+
+    <magic-modal data-width="widget.options.popup_width" class="faq_overlay" data-show="faq.show">
+        <div class="faq_question" data-ng-repeat="quest in widget.faq">
+            <p class="faq_bold" data-ng-bind="quest.question"></p>
+            <p class="faq_italic" data-ng-bind="quest.answer"></p>
+        </div>
+    </magic-modal>
+</div>
