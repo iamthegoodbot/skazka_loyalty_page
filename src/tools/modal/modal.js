@@ -11,11 +11,13 @@ export let Modal = angular.module('magic.tools.modal', [])
     replace: true,
     template: ModalTemplate,
     scope: {
-      config: '=?'
+      config: '=?',
+      width: '=?'
     },
     transclude: true,
     link: function(scope, elm, attrs){
 
+      console.log(attrs)
       scope._modal_config = MAGIC_CONFIG.tools.modal;
       scope.show = false;
 

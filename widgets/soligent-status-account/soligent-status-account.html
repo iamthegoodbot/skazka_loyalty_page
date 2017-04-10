@@ -35,11 +35,15 @@
 
             <a class="soligent-sa-block-link"
                target="_blank"
+               data-ng-click="soligent_status.show = true"
                data-ng-if="widget.options.next_status_link"
-               data-ng-href="{{ widget.options.next_status_link.href }}"
                data-ng-bind="widget.options.next_status_link.title"></a>
 
         </div>
+
+        <magic-modal data-width="widget.options.popup_width", data-src="widget.options.image" class="soligent-sa_link-popup" data-show="soligent_status.show">
+            <img data-ng-src="{{ src }}" alt="">
+        </magic-modal>    
 
         <div class="soligent-sa-block soligent-sa-block_monthly_special"
              data-ng-if="$parent.widget.options.monthly_special">

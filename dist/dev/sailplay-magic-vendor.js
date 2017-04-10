@@ -125,14 +125,17 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	(function () {
 
+	  var last_scroll = 0;
 	  function disableScroll() {
-	    window.document.body.style.top = -(document.body.scrollTop) + 'px';
+	    last_scroll = document.body.scrollTop;
+	    window.document.body.style.top = -last_scroll + 'px';
 	    window.document.body.className += ' noscroll'
 	  }
 
 	  function enableScroll() {
-	    window.document.body.style.top = -(document.body.scrollTop) + 'px';
 	    window.document.body.className = window.document.body.className.replace(' noscroll', '')
+	    window.document.body.style.top = 0;    
+	    window.scrollTo(0, last_scroll)
 	  }  
 
 	  var SAILPLAY = (function () {
@@ -291,11 +294,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	        frame.style.left = '0';
 	        frame.style.bottom = '0';
 	        frame.style.right = '0';
-	        frame.style.width = '410px';
-	        frame.style.height = '510px';
+	        frame.style.width = '100%';
+	        frame.style.height = '100%';
 	        frame.created = true;
 	        frame.style.background = 'transparent';
-	        frame.style.margin = 'auto';
+	        frame.style.margin = '0 auto';
 	        frame.style.zIndex = '100000';
 	        document.body.appendChild(frame);
 

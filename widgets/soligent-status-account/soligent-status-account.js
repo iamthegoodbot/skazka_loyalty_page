@@ -18,6 +18,12 @@ WidgetRegister({
 
       // User model
       scope.user = SailPlayApi.data('load.user.info');
+      scope.soligent_status = {
+        show: false,
+        openStatus: function(state) {
+          scope.soligent_status.show = state || false;
+        }
+      }
 
       // Account model
       scope.variables = {

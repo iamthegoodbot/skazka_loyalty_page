@@ -243,7 +243,7 @@ return webpackJsonp([0],[
 
 	  }]);
 	  return Magic;
-	}(), _class.Widget = _widget.WidgetRegister, _class.version = '2.1.4', _temp);
+	}(), _class.Widget = _widget.WidgetRegister, _class.version = '${MAGIC_VERSION}', _temp);
 
 	//extend SAILPLAY with Magic class
 
@@ -4815,11 +4815,13 @@ return webpackJsonp([0],[
 	    replace: true,
 	    template: _modal2.default,
 	    scope: {
-	      config: '=?'
+	      config: '=?',
+	      width: '=?'
 	    },
 	    transclude: true,
 	    link: function link(scope, elm, attrs) {
 
+	      console.log(attrs);
 	      scope._modal_config = MAGIC_CONFIG.tools.modal;
 	      scope.show = false;
 
@@ -4853,7 +4855,7 @@ return webpackJsonp([0],[
 /* 121 */
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"bns_overlay\" data-ng-class=\"{ visible: show }\" tabindex=\"-1\" role=\"dialog\">\n\n  <div class=\"bns_overlay_iner modal_container\" data-ng-style=\"{ background: _modal_config.styles.background }\">\n    <a href=\"#\" class=\"close_overlay\" data-ng-click=\"$event.preventDefault(); close();\" data-ng-style=\"{ backgroundImage: (_modal_config.images.close | background_image) }\" ng-hide=\"preventClose\"></a>\n    <ng-transclude></ng-transclude>\n\n  </div>\n\n</div>";
+	module.exports = "<div class=\"bns_overlay\" data-ng-class=\"{ visible: show }\" tabindex=\"-1\" role=\"dialog\">\n\n  <div class=\"bns_overlay_iner modal_container\" data-ng-style=\"{ background: _modal_config.styles.background, width: width }\">\n    <a href=\"#\" class=\"close_overlay\" data-ng-click=\"$event.preventDefault(); close();\" data-ng-style=\"{ backgroundImage: (_modal_config.images.close | background_image) }\" ng-hide=\"preventClose\"></a>\n    <ng-transclude></ng-transclude>\n\n  </div>\n\n</div>";
 
 /***/ },
 /* 122 */
