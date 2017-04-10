@@ -41,9 +41,10 @@
 
         </div>
 
-        <magic-modal data-width="widget.options.popup_width", data-src="widget.options.image" class="soligent-sa_link-popup" data-show="soligent_status.show">
-            <img data-ng-src="{{ src }}" alt="">
-        </magic-modal>    
+        <magic-modal data-width="widget.options.popup_width", data-src="widget.options.popup_image" class="soligent-sa_link-popup" data-show="soligent_status.show">
+            <img data-ng-src="{{ widget.options.popup_image }}" alt="">
+            <p data-ng-show="widget.options.popup_text" data-ng-bind="widget.options.popup_text"></p>
+        </magic-modal>
 
         <div class="soligent-sa-block soligent-sa-block_monthly_special"
              data-ng-if="$parent.widget.options.monthly_special">

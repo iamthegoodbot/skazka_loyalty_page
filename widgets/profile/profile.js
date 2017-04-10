@@ -18,10 +18,12 @@ const ProfileWidget = {
       scope.default_avatar = DefaultAvatarImage;
       $rootScope.$on('showHistory', () => scope.profile.history = true);
       $rootScope.$on('openProfile', () => scope.profile.show_fill_profile = true);
-      
+      $rootScope.$on('openFirstPopup', () => scope.profile.first_login = true);
+
       scope.profile = {
         history: false,
         show_fill_profile: false,
+        first_login: false,
         fill_profile: function(state){
 
           scope.profile.show_fill_profile = state || false;

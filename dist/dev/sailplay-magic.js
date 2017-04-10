@@ -243,7 +243,7 @@ return webpackJsonp([0],[
 
 	  }]);
 	  return Magic;
-	}(), _class.Widget = _widget.WidgetRegister, _class.version = '${MAGIC_VERSION}', _temp);
+	}(), _class.Widget = _widget.WidgetRegister, _class.version = '2.1.4', _temp);
 
 	//extend SAILPLAY with Magic class
 
@@ -1232,6 +1232,7 @@ return webpackJsonp([0],[
 	                  scope.already_showed = true;
 	                  scope.$parent.reg_incomplete = true;
 	                  scope.$parent.preventClose = true;
+	                  $rootScope.$broadcast('openFirstPopup');
 	                  $rootScope.$broadcast('openProfile');
 	                }, 10);
 	              }

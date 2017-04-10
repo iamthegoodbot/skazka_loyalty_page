@@ -348,6 +348,7 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
                     scope.already_showed = true;
                     scope.$parent.reg_incomplete = true;
                     scope.$parent.preventClose = true;
+                    $rootScope.$broadcast('openFirstPopup');
                     $rootScope.$broadcast('openProfile');
                   }, 10)
                 }

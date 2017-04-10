@@ -66,6 +66,12 @@
     </div>
   </div>
 
+  <magic-modal data-width="widget.options.popup_width", data-src="widget.options.popup_image" class="profile-sa_profile-popup" data-show="profile.first_login">
+      <img data-ng-src="{{ widget.options.popup_image }}" alt="">
+      <p data-ng-show="widget.options.popup_text" data-ng-bind="widget.options.popup_text"></p>
+  </magic-modal>
+
+
   <magic-modal class="bns_overlay_hist" data-show="profile.history">
 
     <div data-sailplay-history data-sailplay-profile>
