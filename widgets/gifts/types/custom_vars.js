@@ -16,6 +16,20 @@ GiftTypeRegister({
             <label class="form_label">{{ field.label }}</label>
             <date-selector data-ng-model="field.value" data-max-year="{{ field.options.max_year }}" data-min-year="{{ field.options.min_year }}"></date-selector>
           </div>
+          <div data-ng-switch-when="text" class="clearfix">
+            <label class="form_label">{{ field.label }}</label>
+            <input class="form_input" type="text" placeholder="{{ field.placeholder }}" data-ng-model="field.value">
+          </div>
+          <div data-ng-switch-when="select" class="clearfix">
+            <label class="form_label">{{ field.label }}</label>
+            <div class="magic_select form_input">
+              <select data-ng-model="field.value" data-ng-options="item.value as item.text for item in field.data"></select>
+            </div>
+          </div>
+          <div data-ng-switch-when="phone" class="clearfix">
+            <label class="form_label">{{ field.label }}</label>
+            <input class="form_input" type="text" data-ui-mask="{{ field.placeholder }}" data-ng-model="field.value">
+          </div>          
         </div>
       </form>
     `,
