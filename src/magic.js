@@ -5,6 +5,7 @@ import SailPlay from './sailplay/sailplay';
 import core, { Core } from './core/core';
 import Cookies from 'angular-cookie';
 import NgTouch from 'angular-touch';
+import ngSanitize from 'angular-sanitize';
 import Tools from './tools/tools';
 import { WidgetRegister } from '@core/widget'
 // import NgLocale from 'angular-i18n';
@@ -12,7 +13,7 @@ import { WidgetRegister } from '@core/widget'
 //import theme styles
 import './theme/theme.less';
 
-export let magic = angular.module('magic', [ SailPlay, core, Cookies, Tools, NgTouch ])
+export let magic = angular.module('magic', [ SailPlay, core, Cookies, Tools, NgTouch, ngSanitize ])
 
 .config(function(SailPlayProvider, MAGIC_CONFIG, SailPlayHistoryProvider, SailPlayActionsDataProvider){
 
