@@ -18,7 +18,7 @@
         </div>
         <div class="user_info">
           <span class="user_name"  data-ng-bind="user().user.name || widget.texts.name_not_defined"></span>
-          <span class="user_phone" data-ng-if="user().user.phone"  data-ng-bind="user().user.phone | tel"></span>
+          <span class="user_phone" data-ng-if="user().user.phone">+{{ user().user.phone | tel }}</span>
           <span class="user_email" data-ng-if="user().user.email"  data-ng-bind="user().user.email"></span>
         </div>
         <div class="user_info">
@@ -44,6 +44,8 @@
           <span class="points_confirmed_name" data-ng-bind="user().user_points.confirmed | sailplay_pluralize: ('points.texts.pluralize' | tools)"></span>
         </span>
         <a class="button_link history_button" href="#" data-ng-click="$event.preventDefault(); profile.history = true;">{{ widget.texts.history_button }}</a>
+        <a class="button_link spend_button" href="#" scroll-to="cardQuests">Потратить баллы</a>
+        
       </div>
       <div class="bps_right progress_block clearfix" data-ng-if="progress">
         <div class="progress_line_main">

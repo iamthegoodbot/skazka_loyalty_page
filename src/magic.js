@@ -6,13 +6,14 @@ import core, { Core } from './core/core';
 import Cookies from 'angular-cookie';
 import NgTouch from 'angular-touch';
 import Tools from './tools/tools';
+import 'ngSmoothScroll';
 import { WidgetRegister } from '@core/widget'
 // import NgLocale from 'angular-i18n';
 
 //import theme styles
 import './theme/theme.less';
 
-export let magic = angular.module('magic', [ SailPlay, core, Cookies, Tools, NgTouch ])
+export let magic = angular.module('magic', [ SailPlay, core, Cookies, Tools, NgTouch, 'smoothScroll' ])
 
 .config(function(SailPlayProvider, MAGIC_CONFIG, SailPlayHistoryProvider, SailPlayActionsDataProvider){
 
