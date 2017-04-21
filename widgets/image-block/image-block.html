@@ -1,0 +1,12 @@
+<div class="image_block-wrapper container">
+
+  <h3 class="image_block-header">
+    {{ widget.texts.title }}
+  </h3>
+
+  <div class="image_block-content" ng-repeat="item in widget.items">
+      <img class="image_block__image" ng-src="{{ item.image }}" alt="">
+      <div class="image_block__text" ng-bind="item.text"></div>
+  </div>
+
+</div>
