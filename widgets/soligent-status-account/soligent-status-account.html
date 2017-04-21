@@ -4,7 +4,7 @@
 
         <div class="soligent-sa-block soligent-sa-block_current" data-ng-if="current_status">
 
-            <div class="soligent-sa-block__title" data-ng-bind="'YOUR ' + current_status.name + ' BENEFITS'"></div>
+            <div class="soligent-sa-block__title" data-ng-bind="'YOUR ' + (current_status.name.toUpperCase() != 'ELITE' ? current_status.name : '') + ' ELITE BENEFITS'"></div>
 
             <div class="soligent-sa-block__icon"
                  style="background-image: {{ current_status.icon | background_image }}"></div>
@@ -16,12 +16,18 @@
 
             </ul>
 
+            <a class="soligent-sa-block-link"
+               href="javascript:void(0)"
+               data-ng-click="faq.show = true"
+               data-ng-if="widget.options.faq_link"
+               data-ng-bind="widget.options.faq_link.title">FAQs</a>
+
         </div>
 
         <div class="soligent-sa-block soligent-sa-block_next" data-ng-if="next_status">
 
             <div class="soligent-sa-block__title"
-                 data-ng-bind="'SPEND $' + (next_status.sum | number) + ' THIS YEAR TO BECOME A ' + next_status.name + ' MEMBER'"></div>
+                 data-ng-bind="'SPEND $' + (next_status.sum | number) + ' THIS YEAR TO BECOME A ' + next_status.name + ' ELITE DEALER'"></div>
 
             <div class="soligent-sa-block__icon"
                  style="background-image: {{ next_status.icon | background_image }}"></div>
@@ -40,6 +46,13 @@
                data-ng-bind="widget.options.next_status_link.title"></a>
 
         </div>
+
+        <magic-modal data-width="widget.options.faq_popup_width" class="soligent-sa_link-popup" data-show="faq.show">
+            <div class="faq_question" data-ng-repeat="quest in widget.faq">
+                <p class="faq_bold" data-ng-bind="quest.question"></p>
+                <p class="faq_italic" data-ng-bind="quest.answer"></p>
+            </div>
+        </magic-modal>
 
         <magic-modal data-width="widget.options.popup_width", data-src="widget.options.popup_image" class="soligent-sa_link-popup" data-show="soligent_status.show">
             <img data-ng-src="{{ widget.options.popup_image }}" alt="">

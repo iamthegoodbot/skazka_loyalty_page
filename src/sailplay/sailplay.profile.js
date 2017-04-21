@@ -339,7 +339,8 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
           //  angular.extend(scope.profile_form, ipCookie(FillProfile.cookie_name));
           //}
           console.dir(form);
-                      
+
+          $rootScope.$broadcast('openFirstPopup');                      
           if (!scope.already_showed) {
             SailPlay.send('tags.exist', {tags: ['Registration completed']}, function (res) {
               if (res && res.tags.length) {
@@ -348,7 +349,6 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
                     scope.already_showed = true;
                     scope.$parent.reg_incomplete = true;
                     scope.$parent.preventClose = true;
-                    $rootScope.$broadcast('openFirstPopup');
                     $rootScope.$broadcast('openProfile');
                   }, 10)
                 }

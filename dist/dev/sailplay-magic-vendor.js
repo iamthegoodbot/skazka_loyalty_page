@@ -125,19 +125,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	(function () {
 
-	  var last_scroll = 0;
-	  function disableScroll() {
-	    last_scroll = document.body.scrollTop;
-	    window.document.body.style.top = -last_scroll + 'px';
-	    window.document.body.className += ' noscroll'
-	  }
-
-	  function enableScroll() {
-	    window.document.body.className = window.document.body.className.replace(' noscroll', '')
-	    window.document.body.style.top = 0;    
-	    window.scrollTo(0, last_scroll)
-	  }  
-
 	  var SAILPLAY = (function () {
 
 	    //methods that not supported in old browsers
@@ -280,7 +267,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    function remoteLogin(opts) {
 
 	      var frame;
-	      disableScroll();
 	      opts = opts || {};
 
 	      if (opts.node && opts.node.nodeType == 1 && opts.node.tagName == 'IFRAME') {
@@ -294,14 +280,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	        frame.style.left = '0';
 	        frame.style.bottom = '0';
 	        frame.style.right = '0';
-	        frame.style.width = '100%';
-	        frame.style.height = '100%';
+	        frame.style.width = '410px';
+	        frame.style.height = '510px';
 	        frame.created = true;
 	        frame.style.background = 'transparent';
-	        frame.style.margin = '0 auto';
+	        frame.style.margin = 'auto';
 	        frame.style.zIndex = '100000';
 	        document.body.appendChild(frame);
-
 	      }
 
 	      var frame_id = frame.id || 'sailplay_login_frame_' + new Date().getTime();
@@ -330,7 +315,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        if (data.name == 'login.cancel') {
 	          sp.send('login.cancel');
 	          cancelLogin();
-	          enableScroll();          
 	          return;
 	        }
 	        if (data.name == 'login.check') {
@@ -339,7 +323,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          }
 	          else {
 	            cancelLogin();
-	            enableScroll();            
+	            console.log('DAAATAAAA', data)
 	            sp.send('login.do', data.auth_hash, data)
 	          }
 	          return;
@@ -366,6 +350,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	      params.partner_info = opts.partner_info || 0;
 	      if(opts.reg_match_email_oid) {
 	        params.reg_match_email_oid = opts.reg_match_email_oid;
+	      }
+	      if(opts.is_soligent) {
+	        params.is_soligent = opts.is_soligent;
 	      }
 	      if(opts.css_link) {
 	        params.css_link = opts.css_link;
@@ -460,7 +447,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          window.addEventListener("message", onActionMessage, false);
 
 	          //2. recieve ref_hash info
-	          // _config.ref_hash = sp.url_params().ref_hash || '';
+	          _config.ref_hash = sp.url_params().ref_hash || '';
 	          //var cookie_frame = document.createElement('IFRAME');
 	          //cookie_frame.style.width = 0;
 	          //cookie_frame.style.height = 0;

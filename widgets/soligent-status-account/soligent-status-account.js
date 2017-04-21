@@ -18,6 +18,9 @@ WidgetRegister({
 
       // User model
       scope.user = SailPlayApi.data('load.user.info');
+      scope.faq = {
+        faq: false
+      }
       scope.soligent_status = {
         show: false,
         openStatus: function(state) {
@@ -40,7 +43,7 @@ WidgetRegister({
 
       // Watch user data
       (function observeUser(){
-        SailPlayApi.observe('load.user.info').then((user) => {          
+        SailPlayApi.observe('load.user.info').then((user) => {        
             if (!MAGIC_CONFIG.data.status || !MAGIC_CONFIG.data.status.list || !scope.user().user_status || !scope.user().user_status.name) {
               observeUser();             
               return false;
@@ -51,7 +54,7 @@ WidgetRegister({
             }
 
             for (let i = 0, len = MAGIC_CONFIG.data.status.list.length; i < len; i++) {
-              if (MAGIC_CONFIG.data.status.list[i].name.toLowerCase() == scope.user().user_status.name.toLowerCase()) {
+              if (MAGIC_CONFIG.data.status.list[i].name.toLowerCase() == scope.user().user_status.name.toLowerCase()) {                
                 scope.current_status = MAGIC_CONFIG.data.status.list[i];
                 scope.next_status = MAGIC_CONFIG.data.status.list[i + 1];
                 break;

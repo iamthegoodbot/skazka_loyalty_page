@@ -641,19 +641,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	(function () {
 
-	  var last_scroll = 0;
-	  function disableScroll() {
-	    last_scroll = document.body.scrollTop;
-	    window.document.body.style.top = -last_scroll + 'px';
-	    window.document.body.className += ' noscroll'
-	  }
-
-	  function enableScroll() {
-	    window.document.body.className = window.document.body.className.replace(' noscroll', '')
-	    window.document.body.style.top = 0;    
-	    window.scrollTo(0, last_scroll)
-	  }  
-
 	  var SAILPLAY = (function () {
 
 	    //methods that not supported in old browsers
@@ -796,7 +783,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    function remoteLogin(opts) {
 
 	      var frame;
-	      disableScroll();
 	      opts = opts || {};
 
 	      if (opts.node && opts.node.nodeType == 1 && opts.node.tagName == 'IFRAME') {
@@ -810,14 +796,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	        frame.style.left = '0';
 	        frame.style.bottom = '0';
 	        frame.style.right = '0';
-	        frame.style.width = '100%';
-	        frame.style.height = '100%';
+	        frame.style.width = '410px';
+	        frame.style.height = '510px';
 	        frame.created = true;
 	        frame.style.background = 'transparent';
-	        frame.style.margin = '0 auto';
+	        frame.style.margin = 'auto';
 	        frame.style.zIndex = '100000';
 	        document.body.appendChild(frame);
-
 	      }
 
 	      var frame_id = frame.id || 'sailplay_login_frame_' + new Date().getTime();
@@ -846,7 +831,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        if (data.name == 'login.cancel') {
 	          sp.send('login.cancel');
 	          cancelLogin();
-	          enableScroll();          
 	          return;
 	        }
 	        if (data.name == 'login.check') {
@@ -855,7 +839,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          }
 	          else {
 	            cancelLogin();
-	            enableScroll();            
+	            console.log('DAAATAAAA', data)
 	            sp.send('login.do', data.auth_hash, data)
 	          }
 	          return;
@@ -882,6 +866,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	      params.partner_info = opts.partner_info || 0;
 	      if(opts.reg_match_email_oid) {
 	        params.reg_match_email_oid = opts.reg_match_email_oid;
+	      }
+	      if(opts.is_soligent) {
+	        params.is_soligent = opts.is_soligent;
 	      }
 	      if(opts.css_link) {
 	        params.css_link = opts.css_link;
@@ -976,7 +963,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          window.addEventListener("message", onActionMessage, false);
 
 	          //2. recieve ref_hash info
-	          // _config.ref_hash = sp.url_params().ref_hash || '';
+	          _config.ref_hash = sp.url_params().ref_hash || '';
 	          //var cookie_frame = document.createElement('IFRAME');
 	          //cookie_frame.style.width = 0;
 	          //cookie_frame.style.height = 0;
@@ -36164,6 +36151,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        //}
 	        console.dir(form);
 
+	        $rootScope.$broadcast('openFirstPopup');
 	        if (!scope.already_showed) {
 	          SailPlay.send('tags.exist', { tags: ['Registration completed'] }, function (res) {
 	            if (res && res.tags.length) {
@@ -36172,7 +36160,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	                  scope.already_showed = true;
 	                  scope.$parent.reg_incomplete = true;
 	                  scope.$parent.preventClose = true;
-	                  $rootScope.$broadcast('openFirstPopup');
 	                  $rootScope.$broadcast('openProfile');
 	                }, 10);
 	              }
@@ -43639,7 +43626,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 173 */
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"bon_choice_main container clearfix gifts_grid_widget\">\n\n    <h3 class=\"gifts_grid___header\">\n        <span class=\"header\" data-ng-bind=\"widget.texts.header\"></span>\n    </h3>\n\n    <h4 class=\"gifts_grid___caption\">\n        <span class=\"caption\" data-ng-bind=\"widget.texts.caption\"></span>\n    </h4>\n\n    <div class=\"gifts_grid__wrapper clearfix\">\n\n        <div class=\"gifts_grid__blocks clearfix\">\n\n            <div class=\"gifts_grid__block clearfix\">\n\n                <div class=\"gifts_grid__item clearfix\" data-ng-repeat=\"gift in blocks[state] track by $index\">\n\n                    <span class=\"gifts_grid__item-name gift_name\" data-ng-bind=\"gift.name\"></span>\n\n                    <span class=\"gifts_grid__item-points gift_points\"\n                          data-ng-bind=\"(gift.points | number) + ' ' + (gift.points | sailplay_pluralize:('points.texts.pluralize' | tools))\"></span>\n\n                    <img class=\"gifts_grid__item-img gift_img\"\n                         data-ng-src=\"{{ gift.thumbs.url_250x250 | sailplay_pic }}\"\n                         alt=\"{{ gift.name }}\">\n\n\n                    <a class=\"gifts_grid__item-button button_primary\" href=\"#\"\n                       data-ng-bind=\"widget.texts.get\"\n                       data-ng-click=\"$parent.selected_gift = gift;$event.preventDefault();\"></a>\n\n\n                </div>\n\n            </div>\n\n        </div>\n\n        <a href=\"#\" class=\"gifts_grid__arrow gifts_grid__arrow_l slider_arrow_left\"\n           data-ng-if=\"state\"\n           data-ng-click=\"$event.preventDefault(); move(-1);\"></a>\n\n        <a href=\"#\" class=\"gifts_grid__arrow gifts_grid__arrow_r slider_arrow_right\"\n           data-ng-if=\"blocks.length && state != (blocks.length-1)\"\n           data-ng-click=\"$event.preventDefault(); move(1);\"></a>\n\n    </div>\n\n    <magic-modal class=\"bns_overlay_gift\" data-show=\"selected_gift\">\n\n        <div class=\"modal_gift_container\">\n\n            <img class=\"gift_more_img\" data-ng-src=\"{{ selected_gift.thumbs.url_250x250 | sailplay_pic }}\"\n                 alt=\"{{ selected_gift.name }}\">\n\n            <div class=\"gift_more_block\">\n\n                <span data-ng-bind=\"selected_gift\"></span>\n\n                <span class=\"gift_more_name modal_gift_name\" data-ng-bind=\"selected_gift.name\"></span>\n\n                <span class=\"gift_more_points modal_gift_points\"\n                      data-ng-bind=\"(selected_gift.points | number) + ' ' + (selected_gift.points | sailplay_pluralize:('points.texts.pluralize' | tools))\"></span>\n\n                <p class=\"gift_more_descr modal_gift_description\" data-ng-bind=\"selected_gift.descr\"></p>\n\n                <div class=\"modal_gift_buttons\">\n\n                    <span class=\"alink button_primary\" data-ng-click=\"$parent.$parent.selected_gift=null\">{{ 'buttons.texts.close' | tools }}</span>\n\n                    <span class=\"alink button_primary\"\n                          style=\"margin-left: 5px;\"\n                          data-ng-click=\"gift_confirm(selected_gift);\"\n                          data-ng-bind=\"widget.texts.get\"></span>\n                </div>\n\n            </div>\n        </div>\n\n\n</div>";
+	module.exports = "<div class=\"bon_choice_main container clearfix gifts_grid_widget\">\n\n    <h3 class=\"gifts_grid___header\">\n        <span class=\"header\" data-ng-bind=\"widget.texts.header\"></span>\n    </h3>\n\n    <h4 class=\"gifts_grid___caption\">\n        <span class=\"caption\" data-ng-bind=\"widget.texts.caption\"></span>\n    </h4>\n\n    <div class=\"gifts_grid__wrapper clearfix\">\n\n        <div class=\"gifts_grid__blocks clearfix\">\n\n            <div class=\"gifts_grid__block clearfix\">\n\n                <div class=\"gifts_grid__item clearfix\" data-ng-repeat=\"gift in blocks[state] track by $index\">\n\n                    <span class=\"gifts_grid__item-name gift_name\" data-ng-bind=\"gift.name\"></span>\n\n                    <span class=\"gifts_grid__item-points gift_points\"\n                          data-ng-bind=\"(gift.points | number) + ' ' + (gift.points | sailplay_pluralize:('points.texts.pluralize' | tools))\"></span>\n\n                    <img class=\"gifts_grid__item-img gift_img\"\n                         data-ng-src=\"{{ gift.thumbs.url_250x250 | sailplay_pic }}\"\n                         alt=\"{{ gift.name }}\">\n\n\n                    <a class=\"gifts_grid__item-button button_primary\" href=\"#\"\n                       data-ng-bind=\"widget.texts.details\"\n                       data-ng-click=\"$parent.selected_gift = gift;$event.preventDefault();\"></a>\n\n\n                </div>\n\n            </div>\n\n        </div>\n\n        <a href=\"#\" class=\"gifts_grid__arrow gifts_grid__arrow_l slider_arrow_left\"\n           data-ng-if=\"state\"\n           data-ng-click=\"$event.preventDefault(); move(-1);\"></a>\n\n        <a href=\"#\" class=\"gifts_grid__arrow gifts_grid__arrow_r slider_arrow_right\"\n           data-ng-if=\"blocks.length && state != (blocks.length-1)\"\n           data-ng-click=\"$event.preventDefault(); move(1);\"></a>\n\n    </div>\n\n    <magic-modal class=\"bns_overlay_gift\" data-show=\"selected_gift\">\n\n        <div class=\"modal_gift_container\">\n\n            <img class=\"gift_more_img\" data-ng-src=\"{{ selected_gift.thumbs.url_250x250 | sailplay_pic }}\"\n                 alt=\"{{ selected_gift.name }}\">\n\n            <div class=\"gift_more_block\">\n\n                <span data-ng-bind=\"selected_gift\"></span>\n\n                <span class=\"gift_more_name modal_gift_name\" data-ng-bind=\"selected_gift.name\"></span>\n\n                <span class=\"gift_more_points modal_gift_points\"\n                      data-ng-bind=\"(selected_gift.points | number) + ' ' + (selected_gift.points | sailplay_pluralize:('points.texts.pluralize' | tools))\"></span>\n\n                <p class=\"gift_more_descr modal_gift_description\" data-ng-bind=\"selected_gift.descr\"></p>\n\n                <div class=\"modal_gift_buttons\">\n\n                    <span class=\"alink button_primary\" data-ng-click=\"$parent.$parent.selected_gift=null\">{{ 'buttons.texts.close' | tools }}</span>\n\n                    <span class=\"alink button_primary\"\n                          style=\"margin-left: 5px;\"\n                          data-ng-click=\"gift_confirm(selected_gift);\"\n                          data-ng-bind=\"widget.texts.get\"></span>\n                </div>\n\n            </div>\n        </div>\n\n\n</div>";
 
 /***/ },
 /* 174 */
@@ -44568,6 +44555,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	      // User model
 	      scope.user = SailPlayApi.data('load.user.info');
+	      scope.faq = {
+	        faq: false
+	      };
 	      scope.soligent_status = {
 	        show: false,
 	        openStatus: function openStatus(state) {
@@ -44631,7 +44621,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 211 */
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"container clearfix soligent-sa-widget\" data-ng-show=\"user && user()\">\n\n    <div class=\"soligent-sa-wrapper clearfix\">\n\n        <div class=\"soligent-sa-block soligent-sa-block_current\" data-ng-if=\"current_status\">\n\n            <div class=\"soligent-sa-block__title\" data-ng-bind=\"'YOUR ' + current_status.name + ' BENEFITS'\"></div>\n\n            <div class=\"soligent-sa-block__icon\"\n                 style=\"background-image: {{ current_status.icon | background_image }}\"></div>\n\n            <ul class=\"soligent-sa-block-list\">\n\n                <li class=\"soligent-sa-block-list__item\" data-ng-repeat=\"text in current_status.texts track by $index\"\n                    data-ng-bind=\"text\"></li>\n\n            </ul>\n\n        </div>\n\n        <div class=\"soligent-sa-block soligent-sa-block_next\" data-ng-if=\"next_status\">\n\n            <div class=\"soligent-sa-block__title\"\n                 data-ng-bind=\"'SPEND $' + (next_status.sum | number) + ' THIS YEAR TO BECOME A ' + next_status.name + ' MEMBER'\"></div>\n\n            <div class=\"soligent-sa-block__icon\"\n                 style=\"background-image: {{ next_status.icon | background_image }}\"></div>\n\n            <ul class=\"soligent-sa-block-list\">\n\n                <li class=\"soligent-sa-block-list__item\" data-ng-repeat=\"text in next_status.texts track by $index\"\n                    data-ng-bind=\"text\"></li>\n\n            </ul>\n\n            <a class=\"soligent-sa-block-link\"\n               href=\"javascript:void(0)\"\n               data-ng-click=\"soligent_status.show = true\"\n               data-ng-if=\"widget.options.next_status_link\"\n               data-ng-bind=\"widget.options.next_status_link.title\"></a>\n\n        </div>\n\n        <magic-modal data-width=\"widget.options.popup_width\", data-src=\"widget.options.popup_image\" class=\"soligent-sa_link-popup\" data-show=\"soligent_status.show\">\n            <img data-ng-src=\"{{ widget.options.popup_image }}\" alt=\"\">\n            <p data-ng-show=\"widget.options.popup_text\" data-ng-bind=\"widget.options.popup_text\"></p>\n        </magic-modal>\n\n        <div class=\"soligent-sa-block soligent-sa-block_monthly_special\"\n             data-ng-if=\"$parent.widget.options.monthly_special\">\n\n            <div class=\"soligent-sa-block__title\">MONTHLY SPECIAL</div>\n\n            <div class=\"soligent-sa-block__icon\"\n                 style=\"background-image: {{ $parent.widget.options.monthly_special.icon | background_image }}\"></div>\n\n            <ul class=\"soligent-sa-block-list\">\n\n                <li class=\"soligent-sa-block-list__item\"\n                    data-ng-repeat=\"text in $parent.widget.options.monthly_special.texts track by $index\"\n                    data-ng-bind=\"text\"></li>\n\n            </ul>\n\n        </div>\n\n        <div class=\"soligent-sa-block monthly_special_account\" data-ng-if=\"variables\">\n\n            <div class=\"soligent-sa-block__title\">YOUR ACCOUNT EXECUTIVE:</div>\n\n            <div class=\"soligent-sa-block__info\" data-ng-bind=\"variables.sales_rep || 'Name N/A'\"></div>\n\n            <div class=\"soligent-sa-block__info\" data-ng-bind=\"variables.sales_rep_phone || 'Phone N/A'\"></div>\n\n            <div class=\"soligent-sa-block__info\" data-ng-bind=\"variables.sales_rep_email || 'Email N/A'\"></div>\n\n            <div class=\"soligent-sa-block__info\">\n                <span class=\"soligent-sa-block__info_black\">ACCOUNT #:</span>\n                <span data-ng-bind=\"$parent.user().user.origin_user_id || 'N/A'\"></span>\n            </div>\n\n        </div>\n\n    </div>\n\n</div>";
+	module.exports = "<div class=\"container clearfix soligent-sa-widget\" data-ng-show=\"user && user()\">\n\n    <div class=\"soligent-sa-wrapper clearfix\">\n\n        <div class=\"soligent-sa-block soligent-sa-block_current\" data-ng-if=\"current_status\">\n\n            <div class=\"soligent-sa-block__title\" data-ng-bind=\"'YOUR ' + (current_status.name.toUpperCase() != 'ELITE' ? current_status.name : '') + ' ELITE BENEFITS'\"></div>\n\n            <div class=\"soligent-sa-block__icon\"\n                 style=\"background-image: {{ current_status.icon | background_image }}\"></div>\n\n            <ul class=\"soligent-sa-block-list\">\n\n                <li class=\"soligent-sa-block-list__item\" data-ng-repeat=\"text in current_status.texts track by $index\"\n                    data-ng-bind=\"text\"></li>\n\n            </ul>\n\n            <a class=\"soligent-sa-block-link\"\n               href=\"javascript:void(0)\"\n               data-ng-click=\"faq.show = true\"\n               data-ng-if=\"widget.options.faq_link\"\n               data-ng-bind=\"widget.options.faq_link.title\">FAQs</a>\n\n        </div>\n\n        <div class=\"soligent-sa-block soligent-sa-block_next\" data-ng-if=\"next_status\">\n\n            <div class=\"soligent-sa-block__title\"\n                 data-ng-bind=\"'SPEND $' + (next_status.sum | number) + ' THIS YEAR TO BECOME A ' + next_status.name + ' ELITE DEALER'\"></div>\n\n            <div class=\"soligent-sa-block__icon\"\n                 style=\"background-image: {{ next_status.icon | background_image }}\"></div>\n\n            <ul class=\"soligent-sa-block-list\">\n\n                <li class=\"soligent-sa-block-list__item\" data-ng-repeat=\"text in next_status.texts track by $index\"\n                    data-ng-bind=\"text\"></li>\n\n            </ul>\n\n            <a class=\"soligent-sa-block-link\"\n               href=\"javascript:void(0)\"\n               data-ng-click=\"soligent_status.show = true\"\n               data-ng-if=\"widget.options.next_status_link\"\n               data-ng-bind=\"widget.options.next_status_link.title\"></a>\n\n        </div>\n\n        <magic-modal data-width=\"widget.options.faq_popup_width\" class=\"soligent-sa_link-popup\" data-show=\"faq.show\">\n            <div class=\"faq_question\" data-ng-repeat=\"quest in widget.faq\">\n                <p class=\"faq_bold\" data-ng-bind=\"quest.question\"></p>\n                <p class=\"faq_italic\" data-ng-bind=\"quest.answer\"></p>\n            </div>\n        </magic-modal>\n\n        <magic-modal data-width=\"widget.options.popup_width\", data-src=\"widget.options.popup_image\" class=\"soligent-sa_link-popup\" data-show=\"soligent_status.show\">\n            <img data-ng-src=\"{{ widget.options.popup_image }}\" alt=\"\">\n            <p data-ng-show=\"widget.options.popup_text\" data-ng-bind=\"widget.options.popup_text\"></p>\n        </magic-modal>\n\n        <div class=\"soligent-sa-block soligent-sa-block_monthly_special\"\n             data-ng-if=\"$parent.widget.options.monthly_special\">\n\n            <div class=\"soligent-sa-block__title\">MONTHLY SPECIAL</div>\n\n            <div class=\"soligent-sa-block__icon\"\n                 style=\"background-image: {{ $parent.widget.options.monthly_special.icon | background_image }}\"></div>\n\n            <ul class=\"soligent-sa-block-list\">\n\n                <li class=\"soligent-sa-block-list__item\"\n                    data-ng-repeat=\"text in $parent.widget.options.monthly_special.texts track by $index\"\n                    data-ng-bind=\"text\"></li>\n\n            </ul>\n\n        </div>\n\n        <div class=\"soligent-sa-block monthly_special_account\" data-ng-if=\"variables\">\n\n            <div class=\"soligent-sa-block__title\">YOUR ACCOUNT EXECUTIVE:</div>\n\n            <div class=\"soligent-sa-block__info\" data-ng-bind=\"variables.sales_rep || 'Name N/A'\"></div>\n\n            <div class=\"soligent-sa-block__info\" data-ng-bind=\"variables.sales_rep_phone || 'Phone N/A'\"></div>\n\n            <div class=\"soligent-sa-block__info\" data-ng-bind=\"variables.sales_rep_email || 'Email N/A'\"></div>\n\n            <div class=\"soligent-sa-block__info\">\n                <span class=\"soligent-sa-block__info_black\">ACCOUNT #:</span>\n                <span data-ng-bind=\"$parent.user().user.origin_user_id || 'N/A'\"></span>\n            </div>\n\n        </div>\n\n    </div>\n\n</div>";
 
 /***/ },
 /* 212 */
@@ -44668,7 +44658,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	// module
-	exports.push([module.id, ".spm_wrapper .soligent-sa_link-popup img {\n  width: 100%;\n}\n.spm_wrapper .soligent-sa {\n  font-family: Tahoma;\n}\n.spm_wrapper .soligent-sa-wrapper {\n  width: 1200px;\n  padding: 50px 0;\n  margin: 0 auto;\n  box-sizing: border-box;\n}\n@media (max-width: 1200px) {\n  .spm_wrapper .soligent-sa-wrapper {\n    width: 95%;\n  }\n}\n.spm_wrapper .soligent-sa-block {\n  width: 48.5%;\n  float: left;\n  min-height: 250px;\n  box-sizing: border-box;\n  margin-bottom: 1.5%;\n  padding: 20px;\n  font-size: 0;\n  box-shadow: 0 0 20px -10px rgba(0, 0, 0, 0.8);\n}\n.spm_wrapper .soligent-sa-block-link {\n  font-size: 18px;\n  margin-top: 10px;\n  display: block;\n  color: blue;\n}\n@media (max-width: 650px) {\n  .spm_wrapper .soligent-sa-block {\n    width: 100%;\n  }\n}\n.spm_wrapper .soligent-sa-block:nth-child(odd) {\n  margin-right: 1.5%;\n}\n@media (max-width: 650px) {\n  .spm_wrapper .soligent-sa-block:nth-child(odd) {\n    margin-left: 0;\n  }\n}\n.spm_wrapper .soligent-sa-block:nth-child(even) {\n  margin-left: 1.5%;\n}\n@media (max-width: 650px) {\n  .spm_wrapper .soligent-sa-block:nth-child(even) {\n    margin-left: 0;\n  }\n}\n.spm_wrapper .soligent-sa-block__title {\n  text-transform: uppercase;\n  font-size: 28px;\n  margin-bottom: 20px;\n  font-weight: bold;\n  line-height: 1;\n}\n.spm_wrapper .soligent-sa-block__icon {\n  display: inline-block;\n  width: 100px;\n  height: 100px;\n  vertical-align: middle;\n  background-position: center center;\n  background-repeat: no-repeat;\n  background-size: contain;\n  border: 1px solid black;\n}\n.spm_wrapper .soligent-sa-block__info {\n  margin-bottom: 15px;\n  color: grey;\n  font-weight: bold;\n  font-size: 22px;\n}\n.spm_wrapper .soligent-sa-block__info:last-child {\n  margin-bottom: 0;\n}\n.spm_wrapper .soligent-sa-block__info_black {\n  color: black;\n}\n.spm_wrapper .soligent-sa-block-list {\n  width: 70%;\n  display: inline-block;\n  vertical-align: middle;\n  font-size: 14px;\n  margin-left: 20px;\n}\n@media (max-width: 1000px) {\n  .spm_wrapper .soligent-sa-block-list {\n    width: 100%;\n    margin-top: 10px;\n    margin-left: 0;\n  }\n}\n.spm_wrapper .soligent-sa-block-list__item {\n  margin-top: 10px;\n}\n.spm_wrapper .soligent-sa-block-list__item:first-child {\n  margin-top: 0;\n}\n", ""]);
+	exports.push([module.id, ".spm_wrapper .faq_question {\n  margin-bottom: 15px !important;\n}\n.spm_wrapper .faq_bold {\n  font-weight: 600 !important;\n  line-height: 2em;\n}\n.spm_wrapper .faq_italic {\n  font-style: italic !important;\n}\n.spm_wrapper .soligent-sa_link-popup img {\n  width: 100%;\n}\n.spm_wrapper .soligent-sa {\n  font-family: Tahoma;\n}\n.spm_wrapper .soligent-sa-wrapper {\n  width: 1200px;\n  padding: 50px 0;\n  margin: 0 auto;\n  box-sizing: border-box;\n}\n@media (max-width: 1200px) {\n  .spm_wrapper .soligent-sa-wrapper {\n    width: 95%;\n  }\n}\n.spm_wrapper .soligent-sa-block {\n  width: 48.5%;\n  float: left;\n  min-height: 250px;\n  box-sizing: border-box;\n  margin-bottom: 1.5%;\n  padding: 20px;\n  font-size: 0;\n  box-shadow: 0 0 20px -10px rgba(0, 0, 0, 0.8);\n}\n.spm_wrapper .soligent-sa-block-link {\n  font-size: 18px;\n  margin-top: 10px;\n  display: block;\n  color: blue;\n}\n@media (max-width: 650px) {\n  .spm_wrapper .soligent-sa-block {\n    width: 100%;\n  }\n}\n.spm_wrapper .soligent-sa-block:nth-child(odd) {\n  margin-right: 1.5%;\n}\n@media (max-width: 650px) {\n  .spm_wrapper .soligent-sa-block:nth-child(odd) {\n    margin-left: 0;\n  }\n}\n.spm_wrapper .soligent-sa-block:nth-child(even) {\n  margin-left: 1.5%;\n}\n@media (max-width: 650px) {\n  .spm_wrapper .soligent-sa-block:nth-child(even) {\n    margin-left: 0;\n  }\n}\n.spm_wrapper .soligent-sa-block__title {\n  text-transform: uppercase;\n  font-size: 28px;\n  margin-bottom: 20px;\n  font-weight: bold;\n  line-height: 1;\n}\n.spm_wrapper .soligent-sa-block__icon {\n  display: inline-block;\n  width: 100px;\n  height: 100px;\n  vertical-align: middle;\n  background-position: center center;\n  background-repeat: no-repeat;\n  background-size: contain;\n  border: 1px solid black;\n}\n.spm_wrapper .soligent-sa-block__info {\n  margin-bottom: 15px;\n  color: grey;\n  font-weight: bold;\n  font-size: 22px;\n}\n.spm_wrapper .soligent-sa-block__info:last-child {\n  margin-bottom: 0;\n}\n.spm_wrapper .soligent-sa-block__info_black {\n  color: black;\n}\n.spm_wrapper .soligent-sa-block-list {\n  width: 70%;\n  display: inline-block;\n  vertical-align: middle;\n  font-size: 14px;\n  margin-left: 20px;\n}\n@media (max-width: 1000px) {\n  .spm_wrapper .soligent-sa-block-list {\n    width: 100%;\n    margin-top: 10px;\n    margin-left: 0;\n  }\n}\n.spm_wrapper .soligent-sa-block-list__item {\n  margin-top: 10px;\n}\n.spm_wrapper .soligent-sa-block-list__item:first-child {\n  margin-top: 0;\n}\n", ""]);
 
 	// exports
 

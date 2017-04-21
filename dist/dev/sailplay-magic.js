@@ -1224,6 +1224,7 @@ return webpackJsonp([0],[
 	        //}
 	        console.dir(form);
 
+	        $rootScope.$broadcast('openFirstPopup');
 	        if (!scope.already_showed) {
 	          SailPlay.send('tags.exist', { tags: ['Registration completed'] }, function (res) {
 	            if (res && res.tags.length) {
@@ -1232,7 +1233,6 @@ return webpackJsonp([0],[
 	                  scope.already_showed = true;
 	                  scope.$parent.reg_incomplete = true;
 	                  scope.$parent.preventClose = true;
-	                  $rootScope.$broadcast('openFirstPopup');
 	                  $rootScope.$broadcast('openProfile');
 	                }, 10);
 	              }
