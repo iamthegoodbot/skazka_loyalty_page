@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>SAILPLAY HUB</title>
+  <script src="dist/sailplay.hub.min.js"></script>
+  <style>
+    body {
+      text-align: center;
+      font-family: "PT Sans", sans-serif;
+    }
+    table {
+      border-spacing: 0;
+      padding: 0;
+      border-collapse: collapse;
+    }
+    .doc_wrapper {
+      width: 90%;
+      margin: 40px auto;
+      display: inline-block;
+      text-align: left;
+      min-width: 900px;
+    }
+    pre {
+      padding: 12px;
+      background-color: #efefef;
+      border: 1px solid #adadad;
+      border-radius: 3px;
+      overflow: auto;
+      font-family:Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New;
+    }
+    ul, ol {
+      padding-left: 17px;
+    }
+    .events_table {
+      width: 100%;
+
+    }
+    th, td {
+      border: 1px solid #adadad;
+      font-weight: normal;
+      padding: 12px;
+    }
+    th {
+      background-color: #efefef;
+    }
+    .response {
+      padding: 0;
+    }
+    .response table {
+      width: 100%;
+    }
+    .response table tr th:first-child {
+      width: 60%;
+    }
+  </style>
+  <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/default.min.css">
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
+  <script>
+    window.onload = function(){
+      var codes = document.querySelectorAll('pre');
+      for(var i = 0; i < codes.length; i+=1){
+        hljs.highlightBlock(codes[i]);
+      }
+    };
+  </script>
+</head>
+<body>
+<div class="doc_wrapper">
+  <h1>SailPlay HUB</h1>
+  <h2>Описание</h2>
+  <p>
+    SailPlay HUB - это инструмент, для создания собственных виджетов для работы с сервисом SailPlay.
+    <br/>
+    За счет событийного взаимодействия и независимости от внешних библиотек, модуль удобно встраивается в любой фрэймворк или, написанный Вами код.
+  </p>
+  <h2>Принцип работы</h2>
+  <p>
+    Для работы с SailPlay HUB, необходимо добавить на страницу тег:
+  </p>
+    <pre class="html">
+      &lt;script src="ссылка на файл sailplay_hub.js"&gt;&lt;/script&gt;
+    </pre>
+  <p>
+    Модуль работает на системе событий.
+    <br/>
+    Модуль взаимодействует с сервером SailPlay с помощью JSONP запросов, поэтому может располагаться на любом домене.
+    <br/>
+    Основной принцип работы с модулем:
+  </p>
+  <ul>
+    <li>
+      Инициализация события с необходимыми параметрами с помощью метода: <br/>
+      <pre class="js">SAILPLAY.send( '{название-события}', {объект-параметр} );</pre>
+    </li>
+    <li>
+      Модуль выполняет асинхронные операции, затем инициирует различные события и передает обработанные данные. Установить обработчик на эти события можно с помощью метода: <br/>
+      <pre class="js">SAILPLAY.on( '{название-события}', {функция-обработчик-принимающая-возвращаемый-объект} );</pre>
+    </li>
+  </ul>
+  <h2>Список событий, на которые реагирует модуль и события, инициируемые ими.</h2>
+  <p>На данный момент реализованы следующие события:</p>
+  <table class="events_table">
+    <tr>
+      <th>Событие</th>
+      <th>Объект для передачи в обработчик модуля</th>
+      <th style="width: 43%;">Инициируемые модулем события</th>
+      <th>Описание</th>
+    </tr>
+    <tr>
+      <td>init</td>
+      <td>
+        Объект со свойствами:
+        partner_id: {айди-вашего-партнера} (обязательный)</td>
+      <td class="response">
+        <table>
+          <tr>
+            <th>Событие</th>
+            <th>Возвращаемый объект</th>
+          </tr>
+          <tr>
+            <td>init.success</td>
+            <td>объект конфигураций модуля</td>
+          </tr>
+          <tr>
+            <td>init.error</td>
+            <td>объект ошибки с сервера</td>
+          </tr>
+        </table>
+      </td>
+      <td>Инициализация модуля. Необходима для работы. Можно инициировать в любой удобный момент.</td>
+    </tr>
+    <tr>
+      <td>login</td>
+      <td>
+        Строка, содержащая auth_hash пользователя
+      </td>
+      <td class="response">
+        <table>
+          <tr>
+            <th>Событие</th>
+            <th>Возвращаемый объект</th>
+          </tr>
+          <tr>
+            <td>login.success</td>
+            <td>объект с данными авторизованного пользователя</td>
+          </tr>
+          <tr>
+            <td>login.error</td>
+            <td>объект ошибки с сервера</td>
+          </tr>
+        </table>
+      </td>
+      <td>Большинство методов требуют предварительной авторизации пользователя. Для этого необходимо инициировать событие login и передать в качетве параметра auth_hash пользователя, который можно получить через backend api</td>
+    </tr>
+    <tr>
+      <td>login.remote</td>
+      <td>
+        Объект со свойствами:
+        background: {css-код-цвета-фона} (не обязательный)
+      </td>
+      <td class="response">
+        <table>
+          <tr>
+            <th>Событие</th>
+            <th>Возвращаемый объект</th>
+          </tr>
+          <tr>
+            <td>login.success</td>
+            <td>объект с данными авторизованного пользователя</td>
+          </tr>
+          <tr>
+            <td>login.error</td>
+            <td>объект ошибки с сервера</td>
+          </tr>
+          <tr>
+            <td>login.cancel</td>
+            <td>Не возвращает</td>
+          </tr>
+        </table>
+      </td>
+      <td>
+        Событие рендерит айфрейм с формой авторизации/регистрации, включая регистрацию через социальные сети.
+        Вы можете настроить цвет фона в цвете вашей компании.
+      </td>
+    </tr>
+    <tr>
+      <td>logout</td>
+      <td>
+        Без параметров
+      </td>
+      <td class="response">
+        <table>
+          <tr>
+            <th>Событие</th>
+            <th>Возвращаемый объект</th>
+          </tr>
+          <tr>
+            <td>logout.success</td>
+            <td>Нет возвращаемых данных</td>
+          </tr>
+        </table>
+      </td>
+      <td>Переход состояния модуля в неавторизованное состояние</td>
+    </tr>
+    <!--user info-->
+    <tr>
+      <td>load.user.info</td>
+      <td>
+        Без параметров
+      </td>
+      <td class="response">
+        <table>
+          <tr>
+            <th>Событие</th>
+            <th>Возвращаемый объект</th>
+          </tr>
+          <tr>
+            <td>load.user.info.success</td>
+            <td>объект с данными авторизованного пользователя</td>
+          </tr>
+          <tr>
+            <td>load.user.info.error</td>
+            <td>объект ошибки с сервера</td>
+          </tr>
+        </table>
+      </td>
+      <td>Запрос на получение данных авторизованного пользователя.</td>
+    </tr>
+    <!--user history-->
+    <tr>
+      <td>load.user.history</td>
+      <td>
+        Без параметров
+      </td>
+      <td class="response">
+        <table>
+          <tr>
+            <th>Событие</th>
+            <th>Возвращаемый объект</th>
+          </tr>
+          <tr>
+            <td>load.user.history.success</td>
+            <td>Массив с историей действий авторизованного пользователя</td>
+          </tr>
+          <tr>
+            <td>load.user.history.error</td>
+            <td>объект ошибки с сервера</td>
+          </tr>
+        </table>
+      </td>
+      <td>Запрос на получение истории действий авторизованного пользователя.</td>
+    </tr>
+    <!--gifts list-->
+    <tr>
+      <td>load.gifts.list</td>
+      <td>
+        Без параметров
+      </td>
+      <td class="response">
+        <table>
+          <tr>
+            <th>Событие</th>
+            <th>Возвращаемый объект</th>
+          </tr>
+          <tr>
+            <td>load.gifts.list.success</td>
+            <td>Массив подарков текушего партнера</td>
+          </tr>
+          <tr>
+            <td>load.gifts.list.error</td>
+            <td>объект ошибки с сервера</td>
+          </tr>
+        </table>
+      </td>
+      <td>Запрос на получение списка подарков текущего партнера.</td>
+    </tr>
+    <!--gift info data-->
+    <tr>
+      <td>gifts.get</td>
+      <td>
+        ID подарка
+      </td>
+      <td class="response">
+        <table>
+          <tr>
+            <th>Событие</th>
+            <th>Возвращаемый объект</th>
+          </tr>
+          <tr>
+            <td>gifts.get.success</td>
+            <td>объект с информацией о подарке</td>
+          </tr>
+          <tr>
+            <td>gifts.get.error</td>
+            <td>объект ошибки с сервера</td>
+          </tr>
+        </table>
+      </td>
+      <td>Запрос полной информации о подарке.</td>
+    </tr>
+    <!--gifts purchase-->
+    <tr>
+      <td>gifts.purchase</td>
+      <td>
+        Объект со свойствами:
+        id: {айди-подарка} (обязательный)
+      </td>
+      <td class="response">
+        <table>
+          <tr>
+            <th>Событие</th>
+            <th>Возвращаемый объект</th>
+          </tr>
+          <tr>
+            <td>gifts.purchase.auth.error</td>
+            <td>ошибка авторизации</td>
+          </tr>
+          <tr>
+            <td>gifts.purchase.success</td>
+            <td>объект с данными о транзакции с сервера</td>
+          </tr>
+          <tr>
+            <td>gifts.purchase.partner_request.success</td>
+            <td>объект ответа с Вашего серевера</td>
+          </tr>
+          <tr>
+            <td>gifts.purchase.partner_request.error</td>
+            <td>объект ошибки при неудачном обращении в Вашему серверу</td>
+          </tr>
+          <tr>
+            <td>gift.purchase.force_complete.success</td>
+            <td>объект успешного подтверждения транзакции</td>
+          </tr>
+          <tr>
+            <td>gift.purchase.force_complete.error</td>
+            <td>объект ошибки при подтверждении транзакции</td>
+          </tr>
+        </table>
+      </td>
+      <td>Запрос на получение подарка авторизованным пользователем. После успешного создания транзакции, запускается механизм ее подтверждения</td>
+    </tr>
+    <!--badges list-->
+    <tr>
+      <td>load.badges.list</td>
+      <td>
+        Без параметров
+      </td>
+      <td class="response">
+        <table>
+          <tr>
+            <th>Событие</th>
+            <th>Возвращаемый объект</th>
+          </tr>
+          <tr>
+            <td>load.badges.list.success</td>
+            <td>массив бейджиков</td>
+          </tr>
+          <tr>
+            <td>load.badges.list.error</td>
+            <td>объект ошибки с сервера</td>
+          </tr>
+        </table>
+      </td>
+      <td>Запрос на получение списка бейджиков текущего партнера.</td>
+    </tr>
+    <!--actions list-->
+    <tr>
+      <td>load.actions.list</td>
+      <td>
+        Без параметров
+      </td>
+      <td class="response">
+        <table>
+          <tr>
+            <th>Событие</th>
+            <th>Возвращаемый объект</th>
+          </tr>
+          <tr>
+            <td>load.actions.list.success</td>
+            <td>объект с данными о действиях текущего партнера</td>
+          </tr>
+          <tr>
+            <td>load.actions.list.error</td>
+            <td>объект ошибки с сервера</td>
+          </tr>
+        </table>
+      </td>
+      <td>Запрос на получение списка действий текущего партнера.
+        Обновляет конфигурации механизма для выполнения действий.</td>
+    </tr>
+    <!--actions perform-->
+    <tr>
+      <td>actions.perform</td>
+      <td>
+        Объект типа Action со всеми свойствами
+      </td>
+      <td class="response">
+        <table>
+          <tr>
+            <th>Событие</th>
+            <th>Возвращаемый объект</th>
+          </tr>
+          <tr>
+            <td>actions.perform.auth.error</td>
+            <td>ошибка авторизации</td>
+          </tr>
+          <tr>
+            <td>actions.perform.start</td>
+            <td>начало выполнения действия</td>
+          </tr>
+          <tr>
+            <td>actions.social.connect.complete</td>
+            <td>завершение привязки социального аккаунта (результат можно получить, обновив список действий)</td>
+          </tr>
+          <tr>
+            <td>actions.perform.complete</td>
+            <td>завершение выполнения действия пользователем (результат можно получить, обновив список действий), возвращает объект выполненного действия</td>
+          </tr>
+          <tr>
+            <td>actions.perform.success</td>
+            <td>успешное выполнение действия пользователем, возвращает объект выполненного действия</td>
+          </tr>
+        </table>
+      </td>
+      <td>
+        Запрос на выполнение действия авторизованным пользователем.
+      </td>
+    </tr>
+    <!--promopres apply-->
+    <tr>
+      <td>promocodes.apply</td>
+      <td>
+        Объект со свойствами:
+        number: {номер-промокода} (обязательный),
+        group: {группа-промокода} (обязательный)
+      </td>
+      <td class="response">
+        <table>
+          <tr>
+            <th>Событие</th>
+            <th>Возвращаемый объект</th>
+          </tr>
+          <tr>
+            <td>promocodes.apply.auth.error</td>
+            <td>ошибка авторизации</td>
+          </tr>
+          <tr>
+            <td>promocodes.apply.success</td>
+            <td>успешное использование промокода, возвращает объект подтверждения с сервера.</td>
+          </tr>
+          <tr>
+            <td>promocodes.apply.error</td>
+            <td>объект ошибки с сервера</td>
+          </tr>
+        </table>
+      </td>
+      <td>Запрос на ввод промокода авторизованным пользователем. Возвращает количество бонусных баллов за промокод.</td>
+    </tr>
+    <!--tags add-->
+    <tr>
+      <td>tags.add</td>
+      <td>
+        Объект со свойствами:
+        <ul>
+          <li>
+            <strong>tags</strong>: {массив-имен-тегов} (обязательный)
+          </li>
+          <li>
+            <strong>user</strong>: {объект со свойствами} (не обязательный)
+            <ul>
+              <li><strong>auth_hash</strong>: {строка} (не обязательный)</li>
+              <li><strong>email</strong>: {строка: aaa@aaa.com} (не обязательный)</li>
+              <li><strong>phone</strong>: {строка: 79991112233} (не обязательный)</li>
+              <li><strong>origin_user_id</strong>: {строка} (не обязательный)</li>
+            </ul>
+          </li>
+        </ul>
+
+      </td>
+      <td class="response">
+        <table>
+          <tr>
+            <th>Событие</th>
+            <th>Возвращаемый объект</th>
+          </tr>
+          <tr>
+            <td>tags.add.auth.error</td>
+            <td>ошибка авторизации</td>
+          </tr>
+          <tr>
+            <td>tags.add.success</td>
+            <td>объект подтверждения с сервера.</td>
+          </tr>
+          <tr>
+            <td>tags.add.error</td>
+            <td>объект ошибки с сервера</td>
+          </tr>
+        </table>
+      </td>
+      <td>
+        Запрос на добавление тегов авторизованному пользователю.
+        Если не передать параметр: <strong>user</strong>, то будет использован текущий пользователь.
+      </td>
+    </tr>
+    <!--leaderboard data-->
+    <tr>
+      <td>leaderboard.load</td>
+      <td>
+        не принимает параметров
+      </td>
+      <td class="response">
+        <table>
+          <tr>
+            <th>Событие</th>
+            <th>Возвращаемый объект</th>
+          </tr>
+          <tr>
+            <td>leaderboard.load.success</td>
+            <td>объект лидерборда</td>
+          </tr>
+          <tr>
+            <td>leaderboard.load.error</td>
+            <td>объект ошибки с сервера</td>
+          </tr>
+        </table>
+      </td>
+      <td>Запрос данных лидерборда.</td>
+    </tr>
+    <!--reviews list-->
+    <tr>
+      <td>load.reviews.list</td>
+      <td>
+        Объект со свойствами:
+        page: {номер-страницы}
+      </td>
+      <td class="response">
+        <table>
+          <tr>
+            <th>Событие</th>
+            <th>Возвращаемый объект</th>
+          </tr>
+          <tr>
+            <td>load.reviews.list.success</td>
+            <td>объект со списком отзывов и пагинацией</td>
+          </tr>
+          <tr>
+            <td>load.reviews.list.error</td>
+            <td>объект ошибки с сервера</td>
+          </tr>
+        </table>
+      </td>
+      <td>Запрос списка отзывов.</td>
+    </tr>
+    <!--reviews add-->
+    <tr>
+      <td>reviews.add</td>
+      <td>
+        Объект со свойствами:
+        rating: {рейтинг},
+        review: {текст-отзыва} (обязательный)
+      </td>
+      <td class="response">
+        <table>
+          <tr>
+            <th>Событие</th>
+            <th>Возвращаемый объект</th>
+          </tr>
+          <tr>
+            <td>reviews.add.success</td>
+            <td>объект с данными о добавленном отзыве</td>
+          </tr>
+          <tr>
+            <td>reviews.add.error</td>
+            <td>объект ошибки с сервера</td>
+          </tr>
+        </table>
+      </td>
+      <td>Добавление отзыва.</td>
+    </tr>
+    <!--purchases add-->
+    <tr>
+      <td>purchases.add</td>
+      <td>
+        Объект со свойствами:
+        price: {сумма-покупки} (обязательный),
+        order_num: {номер-заказа} (уникальный)
+      </td>
+      <td class="response">
+        <table>
+          <tr>
+            <th>Событие</th>
+            <th>Возвращаемый объект</th>
+          </tr>
+          <tr>
+            <td>purchases.add.success</td>
+            <td>объект с данными о созданной покупке</td>
+          </tr>
+          <tr>
+            <td>purchases.add.error</td>
+            <td>объект ошибки с сервера</td>
+          </tr>
+        </table>
+      </td>
+      <td>Создание покупки.</td>
+    </tr>
+  </table>
+  <h2>Примеры работы с SailPlay HUB</h2>
+    <pre class="js">
+SAILPLAY.send('init', { partner_id: 206 }); //инициируем модуль для партнера с айди = 206
+
+SAILPLAY.on('init.success', function(){ //после успешной инициализации
+  SAILPLAY.send('login', '38c6285d1b1bce88a1071f116704263bf2511b18'); //авторизуем пользователя
+});
+
+SAILPLAY.on('login.success', function(){ //после успешной авторизации
+  SAILPLAY.send('load.user.info'); //загружаем данные пользователя
+  SAILPLAY.send('load.user.history'); //загружаем историю действий пользователя
+  SAILPLAY.send('load.gifts.list'); //загружаем список подарков
+  SAILPLAY.send('load.badges.list'); //загружаем список бейджиков
+  SAILPLAY.send('load.actions.list'); //загружаем список действий
+});
+
+SAILPLAY.on('load.gifts.list.success', function(gifts){ //после загрузки списка подарков
+  SAILPLAY.send('gifts.purchase', gifts[0]); //пользователь получает первый подарок из списка
+});
+
+SAILPLAY.on('load.actions.list.success', function(data){ //после загрузки списка действий
+  SAILPLAY.send('actions.perform', data.actions[1]); //пользователь выполняет второе действие из списка
+});
+
+SAILPLAY.on('actions.perform.complete', function(){ //после выполнения действия
+  SAILPLAY.send('load.actions.list'); //обновляем список действий
+});
+
+SAILPLAY.on('actions.social.connect.complete', function(){  //после привязки социального аккаунта пользователем
+  SAILPLAY.send('load.actions.list'); //обновляем список действий
+});
+    </pre>
+
+  <pre>
+
+    //Добавляем теги пользователю
+  SAILPLAY.send('init', { partner_id: 1, domain: 'http://sailplay.ru' }); //инициируем модуль для партнера с id = 206
+  SAILPLAY.on('init.success', function(){
+    //при успешной инициализации добавляем список тегов для пользователя с одним из идентификаторов
+    SAILPLAY.send('tags.add', { tags: [ 'some', 'tags', 'here' ], user: { email: 'some@user.email', phone: '12223334455', auth_hash: 'some user auth_hash' } });
+  });
+  //При успешном добавлении тегов
+  SAILPLAY.on('tags.add.success', function(response){
+    console.dir(response);
+  });
+  //При ошибке при добавлении тегов
+  SAILPLAY.on('tags.add.error', function(response){
+    console.dir(response);
+  });
+  </pre>
+</div>
+<script type="text/javascript">
+
+  SAILPLAY.send('init', { partner_id: 1, domain: 'http://sailplay.ru' }); //инициируем модуль для партнера с id = 206
+
+  SAILPLAY.on('init.success', function(){
+    SAILPLAY.send('login', '5b701feb743b08bbeb64b9dcf55e02cf3daf63dd');
+  }); //авторизуем пользователя после успешной инициализации
+
+  SAILPLAY.on('login.success', function(){ //после успешной авторизации
+    SAILPLAY.send('load.user.info'); //загружаем данные пользователя
+    SAILPLAY.send('load.user.history'); //загружаем историю действий пользователя
+    SAILPLAY.send('load.gifts.list'); //загружаем список подарков
+    SAILPLAY.send('load.badges.list'); //загружаем список бейджиков
+    SAILPLAY.send('load.actions.list'); //загружаем список действий
+  });
+
+  SAILPLAY.on('load.gifts.list.success', function(gifts){ //после загрузки списка подарков
+    SAILPLAY.send('gifts.purchase', gifts[0]); //пользователь получает первый подарок из списка
+  });
+
+  SAILPLAY.on('load.actions.list.success', function(data){ //после загрузки списка действий
+    console.dir(data.actions);
+//      SAILPLAY.send('actions.perform', data.actions[8]); //пользователь выполняет второе действие из списка
+  });
+
+  SAILPLAY.on('actions.perform.complete', function(){ //после выполнения действия
+    SAILPLAY.send('load.actions.list'); //обновляем список действий
+  });
+
+  SAILPLAY.on('actions.social.connect.complete', function(){  //после привязки социального аккаунта пользователем
+    SAILPLAY.send('load.actions.list'); //обновляем список действий
+  });
+
+  SAILPLAY.on('load.user.info.success', function(res){
+    console.dir(res);
+  });
+
+//  //Добавляем теги польхователю
+//  SAILPLAY.send('init', { partner_id: 1, domain: 'http://sailplay.ru' }); //инициируем модуль для партнера с id = 206
+//  SAILPLAY.on('init.success', function(){
+//    //при успешной инициализации добавляем список тегов для пользователя с одним из идентификаторов
+//    SAILPLAY.send('tags.add', { tags: [ 'some', 'tags', 'here' ], user: { email: 'some@user.email', phone: '12223334455', auth_hash: 'some user auth_hash' } });
+//  });
+//  //При успешном добавлении тегов
+//  SAILPLAY.on('tags.add.success', function(response){
+//    console.dir(response);
+//  });
+//  //При ошибке при добавлении тегов
+//  SAILPLAY.on('tags.add.error', function(response){
+//    console.dir(response);
+//  });
+
+
+  //  //add tags to user
+  //  SAILPLAY.send('init', { partner_id: 1, domain: 'http://sailplay.ru' }); //init hub for partner with id = 206
+  //  SAILPLAY.on('init.success', function(){
+  //    //after success init add tags to user with credentials
+  //    SAILPLAY.send('tags.add', { tags: [ 'some', 'tags', 'here' ], user: { email: 'some@user.email', phone: '12223334455', auth_hash: 'some user auth_hash' } });
+  //  });
+  //  //after add tags success
+  //  SAILPLAY.on('tags.add.success', function(response){
+  //    console.dir(response);
+  //  });
+  //  //after error
+  //  SAILPLAY.on('tags.add.error', function(response){
+  //    console.dir(response);
+  //  });
+
+  console.dir(SAILPLAY);
+</script>
+</body>
+
+</html>

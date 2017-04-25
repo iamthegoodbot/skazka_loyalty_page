@@ -1,0 +1,84 @@
+{
+  "_args": [
+    [
+      {
+        "raw": "sailplay-hub@^2.0.14",
+        "scope": null,
+        "escapedName": "sailplay-hub",
+        "name": "sailplay-hub",
+        "rawSpec": "^2.0.14",
+        "spec": ">=2.0.14 <3.0.0",
+        "type": "range"
+      },
+      "/Users/worker/sailplay/skazka_loyalty_page"
+    ]
+  ],
+  "_from": "sailplay-hub@>=2.0.14 <3.0.0",
+  "_id": "sailplay-hub@2.0.26",
+  "_inCache": true,
+  "_location": "/sailplay-hub",
+  "_nodeVersion": "7.5.0",
+  "_npmOperationalInternal": {
+    "host": "packages-12-west.internal.npmjs.com",
+    "tmp": "tmp/sailplay-hub-2.0.26.tgz_1488280808617_0.568679221207276"
+  },
+  "_npmUser": {
+    "name": "awesomemike",
+    "email": "awesomewebmail@gmail.com"
+  },
+  "_npmVersion": "4.1.2",
+  "_phantomChildren": {},
+  "_requested": {
+    "raw": "sailplay-hub@^2.0.14",
+    "scope": null,
+    "escapedName": "sailplay-hub",
+    "name": "sailplay-hub",
+    "rawSpec": "^2.0.14",
+    "spec": ">=2.0.14 <3.0.0",
+    "type": "range"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/sailplay-hub/-/sailplay-hub-2.0.26.tgz",
+  "_shasum": "350d36706f0a6f6b0896d178ae2e7006049467d2",
+  "_shrinkwrap": null,
+  "_spec": "sailplay-hub@^2.0.14",
+  "_where": "/Users/worker/sailplay/skazka_loyalty_page",
+  "contributors": [
+    {
+      "name": "Mikhail Lagutin"
+    },
+    {
+      "name": "Mikhail Gordukov"
+    }
+  ],
+  "dependencies": {},
+  "description": "Event-based tool for SailPlay Widgets development",
+  "devDependencies": {
+    "gulp": "latest",
+    "gulp-uglify": "latest"
+  },
+  "directories": {},
+  "dist": {
+    "shasum": "350d36706f0a6f6b0896d178ae2e7006049467d2",
+    "tarball": "https://registry.npmjs.org/sailplay-hub/-/sailplay-hub-2.0.26.tgz"
+  },
+  "main": "sailplay.hub.js",
+  "maintainers": [
+    {
+      "name": "awesomemike",
+      "email": "awesomewebmail@gmail.com"
+    },
+    {
+      "name": "saike",
+      "email": "kishkoglot@gmail.com"
+    }
+  ],
+  "name": "sailplay-hub",
+  "optionalDependencies": {},
+  "readme": "ERROR: No README data found!",
+  "scripts": {},
+  "version": "2.0.26"
+}
