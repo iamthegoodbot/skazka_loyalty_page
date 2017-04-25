@@ -37097,7 +37097,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	          return item.points;
 	        });
 
-	        var points = user_points ? user_points.confirmed + user_points.spent + user_points.spent_extra : 0;
+	        function isNumeric(n) {
+	          return !isNaN(parseFloat(n)) && isFinite(n);
+	        }
+
+	        var points;
+	        if (isNumeric(user_points)) points = user_points;else points = user_points ? user_points.confirmed + user_points.spent + user_points.spent_extra : 0;
 
 	        if (status_points[status_points.length - 1] && points > status_points[status_points.length - 1]) {
 	          return {
@@ -43370,6 +43375,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      scope._statuses = MAGIC_CONFIG.data.statuses;
 
 	      scope.user = SailPlayApi.data('load.user.info');
+	      scope.purchase_status = MAGIC_CONFIG.data.purchase_status;
 
 	      scope.get_next_status = function () {
 
@@ -43388,6 +43394,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var points = user_points ? user_points.confirmed + user_points.spent + user_points.spent_extra : 0;
 	        if (MAGIC_CONFIG.data.purchase_status) {
 	          points = user.purchases && user.purchases.sum || 0;
+	          user_points = user.purchases && user.purchases.sum || 0;
 	        }
 
 	        var future_statuses = scope._statuses.sort(function (a, b) {
@@ -43409,7 +43416,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 171 */
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"clearfix container\">\n\n  <div class=\"status-list\">\n\n    <div class=\"next_status_info\" data-ng-show=\"get_next_status().status\">\n\n      <div class=\"next_status_name\">\n        {{ widget.texts.next_status }} <span data-ng-style=\"{ color: get_next_status().status.color  }\">{{ get_next_status().status.status }}</span>\n      </div>\n\n      <div class=\"next_status_offset\">\n        {{ widget.texts.next_status_offset }} {{ get_next_status().offset }}\n      </div>\n\n    </div>\n\n    <div class=\"status-list__wrapper\" data-sailplay-statuses data-ng-cloak>\n\n      <div class=\"status-list__progress element-progress progress_line\"\n           data-ng-style=\"getProgress(user().user_points, _statuses)\"></div>\n\n      <div class=\"status-list__item element-item\"\n           data-ng-class=\"{ type_active : item.points <= user().user_points.confirmed + user().user_points.spent + user().user_points.spent_extra }\"\n           data-ng-repeat=\"item in _statuses\"\n           data-ng-style=\"generateOffset($index, _statuses)\">\n\n        <div class=\"status-list__item-point element-item-point\"></div>\n\n        <div class=\"element-item-point-inner\" data-ng-style=\"{ backgroundColor: item.color }\"></div>\n\n        <div class=\"status-list__item-name element-item-name\" data-ng-bind=\"item.name\"></div>\n        <div class=\"status-list__item-status element-item-status\" data-ng-if=\"item.status\" data-ng-bind=\"item.status\"\n             style=\"{{ (item.color) ? ('color: ' +  item.color) : '' }}\"></div>\n\n      </div>\n\n    </div>\n\n  </div>\n</div>";
+	module.exports = "<div class=\"clearfix container\">\n\n  <div class=\"status-list\">\n\n    <div class=\"next_status_info\" data-ng-show=\"get_next_status().status\">\n\n      <div class=\"next_status_name\">\n        {{ widget.texts.next_status }} <span data-ng-style=\"{ color: get_next_status().status.color  }\">{{ get_next_status().status.status }}</span>\n      </div>\n\n      <div class=\"next_status_offset\">\n        {{ widget.texts.next_status_offset }} {{ get_next_status().offset }}\n      </div>\n\n    </div>\n\n    <div class=\"status-list__wrapper\" data-sailplay-statuses data-ng-cloak>\n\n      <div class=\"status-list__progress element-progress progress_line\"\n           data-ng-style=\"getProgress(purchase_status ? user().purchases.sum : user().user_points, _statuses)\"></div>\n\n      <div class=\"status-list__item element-item\"\n           data-ng-class=\"{ type_active : item.points <= user().user_points.confirmed + user().user_points.spent + user().user_points.spent_extra }\"\n           data-ng-repeat=\"item in _statuses\"\n           data-ng-style=\"generateOffset($index, _statuses)\">\n\n        <div class=\"status-list__item-point element-item-point\"></div>\n\n        <div class=\"element-item-point-inner\" data-ng-style=\"{ backgroundColor: item.color }\"></div>\n\n        <div class=\"status-list__item-name element-item-name\" data-ng-bind=\"item.name\"></div>\n        <div class=\"status-list__item-status element-item-status\" data-ng-if=\"item.status\" data-ng-bind=\"item.status\"\n             style=\"{{ (item.color) ? ('color: ' +  item.color) : '' }}\"></div>\n\n      </div>\n\n    </div>\n\n  </div>\n</div>";
 
 /***/ },
 /* 172 */
