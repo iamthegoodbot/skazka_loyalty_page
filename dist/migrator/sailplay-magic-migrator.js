@@ -119,7 +119,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var Migrator = {
 
-	  version: '2.1.9',
+	  version: '2.1.9.1',
 
 	  migrations: [],
 

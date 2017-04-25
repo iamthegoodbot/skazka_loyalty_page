@@ -32,6 +32,9 @@ WidgetRegister({
 
         let user_points = user.user_points;
         let points =  user_points ? user_points.confirmed + user_points.spent + user_points.spent_extra : 0;
+        if (MAGIC_CONFIG.data.purchase_status) {
+          points = user.purchases && user.purchases.sum || 0
+        }
 
         let future_statuses = scope._statuses.sort((a, b) => {
           return a.points > b.points;
