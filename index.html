@@ -51,9 +51,15 @@
       dep_id: params.dep_id || '',
       domain: params.domain || "https://sailplay.net",
       lang:  params.lang || "en",
-      config: params.config || "default"
-
+      config: params.config || "default",
+      
     });
+
+    if (params.auth_hash) {
+      SAILPLAY.on('init.success', function() {
+        SAILPLAY.send('login', params.auth_hash)
+      })
+    }
 
   </script>
 
