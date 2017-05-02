@@ -8,8 +8,8 @@ const ProfileWidget = {
 
   id: 'profile',
   template: WidgetProfileTemplate,
-  inject: ['$rootScope'],
-  controller: function ($rootScope) {
+  inject: ['$rootScope', 'MAGIC_CONFIG'],
+  controller: function ($rootScope, MAGIC_CONFIG) {
 
     return function (scope, elm, attrs) {
 
@@ -17,8 +17,12 @@ const ProfileWidget = {
 
       scope.default_avatar = DefaultAvatarImage;
       $rootScope.$on('showHistory', () => scope.profile.history = true);
-      $rootScope.$on('openProfile', () => scope.profile.show_fill_profile = true);
-      $rootScope.$on('openFirstPopup', () => scope.profile.first_login = true);
+      $rootScope.$on('openProfile', () => scope.profile.show_fill_profile = true);      
+      $rootScope.$on('openFirstPopup', () => {     
+        console.log(MAGIC_CONFIG.data, 'DATA')   
+        if (!MAGIC_CONFIG.data.no_show_login_popup)
+          scope.profile.first_login = true
+      });
 
       scope.profile = {
         history: false,

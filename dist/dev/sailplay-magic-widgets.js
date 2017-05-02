@@ -2900,8 +2900,8 @@ return webpackJsonp([2],[
 
 	  id: 'profile',
 	  template: _profile2.default,
-	  inject: ['$rootScope'],
-	  controller: function controller($rootScope) {
+	  inject: ['$rootScope', 'MAGIC_CONFIG'],
+	  controller: function controller($rootScope, MAGIC_CONFIG) {
 
 	    return function (scope, elm, attrs) {
 
@@ -2915,7 +2915,8 @@ return webpackJsonp([2],[
 	        return scope.profile.show_fill_profile = true;
 	      });
 	      $rootScope.$on('openFirstPopup', function () {
-	        return scope.profile.first_login = true;
+	        console.log(MAGIC_CONFIG.data, 'DATA');
+	        if (!MAGIC_CONFIG.data.no_show_login_popup) scope.profile.first_login = true;
 	      });
 
 	      scope.profile = {
