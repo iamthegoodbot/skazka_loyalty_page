@@ -1,6 +1,6 @@
 <div class="widget {{ widget.id }} clearfix">
 
-  <div class="container clearfix" data-ng-show="widget.enabled" data-ng-cloak>
+  <div class="container clearfix" data-ng-show="widget.enabled && !$root.hide_all" data-ng-cloak>
 
     <h3 class="bon_header">
       <span class="header">{{ widget.texts.header }}</span>

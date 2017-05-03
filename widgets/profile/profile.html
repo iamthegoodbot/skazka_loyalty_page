@@ -36,7 +36,7 @@
       <span class="status_block_name" data-ng-bind="user().user_status.name || widget.texts.empty_status "></span>
     </div>
 
-    <div class="bon_profile_stat">
+    <div class="bon_profile_stat" ng-hide="$root.hide_all">
       <div class="bps_left points_block clearfix" data-ng-if="user()">
         <span class="points_confirmed">
           <span class="points_confirmed_value" data-ng-bind="user().user_points.confirmed | number"></span>
@@ -66,9 +66,9 @@
     </div>
   </div>
 
-  <magic-model class="bns_overlay_hist" data-show="profile.message">
+  <magic-modal class="bns_overlay_hist" data-show="profile.message">
     <h1 data-ng-bind="profile.message"></h1>
-  </magic-model>
+  </magic-modal>
   
   <magic-modal class="bns_overlay_hist" data-show="profile.history">
 

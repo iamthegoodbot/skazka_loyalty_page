@@ -57,9 +57,12 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
         };
 
         SailPlay.on('login.do', (auth_hash, data) => {
-          if (data.is_invited && MAGIC_CONFIG.data.invite_tag) {
-            $rootScope.tagShouldBeAdded = MAGIC_CONFIG.data.invite_tag ;
-            scope.tags_add({tags: [MAGIC_CONFIG.data.invite_tag]})
+          if (data.is_invited && MAGIC_CONFIG.data.tag_type) {
+            $rootScope.tagShouldBeAdded = MAGIC_CONFIG.data.tag_type ;
+            scope.tags_add({tags: [MAGIC_CONFIG.data.tag_type]})
+          } else {
+            scope.profile.message = MAGIC_CONFIG.data.not_authorized_message
+            SailPlay.send('logout');
           }
         })
 
@@ -224,8 +227,8 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
             SailPlay.send('tags.exist', {tags: [MAGIC_CONFIG.data.tag_type]}, res => {
               if (res.tags[0].name == MAGIC_CONFIG.data.tag_type &&
                 !res.tags[0].exist) {
-                  alert(MAGIC_CONFIG.data.not_applied_message)
-                  scope.profile.message = MAGIC_CONFIG.data.not_applied_message
+                  scope.profile.message = MAGIC_CONFIG.data.not_applied_message;
+                  SailPlay.send('logout');
                 }
             })
 
@@ -309,19 +312,6 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
           //  angular.extend(scope.profile_form, ipCookie(FillProfile.cookie_name));
           //}
           console.dir(form);
-
-          if (MAGIC_CONFIG.data.force_registration)
-            SailPlay.send('tags.exist', {tags: ['Registration completed']}, function (res) {
-              if (res && res.tags.length) {
-                if (!res.tags[0].exist) {
-                  $timeout(function(){
-                    scope.$parent.reg_incomplete = true;
-                    scope.$parent.preventClose = true;
-                    $rootScope.$broadcast('openProfile');
-                  }, 10)
-                }
-              }
-          });
 
           saved_form = angular.copy(form);
 
