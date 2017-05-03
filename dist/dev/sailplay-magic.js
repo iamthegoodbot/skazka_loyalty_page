@@ -243,7 +243,7 @@ return webpackJsonp([0],[
 
 	  }]);
 	  return Magic;
-	}(), _class.Widget = _widget.WidgetRegister, _class.version = '2.1.2', _temp);
+	}(), _class.Widget = _widget.WidgetRegister, _class.version = '${MAGIC_VERSION}', _temp);
 
 	//extend SAILPLAY with Magic class
 
@@ -1099,7 +1099,8 @@ return webpackJsonp([0],[
 
 	        if ($rootScope.tagShouldBeAdded != MAGIC_CONFIG.data.tag_type) SailPlay.send('tags.exist', { tags: [MAGIC_CONFIG.data.tag_type] }, function (res) {
 	          if (res.tags[0].name == MAGIC_CONFIG.data.tag_type && !res.tags[0].exist) {
-	            location.replace(MAGIC_CONFIG.data.redirect_to);
+	            alert(MAGIC_CONFIG.data.not_applied_message);
+	            scope.profile.message = MAGIC_CONFIG.data.not_applied_message;
 	          }
 	        });
 
@@ -1268,8 +1269,9 @@ return webpackJsonp([0],[
 	            scope.$apply(function () {
 
 	              if (typeof callback == 'function') callback();
-	              SailPlay.send('tags.add', { tags: ['Registration completed'] });
-	              SailPlayApi.call('load.user.info', { all: 1 });
+	              SailPlay.send('tags.add', { tags: ['Registration completed'] }, function () {
+	                SailPlayApi.call('load.user.info', { all: 1 });
+	              });
 	            });
 	          } else {
 

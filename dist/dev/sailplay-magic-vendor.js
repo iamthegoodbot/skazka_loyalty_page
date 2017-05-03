@@ -267,7 +267,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    function remoteLogin(opts) {
 
 	      var frame;
-
 	      opts = opts || {};
 
 	      if (opts.node && opts.node.nodeType == 1 && opts.node.tagName == 'IFRAME') {
@@ -324,6 +323,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          }
 	          else {
 	            cancelLogin();
+	            console.log('DAAATAAAA', data)
 	            sp.send('login.do', data.auth_hash, data)
 	          }
 	          return;
@@ -350,6 +350,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	      params.partner_info = opts.partner_info || 0;
 	      if(opts.reg_match_email_oid) {
 	        params.reg_match_email_oid = opts.reg_match_email_oid;
+	      }
+	      if(opts.is_soligent) {
+	        params.is_soligent = opts.is_soligent;
 	      }
 	      if(opts.css_link) {
 	        params.css_link = opts.css_link;
@@ -444,7 +447,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          window.addEventListener("message", onActionMessage, false);
 
 	          //2. recieve ref_hash info
-	          // _config.ref_hash = sp.url_params().ref_hash || '';
+	          _config.ref_hash = sp.url_params().ref_hash || '';
 	          //var cookie_frame = document.createElement('IFRAME');
 	          //cookie_frame.style.width = 0;
 	          //cookie_frame.style.height = 0;

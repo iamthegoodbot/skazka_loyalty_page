@@ -224,7 +224,8 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
             SailPlay.send('tags.exist', {tags: [MAGIC_CONFIG.data.tag_type]}, res => {
               if (res.tags[0].name == MAGIC_CONFIG.data.tag_type &&
                 !res.tags[0].exist) {
-                  location.replace(MAGIC_CONFIG.data.redirect_to)
+                  alert(MAGIC_CONFIG.data.not_applied_message)
+                  scope.profile.message = MAGIC_CONFIG.data.not_applied_message
                 }
             })
 
