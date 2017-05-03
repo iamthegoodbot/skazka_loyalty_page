@@ -39,9 +39,11 @@ export let SailPlayGifts = angular.module('sailplay.gifts', [])
 
 
       SailPlayApi.observe('load.gifts.list', result => {
-        build_progress(result, user()).then(() => {
-          if(scope.$root.$$phase != '$digest')
+        build_progress(result, user()).then((progress) => {
+          scope.progress = progress
+          if(scope.$root.$$phase != '$digest'){
             scope.$digest();
+          }
         })
       })
 

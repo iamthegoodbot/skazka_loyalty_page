@@ -1,4 +1,6 @@
-<div class="spm_tools_widget {{ widget.id }}" data-ng-show="widget.enabled" data-ng-hide="widget.options.hiddenAnonymous && !widget.user()">
-  <widget-style data-widget="widget"></widget-style>
-  <div data-widget-wrapper class="clearfix"></div>
+<div class="spm_tools_widget {{ widget.id }}" data-ng-show="widget.enabled"
+     data-ng-hide="widget.options.hiddenAnonymous && !widget.user()">
+    <widget-style data-widget="widget"></widget-style>
+    <div data-widget-wrapper class="clearfix"
+         data-ng-class="{noauth : !$parent.$parent.$parent.auth_state }"></div>
 </div>

@@ -22,7 +22,9 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 			installedChunks[chunkId] = 0;
 /******/ 		}
 /******/ 		for(moduleId in moreModules) {
-/******/ 			modules[moduleId] = moreModules[moduleId];
+/******/ 			if(Object.prototype.hasOwnProperty.call(moreModules, moduleId)) {
+/******/ 				modules[moduleId] = moreModules[moduleId];
+/******/ 			}
 /******/ 		}
 /******/ 		if(parentJsonpFunction) parentJsonpFunction(chunkIds, moreModules);
 /******/ 		while(callbacks.length)
@@ -107,7 +109,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ ({
 
 /***/ 0:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	__webpack_require__(31);
 	__webpack_require__(59);
@@ -118,10 +120,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = __webpack_require__(30);
 
 
-/***/ },
+/***/ }),
 
 /***/ 29:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	(function () {
 
@@ -267,6 +269,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    function remoteLogin(opts) {
 
 	      var frame;
+
 	      opts = opts || {};
 
 	      if (opts.node && opts.node.nodeType == 1 && opts.node.tagName == 'IFRAME') {
@@ -323,8 +326,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          }
 	          else {
 	            cancelLogin();
-	            console.log('DAAATAAAA', data)
-	            sp.send('login.do', data.auth_hash, data)
+	            sp.send('login.do', data.auth_hash)
 	          }
 	          return;
 	        }
@@ -350,9 +352,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	      params.partner_info = opts.partner_info || 0;
 	      if(opts.reg_match_email_oid) {
 	        params.reg_match_email_oid = opts.reg_match_email_oid;
-	      }
-	      if(opts.is_soligent) {
-	        params.is_soligent = opts.is_soligent;
 	      }
 	      if(opts.css_link) {
 	        params.css_link = opts.css_link;
@@ -1243,10 +1242,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	}());
 
 
-/***/ },
+/***/ }),
 
 /***/ 30:
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	(function () {
 
@@ -1625,19 +1624,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	}());
 
 
-/***/ },
+/***/ }),
 
 /***/ 31:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	__webpack_require__(32);
 	module.exports = angular;
 
 
-/***/ },
+/***/ }),
 
 /***/ 32:
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	/**
 	 * @license AngularJS v1.6.3
@@ -34985,19 +34984,19 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	!window.angular.$$csp().noInlineStyle && window.angular.element(document.head).prepend('<style type="text/css">@charset "UTF-8";[ng\\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\\:form{display:block;}.ng-animate-shim{visibility:hidden;}.ng-anchor{position:absolute;}</style>');
 
-/***/ },
+/***/ }),
 
 /***/ 59:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	__webpack_require__(60);
 	module.exports = 'ipCookie';
 
 
-/***/ },
+/***/ }),
 
 /***/ 60:
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	/*
 	 * Copyright 2013 Ivan Pusic
@@ -35126,19 +35125,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	]);
 
 
-/***/ },
+/***/ }),
 
 /***/ 63:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	__webpack_require__(64);
 	module.exports = 'ngTouch';
 
 
-/***/ },
+/***/ }),
 
 /***/ 64:
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	/**
 	 * @license AngularJS v1.6.3
@@ -35891,19 +35890,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	})(window, window.angular);
 
 
-/***/ },
+/***/ }),
 
 /***/ 66:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	__webpack_require__(67);
 	module.exports = 'angularUtils.directives.dirPagination';
 
 
-/***/ },
+/***/ }),
 
 /***/ 67:
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	/**
 	 * dirPagination - AngularJS module for paginating (almost) anything.
@@ -36546,10 +36545,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	})();
 
 
-/***/ },
+/***/ }),
 
 /***/ 68:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	//https://github.com/angular/angular.js/pull/10732
 
@@ -36559,10 +36558,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = 'ui.mask';
 
 
-/***/ },
+/***/ }),
 
 /***/ 69:
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	/*!
 	 * angular-ui-mask
@@ -37340,7 +37339,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	}());
 
-/***/ }
+/***/ })
 
 /******/ })
 });
