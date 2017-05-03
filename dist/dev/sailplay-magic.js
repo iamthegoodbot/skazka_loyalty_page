@@ -946,12 +946,11 @@ return webpackJsonp([0],[
 	      };
 
 	      SailPlay.on('login.do', function (auth_hash, data) {
+	        console.log('INVITE', auth_hash, data);
 	        if (data.is_invited && MAGIC_CONFIG.data.tag_type) {
 	          $rootScope.tagShouldBeAdded = MAGIC_CONFIG.data.tag_type;
+	          $rootScope.hide_all = false;
 	          scope.tags_add({ tags: [MAGIC_CONFIG.data.tag_type] });
-	        } else {
-	          scope.profile.message = MAGIC_CONFIG.data.not_authorized_message;
-	          SailPlay.send('logout');
 	        }
 	      });
 
@@ -1104,6 +1103,8 @@ return webpackJsonp([0],[
 	          if (res.tags[0].name == MAGIC_CONFIG.data.tag_type && !res.tags[0].exist) {
 	            scope.profile.message = MAGIC_CONFIG.data.not_applied_message;
 	            SailPlay.send('logout');
+	          } else {
+	            $rootScope.hide_all = false;
 	          }
 	        });
 

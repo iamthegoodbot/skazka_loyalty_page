@@ -1084,7 +1084,7 @@ return webpackJsonp([2],[
 	              phone: lead_obj['phone'],
 	              tags: ''
 	            };
-	            SAILPLAY.jsonp.get(_config.DOMAIN + tagAdd, tag_obj);
+	            SAILPLAY.jsonp.get(_config.DOMAIN + tagAdd, set_status);
 	            scope.startNewLead = false;
 	            fields.map(function (field) {
 	              field.value = '';return field;

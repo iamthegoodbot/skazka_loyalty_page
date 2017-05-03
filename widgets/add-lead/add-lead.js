@@ -36,7 +36,7 @@ WidgetRegister({
               phone: lead_obj['phone'],
               tags: ''
             }
-            SAILPLAY.jsonp.get(_config.DOMAIN + tagAdd, tag_obj) 
+            SAILPLAY.jsonp.get(_config.DOMAIN + tagAdd, set_status) 
             scope.startNewLead = false;
             fields.map(field => { field.value = ''; return field })
             scope.$digest();
