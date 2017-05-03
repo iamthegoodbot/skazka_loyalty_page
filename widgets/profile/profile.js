@@ -17,7 +17,10 @@ const ProfileWidget = {
 
       scope.default_avatar = DefaultAvatarImage;
       $rootScope.$on('openProfile', () => scope.profile.show_fill_profile = true);
-
+      $rootScope.$on('openProfileForce', () => {
+        scope.profile.show_fill_profile = true;
+        $rootScope.profile_fill_force = true;
+      })
       scope.profile = {
         history: false,
         show_fill_profile: false,

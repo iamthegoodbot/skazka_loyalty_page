@@ -56,13 +56,6 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
 
         };
 
-        SailPlay.on('login.do', (auth_hash, data) => {
-          if (data.is_invited && MAGIC_CONFIG.data.invite_tag) {
-            $rootScope.tagShouldBeAdded = MAGIC_CONFIG.data.invite_tag ;
-            scope.tags_add({tags: [MAGIC_CONFIG.data.invite_tag]})
-          }
-        })
-
         /**
          * @ngdoc method
          * @name tags_add
@@ -213,6 +206,7 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
         }
 
         var saved_form = false;
+        $rootScope.hide_all = true;
 
         scope.$watch(function () {
           return angular.toJson([SailPlayApi.data('load.user.info')()]);
@@ -220,13 +214,28 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
           var user = SailPlayApi.data('load.user.info')();
           if (!user) return;
 
-          if ($rootScope.tagShouldBeAdded != MAGIC_CONFIG.data.tag_type)
-            SailPlay.send('tags.exist', {tags: [MAGIC_CONFIG.data.tag_type]}, res => {
-              if (res.tags[0].name == MAGIC_CONFIG.data.tag_type &&
-                !res.tags[0].exist) {
-                  location.replace(MAGIC_CONFIG.data.redirect_to)
+          SailPlay.send('tags.exist', {tags: [
+            MAGIC_CONFIG.data.tag_type, 
+            MAGIC_CONFIG.data.tag_approval,
+            MAGIC_CONFIG.data.tag_reject
+            ]}, res => {
+              $timeout(() => {
+              if (!res.tags[0].exist) {
+
+                if (!res.tags[1].exist) { // approval not exist
+                  if (res.tags[2].exist) { //reject exist           
+                    scope.profile.message = MAGIC_CONFIG.data.reject_message;
+                    SailPlay.send('logout');
+                  }
+                } else { // approval exist
+                  scope.profile.message = MAGIC_CONFIG.data.pending_message;
+                  $rootScope.hide_all = true;
                 }
-            })
+              } else {
+                  $rootScope.hide_all = false;
+              }
+              }, 500)
+          })
 
           var custom_fields = [];
           var form = scope.sailplay.fill_profile.form;
@@ -309,18 +318,19 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
           //}
           console.dir(form);
 
-          if (MAGIC_CONFIG.data.force_registration)
-            SailPlay.send('tags.exist', {tags: ['Registration completed']}, function (res) {
-              if (res && res.tags.length) {
-                if (!res.tags[0].exist) {
-                  $timeout(function(){
+          SailPlay.send('tags.exist', {tags: [MAGIC_CONFIG.data.tag_type, MAGIC_CONFIG.data.tag_reject, MAGIC_CONFIG.data.tag_approval]}, function (res) {
+            if (res && res.tags.length) {
+              if (!res.tags[0].exist && !res.tags[1].exist && !res.tags[2].exist) {
+                $timeout(function(){
+                  if (!scope.$parent.submited) {
                     scope.$parent.reg_incomplete = true;
                     scope.$parent.preventClose = true;
                     $rootScope.$broadcast('openProfile');
-                  }, 10)
-                }
+                  }
+                }, 10)
               }
-          });
+            }
+          })
 
           saved_form = angular.copy(form);
 
@@ -384,6 +394,7 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
             req_user.birthDate = bd.reverse().join('-');
           }
 
+          scope.profile.message = MAGIC_CONFIG.data.pending_message;
           SailPlay.send('users.update', req_user, function (user_res) {
 
             if (user_res.status === 'ok') {
@@ -398,9 +409,9 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
               }
 
               scope.$apply(function () {
-
                 if (typeof callback == 'function') callback();
-                SailPlay.send('tags.add', {tags: ['Registration completed']}, () => {
+                SailPlay.send('tags.add', {tags: [MAGIC_CONFIG.data.tag_approval]}, () => {
+                  scope.$parent.submited = true;
                   SailPlayApi.call('load.user.info', {all: 1});
                 });
 

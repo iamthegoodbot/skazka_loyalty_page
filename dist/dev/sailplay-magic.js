@@ -945,13 +945,6 @@ return webpackJsonp([0],[
 	        SailPlay.authorize(type);
 	      };
 
-	      SailPlay.on('login.do', function (auth_hash, data) {
-	        if (data.is_invited && MAGIC_CONFIG.data.invite_tag) {
-	          $rootScope.tagShouldBeAdded = MAGIC_CONFIG.data.invite_tag;
-	          scope.tags_add({ tags: [MAGIC_CONFIG.data.invite_tag] });
-	        }
-	      });
-
 	      /**
 	       * @ngdoc method
 	       * @name tags_add
@@ -1090,6 +1083,7 @@ return webpackJsonp([0],[
 	      }
 
 	      var saved_form = false;
+	      $rootScope.hide_all = true;
 
 	      scope.$watch(function () {
 	        return _angular2.default.toJson([SailPlayApi.data('load.user.info')()]);
@@ -1097,10 +1091,26 @@ return webpackJsonp([0],[
 	        var user = SailPlayApi.data('load.user.info')();
 	        if (!user) return;
 
-	        if ($rootScope.tagShouldBeAdded != MAGIC_CONFIG.data.tag_type) SailPlay.send('tags.exist', { tags: [MAGIC_CONFIG.data.tag_type] }, function (res) {
-	          if (res.tags[0].name == MAGIC_CONFIG.data.tag_type && !res.tags[0].exist) {
-	            location.replace(MAGIC_CONFIG.data.redirect_to);
-	          }
+	        SailPlay.send('tags.exist', { tags: [MAGIC_CONFIG.data.tag_type, MAGIC_CONFIG.data.tag_approval, MAGIC_CONFIG.data.tag_reject] }, function (res) {
+	          $timeout(function () {
+	            if (!res.tags[0].exist) {
+
+	              if (!res.tags[1].exist) {
+	                // approval not exist
+	                if (res.tags[2].exist) {
+	                  //reject exist           
+	                  scope.profile.message = MAGIC_CONFIG.data.reject_message;
+	                  SailPlay.send('logout');
+	                }
+	              } else {
+	                // approval exist
+	                scope.profile.message = MAGIC_CONFIG.data.pending_message;
+	                $rootScope.hide_all = true;
+	              }
+	            } else {
+	              $rootScope.hide_all = false;
+	            }
+	          }, 500);
 	        });
 
 	        var custom_fields = [];
@@ -1184,13 +1194,15 @@ return webpackJsonp([0],[
 	        //}
 	        console.dir(form);
 
-	        if (MAGIC_CONFIG.data.force_registration) SailPlay.send('tags.exist', { tags: ['Registration completed'] }, function (res) {
+	        SailPlay.send('tags.exist', { tags: [MAGIC_CONFIG.data.tag_type, MAGIC_CONFIG.data.tag_reject, MAGIC_CONFIG.data.tag_approval] }, function (res) {
 	          if (res && res.tags.length) {
-	            if (!res.tags[0].exist) {
+	            if (!res.tags[0].exist && !res.tags[1].exist && !res.tags[2].exist) {
 	              $timeout(function () {
-	                scope.$parent.reg_incomplete = true;
-	                scope.$parent.preventClose = true;
-	                $rootScope.$broadcast('openProfile');
+	                if (!scope.$parent.submited) {
+	                  scope.$parent.reg_incomplete = true;
+	                  scope.$parent.preventClose = true;
+	                  $rootScope.$broadcast('openProfile');
+	                }
 	              }, 10);
 	            }
 	          }
@@ -1253,6 +1265,7 @@ return webpackJsonp([0],[
 	          req_user.birthDate = bd.reverse().join('-');
 	        }
 
+	        scope.profile.message = MAGIC_CONFIG.data.pending_message;
 	        SailPlay.send('users.update', req_user, function (user_res) {
 
 	          if (user_res.status === 'ok') {
@@ -1266,10 +1279,11 @@ return webpackJsonp([0],[
 	            }
 
 	            scope.$apply(function () {
-
 	              if (typeof callback == 'function') callback();
-	              SailPlay.send('tags.add', { tags: ['Registration completed'] });
-	              SailPlayApi.call('load.user.info', { all: 1 });
+	              SailPlay.send('tags.add', { tags: [MAGIC_CONFIG.data.tag_approval] }, function () {
+	                scope.$parent.submited = true;
+	                SailPlayApi.call('load.user.info', { all: 1 });
+	              });
 	            });
 	          } else {
 
