@@ -4,7 +4,7 @@
 
         <div class="soligent-sa-block soligent-sa-block_current" data-ng-if="current_status">
 
-            <div class="soligent-sa-block__title" data-ng-bind="'YOUR ' + (current_status.name.toUpperCase() != 'ELITE' ? current_status.name : '') + ' ELITE DEALER BENEFITS'"></div>
+            <div class="soligent-sa-block__title" data-ng-bind="'YOUR ' + current_status.name + ' DEALER BENEFITS'"></div>
 
             <div class="soligent-sa-block__icon"
                  style="background-image: {{ current_status.icon | background_image }}"></div>
