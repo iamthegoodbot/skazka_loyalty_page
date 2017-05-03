@@ -314,6 +314,19 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
           //}
           console.dir(form);
 
+          if (MAGIC_CONFIG.data.force_registration)
+            SailPlay.send('tags.exist', {tags: ['Registration completed']}, function (res) {
+              if (res && res.tags.length) {
+                if (!res.tags[0].exist) {
+                  $timeout(function(){
+                    scope.$parent.reg_incomplete = true;
+                    scope.$parent.preventClose = true;
+                    $rootScope.$broadcast('openProfile');
+                  }, 10)
+                }
+              }
+          });
+
           saved_form = angular.copy(form);
 
         });
