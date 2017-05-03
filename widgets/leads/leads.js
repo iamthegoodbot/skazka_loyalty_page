@@ -18,7 +18,7 @@ WidgetRegister({
       var tagDelete = '/js-api/' + _config.partner.id + '/tags/delete';
 
       scope.Math = window.Math;
-      scope.setTag = (phone, tag) => {
+      scope.setTag = (phone, tag, parent_phone) => {
         var tag_obj_delete = {
           phone: phone,
           tags: ['Closed', 'Open', 'Booked'].join(',')
@@ -28,8 +28,16 @@ WidgetRegister({
           phone: phone,
           tags: tag[0].toUpperCase() + tag.slice(1)
         }
+
+        var parent_tag = {
+          phone: parent_phone,
+          tags: 'Booked_counter'
+        }
+
         SAILPLAY.jsonp.get(_config.DOMAIN + tagDelete, tag_obj_delete, () => {
-          SAILPLAY.jsonp.get(_config.DOMAIN + tagAdd, tag_obj) 
+          SAILPLAY.jsonp.get(_config.DOMAIN + tagAdd, tag_obj)
+          if (tag == 'booked')
+            SAILPLAY.jsonp.get(_config.DOMAIN + tagAdd, parent_tag) 
         });
       }
 
@@ -46,7 +54,6 @@ WidgetRegister({
         }
 
         scope.leads = [];
-        console.log('LEADS', scope)
         var url = '/js-api/' + _config.partner.id + '/custom/referrals/list/'
         SAILPLAY.jsonp.get(_config.DOMAIN + url, obj, function (res) {
           var _leads = res.leads
@@ -81,7 +88,7 @@ WidgetRegister({
                         default:
                           _partner.tag = 'open';  
                       }
-                    lead.partners = lead.partners.filter(obj => { return ['closed', 'booket'].indexOf(obj.tag) == -1 })                      
+                    lead.partners = lead.partners.filter(obj => { return ['closed', 'booked'].indexOf(obj.tag) == -1 })                      
                     scope.$digest();
                   })
                 })                

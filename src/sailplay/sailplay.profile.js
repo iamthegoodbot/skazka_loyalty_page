@@ -220,8 +220,7 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
             MAGIC_CONFIG.data.tag_reject
             ]}, res => {
               $timeout(() => {
-              if (!res.tags[0].exist) {
-
+              if (!res.tags[0].exist) {                
                 if (!res.tags[1].exist) { // approval not exist
                   if (res.tags[2].exist) { //reject exist           
                     scope.profile.message = MAGIC_CONFIG.data.reject_message;
@@ -232,6 +231,7 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
                   $rootScope.hide_all = true;
                 }
               } else {
+                  scope.not_need_approval = true;
                   $rootScope.hide_all = false;
               }
               }, 500)
@@ -394,7 +394,8 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
             req_user.birthDate = bd.reverse().join('-');
           }
 
-          scope.profile.message = MAGIC_CONFIG.data.pending_message;
+          if (!scope.not_need_approval)
+            scope.profile.message = MAGIC_CONFIG.data.pending_message;                  
           SailPlay.send('users.update', req_user, function (user_res) {
 
             if (user_res.status === 'ok') {
@@ -410,10 +411,12 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
 
               scope.$apply(function () {
                 if (typeof callback == 'function') callback();
-                SailPlay.send('tags.add', {tags: [MAGIC_CONFIG.data.tag_approval]}, () => {
-                  scope.$parent.submited = true;
-                  SailPlayApi.call('load.user.info', {all: 1});
-                });
+                if (!scope.not_need_approval) {
+                  SailPlay.send('tags.add', {tags: [MAGIC_CONFIG.data.tag_approval]}, () => {
+                    scope.$parent.submited = true;
+                    SailPlayApi.call('load.user.info', {all: 1});
+                  });
+                }
 
               });
 

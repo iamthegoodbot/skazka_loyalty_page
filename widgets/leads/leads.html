@@ -27,7 +27,7 @@
               <div class="field">
                 <div class="caption">STATUS</div>
                 <div class="value select">
-                  <select class="magic_select" ng-model="partner.tag" data-ng-change="$parent.setTag(partner.phone, partner.tag)">
+                  <select class="magic_select" ng-model="partner.tag" data-ng-change="$parent.setTag(partner.phone, partner.tag, lead.phone)">
                   <option value="closed">Closed</option>
                   <option value="open">Open</option>
                   <option value="booked">Booked</option>

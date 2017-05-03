@@ -142,8 +142,8 @@
           </div>
 
           <div data-ng-switch-when="phone" class="clearfix">
-            <label class="form_label">{{ field.label }}</label>
-            <input class="form_input" type="text" data-model-view-value="true" data-ui-mask="{{ field.placeholder }}" data-ng-model="field.value">
+            <label class="form_label">{{ field.label }}</label>            
+            <input ng-class="{error: fill_profile_form.phone.$error.required}" name="phone" required class="form_input" type="text" data-model-view-value="true" data-ui-mask="{{ field.placeholder }}" data-ng-model="field.value">
           </div>
 
           <div data-ng-switch-when="email" class="clearfix">
