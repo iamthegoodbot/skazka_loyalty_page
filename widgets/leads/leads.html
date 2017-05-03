@@ -7,6 +7,7 @@
       <span class="caption">{{ widget.texts.caption }}</span>
     </h4>
 
+    <div data-ng-show="leads.length == 0" style="text-align: center"> Empty Data </div>
     <div class="lead" data-ng-repeat="lead in leads">
       <div class="lead_info" ng-init="currentIndex = 0">
         <p data-ng-bind="lead.name"></p>

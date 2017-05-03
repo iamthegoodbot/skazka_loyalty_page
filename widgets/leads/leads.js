@@ -46,6 +46,7 @@ WidgetRegister({
         }
 
         scope.leads = [];
+        console.log('LEADS', scope)
         var url = '/js-api/' + _config.partner.id + '/custom/referrals/list/'
         SAILPLAY.jsonp.get(_config.DOMAIN + url, obj, function (res) {
           var _leads = res.leads
