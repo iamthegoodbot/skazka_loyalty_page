@@ -314,7 +314,7 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
           //}
           console.dir(form);
 
-          if (MAGIC_CONFIG.data.force_registration)
+          if (MAGIC_CONFIG.data.force_registration && !$rootScope.submited)
             SailPlay.send('tags.exist', {tags: ['Registration completed']}, function (res) {
               if (res && res.tags.length) {
                 if (!res.tags[0].exist) {
@@ -406,6 +406,7 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
 
                 if (typeof callback == 'function') callback();
                 SailPlay.send('tags.add', {tags: ['Registration completed']}, () => {
+                  $rootScope.submited = true;
                   SailPlayApi.call('load.user.info', {all: 1});
                 });
 
