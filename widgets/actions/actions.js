@@ -9,9 +9,10 @@ WidgetRegister({
   inject: [
     'tools',
     'SailPlayApi',
-    'SailPlay'
+    'SailPlay',
+    '$rootScope'
   ],
-  controller: function (tools, SailPlayApi, SailPlay) {
+  controller: function (tools, SailPlayApi, SailPlay, $rootScope) {
 
     return function (scope, elm, attrs) {
 
@@ -27,6 +28,11 @@ WidgetRegister({
         scope.action_selected = action || false;
 
       };
+
+      scope.open_profile = function() {
+        if(!SailPlayApi.data('load.user.info')()) return SailPlay.authorize('remote');        
+        $rootScope.$broadcast('openProfile')
+      }
 
       SailPlay.on('actions.perform.success', function(){
        scope.$apply(function(){

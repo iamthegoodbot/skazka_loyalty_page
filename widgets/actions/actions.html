@@ -20,7 +20,8 @@
               <div class="mb_item_left">
                 <span class="action_name" data-ng-bind="action_data(action).name"></span>
                 <span class="action_points" data-ng-show="action.points" data-ng-bind="((action.points || 0) | number) + ' ' + (action.points | sailplay_pluralize:( 'points.texts.pluralize' | tools ))"></span>
-                <a class="sp_btn button_primary" data-ng-click="action_select(action)">{{ action_data(action).button_text }}</a>
+                <a class="sp_btn button_primary" data-ng-if="action_data(action).just_open_profile" data-ng-click="open_profile()">{{ action_data(action).button_text }}</a>                
+                <a class="sp_btn button_primary" data-ng-if="!action_data(action).just_open_profile" data-ng-click="action_select(action)">{{ action_data(action).button_text }}</a>
               </div>
               <div class="mb_item_right">
                 <img data-ng-src="{{ action_data(action).pic | sailplay_pic }}" alt="">
