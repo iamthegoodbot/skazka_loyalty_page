@@ -610,6 +610,14 @@ export let Tools = angular.module('magic.tools', [
 
     var country, city, number;
 
+    if (value.slice(0, 2) == '65') {
+      country = 65;
+      city = value.slice(2,5);
+      number = value.slice(5);
+
+      number = number.slice(0, 4) + '-' + number.slice(4);
+    } else {
+
     switch (value.length) {
       case 10: // +1PPP####### -> C (PPP) ###-####
         country = 1;
@@ -638,7 +646,7 @@ export let Tools = angular.module('magic.tools', [
     }
 
     number = number.slice(0, 3) + '-' + number.slice(3);
-
+    }
     return (country + " (" + city + ") " + number).trim();
   };
 });

@@ -310,7 +310,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  }]);
 	  return Magic;
-	}(), _class.Widget = _widget.WidgetRegister, _class.version = '2.1.10', _temp);
+	}(), _class.Widget = _widget.WidgetRegister, _class.version = '2.1.11', _temp);
 
 	//extend SAILPLAY with Magic class
 
@@ -36099,7 +36099,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	                  break;
 
 	                case 'addPhone':
-
 	                  form_field.value = user.user.phone || '';
 	                  break;
 
@@ -38859,38 +38858,46 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    var country, city, number;
 
-	    switch (value.length) {
-	      case 10:
-	        // +1PPP####### -> C (PPP) ###-####
-	        country = 1;
-	        city = value.slice(0, 3);
-	        number = value.slice(3);
-	        break;
+	    if (value.slice(0, 2) == '65') {
+	      country = 65;
+	      city = value.slice(2, 5);
+	      number = value.slice(5);
 
-	      case 11:
-	        // +CPPP####### -> CCC (PP) ###-####
-	        country = value[0];
-	        city = value.slice(1, 4);
-	        number = value.slice(4);
-	        break;
+	      number = number.slice(0, 4) + '-' + number.slice(4);
+	    } else {
 
-	      case 12:
-	        // +CCCPP####### -> CCC (PP) ###-####
-	        country = value.slice(0, 3);
-	        city = value.slice(3, 5);
-	        number = value.slice(5);
-	        break;
+	      switch (value.length) {
+	        case 10:
+	          // +1PPP####### -> C (PPP) ###-####
+	          country = 1;
+	          city = value.slice(0, 3);
+	          number = value.slice(3);
+	          break;
 
-	      default:
-	        return tel;
+	        case 11:
+	          // +CPPP####### -> CCC (PP) ###-####
+	          country = value[0];
+	          city = value.slice(1, 4);
+	          number = value.slice(4);
+	          break;
+
+	        case 12:
+	          // +CCCPP####### -> CCC (PP) ###-####
+	          country = value.slice(0, 3);
+	          city = value.slice(3, 5);
+	          number = value.slice(5);
+	          break;
+
+	        default:
+	          return tel;
+	      }
+
+	      if (country == 1) {
+	        country = "";
+	      }
+
+	      number = number.slice(0, 3) + '-' + number.slice(3);
 	    }
-
-	    if (country == 1) {
-	      country = "";
-	    }
-
-	    number = number.slice(0, 3) + '-' + number.slice(3);
-
 	    return (country + " (" + city + ") " + number).trim();
 	  };
 	});

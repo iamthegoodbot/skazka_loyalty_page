@@ -246,7 +246,6 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
                     break;
 
                   case 'addPhone':
-
                     form_field.value = user.user.phone || '';
                     break;
 
