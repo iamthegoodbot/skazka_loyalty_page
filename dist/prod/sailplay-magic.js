@@ -310,7 +310,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  }]);
 	  return Magic;
-	}(), _class.Widget = _widget.WidgetRegister, _class.version = '2.1.11', _temp);
+	}(), _class.Widget = _widget.WidgetRegister, _class.version = '2.1.12', _temp);
 
 	//extend SAILPLAY with Magic class
 
@@ -38858,10 +38858,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    var country, city, number;
 
-	    if (value.slice(0, 2) == '65') {
-	      country = 65;
-	      city = value.slice(2, 5);
-	      number = value.slice(5);
+	    if (value.slice(0, 2) == '614') {
+	      country = '61 4';
+	      city = '';
+	      number = value.slice(3);
 
 	      number = number.slice(0, 4) + '-' + number.slice(4);
 	    } else {

@@ -610,10 +610,10 @@ export let Tools = angular.module('magic.tools', [
 
     var country, city, number;
 
-    if (value.slice(0, 2) == '65') {
-      country = 65;
-      city = value.slice(2,5);
-      number = value.slice(5);
+    if (value.slice(0, 2) == '614') {
+      country = '61 4';
+      city = '';
+      number = value.slice(3);
 
       number = number.slice(0, 4) + '-' + number.slice(4);
     } else {
