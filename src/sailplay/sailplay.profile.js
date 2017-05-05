@@ -292,6 +292,7 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
           //  angular.extend(scope.profile_form, ipCookie(FillProfile.cookie_name));
           //}
           console.dir(form);
+          scope.$parent.$parent.$parent.next_status_points = 100
           saved_form = angular.copy(form);
 
           if (scope.$root.$$phase != '$digest')

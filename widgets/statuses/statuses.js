@@ -17,7 +17,14 @@ WidgetRegister({
 
       scope.user = SailPlayApi.data('load.user.info');
       scope.purchase_status = MAGIC_CONFIG.data.purchase_status;
-
+      scope.show_statuses = false;
+      scope.getStatusName = function(index) {
+        console.log('STATUS', scope._statuses)
+        return scope._statuses[index].status
+      }
+      scope.getStatusDescription = function(index) {
+        return scope._statuses[index].description
+      }
       scope.get_next_status = function () {
 
         if(!scope._statuses) return;

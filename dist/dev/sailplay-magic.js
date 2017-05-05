@@ -237,7 +237,7 @@ return webpackJsonp([0],[
 
 	  }]);
 	  return Magic;
-	}(), _class.Widget = _widget.WidgetRegister, _class.version = '2.1.12', _temp);
+	}(), _class.Widget = _widget.WidgetRegister, _class.version = '${MAGIC_VERSION}', _temp);
 
 	//extend SAILPLAY with Magic class
 
@@ -1183,6 +1183,7 @@ return webpackJsonp([0],[
 	        //  angular.extend(scope.profile_form, ipCookie(FillProfile.cookie_name));
 	        //}
 	        console.dir(form);
+	        scope.$parent.$parent.$parent.next_status_points = 100;
 	        saved_form = _angular2.default.copy(form);
 
 	        if (scope.$root.$$phase != '$digest') scope.$digest();
