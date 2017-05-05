@@ -237,7 +237,7 @@ return webpackJsonp([0],[
 
 	  }]);
 	  return Magic;
-	}(), _class.Widget = _widget.WidgetRegister, _class.version = '${MAGIC_VERSION}', _temp);
+	}(), _class.Widget = _widget.WidgetRegister, _class.version = '2.1.13', _temp);
 
 	//extend SAILPLAY with Magic class
 
