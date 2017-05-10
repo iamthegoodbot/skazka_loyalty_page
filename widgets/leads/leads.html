@@ -7,13 +7,13 @@
       <span class="caption">{{ widget.texts.caption }}</span>
     </h4>
 
-    <div data-ng-show="leads.length == 0" style="text-align: center"> Empty Data </div>
+    <div data-ng-hide="leads.length" style="text-align: center"> Empty Data </div>
     <div class="lead" data-ng-repeat="lead in leads">
       <div class="lead_info" ng-init="currentIndex = 0">
-        <p data-ng-bind="lead.name"></p>
-        <p data-ng-bind="lead.custom_vars[0].value"></p>
-        <p data-ng-bind="lead.phone"></p>
-        <p data-ng-bind="lead.email"></p>
+        <p>Name: {{ lead.name }}</p>
+        <p>Company Name: {{ lead.custom_vars[0].value }}</p>
+        <p>Phone: {{ lead.phone }}</p>
+        <p>Email: {{ lead.email }}</p>
       </div>
       <div class="lead_center">
         <div class="lead_partners_controls" ng-show="lead.partners.length">
@@ -22,7 +22,7 @@
         </div>
         <div class="lead_partners">
           <div class="slider" data-ng-style="{ transform: 'translate3d(' + -(currentIndex * 640) + 'px, 0, 0)' }">
-            <div data-ng-show="lead.partners.length == 0"> Empty Data </div>
+            <div data-ng-hide="lead.partners.length" style="text-align: center"> Empty Data </div>
             <div class="lead_partner_item" data-ng-repeat="partner in lead.partners">
               <div class="field">
                 <div class="caption">STATUS</div>
@@ -44,11 +44,11 @@
               </div>
               <div class="field">
                 <div class="caption">Email</div>
-                <div class="value" data-ng-bind="partner.email"></div>
+                <div class="value" style="overflow: hidden; text-overflow: ellipsis" data-ng-attr-title="{{ partner.email }}" data-ng-bind="partner.email"></div>
               </div>
               <div class="field">
                 <div class="caption">From</div>
-                <div class="value">{{ partner.custom_vars[1].value }}, {{ partner.custom_vars[3].value }}</div>
+                <div style="overflow: hidden; text-overflow: ellipsis" data-ng-attr-title="{{ partner.custom_vars[1].value }}, {{ partner.custom_vars[3].value }}" class="value">{{ partner.custom_vars[1].value }}, {{ partner.custom_vars[3].value }}</div>
               </div>
               <div class="field">
                 <div class="caption">To</div>
