@@ -17,6 +17,7 @@ WidgetRegister({
       var tagAdd = '/js-api/' + _config.partner.id + '/tags/add';
       var tagDelete = '/js-api/' + _config.partner.id + '/tags/delete';
 
+      scope.already_booked = {};
       scope.Math = window.Math;
       scope.setTag = (phone, tag, parent_phone) => {
         var tag_obj_delete = {
@@ -36,8 +37,10 @@ WidgetRegister({
 
         SAILPLAY.jsonp.get(_config.DOMAIN + tagDelete, tag_obj_delete, () => {
           SAILPLAY.jsonp.get(_config.DOMAIN + tagAdd, tag_obj)
-          if (tag == 'booked')
+          if (tag == 'booked' && !scope.already_booked[phone]) {
+            scope.already_booked[phone] = true
             SAILPLAY.jsonp.get(_config.DOMAIN + tagAdd, parent_tag) 
+          }
         });
       }
 
