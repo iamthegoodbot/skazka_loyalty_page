@@ -45062,12 +45062,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var tagAdd = '/js-api/' + _config.partner.id + '/tags/add';
 	      var tagDelete = '/js-api/' + _config.partner.id + '/tags/delete';
 
-	      scope.already_booked = {};
 	      scope.Math = window.Math;
 	      scope.setTag = function (phone, tag, parent_phone) {
 	        var tag_obj_delete = {
 	          phone: phone,
-	          tags: ['Closed', 'Open', 'Booked'].join(',')
+	          tags: ['Closed', 'Open'].join(',')
 	        };
 
 	        var tag_obj = {
@@ -45080,12 +45079,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	          tags: 'Booked_counter'
 	        };
 
+	        var deleted_parent_tag = {
+	          phone: parent_phone,
+	          tags: 'Booked_deleted_counter'
+	        };
+
 	        SAILPLAY.jsonp.get(_config.DOMAIN + tagDelete, tag_obj_delete, function () {
-	          SAILPLAY.jsonp.get(_config.DOMAIN + tagAdd, tag_obj);
-	          if (tag == 'booked' && !scope.already_booked[phone]) {
-	            scope.already_booked[phone] = true;
-	            SAILPLAY.jsonp.get(_config.DOMAIN + tagAdd, parent_tag);
-	          }
+	          SAILPLAY.jsonp.get(_config.DOMAIN + tagDelete, { phone: phone, tags: 'Booked' }, function (data) {
+	            if (data.deleted_count) SAILPLAY.jsonp.get(_config.DOMAIN + tagAdd, deleted_parent_tag);
+
+	            SAILPLAY.jsonp.get(_config.DOMAIN + tagAdd, tag_obj);
+	            if (tag == 'booked') {
+	              SAILPLAY.jsonp.get(_config.DOMAIN + tagAdd, parent_tag);
+	            }
+	          });
 	        });
 	      };
 
