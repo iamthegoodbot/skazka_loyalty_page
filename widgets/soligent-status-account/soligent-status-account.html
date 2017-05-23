@@ -1,8 +1,7 @@
 <div class="container clearfix soligent-sa-widget" data-ng-show="user && user()">
 
     <div class="soligent-sa-wrapper clearfix">
-
-        <div class="soligent-sa-block soligent-sa-block_current" data-ng-if="current_status">
+        <div class="soligent-sa-block soligent-sa-block_current" data-ng-class="current_status.cls" data-ng-if="current_status">
 
             <div class="soligent-sa-block__title" data-ng-bind="'YOUR ' + current_status.name + ' DEALER BENEFITS'"></div>
 

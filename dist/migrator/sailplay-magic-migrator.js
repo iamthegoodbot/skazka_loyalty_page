@@ -52,7 +52,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	__webpack_require__(1);
 	__webpack_require__(2);
@@ -60,9 +60,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = __webpack_require__(4);
 
 
-/***/ },
+/***/ }),
 /* 1 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	'use strict';
 
@@ -185,9 +185,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	exports.default = Migrator;
 
-/***/ },
+/***/ }),
 /* 2 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -204,9 +204,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	});
 
-/***/ },
+/***/ }),
 /* 3 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -299,9 +299,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	});
 
-/***/ },
+/***/ }),
 /* 4 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -318,7 +318,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	});
 
-/***/ }
+/***/ })
 /******/ ])
 });
 ;
