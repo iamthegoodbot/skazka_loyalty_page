@@ -2,7 +2,6 @@ import { Widget } from '@core/widget';
 import WidgetProfileTemplate from './profile.html'
 import HistoryPaginationTemplate from './history_pagination.html';
 import './profile.less';
-import DefaultAvatarImage from './assets/img/avatar_default.png';
 
 const ProfileWidget = {
 
@@ -15,7 +14,7 @@ const ProfileWidget = {
 
       // scope._tools = MAGIC_CONFIG.tools;
 
-      scope.default_avatar = DefaultAvatarImage;
+      scope.default_avatar = 'https://sailplays3.cdnvideo.ru/media/assets/assetfile/702eab75ea9f3db82d9a83117df8c081.png';
       $rootScope.$on('openProfile', () => {
         scope.profile.show_fill_profile = true;
       })

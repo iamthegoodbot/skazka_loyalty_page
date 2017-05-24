@@ -187,7 +187,7 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
    * This directive extends parent scope with property: sailplay.fill_profile
    *
    */
-  .directive('sailplayFillProfile', function (SailPlay, $rootScope, $q, ipCookie, SailPlayApi, SailPlayFillProfile) {
+  .directive('sailplayFillProfile', function (SailPlay, $timeout, $rootScope, $q, ipCookie, SailPlayApi, SailPlayFillProfile) {
 
     return {
 
@@ -275,6 +275,15 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
           //}
           console.dir(form);
           saved_form = angular.copy(form);                        
+          scope.form_custom = {};
+          SailPlayApi.call('vars.batch', {
+            names: ['beauty', 'nutricion', 'ph_act', 'medical', 'self_dev', 'fin_mang', 'leisure']
+          }, res => {
+            angular.forEach(res.vars, v => {
+              if (v.value === '1') scope.form_custom[v.name] = true; else
+                scope.form_custom[v.name] = false
+            })
+          })
 
           if (custom_fields.length) {            
             SailPlayApi.call("vars.batch", { names: custom_fields.map(field => { return field.name }) }, (res) => {
@@ -296,6 +305,17 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
 
           if (scope.$root.$$phase != '$digest')
             scope.$digest();
+
+          SailPlayApi.call('tags.exist', {
+            tags: ['Register Complete']
+          }, res => {            
+            if (!res.tags[0].exist && !scope.submited) {
+              $rootScope.preventClose = true;
+              $timeout(() => {
+                $rootScope.$broadcast('openProfile');  
+              }, 1)
+            }
+          })
         });
 
         scope.revert_profile_form = function (form) {
@@ -359,6 +379,18 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
           SailPlay.send('users.update', req_user, function (user_res) {
 
             if (user_res.status === 'ok') {
+              console.log(scope.sailplay.fill_profile.form)
+              SailPlay.send('vars.add', {custom_vars: {
+                "beauty": scope.form_custom.beauty ? 1 : 0,
+                "nutrition": scope.form_custom.nutrition ? 1 : 0,
+                "ph_act": scope.form_custom.ph_act ? 1 : 0,
+                "medical": scope.form_custom.medical ? 1 : 0,
+                "self_dev": scope.form_custom.self_dev ? 1 : 0,
+                "fin_mang": scope.form_custom.fin_mang ? 1 : 0,                
+                "leisure": scope.form_custom.leisure ? 1 : 0               
+              }}, () => {
+
+              })
 
               if (Object.keys(custom_user_vars).length) {
                 SailPlay.send('vars.add', {custom_vars: custom_user_vars}, (res_vars) => {
@@ -369,6 +401,8 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
                 })
               }
 
+              SailPlayApi.call('tags.add', {tags: ['Register Complete']})
+              scope.submited = true;
               scope.$apply(function () {
 
                 if (typeof callback == 'function') callback();

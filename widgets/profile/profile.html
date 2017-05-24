@@ -21,7 +21,7 @@
           <span class="user_phone" data-ng-if="user().user.phone"  data-ng-bind="user().user.phone | tel"></span>
           <span class="user_email" data-ng-if="user().user.email"  data-ng-bind="user().user.email"></span>
         </div>
-        <div class="user_info">
+        <div class="user_info logout_container">
           <a href="#" class="edit_profile_btn button_link" data-ng-click="$event.preventDefault(); profile.fill_profile(true);">{{ widget.texts.edit_profile_button }}</a>
         </div>
       </div>
@@ -149,6 +149,40 @@
             <input class="form_input" type="email" placeholder="{{ field.placeholder }}" data-ng-model="field.value">
           </div>
 
+        </div>
+
+        <label class="form_label" style="display: block">Please indicate your fields of interest</label>
+        <div class="activities">
+          <label class="form_label">Beauty</label>
+          <input type="checkbox" data-ng-model="form_custom.beauty">
+        </div>
+        <div class="activities">
+          <label class="form_label">Nutrition</label>
+          <input type="checkbox" data-ng-model="form_custom.nutrition">
+        </div>
+        <div class="activities">
+          <label class="form_label">Physical Activities</label>
+          <input type="checkbox" data-ng-model="form_custom.ph_act">
+        </div>
+        <div class="activities">
+          <label class="form_label">Medical</label>
+          <input type="checkbox" data-ng-model="form_custom.medical">
+        </div>
+        <div class="activities">
+          <label class="form_label">Self-Development</label>
+          <input type="checkbox" data-ng-model="form_custom.self_dev">
+        </div>
+        <div class="activities">
+          <label class="form_label">Financial Management</label>
+          <input type="checkbox" data-ng-model="form_custom.fin_mang">
+        </div>
+        <div class="activities">
+          <label class="form_label">Leisure</label>
+          <input type="checkbox" data-ng-model="form_custom.leisure">
+        </div>
+        <div>
+          <label class="form_label">Alternative Therapies</label>
+          <input type="checkbox">
         </div>
 
         <div class="answ_text">
