@@ -123,30 +123,30 @@
           </div>
 
           <div data-ng-switch-when="text" class="clearfix">
-            <label class="form_label">{{ field.label }}</label>
-            <input class="form_input" type="text" placeholder="{{ field.placeholder }}" data-ng-model="field.value">
+            <label ng-class="{ error: fill_profile_form[field.name].$error.required }" class="form_label">{{ field.label }}</label>
+            <input ng-class="{ error: fill_profile_form[field.name].$error.required }" required ng-attr-name="{{ field.name }}" class="form_input" type="text" placeholder="{{ field.placeholder }}" data-ng-model="field.value">
           </div>
 
           <div data-ng-switch-when="date" class="clearfix">
-            <label class="form_label">{{ field.label }}</label>
-            <date-picker data-model="field.value"></date-picker>
+            <label ng-class="{ error: fill_profile_form[field.name].$error.required }" class="form_label">{{ field.label }}</label>
+            <date-picker ng-class="{ error: fill_profile_form[field.name].$error.required }" ng-attr-name="{{ field.name }}" data-model="field.value"></date-picker>
           </div>
 
           <div data-ng-switch-when="select" class="clearfix">
-            <label class="form_label">{{ field.label }}</label>
+            <label ng-class="{ error: !field.value || field.value == 'Not defined' }" class="form_label">{{ field.label }}</label>            
             <div class="magic_select form_input">
-              <select data-ng-model="field.value" data-ng-options="item.value as item.text for item in field.data"></select>
+              <select ng-class="{ error: !field.value || field.value == 'Not defined' }" ng-attr-name="{{ field.name }}" equired data-ng-model="field.value" data-ng-options="item.value as item.text for item in field.data"></select>
             </div>
           </div>
 
           <div data-ng-switch-when="phone" class="clearfix">
-            <label class="form_label">{{ field.label }}</label>
-            <input class="form_input" type="text" data-model-view-value="true" data-ui-mask="{{ field.placeholder }}" data-ng-model="field.value">
+            <label ng-class="{ error: fill_profile_form[field.name].$error.required }" class="form_label">{{ field.label }}</label>
+            <input ng-class="{ error: fill_profile_form[field.name].$error.required }" ng-attr-name="{{ field.name }}" required class="form_input" type="text" data-model-view-value="true" data-ui-mask="{{ field.placeholder }}" data-ng-model="field.value">
           </div>
 
           <div data-ng-switch-when="email" class="clearfix">
-            <label class="form_label">{{ field.label }}</label>
-            <input class="form_input" type="email" placeholder="{{ field.placeholder }}" data-ng-model="field.value">
+            <label ng-class="{ error: fill_profile_form[field.name].$error.required }" class="form_label">{{ field.label }}</label>
+            <input ng-class="{ error: fill_profile_form[field.name].$error.required }" ng-attr-name="{{ field.name }}" required class="form_input" type="email" placeholder="{{ field.placeholder }}" data-ng-model="field.value">
           </div>
 
         </div>

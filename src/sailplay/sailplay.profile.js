@@ -345,8 +345,7 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
         };
 
         scope.sailplay.fill_profile.submit = function (form, callback) {
-
-          if (!form || !form.$valid) {
+          if (!form || !form.$valid || form.sex.$modelValue == '') {
             return;
           }
 

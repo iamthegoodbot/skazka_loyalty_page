@@ -237,7 +237,7 @@ return webpackJsonp([0],[
 
 	  }]);
 	  return Magic;
-	}(), _class.Widget = _widget.WidgetRegister, _class.version = '${MAGIC_VERSION}', _temp);
+	}(), _class.Widget = _widget.WidgetRegister, _class.version = '2.1.13', _temp);
 
 	//extend SAILPLAY with Magic class
 
@@ -1231,8 +1231,7 @@ return webpackJsonp([0],[
 	      };
 
 	      scope.sailplay.fill_profile.submit = function (form, callback) {
-
-	        if (!form || !form.$valid) {
+	        if (!form || !form.$valid || form.sex.$modelValue == '') {
 	          return;
 	        }
 
@@ -3031,6 +3030,15 @@ return webpackJsonp([0],[
 	      country = '61 4';
 	      city = '';
 	      number = value.slice(3);
+
+	      number = number.slice(0, 4) + '-' + number.slice(4);
+	      return (country + ' ' + number).trim();
+	    }
+
+	    if (value.slice(0, 2) == '65') {
+	      country = '65';
+	      city = '';
+	      number = value.slice(2);
 
 	      number = number.slice(0, 4) + '-' + number.slice(4);
 	      return (country + ' ' + number).trim();
