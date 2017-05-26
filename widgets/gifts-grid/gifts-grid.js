@@ -21,34 +21,94 @@ WidgetRegister({
       // Grid blocks array
       scope.blocks = [];
 
+      scope.gifts = [];
+
       // Current state of grid
       scope.state = 0;
+
+      scope.check_categories = false;
+
+      scope.user_categories = [];
 
       // Grid block size
       const block_size = scope.widget.options && scope.widget.options.grid_size || 6;
 
+      const available_categories = scope.widget.options && scope.widget.options.available_categories || [];
+
+      const unavailable_categories = scope.widget.options && scope.widget.options.unavailable_categories || [];
+
+      if (!available_categories.length) {
+        scope.check_categories = true;
+      } else {
+        SailPlay.send('tags.exist', {tags: available_categories.map(item => item.tag)}, tags_res => {
+          if (tags_res && tags_res.status === 'ok') {
+            scope.check_categories = true;
+            scope.user_categories = tags_res.tags;
+            scope.$digest();
+          } else {
+            console.error('Tags exit error. Response: ', tags_res)
+          }
+          scope.getBlocks();
+        });
+      }
+
+      function replaceVariables(str, data) {
+        if (!str || !data) return;
+        var re;
+        for (var field in data) {
+          re = new RegExp('%%' + field + '%%', "g");
+          str = str.replace(re, data[field]);
+        }
+        return str;
+      }
+
+      scope.isNotAvailableGift = gift => {
+        if (!gift) return;
+        let status = unavailable_categories.filter(item => item.id == gift.category)[0];
+        let obj = {
+          status_name: status && status.tag,
+        };
+        $rootScope.$broadcast('notifier:notify', {
+          header: replaceVariables(scope.widget.texts.no_available_category.header, obj),
+          body: replaceVariables(scope.widget.texts.no_available_category.body, obj)
+        });
+      };
+
+      scope.isAvailableGift = gift => {
+        if (!gift || !gift.category) return false;
+        let checked = scope.user_categories.filter(tag => {
+          return tag.name == gift.category
+        })[0];
+        return scope.check_categories && checked;
+      };
+
       // Local variable for preparing grid data
       let i = 0, page = null, len = 0;
 
-      /**
-       * Watch gift list, and prepare it for grid
-       */
-
-      SailPlayApi.observe('load.gifts.list', gifts => {
+      scope.getBlocks = () => {
         scope.blocks = [];
-        if (!gifts && !gifts.length) return
+        if (!scope.gifts && !scope.gifts.length && scope.check_categories) return;
+        let gifts = angular.copy(scope.gifts);
         len = Math.ceil(gifts.length / block_size);
         i = 0;
         do {
           if (i == (len - 1)) {
             page = gifts.slice(block_size * i);
           } else {
-            page = gifts.slice(block_size * i, block_size);
+            page = gifts.slice(block_size * i, block_size * i + block_size);
           }
           scope.blocks.push(page);
           i++;
-        } while (i != len);
-      })
+        } while (len && i != len);
+      };
+
+      /**
+       * Watch gift list, and prepare it for grid
+       */
+      SailPlayApi.observe('load.gifts.list', gifts => {
+        scope.gifts = gifts;
+        scope.getBlocks();
+      });
 
       /**
        * Change grid page
@@ -80,6 +140,15 @@ WidgetRegister({
           SailPlay.send('gifts.purchase', {gift: gift});
         }
 
+      };
+
+      scope.open = gift => {
+        if (!gift) return;
+        if (scope.isAvailableGift(gift)) {
+          scope.selected_gift = gift;
+        } else {
+          scope.isNotAvailableGift(gift);
+        }
       };
 
       /**

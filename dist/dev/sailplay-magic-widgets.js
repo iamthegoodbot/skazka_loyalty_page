@@ -1688,35 +1688,99 @@ return webpackJsonp([2],[
 	      // Grid blocks array
 	      scope.blocks = [];
 
+	      scope.gifts = [];
+
 	      // Current state of grid
 	      scope.state = 0;
 
+	      scope.check_categories = false;
+
+	      scope.user_categories = [];
+
 	      // Grid block size
 	      var block_size = scope.widget.options && scope.widget.options.grid_size || 6;
+
+	      var available_categories = scope.widget.options && scope.widget.options.available_categories || [];
+
+	      var unavailable_categories = scope.widget.options && scope.widget.options.unavailable_categories || [];
+
+	      if (!available_categories.length) {
+	        scope.check_categories = true;
+	      } else {
+	        SailPlay.send('tags.exist', { tags: available_categories.map(function (item) {
+	            return item.tag;
+	          }) }, function (tags_res) {
+	          if (tags_res && tags_res.status === 'ok') {
+	            scope.check_categories = true;
+	            scope.user_categories = tags_res.tags;
+	            scope.$digest();
+	          } else {
+	            console.error('Tags exit error. Response: ', tags_res);
+	          }
+	          scope.getBlocks();
+	        });
+	      }
+
+	      function replaceVariables(str, data) {
+	        if (!str || !data) return;
+	        var re;
+	        for (var field in data) {
+	          re = new RegExp('%%' + field + '%%', "g");
+	          str = str.replace(re, data[field]);
+	        }
+	        return str;
+	      }
+
+	      scope.isNotAvailableGift = function (gift) {
+	        if (!gift) return;
+	        var status = unavailable_categories.filter(function (item) {
+	          return item.id == gift.category;
+	        })[0];
+	        var obj = {
+	          status_name: status && status.tag
+	        };
+	        $rootScope.$broadcast('notifier:notify', {
+	          header: replaceVariables(scope.widget.texts.no_available_category.header, obj),
+	          body: replaceVariables(scope.widget.texts.no_available_category.body, obj)
+	        });
+	      };
+
+	      scope.isAvailableGift = function (gift) {
+	        if (!gift || !gift.category) return false;
+	        var checked = scope.user_categories.filter(function (tag) {
+	          return tag.name == gift.category;
+	        })[0];
+	        return scope.check_categories && checked;
+	      };
 
 	      // Local variable for preparing grid data
 	      var i = 0,
 	          page = null,
 	          len = 0;
 
-	      /**
-	       * Watch gift list, and prepare it for grid
-	       */
-
-	      SailPlayApi.observe('load.gifts.list', function (gifts) {
+	      scope.getBlocks = function () {
 	        scope.blocks = [];
-	        if (!gifts && !gifts.length) return;
+	        if (!scope.gifts && !scope.gifts.length && scope.check_categories) return;
+	        var gifts = angular.copy(scope.gifts);
 	        len = Math.ceil(gifts.length / block_size);
 	        i = 0;
 	        do {
 	          if (i == len - 1) {
 	            page = gifts.slice(block_size * i);
 	          } else {
-	            page = gifts.slice(block_size * i, block_size);
+	            page = gifts.slice(block_size * i, block_size * i + block_size);
 	          }
 	          scope.blocks.push(page);
 	          i++;
-	        } while (i != len);
+	        } while (len && i != len);
+	      };
+
+	      /**
+	       * Watch gift list, and prepare it for grid
+	       */
+	      SailPlayApi.observe('load.gifts.list', function (gifts) {
+	        scope.gifts = gifts;
+	        scope.getBlocks();
 	      });
 
 	      /**
@@ -1744,6 +1808,15 @@ return webpackJsonp([2],[
 	          scope.selected_gift = null;
 	        } else if (scope.user().user_points.confirmed >= gift.points) {
 	          SailPlay.send('gifts.purchase', { gift: gift });
+	        }
+	      };
+
+	      scope.open = function (gift) {
+	        if (!gift) return;
+	        if (scope.isAvailableGift(gift)) {
+	          scope.selected_gift = gift;
+	        } else {
+	          scope.isNotAvailableGift(gift);
 	        }
 	      };
 
@@ -1781,7 +1854,7 @@ return webpackJsonp([2],[
 /* 136 */
 /***/ (function(module, exports) {
 
-	module.exports = "<div class=\"bon_choice_main container clearfix gifts_grid_widget\">\n\n    <h3 class=\"gifts_grid___header\">\n        <span class=\"header\" data-ng-bind=\"widget.texts.header\"></span>\n    </h3>\n\n    <h4 class=\"gifts_grid___caption\">\n        <span class=\"caption\" data-ng-bind=\"widget.texts.caption\"></span>\n    </h4>\n\n    <div class=\"gifts_grid__wrapper clearfix\">\n\n        <div class=\"gifts_grid__blocks clearfix\">\n\n            <div class=\"gifts_grid__block clearfix\">\n\n                <div class=\"gifts_grid__item clearfix\" data-ng-repeat=\"gift in blocks[state] track by $index\">\n\n                    <span class=\"gifts_grid__item-name gift_name\" data-ng-bind=\"gift.name\"></span>\n\n                    <span class=\"gifts_grid__item-points gift_points\"\n                          data-ng-bind=\"(gift.points | number) + ' ' + (gift.points | sailplay_pluralize:('points.texts.pluralize' | tools))\"></span>\n\n                    <img class=\"gifts_grid__item-img gift_img\"\n                         data-ng-src=\"{{ gift.thumbs.url_250x250 | sailplay_pic }}\"\n                         alt=\"{{ gift.name }}\">\n\n\n                    <a class=\"gifts_grid__item-button button_primary\" href=\"#\"\n                       data-ng-bind=\"widget.texts.get\"\n                       data-ng-click=\"$parent.selected_gift = gift;$event.preventDefault();\"></a>\n\n\n                </div>\n\n            </div>\n\n        </div>\n\n        <a href=\"#\" class=\"gifts_grid__arrow gifts_grid__arrow_l slider_arrow_left\"\n           data-ng-if=\"state\"\n           data-ng-click=\"$event.preventDefault(); move(-1);\"></a>\n\n        <a href=\"#\" class=\"gifts_grid__arrow gifts_grid__arrow_r slider_arrow_right\"\n           data-ng-if=\"blocks.length && state != (blocks.length-1)\"\n           data-ng-click=\"$event.preventDefault(); move(1);\"></a>\n\n    </div>\n\n    <magic-modal class=\"bns_overlay_gift\" data-show=\"selected_gift\">\n\n        <div class=\"modal_gift_container\">\n\n            <img class=\"gift_more_img\" data-ng-src=\"{{ selected_gift.thumbs.url_250x250 | sailplay_pic }}\"\n                 alt=\"{{ selected_gift.name }}\">\n\n            <div class=\"gift_more_block\">\n\n                <span data-ng-bind=\"selected_gift\"></span>\n\n                <span class=\"gift_more_name modal_gift_name\" data-ng-bind=\"selected_gift.name\"></span>\n\n                <span class=\"gift_more_points modal_gift_points\"\n                      data-ng-bind=\"(selected_gift.points | number) + ' ' + (selected_gift.points | sailplay_pluralize:('points.texts.pluralize' | tools))\"></span>\n\n                <p class=\"gift_more_descr modal_gift_description\" data-ng-bind=\"selected_gift.descr\"></p>\n\n                <div class=\"modal_gift_buttons\">\n\n                    <span class=\"alink button_primary\" data-ng-click=\"$parent.$parent.selected_gift=null\">{{ 'buttons.texts.close' | tools }}</span>\n\n                    <span class=\"alink button_primary\"\n                          style=\"margin-left: 5px;\"\n                          data-ng-click=\"gift_confirm(selected_gift);\"\n                          data-ng-bind=\"widget.texts.get\"></span>\n                </div>\n\n            </div>\n        </div>\n\n\n</div>";
+	module.exports = "<div class=\"bon_choice_main container clearfix gifts_grid_widget\">\n\n    <h3 class=\"gifts_grid___header\">\n        <span class=\"header\" data-ng-bind=\"widget.texts.header\"></span>\n    </h3>\n\n    <h4 class=\"gifts_grid___caption\">\n        <span class=\"caption\" data-ng-bind=\"widget.texts.caption\"></span>\n    </h4>\n\n    <div class=\"gifts_grid__wrapper clearfix\">\n\n        <div class=\"gifts_grid__blocks clearfix\">\n\n            <div class=\"gifts_grid__block clearfix\">\n\n                <div class=\"gifts_grid__item clearfix\"\n                     data-ng-class=\"{\n                     'gift-available': isAvailableGift(gift),\n                     'gift-unavailable': !isAvailableGift(gift)\n                     }\"\n                     data-ng-repeat=\"gift in blocks[state] track by $index\">\n\n                    <span class=\"gifts_grid__item-name gift_name\" data-ng-bind=\"gift.name\"></span>\n\n                    <span class=\"gifts_grid__item-points gift_points\"\n                          data-ng-bind=\"(gift.points | number) + ' ' + (gift.points | sailplay_pluralize:('points.texts.pluralize' | tools))\"></span>\n\n                    <img class=\"gifts_grid__item-img gift_img\"\n                         data-ng-src=\"{{ gift.thumbs.url_250x250 | sailplay_pic }}\"\n                         alt=\"{{ gift.name }}\">\n\n\n                    <a class=\"gifts_grid__item-button button_primary\" href=\"#\"\n                       data-ng-bind=\"widget.texts.get\"\n                       data-ng-click=\"$event.preventDefault();open(gift)\"></a>\n\n\n                </div>\n\n            </div>\n\n        </div>\n\n        <a href=\"#\" class=\"gifts_grid__arrow gifts_grid__arrow_l slider_arrow_left\"\n           data-ng-if=\"state\"\n           data-ng-click=\"$event.preventDefault(); move(-1);\"></a>\n\n        <a href=\"#\" class=\"gifts_grid__arrow gifts_grid__arrow_r slider_arrow_right\"\n           data-ng-if=\"blocks.length && state != (blocks.length-1)\"\n           data-ng-click=\"$event.preventDefault(); move(1);\"></a>\n\n    </div>\n\n    <magic-modal class=\"bns_overlay_gift\" data-show=\"selected_gift\">\n\n        <div class=\"modal_gift_container\">\n\n            <img class=\"gift_more_img\" data-ng-src=\"{{ selected_gift.thumbs.url_250x250 | sailplay_pic }}\"\n                 alt=\"{{ selected_gift.name }}\">\n\n            <div class=\"gift_more_block\">\n\n                <span data-ng-bind=\"selected_gift\"></span>\n\n                <span class=\"gift_more_name modal_gift_name\" data-ng-bind=\"selected_gift.name\"></span>\n\n                <span class=\"gift_more_points modal_gift_points\"\n                      data-ng-bind=\"(selected_gift.points | number) + ' ' + (selected_gift.points | sailplay_pluralize:('points.texts.pluralize' | tools))\"></span>\n\n                <p class=\"gift_more_descr modal_gift_description\" data-ng-bind=\"selected_gift.descr\"></p>\n\n                <div class=\"modal_gift_buttons\">\n\n                    <span class=\"alink button_primary\" data-ng-click=\"$parent.$parent.selected_gift=null\">{{ 'buttons.texts.close' | tools }}</span>\n\n                    <span class=\"alink button_primary\"\n                          style=\"margin-left: 5px;\"\n                          data-ng-click=\"gift_confirm(selected_gift);\"\n                          data-ng-bind=\"widget.texts.get\"></span>\n                </div>\n\n            </div>\n        </div>\n\n\n</div>";
 
 /***/ }),
 /* 137 */
