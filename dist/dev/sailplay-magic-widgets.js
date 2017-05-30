@@ -1702,12 +1702,14 @@ return webpackJsonp([2],[
 
 	      var available_categories = scope.widget.options && scope.widget.options.available_categories || [];
 
-	      var unavailable_categories = scope.widget.options && scope.widget.options.unavailable_categories || [];
+	      var categories = scope.widget.options && scope.widget.options.categories || [];
 
 	      if (!available_categories.length) {
 	        scope.check_categories = true;
 	      } else {
-	        SailPlay.send('tags.exist', { tags: available_categories.map(function (item) {
+	        SailPlay.send('tags.exist', { tags: categories.filter(function (item) {
+	            return available_categories.indexOf(item.id) !== -1;
+	          }).map(function (item) {
 	            return item.tag;
 	          }) }, function (tags_res) {
 	          if (tags_res && tags_res.status === 'ok') {
@@ -1732,12 +1734,16 @@ return webpackJsonp([2],[
 	      }
 
 	      scope.isNotAvailableGift = function (gift) {
-	        if (!gift) return;
-	        var status = unavailable_categories.filter(function (item) {
+	        if (!gift || !scope.user()) return;
+	        var status = categories.filter(function (item) {
+	          return item.id == gift.category;
+	        })[0] || available_categories.filter(function (item) {
 	          return item.id == gift.category;
 	        })[0];
 	        var obj = {
-	          status_name: status && status.tag
+	          tag_id: status && status.id,
+	          status_name: status && status.name,
+	          tag_name: status && status.tag
 	        };
 	        $rootScope.$broadcast('notifier:notify', {
 	          header: replaceVariables(scope.widget.texts.no_available_category.header, obj),
@@ -1746,9 +1752,15 @@ return webpackJsonp([2],[
 	      };
 
 	      scope.isAvailableGift = function (gift) {
-	        if (!gift || !gift.category) return false;
+	        if (!gift || !scope.check_categories) return false;
+	        var category = categories.filter(function (category) {
+	          return category.id == gift.category;
+	        })[0];
+	        if (scope.check_categories && (!gift.category || !category)) {
+	          return true;
+	        }
 	        var checked = scope.user_categories.filter(function (tag) {
-	          return tag.name == gift.category;
+	          return tag.name == gift.category && tag.exist;
 	        })[0];
 	        return scope.check_categories && checked;
 	      };

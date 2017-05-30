@@ -3625,7 +3625,7 @@ return webpackJsonp([0],[
 
 	        scope.data = data;
 	        scope.show_notifier = true;
-	        console.log('notifier: ' + data.body);
+	        // console.log('notifier: ' + data.body);
 	      });
 
 	      scope.reset_notifier = function () {

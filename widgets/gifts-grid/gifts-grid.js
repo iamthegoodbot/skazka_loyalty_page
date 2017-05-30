@@ -35,12 +35,12 @@ WidgetRegister({
 
       const available_categories = scope.widget.options && scope.widget.options.available_categories || [];
 
-      const unavailable_categories = scope.widget.options && scope.widget.options.unavailable_categories || [];
+      const categories = scope.widget.options && scope.widget.options.categories || [];
 
       if (!available_categories.length) {
         scope.check_categories = true;
       } else {
-        SailPlay.send('tags.exist', {tags: available_categories.map(item => item.tag)}, tags_res => {
+        SailPlay.send('tags.exist', {tags: categories.filter(item => available_categories.indexOf(item.id) !== -1).map(item => item.tag)}, tags_res => {
           if (tags_res && tags_res.status === 'ok') {
             scope.check_categories = true;
             scope.user_categories = tags_res.tags;
@@ -63,10 +63,12 @@ WidgetRegister({
       }
 
       scope.isNotAvailableGift = gift => {
-        if (!gift) return;
-        let status = unavailable_categories.filter(item => item.id == gift.category)[0];
+        if (!gift || !scope.user()) return;
+        let status = categories.filter(item => item.id == gift.category)[0] || available_categories.filter(item => item.id == gift.category)[0];
         let obj = {
-          status_name: status && status.tag,
+          tag_id: status && status.id,
+          status_name: status && status.name,
+          tag_name: status && status.tag
         };
         $rootScope.$broadcast('notifier:notify', {
           header: replaceVariables(scope.widget.texts.no_available_category.header, obj),
@@ -75,9 +77,13 @@ WidgetRegister({
       };
 
       scope.isAvailableGift = gift => {
-        if (!gift || !gift.category) return false;
+        if (!gift || !scope.check_categories) return false;
+        let category = categories.filter(category => category.id == gift.category)[0];
+        if (scope.check_categories && (!gift.category || !category)) {
+          return true;
+        }
         let checked = scope.user_categories.filter(tag => {
-          return tag.name == gift.category
+          return tag.name == gift.category && tag.exist
         })[0];
         return scope.check_categories && checked;
       };
