@@ -57,7 +57,7 @@ const PointsStatus = {
         }
 
         value = value > 100 ? 100 : value < 0 ? 0 : value;
-
+        console.log('VALUE', value)
         return value + '%'
 
       };

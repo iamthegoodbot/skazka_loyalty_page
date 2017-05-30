@@ -187,7 +187,7 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
    * This directive extends parent scope with property: sailplay.fill_profile
    *
    */
-  .directive('sailplayFillProfile', function (SailPlay, $rootScope, $q, ipCookie, SailPlayApi, SailPlayFillProfile) {
+  .directive('sailplayFillProfile', function (SailPlay, $rootScope, $q, ipCookie, SailPlayApi, SailPlayFillProfile, MAGIC_CONFIG) {
 
     return {
 
@@ -292,7 +292,38 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
           //  angular.extend(scope.profile_form, ipCookie(FillProfile.cookie_name));
           //}
           console.dir(form);
-          scope.$parent.$parent.$parent.next_status_points = 100
+
+          (function () {
+
+            if(!user) {
+              return {
+                status: MAGIC_CONFIG.data.statuses[0],
+                offset: MAGIC_CONFIG.data.statuses.points
+              };
+            }
+
+            let user_points = user.user_points;
+            let points =  user_points ? user_points.confirmed + user_points.spent + user_points.spent_extra : 0;
+            if (MAGIC_CONFIG.data.purchase_status) {
+              points = user.purchases && user.purchases.sum || 0;
+              user_points = user.purchases && user.purchases.sum || 0
+            }
+
+            let future_statuses = MAGIC_CONFIG.data.statuses.sort((a, b) => {
+              return a.points > b.points;
+            }).filter((status) => {
+              return status.points > points;
+            });
+
+            scope.$parent.$parent.$parent.next_status_points = future_statuses[0] && future_statuses[0].points - points || 0
+            return {
+              status: future_statuses[0],
+              offset: future_statuses[0] && future_statuses[0].points - points || 0
+            };
+
+          })()
+
+
           saved_form = angular.copy(form);
 
           if (scope.$root.$$phase != '$digest')

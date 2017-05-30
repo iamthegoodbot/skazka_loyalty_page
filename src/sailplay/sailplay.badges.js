@@ -54,7 +54,6 @@ export let SailPlayBadges = angular.module('sailplay.badges', [])
       };
 
       scope.getProgress = function (user_points, statuses) {
-
         if (!user_points || !statuses) return;
 
         var status_points = statuses.map(function (item) {
@@ -65,6 +64,7 @@ export let SailPlayBadges = angular.module('sailplay.badges', [])
           return !isNaN(parseFloat(n)) && isFinite(n);
         }
 
+        debugger;
         var points;
         if (isNumeric(user_points)) points = user_points;
         else points = user_points ? user_points.confirmed + user_points.spent + user_points.spent_extra : 0;
@@ -97,7 +97,7 @@ export let SailPlayBadges = angular.module('sailplay.badges', [])
           current = (points - status_points[state]);
           total = status_points[state + 1] ? (status_points[state + 1] - status_points[state]) : status_points[state];
         }
-
+        
         return {
           width: parseInt((current * 100 / total / 100 * 10) + (state * multiplier)) + '%'
         };

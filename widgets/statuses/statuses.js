@@ -15,16 +15,54 @@ WidgetRegister({
       scope._tools = MAGIC_CONFIG.tools;
       scope._statuses = MAGIC_CONFIG.data.statuses;
 
-      scope.user = SailPlayApi.data('load.user.info');
+      scope.user = SailPlayApi.data('load.user.info');      
       scope.purchase_status = MAGIC_CONFIG.data.purchase_status;
       scope.show_statuses = false;
       scope.getStatusName = function(index) {
-        console.log('STATUS', scope._statuses)
         return scope._statuses[index].status
       }
       scope.getStatusDescription = function(index) {
         return scope._statuses[index].description
       }
+
+      scope.getProgress = (points, statusList) => {
+        let value = points;
+        let maxPoints = 0;
+        
+        if (!statusList || !statusList.length) return value;
+
+        let _statusArray = statusList.map((item) => {
+          maxPoints += item.points;
+          return item.points
+        });
+
+        if (_statusArray[_statusArray.length - 1] <= points) return '100%';
+
+        let step = (100 / _statusArray.length).toFixed(1);
+
+        let state = 0;
+
+        for (let i = 0, len = _statusArray.length; i < len; i++) {
+          if (points < _statusArray[i]) {
+            state = i;
+            break;
+          }
+        }
+
+        // percent
+        value = value / maxPoints * 100;
+        return {
+          width: value + '%'
+        }
+
+      };
+
+      scope.generateOffset = function (index, statuses) {
+        return {
+          left: ((100 / (statuses.length - 1)) * index) + '%'
+        }
+      };
+
       scope.get_next_status = function () {
 
         if(!scope._statuses) return;

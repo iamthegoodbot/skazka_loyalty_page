@@ -1961,6 +1961,43 @@ return webpackJsonp([2],[
 
 	        return scope.is_active_status(status) && status.image_active || status.image;
 	      };
+
+	      scope.getProgress = function (points, statusList) {
+
+	        var value = 0;
+
+	        if (!statusList || !statusList.length) return value;
+
+	        var _statusArray = statusList.map(function (item) {
+	          return item.points;
+	        });
+
+	        if (_statusArray[_statusArray.length - 1] <= points) return '100%';
+
+	        var step = (100 / _statusArray.length).toFixed(1);
+
+	        var state = 0;
+
+	        for (var i = 0, len = _statusArray.length; i < len; i++) {
+	          if (points < _statusArray[i]) {
+	            state = i;
+	            break;
+	          }
+	        }
+
+	        value = step * state;
+
+	        if (state != 0) {
+	          value += (points - _statusArray[state - 1]) * 100 / (_statusArray[state] - _statusArray[state - 1]) / _statusArray.length;
+	        } else {
+	          value += points * 100 / _statusArray[state] / _statusArray.length;
+	        }
+
+	        value = value > 100 ? 100 : value < 0 ? 0 : value;
+
+	        console.log('VALUE', value);
+	        return value + '%';
+	      };
 	    };
 	  }
 	});
@@ -2155,7 +2192,7 @@ return webpackJsonp([2],[
 	        }
 
 	        value = value > 100 ? 100 : value < 0 ? 0 : value;
-
+	        console.log('VALUE', value);
 	        return value + '%';
 	      };
 	    };
@@ -2582,12 +2619,49 @@ return webpackJsonp([2],[
 	      scope.purchase_status = MAGIC_CONFIG.data.purchase_status;
 	      scope.show_statuses = false;
 	      scope.getStatusName = function (index) {
-	        console.log('STATUS', scope._statuses);
 	        return scope._statuses[index].status;
 	      };
 	      scope.getStatusDescription = function (index) {
 	        return scope._statuses[index].description;
 	      };
+
+	      scope.getProgress = function (points, statusList) {
+	        var value = points;
+	        var maxPoints = 0;
+
+	        if (!statusList || !statusList.length) return value;
+
+	        var _statusArray = statusList.map(function (item) {
+	          maxPoints += item.points;
+	          return item.points;
+	        });
+
+	        if (_statusArray[_statusArray.length - 1] <= points) return '100%';
+
+	        var step = (100 / _statusArray.length).toFixed(1);
+
+	        var state = 0;
+
+	        for (var i = 0, len = _statusArray.length; i < len; i++) {
+	          if (points < _statusArray[i]) {
+	            state = i;
+	            break;
+	          }
+	        }
+
+	        // percent
+	        value = value / maxPoints * 100;
+	        return {
+	          width: value + '%'
+	        };
+	      };
+
+	      scope.generateOffset = function (index, statuses) {
+	        return {
+	          left: 100 / (statuses.length - 1) * index + '%'
+	        };
+	      };
+
 	      scope.get_next_status = function () {
 
 	        if (!scope._statuses) return;
@@ -2627,7 +2701,7 @@ return webpackJsonp([2],[
 /* 170 */
 /***/ (function(module, exports) {
 
-	module.exports = "<div class=\"clearfix container\">\n\n  <div class=\"status-list\">\n\n    <!--<div class=\"next_status_info\" data-ng-show=\"get_next_status().status\">\n\n      <div class=\"next_status_name\">\n        {{ widget.texts.next_status }} <span data-ng-style=\"{ color: get_next_status().status.color  }\">{{ get_next_status().status.status }}</span>\n      </div>\n\n      <div class=\"next_status_offset\">\n        {{ widget.texts.next_status_offset }} {{ get_next_status().offset }}\n      </div>\n\n    </div>-->\n\n    <magic-modal class=\"bns_overlay_statuses\" data-show=\"show_statuses\">\n      <div class=\"status_item\">\n        <img src=\"https://sailplays3.cdnvideo.ru/media/assets/assetfile/56443f288b99c5803391b0c302ce0c4e.png\" alt=\"\">\n        <div class=\"status_item__descr\">\n          <h1 data-ng-bind=\"getStatusName(0)\"></h1>\n          <div class=\"content\" data-ng-bind=\"getStatusDescription(0)\"></div>\n        </div>\n      </div>\n      <div class=\"status_item\">\n        <img src=\"https://sailplays3.cdnvideo.ru/media/assets/assetfile/27e6cfe2cabeea178e07bd2108148453.png\" alt=\"\">\n        <div class=\"status_item__descr\">\n          <h1 data-ng-bind=\"getStatusName(1)\"></h1>\n          <div class=\"content\" data-ng-bind=\"getStatusDescription(1)\"></div>\n        </div>        \n      </div>\n      <div class=\"status_item\">\n        <img src=\"https://sailplays3.cdnvideo.ru/media/assets/assetfile/3aa3992d61729f391eac297e044fdf78.png\" alt=\"\">\n        <div class=\"status_item__descr\">\n          <h1 data-ng-bind=\"getStatusName(2)\"></h1>\n          <div class=\"content\" data-ng-bind=\"getStatusDescription(2)\"></div>\n        </div>        \n      </div>\n      <div class=\"status_item\">\n        <img src=\"https://sailplays3.cdnvideo.ru/media/assets/assetfile/d633a5663017b59e1c28cc72085e1f07.png\" alt=\"\">\n        <div class=\"status_item__descr\">\n          <h1 data-ng-bind=\"getStatusName(3)\"></h1>\n          <div class=\"content\" data-ng-bind=\"getStatusDescription(3)\"></div>\n        </div>        \n      </div>        \n      <div style=\"text-align: center\">\n        <button type=\"submit\" data-ng-click=\"$parent.$parent.show_statuses=false\" class=\"sp_btn button_primary\">{{ 'buttons.texts.close' | tools }}</button>        \n      </div>\n    </magic-modal>\n\n      <div class=\"status-list__your\">\n        <img class=\"status_block_img\" data-ng-src=\"{{ user().user_status.pic | sailplay_pic }}\" alt=\"{{ user().user_status.name }}\">\n        <div class=\"status-list__your_status_text\">Ваш статус</div>\n        <div class=\"status-list__your_status_value\">{{ user().user_status.name }}</div>\n        <a href=\"#\" ng-click=\"show_statuses=true\" class=\"status-list__your_status_all_statuses\">Все статусы</a>        \n      </div>\n\n    <div class=\"status-list__wrapper\" data-sailplay-statuses data-ng-cloak>\n\n      <div class=\"status-list__progress element-progress progress_line\"\n           data-ng-style=\"getProgress(purchase_status ? user().purchases.sum : user().user_points, _statuses)\"></div>\n        \n        <div class=\"status-list__item element-item\"\n           data-ng-class=\"{ type_active : item.points <= user().user_points.confirmed + user().user_points.spent + user().user_points.spent_extra }\"\n           data-ng-repeat=\"item in _statuses\"\n           data-ng-style=\"generateOffset($index, _statuses)\">\n\n        <div class=\"status-list__item-image\"></div>\n        <div class=\"status-list__item-point element-item-point\"></div>\n\n        <div class=\"element-item-point-inner\" data-ng-style=\"{ backgroundColor: item.color }\"></div>\n\n        <div class=\"status-list__item-name element-item-name\" data-ng-bind=\"item.name\"></div>\n        <div class=\"status-list__item-status element-item-status\" data-ng-if=\"item.status\" data-ng-bind=\"item.status\"\n             style=\"{{ (item.color) ? ('color: ' +  item.color) : '' }}\"></div>\n\n      </div>\n\n    </div>\n\n  </div>\n</div>";
+	module.exports = "<div class=\"clearfix container\">\n\n  <div class=\"status-list\">\n\n    <!--<div class=\"next_status_info\" data-ng-show=\"get_next_status().status\">\n\n      <div class=\"next_status_name\">\n        {{ widget.texts.next_status }} <span data-ng-style=\"{ color: get_next_status().status.color  }\">{{ get_next_status().status.status }}</span>\n      </div>\n\n      <div class=\"next_status_offset\">\n        {{ widget.texts.next_status_offset }} {{ get_next_status().offset }}\n      </div>\n\n    </div>-->\n\n    <magic-modal class=\"bns_overlay_statuses\" data-show=\"show_statuses\">\n      <div class=\"status_item\">\n        <img src=\"https://sailplays3.cdnvideo.ru/media/assets/assetfile/56443f288b99c5803391b0c302ce0c4e.png\" alt=\"\">\n        <div class=\"status_item__descr\">\n          <h1 data-ng-bind=\"getStatusName(0)\"></h1>\n          <div class=\"content\" data-ng-bind=\"getStatusDescription(0)\"></div>\n        </div>\n      </div>\n      <div class=\"status_item\">\n        <img src=\"https://sailplays3.cdnvideo.ru/media/assets/assetfile/27e6cfe2cabeea178e07bd2108148453.png\" alt=\"\">\n        <div class=\"status_item__descr\">\n          <h1 data-ng-bind=\"getStatusName(1)\"></h1>\n          <div class=\"content\" data-ng-bind=\"getStatusDescription(1)\"></div>\n        </div>        \n      </div>\n      <div class=\"status_item\">\n        <img src=\"https://sailplays3.cdnvideo.ru/media/assets/assetfile/3aa3992d61729f391eac297e044fdf78.png\" alt=\"\">\n        <div class=\"status_item__descr\">\n          <h1 data-ng-bind=\"getStatusName(2)\"></h1>\n          <div class=\"content\" data-ng-bind=\"getStatusDescription(2)\"></div>\n        </div>        \n      </div>\n      <div class=\"status_item\">\n        <img src=\"https://sailplays3.cdnvideo.ru/media/assets/assetfile/d633a5663017b59e1c28cc72085e1f07.png\" alt=\"\">\n        <div class=\"status_item__descr\">\n          <h1 data-ng-bind=\"getStatusName(3)\"></h1>\n          <div class=\"content\" data-ng-bind=\"getStatusDescription(3)\"></div>\n        </div>        \n      </div>        \n      <div style=\"text-align: center\">\n        <button type=\"submit\" data-ng-click=\"$parent.$parent.show_statuses=false\" class=\"sp_btn button_primary\">{{ 'buttons.texts.close' | tools }}</button>        \n      </div>\n    </magic-modal>\n\n      <div class=\"status-list__your\">\n        <img class=\"status_block_img\" data-ng-src=\"{{ user().user_status.pic | sailplay_pic }}\" alt=\"{{ user().user_status.name }}\">\n        <div class=\"status-list__your_status_text\">Ваш статус</div>\n        <div class=\"status-list__your_status_value\">{{ user().user_status.name }}</div>\n        <a href=\"#\" ng-click=\"show_statuses=true\" class=\"status-list__your_status_all_statuses\">Все статусы</a>        \n      </div>\n\n    <div class=\"status-list__wrapper\" data-ng-cloak>\n\n      <div class=\"status-list__progress element-progress progress_line\"\n           data-ng-style=\"getProgress(purchase_status ? user().purchases.sum : user().user_points.confirmed, _statuses)\"></div>\n        \n        <div class=\"status-list__item element-item\"\n           data-ng-class=\"{ type_active : item.points <= user().user_points.confirmed + user().user_points.spent + user().user_points.spent_extra }\"\n           data-ng-repeat=\"item in _statuses\"\n           data-ng-style=\"generateOffset($index, _statuses)\">\n\n        <div class=\"status-list__item-image\"></div>\n        <div class=\"status-list__item-point element-item-point\"></div>\n\n        <div class=\"element-item-point-inner\" data-ng-style=\"{ backgroundColor: item.color }\"></div>\n\n        <div class=\"status-list__item-name element-item-name\" data-ng-bind=\"item.name\"></div>\n        <div class=\"status-list__item-status element-item-status\" data-ng-if=\"item.status\" data-ng-bind=\"item.status\"\n             style=\"{{ (item.color) ? ('color: ' +  item.color) : '' }}\"></div>\n\n      </div>\n\n    </div>\n\n  </div>\n</div>";
 
 /***/ }),
 /* 171 */

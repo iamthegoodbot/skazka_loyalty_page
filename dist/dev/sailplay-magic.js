@@ -1077,7 +1077,7 @@ return webpackJsonp([0],[
 	 * This directive extends parent scope with property: sailplay.fill_profile
 	 *
 	 */
-	.directive('sailplayFillProfile', function (SailPlay, $rootScope, $q, ipCookie, SailPlayApi, SailPlayFillProfile) {
+	.directive('sailplayFillProfile', function (SailPlay, $rootScope, $q, ipCookie, SailPlayApi, SailPlayFillProfile, MAGIC_CONFIG) {
 
 	  return {
 
@@ -1183,7 +1183,36 @@ return webpackJsonp([0],[
 	        //  angular.extend(scope.profile_form, ipCookie(FillProfile.cookie_name));
 	        //}
 	        console.dir(form);
-	        scope.$parent.$parent.$parent.next_status_points = 100;
+
+	        (function () {
+
+	          if (!user) {
+	            return {
+	              status: MAGIC_CONFIG.data.statuses[0],
+	              offset: MAGIC_CONFIG.data.statuses.points
+	            };
+	          }
+
+	          var user_points = user.user_points;
+	          var points = user_points ? user_points.confirmed + user_points.spent + user_points.spent_extra : 0;
+	          if (MAGIC_CONFIG.data.purchase_status) {
+	            points = user.purchases && user.purchases.sum || 0;
+	            user_points = user.purchases && user.purchases.sum || 0;
+	          }
+
+	          var future_statuses = MAGIC_CONFIG.data.statuses.sort(function (a, b) {
+	            return a.points > b.points;
+	          }).filter(function (status) {
+	            return status.points > points;
+	          });
+
+	          scope.$parent.$parent.$parent.next_status_points = future_statuses[0] && future_statuses[0].points - points || 0;
+	          return {
+	            status: future_statuses[0],
+	            offset: future_statuses[0] && future_statuses[0].points - points || 0
+	          };
+	        })();
+
 	        saved_form = _angular2.default.copy(form);
 
 	        if (scope.$root.$$phase != '$digest') scope.$digest();
@@ -2171,7 +2200,6 @@ return webpackJsonp([0],[
 	      };
 
 	      scope.getProgress = function (user_points, statuses) {
-
 	        if (!user_points || !statuses) return;
 
 	        var status_points = statuses.map(function (item) {
@@ -2182,6 +2210,7 @@ return webpackJsonp([0],[
 	          return !isNaN(parseFloat(n)) && isFinite(n);
 	        }
 
+	        debugger;
 	        var points;
 	        if (isNumeric(user_points)) points = user_points;else points = user_points ? user_points.confirmed + user_points.spent + user_points.spent_extra : 0;
 
