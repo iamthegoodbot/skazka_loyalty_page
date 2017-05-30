@@ -237,7 +237,7 @@ return webpackJsonp([0],[
 
 	  }]);
 	  return Magic;
-	}(), _class.Widget = _widget.WidgetRegister, _class.version = '${MAGIC_VERSION}', _temp);
+	}(), _class.Widget = _widget.WidgetRegister, _class.version = '2.1.13', _temp);
 
 	//extend SAILPLAY with Magic class
 
@@ -877,7 +877,8 @@ return webpackJsonp([0],[
 
 	    }
 
-	    $window[0].open(share_url, '_blank', 'toolbar=0,status=0,width=626,height=436,location=no');
+	    window.open(share_url, '_blank', 'toolbar=0,status=0,width=626,height=436,location=no');
+	    console.log(share_url);
 	  };
 	});
 

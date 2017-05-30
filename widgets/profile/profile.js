@@ -8,14 +8,23 @@ const ProfileWidget = {
 
   id: 'profile',
   template: WidgetProfileTemplate,
-  inject: ['$rootScope'],
-  controller: function ($rootScope) {
+  inject: ['$rootScope', 'SailPlayShare'],
+  controller: function ($rootScope, SailPlayShare) {
 
     return function (scope, elm, attrs) {
 
       // scope._tools = MAGIC_CONFIG.tools;
 
       scope.default_avatar = DefaultAvatarImage;
+
+      scope.share_fb = function(url, title) {
+        SailPlayShare('fb', url, title)
+      }
+
+      scope.share_tw = function(url, descr) {
+        SailPlayShare('tw', url, '', descr)
+      }
+
       $rootScope.$on('openProfile', () => {
         scope.profile.show_fill_profile = true;
       })

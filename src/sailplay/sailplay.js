@@ -337,8 +337,7 @@ export let SailPlay = angular.module('sailplay', [
 
       }
 
-      $window[0].open(share_url, '_blank', 'toolbar=0,status=0,width=626,height=436,location=no');
-
+      window.open(share_url, '_blank', 'toolbar=0,status=0,width=626,height=436,location=no');
     }
   });
 
