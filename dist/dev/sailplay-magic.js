@@ -2177,6 +2177,12 @@ return webpackJsonp([0],[
 	          return item.points;
 	        });
 
+	        if (status_points[0] !== 0) {
+	          return {
+	            width: '0'
+	          };
+	        }
+
 	        function isNumeric(n) {
 	          return !isNaN(parseFloat(n)) && isFinite(n);
 	        }
@@ -2204,16 +2210,15 @@ return webpackJsonp([0],[
 	        var total = status_points[0];
 
 	        if (state === 0) {
-	          return {
-	            width: '0%'
-	          };
+	          current = points;
+	          total = status_points[state + 1];
 	        } else {
 	          current = points - status_points[state];
 	          total = status_points[state + 1] ? status_points[state + 1] - status_points[state] : status_points[state];
 	        }
 
 	        return {
-	          width: parseInt(current * 100 / total / 100 * 10 + state * multiplier) + '%'
+	          width: parseInt(current * 100 / total / (status_points.length - 1) + state * multiplier) + '%'
 	        };
 	      };
 

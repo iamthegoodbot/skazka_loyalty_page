@@ -23,6 +23,10 @@ WidgetRegister({
 
       scope.gifts = [];
 
+      scope.filter = scope.widget.options && scope.widget.options.filter || {};
+
+      scope.orderBy = scope.widget.options && scope.widget.options.orderBy || 'points';
+
       // Current state of grid
       scope.state = 0;
 
@@ -64,7 +68,7 @@ WidgetRegister({
 
       scope.isNotAvailableGift = gift => {
         if (!gift || !scope.user()) return;
-        let status = categories.filter(item => item.id == gift.category)[0] || available_categories.filter(item => item.id == gift.category)[0];
+        let status = categories.filter(item => item.id == gift.category)[0];
         let obj = {
           tag_id: status && status.id,
           status_name: status && status.name,
@@ -83,7 +87,7 @@ WidgetRegister({
           return true;
         }
         let checked = scope.user_categories.filter(tag => {
-          return tag.name == gift.category && tag.exist
+          return tag.name == category.tag && tag.exist
         })[0];
         return scope.check_categories && checked;
       };

@@ -19,7 +19,7 @@
                      'gift-available': isAvailableGift(gift),
                      'gift-unavailable': !isAvailableGift(gift)
                      }"
-                     data-ng-repeat="gift in blocks[state] track by $index">
+                     data-ng-repeat="gift in blocks[state] | filter:filter | orderBy:orderBy track by $index">
 
                     <span class="gifts_grid__item-name gift_name" data-ng-bind="gift.name"></span>
 
