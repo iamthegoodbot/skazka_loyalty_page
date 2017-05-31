@@ -14,7 +14,7 @@
 
       <div class="spm_row clearfix">
 
-          <div class="spm_col quest_card_container" data-ng-repeat="action in actions().actions">
+          <div class="spm_col quest_card_container" data-ng-repeat="action in actions().actions | filter:filter">
 
             <div class="quest_card" title="{{ action_data(action).name }}">
 
@@ -39,7 +39,7 @@
 
           </div>
 
-          <div class="spm_col quest_card_container" data-ng-repeat="action in actions_custom()">
+          <div class="spm_col quest_card_container" data-ng-repeat="action in actions_custom() | filter:filter">
 
             <div class="quest_card" title="{{ action.name }}">
 

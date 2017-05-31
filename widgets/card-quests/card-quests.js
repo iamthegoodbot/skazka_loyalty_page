@@ -20,6 +20,8 @@ WidgetRegister({
       scope.action_selected = false;
       scope.action_custom_selected = false;
 
+      scope.filter = scope.widget.options && scope.widget.options.filter || {};
+
       scope.action_select = function (action) {
 
         if(!SailPlayApi.data('load.user.info')()) return SailPlay.authorize('remote');
