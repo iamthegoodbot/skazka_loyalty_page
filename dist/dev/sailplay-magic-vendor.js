@@ -368,6 +368,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	      if(opts.reg_match_email_oid) {
 	        params.reg_match_email_oid = opts.reg_match_email_oid;
 	      }
+	      console.log(opts)
+	      if(opts.reg_match_oid) {
+	        params.reg_match_oid = opts.reg_match_oid;
+	      }
 	      if(opts.css_link) {
 	        params.css_link = opts.css_link;
 	      }
