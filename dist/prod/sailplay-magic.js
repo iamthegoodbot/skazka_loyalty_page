@@ -1223,6 +1223,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	      params = params || {};
 
+	      if (!_config.auth_hash) {
+	        return
+	      }
+	      
 	      if (_config.auth_hash) {
 	        params.auth_hash = _config.auth_hash;
 	      }
