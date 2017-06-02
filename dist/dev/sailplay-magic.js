@@ -878,7 +878,6 @@ return webpackJsonp([0],[
 	    }
 
 	    window.open(share_url, '_blank', 'toolbar=0,status=0,width=626,height=436,location=no');
-	    console.log(share_url);
 	  };
 	});
 
