@@ -11,12 +11,12 @@
           <span class="caption">{{ widget.texts.spoiler }}</span>
         </h4>
       </div>
+      <span class="welcome_back">Welcome back, <span data-ng-bind="user().user.first_name || 'John'"></span>!</span>
       <div class="bon_profile_right clearfix" data-ng-if="user()">
         <div class="user_avatar">
           <img class="user_avatar_image" data-ng-src="{{ (user().user.pic | sailplay_pic) || default_avatar}}" alt="You">
           <a href="#" class="logout_btn button_link" data-ng-click="$event.preventDefault(); logout();">{{ widget.texts.logout }}</a>
-        </div>
-        <span class="welcome_back">Welcome back, <span data-ng-bind="user().user.first_name || 'John'"></span>!</span>
+        </div>        
         <div class="user_info">
           <span class="user_name"  data-ng-bind="user().user.name || widget.texts.name_not_defined"></span>
           <span class="user_phone" data-ng-if="user().user.phone"  data-ng-bind="user().user.phone | tel"></span>
