@@ -25,18 +25,18 @@ WidgetRegister({
         return scope._statuses[index].description
       }
 
-      scope.getProgress = (points, statusList) => {
+      scope.getProgress = (points, statusList) => {        
         let value = points;
         let maxPoints = 0;
         
         if (!statusList || !statusList.length) return value;
 
         let _statusArray = statusList.map((item) => {
-          maxPoints += item.points;
+          if (maxPoints < item.points) maxPoints = item.points;
           return item.points
         });
 
-        if (_statusArray[_statusArray.length - 1] <= points) return '100%';
+        if (_statusArray[_statusArray.length - 1] <= points) return { width: '100%' };
 
         let step = (100 / _statusArray.length).toFixed(1);
 
