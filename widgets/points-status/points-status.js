@@ -22,6 +22,20 @@ const PointsStatus = {
       // History popup
       scope.history = false;
 
+      scope.getPercents = index => {
+        let percents = 0;
+        if(!scope.user()) return  percents;
+        let prev = scope.widget.options.status_list[index-1];
+        if(!prev){
+          prev = {points: 0};
+        }
+        let cur = scope.widget.options.status_list[index];
+        let points = scope.user().user_points.total;
+        percents = ((points - prev.points) / (cur.points - prev.points)) * 100;
+        percents = percents < 0 ? 0 : percents > 100 ? 100 : percents;
+        return Math.round(percents);
+      };
+
       /**
        * Calculating progress
        */

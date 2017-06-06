@@ -21,15 +21,14 @@
                      }"
                      data-ng-repeat="gift in blocks[state] | filter:filter | orderBy:orderBy track by $index">
 
-                    <span class="gifts_grid__item-name gift_name" data-ng-bind="gift.name"></span>
-
-                    <span class="gifts_grid__item-points gift_points"
-                          data-ng-bind="(gift.points | number) + ' ' + (gift.points | sailplay_pluralize:('points.texts.pluralize' | tools))"></span>
-
                     <img class="gifts_grid__item-img gift_img"
                          data-ng-src="{{ gift.thumbs.url_250x250 | sailplay_pic }}"
                          alt="{{ gift.name }}">
 
+                    <span class="gifts_grid__item-name gift_name" data-ng-bind="gift.name"></span>
+
+                    <span class="gifts_grid__item-points gift_points"
+                          data-ng-bind="(gift.points | number) + ' ' + (gift.points | sailplay_pluralize:('points.texts.pluralize' | tools))"></span>
 
                     <a class="gifts_grid__item-button button_primary" href="#"
                        data-ng-bind="widget.texts.get"

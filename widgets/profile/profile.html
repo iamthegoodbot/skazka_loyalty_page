@@ -10,6 +10,7 @@
         <h4>
           <span class="caption">{{ widget.texts.spoiler }}</span>
         </h4>
+        <a class="link" data-ng-href="{{ widget.texts.href }}" data-ng-bind="widget.texts.button"></a>
       </div>
       <div class="bon_profile_right clearfix" data-ng-if="user()">
         <div class="user_avatar">
@@ -31,7 +32,8 @@
     </div>
 
     <!-- status -->
-    <div class="status_block" data-ng-if="user() && user().user_status.name">
+    <!--<div class="status_block" data-ng-if="user() && user().user_status.name">-->
+    <div class="status_block" data-ng-if="user()">
       <span class="status_block_title" data-ng-bind="widget.texts.user_status"></span>
       <img class="status_block_img" data-ng-src="{{ user().user_status.pic | sailplay_pic }}" alt="{{ user().user_status.name }}">
       <span class="status_block_name" data-ng-bind="user().user_status.name || widget.texts.empty_status "></span>
@@ -39,6 +41,7 @@
 
     <div class="bon_profile_stat">
       <div class="bps_left points_block clearfix" data-ng-if="user()">
+        <span class="points_block_label" data-ng-bind="widget.texts.user_points"></span>
         <span class="points_confirmed">
           <span class="points_confirmed_value" data-ng-bind="user().user_points.confirmed | number"></span>
           <span class="points_confirmed_name" data-ng-bind="user().user_points.confirmed | sailplay_pluralize: ('points.texts.pluralize' | tools)"></span>

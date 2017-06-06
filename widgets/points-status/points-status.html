@@ -29,9 +29,13 @@
                 <div class="gift_item progress_bar_border"
                      data-ng-repeat="item in widget.options.status_list track by $index"
                      data-ng-class="{ act : item.points <= user().user_points.total, progress_bar_gift_filled: item.points <=user().user_points.total, progress_bar_gift: item.points > user().user_points.total}"
-                     data-ng-style="{ left: (100/widget.options.status_list.length * ($index+1)) + '%', 'background-image': 'url(' + item.image +')' }">
+                     data-ng-style="{ left: (100/widget.options.status_list.length * ($index)) + '%', 'width': (100/widget.options.status_list.length) + '%' }">
 
-                    <span class="gift_item_hint" data-ng-bind="item.points | number"></span>
+                    <img class="gift_item_image" data-ng-if="item.image" data-ng-src="{{ item.image }}">
+                    <span class="gift_item_percents" data-ng-bind="getPercents($index) + '%'"></span>
+                    <span class="gift_item_title" data-ng-bind="item.title"></span>
+                    <span class="gift_item_name" data-ng-bind="item.name"></span>
+                    <span class="gift_item_text" data-ng-bind-html="item.description | to_trusted"></span>
 
                 </div>
 
