@@ -44,18 +44,20 @@ export let SailPlayGifts = angular.module('sailplay.gifts', [])
           if(scope.$root.$$phase != '$digest')
             scope.$digest();
         })
-      })
+      });
 
       scope.progress = false;
 
-      function build_progress(gifts, user){
+      function build_progress(gifts_list, user){
 
         return $q(function (resolve, reject) {
 
-          if(!gifts || gifts.length < 1) {
+          if(!gifts_list || gifts_list.length < 1) {
             scope.progress = false;
             return;
           }
+
+          let gifts = angular.copy(gifts_list);
 
           let target = Math.max.apply(Math,gifts.map(function(o){return o.points;}));
 

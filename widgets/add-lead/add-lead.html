@@ -45,10 +45,10 @@
           </div>
         </div>
         <div class="answ_left">
-          <button type="submit" class="sp_btn button_primary">{{ widget.texts.submit }}</button>
+          <button type="button" class="sp_btn button_primary" data-ng-click="$parent.$parent.startNewLead = false">Back</button>
         </div>
         <div class="answ_right">
-          <button type="button" class="sp_btn button_primary" data-ng-click="$parent.$parent.startNewLead = false">Back</button>
+          <button type="submit" class="sp_btn button_primary">{{ widget.texts.submit }}</button>
         </div>
       </form>
     </div>

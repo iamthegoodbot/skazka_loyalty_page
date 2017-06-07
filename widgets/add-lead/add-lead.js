@@ -13,7 +13,8 @@ WidgetRegister({
   ],
   controller: (SailPlayApi, SailPlay, MAGIC_CONFIG, $rootScope) => {
     return (scope, elm, attrs) => {
-      scope.submit = fields => { 
+
+      scope.submit = fields => {
 
         var _config = SailPlay.config();
         var tagAdd = '/js-api/' + _config.partner.id + '/tags/add';
@@ -36,9 +37,10 @@ WidgetRegister({
               phone: lead_obj['phone'],
               tags: ''
             }
-            SAILPLAY.jsonp.get(_config.DOMAIN + tagAdd, set_status) 
+            SAILPLAY.jsonp.get(_config.DOMAIN + tagAdd, set_status)
             scope.startNewLead = false;
             fields.map(field => { field.value = ''; return field })
+            $rootScope.$broadcast('notifier:notify', scope.widget.texts.success);
             scope.$digest();
           } else {
             $rootScope.$broadcast('notifier:notify', {body: res.message})
