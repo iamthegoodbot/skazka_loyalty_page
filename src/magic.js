@@ -1,4 +1,4 @@
-import SAILPLAY from 'sailplay-hub';
+import SAILPLAY from '../sailplay-hub';
 import 'sailplay-hub-actions/sailplay.hub.actions';
 import angular from 'angular';
 import SailPlay from './sailplay/sailplay';
