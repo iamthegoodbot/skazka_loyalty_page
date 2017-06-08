@@ -32,8 +32,8 @@ WidgetRegister({
         if (!statusList || !statusList.length) return value;
 
         let _statusArray = statusList.map((item) => {
-          if (maxPoints < item.points) maxPoints = item.points;
-          return item.points
+          if (maxPoints < item.sum) maxPoints = item.sum;
+          return item.sum
         });
 
         if (_statusArray[_statusArray.length - 1] <= points) return { width: '100%' };
@@ -72,26 +72,24 @@ WidgetRegister({
         if(!user) {
           return {
             status: scope._statuses[0],
-            offset: scope._statuses[0].points
+            offset: scope._statuses[0].sum
           };
         }
 
-        let user_points = user.user_points;
-        let points =  user_points ? user_points.confirmed + user_points.spent + user_points.spent_extra : 0;
-        if (MAGIC_CONFIG.data.purchase_status) {
-          points = user.purchases && user.purchases.sum || 0;
-          user_points = user.purchases && user.purchases.sum || 0
+        let sum =  0;
+        if (MAGIC_CONFIG.data.statuses) {
+          sum = user.purchases && user.purchases.sum || 0;
         }
 
         let future_statuses = scope._statuses.sort((a, b) => {
-          return a.points > b.points;
+          return a.sum > b.sum;
         }).filter((status) => {
-          return status.points > points;
+          return status.sum > sum;
         });
 
         return {
           status: future_statuses[0],
-          offset: future_statuses[0] && future_statuses[0].points - points || 0
+          offset: future_statuses[0] && future_statuses[0].sum - sum || 0
         };
 
       }

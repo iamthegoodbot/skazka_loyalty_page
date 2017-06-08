@@ -1189,27 +1189,26 @@ return webpackJsonp([0],[
 	          if (!user) {
 	            return {
 	              status: MAGIC_CONFIG.data.statuses[0],
-	              offset: MAGIC_CONFIG.data.statuses.points
+	              offset: MAGIC_CONFIG.data.statuses.sum
 	            };
 	          }
 
-	          var user_points = user.user_points;
-	          var points = user_points ? user_points.confirmed + user_points.spent + user_points.spent_extra : 0;
-	          if (MAGIC_CONFIG.data.purchase_status) {
-	            points = user.purchases && user.purchases.sum || 0;
-	            user_points = user.purchases && user.purchases.sum || 0;
+	          var sum = 0;
+	          if (MAGIC_CONFIG.data.statuses) {
+	            sum = user.purchases && user.purchases.sum || 0;
 	          }
 
 	          var future_statuses = MAGIC_CONFIG.data.statuses.sort(function (a, b) {
-	            return a.points > b.points;
+	            return a.sum > b.sum;
 	          }).filter(function (status) {
-	            return status.points > points;
+	            return status.sum > sum;
 	          });
 
-	          scope.$parent.$parent.$parent.next_status_points = future_statuses[0] && future_statuses[0].points - points || 0;
+	          scope.$parent.$parent.$parent.next_status_points = future_statuses[0] && future_statuses[0].sum - sum || 0;
+
 	          return {
 	            status: future_statuses[0],
-	            offset: future_statuses[0] && future_statuses[0].points - points || 0
+	            offset: future_statuses[0] && future_statuses[0].sum - sum || 0
 	          };
 	        })();
 

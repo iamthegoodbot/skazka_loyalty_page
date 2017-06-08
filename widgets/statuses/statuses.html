@@ -52,17 +52,17 @@
         <img class="status_block_img" data-ng-src="{{ user().user_status.pic | sailplay_pic }}" alt="{{ user().user_status.name }}">
         <div class="status-list__your_status_text">Ваш статус</div>
         <div class="status-list__your_status_value">{{ user().user_status.name }}</div>
-        <a href="#" ng-click="show_statuses=true" class="status-list__your_status_all_statuses">Все статусы</a>        
+        <a href="#" data-ng-click="$event.preventDefault();show_statuses=true" class="status-list__your_status_all_statuses">Все статусы</a>
       </div>
 
     <div class="status-list__wrapper" data-ng-cloak>
 
       <div class="status-list__progress element-progress progress_line"
-           data-ng-style="getProgress(purchase_status ? user().purchases.sum : user().user_points.total, _statuses)"></div>
+           data-ng-style="getProgress(user().purchases.sum, _statuses)"></div>
         
         <div class="status-list__item element-item"
-           data-ng-class="{ type_active : item.points <= user().user_points.confirmed + user().user_points.spent + user().user_points.spent_extra }"
            data-ng-repeat="item in _statuses"
+           data-ng-class="{ type_active : item.sum <= user().purchases.sum }"
            data-ng-style="generateOffset($index, _statuses)">
 
         <div class="status-list__item-image"></div>
