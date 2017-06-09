@@ -237,7 +237,7 @@ return webpackJsonp([0],[
 
 	  }]);
 	  return Magic;
-	}(), _class.Widget = _widget.WidgetRegister, _class.version = '${MAGIC_VERSION}', _temp);
+	}(), _class.Widget = _widget.WidgetRegister, _class.version = '2.1.14', _temp);
 
 	//extend SAILPLAY with Magic class
 
@@ -1023,7 +1023,7 @@ return webpackJsonp([0],[
 	 */
 	.provider('SailPlayFillProfile', function () {
 
-	  var profile_tag = 'Completed Profile';
+	  var profile_tag = 'Filled Profile';
 	  var cookie_name = 'sailplay_profile_form';
 
 	  return {
@@ -1077,7 +1077,7 @@ return webpackJsonp([0],[
 	 * This directive extends parent scope with property: sailplay.fill_profile
 	 *
 	 */
-	.directive('sailplayFillProfile', function (SailPlay, $rootScope, $q, ipCookie, SailPlayApi, SailPlayFillProfile) {
+	.directive('sailplayFillProfile', function (SailPlay, $rootScope, $q, ipCookie, SailPlayApi, SailPlayFillProfile, $timeout) {
 
 	  return {
 
@@ -1162,7 +1162,7 @@ return webpackJsonp([0],[
 	        //if(ipCookie(FillProfile.cookie_name) && SailPlay.config().auth_hash === ipCookie(FillProfile.cookie_name).user.auth_hash ){
 	        //  angular.extend(scope.profile_form, ipCookie(FillProfile.cookie_name));
 	        //}
-	        console.dir(form);
+	        // console.dir(form);
 	        saved_form = _angular2.default.copy(form);
 
 	        if (custom_fields.length) {
@@ -1182,7 +1182,18 @@ return webpackJsonp([0],[
 	        //if(ipCookie(FillProfile.cookie_name) && SailPlay.config().auth_hash === ipCookie(FillProfile.cookie_name).user.auth_hash ){
 	        //  angular.extend(scope.profile_form, ipCookie(FillProfile.cookie_name));
 	        //}
-	        console.dir(form);
+
+	        SailPlay.send('tags.exist', { tags: ['Filled Profile'] }, function (res) {
+	          if (res && res.tags.length) {
+	            if (!res.tags[0].exist) {
+	              $timeout(function () {
+	                $rootScope.$broadcast('openProfile');
+	                scope.$parent.preventClose = true;
+	              }, 10);
+	            }
+	          }
+	        });
+
 	        saved_form = _angular2.default.copy(form);
 
 	        if (scope.$root.$$phase != '$digest') scope.$digest();
@@ -1257,8 +1268,9 @@ return webpackJsonp([0],[
 	            scope.$apply(function () {
 
 	              if (typeof callback == 'function') callback();
-
-	              SailPlayApi.call('load.user.info', { all: 1 });
+	              SailPlay.send('tags.add', { tags: ['Filled Profile'] }, function () {
+	                SailPlayApi.call('load.user.info', { all: 1, purchases: 1 });
+	              });
 	            });
 	          } else {
 
@@ -3737,7 +3749,7 @@ return webpackJsonp([0],[
 	      };
 
 	      elm.on('click', function (e) {
-	        if (e.target === elm[0]) {
+	        if (e.target === elm[0] && !scope.preventClose) {
 	          scope.$apply(function () {
 	            scope.close();
 	          });

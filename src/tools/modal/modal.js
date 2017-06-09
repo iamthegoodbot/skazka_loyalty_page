@@ -26,7 +26,7 @@ export let Modal = angular.module('magic.tools.modal', [])
       };
 
       elm.on('click', function(e){
-        if(e.target === elm[0]){
+        if(e.target === elm[0] && !scope.preventClose){
           scope.$apply(function () {
             scope.close();
           });

@@ -41,10 +41,10 @@
 
     <div class="bon_profile_stat">
       <div class="bps_left points_block clearfix" data-ng-if="user()">
-        <span class="points_block_label" data-ng-bind="widget.texts.user_points"></span>
+        <span class="points_block_label" data-ng-bind="widget.texts.your_balance"></span>
         <span class="points_confirmed">
-          <span class="points_confirmed_value" data-ng-bind="user().user_points.confirmed | number"></span>
-          <span class="points_confirmed_name" data-ng-bind="user().user_points.confirmed | sailplay_pluralize: ('points.texts.pluralize' | tools)"></span>
+          <span class="points_confirmed_value" data-ng-bind="user().purchases.sum | number"></span>
+          <span class="points_confirmed_name" data-ng-bind="user().purchases.sum | sailplay_pluralize: ('currency.texts.pluralize' | tools)"></span>
         </span>
         <a class="button_link history_button" href="#" data-ng-click="$event.preventDefault(); profile.history = true;">{{ widget.texts.history_button }}</a>
       </div>
@@ -92,7 +92,8 @@
             <span><b class="modal_history_content" data-ng-bind="item | history_item"></b></span>
           </td>
           <td>
-            <span class="modal_history_points" data-ng-if="item.points_delta" data-ng-bind="((item.points_delta|number) || 0) + ' ' + (item.points_delta | sailplay_pluralize:('points.texts.pluralize' | tools))"></span>
+            <span class="modal_history_points" data-ng-if="item.price" data-ng-bind="item.price + ' ' + ' ' + (item.price | sailplay_pluralize:('currency.texts.pluralize' | tools))"></span>
+            <span class="modal_history_points" data-ng-if="item.points_delta" data-ng-bind="(item.price ? '(': '') + ((item.points_delta|number) || 0) + ' ' + (item.points_delta | sailplay_pluralize:('points.texts.pluralize' | tools)) + (item.price ? ')': '')"></span>
           </td>
         </tr>
 
@@ -127,29 +128,29 @@
 
           <div data-ng-switch-when="text" class="clearfix">
             <label class="form_label">{{ field.label }}</label>
-            <input class="form_input" type="text" placeholder="{{ field.placeholder }}" data-ng-model="field.value">
+            <input class="form_input" type="text" placeholder="{{ field.placeholder }}" data-ng-model="field.value" data-ng-required="{{ field.required }}">
           </div>
 
           <div data-ng-switch-when="date" class="clearfix">
             <label class="form_label">{{ field.label }}</label>
-            <date-picker data-model="field.value"></date-picker>
+            <date-picker data-model="field.value" data-ng-required="{{ field.required }}"></date-picker>
           </div>
 
           <div data-ng-switch-when="select" class="clearfix">
             <label class="form_label">{{ field.label }}</label>
             <div class="magic_select form_input">
-              <select data-ng-model="field.value" data-ng-options="item.value as item.text for item in field.data"></select>
+              <select data-ng-model="field.value" data-ng-options="item.value as item.text for item in field.data" data-ng-required="{{ field.required }}"></select>
             </div>
           </div>
 
           <div data-ng-switch-when="phone" class="clearfix">
             <label class="form_label">{{ field.label }}</label>
-            <input class="form_input" type="text" data-model-view-value="true" data-ui-mask="{{ field.placeholder }}" data-ng-model="field.value">
+            <input class="form_input" type="text" data-model-view-value="true" data-ui-mask="{{ field.placeholder }}" data-ng-model="field.value" data-ng-required="{{ field.required }}">
           </div>
 
           <div data-ng-switch-when="email" class="clearfix">
             <label class="form_label">{{ field.label }}</label>
-            <input class="form_input" type="email" placeholder="{{ field.placeholder }}" data-ng-model="field.value">
+            <input class="form_input" type="email" placeholder="{{ field.placeholder }}" data-ng-model="field.value" data-ng-required="{{ field.required }}">
           </div>
 
         </div>

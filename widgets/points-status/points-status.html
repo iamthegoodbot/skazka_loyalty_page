@@ -23,12 +23,12 @@
                 <div class="progress_line_bg progress_bar progress_bar_border"></div>
 
                 <div class="progress_line progress_bar_filled"
-                     data-ng-style="{ width: getProgress(user().user_points.total, widget.options.status_list) }">
+                     data-ng-style="{ width: getProgress(user().purchases.sum, widget.options.status_list) }">
                 </div>
 
                 <div class="gift_item progress_bar_border"
                      data-ng-repeat="item in widget.options.status_list track by $index"
-                     data-ng-class="{ act : item.points <= user().user_points.total, progress_bar_gift_filled: item.points <=user().user_points.total, progress_bar_gift: item.points > user().user_points.total}"
+                     data-ng-class="{ act : item.sum <= user().purchases.sum, progress_bar_gift_filled: item.sum <=user().purchases.sum, progress_bar_gift: item.sum > user().purchases.sum}"
                      data-ng-style="{ left: (100/widget.options.status_list.length * ($index)) + '%', 'width': (100/widget.options.status_list.length) + '%' }">
 
                     <img class="gift_item_image" data-ng-if="item.image" data-ng-src="{{ item.image }}">

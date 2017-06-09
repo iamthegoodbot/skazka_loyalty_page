@@ -24,14 +24,14 @@ const PointsStatus = {
 
       scope.getPercents = index => {
         let percents = 0;
-        if(!scope.user()) return  percents;
+        if(!scope.user() || !scope.user().purchases) return  percents;
         let prev = scope.widget.options.status_list[index-1];
         if(!prev){
-          prev = {points: 0};
+          prev = {sum: 0};
         }
         let cur = scope.widget.options.status_list[index];
-        let points = scope.user().user_points.total;
-        percents = ((points - prev.points) / (cur.points - prev.points)) * 100;
+        let points = scope.user().purchases.sum;
+        percents = ((points - prev.sum) / (cur.sum - prev.sum)) * 100;
         percents = percents < 0 ? 0 : percents > 100 ? 100 : percents;
         return Math.round(percents);
       };
@@ -46,7 +46,7 @@ const PointsStatus = {
         if (!statusList || !statusList.length) return value;
 
         let _statusArray = statusList.map((item) => {
-          return item.points
+          return item.sum
         });
 
         if (_statusArray[_statusArray.length - 1] <= points) return '100%';
