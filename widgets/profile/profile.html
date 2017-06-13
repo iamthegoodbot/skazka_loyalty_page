@@ -41,11 +41,20 @@
 
     <div class="bon_profile_stat">
       <div class="bps_left points_block clearfix" data-ng-if="user()">
-        <span class="points_block_label" data-ng-bind="widget.texts.your_balance"></span>
-        <span class="points_confirmed">
-          <span class="points_confirmed_value" data-ng-bind="user().purchases.sum | number"></span>
-          <span class="points_confirmed_name" data-ng-bind="user().purchases.sum | sailplay_pluralize: ('currency.texts.pluralize' | tools)"></span>
-        </span>
+        <div class="points_block_balance">
+            <span class="points_block_label" data-ng-bind="widget.texts.your_balance"></span>
+            <span class="points_confirmed">
+                  <span class="points_confirmed_name" data-ng-bind="user().purchases.sum | sailplay_pluralize: ('currency.texts.pluralize' | tools)"></span>
+                  <span class="points_confirmed_value" data-ng-bind="user().purchases.sum | number"></span>
+            </span>
+        </div>
+        <div class="points_block_points">
+            <span class="points_block_label" data-ng-bind="widget.texts.your_points"></span>
+            <span class="points_confirmed">
+                  <span class="points_confirmed_name" data-ng-bind="user().user_points.confirmed | sailplay_pluralize: ('currency.texts.pluralize' | tools)"></span>
+                  <span class="points_confirmed_value" data-ng-bind="user().user_points.confirmed | number"></span>
+            </span>
+        </div>
         <a class="button_link history_button" href="#" data-ng-click="$event.preventDefault(); profile.history = true;">{{ widget.texts.history_button }}</a>
       </div>
       <div class="bps_right progress_block clearfix" data-ng-if="progress">
