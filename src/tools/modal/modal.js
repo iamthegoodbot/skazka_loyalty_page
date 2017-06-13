@@ -21,12 +21,13 @@ export let Modal = angular.module('magic.tools.modal', [])
       scope.show = false;
 
       scope.close = function(){
+        if(scope.preventClose) return;
         $parse(attrs.show).assign(scope.$parent, false);
         scope.$eval(attrs.onClose);
       };
 
       elm.on('click', function(e){
-        if(e.target === elm[0]){
+        if(e.target === elm[0] && !scope.preventClose){
           scope.$apply(function () {
             scope.close();
           });

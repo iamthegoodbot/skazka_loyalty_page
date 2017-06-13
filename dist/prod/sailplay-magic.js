@@ -36041,7 +36041,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * This directive extends parent scope with property: sailplay.fill_profile
 	 *
 	 */
-	.directive('sailplayFillProfile', function (SailPlay, $rootScope, $q, ipCookie, SailPlayApi, SailPlayFillProfile) {
+	.directive('sailplayFillProfile', function (SailPlay, $rootScope, $q, ipCookie, SailPlayApi, SailPlayFillProfile, $timeout) {
 
 	  return {
 
@@ -36127,6 +36127,23 @@ return /******/ (function(modules) { // webpackBootstrap
 	        //  angular.extend(scope.profile_form, ipCookie(FillProfile.cookie_name));
 	        //}
 	        console.dir(form);
+
+	        SailPlay.send('tags.exist', { tags: ['Birthday Club'] }, function (res) {
+	          var params = SailPlay.url_params();
+	          if (params.edit_profile) {
+	            if (res && res.tags.length) {
+	              if (!res.tags[0].exist) {
+	                $timeout(function () {
+	                  $rootScope.$broadcast('openProfile');
+	                  scope.$parent.preventClose = true;
+	                }, 10);
+	              } else {
+	                scope.$parent.preventClose = false;
+	              }
+	            }
+	          }
+	        });
+
 	        saved_form = _angular2.default.copy(form);
 
 	        if (custom_fields.length) {
@@ -36222,7 +36239,17 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	              if (typeof callback == 'function') callback();
 
-	              SailPlayApi.call('load.user.info', { all: 1 });
+	              SailPlay.send('tags.exist', { tags: ['Birthday Club'] }, function (res) {
+	                if (res && res.tags.length) {
+	                  if (!res.tags[0].exist) {
+	                    SailPlay.send('tags.add', { tags: ['Birthday Club'] }, function () {
+	                      SailPlayApi.call('load.user.info', { all: 1, purchases: 1 });
+	                    });
+	                  } else {
+	                    SailPlayApi.call('load.user.info', { all: 1, purchases: 1 });
+	                  }
+	                }
+	              });
 	            });
 	          } else {
 
@@ -41035,12 +41062,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	      scope.show = false;
 
 	      scope.close = function () {
+	        if (scope.preventClose) return;
 	        $parse(attrs.show).assign(scope.$parent, false);
 	        scope.$eval(attrs.onClose);
 	      };
 
 	      elm.on('click', function (e) {
-	        if (e.target === elm[0]) {
+	        if (e.target === elm[0] && !scope.preventClose) {
 	          scope.$apply(function () {
 	            scope.close();
 	          });
