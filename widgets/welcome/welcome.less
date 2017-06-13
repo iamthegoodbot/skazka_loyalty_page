@@ -1,0 +1,41 @@
+@import (reference) "../../src/theme/mixins";
+@import (reference) "../../src/theme/helpers";
+@import (reference) "../../src/theme/colors";
+
+@WelcomeMaxWidth: 1200px;
+@WelcomeMinWidth: 800px;
+
+.spm_wrapper {
+
+  .welcome_container {
+    max-width: @WelcomeMaxWidth;
+    margin: 0 auto;
+
+    .container_left {
+      width: 70%;
+      box-sizing: border-box;
+      padding: 30px;
+      float: left;
+
+      @media screen and (max-width: @WelcomeMinWidth) {
+        width: 100%;
+      }
+
+    }
+
+    .container_right {
+      width: 30%;
+      padding: 30px;
+      box-sizing: border-box;
+      float: left;
+
+
+      @media screen and (max-width: @WelcomeMinWidth) {
+        width: 100%;
+      }
+
+    }
+
+  }
+
+}

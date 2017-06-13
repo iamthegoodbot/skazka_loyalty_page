@@ -3535,7 +3535,7 @@ return webpackJsonp([0],[
 /* 77 */
 /***/ (function(module, exports) {
 
-	module.exports = "<div class=\"spm_tools_widget {{ widget.id }}\" data-ng-show=\"widget.enabled\"\n     data-ng-hide=\"widget.options.hiddenAnonymous && !widget.user()\">\n    <widget-style data-widget=\"widget\"></widget-style>\n    <div data-widget-wrapper class=\"clearfix\"\n         data-ng-class=\"{noauth : !$parent.$parent.$parent.auth_state }\"></div>\n</div>";
+	module.exports = "<div class=\"spm_tools_widget {{ widget.id }}\" data-ng-show=\"widget.enabled\"\n     data-ng-class=\"{noauth : !$parent.$parent.$parent.auth_state }\">\n    <widget-style data-widget=\"widget\"></widget-style>\n    <div data-widget-wrapper class=\"clearfix\"></div>\n</div>";
 
 /***/ }),
 /* 78 */

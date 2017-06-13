@@ -1,0 +1,17 @@
+<div class="container welcome_container clearfix" data-ng-show="widget.enabled" data-ng-cloak>
+
+    <div class="container_left">
+        <div class="container_header" data-ng-bind="widget.texts.header"></div>
+        <div class="container_text" data-ng-bind-html="widget.texts.text | to_trusted"></div>
+    </div>
+
+    <div class="container_right">
+        <div class="container_login_header" data-ng-bind="widget.texts.login_header"></div>
+        <a href="#"
+           class="container_login_button"
+           data-ng-click="$event.preventDefault();login('remote');"
+           data-ng-bind="widget.texts.login_button"></a>
+    </div>
+
+</div>
+

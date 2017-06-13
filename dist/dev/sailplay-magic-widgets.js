@@ -27,7 +27,8 @@ return webpackJsonp([2],[
 	__webpack_require__(151);
 	__webpack_require__(156);
 	__webpack_require__(161);
-	module.exports = __webpack_require__(169);
+	__webpack_require__(169);
+	module.exports = __webpack_require__(173);
 
 
 /***/ }),
@@ -2667,6 +2668,82 @@ return webpackJsonp([2],[
 
 	// module
 	exports.push([module.id, ".spm_wrapper .status-list {\n  float: left;\n  width: 90%;\n  position: relative;\n  margin: 0 5%;\n  padding: 30px 0 80px;\n  z-index: 1;\n}\n.spm_wrapper .status-list .next_status_info {\n  margin-bottom: 30px;\n}\n@media screen and (max-width: 650px) {\n  .spm_wrapper .status-list {\n    width: 80%;\n    margin-left: 10% !important;\n  }\n}\n.spm_wrapper .status-list__wrapper {\n  background: #F4F4F4;\n  position: relative;\n  height: 20px;\n  border-radius: 5px;\n  display: block;\n  margin: 0 20px;\n}\n@media screen and (max-width: 650px) {\n  .spm_wrapper .status-list__wrapper {\n    height: 10px;\n  }\n}\n.spm_wrapper .status-list__item {\n  position: absolute;\n  height: 100%;\n  width: 0;\n}\n.spm_wrapper .status-list__item .element-item-point-inner {\n  z-index: 1;\n  content: '';\n  position: absolute;\n  width: 30px;\n  height: 30px;\n  display: none;\n  margin-top: -15px;\n  margin-left: -15px;\n  top: 50%;\n  left: 50%;\n  border-radius: 50%;\n  background: #444444;\n}\n@media screen and (max-width: 650px) {\n  .spm_wrapper .status-list__item .element-item-point-inner {\n    width: 20px;\n    height: 20px;\n    margin: -10px 0 0 -10px;\n  }\n}\n.spm_wrapper .status-list__item-point {\n  position: absolute;\n  left: 50%;\n  top: 50%;\n  width: 50px;\n  height: 50px;\n  transform: translate3d(-50%, -50%, 0);\n  border-radius: 50%;\n  background: #f4f4f4;\n  z-index: -1;\n}\n@media screen and (max-width: 650px) {\n  .spm_wrapper .status-list__item-point {\n    width: 30px;\n    height: 30px;\n  }\n}\n.spm_wrapper .status-list__item-status {\n  display: inline-block;\n  min-width: 100px;\n  left: 0;\n  position: absolute;\n  top: 60px;\n  transform: translateX(-50%);\n  text-align: center;\n}\n@media screen and (max-width: 650px) {\n  .spm_wrapper .status-list__item-status {\n    font-size: 14px;\n  }\n}\n@media screen and (max-width: 450px) {\n  .spm_wrapper .status-list__item-status {\n    font-size: 12px;\n    min-width: 100%;\n    top: 50px;\n  }\n}\n.spm_wrapper .status-list__item-name {\n  display: inline-block;\n  min-width: 80px;\n  position: absolute;\n  top: 40px;\n  left: 0;\n  transform: translateX(-50%);\n  text-align: center;\n}\n@media screen and (max-width: 650px) {\n  .spm_wrapper .status-list__item-name {\n    font-size: 12px;\n  }\n}\n@media screen and (max-width: 450px) {\n  .spm_wrapper .status-list__item-name {\n    font-size: 8px;\n    min-width: 100%;\n    top: 25px;\n  }\n}\n.spm_wrapper .status-list__item.type_active .element-item-point-inner {\n  display: block;\n}\n.spm_wrapper .status-list__progress {\n  height: 10px;\n  position: absolute;\n  width: 0;\n  background: #444444;\n  z-index: 0;\n  top: 5px;\n  border-radius: 5px;\n}\n@media screen and (max-width: 650px) {\n  .spm_wrapper .status-list__progress {\n    height: 5px;\n    top: 2.5px;\n  }\n}\n", ""]);
+
+	// exports
+
+
+/***/ }),
+/* 173 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _widget = __webpack_require__(62);
+
+	var _welcome = __webpack_require__(174);
+
+	var _welcome2 = _interopRequireDefault(_welcome);
+
+	__webpack_require__(175);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	(0, _widget.WidgetRegister)({
+	  id: 'welcome',
+	  template: _welcome2.default,
+	  inject: ['SailPlay'],
+	  controller: function controller(SailPlay) {
+	    return function (scope, elm, attrs) {
+	      scope.login = function (type) {
+	        SailPlay.authorize(type);
+	      };
+	    };
+	  }
+
+	});
+
+/***/ }),
+/* 174 */
+/***/ (function(module, exports) {
+
+	module.exports = "<div class=\"container welcome_container clearfix\" data-ng-show=\"widget.enabled\" data-ng-cloak>\n\n    <div class=\"container_left\">\n        <div class=\"container_header\" data-ng-bind=\"widget.texts.header\"></div>\n        <div class=\"container_text\" data-ng-bind-html=\"widget.texts.text | to_trusted\"></div>\n    </div>\n\n    <div class=\"container_right\">\n        <div class=\"container_login_header\" data-ng-bind=\"widget.texts.login_header\"></div>\n        <a href=\"#\"\n           class=\"container_login_button\"\n           data-ng-click=\"$event.preventDefault();login('remote');\"\n           data-ng-bind=\"widget.texts.login_button\"></a>\n    </div>\n\n</div>\n\n";
+
+/***/ }),
+/* 175 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(176);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(75)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./welcome.less", function() {
+				var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./welcome.less");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ }),
+/* 176 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(74)();
+	// imports
+
+
+	// module
+	exports.push([module.id, ".spm_wrapper .welcome_container {\n  max-width: 1200px;\n  margin: 0 auto;\n}\n.spm_wrapper .welcome_container .container_left {\n  width: 70%;\n  box-sizing: border-box;\n  padding: 30px;\n  float: left;\n}\n@media screen and (max-width: 800px) {\n  .spm_wrapper .welcome_container .container_left {\n    width: 100%;\n  }\n}\n.spm_wrapper .welcome_container .container_right {\n  width: 30%;\n  padding: 30px;\n  box-sizing: border-box;\n  float: left;\n}\n@media screen and (max-width: 800px) {\n  .spm_wrapper .welcome_container .container_right {\n    width: 100%;\n  }\n}\n", ""]);
 
 	// exports
 
