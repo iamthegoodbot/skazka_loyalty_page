@@ -35,8 +35,13 @@
     <!--<div class="status_block" data-ng-if="user() && user().user_status.name">-->
     <div class="status_block" data-ng-if="user()">
       <span class="status_block_title" data-ng-bind="widget.texts.user_status"></span>
-      <img class="status_block_img" data-ng-src="{{ user().user_status.pic | sailplay_pic }}" alt="{{ user().user_status.name }}">
-      <span class="status_block_name" data-ng-bind="user().user_status.name || widget.texts.empty_status "></span>
+      <img class="status_block_img" data-ng-src="{{ user().user_status.pic | sailplay_pic }}"
+           alt="{{ user().user_status.name }}">
+      <div>
+        <a class="status_block_name button_link"
+           data-ng-click="$event.preventDefault();$parent.$parent.show_status = true;"
+           data-ng-bind="widget.texts.status || widget.texts.empty_status "></a>
+      </div>
     </div>
 
     <div class="bon_profile_stat">
@@ -78,6 +83,10 @@
       </div>
     </div>
   </div>
+
+  <magic-modal class="bns_overlay_hist" data-show="show_status">
+    <div data-ng-bind-html="widget.options.status_popup | to_trusted"></div>
+  </magic-modal>
 
   <magic-modal class="bns_overlay_hist" data-show="profile.history">
 
