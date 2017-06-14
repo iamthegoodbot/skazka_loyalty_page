@@ -1710,24 +1710,26 @@ return webpackJsonp([2],[
 
 	      var categories = scope.widget.options && scope.widget.options.categories || [];
 
-	      if (!available_categories.length) {
-	        scope.check_categories = true;
-	      } else {
-	        SailPlay.send('tags.exist', { tags: categories.filter(function (item) {
-	            return available_categories.indexOf(item.id) !== -1;
-	          }).map(function (item) {
-	            return item.tag;
-	          }) }, function (tags_res) {
-	          if (tags_res && tags_res.status === 'ok') {
-	            scope.check_categories = true;
-	            scope.user_categories = tags_res.tags;
-	            scope.$digest();
-	          } else {
-	            console.error('Tags exit error. Response: ', tags_res);
-	          }
-	          scope.getBlocks();
-	        });
-	      }
+	      scope.check_user_tags = function () {
+	        if (!available_categories.length) {
+	          scope.check_categories = true;
+	        } else {
+	          SailPlay.send('tags.exist', { tags: categories.filter(function (item) {
+	              return available_categories.indexOf(item.id) !== -1;
+	            }).map(function (item) {
+	              return item.tag;
+	            }) }, function (tags_res) {
+	            if (tags_res && tags_res.status === 'ok') {
+	              scope.check_categories = true;
+	              scope.user_categories = tags_res.tags;
+	              scope.$digest();
+	            } else {
+	              console.error('Tags exit error. Response: ', tags_res);
+	            }
+	            scope.getBlocks();
+	          });
+	        }
+	      };
 
 	      function replaceVariables(str, data) {
 	        if (!str || !data) return;
@@ -1799,6 +1801,10 @@ return webpackJsonp([2],[
 	        scope.getBlocks();
 	      });
 
+	      SailPlayApi.observe('load.user.info', function () {
+	        scope.check_user_tags();
+	      });
+
 	      /**
 	       * Change grid page
 	       * @param action
@@ -1861,6 +1867,8 @@ return webpackJsonp([2],[
 	          });
 	        });
 	      });
+
+	      scope.check_user_tags();
 	    };
 	  }
 

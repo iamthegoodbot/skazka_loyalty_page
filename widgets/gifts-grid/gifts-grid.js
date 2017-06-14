@@ -41,20 +41,22 @@ WidgetRegister({
 
       const categories = scope.widget.options && scope.widget.options.categories || [];
 
-      if (!available_categories.length) {
-        scope.check_categories = true;
-      } else {
-        SailPlay.send('tags.exist', {tags: categories.filter(item => available_categories.indexOf(item.id) !== -1).map(item => item.tag)}, tags_res => {
-          if (tags_res && tags_res.status === 'ok') {
-            scope.check_categories = true;
-            scope.user_categories = tags_res.tags;
-            scope.$digest();
-          } else {
-            console.error('Tags exit error. Response: ', tags_res)
-          }
-          scope.getBlocks();
-        });
-      }
+      scope.check_user_tags = () => {
+        if (!available_categories.length) {
+          scope.check_categories = true;
+        } else {
+          SailPlay.send('tags.exist', {tags: categories.filter(item => available_categories.indexOf(item.id) !== -1).map(item => item.tag)}, tags_res => {
+            if (tags_res && tags_res.status === 'ok') {
+              scope.check_categories = true;
+              scope.user_categories = tags_res.tags;
+              scope.$digest();
+            } else {
+              console.error('Tags exit error. Response: ', tags_res)
+            }
+            scope.getBlocks();
+          });
+        }
+      };
 
       function replaceVariables(str, data) {
         if (!str || !data) return;
@@ -118,6 +120,10 @@ WidgetRegister({
       SailPlayApi.observe('load.gifts.list', gifts => {
         scope.gifts = gifts;
         scope.getBlocks();
+      });
+
+      SailPlayApi.observe('load.user.info', () => {
+        scope.check_user_tags();
       });
 
       /**
@@ -187,6 +193,7 @@ WidgetRegister({
         });
       });
 
+      scope.check_user_tags();
 
     };
 
