@@ -49,9 +49,11 @@ export let SailPlayGifts = angular.module('sailplay.gifts', [])
 
       scope.progress = false;
 
-      function build_progress(gifts, user){
+      function build_progress(gifts_list, user){
 
         return $q(function (resolve, reject) {
+
+          var gifts = angular.copy(gifts_list);
 
           if(!gifts || gifts.length < 1) {
             scope.progress = false;

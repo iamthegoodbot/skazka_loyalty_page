@@ -420,12 +420,17 @@ export let Tools = angular.module('magic.tools', [
   this.stringify_widget_css = (prefix, obj) => {
 
     let css_string = '';
+    let media_queries = '';
 
     for(let selector in obj){
 
       if(obj.hasOwnProperty(selector)){
 
-        css_string += prefix + ' .' + selector + '{ ';
+        if (selector[0] == '@' && selector.split('|').length > 1) {
+          var media = selector.split('|')[0].trim();
+          var cls = selector.split('|')[1].trim();
+          media_queries += media + '{ ' + prefix + ' .' + cls + '{ '
+        } else css_string += prefix + ' .' + selector + '{ ';
 
         let selector_styles = obj[selector];
 
@@ -433,18 +438,22 @@ export let Tools = angular.module('magic.tools', [
 
           if(selector_styles.hasOwnProperty(prop)) {
 
-            css_string += prop + ':' + selector_styles[prop] + ' !important;';
+            if (selector[0] == '@')
+              media_queries += prop + ':' + selector_styles[prop] + ' !important;';
+            else
+              css_string += prop + ':' + selector_styles[prop] + ' !important;';
 
           }
 
         }
 
-        css_string += ' }';
-
+        if (selector[0] == '@') media_queries += ' } }'
+        else css_string += ' }';
       }
 
     }
 
+    css_string += media_queries;
     return css_string;
 
   };

@@ -10,7 +10,7 @@
 })(this, function() {
 return webpackJsonp([3],[
 /* 0 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 
@@ -859,7 +859,7 @@ return webpackJsonp([3],[
 	  }
 	};
 
-/***/ }
+/***/ })
 ])
 });
 ;
