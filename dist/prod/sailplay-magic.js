@@ -42572,8 +42572,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  id: 'gifts-grid',
 	  template: _giftsGrid2.default,
-	  inject: ['SailPlayApi', 'SailPlay', '$rootScope', '$timeout'],
-	  controller: function controller(SailPlayApi, SailPlay, $rootScope, $timeout) {
+	  inject: ['SailPlayApi', 'SailPlay', '$rootScope', '$timeout', '$filter'],
+	  controller: function controller(SailPlayApi, SailPlay, $rootScope, $timeout, $filter) {
 
 	    return function (scope, elm, attrs) {
 
@@ -42675,6 +42675,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        scope.blocks = [];
 	        if (!scope.gifts && !scope.gifts.length && scope.check_categories) return;
 	        var gifts = angular.copy(scope.gifts);
+	        gifts = $filter('filter')(gifts, scope.filter);
+	        gifts = $filter('orderBy')(gifts, scope.orderBy);
 	        len = Math.ceil(gifts.length / scope.block_size);
 	        i = 0;
 	        do {

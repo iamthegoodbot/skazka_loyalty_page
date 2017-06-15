@@ -10,9 +10,10 @@ WidgetRegister({
     'SailPlayApi',
     'SailPlay',
     '$rootScope',
-    '$timeout'
+    '$timeout',
+    '$filter'
   ],
-  controller: function (SailPlayApi, SailPlay, $rootScope, $timeout) {
+  controller: function (SailPlayApi, SailPlay, $rootScope, $timeout, $filter) {
 
     return function (scope, elm, attrs) {
 
@@ -104,6 +105,8 @@ WidgetRegister({
         scope.blocks = [];
         if (!scope.gifts && !scope.gifts.length && scope.check_categories) return;
         let gifts = angular.copy(scope.gifts);
+        gifts = $filter('filter')(gifts, scope.filter);
+        gifts = $filter('orderBy')(gifts, scope.orderBy);
         len = Math.ceil(gifts.length / scope.block_size);
         i = 0;
         do {
