@@ -42554,6 +42554,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
+	var _keys = __webpack_require__(36);
+
+	var _keys2 = _interopRequireDefault(_keys);
+
 	var _widget = __webpack_require__(63);
 
 	var _giftsGrid = __webpack_require__(137);
@@ -42568,8 +42572,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  id: 'gifts-grid',
 	  template: _giftsGrid2.default,
-	  inject: ['SailPlayApi', 'SailPlay', '$rootScope'],
-	  controller: function controller(SailPlayApi, SailPlay, $rootScope) {
+	  inject: ['SailPlayApi', 'SailPlay', '$rootScope', '$timeout'],
+	  controller: function controller(SailPlayApi, SailPlay, $rootScope, $timeout) {
 
 	    return function (scope, elm, attrs) {
 
@@ -42598,6 +42602,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var available_categories = scope.widget.options && scope.widget.options.available_categories || [];
 
 	      var categories = scope.widget.options && scope.widget.options.categories || [];
+
+	      scope.block_size = block_size;
 
 	      scope.check_user_tags = function () {
 	        if (!available_categories.length) {
@@ -42669,17 +42675,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	        scope.blocks = [];
 	        if (!scope.gifts && !scope.gifts.length && scope.check_categories) return;
 	        var gifts = angular.copy(scope.gifts);
-	        len = Math.ceil(gifts.length / block_size);
+	        len = Math.ceil(gifts.length / scope.block_size);
 	        i = 0;
 	        do {
 	          if (i == len - 1) {
-	            page = gifts.slice(block_size * i);
+	            page = gifts.slice(scope.block_size * i);
 	          } else {
-	            page = gifts.slice(block_size * i, block_size * i + block_size);
+	            page = gifts.slice(scope.block_size * i, scope.block_size * i + scope.block_size);
 	          }
 	          scope.blocks.push(page);
 	          i++;
 	        } while (len && i != len);
+	        if (!scope.blocks[scope.state]) {
+	          while (scope.state == 0 || !scope.blocks[scope.state] || !scope.blocks[scope.state].length) {
+	            scope.state--;
+	          }
+	        }
 	      };
 
 	      /**
@@ -42758,6 +42769,34 @@ return /******/ (function(modules) { // webpackBootstrap
 	      });
 
 	      scope.check_user_tags();
+
+	      if (scope.widget.options && scope.widget.options.media_grid_size) {
+	        var render_timeout = null;
+	        var render_time = 50;
+	        var on_resize = function on_resize() {
+	          if (render_timeout) $timeout.cancel(render_timeout);
+	          var width = window.innerWidth;
+	          var media_size = block_size;
+	          var rules = (0, _keys2.default)(scope.widget.options.media_grid_size).map(function (rule) {
+	            return parseInt(rule);
+	          }).reverse();
+	          angular.forEach(rules, function (rule_width) {
+	            if (rule_width >= width) {
+	              media_size = scope.widget.options.media_grid_size[rule_width];
+	            }
+	          });
+	          if (scope.block_size == media_size) return;
+	          render_timeout = $timeout(function () {
+	            scope.$apply(function () {
+	              scope.block_size = media_size;
+	              scope.getBlocks();
+	            });
+	          }, render_time);
+	        };
+	        angular.element(window).bind('resize', on_resize);
+
+	        on_resize();
+	      }
 	    };
 	  }
 

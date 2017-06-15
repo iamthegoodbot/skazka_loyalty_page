@@ -9,9 +9,10 @@ WidgetRegister({
   inject: [
     'SailPlayApi',
     'SailPlay',
-    '$rootScope'
+    '$rootScope',
+    '$timeout'
   ],
-  controller: function (SailPlayApi, SailPlay, $rootScope) {
+  controller: function (SailPlayApi, SailPlay, $rootScope, $timeout) {
 
     return function (scope, elm, attrs) {
 
@@ -40,6 +41,8 @@ WidgetRegister({
       const available_categories = scope.widget.options && scope.widget.options.available_categories || [];
 
       const categories = scope.widget.options && scope.widget.options.categories || [];
+
+      scope.block_size = block_size;
 
       scope.check_user_tags = () => {
         if (!available_categories.length) {
@@ -101,17 +104,22 @@ WidgetRegister({
         scope.blocks = [];
         if (!scope.gifts && !scope.gifts.length && scope.check_categories) return;
         let gifts = angular.copy(scope.gifts);
-        len = Math.ceil(gifts.length / block_size);
+        len = Math.ceil(gifts.length / scope.block_size);
         i = 0;
         do {
           if (i == (len - 1)) {
-            page = gifts.slice(block_size * i);
+            page = gifts.slice(scope.block_size * i);
           } else {
-            page = gifts.slice(block_size * i, block_size * i + block_size);
+            page = gifts.slice(scope.block_size * i, scope.block_size * i + scope.block_size);
           }
           scope.blocks.push(page);
           i++;
         } while (len && i != len);
+        if (!scope.blocks[scope.state]) {
+          while (scope.state == 0 || (!scope.blocks[scope.state] || !scope.blocks[scope.state].length)) {
+            scope.state--;
+          }
+        }
       };
 
       /**
@@ -194,6 +202,33 @@ WidgetRegister({
       });
 
       scope.check_user_tags();
+
+      if (scope.widget.options && scope.widget.options.media_grid_size) {
+        let render_timeout = null;
+        let render_time = 50;
+        let on_resize = () => {
+          if (render_timeout) $timeout.cancel(render_timeout);
+          let width = window.innerWidth;
+          let media_size = block_size;
+          let rules = Object.keys(scope.widget.options.media_grid_size).map(rule => parseInt(rule)).reverse();
+          angular.forEach(rules, (rule_width) => {
+            if (rule_width >= width) {
+              media_size = scope.widget.options.media_grid_size[rule_width];
+            }
+          });
+          if (scope.block_size == media_size) return;
+          render_timeout = $timeout(() => {
+            scope.$apply(() => {
+              scope.block_size = media_size;
+              scope.getBlocks();
+            });
+          }, render_time);
+        };
+        angular.element(window).bind('resize', on_resize);
+
+        on_resize();
+      }
+
 
     };
 
