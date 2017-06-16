@@ -1,0 +1,322 @@
+@import (reference) "../../src/theme/mixins";
+@import (reference) "../../src/theme/helpers";
+@import (reference) "../../src/theme/colors";
+
+.spm_wrapper {
+  .spm_tools_widget.hc_profile {
+    .container {
+      position: relative;
+      overflow: visible;
+      max-width: 1100px;
+      width: 100%;
+      margin: 0 auto;
+      .box-sizing(border-box);
+
+      &-oid {
+        position: absolute;
+        right: 0;
+        top: -35px;
+        width: 470px;
+        text-align: center;
+      }
+
+      &-left {
+        background: #F8F8F8;
+        float: left;
+        width: 100%;
+        box-sizing: border-box;
+        padding: 30px;
+        max-width: 800px;
+        border-top-left-radius: 15px;
+        text-align: center;
+
+        &-pic {
+          text-align: center;
+          width: 30%;
+          box-sizing: border-box;
+          padding-right: 30px;
+          float: left;
+
+          img {
+            border-radius: 50%;
+          }
+
+          @media screen and (max-width: 600px) {
+            width: 100%;
+          }
+
+        }
+
+        &-profile {
+          text-align: left;
+          float: left;
+          width: 70%;
+          position: relative;
+
+          &-name {
+            font-size: 32px;
+            font-weight: bold;
+            padding-bottom: 20px;
+          }
+
+          &_field {
+            padding-bottom: 10px;
+
+            &-name {
+              width: 25%;
+              font-size: 16px;
+              float: left;
+            }
+
+            &-value {
+              float: left;
+              width: 75%;
+              position: relative;
+              color: rgba(0, 0, 0, 0.5);
+              height: 20px;
+
+              &-edit {
+                width: 16px;
+                height: 16px;
+                text-decoration: none;
+                cursor: pointer;
+                display: inline-block;
+                vertical-align: middle;
+                z-index: 1;
+                margin-left: 5px;
+                background: url('https://sailplays3.cdnvideo.ru/media/assets/assetfile/c3231ca2ec7e09effef5ce8497b39c32.png') no-repeat center top/auto 90%;
+              }
+
+              span {
+                vertical-align: middle;
+                display: inline-block;
+                line-height: 20px;
+                font-size: 16px;
+                height: 20px;
+              }
+
+              input {
+                display: none;
+                position: absolute;
+                left: 0;
+                top: 0;
+                font-size: 16px;
+                outline: none;
+                width: 0%;
+                height: 100%;
+                line-height: 20px;
+                box-sizing: border-box;
+                border-top: none;
+                border-left: none;
+                border-right: none;
+                border-bottom: 2px solid #D6D9E3;
+                transition: width .5s ease;
+                background: transparent;
+              }
+
+            }
+
+            &.type-editing {
+              span, a {
+                display: none;
+              }
+              input {
+                display: block;
+                width: 100%;
+              }
+            }
+
+          }
+
+          &-subscribe {
+            display: inline-block;
+            vertical-align: middle;
+            cursor: pointer;
+            box-sizing: border-box;
+            position: relative;
+            padding-left: 20px;
+
+            &:first-child {
+              margin-right: 10px;
+            }
+
+            &:before {
+              content: '';
+              width: 15px;
+              height: 15px;
+              background: rgba(0, 0, 0, 0.15);
+              display: inline-block;
+              position: absolute;
+              top: 0;
+              bottom: 0;
+              left: 0;
+              margin: auto;
+              vertical-align: middle;
+            }
+
+            &.type-checked:before {
+              background: url(https://sailplays3.cdnvideo.ru/media/assets/assetfile/a514d838259ef72146ef8ba4aaeb2014.png) rgba(0, 0, 0, 0.15) no-repeat center center/70% auto;
+            }
+
+          }
+
+          @media screen and (max-width: 600px) {
+            width: 100%;
+          }
+
+        }
+
+        @media screen and (max-width: 1100px) {
+          max-width: 100%;
+          border-top-left-radius: 0;
+        }
+
+      }
+
+      &-right {
+        width: 100%;
+        float: left;
+        box-sizing: border-box;
+        padding: 30px;
+        max-width: 300px;
+        background: #D6D9E3;
+        border-top-right-radius: 15px;
+        text-align: center;
+
+        &-balance {
+          font-size: 72px;
+          display: inline-block;
+          width: 100%;
+          padding-top: 10px;
+          font-weight: bold;
+        }
+
+        &-placeholder {
+          font-size: 26px;
+          display: inline-block;
+          width: 100%;
+        }
+
+        &-discount {
+          font-weight: bold;
+          margin-top: 10px;
+          padding-top: 10px;
+          border-top: 2px solid black;
+          font-size: 26px;
+          display: inline-block;
+          width: 100%;
+        }
+
+        &-history {
+          margin: 20px auto 8px;
+        }
+
+        @media screen and (max-width: 1100px) {
+          max-width: 100%;
+          border-top-right-radius: 0;
+        }
+
+      }
+
+      .bns_overlay_password {
+        text-align: center;
+        .bns_overlay_iner {
+          width: 100%;
+          max-width: 300px;
+        }
+        button {
+          height: 40px !important;
+          width: 100% !important;
+        }
+        input {
+          width: 100%;
+          height: 40px;
+          line-height: 40px;
+          font-size: 16px;
+          padding: 0 10px;
+          margin-bottom: 10px;
+          box-sizing: border-box;
+          overflow: hidden;
+        }
+      }
+
+      &-bottom {
+        float: left;
+        width: 100%;
+        padding-bottom: 100px;
+
+        &-line {
+          background: #BDC2D1;
+          height: 30px;
+          position: relative;
+
+          &_progress {
+            background: white;
+            position: absolute;
+            left: 0;
+            top: -10%;
+            height: 120%;
+            border-top-right-radius: 20px;
+            border-bottom-right-radius: 20px;
+            z-index: 2;
+          }
+
+          &_item {
+            border-radius: 40px;
+            z-index: 2;
+            text-align: center;
+            width: 100px;
+            height: 80px;
+            background: #BDC2D1;
+            position: absolute;
+            top: 50%;
+            box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.4);
+            transform: translate3d(-100%,-50%,0);
+
+            &_value{
+              height: 80px;
+              line-height: 80px;
+              font-weight: bold;
+              font-size: 32px;
+              color: white;
+              text-align: center;
+            }
+
+            &_get{
+              width: 140px;
+              left: 50%;
+              margin-left: -100px;
+              margin-top: 20px;
+              position: relative;
+            }
+
+            &_left{
+              margin-top: 20px;
+              width: 100%;
+              font-size: 18px;
+              font-weight: bold;
+            }
+
+            &_received{
+              color: rgba(128, 128, 128, 0.5);
+              margin-top: 20px;
+              width: 100%;
+              font-size: 18px;
+              font-weight: bold;
+              text-transform: lowercase;
+            }
+
+            &.type-received {
+              box-shadow: none;
+            }
+
+          }
+
+        }
+
+      }
+
+    }
+  }
+}
+

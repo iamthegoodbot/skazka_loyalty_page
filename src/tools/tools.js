@@ -615,7 +615,7 @@ export let Tools = angular.module('magic.tools', [
       city = '';
       number = value.slice(3);
 
-      number = number.slice(0, 4) + '-' + number.slice(4);
+      number = number.slice(0, 4) + '-' + number.slice(2) + '-' + number.slice(2);
       return (country + ' ' + number).trim();
     }
 
@@ -646,7 +646,7 @@ export let Tools = angular.module('magic.tools', [
       country = "";
     }
 
-    number = number.slice(0, 3) + '-' + number.slice(3);
+    number = number.slice(0, 3) + '-' + number.slice(3, 5) + '-' + number.slice(5);
     return (country + " (" + city + ") " + number).trim();
   };
 });
