@@ -598,6 +598,7 @@ export let Tools = angular.module('magic.tools', [
 
 .filter('tel', function () {
   return function (tel) {
+
     if (!tel) { return ''; }
 
     var value = tel.toString().trim().replace(/^\+/, '');
@@ -629,10 +630,6 @@ export let Tools = angular.module('magic.tools', [
 
       default:
         return tel;
-    }
-
-    if (country == 1) {
-      country = "";
     }
 
     number = number.slice(0, 3) + '-' + number.slice(3);

@@ -5056,6 +5056,7 @@ return webpackJsonp([0],[
 	  };
 	}).filter('tel', function () {
 	  return function (tel) {
+
 	    if (!tel) {
 	      return '';
 	    }
@@ -5092,10 +5093,6 @@ return webpackJsonp([0],[
 
 	      default:
 	        return tel;
-	    }
-
-	    if (country == 1) {
-	      country = "";
 	    }
 
 	    number = number.slice(0, 3) + '-' + number.slice(3);
