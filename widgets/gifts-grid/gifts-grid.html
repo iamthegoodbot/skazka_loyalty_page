@@ -70,6 +70,10 @@
 
                 <p class="gift_more_descr modal_gift_description" data-ng-bind="selected_gift.descr"></p>
 
+                <div class="modal_gift_type_block clearfix" data-gift-type
+                     data-ng-if="selected_gift && (selected_gift.points <= user().user_points.confirmed)" data-gift="$parent.selected_gift"
+                     data-types="widget.options.gift_types"></div>
+
                 <div class="modal_gift_buttons">
 
                     <span class="alink button_primary" data-ng-click="$parent.$parent.selected_gift=null">{{ 'buttons.texts.close' | tools }}</span>
@@ -77,7 +81,7 @@
                     <span class="alink button_primary"
                           style="margin-left: 5px;"
                           data-ng-click="gift_confirm(selected_gift);"
-                          data-ng-bind="widget.texts.get"></span>
+                          data-ng-bind="selected_gift.points <= user().user_points.confirmed ? widget.texts.get : widget.texts.no_points_button_text"></span>
                 </div>
 
             </div>
