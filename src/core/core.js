@@ -46,7 +46,7 @@ export let Core = angular.module('magic.core', [
     SailPlayApi.call('load.badges.list', {include_rules: 1});
     SailPlayApi.call('load.actions.list');
     SailPlayApi.call('load.actions.custom.list');
-    SailPlayApi.call('load.user.history');
+    SailPlayApi.call('load.user.history', {tz: getTimeZone()});
     SailPlayApi.call('tags.exist', {tags: TAGS});
     SailPlayApi.call('load.gifts.list');
     SailPlayApi.call('leaderboard.load');
@@ -75,12 +75,17 @@ export let Core = angular.module('magic.core', [
   SailPlay.on('gifts.purchase.success', function(res){
 
     SailPlayApi.call('load.user.info', { all: 1, purchases: 1 });
-    SailPlayApi.call('load.user.history');
+    SailPlayApi.call('load.user.history', {tz: getTimeZone()});
     SailPlayApi.call('leaderboard.load');
 
     $rootScope.$apply();
 
   });
+
+  function getTimeZone() {
+    var offset = new Date().getTimezoneOffset(), o = Math.abs(offset);
+    return (offset < 0 ? "+" : "-") + ("00" + Math.floor(o / 60)).slice(-2) + ":" + ("00" + (o % 60)).slice(-2);
+  }
 
   //SailPlay.on('actions.social.connect.complete', function(){
   //  SailPlayApi.call('load.actions.list');

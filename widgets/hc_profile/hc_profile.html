@@ -26,7 +26,19 @@
                 <div class="container-left-profile_field-name" data-ng-bind="field.label"></div>
 
                 <div class="container-left-profile_field-value" data-ng-switch-when="info">
-                    <span data-ng-bind="field.data[field.value] && field.data[field.value].value || widget.texts.not_defined"></span>
+                    <span data-ng-bind="field.data[field.value] && field.data[field.value].text || widget.texts.not_defined"></span>
+                </div>
+
+                <div class="container-left-profile_field-value" data-ng-switch-when="select">
+                    <span data-ng-bind="getValue(field) ? getValue(field).text : widget.texts.not_defined"></span>
+                    <select data-ng-model="field.value"
+                            data-ng-change="sailplay.fill_profile.submit(fill_profile_form, profile.fill_profile);"
+                            data-ng-click="$event.preventDefault();$event.stopPropagation();"
+                            data-ng-options="item.value as item.text for item in field.data"></select>
+                    <a href="#"
+                       data-ng-if="field.can_edit"
+                       class="container-left-profile_field-value-edit"
+                       data-ng-click="$event.preventDefault();$event.stopPropagation();field.editing=true;sailplay.fill_profile.focus($event, field);"></a>
                 </div>
 
                 <div class="container-left-profile_field-value" data-ng-switch-when="phone">
@@ -114,7 +126,8 @@
         <span class="container-right-balance" data-ng-bind="user().user_points.confirmed | number"></span>
         <span class="container-right-placeholder"
               data-ng-bind="user().user_points.confirmed | sailplay_pluralize: ('points.texts.pluralize' | tools)"></span>
-        <span class="container-right-discount" data-ng-bind="getCurrentStatus(status_list) ? widget.texts.discount + getCurrentStatus(status_list).name : widget.texts.not_discount"></span>
+        <span class="container-right-discount"
+              data-ng-bind="getCurrentStatus(status_list) ? widget.texts.discount + getCurrentStatus(status_list).name : widget.texts.not_discount"></span>
         <a href="#" class="container-right-history button_primary"
            data-ng-bind="widget.texts.history" data-ng-click="$event.preventDefault();show_history = true;"></a>
     </div>
@@ -133,14 +146,14 @@
                 <div class="container-bottom-line_item_value" data-ng-bind="status.name"></div>
 
                 <div class="container-bottom-line_item_left" data-ng-if="!status.received"
-                data-ng-bind="(status.points | number) + ' ' + (status.points | sailplay_pluralize: ('points.texts.pluralize' | tools))"></div>
+                     data-ng-bind="(status.points | number) + ' ' + (status.points | sailplay_pluralize: ('points.texts.pluralize' | tools))"></div>
 
                 <div class="container-bottom-line_item_received"
                      data-ng-if="status.received"
                      data-ng-bind="widget.texts.received"></div>
 
                 <a class="container-bottom-line_item_get button_primary"
-                   data-ng-if="!status.received && status.points <= user().user_points.confirmed"
+                   data-ng-if="!status.received && (status.points <= user().user_points.confirmed) && (!status_list[$index-1] || status_list[$index-1].received)"
                    data-ng-bind="widget.texts.get"
                    data-ng-click="$event.preventDefault();getStatus(status)"></a>
 
@@ -165,10 +178,12 @@
 
                 <tr data-dir-paginate="item in history() | itemsPerPage:10" data-pagination-id="history_pages">
                     <td>
-                        <span class="modal_history_date" data-ng-bind="item.action_date | date:'d/MM/yyyy'"></span>
+                        <span class="modal_history_date" data-ng-bind="item.action_date | date:'d/MM/yyyy HH:mm'"></span>
                     </td>
                     <td>
-                        <span><b class="modal_history_content" data-ng-bind="item | history_item"></b></span>
+                        <span>
+                            <b data-ng-bind="(item | history_item) + (item.order_num  && (' (' + item.order_num + ')'))"></b>
+                        </span>
                     </td>
                     <td>
                         <span class="modal_history_points" data-ng-if="item.points_delta"

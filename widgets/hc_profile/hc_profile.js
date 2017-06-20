@@ -19,6 +19,10 @@ WidgetRegister({
 
       let tags = status_list.map(status => status.tag);
 
+      scope.getValue = field => {
+        return field.data.filter(item => item.value == field.value)[0]
+      };
+
       scope.checkStatus = () => {
         SailPlayApi.call('tags.exist', {tags: tags}, res => {
           scope.$apply(() => {
@@ -85,9 +89,9 @@ WidgetRegister({
         value = step * state;
 
         if (state != 0) {
-          value += (points - _statusArray[state - 1]) * 100 / (_statusArray[state] - _statusArray[state - 1]) / _statusArray.length;
+          value += (points - _statusArray[state - 1]) * 100 / (_statusArray[state] - _statusArray[state - 1]) / (_statusArray.length + 1);
         } else {
-          value += (points * 100 / _statusArray[state]) / _statusArray.length;
+          value += (points * 100 / _statusArray[state]) / (_statusArray.length + 1);
         }
 
         value = value > 100 ? 100 : value < 0 ? 0 : value;
