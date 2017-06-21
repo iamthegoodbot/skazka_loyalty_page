@@ -4,6 +4,8 @@ import fs from 'fs';
 
 const app_name = 'magic.js';
 
+var ExtractTextPlugin = require("extract-text-webpack-plugin");
+
 /*
   load dependencies and chunk them to vendor file
 */
@@ -59,7 +61,10 @@ let loaders = [
   },
   {
     test: /\.less$/,
-    loader: "style-loader!css-loader!less-loader"
+    loader: ExtractTextPlugin.extract(
+      "style-loader",
+      "css-loader!less-loader"
+      )
   },
   //fonts loaders
   { test: /\.svg$/, loader: 'url?limit=65000&mimetype=image/svg+xml' },
@@ -74,17 +79,29 @@ let loaders = [
 ];
 
 let resolve = {
+  root: __dirname,
+  modulesDirectories: ['node_modules'],
   alias: {
     "@core": path.join(__dirname, 'src', 'core')
   }
 };
 
+console.log("magic: "+ [ path.join(__dirname, 'src', app_name) ])
+console.log("widgets: " + widgets)
+
+let entry = {
+  'sailplay-magic': [ path.join(__dirname, 'src', app_name) ].concat(widgets)
+}
+
+let plugins = [
+  new webpack.NoErrorsPlugin(),
+  new ExtractTextPlugin("[name].css", {
+      allChunks: true
+    })
+]
+
 export let development = {
-  entry: {
-    'sailplay-magic': path.join(__dirname, 'src', app_name),
-    'sailplay-magic-widgets': widgets,
-    'sailplay-magic-vendor':  vendors
-  },
+  entry: entry,
   resolve: resolve,
   output: {
     path: path.join(__dirname, 'dist', 'dev'),
@@ -94,25 +111,47 @@ export let development = {
   module: {
     loaders: loaders
   },
-  plugins: [
-    new webpack.optimize.CommonsChunkPlugin('sailplay-magic-vendor', 'sailplay-magic-vendor.js', Infinity)
-  ]
+  plugins: plugins,
+  devtool: "eval"
 };
 
-export let production = {
+let prodResolve = resolve
 
-  entry: {
-    'sailplay-magic': [ path.join(__dirname, 'src', app_name) ].concat(widgets)
-  },
-  resolve: resolve,
+let prodLoaders = loaders.concat(
+  //angular commonjs kostyl
+  {
+    test: /angular.min.js$/,
+    loader: 'exports?angular'
+  }
+  )
+
+prodResolve.alias.angular = "node_modules/angular/angular.min.js"
+
+let prodPlugins = plugins.concat(
+  new webpack.optimize.UglifyJsPlugin({
+      compress: {
+        warnings:     false,
+        drop_console: true,
+        unsafe:       false
+      },
+      
+      mangle: false
+    })
+  )
+
+export let production = {
+  entry: entry,
+  resolve: prodResolve,
   output: {
     path: path.join(__dirname, 'dist', 'prod'),
     filename: "[name].js",
     libraryTarget: 'umd'
   },
   module: {
-    loaders: loaders
-  }
+    loaders: prodLoaders
+  },
+  devtool: "source-map",
+  plugins: prodPlugins
 };
 
 /*
