@@ -279,6 +279,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	      if (_this.inited || !res_config.config || !res_config.config.config.$MAGIC) return;
 
+	      _core.Core.constant('MAGIC_CONFIG_DATA', res_config.config);
+
 	      _core.Core.constant('MAGIC_CONFIG', res_config.config.config.$MAGIC);
 
 	      var app_container = config.root || document.getElementsByTagName('sailplay-magic')[0];
@@ -310,7 +312,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  }]);
 	  return Magic;
-	}(), _class.Widget = _widget.WidgetRegister, _class.version = '2.1.14', _temp);
+	}(), _class.Widget = _widget.WidgetRegister, _class.version = '2.1.15', _temp);
 
 	//extend SAILPLAY with Magic class
 
@@ -37027,7 +37029,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @param {object}  action   A SailPlay custom action object, received from api.
 	 *
 	 */
-	.directive('sailplayActionCustom', function (SailPlay, $document) {
+	.directive('sailplayActionCustom', function (SailPlay, $document, MAGIC_CONFIG_DATA) {
 
 	  var init_state = void 0;
 
@@ -37041,6 +37043,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    link: function link(scope, elm, attrs) {
 
 	      var iframe = $document[0].createElement('iframe');
+	      var name = MAGIC_CONFIG_DATA.name;
 
 	      iframe.style.backgroundColor = "transparent";
 	      iframe.frameBorder = "0";
@@ -37054,7 +37057,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	          var config = SailPlay.config();
 
-	          iframe.src = config && config.DOMAIN + config.urls.actions.custom.render.replace(':action_id', action.id) + '?auth_hash=' + config.auth_hash + '&lang=' + config.lang || '';
+	          iframe.src = config && config.DOMAIN + config.urls.actions.custom.render.replace(':action_id', action.id) + '?auth_hash=' + config.auth_hash + '&lang=' + config.lang + '&config=' + name || '';
 
 	          iframe.className = ['sailplay_action_custom_frame', action.type].join(' ');
 	        } else {

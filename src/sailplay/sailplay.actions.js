@@ -302,7 +302,7 @@ export let SailPlayActions = angular.module('sailplay.actions', [])
  * @param {object}  action   A SailPlay custom action object, received from api.
  *
  */
-.directive('sailplayActionCustom', function(SailPlay, $document){
+.directive('sailplayActionCustom', function(SailPlay, $document, MAGIC_CONFIG_DATA){
 
   let init_state;
 
@@ -316,6 +316,7 @@ export let SailPlayActions = angular.module('sailplay.actions', [])
     link: function(scope, elm, attrs){
 
       let iframe = $document[0].createElement('iframe');
+      let name = MAGIC_CONFIG_DATA.name;
 
       iframe.style.backgroundColor = "transparent";
       iframe.frameBorder = "0";
@@ -329,7 +330,7 @@ export let SailPlayActions = angular.module('sailplay.actions', [])
 
           let config = SailPlay.config();
 
-          iframe.src = (config && ((config.DOMAIN + config.urls.actions.custom.render.replace(':action_id', action.id) + '?auth_hash=' + config.auth_hash + '&lang=' + config.lang))) || '';
+          iframe.src = (config && ((config.DOMAIN + config.urls.actions.custom.render.replace(':action_id', action.id) + '?auth_hash=' + config.auth_hash + '&lang=' + config.lang + '&config=' + name))) || '';
 
           iframe.className = ['sailplay_action_custom_frame', action.type].join(' ');
 
