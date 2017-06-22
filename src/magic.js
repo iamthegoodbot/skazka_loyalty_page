@@ -199,10 +199,12 @@ export default class Magic {
 
   static Widget = WidgetRegister;
 
-  //////////////// this variable will replace to package version when deploy
-  static version = '${MAGIC_VERSION}';
+  //////////////// const from package.json
+
+  static version = MAGIC_VERSION;
 
 }
+
 
 //extend SAILPLAY with Magic class
 SAILPLAY.Magic = SAILPLAY.Magic || Magic;
