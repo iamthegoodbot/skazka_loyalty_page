@@ -1038,18 +1038,32 @@ return webpackJsonp([2],[
 	          lead_obj[field.name] = field.value;
 	        });
 
+	        // Add for current user tag and variables for chains
+	        var update_current_user = function update_current_user(fields) {
+	          var tags = ['Lead was submitted'];
+	          var user = {};
+	          angular.forEach(fields, function (field) {
+	            user['type3_' + field.name] = field.value;
+	          });
+	          SailPlayApi.call('tags.add', { tags: tags });
+	          SailPlayApi.call('vars.add', { custom_vars: user });
+	        };
+
 	        var url = '/js-api/' + _config.partner.id + '/custom/referrals/add/';
 
 	        SAILPLAY.jsonp.get(_config.DOMAIN + url, lead_obj, function (res) {
+
 	          if (res.status == 'ok') {
-	            var set_status = {
-	              phone: lead_obj['phone'],
-	              tags: ''
-	            };
-	            SAILPLAY.jsonp.get(_config.DOMAIN + tagAdd, set_status);
+	            // let set_status = {
+	            //   phone: lead_obj['phone'],
+	            //   tags: ''
+	            // }
+	            update_current_user(fields);
+	            // SAILPLAY.jsonp.get(_config.DOMAIN + tagAdd, set_status)
 	            scope.startNewLead = false;
 	            fields.map(function (field) {
-	              field.value = '';return field;
+	              field.value = '';
+	              return field;
 	            });
 	            $rootScope.$broadcast('notifier:notify', scope.widget.texts.success);
 	            scope.$digest();
