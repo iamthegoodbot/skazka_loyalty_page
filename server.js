@@ -2,6 +2,7 @@ const express = require('express');
 const proxy = require('proxy-middleware');
 const staticFile = require('connect-static-file')
 const url = require('url');
+const path = require('path')
 const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
 const development = require('./webpack.config').development // <-- Contains ES6+
@@ -17,10 +18,9 @@ const devServerPort = '3001'
 //static directory if needed
 //server.use('/assets', express.static(__dirname + '/assets'));
 
-server.use('/dist', proxy(url.parse('http://' + devServerHost + ':' + devServerPort + '/dist')));
+server.use('/dist/prod', proxy(url.parse('http://' + devServerHost + ':' + devServerPort + '/dist')));
 
 server.use('/', staticFile('index.html', {}))
-
 
 const webpackConfig = development({
 	wdsPort: devServerPort,

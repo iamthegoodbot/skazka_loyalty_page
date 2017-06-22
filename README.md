@@ -44,3 +44,24 @@ Then, place this code to any place in your page:
 
   </script>
 ```
+
+
+## Building & Development
+
+launch webpack dev server on localhost:3000
+
+```sh
+  npm start
+```
+
+build magic and migrator for production
+
+```sh
+  npm run prod
+```
+
+build magic (without migrator) and start server on localhost:3000
+
+```sh
+  npm run prod-server
+```

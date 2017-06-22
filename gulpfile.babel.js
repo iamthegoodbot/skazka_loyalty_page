@@ -44,14 +44,7 @@ gulp.task('server', () => {
 });
 
 gulp.task("production-server", () => {
-  run('deploy.magic', 'copy-prod', 'server');
-})
-
-gulp.task("copy-prod", () => {
-  fs.createReadStream(path.join(production.output.path, 'sailplay-magic.js'))
-    .pipe(fs.createWriteStream(path.join(__dirname, 'dist', 'sailplay-magic.js')))
-  fs.createReadStream(path.join(production.output.path, 'sailplay-magic.js.map'))
-    .pipe(fs.createWriteStream(path.join(__dirname, 'dist', 'sailplay-magic.js.map')))
+  run('deploy.magic', 'server');
 })
 
 gulp.task("webpack-dev-server", () => {
