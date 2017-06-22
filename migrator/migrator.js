@@ -47,7 +47,7 @@ function compare_versions(v1, v2, options) {
 
 let Migrator = {
 
-  version: '${MAGIC_VERSION}',
+  version: MAGIC_VERSION,
 
   migrations: [],
 
