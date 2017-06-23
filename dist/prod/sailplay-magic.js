@@ -35668,6 +35668,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	            if (auth_options && auth_options.disable) {
 	              $rootScope.$broadcast('sailplay-login-try', from);
+	              sp.send('sailplay-login-try', from);
 	              return;
 	            }
 
