@@ -26,7 +26,7 @@
         </div>
       </div>
       <div class="bon_profile_right clearfix" data-ng-if="!user()">
-        <button type="button" class="sp_btn button_primary login_reg_btn" data-ng-click="$event.preventDefault(); login('remote');">{{ widget.texts.login_reg }}</button>
+        <button type="button" class="sp_btn button_primary login_reg_btn" data-ng-click="$event.preventDefault(); login('remote', {widget: 'profile', element: 'profile_login_button'});">{{ widget.texts.login_reg }}</button>
       </div>
     </div>
 

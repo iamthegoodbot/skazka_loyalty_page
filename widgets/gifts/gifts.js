@@ -42,7 +42,7 @@ WidgetRegister({
 
         if(!scope.user()){
 
-          SailPlay.authorize('remote');
+          SailPlay.authorize('remote', {widget: 'gifts', action: 'gift_confirm'});
 
         }
 
