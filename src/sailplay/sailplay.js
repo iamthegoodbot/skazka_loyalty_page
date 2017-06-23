@@ -91,7 +91,7 @@ export let SailPlay = angular.module('sailplay', [
 
         var sp = $window.SAILPLAY || {};
 
-        sp.authorize = function (type) {
+        sp.authorize = function (type, from) {
 
           type = type || auth_type;
 
@@ -122,6 +122,11 @@ export let SailPlay = angular.module('sailplay', [
               break;
 
             case 'remote':
+
+              if(auth_options && auth_options.disable) {
+                $rootScope.$broadcast('sailplay-login-try', from);
+                return;
+              }
 
               sp.send('login.remote', auth_options);
 

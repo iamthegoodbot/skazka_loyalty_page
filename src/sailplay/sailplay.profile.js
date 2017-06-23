@@ -49,10 +49,11 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
          * @description
          * Login by type.
          * @param {string}  type   Authorization type.
+         * @param {object}  from   Where it call.
          */
-        scope.login = function (type) {
+        scope.login = function (type, from) {
 
-          SailPlay.authorize(type);
+          SailPlay.authorize(type, from);
 
         };
 

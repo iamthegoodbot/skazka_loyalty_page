@@ -135,7 +135,7 @@ WidgetRegister({
        */
       scope.gift_confirm = (gift) => {
 
-        if (!scope.user()) SailPlay.authorize('remote');
+        if (!scope.user()) SailPlay.authorize('remote', {widget: 'gifts-grid', action: 'gift_confirm'});
 
         else if (scope.user().user_points.confirmed < gift.points) {
 

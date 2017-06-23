@@ -239,7 +239,7 @@ return webpackJsonp([0],[
 
 	  }]);
 	  return Magic;
-	}(), _class.Widget = _widget.WidgetRegister, _class.version = '2.1.15', _temp);
+	}(), _class.Widget = _widget.WidgetRegister, _class.version = '2.1.16', _temp);
 
 	//extend SAILPLAY with Magic class
 
@@ -672,7 +672,7 @@ return webpackJsonp([0],[
 
 	      var sp = $window.SAILPLAY || {};
 
-	      sp.authorize = function (type) {
+	      sp.authorize = function (type, from) {
 
 	        type = type || auth_type;
 
@@ -701,6 +701,11 @@ return webpackJsonp([0],[
 	            break;
 
 	          case 'remote':
+
+	            if (auth_options && auth_options.disable) {
+	              $rootScope.$broadcast('sailplay-login-try', from);
+	              return;
+	            }
 
 	            sp.send('login.remote', auth_options);
 
@@ -954,10 +959,11 @@ return webpackJsonp([0],[
 	       * @description
 	       * Login by type.
 	       * @param {string}  type   Authorization type.
+	       * @param {object}  from   Where it call.
 	       */
-	      scope.login = function (type) {
+	      scope.login = function (type, from) {
 
-	        SailPlay.authorize(type);
+	        SailPlay.authorize(type, from);
 	      };
 
 	      /**

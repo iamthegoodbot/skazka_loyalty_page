@@ -23,14 +23,14 @@ WidgetRegister({
 
       scope.action_select = function (action) {
 
-        if(!SailPlayApi.data('load.user.info')()) return SailPlay.authorize('remote');
+        if(!SailPlayApi.data('load.user.info')()) return SailPlay.authorize('remote', {widget: 'actions', action: 'action_select'});
 
         scope.action_selected = action || false;
 
       };
 
       scope.open_profile = function() {
-        if(!SailPlayApi.data('load.user.info')()) return SailPlay.authorize('remote');        
+        if(!SailPlayApi.data('load.user.info')()) return SailPlay.authorize('remote', {widget: 'actions', action: 'open_profile'});
         $rootScope.$broadcast('openProfile')
       }
 
@@ -42,7 +42,7 @@ WidgetRegister({
 
       scope.action_custom_select = function (action) {
 
-        if(!SailPlayApi.data('load.user.info')()) return SailPlay.authorize('remote');
+        if(!SailPlayApi.data('load.user.info')()) return SailPlay.authorize('remote', {widget: 'actions', action: 'action_custom_select'});
         scope.action_custom_selected = action || false;
 
       };
