@@ -405,6 +405,12 @@ export let Tools = angular.module('magic.tools', [
   };
 }])
 
+.filter('trustUrl', function ($sce) {
+  return function(url) {
+    return $sce.trustAsResourceUrl(url);
+  };
+})
+
 .filter('background_image', function(){
   return function(url) {
     return url && 'url(' + url + ')' || '';

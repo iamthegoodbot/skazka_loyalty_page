@@ -11,6 +11,7 @@ WidgetRegister({
   ],
   controller: SailPlay => {
     return (scope, elm, attrs) => {
+      scope.popup = null;
       scope.login = type => {
         SailPlay.authorize(type);
       }

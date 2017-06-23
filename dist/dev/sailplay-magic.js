@@ -2817,7 +2817,11 @@ return webpackJsonp([0],[
 	  return function (text) {
 	    return $sce.trustAsHtml(text);
 	  };
-	}]).filter('background_image', function () {
+	}]).filter('trustUrl', function ($sce) {
+	  return function (url) {
+	    return $sce.trustAsResourceUrl(url);
+	  };
+	}).filter('background_image', function () {
 	  return function (url) {
 	    return url && 'url(' + url + ')' || '';
 	  };

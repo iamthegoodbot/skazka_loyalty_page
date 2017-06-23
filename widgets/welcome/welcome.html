@@ -11,7 +11,19 @@
            class="container_login_button"
            data-ng-click="$event.preventDefault();login('remote');"
            data-ng-bind="widget.texts.login_button"></a>
+        <a href="#"
+           class="container_terms_and_conditions_button"
+           data-ng-click="$event.preventDefault();popup = 'terms_and_conditions'"
+           data-ng-bind="widget.texts.terms_and_conditions_button"></a>
+        <a href="#"
+           class="container_faq_button"
+           data-ng-click="$event.preventDefault();popup = 'faq'"
+           data-ng-bind="widget.texts.faq_button"></a>
     </div>
+
+    <magic-modal class="bns_overlay bns_overlay_welcome" data-show="popup">
+        <iframe data-ng-if="popup" src="{{ widget.options.popup[$parent.popup] | trustUrl }}" frameborder="0"></iframe>
+    </magic-modal>
 
 </div>
 

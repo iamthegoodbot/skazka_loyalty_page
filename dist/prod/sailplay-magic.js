@@ -38680,7 +38680,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	  return function (text) {
 	    return $sce.trustAsHtml(text);
 	  };
-	}]).filter('background_image', function () {
+	}]).filter('trustUrl', function ($sce) {
+	  return function (url) {
+	    return $sce.trustAsResourceUrl(url);
+	  };
+	}).filter('background_image', function () {
 	  return function (url) {
 	    return url && 'url(' + url + ')' || '';
 	  };
@@ -43550,6 +43554,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  inject: ['SailPlay'],
 	  controller: function controller(SailPlay) {
 	    return function (scope, elm, attrs) {
+	      scope.popup = null;
 	      scope.login = function (type) {
 	        SailPlay.authorize(type);
 	      };
@@ -43562,7 +43567,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 175 */
 /***/ (function(module, exports) {
 
-	module.exports = "<div class=\"container welcome_container clearfix\" data-ng-show=\"widget.enabled\" data-ng-cloak>\n\n    <div class=\"container_left\">\n        <div class=\"container_header\" data-ng-bind=\"widget.texts.header\"></div>\n        <div class=\"container_text\" data-ng-bind-html=\"widget.texts.text | to_trusted\"></div>\n    </div>\n\n    <div class=\"container_right\">\n        <div class=\"container_login_header\" data-ng-bind=\"widget.texts.login_header\"></div>\n        <a href=\"#\"\n           class=\"container_login_button\"\n           data-ng-click=\"$event.preventDefault();login('remote');\"\n           data-ng-bind=\"widget.texts.login_button\"></a>\n    </div>\n\n</div>\n\n";
+	module.exports = "<div class=\"container welcome_container clearfix\" data-ng-show=\"widget.enabled\" data-ng-cloak>\n\n    <div class=\"container_left\">\n        <div class=\"container_header\" data-ng-bind=\"widget.texts.header\"></div>\n        <div class=\"container_text\" data-ng-bind-html=\"widget.texts.text | to_trusted\"></div>\n    </div>\n\n    <div class=\"container_right\">\n        <div class=\"container_login_header\" data-ng-bind=\"widget.texts.login_header\"></div>\n        <a href=\"#\"\n           class=\"container_login_button\"\n           data-ng-click=\"$event.preventDefault();login('remote');\"\n           data-ng-bind=\"widget.texts.login_button\"></a>\n        <a href=\"#\"\n           class=\"container_terms_and_conditions_button\"\n           data-ng-click=\"$event.preventDefault();popup = 'terms_and_conditions'\"\n           data-ng-bind=\"widget.texts.terms_and_conditions_button\"></a>\n        <a href=\"#\"\n           class=\"container_faq_button\"\n           data-ng-click=\"$event.preventDefault();popup = 'faq'\"\n           data-ng-bind=\"widget.texts.faq_button\"></a>\n    </div>\n\n    <magic-modal class=\"bns_overlay bns_overlay_welcome\" data-show=\"popup\">\n        <iframe data-ng-if=\"popup\" src=\"{{ widget.options.popup[$parent.popup] | trustUrl }}\" frameborder=\"0\"></iframe>\n    </magic-modal>\n\n</div>\n\n";
 
 /***/ }),
 /* 176 */
@@ -43599,7 +43604,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	// module
-	exports.push([module.id, ".spm_wrapper .welcome_container {\n  max-width: 1200px;\n  margin: 0 auto;\n}\n.spm_wrapper .welcome_container .container_left {\n  width: 70%;\n  box-sizing: border-box;\n  padding: 30px;\n  float: left;\n}\n@media screen and (max-width: 800px) {\n  .spm_wrapper .welcome_container .container_left {\n    width: 100%;\n  }\n}\n.spm_wrapper .welcome_container .container_right {\n  width: 30%;\n  padding: 30px;\n  box-sizing: border-box;\n  float: left;\n}\n@media screen and (max-width: 800px) {\n  .spm_wrapper .welcome_container .container_right {\n    width: 100%;\n  }\n}\n", ""]);
+	exports.push([module.id, ".spm_wrapper .welcome_container {\n  max-width: 1200px;\n  margin: 0 auto;\n}\n.spm_wrapper .welcome_container .container_left {\n  width: 70%;\n  box-sizing: border-box;\n  padding: 30px;\n  float: left;\n}\n@media screen and (max-width: 800px) {\n  .spm_wrapper .welcome_container .container_left {\n    width: 100%;\n  }\n}\n.spm_wrapper .welcome_container .container_right {\n  width: 30%;\n  padding: 30px;\n  box-sizing: border-box;\n  float: left;\n}\n@media screen and (max-width: 800px) {\n  .spm_wrapper .welcome_container .container_right {\n    width: 100%;\n  }\n}\n.spm_wrapper .welcome_container .bns_overlay_welcome .bns_overlay_iner {\n  padding: 0;\n  min-height: 600px;\n  width: 1000px;\n  max-width: 100%;\n}\n.spm_wrapper .welcome_container .bns_overlay_welcome iframe {\n  position: absolute;\n  left: 0;\n  top: 0;\n  width: 100%;\n  height: 100%;\n}\n", ""]);
 
 	// exports
 
