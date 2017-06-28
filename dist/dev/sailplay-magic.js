@@ -239,7 +239,7 @@ return webpackJsonp([0],[
 
 	  }]);
 	  return Magic;
-	}(), _class.Widget = _widget.WidgetRegister, _class.version = '2.1.16', _temp);
+	}(), _class.Widget = _widget.WidgetRegister, _class.version = '${MAGIC_VERSION}', _temp);
 
 	//extend SAILPLAY with Magic class
 
@@ -704,6 +704,7 @@ return webpackJsonp([0],[
 
 	            if (auth_options && auth_options.disable) {
 	              $rootScope.$broadcast('sailplay-login-try', from);
+	              sp.send('sailplay-login-try', from);
 	              return;
 	            }
 
@@ -2618,11 +2619,10 @@ return webpackJsonp([0],[
 	            slidesToShow: 1,
 	            slidesToScroll: 1
 	          }
-	        }
-	        // You can unslick at a given breakpoint now by adding:
-	        // settings: "unslick"
-	        // instead of a settings object
-	        ]
+	          // You can unslick at a given breakpoint now by adding:
+	          // settings: "unslick"
+	          // instead of a settings object
+	        }]
 	      };
 
 	      scope.process = false;

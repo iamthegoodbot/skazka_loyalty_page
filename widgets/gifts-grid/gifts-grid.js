@@ -53,6 +53,7 @@ WidgetRegister({
             console.error('Tags exit error. Response: ', tags_res)
           }
           scope.getBlocks();
+          scope.$digest();
         });
       }
 
@@ -99,13 +100,14 @@ WidgetRegister({
         scope.blocks = [];
         if (!scope.gifts && !scope.gifts.length && scope.check_categories) return;
         let gifts = angular.copy(scope.gifts);
-        len = Math.ceil(gifts.length / block_size);
+        let block_len = block_size == 'all' ? gifts.length : block_size;
+        len = Math.ceil(gifts.length / block_len);
         i = 0;
         do {
           if (i == (len - 1)) {
-            page = gifts.slice(block_size * i);
+            page = gifts.slice(block_len * i);
           } else {
-            page = gifts.slice(block_size * i, block_size * i + block_size);
+            page = gifts.slice(block_len * i, block_len * i + block_len);
           }
           scope.blocks.push(page);
           i++;
@@ -118,6 +120,7 @@ WidgetRegister({
       SailPlayApi.observe('load.gifts.list', gifts => {
         scope.gifts = gifts;
         scope.getBlocks();
+        scope.$digest();
       });
 
       /**
@@ -167,6 +170,8 @@ WidgetRegister({
       SailPlay.on('gifts.purchase.success', (res) => {
         $rootScope.$apply(() => {
           scope.selected_gift = null;
+          SailPlayApi.call('load.gifts.list');
+          SailPlayApi.call('load.user.info');
           $rootScope.$broadcast('notifier:notify', {
             header: scope.widget.texts.purchase_success_header,
             body: (res.coupon_number && (scope.widget.texts.coupon_number + ' ' + res.coupon_number)) || res.success_message || scope.widget.texts.gift_received
