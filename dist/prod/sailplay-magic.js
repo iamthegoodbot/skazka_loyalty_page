@@ -38467,11 +38467,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	            slidesToShow: 1,
 	            slidesToScroll: 1
 	          }
-	        }
-	        // You can unslick at a given breakpoint now by adding:
-	        // settings: "unslick"
-	        // instead of a settings object
-	        ]
+	          // You can unslick at a given breakpoint now by adding:
+	          // settings: "unslick"
+	          // instead of a settings object
+	        }]
 	      };
 
 	      scope.process = false;
@@ -43554,7 +43553,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  inject: ['SailPlay'],
 	  controller: function controller(SailPlay) {
 	    return function (scope, elm, attrs) {
-	      scope.popup = null;
+	      // scope.popup = null;
 	      scope.login = function (type) {
 	        SailPlay.authorize(type);
 	      };
@@ -43567,7 +43566,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 175 */
 /***/ (function(module, exports) {
 
-	module.exports = "<div class=\"container welcome_container clearfix\" data-ng-show=\"widget.enabled\" data-ng-cloak>\n\n    <div class=\"container_left\">\n        <div class=\"container_header\" data-ng-bind=\"widget.texts.header\"></div>\n        <div class=\"container_text\" data-ng-bind-html=\"widget.texts.text | to_trusted\"></div>\n    </div>\n\n    <div class=\"container_right\">\n        <div class=\"container_login_header\" data-ng-bind=\"widget.texts.login_header\"></div>\n        <a href=\"#\"\n           class=\"container_login_button\"\n           data-ng-click=\"$event.preventDefault();login('remote');\"\n           data-ng-bind=\"widget.texts.login_button\"></a>\n        <a href=\"#\"\n           class=\"container_terms_and_conditions_button\"\n           data-ng-click=\"$event.preventDefault();popup = 'terms_and_conditions'\"\n           data-ng-bind=\"widget.texts.terms_and_conditions_button\"></a>\n        <a href=\"#\"\n           class=\"container_faq_button\"\n           data-ng-click=\"$event.preventDefault();popup = 'faq'\"\n           data-ng-bind=\"widget.texts.faq_button\"></a>\n    </div>\n\n    <magic-modal class=\"bns_overlay bns_overlay_welcome\" data-show=\"popup\">\n        <iframe data-ng-if=\"popup\" src=\"{{ widget.options.popup[$parent.popup] | trustUrl }}\" frameborder=\"0\"></iframe>\n    </magic-modal>\n\n</div>\n\n";
+	module.exports = "<div class=\"container welcome_container clearfix\" data-ng-show=\"widget.enabled\" data-ng-cloak>\n\n    <div class=\"container_left\">\n        <div class=\"container_header\" data-ng-bind=\"widget.texts.header\"></div>\n        <div class=\"container_text\" data-ng-bind-html=\"widget.texts.text | to_trusted\"></div>\n    </div>\n\n    <div class=\"container_right\">\n        <div class=\"container_login_header\" data-ng-bind=\"widget.texts.login_header\"></div>\n        <a href=\"#\"\n           class=\"container_login_button\"\n           data-ng-click=\"$event.preventDefault();login('remote');\"\n           data-ng-bind=\"widget.texts.login_button\"></a>\n\n        <a data-ng-href=\"{{ widget.options.link.terms_and_conditions.url }}\"\n           class=\"container_terms_and_conditions_button\"\n           target=\"{{widget.options.link.terms_and_conditions.target || '_self'}}\"\n           data-ng-bind=\"widget.texts.terms_and_conditions_button\"></a>\n        <!--data-ng-click=\"$event.preventDefault();popup = 'terms_and_conditions'\"-->\n\n        <a data-ng-href=\"{{ widget.options.link.faq.url }}\"\n           class=\"container_faq_button\"\n           target=\"{{widget.options.link.faq.target || '_self'}}\"\n           data-ng-bind=\"widget.texts.faq_button\"></a>\n           <!--data-ng-click=\"$event.preventDefault();popup = 'faq'\"-->\n    </div>\n\n    <!--<magic-modal class=\"bns_overlay bns_overlay_welcome\" data-show=\"popup\">-->\n        <!--<iframe data-ng-if=\"popup\" src=\"{{ widget.options.popup[$parent.popup] | trustUrl }}\" frameborder=\"0\"></iframe>-->\n    <!--</magic-modal>-->\n\n</div>\n\n";
 
 /***/ }),
 /* 176 */
