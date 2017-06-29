@@ -11,17 +11,17 @@ Widget.factory('datesFactory', ($rootScope, SailPlayApi, SailPlay) => {
   }
 
   function getUserDatesFromServer(){
-    console.info('hi2')
     SailPlayApi.call("vars.batch", {
       names: [
         "dates_events"
       ]
-    })
-    SailPlay.on('vars.batch.success', (vars)=>{
-      console.info('getting datees')
+    }, (vars)=>{
+      console.log(vars)
+      const parsedArr = JSON.parse(vars.vars[0].value)
+      console.info('getting datees', vars)
       obj.vars = vars
       obj.synced = true
-      $rootScope.$broadcast('dates-events-get', {})
+      $rootScope.$broadcast('dates-events-get', parsedArr)
     })
   }
 
@@ -39,7 +39,8 @@ Widget.factory('datesFactory', ($rootScope, SailPlayApi, SailPlay) => {
   }
 
   function setUserDates(datesArr, cb){
-    SailPlayApi.call('vars.add', datesArr, () => {
+    const datesArrAsString = angular.toJson(datesArr)
+    SailPlayApi.call('vars.add', {custom_vars: {'dates_events': datesArrAsString}}, () => {
       $rootScope.$broadcast('dates-events-update', datesArr)
     })
   }
@@ -51,6 +52,7 @@ Widget.factory('datesFactory', ($rootScope, SailPlayApi, SailPlay) => {
 //  $rootScope.$on('openProfile', getUserDates)
 
   obj.getUserDates = getUserDates
+  obj.setUserDates = setUserDates
   
   return obj
 })
@@ -62,19 +64,24 @@ WidgetRegister({
     'SailPlayApi',
     'SailPlay',
     '$rootScope',
-    'datesFactory'
+    'datesFactory',
+    'moment'
   ],
-  controller: function (SailPlayApi, SailPlay, $rootScope, datesFactory) {
+  controller: function (SailPlayApi, SailPlay, $rootScope, datesFactory, moment) {
 
     return function (scope, elm, attrs) {
 
       scope.user = SailPlayApi.data('load.user.info');
 
-      scope.modals = {
-        confirmed_gift: false,
-        selected_gift: false,
-        no_points_error: false
-      };
+      scope.show_events = false
+
+      scope.isFormOpened = false
+
+      scope.$on('dates-open', (ev, isOpen)=>{
+        if(isOpen){
+          scope.show_events = true
+        }
+      })
 
       /*
         example date
@@ -91,18 +98,78 @@ WidgetRegister({
 
         }
       */
-      
+      /*
+      scope.dates = [
+        {
+          id: 1,
+          name: 'qweqw',
+          secondName: 'qweqwe',
+          date: moment(),
+          relation: "123",
+          email_notify: true,
+          sms_notify: false
+        }
+      ]
+      */
 
-      scope.set_date = function(dateObj) {
-        
+      scope.dates = []
+
+      scope.relationOptions = [
+        'Мама',
+        'Папа',
+        'Сын',
+        'Дочь',
+        'Брат',
+        'Сестра',
+        'Тётя',
+        'Дядя',
+        'Двоюродный брат',
+        'Двоюродная сестра',
+        'Бабушка',
+        'Дедушка',
+        'Друг',
+        'Подруга'
+      ]
+
+      scope.getNextId = function(){
+        const dates = scope.dates
+        if(dates !== void 0 && dates.length>0){
+          const idsArr = dates.map(x=>x.id)
+          const max = Math.max(...idsArr)          
+          return max+1
+        } else {
+          return 1
+        }
       }
 
-      scope.get_dates = function() {
-        
+      scope.newDate = {
+        id: void 0,
+        name: '',
+        secondName: '',
+        date: [],
+        relation: '',
+        email_notify: false,
+        sms_notify: false
       }
+
+      scope.createDate = function(){
+        const dateAsIsoString = moment().set({'year': scope.newDate.date[2], 'month': scope.newDate.date[1]-1, 'date': scope.newDate.date[0]}).toISOString()
+        const newDate = {...scope.newDate, date: dateAsIsoString, id: scope.getNextId()}
+        scope.dates = scope.dates.concat(newDate)
+        datesFactory.setUserDates(scope.dates)
+      }
+
+      scope.$on('dates-events-get', (ev, datesArr) => {
+        if(typeof datesArr === 'object'){
+          scope.dates = datesArr
+        }
+      })
 
       scope.delete_date_by_id = function(id) {
-
+        console.info(id)
+        const withoutDeleted = scope.dates.filter(x=>x.id!==id)
+        scope.dates = withoutDeleted
+        datesFactory.setUserDates(scope.dates)
       }
 
       datesFactory.getUserDates().then(res=>{

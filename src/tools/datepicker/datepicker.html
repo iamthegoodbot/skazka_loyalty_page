@@ -1,25 +1,31 @@
 <div>
 
-  <div class="form_date form_date__day">
-    <span data-ng-bind="model[0] || date.placeholder.day"></span>
-    <div class="form_date__popup">
-      <a href="#" data-ng-repeat="day in range(1, days[model[1] || 1])" data-ng-bind="day"
+  <div class="bns_input_block bns_input_block_sel">
+    <label data-ng-bind="model[0] || date.placeholder.day"></label>
+    <ul>
+      <li data-ng-repeat="day in range(1, days[model[1] || 1])">
+        <a href="#" data-ng-bind="day"
          data-ng-click="$event.preventDefault();model[0] = day;"></a>
-    </div>
+      </li>
+    </ul>
   </div>
-  <div class="form_date form_date__month">
-    <span data-ng-bind="date.months[model[1]] || date.placeholder.month"></span>
-    <div class="form_date__popup">
-      <a href="#" data-ng-repeat="(key, value) in date.months track by $index" data-ng-bind="value"
+  <div class="bns_input_block bns_input_block_sel">
+    <label data-ng-bind="date.months[model[1]] || date.placeholder.month"></label>
+    <ul class="form_date__popup">
+      <li data-ng-repeat="(key, value) in date.months track by $index">
+        <a href="#"  data-ng-bind="value"
          data-ng-click="$event.preventDefault();model[1] = +key;"></a>
-    </div>
+      </li>
+    </ul>
   </div>
-  <div class="form_date form_date__year" >
-    <span data-ng-bind="model[2] || date.placeholder.year"></span>
-    <div class="form_date__popup">
-      <a href="#" data-ng-repeat="year in years" data-ng-bind="year"
+  <div class="bns_input_block bns_input_block_sel" >
+    <label data-ng-bind="model[2] || date.placeholder.year"></label>
+    <ul class="form_date__popup">
+      <li data-ng-repeat="year in years">
+        <a href="#" data-ng-bind="year"
          data-ng-click="$event.preventDefault();model[2] = year;"></a>
-    </div>
+      </li>
+    </ul>
   </div>
 
 </div>

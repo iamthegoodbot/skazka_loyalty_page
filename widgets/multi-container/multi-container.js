@@ -43,8 +43,15 @@ WidgetRegister({
       })
 
       scope.openHistory = function(ev){
-        console.info('open history-open')
         $rootScope.$broadcast('history-open', true)
+      }
+
+      scope.openDates = function(ev){
+        $rootScope.$broadcast('dates-open', true)
+      }
+
+      scope.openEditProfile = function(ev){
+        $rootScope.$broadcast('openProfile', true)
       }
 
     }

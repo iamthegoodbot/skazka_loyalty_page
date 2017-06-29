@@ -113,7 +113,7 @@ module.exports.development = function(opts){
     resolve: resolve,
     output: {
       path: path.join(__dirname, 'dist', 'prod'),
-      publicPath: "/dist/prod",
+      publicPath: "/dist/prod/",
       filename: "[name].js",
       libraryTarget: 'umd'
     },

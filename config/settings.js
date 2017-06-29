@@ -44,58 +44,64 @@ module.exports = {
               {
                 "input": "text",
                 "type": "system",
-                "placeholder": "Enter your name",
+                "placeholder": "Имя",
                 "name": "firstName",
-                "label": "Your name"
+                "label": "Имя"
               },
               {
                 "input": "text",
                 "type": "system",
-                "placeholder": "Enter your last name",
+                "placeholder": "Фамилия",
                 "name": "lastName",
-                "label": "Your last name"
+                "label": "Фамилия"
               },
               {
                 "input": "phone",
                 "type": "system",
-                "placeholder": "1 (999) 999-99-99",
+                "placeholder": "+7 (012) 345-67-89",
                 "name": "addPhone",
-                "label": "Your phone number"
-              },
-              {
-                "input": "email",
-                "type": "system",
-                "placeholder": "your@address.com",
-                "name": "addEmail",
-                "label": "Your E-Mail"
+                "label": "Телефон"
               },
               {
                 "input": "date",
                 "type": "system",
                 "placeholder": "Enter your birth date",
                 "name": "birthDate",
-                "label": "Your birth date"
+                "label": "Дата рождения"
               },
               {
                 "name": "sex",
                 "type": "system",
                 "data": [
                   {
-                    "text": "Not defined",
-                    "value": ""
-                  },
-                  {
-                    "text": "Male",
+                    "text": "Мужской",
                     "value": 1
                   },
                   {
-                    "text": "Female",
+                    "text": "Женский",
                     "value": 2
                   }
                 ],
-                "input": "select",
-                "label": "Gender",
-                "placeholder": "Enter your last name"
+                "input": "radio",
+                "label": "Пол",
+                "placeholder": "Пол"
+              },
+              {
+                "name": "sp",
+                "type": "system",
+                "data": [
+                  {
+                    "text": "Замужем/женат",
+                    "value": 1
+                  },
+                  {
+                    "text": "Не замужем/холост",
+                    "value": 2
+                  }
+                ],
+                "input": "radio",
+                "label": "Семейное положение",
+                "placeholder": "Пол"
               }
             ],
             "tag": "Client filled profile"
@@ -120,21 +126,18 @@ module.exports = {
         "id": "profile"
       },
       {
-        "id": 'dates-events',
+        "id": 'top-banner',
         "texts": {},
         "enabled": true,
         "options": {},
         "texts": {}
       },
       {
-        
+        "id": 'dates-events',
+        "texts": {},
         "enabled": true,
         "options": {},
-        "texts": {},
-        "images": {
-          "Japan crate royalty program": "https://sailplays3.cdnvideo.ru/media/assets/assetfile/141733eacb51849f91be19d0edbd0d91.png"
-        },
-        "id": "banner"
+        "texts": {}
       },
       {
         "id": "multi-container",
@@ -167,16 +170,6 @@ module.exports = {
         "images": {},
         "enabled": true,
         "id": "gifts-grid"
-      },
-      {
-        
-        "enabled": true,
-        "options": {},
-        "texts": {},
-        "images": {
-          "Exclusive gift items": "https://sailplays3.cdnvideo.ru/media/assets/assetfile/ff438ba16a76b52976701fc4e0c73cc2.jpg"
-        },
-        "id": "banner"
       },
       {
         
@@ -319,10 +312,10 @@ module.exports = {
       "buttons": {
         
         "texts": {
-          "close": "Close",
-          "save": "Save",
+          "close": "Закрыть",
+          "save": "Сохранить",
           "ok": "OK",
-          "get": "Get"
+          "get": "Получить"
         }
       },
       "slider": {
@@ -341,23 +334,23 @@ module.exports = {
       },
       "date": {
         "months": {
-          "1": "January",
-          "2": "February",
-          "3": "March",
-          "4": "April",
-          "5": "May",
-          "6": "June",
-          "7": "July",
-          "8": "August",
-          "9": "September",
-          "10": "October",
-          "11": "November",
-          "12": "December"
+          "1": "Янв",
+          "2": "Фев",
+          "3": "Мар",
+          "4": "Апр",
+          "5": "Май",
+          "6": "Июн",
+          "7": "Июл",
+          "8": "Авг",
+          "9": "Сен",
+          "10": "Окт",
+          "11": "Нов",
+          "12": "Дек"
         },
         "placeholder": {
-          "month": "Month",
-          "day": "Day",
-          "year": "Year"
+          "month": "Месяц",
+          "day": "День",
+          "year": "Год"
         }
       },
       "notifier": {

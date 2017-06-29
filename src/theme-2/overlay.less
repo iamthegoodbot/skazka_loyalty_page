@@ -8,8 +8,12 @@
   overflow-y: auto;
   top:0;
   left: 0;
-  &.visible {
-    display: block;
+  &.bns_overlay_prof {
+    .bns_overlay_inner {
+      .bns_form {
+        opacity: 1;
+      }
+    }
   }
   .bns_overlay_inner {
     background-color: #ffffff;
@@ -65,6 +69,9 @@
           text-transform: uppercase;
           border-bottom: 0;
         }
+        .tb_yvd {
+          padding-left: 0;
+        }
       }
       tr {
         &:last-child {
@@ -85,6 +92,9 @@
           }
           &:first-child {
             padding-left: 37px;
+          }
+          &:last-child {
+            padding-right: 37px;
           }
           &.bns_p_cheack {
             padding-left:28px;
@@ -110,6 +120,17 @@
               transform: translateY(-50%);
             }
           }
+          &.bns_sgar {
+            white-space: normal;
+            strong {
+              display: inline-block;
+              width: 100%;
+              font-weight: 300;
+              color: ##a4b4ba;
+              font-size: 12px;
+            }
+          }
+
           .bns_remove {
             width: 10px;
             height: 10px;
@@ -127,8 +148,8 @@
       -webkit-box-sizing: border-box;
       -moz-box-sizing: border-box;
       box-sizing: border-box;
-      padding-left:21px;
-      margin-top: 30px;
+      padding-left:32px;
+      margin-top: 15px;
       margin-bottom: 30px;
       a {
         color: #285569;
@@ -168,23 +189,32 @@
         max-width: 401px;
         max-height: 470px;
         opacity: 1;
+        transition-delay: 0s;
+        .bns_head, .bns_form {
+          transition-delay: .4s;
+          opacity: 1;
+        }
       }
     }
     .bns_over_right {
       border-left: 1px solid #d1dde3;
-      opacity: 0;
       max-width: 0;
       max-height: 0;
       width: 401px;
       transition: all .4s ease;
+      transition-delay: .4s;
       .bns_head {
         white-space: nowrap;
+        opacity: 0;
+        transition: all .4s ease;
       }
     }
     .bns_form {
       width: 400px;
       box-sizing: border-box;
       padding: 0 37px;
+      opacity: 0;
+      transition: all .4s ease;
       .bns_input_block {
         width: 100%;
         box-sizing: border-box;
@@ -210,6 +240,7 @@
         position: relative;
         label {
           position: relative;
+          color: #000;
           &:after {
             content: '';
             display: block;
@@ -310,7 +341,7 @@
               background-color: #820d41;
               background-position: center center;
               background-repeat: no-repeat;
-              background-image: url(./../img/gal.png);
+              background-image: url(http://localhost/jw/img/gal.png);
             }
           }
           label {
@@ -392,6 +423,9 @@
         display: inline-block;
         margin-top: 25px;
         margin-bottom: 30px;
+        &.bns_form_bottom_mt {
+          margin-top: 10px;
+        }
         .bns_btn {
           float: left;
           padding: 0 21px;

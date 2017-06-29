@@ -16,7 +16,8 @@ const ProfileWidget = {
       // scope._tools = MAGIC_CONFIG.tools;
 
       scope.default_avatar = DefaultAvatarImage;
-      $rootScope.$on('openProfile', () => {
+      scope.$on('openProfile', () => {
+        console.info('profile_open')
         scope.profile.show_fill_profile = true;
       })
       scope.profile = {
@@ -27,7 +28,7 @@ const ProfileWidget = {
           scope.profile.show_fill_profile = state || false;
 
         }
-      };
+      }
 
     }
 

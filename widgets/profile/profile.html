@@ -1,235 +1,82 @@
-<magic-modal>
-  <div class="bns_overlay bns_overlay_prof">
-      <div class="bns_overlay_inner">
-          <h4 class="bns_head">
-              {{ widget.fill_profile.header }}
-          </h4>
-          <a href="#" class="close"></a>
-          <div class="bns_form">
-              <div class="bns_input_block">
-                  <label>Имя</label>
-                  <input type="text" value="Лиза">
-              </div>
-              <div class="bns_input_block">
-                  <label>Фамилия</label>
-                  <input type="text" value="Соловьева">
-              </div>
-              <div class="bns_select_date">
-                  <label>Дата рождения</label>
-                  <div class="bns_input_block bns_input_block_sel">
-                      <label>День</label>
-                      <input type="hidden">
-                      <ul>
-                          <li>
-                              <a href="1">1</a>
-                          </li>
-                          <li>
-                              <a href="2">2</a>
-                          </li>
-                          <li>
-                              <a href="3">3</a>
-                          </li>
-                          <li>
-                              <a href="4">4</a>
-                          </li>
-                      </ul>
-                  </div>
-                  <div class="bns_input_block bns_input_block_sel">
-                      <label>Месяц</label>
-                      <input type="hidden">
-                      <ul>
-                          <li>
-                              <a href="1">1</a>
-                          </li>
-                          <li>
-                              <a href="2">2</a>
-                          </li>
-                          <li>
-                              <a href="3">3</a>
-                          </li>
-                          <li>
-                              <a href="4">4</a>
-                          </li>
-                      </ul>
-                  </div>
-                  <div class="bns_input_block bns_input_block_sel">
-                      <label>Год</label>
-                      <input type="hidden">
-                      <ul>
-                          <li>
-                              <a href="1">1</a>
-                          </li>
-                          <li>
-                              <a href="2">2</a>
-                          </li>
-                          <li>
-                              <a href="3">3</a>
-                          </li>
-                          <li>
-                              <a href="4">4</a>
-                          </li>
-                      </ul>
-                  </div>
-              </div>
-              <div class="bns_input_block">
-                  <label>Телефон</label>
-                  <input type="text" value="+7 (968) 505-70-33">
-              </div>
-              <div class="bns_radio_block">
-                  <label>Пол</label>
-                  <div class="bns_radio">
-                      <div class="bns_radio_item">
-                          <input type="checkbox" name="pol" id="man">
-                          <label for="man">Мужской</label>
-                      </div>
-                      <div class="bns_radio_item">
-                          <input type="checkbox" name="pol" id="fam">
-                          <label for="fam">Женский</label>
-                      </div>
-                  </div>
-              </div>
-              <div class="bns_radio_block">
-                  <label>Семейное положение</label>
-                  <div class="bns_radio">
-                      <div class="bns_radio_item">
-                          <input type="checkbox" name="brack" id="zam_jen">
-                          <label for="zam_jen">Замужем/женат</label>
-                      </div>
-                      <div class="bns_radio_item">
-                          <input type="checkbox" name="brack" id="no_zam_jen">
-                          <label for="no_zam_jen">Не замужем/холост</label>
-                      </div>
-                  </div>
-              </div>
-              <div class="bns_radio_block">
-                  <label>Скрывать детализацию баллов</label>
-                  <div class="bns_radio">
-                      <div class="bns_radio_item">
-                          <input type="checkbox" name="bal" id="yes">
-                          <label for="yes">Да</label>
-                      </div>
-                      <div class="bns_radio_item">
-                          <input type="checkbox" name="bal" id="no">
-                          <label for="no">Нет</label>
-                      </div>
-                  </div>
-              </div>
-              <div class="bns_form_bottom">
-                  <a href="#" class="bns_btn">
-                      Сохранить
-                  </a>
-              </div>
-          </div>
-      </div>
-  </div>
-</magic-modal>
-
 <div class="bon_profile_wrap container" data-ng-show="widget.enabled" data-ng-cloak>
 
-  <div class="bon_profile_info" data-sailplay-profile data-sailplay-gifts>
+  <magic-modal class="bns_overlay bns_overlay_prof" data-ng-cloak data-show="profile.show_fill_profile">
+        <div class="bns_overlay_inner" data-sailplay-fill-profile data-config="widget.fill_profile.config">
+            <h4 class="bns_head">
+                Ваш профиль
+            </h4>
+            <a href="#" class="close"></a>
+            <form name="fill_profile_form" class="bns_form" data-ng-submit="sailplay.fill_profile.submit(fill_profile_form, profile.fill_profile);">
 
-    <div class="bon_profile_top clearfix">
-      <div class="bon_profile_top_left">
-        <h3>
-          <span class="header">{{ widget.texts.header }}</span>
-        </h3>
-        <h4>
-          <span class="caption">{{ widget.texts.spoiler }}</span>
-        </h4>
-      </div>
-      <div class="bon_profile_right clearfix" data-ng-if="user()">
-        <div class="user_avatar">
-          <img class="user_avatar_image" data-ng-src="{{ (user().user.pic | sailplay_pic) || default_avatar}}" alt="You">
-          <a href="#" class="logout_btn button_link" data-ng-click="$event.preventDefault(); logout();">{{ widget.texts.logout }}</a>
-        </div>
-        <div class="user_info">
-          <span class="user_name"  data-ng-bind="user().user.name || widget.texts.name_not_defined"></span>
-          <span class="user_phone" data-ng-if="user().user.phone"  data-ng-bind="user().user.phone | tel"></span>
-          <span class="user_email" data-ng-if="user().user.email"  data-ng-bind="user().user.email"></span>
-        </div>
-        <div class="user_info">
-          <a href="#" class="edit_profile_btn button_link" data-ng-click="$event.preventDefault(); profile.fill_profile(true);">{{ widget.texts.edit_profile_button }}</a>
-        </div>
-      </div>
-      <div class="bon_profile_right clearfix" data-ng-if="!user()">
-        <button type="button" class="sp_btn button_primary login_reg_btn" data-ng-click="$event.preventDefault(); login('remote');">{{ widget.texts.login_reg }}</button>
-      </div>
-    </div>
+            <div class="" data-ng-repeat="field in sailplay.fill_profile.form.fields" data-ng-switch="field.input">
 
-    <!-- status -->
-    <div class="status_block" data-ng-if="user() && user().user_status.name">
-      <span class="status_block_title" data-ng-bind="widget.texts.user_status"></span>
-      <img class="status_block_img" data-ng-src="{{ user().user_status.pic | sailplay_pic }}" alt="{{ user().user_status.name }}">
-      <span class="status_block_name" data-ng-bind="user().user_status.name || widget.texts.empty_status "></span>
-    </div>
+              <div data-ng-switch-when="image" class="avatar_upload clearfix">
+                <img width="160px" data-ng-src="{{ (field.value | sailplay_pic) || 'http://saike.ru/sailplay-magic/dist/img/profile/avatar_default.png'}}" alt="">
+              </div>
 
-    <div class="bon_profile_stat">
-      <div class="bps_left points_block clearfix" data-ng-if="user()">
-        <span class="points_confirmed">
-          <span class="points_confirmed_value" data-ng-bind="user().user_points.confirmed | number"></span>
-          <span class="points_confirmed_name" data-ng-bind="user().user_points.confirmed | sailplay_pluralize: ('points.texts.pluralize' | tools)"></span>
-        </span>
-        <a class="button_link history_button" href="#" data-ng-click="$event.preventDefault(); profile.history = true;">{{ widget.texts.history_button }}</a>
-      </div>
-      <div class="bps_right progress_block clearfix" data-ng-if="progress">
-        <div class="progress_line_main">
-          <div class="progress_line_bg progress_bar progress_bar_border"></div>
-          <div class="progress_line progress_bar_filled" data-procent="0" data-ng-style="{ width: progress.plenum + '%' }">
-            <div class="progress_text progress_bar_flag" data-ng-show="progress.next.item" data-ng-class="{ right_position: progress.plenum < 50 }">
-              <span class="progress_bar_flag_text" data-ng-bind="progress.next.offset + ' ' + (progress.next.offset | sailplay_pluralize:('points.texts.pluralize' | tools)) + ' ' + widget.texts.before_gift"></span>
+              <div data-ng-switch-when="text" class="bns_input_block">
+                <label>{{ field.label }}</label>
+                <input type="text" placeholder="{{ field.placeholder }}" data-ng-model="field.value">
+              </div>
+
+              <div data-ng-switch-when="date" class="bns_select_date bns_zi3">
+                <label>{{ field.label }}</label>
+                <date-picker data-model="field.value"></date-picker>
+              </div>
+
+              <div data-ng-switch-when="select" class="clearfix">
+                <label class="form_label">{{ field.label }}</label>
+                <div class="magic_select form_input">
+                  <select data-ng-model="field.value" data-ng-options="item.value as item.text for item in field.data"></select>
+                </div>
+              </div>
+<!--
+                <div class="bns_radio_block bns_zi2">
+                    <label>Пол</label>
+                    <div class="bns_radio">
+                        <div class="bns_radio_item">
+                            <input type="radio" name="pol" id="man">
+                            <label for="man">Мужской</label>
+                        </div>
+                        <div class="bns_radio_item">
+                            <input type="radio" name="pol" id="fam">
+                            <label for="fam">Женский</label>
+                        </div>
+                    </div>
+                </div>
+-->
+              <div data-ng-switch-when="radio" class="bns_radio_block bns_zi2">
+                <label>{{ field.label }}</label>
+                <div class="bns_radio">
+                  <div class="bns_radio_item" data-ng-repeat="item in field.data">
+                      <input name="{{field.name}}" data-ng-value="item.value" id="{{'field_' + field.name + '_' + item.value}}" type="radio">
+                      <label for="{{'field_' + field.name + '_' + item.value}}">{{ item.text }}</label>
+                  </div>
+                </div>
+              </div>
+
+              <div data-ng-switch-when="phone" class="bns_input_block">
+                <label>{{ field.label }}</label>
+                <input type="text" data-model-view-value="true" data-ui-mask="{{ field.placeholder }}" data-ng-model="field.value" disabled="true">
+              </div>
+
+              <div data-ng-switch-when="email" class="clearfix">
+                <label class="form_label">{{ field.label }}</label>
+                <input class="form_input" type="email" placeholder="{{ field.placeholder }}" data-ng-model="field.value">
+              </div>
+
             </div>
-          </div>
+            <div class="bns_form_bottom bns_form_bottom_mt answ_text">
+              <button type="submit" class="bns_btn">
+                {{ 'buttons.texts.save' | tools }}
+              </button>
+            </div>
 
-          <div class="gift_item progress_bar_border" data-ng-repeat="item in progress.items track by $index"
-               data-ng-class="{ act : item.reached, progress_bar_gift_filled: item.reached, progress_bar_gift: !item.reached}"
-               data-ng-style="{ left: item.get_left() }">
-
-            <span class="gift_item_hint" data-ng-bind="item.gifts[0].points"></span>
-
-          </div>
-
+          </form>
+            
         </div>
-      </div>
-    </div>
-  </div>
-
-  <magic-modal class="bns_overlay_hist" data-show="profile.history">
-
-    <div data-sailplay-history data-sailplay-profile>
-
-      <h3>
-        <span class="modal_history_header">{{ widget.texts.history.header }}</span>
-        <!--<b>У вас {{ user().user_points.confirmed + ' ' + (user().user_points.confirmed | sailplay_pluralize:_tools.points.texts.pluralize) }}</b>-->
-      </h3>
-      <h4 class="modal_history_caption">{{ widget.texts.history.caption }}</h4>
-
-      <table class="bns_hist_table">
-
-        <tbody>
-
-        <tr data-dir-paginate="item in history() | itemsPerPage:10" data-pagination-id="history_pages">
-          <td>
-            <span class="modal_history_date" data-ng-bind="item.action_date | date:'d/MM/yyyy'"></span>
-          </td>
-          <td>
-            <span><b class="modal_history_content" data-ng-bind="item | history_item"></b></span>
-          </td>
-          <td>
-            <span class="modal_history_points" data-ng-if="item.points_delta" data-ng-bind="((item.points_delta|number) || 0) + ' ' + (item.points_delta | sailplay_pluralize:('points.texts.pluralize' | tools))"></span>
-          </td>
-        </tr>
-
-        </tbody>
-      </table>
-
-      <dir-pagination-controls data-max-size="7" data-pagination-id="history_pages"
-                               data-template-url="profile.history_pagination"
-                               data-auto-hide="true"></dir-pagination-controls>
-    </div>
-
-
-
   </magic-modal>
+</div>
 
   <!--profile edit section
   <magic-modal class="fill_profile_modal" data-show="profile.show_fill_profile">

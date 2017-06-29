@@ -1,93 +1,90 @@
 <div class="bon_choice_main container" data-ng-show="widget.enabled" data-ng-cloak>
-  <h3 class="bon_header">
-    <span class="header">{{ widget.texts.header }}</span>
-  </h3>
-  <h4 class="bon_sub_header">
-    <span class="caption">{{ widget.texts.caption }}</span>
-  </h4>
+ 
+    <magic-modal class="bns_overlay_date" data-ng-cloak data-show="show_events">
 
-  <div data-sailplay-gifts class="clearfix">
-    <div class="bon_item_main" data-ng-show="gifts && gifts().length" data-magic-slider>
-
-      <div class="bon_slide_cat_item_wrap" data-magic-gallery>
-        <div class="bon_slide_cat_item">
-
-          <div class="bon_item_line" data-ng-style="{left : left}">
-
-            <div class="bon_item gift" data-magic-slide data-magic-gift data-ng-repeat="gift in gifts()">
-              <div class="bon_item_iner">
-                <img data-ng-src="{{ gift.thumbs.url_250x250 | sailplay_pic }}" alt="{{ gift.name }}">
-                <span class="bon_item_name gift_name" data-ng-bind="gift.name"></span>
-                <span class="bon_tem_info gift_points" data-ng-bind="(gift.points | number) + ' ' + (gift.points | sailplay_pluralize:('points.texts.pluralize' | tools))"></span>
-                <a href="#" class="button_primary" data-ng-click="gift_select(gift); $event.preventDefault();">{{ widget.texts.get }}</a>
-              </div>
+      <div data-ng-class="{'bns_open_form': isFormOpened,  'bns_overlay_inner': true, 'bns_overlay_inner_flex': true}">
+            <div class="bns_over_left">
+                <h4 class="bns_head">
+                    Памятные даты
+                </h4>
+                <a href="#" class="close"></a>
+                <table class="bns_table bns_table_date">
+                    <tr class="tr_head">
+                        <td>Имя</td>
+                        <td>Фамилия</td>
+                        <td>Дата рождения</td>
+                        <td>Родство</td>
+                        <td colspan="3" class="tb_yvd">Уведомления</td>
+                    </tr>
+                    <tr data-dir-paginate="item in dates | itemsPerPage:10" data-pagination-id="history_pages">
+                        <td data-ng-bind="item.name"></td>
+                        <td data-ng-bind="item.secondName"></td>
+                        <td data-ng-bind="item.date | amDateFormat:'D MMMM Y'">27 октября 1985</td>
+                        <td data-ng-bind="item.relation"></td>
+                        <td data-ng-class="{'bns_act': item.email_notify,  'bns_p_cheack': true}">e-mail</td>
+                        <td data-ng-class="{'bns_act': item.sms_notify,  'bns_p_cheack': true}">SMS</td>
+                        <td>
+                            <a href="#" class="bns_remove" data-ng-click="delete_date_by_id(item.id)"></a>
+                        </td>
+                    </tr>
+                </table>
+                <a href="#" class="bns_btn js_add_zap" data-ng-hide="isFormOpened" data-ng-click="isFormOpened = true">
+                    Добавить запись
+                </a>
             </div>
-
-          </div>
-
+            <div class="bns_over_right">
+                <h4 class="bns_head">
+                    Памятные даты
+                </h4>
+                <div class="bns_form">
+                    <div class="bns_input_block">
+                        <label>Имя</label>
+                        <input type="text" data-ng-model="newDate.name">
+                    </div>
+                    <div class="bns_input_block">
+                        <label>Фамилия</label>
+                        <input type="text" data-ng-model="newDate.secondName">
+                    </div>
+                    <div class="bns_input_block bns_input_block_sel bns_zi3">
+                        <label>{{ newDate.relation || 'Родство' }}</label>
+                        <input type="hidden">
+                        <ul>
+                            <li data-ng-repeat="option in relationOptions">
+                              <a href="#" data-ng-bind="option"
+                               data-ng-click="$event.preventDefault();newDate.relation = option;"></a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="bns_select_date">
+                        <label class="bns_select_date_head">Дата рождения</label>
+                        <date-picker data-model="newDate.date"></date-picker>
+                    </div>
+                    <div class="bns_check_block">
+                        <label>Уведомлять заранее</label>
+                        <div class="bns_check">
+                            <div class="bns_check_item bns_check_item_mr">
+                                <input type="checkbox" id="email" data-ng-model='newDate.email_notify'>
+                                <label for="email">e-mail</label>
+                            </div>
+                            <div class="bns_check_item">
+                                <input type="checkbox" id="sms" data-ng-model='newDate.sms_notify'>
+                                <label for="sms">sms</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bns_form_bottom">
+                        <a href="#" class="bns_btn" data-ng-click="createDate()">
+                            Сохранить
+                        </a>
+                        <a href="#" class="bns_btn js_close_form" data-ng-click="isFormOpened = false">
+                            Отмена
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <a href="#" class="arr_left arr_left slider_arrow_left" data-ng-click="$event.preventDefault(); set_position('left');" data-ng-show="show_left"></a>
-        <a href="#" class="arr_right arr_right slider_arrow_right" data-ng-click="$event.preventDefault(); set_position('right');" data-ng-show="show_right"></a>
-
-      </div>
-
-    </div>
-
-    <magic-modal class="bns_overlay_gift" data-ng-cloak data-show="modals.selected_gift">
-
-      <div class="modal_gift_container">
-
-        <img class="gift_more_img" data-ng-src="{{ modals.selected_gift.thumbs.url_250x250 | sailplay_pic }}"
-             alt="{{ modals.selected_gift.name }}">
-
-        <div class="gift_more_block">
-
-          <span class="gift_more_name modal_gift_name" data-ng-bind="modals.selected_gift.name"></span>
-
-          <span class="gift_more_points modal_gift_points"
-                data-ng-bind="(modals.selected_gift.points | number) + ' ' + (modals.selected_gift.points | sailplay_pluralize:('points.texts.pluralize' | tools))"></span>
-
-          <p class="gift_more_descr modal_gift_description" data-ng-bind="modals.selected_gift.descr"></p>
-
-          <div class="modal_gift_type_block clearfix" data-gift-type data-types="widget.options.gift_types" data-gift="modals.selected_gift"></div>
-
-          <div class="modal_gift_buttons">
-            <span class="alink button_primary" data-ng-click="gift_select(false);">{{ 'buttons.texts.close' | tools }}</span>
-
-            <span class="alink button_primary"
-                  style="margin-left: 5px;"
-                  data-ng-click="gift_confirm();"
-                  data-ng-bind="gift_affordable(modals.selected_gift) ? widget.texts.get : widget.texts.no_points_button_text">{{ widget.texts.get }}</span>
-          </div>
-
-        </div>
-      </div>
-
     </magic-modal>
-
-    <magic-modal class="bns_overlay_gift_not_points" data-ng-cloak data-show="modals.no_points_error">
-      <div>
-        <p class="modal_gift_description">
-          {{ widget.texts.no_points_message }}
-        </p>
-        <a class="alink button_primary earn_points_button" href="#magic_actions" data-ng-click="gift_unconfirm()">{{ widget.texts.earn_points }}</a>
-        <a class="alink button_primary service_button" target="_blank" href="{{ widget.texts.partner_service_url }}" data-ng-click="gift_unconfirm()">{{ widget.texts.service }}</a>
-      </div>
-    </magic-modal>
-
-    <magic-modal class="bns_overlay_gift_complete" data-ng-cloak data-show="modals.confirmed_gift">
-      <div>
-        <p class="modal_gift_description">
-          {{ widget.texts.confirm_message_start }}
-          {{ (modals.confirmed_gift.points | number) + ' ' + (modals.confirmed_gift.points | sailplay_pluralize:('points.texts.pluralize' | tools)) }}.
-          {{ widget.texts.confirm_message_end }}
-        </p>
-        <span class="alink button_primary" data-ng-click="gift_unconfirm();">{{ 'buttons.texts.close' | tools }}</span>
-        <span class="alink button_primary" data-ng-click="gift_purchase(modals.confirmed_gift);">{{ 'buttons.texts.get' | tools }}</span>
-      </div>
-    </magic-modal>
-  </div>
 
 
 </div>

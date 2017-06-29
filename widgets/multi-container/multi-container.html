@@ -10,7 +10,7 @@
         Бонусных баллов
     </span>
     </div>
-    <div class="bns_info_item bns_info_item_date">
+    <div class="bns_info_item bns_info_item_date" data-ng-click="openDates()">
         <h3 class="bns_head">
             <span>Памятные даты</span>
         </h3>
@@ -22,18 +22,18 @@
         Завтра, 29 июня 
     </span>
     </div>
-    <div class="bns_info_item bns_info_item_profile">
+    <div class="bns_info_item bns_info_item_profile" data-ng-click="openEditProfile()">
         <h3 class="bns_head">
             <span>Профиль</span>
         </h3>
         <span class="bns_date_name">
-        <span data-ng-bind="user().user.first_name || 'Адольф'"></span>
+        <span data-ng-bind="user().user.first_name"></span>
         <br>
-        <span data-ng-bind="user().user.last_name || 'Гитлер'"></span>
+        <span data-ng-bind="user().user.last_name"></span>
     </span>
         <span class="bns_date_text" data-ng-bind="user().user.phone | phonenumber">
         asdasd
     </span>
-        <img src="../../src/img/ava.jpg" class="bns_ava" alt="">
+        <img data-ng-src="{{ (user().user.pic | sailplay_pic) }}" class="bns_ava" alt="">
     </div>
 </div>

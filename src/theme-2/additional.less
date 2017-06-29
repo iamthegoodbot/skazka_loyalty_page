@@ -1,0 +1,31 @@
+.bns_input_block_sel{
+  &:hover, &:active{
+  	& ul{
+      display: block !important;
+  	}
+  }
+  & ul{
+	max-height: 200px;
+    overflow-y: auto;
+  }
+}  
+
+.bns_overlay {
+  &.visible {
+    display: block;
+  }
+}
+
+.bns_btn{
+	cursor: pointer;
+	cursor: hand;
+	border: 0;
+}
+
+input[type="text"]:disabled{
+	background-color: white !important;
+}
+
+.form_date__popup{
+	z-index: 999;
+}
