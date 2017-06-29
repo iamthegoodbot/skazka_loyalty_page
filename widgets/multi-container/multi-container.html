@@ -1,26 +1,30 @@
 <div class="bns_info">
     <div class="bns_info_item bns_info_item_bal" data-ng-click="openHistory()">
-        <h3 class="bns_head">
-            <span>Детализация баллов</span>
-        </h3>
-        <span class="bns_bal_num" data-ng-bind="user().user_points.confirmed">
-        
-        </span>
-        <span class="bns_bal_text">
+      <h3 class="bns_head">
+          <span>Детализация баллов</span>
+      </h3>
+      <span class="bns_bal_num" data-ng-bind="user().user_points.confirmed">
+      
+      </span>
+      <span class="bns_bal_text">
         Бонусных баллов
-    </span>
+      </span>
+      <span class="bns_over">
+        Здесь Вы можете узнать подробную информацию об операциях начисления или списания бонусов
+      </span>
     </div>
     <div class="bns_info_item bns_info_item_date" data-ng-click="openDates()">
         <h3 class="bns_head">
             <span>Памятные даты</span>
         </h3>
         <span class="bns_date_name">
-        У Анастасии<br>
-        День рождения
+        Анастасия празднует  <br> день
+                рождения завтра
     </span>
-        <span class="bns_date_text">
-        Завтра, 29 июня 
-    </span>
+        <span class="bns_over">
+                Здесь Вы можете добавлять даты,
+                о которых хотите получать напоминания. Например, дни рождения дорогих Вам людей
+                </span>
     </div>
     <div class="bns_info_item bns_info_item_profile" data-ng-click="openEditProfile()">
         <h3 class="bns_head">
@@ -30,10 +34,12 @@
         <span data-ng-bind="user().user.first_name"></span>
         <br>
         <span data-ng-bind="user().user.last_name"></span>
-    </span>
+        </span>
         <span class="bns_date_text" data-ng-bind="user().user.phone | phonenumber">
-        asdasd
-    </span>
+        </span>
+        <span class="bns_over">
+          Заполните пустые поля и&nbsp;получите баллы
+        </span>
         <img data-ng-src="{{ (user().user.pic | sailplay_pic) }}" class="bns_ava" alt="">
     </div>
 </div>

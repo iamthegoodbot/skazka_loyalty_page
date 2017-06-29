@@ -28,9 +28,9 @@ module.exports = {
           ]
         },
         "texts": {
-          "history_button": "History",
+          "history_button": "ДЕТАЛИЗАЦИЯ БАЛЛОВ",
           "history": {
-            "header": "History"
+            "header": "ДЕТАЛИЗАЦИЯ БАЛЛОВ"
           }
         },
         "images": {},
@@ -109,16 +109,16 @@ module.exports = {
         },
         "enabled": true,
         "texts": {
-          "spoiler": "Earn bonus points, get rewards, and manage your loyalty account",
-          "name_not_defined": "John Doe",
-          "user_status": "Your status:",
-          "history_button": "History",
-          "edit_profile_button": "Edit Profile",
-          "header": "Greenly Rewards",
-          "logout": "Logout",
-          "before_gift": "until next gift",
+          "spoiler": "1",
+          "name_not_defined": "J1",
+          "user_status": "1",
+          "history_button": "ДЕТАЛИЗАЦИЯ БАЛЛОВ",
+          "edit_profile_button": "1",
+          "header": "1",
+          "logout": "1",
+          "before_gift": "1",
           "history": {
-            "header": "History"
+            "header": "ДЕТАЛИЗАЦИЯ БАЛЛОВ"
           },
           "login_reg": "Login/Register"
         },
