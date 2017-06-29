@@ -3,6 +3,127 @@ import PointsStatusTemplate from './points-status.html';
 import HistoryPaginationTemplate from './history_pagination.html';
 import './points-status.less';
 
+/*
+action
+:
+"purchase"
+action_date
+:
+"2017-06-28T15:52:18.754"
+debited_points_delta
+:
+10
+id
+:
+93695456
+is_completed
+:
+true
+name
+:
+"Покупка"
+order_num
+:
+"test_points_deduction"
+points_delta
+:
+8
+price
+:
+85
+store_department_id
+:
+3489
+*/
+
+function tryExtractJsonFromExtraName(nameField){
+  // Some of extra actions has json in it's name field, and some doesn't
+  let nameJson = ""
+  let hasJson = true
+  try {
+    nameJson = JSON.parse(nameField)
+    hasJson = nameJson.promo_name !== void 0
+  } catch(e) {
+    hasJson = false
+  }
+  return {
+    hasJson,
+    nameJson
+  }
+}
+
+Widget.filter('get_bonus_name', function () {
+  return function (item) {
+
+    if(item.action=="extra"){
+      const parseResult = tryExtractJsonFromExtraName(item.name)
+      if(parseResult.hasJson){
+        const name = parseResult.nameJson.promo_name
+        return name
+      } else {
+        return item.name
+      }
+    } else {
+      return item.name
+    }
+    
+  }
+})
+
+Widget.filter('get_bonus_expiration', function (moment) {
+  return function (item) {
+
+    if(item.action=="extra"){
+      const parseResult = tryExtractJsonFromExtraName(item.name)
+      if(parseResult.hasJson){
+        const expiration_date = "До " + moment(item.action_date).add(parseResult.nameJson.expiration_period, "days").format('D MMM')
+        console.log(expiration_date)
+        return expiration_date
+      } else {
+        return ""
+      }
+    } else {
+      return ""
+    }
+    
+  }
+})
+
+Widget.filter('get_bonus_add', function () {
+  return function (item) {
+
+    if(item){
+      if(item.points_delta > 0){
+        return "+" + item.points_delta
+      } else {
+        return 0
+      }
+    }
+
+    return 'no number'
+    
+  }
+})
+
+Widget.filter('get_bonus_sub', function () {
+  return function (item) {
+
+    if(item){
+      if(item.points_delta < 0){
+        return item.points_delta
+      } else if(item.action == "purchase") {
+        return -item.debited_points_delta
+      } else {
+        return 0
+      }
+    }
+
+    return 'no number'
+    
+  }
+})
+
+
 const PointsStatus = {
 
   id: 'points-status',
@@ -21,6 +142,12 @@ const PointsStatus = {
 
       // History popup
       scope.history = false;
+
+      scope.$on('history-open', (ev, isOpen)=>{
+        if(isOpen){
+          scope.history = true
+        }
+      })
 
       /**
        * Calculating progress

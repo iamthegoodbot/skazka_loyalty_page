@@ -1,6 +1,6 @@
 import angular from 'angular';
 import ModalTemplate from './modal.html';
-import './modal.less';
+//import './modal.less';
 
 export let Modal = angular.module('magic.tools.modal', [])
 

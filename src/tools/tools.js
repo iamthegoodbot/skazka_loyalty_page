@@ -7,6 +7,9 @@ import Notifier from './notifier/notifier'
 import MagicModal from './modal/modal';
 import Fonts from './fonts/fonts';
 import DatePicker from './datepicker/datepicker';
+import Moment from 'moment';
+import MomentRu from './../../node_modules/moment/locale/ru.js';
+import angularMoment from 'angular-moment';
 
 export let Tools = angular.module('magic.tools', [
   NgPagination,
@@ -16,8 +19,13 @@ export let Tools = angular.module('magic.tools', [
   Widget,
   Notifier,
   MagicModal,
-  DatePicker
+  DatePicker,
+  angularMoment
 ])
+
+.run(function(amMoment) {
+  amMoment.changeLocale('ru');
+})
 
 .filter('tools', function (MAGIC_CONFIG, $parse) {
 

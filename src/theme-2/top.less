@@ -1,0 +1,176 @@
+.bns_top {
+  -webkit-background-size: cover;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-image: url("@{burl}top.jpg");
+  .bns_head {
+    color: #ffffff;
+    text-transform: uppercase;
+    font-size: 36px;
+    display: inline-block;
+    width: 100%;
+    font-weight: normal;
+    margin-top: 48px;
+    margin-bottom: 0;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 0 38px;
+    letter-spacing: 3.5px;
+  }
+  .bns_desc {
+    width: 100%;
+    display: inline-block;
+    font-weight: 300;
+    color: #ffffff;
+    font-size: 20px;
+    box-sizing: border-box;
+    padding: 0 38px;
+    p {
+      width: 100%;
+      max-width: 750px;
+      margin-top: 24px;
+      margin-bottom: 0;
+      line-height: 24px;
+      margin-bottom: 20px;
+    }
+  }
+  .bns_linck {
+    line-height: 30px;
+    background-color: #fff;
+    width: 250px;
+    color: #db9e9c;
+    border-radius: 4px;
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+    margin-left: 35px;
+    margin-bottom: 39px;
+  }
+}
+.bns_info {
+  margin-top: 37px;
+  display: inline-block;
+  width: 100%;
+  vertical-align: baseline;
+  .bns_info_item {
+    display: inline-block;
+    height: 228px;
+    cursor: pointer;
+    -webkit-background-size: cover;
+    background-size: cover;
+    overflow: hidden;
+    float: left;
+    width: 32.5%;
+    margin-right: 1.25%;
+    position: relative;
+    &:last-child {
+      margin-right: 0;
+    }
+    &.bns_info_item_bal {
+      background-image: url("@{burl}bal.jpg");
+    }
+    &.bns_info_item_date {
+      background-image: url("@{burl}date.jpg");
+    }
+    &.bns_info_item_profile {
+      background-image: url("@{burl}prof.jpg");
+    }
+    &:hover {
+      .bns_over {
+        opacity: 1;
+      }
+      .bns_bal_num, .bns_bal_text, .bns_date_name, .bns_ava, .bns_date_text{
+        opacity: 0;
+      }
+    }
+    .bns_head {
+      display: inline-block;
+      width: 100%;
+      text-align: left;
+      margin-top: 24px;
+      margin-bottom: 0;
+      transition: opacity .4s;
+      span {
+        background-color: #fff;
+        display: inline-block;
+        font-weight: 300;
+        font-size: 20px;
+        line-height: 44px;
+        padding-left: 37px;
+        padding-right: 30px;
+        border-radius: 0 44px 44px 0;
+        color: #a4acad;
+      }
+    }
+    .bns_over {
+      position: absolute;
+      left:37px;
+      top:100px;
+      width: 316px;
+      line-height: 24px;
+      font-size: 20px;
+      opacity: 0;
+      color: #285569;
+      transition: opacity .4s;
+    }
+    .bns_bal_num {
+      width: 100%;
+      display: inline-block;
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      box-sizing: border-box;
+      font-weight: 300;
+      font-size: 78px;
+      color: #285569;
+      padding-left: 37px;
+      margin-top: 28px;
+      transition: opacity .4s;
+    }
+    .bns_bal_text {
+      width: 100%;
+      display: inline-block;
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      box-sizing: border-box;
+      padding-left: 42px;
+      color: #285569;
+      font-weight: 300;
+      font-size: 16px;
+      transition: opacity .4s;
+    }
+    .bns_date_name {
+      color: #285569;
+      display: inline-block;
+      width: 100%;
+      font-size: 26px;
+      margin-top: 25px;
+      line-height: 37px;
+      text-transform: uppercase;
+      padding-left: 37px;
+      transition: opacity .4s;
+    }
+    .bns_date_text {
+      display: inline-block;
+      width: 100%;
+      padding-left: 37px;
+      color: #285569;
+      font-size: 16px;
+      font-weight: 300;
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      box-sizing: border-box;
+      margin-top: 9px;
+      transition: opacity .4s;
+    }
+    .bns_ava {
+      position: absolute;
+      width: 158px;
+      height: 158px;
+      border-radius: 100%;
+      right: 55px;
+      top: 34px;
+      transition: opacity .4s;
+    }
+  }
+}

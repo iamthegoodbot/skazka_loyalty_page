@@ -1,3 +1,129 @@
+<magic-modal>
+  <div class="bns_overlay bns_overlay_prof">
+      <div class="bns_overlay_inner">
+          <h4 class="bns_head">
+              {{ widget.fill_profile.header }}
+          </h4>
+          <a href="#" class="close"></a>
+          <div class="bns_form">
+              <div class="bns_input_block">
+                  <label>Имя</label>
+                  <input type="text" value="Лиза">
+              </div>
+              <div class="bns_input_block">
+                  <label>Фамилия</label>
+                  <input type="text" value="Соловьева">
+              </div>
+              <div class="bns_select_date">
+                  <label>Дата рождения</label>
+                  <div class="bns_input_block bns_input_block_sel">
+                      <label>День</label>
+                      <input type="hidden">
+                      <ul>
+                          <li>
+                              <a href="1">1</a>
+                          </li>
+                          <li>
+                              <a href="2">2</a>
+                          </li>
+                          <li>
+                              <a href="3">3</a>
+                          </li>
+                          <li>
+                              <a href="4">4</a>
+                          </li>
+                      </ul>
+                  </div>
+                  <div class="bns_input_block bns_input_block_sel">
+                      <label>Месяц</label>
+                      <input type="hidden">
+                      <ul>
+                          <li>
+                              <a href="1">1</a>
+                          </li>
+                          <li>
+                              <a href="2">2</a>
+                          </li>
+                          <li>
+                              <a href="3">3</a>
+                          </li>
+                          <li>
+                              <a href="4">4</a>
+                          </li>
+                      </ul>
+                  </div>
+                  <div class="bns_input_block bns_input_block_sel">
+                      <label>Год</label>
+                      <input type="hidden">
+                      <ul>
+                          <li>
+                              <a href="1">1</a>
+                          </li>
+                          <li>
+                              <a href="2">2</a>
+                          </li>
+                          <li>
+                              <a href="3">3</a>
+                          </li>
+                          <li>
+                              <a href="4">4</a>
+                          </li>
+                      </ul>
+                  </div>
+              </div>
+              <div class="bns_input_block">
+                  <label>Телефон</label>
+                  <input type="text" value="+7 (968) 505-70-33">
+              </div>
+              <div class="bns_radio_block">
+                  <label>Пол</label>
+                  <div class="bns_radio">
+                      <div class="bns_radio_item">
+                          <input type="checkbox" name="pol" id="man">
+                          <label for="man">Мужской</label>
+                      </div>
+                      <div class="bns_radio_item">
+                          <input type="checkbox" name="pol" id="fam">
+                          <label for="fam">Женский</label>
+                      </div>
+                  </div>
+              </div>
+              <div class="bns_radio_block">
+                  <label>Семейное положение</label>
+                  <div class="bns_radio">
+                      <div class="bns_radio_item">
+                          <input type="checkbox" name="brack" id="zam_jen">
+                          <label for="zam_jen">Замужем/женат</label>
+                      </div>
+                      <div class="bns_radio_item">
+                          <input type="checkbox" name="brack" id="no_zam_jen">
+                          <label for="no_zam_jen">Не замужем/холост</label>
+                      </div>
+                  </div>
+              </div>
+              <div class="bns_radio_block">
+                  <label>Скрывать детализацию баллов</label>
+                  <div class="bns_radio">
+                      <div class="bns_radio_item">
+                          <input type="checkbox" name="bal" id="yes">
+                          <label for="yes">Да</label>
+                      </div>
+                      <div class="bns_radio_item">
+                          <input type="checkbox" name="bal" id="no">
+                          <label for="no">Нет</label>
+                      </div>
+                  </div>
+              </div>
+              <div class="bns_form_bottom">
+                  <a href="#" class="bns_btn">
+                      Сохранить
+                  </a>
+              </div>
+          </div>
+      </div>
+  </div>
+</magic-modal>
+
 <div class="bon_profile_wrap container" data-ng-show="widget.enabled" data-ng-cloak>
 
   <div class="bon_profile_info" data-sailplay-profile data-sailplay-gifts>
@@ -105,7 +231,7 @@
 
   </magic-modal>
 
-  <!--profile edit section-->
+  <!--profile edit section
   <magic-modal class="fill_profile_modal" data-show="profile.show_fill_profile">
 
     <div class="mb_popup mb_popup_prof" data-sailplay-fill-profile data-config="widget.fill_profile.config">
@@ -157,5 +283,6 @@
       </form>
     </div>
   </magic-modal>
+  -->
 
 </div>

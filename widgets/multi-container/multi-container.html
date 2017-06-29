@@ -1,0 +1,39 @@
+<div class="bns_info">
+    <div class="bns_info_item bns_info_item_bal" data-ng-click="openHistory()">
+        <h3 class="bns_head">
+            <span>Детализация баллов</span>
+        </h3>
+        <span class="bns_bal_num" data-ng-bind="user().user_points.confirmed">
+        
+        </span>
+        <span class="bns_bal_text">
+        Бонусных баллов
+    </span>
+    </div>
+    <div class="bns_info_item bns_info_item_date">
+        <h3 class="bns_head">
+            <span>Памятные даты</span>
+        </h3>
+        <span class="bns_date_name">
+        У Анастасии<br>
+        День рождения
+    </span>
+        <span class="bns_date_text">
+        Завтра, 29 июня 
+    </span>
+    </div>
+    <div class="bns_info_item bns_info_item_profile">
+        <h3 class="bns_head">
+            <span>Профиль</span>
+        </h3>
+        <span class="bns_date_name">
+        <span data-ng-bind="user().user.first_name || 'Адольф'"></span>
+        <br>
+        <span data-ng-bind="user().user.last_name || 'Гитлер'"></span>
+    </span>
+        <span class="bns_date_text" data-ng-bind="user().user.phone | phonenumber">
+        asdasd
+    </span>
+        <img src="../../src/img/ava.jpg" class="bns_ava" alt="">
+    </div>
+</div>

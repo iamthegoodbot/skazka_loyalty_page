@@ -1,0 +1,115 @@
+.bns_qust {
+  .bns_head {
+    width: 100%;
+    display: inline-block;
+    text-align: center;
+    color: #000000;
+    font-size: 36px;
+    text-transform: uppercase;
+    font-weight: normal;
+    margin-top: 72px;
+    margin-bottom: 35px;
+  }
+  .bns_qust_main {
+    width: 100%;
+    display: inline-block;
+    .bns_qust_item {
+      display: inline-block;
+      overflow: hidden;
+      float: left;
+      height: 200px;
+      width: 32.5%;
+      background-color: #fbf0ee;
+      margin-right: 1.25%;
+      margin-bottom: 18px;
+      position: relative;
+      &:hover {
+        .bns_qust_over {
+          opacity: 1;
+        }
+      }
+      &:nth-child(3n) {
+        margin-right: 0;
+      }
+      .bns_qust_over {
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #fbf0ee;
+        opacity: 0;
+        transition: opacity .4s ease;
+        .bns_btn {
+          font-size: 18px;
+          color: #ffffff;
+          text-transform: uppercase;
+          text-decoration: none;
+          display: inline-block;
+          padding: 0 24px;
+          padding-top: 3px;
+          line-height: 37px;
+          background-color: #820d41;
+          position: absolute;
+          left: 50%;
+          top:50%;
+          transform: translate(-50%,-50%);
+          border-radius: 40px;
+        }
+        .bns_soc {
+          display: inline-block;
+          width: 84px;
+          height: 31px;
+          -webkit-background-size: cover;
+          background-size: cover;
+          position: absolute;
+          left: 50%;
+          top:50%;
+          transform: translate(-50%,-50%);
+          background-image: url("@{burl}like.png");
+        }
+      }
+      .bns_qust_left {
+        float: left;
+        width: 50%;
+        position: absolute;
+        height: 100%;
+        left: 0;
+        top: 0;
+        img {
+          position: absolute;
+          top:50%;
+          left: 50%;
+          -webkit-transform: translate(-50%,-50%);
+          -moz-transform: translate(-50%,-50%);
+          -ms-transform: translate(-50%,-50%);
+          -o-transform: translate(-50%,-50%);
+          transform: translate(-50%,-50%);
+        }
+      }
+      .bns_qust_right {
+        width: 50%;
+        float: right;
+        .bns_bal {
+          font-size: 26px;
+          color: #7d7477;
+          display: inline-block;
+          width: 100%;
+          text-transform: uppercase;
+          margin-top: 65px;
+        }
+        .bns_name {
+          display: inline-block;
+          width: 100%;
+          color: #7d7477;
+          font-size: 20px;
+          line-height: 24px;
+          font-weight: 300;
+          box-sizing: border-box;
+          padding-right: 30px;
+          margin-top: 10px;
+        }
+      }
+    }
+  }
+}

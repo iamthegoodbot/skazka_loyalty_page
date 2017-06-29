@@ -1,343 +1,380 @@
-window.SAILPLAY_MAGIC_CONFIG = {
-
-  "auth": {
-    "type": "hybrid",
-    "auth_hash_id": "sailplay_magic_auth_hash"
-  },
-
-  "widgets": {
-
-    "profile": {
-
-      "enabled": true,
-      "texts": {
-        "header": "Ваш профиль",
-        "spoiler": "Здесь отображается количество накопленных баллов и прогресс получения подарков",
-        "edit_profile_button": "Редактировать профиль",
-        "name_not_defined": "Имя не указано",
-        "history_button": "История начислений",
-        "login_reg": "Войти/Зарегистрироваться",
-        "logout": "Выйти",
-        "before_gift": "до подарка",
-        "history_items": {
-          "purchase": "Purchase",
-          "gift_purchase": "Gift",
-          "badge": "Badge",
-          "registration": "Sign up",
-          "referral": "Invite friend",
-          "referred": "Registration from friend's invite",
-          "referred_purchase": "Friend's purchase",
-          "promocode": "Promocode activation",
-          "enter_group": "Joined our group on ",
-          "share_purchase": "Shared a purchase on ",
-          "social_share": "Shared our website on ",
-          "share_badge": "Shared a badge on ",
-          "earn_badge": "Earn badge ",
-          "custom_action" : "Custom action"
-        }
-      },
-      "images": {
-        "progress_gift": "http://saike.ru/sailplay-magic/dist/img/profile/progress_gift.png",
-        "progress_line": "http://saike.ru/sailplay-magic/dist/img/profile/progress_line.png",
-        "no_avatar": ""
-      },
-      "styles": {
-        "main": {
-          //http://www.w3schools.com/cssref/css3_pr_background.asp
-          "backgroundImage": "url(http://25.media.tumblr.com/2cd67779bf87cfd488629bcb6cb2ad40/tumblr_n24v24CZ9e1qhcd6po1_500.gif)",
-          "backgroundRepeat": "no-repeat",
-          "backgroundSize": "cover"
+module.exports = {
+  "$MAGIC": {
+    "widgets": [
+          {
+        "errors": {
+          'email is not valid': 'Введите правильный E-Mail',
+          '-200007': 'Пользователь с таким номером телефона уже зарегистрирован. Если аккаунт с этим номером принадлежит Вам, зайдите в личный кабинет, используя данные этого аккаунта',
+          '-200010': 'Пользователь с таким адресом эл. почты уже зарегистрирован. Если аккаунт с этим адресом принадлежит Вам, зайдите в личный кабинет, используя данные этого аккаунта'
         },
-        "headers": {
-          "color": "#333",
-          "font-family": "Helvetica"
+        "enabled": true,
+        "options": {
+          "status_list": [
+            {
+              "image": "https://sailplays3.cdnvideo.ru/media/assets/assetfile/f0a95012b3de8428fe7d9cd2489c98da.png",
+              "points": 200,
+              "name": "Bronze"
+            },
+            {
+              "image": "https://sailplays3.cdnvideo.ru/media/assets/assetfile/4509a25a97ae64a113e14c1c29ee35c4.png",
+              "points": 600,
+              "name": "Silver"
+            },
+            {
+              "image": "https://sailplays3.cdnvideo.ru/media/assets/assetfile/8535dda62376552f4ece0f549dc0e594.png",
+              "points": 1500,
+              "name": "Gold"
+            }
+          ]
         },
-        "captions": {
-          "color": "#666",
-          "font-family": "sans-serif"
-        },
-        "progress": {
-          "pure_color": "#333",
-          "progress_color": "#fff",
-          "border_color": "#111"
-        }
-      }
-
-    },
-    "gifts": {
-
-      "enabled": true,
-      "texts": {
-        "header": "Выберите вознаграждение",
-        "caption": "Вы моежете потратить накопленные баллы на подарки из разных категорий",
-        "get": "Получить",
-        "no_points_button_text": "Недостаточно баллов",
-        "confirm_message_start": "Пожалуйста, подтвердите получение подарка. С вашего счета будет списано",
-        "confirm_message_end": "Приняли решение? Подтвердите, пожалуйста, свой выбор и списание баллов.",
-        "no_points_message": "У вас недостаточное количество баллов на этот подарок. Вам необходимо выполнить следующие действия.",
-        "earn_points": "Заработать баллы",
-        "service": "Выбрать услугу",
-        "partner_service_url": "https://rktdj.com/paice",
-        "coupon_number": "Номер купона:",
-        "gift_received": "Вы только что получили подарок"
-      },
-      "errors": {
-        "gift_received_error": "К сожалению, вы не получили подарок"
-      },
-      "images": {
-
-      },
-      "styles": {
-        "main": {
-          //http://www.w3schools.com/cssref/css3_pr_background.asp
-          "background": "#000 url(https://67.media.tumblr.com/eda512c6588b15c7faf663606c09a7ab/tumblr_n5xouw7W9a1tcvo52o1_250.gif) repeat left top"
-        },
-        "headers": {
-          "color": "#ccc",
-          "font-family": "Helvetica"
-        },
-        "captions": {
-          "color": "#fff",
-          "font-family": "sans-serif"
-        },
-        "points": {
-          "color": "#bbb",
-          "font-family": "sans-serif",
-          "fontSize": "16px"
-        },
-        "gift": {
-          "backgroundImage": "url(https://s-media-cache-ak0.pinimg.com/236x/76/1c/3f/761c3f2547e8dc809a4f07cf6063e906.jpg)",
-          "backgroundRepeat": "no-repeat",
-          "backgroundSize": "cover",
-          "borderColor": "#222",
-          "borderWidth": "4px"
-        },
-        "description": {
-          "color": "#333",
-          "fontFamily": "Arial",
-          "fontSize": "14px"
-        }
-      }
-
-    },
-    "actions": {
-
-      "enabled": true,
-      "texts": {
-        "header": "Заработайте баллы",
-        "caption": "Выполняя простые задания вы можете получить дополнительные баллы",
-        "perform": "Выполнить"
-      },
-      "errors": {
-
-      },
-      "images": {
-
-      },
-      "styles": {
-        "main": {
-          //http://www.w3schools.com/cssref/css3_pr_background.asp
-          "backgroundImage": "url(https://pixelnoizz.files.wordpress.com/2011/09/pixelnoizz_1.gif)",
-          "backgroundRepeat": "no-repeat",
-          "backgroundSize": "cover"
-        },
-        "headers": {
-          "color": "#DB1442",
-          "font-family": "Helvetica",
-          "background-color": "rgba(255,255,255,0.8)",
-          "padding-right": "10px",
-          "padding-left": "10px"
-        },
-        "captions": {
-          "color": "#780D26",
-          "font-family": "sans-serif",
-          "background-color": "rgba(255,255,255,0.8)",
-          "padding-right": "10px",
-          "padding-left": "10px"
-        },
-        "points": {
-          "color": "#333",
-          "font-family": "sans-serif",
-          "font-size": "16px",
-          "font-weight": "300",
-          "background-color": "rgba(255,255,255,0.8)",
-          "padding": "6px"
-        },
-        "action": {
-          "backgroundImage": "url(http://sf.co.ua/13/02/wallpaper-885912.jpg)",
-          "backgroundRepeat": "no-repeat",
-          "backgroundSize": "cover",
-          "borderColor": "#222",
-          "borderWidth": "4px"
-        },
-        "name": {
-          "color": "#333",
-          "font-family": "sans-serif",
-          "font-size": "16px",
-          "font-weight": "300",
-          "background-color": "rgba(255,255,255,0.8)",
-          "padding": "6px"
-        },
-        "description": {
-          "color": "#333",
-          "fontFamily": "Arial",
-          "fontSize": "14px"
-        },
-        "modal": {
-          "header": {
-            "color": "#333"
-          },
-          "caption": {
-            "color": "#333"
-          },
-          "body": {
-            "color": "#333"
-          }
-        }
-      },
-      "data": {
-        "system": {
-          "emailBinding": {
-            "name": "Привяжите E-Mail",
-            "pic": "dist/img/task-icon-07.svg"
-          },
-          "fillProfile":{
-            "name": "Заполните профиль",
-            "pic": "dist/img/task-icon-07.svg"
-          },
-          "inviteFriend":{
-            "name": "Пригласите друга",
-            "pic": "dist/img/task-icon-07.svg"
+        "texts": {
+          "history_button": "History",
+          "history": {
+            "header": "History"
           }
         },
-        "social": {
-          "vk": {
-            "like": {
-              "name": "Вступите в группу VK",
-              "pic": "http://saike.ru/sailplay-magic/dist/img/actions/data/icon_vk.png"
-            },
-            "partner_page": {
-              "name": "Рассказать о нашем магазине в VK",
-              "pic": "http://saike.ru/sailplay-magic/dist/img/actions/data/icon_vk.png"
-            },
-            "purchase": {
-              "name": "Поделитесь вашей покупкой в VK",
-              "pic": "http://saike.ru/sailplay-magic/dist/img/actions/data/icon_vk.png"
-            }
-          },
-          "fb": {
-            "like": {
-              "name": "Вступите в группу Facebook",
-              "pic": "http://saike.ru/sailplay-magic/dist/img/actions/data/icon_fb.png"
-            },
-            "partner_page": {
-              "name": "Рассказать о нашем магазине в Facebook",
-              "pic": "http://saike.ru/sailplay-magic/dist/img/actions/data/icon_fb.png"
-            },
-            "purchase": {
-              "name": "Поделитесь вашей покупкой в Facebook",
-              "pic": "http://saike.ru/sailplay-magic/dist/img/actions/data/icon_fb.png"
-            }
-          },
-          "gp": {
-            "like": {
-              "name": "Вступите в группу Google+",
-              "pic": "dist/img/task-icon-06.svg"
-            },
-            "partner_page": {
-              "name": "Рассказать о нашем магазине в Google+",
-              "pic": "dist/img/task-icon-06.svg"
-            },
-            "purchase": {
-              "name": "Поделитесь вашей покупкой в Google+",
-              "pic": "dist/img/task-icon-06.svg"
-            }
-          },
-          "ok": {
-            "like": {
-              "name": "Вступите в группу Одноклассники",
-              "pic": "http://saike.ru/sailplay-magic/dist/img/actions/data/icon_ok.png"
-            },
-            "partner_page": {
-              "name": "Рассказать о нашем магазине в Одноклассники",
-              "pic": "http://saike.ru/sailplay-magic/dist/img/actions/data/icon_ok.png"
-            },
-            "purchase": {
-              "name": "Поделитесь вашей покупкой в Одноклассники",
-              "pic": "http://saike.ru/sailplay-magic/dist/img/actions/data/icon_ok.png"
-            }
-          },
-          "tw": {
-            "partner_page": {
-              "name": "Рассказать о нашем магазине в Twitter",
-              "pic": "http://saike.ru/sailplay-magic/dist/img/actions/data/icon_tw.png"
-            },
-            "purchase": {
-              "name": "Поделитесь вашей покупкой в Twitter",
-              "pic": "http://saike.ru/sailplay-magic/dist/img/actions/data/icon_tw.png"
-            }
+        "images": {},
+        "id": "points-status"
+      },
+      {
+        "fill_profile": {
+          "header": "Update your profile",
+          "config": {
+            "fields": [
+              {
+                "input": "text",
+                "type": "system",
+                "placeholder": "Enter your name",
+                "name": "firstName",
+                "label": "Your name"
+              },
+              {
+                "input": "text",
+                "type": "system",
+                "placeholder": "Enter your last name",
+                "name": "lastName",
+                "label": "Your last name"
+              },
+              {
+                "input": "phone",
+                "type": "system",
+                "placeholder": "1 (999) 999-99-99",
+                "name": "addPhone",
+                "label": "Your phone number"
+              },
+              {
+                "input": "email",
+                "type": "system",
+                "placeholder": "your@address.com",
+                "name": "addEmail",
+                "label": "Your E-Mail"
+              },
+              {
+                "input": "date",
+                "type": "system",
+                "placeholder": "Enter your birth date",
+                "name": "birthDate",
+                "label": "Your birth date"
+              },
+              {
+                "name": "sex",
+                "type": "system",
+                "data": [
+                  {
+                    "text": "Not defined",
+                    "value": ""
+                  },
+                  {
+                    "text": "Male",
+                    "value": 1
+                  },
+                  {
+                    "text": "Female",
+                    "value": 2
+                  }
+                ],
+                "input": "select",
+                "label": "Gender",
+                "placeholder": "Enter your last name"
+              }
+            ],
+            "tag": "Client filled profile"
           }
-        }
-      }
-
-    }
-
-  },
-  //components
-  "tools": {
-
-    "modal": {
-      "images": {
-        "close": "http://saike.ru/sailplay-magic/dist/img/tools/modal/close.png"
-      },
-      "styles": {
-        "background": "#ссс"
-      }
-    },
-    "points": {
-      "texts": {
-        "pluralize": "балл,балла,баллов"
-      }
-    },
-    "slider": {
-      "images": {
-        "arrow_left": "http://saike.ru/sailplay-magic/dist/img/tools/slider/arrow_left.png",
-        "arrow_right": "http://saike.ru/sailplay-magic/dist/img/tools/slider/arrow_right.png"
-      },
-      "styles": {
-        "arrow_background_color": "#222"
-      }
-    },
-    "buttons": {
-      "texts": {
-        "close": "Закрыть",
-        "get": "Получить",
-        "ok": "OK"
-      },
-      "styles": {
-        "background" : "#333",
-        "color": "#ddd"
-      }
-    },
-    "notifier": {
-      "texts": {
-        "congratulations": "Поздравляем!",
-        "error": "Произошла ошибка"
-      },
-      "styles": {
-        "header": {
-          "color": "#333",
-          "font-family": "Helvetica",
-          "font-size": "26px"
         },
-        "body": {
-          "color": "#333",
-          "font-family": "sans-serif",
-          "font-weight": 300
+        "enabled": true,
+        "texts": {
+          "spoiler": "Earn bonus points, get rewards, and manage your loyalty account",
+          "name_not_defined": "John Doe",
+          "user_status": "Your status:",
+          "history_button": "History",
+          "edit_profile_button": "Edit Profile",
+          "header": "Greenly Rewards",
+          "logout": "Logout",
+          "before_gift": "until next gift",
+          "history": {
+            "header": "History"
+          },
+          "login_reg": "Login/Register"
+        },
+        "images": {},
+        "id": "profile"
+      },
+      {
+        "id": 'dates-events',
+        "texts": {},
+        "enabled": true,
+        "options": {},
+        "texts": {}
+      },
+      {
+        
+        "enabled": true,
+        "options": {},
+        "texts": {},
+        "images": {
+          "Japan crate royalty program": "https://sailplays3.cdnvideo.ru/media/assets/assetfile/141733eacb51849f91be19d0edbd0d91.png"
+        },
+        "id": "banner"
+      },
+      {
+        "id": "multi-container",
+        "enabled": true,
+        "options": {},
+        "texts": {}
+      },
+
+      {
+        
+        "texts": {
+          "gift_received": 'Подарок добавлен в корзину!',
+          "gift_error": 'К сожалению, вы не получили подарок!',
+          "gift_error_points": 'Недостаточно баллов для получения этого подарка',
+          "error": 'Ошибка',
+          "perform": 'Выполнить',
+          "no_points_button_text": "Not enough points",
+          "gift_received_error": "Sorry, we're unable to process your request at this time",
+          "get": "Get",
+          "purchase_success_header": "Congratulations!",
+          "earn_points": "earn points",
+          "confirm_message_start": "Confirm",
+          "header": "Gifts",
+          "coupon_number": "Coupon number",
+          "purchase_error_header": "Gift was not received.",
+          "confirm_message_end": "Cancel",
+          "caption": "Redeem your bonus points for these great gifts!",
+          "no_points_message": "Not enough points. Try completing some of these actions:"
+        },
+        "images": {},
+        "enabled": true,
+        "id": "gifts-grid"
+      },
+      {
+        
+        "enabled": true,
+        "options": {},
+        "texts": {},
+        "images": {
+          "Exclusive gift items": "https://sailplays3.cdnvideo.ru/media/assets/assetfile/ff438ba16a76b52976701fc4e0c73cc2.jpg"
+        },
+        "id": "banner"
+      },
+      {
+        
+        "errors": {},
+        "enabled": true,
+        "texts": {
+          "perform": "Share",
+          "header": "Quests",
+          "caption": "Earn extra points by completing these quests"
+        },
+        "images": {},
+        "id": "card-quests"
+      },
+      {
+        
+        "texts": {
+          "header": "Badges",
+          "caption": "Earn prizes and rewards for exploring our products, referring your friends and more!"
+        },
+        "enabled": true,
+        "id": "badges"
+      }
+    ],
+    "data": {
+      "custom_actions": {
+        "static_page": {
+          
+        }
+      },
+      "actions": {
+    "system": {
+      "emailBinding": {
+        name: "Привяжите E-Mail",
+        pic: "https://sailplays3.cdnvideo.ru/media/assets/assetfile/6ecebe184db25e4708b8d03def71b558.png"
+      },
+      "fillProfile":{
+        name: "Заполните профиль",
+        pic: "https://sailplays3.cdnvideo.ru/media/assets/assetfile/f22be1f2b19c86d6824c936faffa6a0c.png"
+      },
+      "inviteFriend":{
+        name: "Пригласите друга",
+        pic: 'https://sailplays3.cdnvideo.ru/media/assets/assetfile/a6f3c1bc8ea6217bf09cdd16e1f24634.png'
+      }
+    },
+    "social": {
+      "vk": {
+        "like": {
+          "name": "Вступите в группу VK",
+          pic: 'https://sailplays3.cdnvideo.ru/media/assets/assetfile/7348ae509da7fa250fe8cc5b8d836dd8.png'
+        },
+        "partner_page": {
+          "name": "Рассказать о нашем магазине в VK",
+          pic: 'https://sailplays3.cdnvideo.ru/media/assets/assetfile/7348ae509da7fa250fe8cc5b8d836dd8.png'
+        },
+        "purchase": {
+          "name": "Поделитесь вашей покупкой в VK",
+          pic: 'https://sailplays3.cdnvideo.ru/media/assets/assetfile/7348ae509da7fa250fe8cc5b8d836dd8.png'
+        }
+      },
+      "fb": {
+        "like": {
+          "name": "Вступите в группу Facebook",
+          pic: 'https://sailplays3.cdnvideo.ru/media/assets/assetfile/135cb1b4fd6ea0a83558b8b7a00d690e.png'
+        },
+        "partner_page": {
+          "name": "Рассказать о нашем магазине в Facebook",
+          pic: 'https://sailplays3.cdnvideo.ru/media/assets/assetfile/135cb1b4fd6ea0a83558b8b7a00d690e.png'
+        },
+        "purchase": {
+          "name": "Поделитесь вашей покупкой в Facebook",
+          pic: 'https://sailplays3.cdnvideo.ru/media/assets/assetfile/135cb1b4fd6ea0a83558b8b7a00d690e.png'
+        }
+      },
+      "gp": {
+        "like": {
+          "name": "Вступите в группу Google+",
+          pic: 'https://sailplays3.cdnvideo.ru/media/assets/assetfile/d32fbca1089257b6cd36e83352f0da8a.png'
+        },
+        "partner_page": {
+          "name": "Рассказать о нашем магазине в Google+",
+          pic: 'https://sailplays3.cdnvideo.ru/media/assets/assetfile/d32fbca1089257b6cd36e83352f0da8a.png'
+        },
+        "purchase": {
+          "name": "Поделитесь вашей покупкой в Google+",
+          pic: 'https://sailplays3.cdnvideo.ru/media/assets/assetfile/d32fbca1089257b6cd36e83352f0da8a.png'
+        }
+      },
+      "ok": {
+        "like": {
+          "name": "Вступите в группу Одноклассники"
+        },
+        "partner_page": {
+          "name": "Рассказать о нашем магазине в Одноклассники"
+        },
+        "purchase": {
+          "name": "Поделитесь вашей покупкой в Одноклассники"
+        }
+      },
+      "tw": {
+        "partner_page": {
+          "name": "Рассказать о нашем магазине в Twitter",
+          pic: 'dist/img/actions/twitter.png'
+        },
+        "purchase": {
+          "name": "Поделитесь вашей покупкой в Twitter",
+          pic: 'dist/img/actions/twitter.png'
         }
       }
     }
-
-  }
-
-};
+  },
+      "history": {
+        "purchase": "Покупка",
+        "gift_purchase": "Подарок",
+        "badge": "Получен статус: ",
+        "registration": "Регистрация",
+        "referral": "Регистрация друга",
+        "referred": "Регистрация по приглашению",
+        "referred_purchase": "Покупка приглашенного пользователя",
+        "promocode": "За ввод промокода",
+        "enter_group": "Вступление в группу ",
+        "share_purchase": "Рассказ о покупке в ",
+        "social_share": "Рассказ в ",
+        "share_badge": "Рассказ о статусе в ",
+        "earn_badge": 'Получен статус% ',
+        "custom_action": "Экстра"
+      }
+    },
+    "tools": {
+      "forms": {
+        
+        "texts": {}
+      },
+      "fonts": {
+        "options": {
+          "items": [
+            "https://fonts.googleapis.com/css?family=Raleway"
+          ]
+        }
+      },
+      "buttons": {
+        
+        "texts": {
+          "close": "Close",
+          "save": "Save",
+          "ok": "OK",
+          "get": "Get"
+        }
+      },
+      "slider": {
+        
+      },
+      "points": {
+        "texts": {
+          "pluralize": "балл, балла, баллов"
+        }
+      },
+      "modal": {
+        "images": {
+          "close": "http://saike.ru/sailplay-magic/lib/magic/img/tools/modal/close.png"
+        },
+        
+      },
+      "date": {
+        "months": {
+          "1": "January",
+          "2": "February",
+          "3": "March",
+          "4": "April",
+          "5": "May",
+          "6": "June",
+          "7": "July",
+          "8": "August",
+          "9": "September",
+          "10": "October",
+          "11": "November",
+          "12": "December"
+        },
+        "placeholder": {
+          "month": "Month",
+          "day": "Day",
+          "year": "Year"
+        }
+      },
+      "notifier": {
+        
+        "texts": {
+          "congratulations": "Congratulations!",
+          "error": "An error occurred"
+        }
+      }
+    },
+    "auth": {
+      "config": {
+        "disable": true
+      },
+      "type": "hybrid",
+      "auth_hash_id": "sailplay_magic_auth_hash"
+    }
+  },
+  "$MOBILE": {}
+}

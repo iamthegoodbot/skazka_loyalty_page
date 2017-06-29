@@ -1,5 +1,5 @@
 <div id="points-status" class="bon_choice_main container clearfix">
-
+<!--
     <div class="points-status__wrapper clearfix">
 
         <div class="points-status__left points_block clearfix" data-ng-if="user()">
@@ -40,41 +40,57 @@
         </div>
 
     </div>
-
-    <magic-modal class="bns_overlay_hist" data-show="history">
+-->
+    <magic-modal class="bns_overlay bns_overlay_hist" data-show="history">
 
         <div data-sailplay-history data-sailplay-profile>
 
-            <h3>
-                <span class="modal_history_header" data-ng-bind="widget.texts.history.header"></span>
-            </h3>
-            <h4 class="modal_history_caption" data-ng-bind="widget.texts.history.caption"></h4>
+            <h4 class="bns_head" data-ng-bind="widget.texts.history.header">
+            </h4>
+            <a href="#" class="close"></a>
 
-            <table class="bns_hist_table">
+            <table class="bns_table">
+                <tr class="tr_head">
+                    <td>Дата и время</td>
+                    <td>Действие</td>
+                    <td>Начисление</td>
+                    <td>Списание</td>
+                    <td>Срок действия</td>
+                </tr>
 
                 <tbody>
 
                 <tr data-dir-paginate="item in history() | itemsPerPage:10" data-pagination-id="history_pages">
                     <td>
-                        <span class="modal_history_date" data-ng-bind="item.action_date | date:'d/MM/yyyy'"></span>
+                        <span data-ng-bind="item.action_date | amDateFormat:'D MMM, hh:mm'"></span>
                     </td>
                     <td>
-                        <span><b class="modal_history_content" data-ng-bind="item | history_item"></b></span>
+                        <span data-ng-bind="item | get_bonus_name"></span>
                     </td>
                     <td>
+                        <span data-ng-bind="(item | get_bonus_add) + ' баллов'"></span>
+                    </td>
+                    <td>
+                        <span data-ng-bind="(item | get_bonus_sub) + ' баллов'""></span>
+                    </td>
+                    <td>
+                        <span data-ng-bind="item | get_bonus_expiration"></span>
+                    </td>
+    <!--                <td>
                         <span class="modal_history_points" data-ng-if="item.points_delta"
-                              data-ng-bind="((item.points_delta|number) || 0) + ' ' + (item.points_delta | sailplay_pluralize:('points.texts.pluralize' | tools))"></span>
-                    </td>
+                              data-ng-bind="((item.points_delta|number) || 0) + ' ' + (item.points_delta | sailplay_pluralize:('points.texts.pluralize' | tools))">
+                        </span>
+                    </td> -->
                 </tr>
 
                 </tbody>
             </table>
 
+
             <dir-pagination-controls data-max-size="7" data-pagination-id="history_pages"
                                      data-template-url="points_status.history_pagination"
                                      data-auto-hide="true"></dir-pagination-controls>
         </div>
-
 
     </magic-modal>
 
