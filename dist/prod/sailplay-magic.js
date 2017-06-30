@@ -70,7 +70,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	__webpack_require__(152);
 	__webpack_require__(157);
 	__webpack_require__(162);
-	module.exports = __webpack_require__(170);
+	__webpack_require__(170);
+	module.exports = __webpack_require__(175);
 
 
 /***/ }),
@@ -38481,11 +38482,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	            slidesToShow: 1,
 	            slidesToScroll: 1
 	          }
-	        }
-	        // You can unslick at a given breakpoint now by adding:
-	        // settings: "unslick"
-	        // instead of a settings object
-	        ]
+	          // You can unslick at a given breakpoint now by adding:
+	          // settings: "unslick"
+	          // instead of a settings object
+	        }]
 	      };
 
 	      scope.process = false;
@@ -42597,6 +42597,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            console.error('Tags exit error. Response: ', tags_res);
 	          }
 	          scope.getBlocks();
+	          scope.$digest();
 	        });
 	      }
 
@@ -42649,13 +42650,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	        scope.blocks = [];
 	        if (!scope.gifts && !scope.gifts.length && scope.check_categories) return;
 	        var gifts = angular.copy(scope.gifts);
-	        len = Math.ceil(gifts.length / block_size);
+	        var block_len = block_size == 'all' ? gifts.length : block_size;
+	        len = Math.ceil(gifts.length / block_len);
 	        i = 0;
 	        do {
 	          if (i == len - 1) {
-	            page = gifts.slice(block_size * i);
+	            page = gifts.slice(block_len * i);
 	          } else {
-	            page = gifts.slice(block_size * i, block_size * i + block_size);
+	            page = gifts.slice(block_len * i, block_len * i + block_len);
 	          }
 	          scope.blocks.push(page);
 	          i++;
@@ -42668,6 +42670,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      SailPlayApi.observe('load.gifts.list', function (gifts) {
 	        scope.gifts = gifts;
 	        scope.getBlocks();
+	        scope.$digest();
 	      });
 
 	      /**
@@ -42713,6 +42716,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	      SailPlay.on('gifts.purchase.success', function (res) {
 	        $rootScope.$apply(function () {
 	          scope.selected_gift = null;
+	          SailPlayApi.call('load.gifts.list');
+	          SailPlayApi.call('load.user.info');
 	          $rootScope.$broadcast('notifier:notify', {
 	            header: scope.widget.texts.purchase_success_header,
 	            body: res.coupon_number && scope.widget.texts.coupon_number + ' ' + res.coupon_number || res.success_message || scope.widget.texts.gift_received
@@ -42741,7 +42746,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 137 */
 /***/ (function(module, exports) {
 
-	module.exports = "<div class=\"bon_choice_main container clearfix gifts_grid_widget\">\n\n    <h3 class=\"gifts_grid___header\">\n        <span class=\"header\" data-ng-bind=\"widget.texts.header\"></span>\n    </h3>\n\n    <h4 class=\"gifts_grid___caption\">\n        <span class=\"caption\" data-ng-bind=\"widget.texts.caption\"></span>\n    </h4>\n\n    <div class=\"gifts_grid__wrapper clearfix\">\n\n        <div class=\"gifts_grid__blocks clearfix\">\n\n            <div class=\"gifts_grid__block clearfix\">\n\n                <div class=\"gifts_grid__item clearfix\"\n                     data-ng-class=\"{\n                     'gift-available': isAvailableGift(gift),\n                     'gift-unavailable': !isAvailableGift(gift)\n                     }\"\n                     data-ng-repeat=\"gift in blocks[state] | filter:filter | orderBy:orderBy track by $index\">\n\n                    <span class=\"gifts_grid__item-name gift_name\" data-ng-bind=\"gift.name\"></span>\n\n                    <span class=\"gifts_grid__item-points gift_points\"\n                          data-ng-bind=\"(gift.points | number) + ' ' + (gift.points | sailplay_pluralize:('points.texts.pluralize' | tools))\"></span>\n\n                    <img class=\"gifts_grid__item-img gift_img\"\n                         data-ng-src=\"{{ gift.thumbs.url_250x250 | sailplay_pic }}\"\n                         alt=\"{{ gift.name }}\">\n\n\n                    <a class=\"gifts_grid__item-button button_primary\" href=\"#\"\n                       data-ng-bind=\"widget.texts.get\"\n                       data-ng-click=\"$event.preventDefault();open(gift)\"></a>\n\n\n                </div>\n\n            </div>\n\n        </div>\n\n        <a href=\"#\" class=\"gifts_grid__arrow gifts_grid__arrow_l slider_arrow_left\"\n           data-ng-if=\"state\"\n           data-ng-click=\"$event.preventDefault(); move(-1);\"></a>\n\n        <a href=\"#\" class=\"gifts_grid__arrow gifts_grid__arrow_r slider_arrow_right\"\n           data-ng-if=\"blocks.length && state != (blocks.length-1)\"\n           data-ng-click=\"$event.preventDefault(); move(1);\"></a>\n\n    </div>\n\n    <magic-modal class=\"bns_overlay_gift\" data-show=\"selected_gift\">\n\n        <div class=\"modal_gift_container\">\n\n            <img class=\"gift_more_img\" data-ng-src=\"{{ selected_gift.thumbs.url_250x250 | sailplay_pic }}\"\n                 alt=\"{{ selected_gift.name }}\">\n\n            <div class=\"gift_more_block\">\n\n                <span data-ng-bind=\"selected_gift\"></span>\n\n                <span class=\"gift_more_name modal_gift_name\" data-ng-bind=\"selected_gift.name\"></span>\n\n                <span class=\"gift_more_points modal_gift_points\"\n                      data-ng-bind=\"(selected_gift.points | number) + ' ' + (selected_gift.points | sailplay_pluralize:('points.texts.pluralize' | tools))\"></span>\n\n                <p class=\"gift_more_descr modal_gift_description\" data-ng-bind=\"selected_gift.descr\"></p>\n\n                <div class=\"modal_gift_buttons\">\n\n                    <span class=\"alink button_primary\" data-ng-click=\"$parent.$parent.selected_gift=null\">{{ 'buttons.texts.close' | tools }}</span>\n\n                    <span class=\"alink button_primary\"\n                          style=\"margin-left: 5px;\"\n                          data-ng-click=\"gift_confirm(selected_gift);\"\n                          data-ng-bind=\"widget.texts.get\"></span>\n                </div>\n\n            </div>\n        </div>\n\n\n</div>";
+	module.exports = "<div class=\"bon_choice_main container clearfix gifts_grid_widget\">\n\n    <h3 class=\"gifts_grid___header\">\n        <span class=\"header\" data-ng-bind=\"widget.texts.header\"></span>\n    </h3>\n\n    <h4 class=\"gifts_grid___caption\">\n        <span class=\"caption\" data-ng-bind=\"widget.texts.caption\"></span>\n    </h4>\n\n    <div class=\"gifts_grid__wrapper clearfix\">\n\n        <div class=\"gifts_grid__blocks clearfix\">\n\n            <div class=\"gifts_grid__block clearfix\">\n\n                <div class=\"gifts_grid__item clearfix\"\n                     data-ng-class=\"{\n                     'gift-available': isAvailableGift(gift),\n                     'gift-unavailable': !isAvailableGift(gift),\n                     'gift-points-not-enough': user().user_points.confirmed < gift.points\n                     }\"\n                     data-ng-repeat=\"gift in blocks[state] | filter:filter | orderBy:orderBy track by $index\">\n\n                    <span class=\"gifts_grid__item-name gift_name\" data-ng-bind=\"gift.name\"></span>\n\n                    <span class=\"gifts_grid__item-points gift_points\"\n                          data-ng-bind=\"(gift.points | number) + ' ' + (gift.points | sailplay_pluralize:('points.texts.pluralize' | tools))\"></span>\n\n                    <img class=\"gifts_grid__item-img gift_img\"\n                         data-ng-src=\"{{ gift.thumbs.url_250x250 | sailplay_pic }}\"\n                         alt=\"{{ gift.name }}\">\n\n\n                    <a class=\"gifts_grid__item-button button_primary\" href=\"#\"\n                       data-ng-bind=\"widget.texts.get\"\n                       data-ng-click=\"$event.preventDefault();open(gift)\"></a>\n\n\n                </div>\n\n            </div>\n\n        </div>\n\n        <a href=\"#\" class=\"gifts_grid__arrow gifts_grid__arrow_l slider_arrow_left\"\n           data-ng-if=\"state\"\n           data-ng-click=\"$event.preventDefault(); move(-1);\"></a>\n\n        <a href=\"#\" class=\"gifts_grid__arrow gifts_grid__arrow_r slider_arrow_right\"\n           data-ng-if=\"blocks.length && state != (blocks.length-1)\"\n           data-ng-click=\"$event.preventDefault(); move(1);\"></a>\n\n    </div>\n\n    <magic-modal class=\"bns_overlay_gift\" data-show=\"selected_gift\">\n\n        <div class=\"modal_gift_container\">\n\n            <img class=\"gift_more_img\" data-ng-src=\"{{ selected_gift.thumbs.url_250x250 | sailplay_pic }}\"\n                 alt=\"{{ selected_gift.name }}\">\n\n            <div class=\"gift_more_block\">\n\n                <span data-ng-bind=\"selected_gift\"></span>\n\n                <span class=\"gift_more_name modal_gift_name\" data-ng-bind=\"selected_gift.name\"></span>\n\n                <span class=\"gift_more_points modal_gift_points\"\n                      data-ng-bind=\"(selected_gift.points | number) + ' ' + (selected_gift.points | sailplay_pluralize:('points.texts.pluralize' | tools))\"></span>\n\n                <p class=\"gift_more_descr modal_gift_description\" data-ng-bind=\"selected_gift.descr\"></p>\n\n                <div class=\"modal_gift_buttons\">\n\n                    <span class=\"alink button_primary\" data-ng-click=\"$parent.$parent.selected_gift=null\">{{ 'buttons.texts.close' | tools }}</span>\n\n                    <span class=\"alink button_primary\"\n                          style=\"margin-left: 5px;\"\n                          data-ng-click=\"gift_confirm(selected_gift);\"\n                          data-ng-bind=\"widget.texts.get\"></span>\n                </div>\n\n            </div>\n        </div>\n\n\n</div>";
 
 /***/ }),
 /* 138 */
@@ -43520,11 +43525,112 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _widget = __webpack_require__(63);
 
-	var _statuses = __webpack_require__(171);
+	var _profile_nr = __webpack_require__(171);
+
+	var _profile_nr2 = _interopRequireDefault(_profile_nr);
+
+	var _history_pagination = __webpack_require__(172);
+
+	var _history_pagination2 = _interopRequireDefault(_history_pagination);
+
+	__webpack_require__(173);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var ProfileNrWidget = {
+
+	  id: 'profile_nr',
+	  template: _profile_nr2.default,
+	  inject: ['$rootScope', 'SailPlayApi'],
+	  controller: function controller($rootScope, SailPlayApi) {
+	    return function (scope, elm, attrs) {
+
+	      scope.profile = {
+	        history: false,
+	        show_fill_profile: false,
+	        fill_profile: function fill_profile(state) {
+
+	          scope.profile.show_fill_profile = state || false;
+	        }
+	      };
+	    };
+	  }
+
+	};
+
+	_widget.Widget.config(["MagicWidgetProvider", function (MagicWidgetProvider) {
+	  MagicWidgetProvider.register(ProfileNrWidget);
+	}]);
+
+	_widget.Widget.run(["$templateCache", function ($templateCache) {
+	  $templateCache.put('profile_nr.history_pagination', _history_pagination2.default);
+	}]);
+
+/***/ }),
+/* 171 */
+/***/ (function(module, exports) {
+
+	module.exports = "<div class=\"spm_profile_nr clearfix\" data-ng-if=\"widget.enabled\" data-ng-cloak data-sailplay-profile>\n\n    <div class=\"spm_profile_nr-left\">\n\n        <div class=\"spm_profile_nr-header\"\n             data-ng-bind=\"user() ? (widget.texts.auth.header + user().user.name) : widget.texts.no_auth.header\"></div>\n        <div class=\"spm_profile_nr-description\"\n             data-ng-bind=\"widget.texts[user() ? 'auth' : 'no_auth'].description\"></div>\n\n        <div class=\"spm_profile_nr-buttons\" data-ng-if=\"user && user()\">\n            <a href=\"#\" class=\"button_primary spm_profile_nr-edit\"\n               data-ng-bind=\"widget.texts.edit\"\n               data-ng-click=\"$event.preventDefault();profile.show_fill_profile=true;\"></a>\n            <a href=\"#\" class=\"button_primary spm_profile_nr-logout\"\n               data-ng-click=\"$event.preventDefault();logout();\"></a>\n        </div>\n\n    </div>\n\n    <div class=\"spm_profile_nr-right\">\n\n        <div data-ng-if=\"user()\">\n\n            <div class=\"spm_profile_nr-avatar\" data-ng-style=\"{'background-image': (user().user.avatar['250x250'] | sailplay_pic | background_image)}\"></div>\n\n            <div class=\"spm_profile_nr-balance\">\n                <div class=\"spm_profile_nr-balance-hover\">\n                    <span class=\"spm_profile_nr-balance-value\" data-ng-bind=\"user().user_points.confirmed | number\"></span>\n                    <span class=\"spm_profile_nr-balance-placeholder\" data-ng-bind=\"widget.texts.balance\"></span>\n                    <a href=\"\" class=\"button_primary spm_profile_nr-history\" data-ng-bind=\"widget.texts.history\"\n                       data-ng-click=\"$event.preventDefault();profile.history=true;\"></a>\n                </div>\n            </div>\n\n        </div>\n\n        <a href=\"#\" class=\"spm_profile_nr-login\"\n           data-ng-if=\"!user()\"\n           data-ng-bind=\"widget.texts.login\"\n           data-ng-click=\"$event.preventDefault();login('remote', {widget: 'profile_nr', action: 'login_button'});\"></a>\n\n    </div>\n\n    <magic-modal class=\"bns_overlay_hist\" data-show=\"profile.history\">\n\n        <div data-sailplay-history data-sailplay-profile>\n\n            <h3>\n                <span class=\"modal_history_header\">{{ widget.texts.history.header }}</span>\n                <!--<b>У вас {{ user().user_points.confirmed + ' ' + (user().user_points.confirmed | sailplay_pluralize:_tools.points.texts.pluralize) }}</b>-->\n            </h3>\n            <h4 class=\"modal_history_caption\">{{ widget.texts.history.caption }}</h4>\n\n            <table class=\"bns_hist_table\">\n\n                <tbody>\n\n                <tr data-dir-paginate=\"item in history() | itemsPerPage:10\" data-pagination-id=\"history_pages\">\n                    <td>\n                        <span class=\"modal_history_date\" data-ng-bind=\"item.action_date | date:'d/MM/yyyy'\"></span>\n                    </td>\n                    <td>\n                        <span><b class=\"modal_history_content\" data-ng-bind=\"item | history_item\"></b></span>\n                    </td>\n                    <td>\n                        <span class=\"modal_history_points\" data-ng-if=\"item.points_delta\" data-ng-bind=\"((item.points_delta|number) || 0) + ' ' + (item.points_delta | sailplay_pluralize:('points.texts.pluralize' | tools))\"></span>\n                    </td>\n                </tr>\n\n                </tbody>\n            </table>\n\n            <dir-pagination-controls data-max-size=\"7\" data-pagination-id=\"history_pages\"\n                                     data-template-url=\"profile.history_pagination\"\n                                     data-auto-hide=\"true\"></dir-pagination-controls>\n        </div>\n\n\n\n    </magic-modal>\n\n    <!--profile edit section-->\n    <magic-modal class=\"fill_profile_modal\" data-show=\"profile.show_fill_profile\">\n\n        <div class=\"mb_popup mb_popup_prof\" data-sailplay-fill-profile data-config=\"widget.fill_profile.config\">\n\n            <div class=\"mb_popup_top\">\n                <span class=\"modal_profile_header\">{{ widget.fill_profile.header }}</span>\n            </div>\n\n            <form name=\"fill_profile_form\" class=\"mb_popup_main mb_popup_main_mt\" data-ng-submit=\"sailplay.fill_profile.submit(fill_profile_form, profile.fill_profile);\">\n\n                <div class=\"form_field\" data-ng-repeat=\"field in sailplay.fill_profile.form.fields\" data-ng-switch=\"field.input\">\n\n                    <div data-ng-switch-when=\"image\" class=\"avatar_upload clearfix\">\n                        <img width=\"160px\" data-ng-src=\"{{ (field.value | sailplay_pic) || 'http://saike.ru/sailplay-magic/dist/img/profile/avatar_default.png'}}\" alt=\"\">\n                    </div>\n\n                    <div data-ng-switch-when=\"text\" class=\"clearfix\">\n                        <label class=\"form_label\">{{ field.label }}</label>\n                        <input class=\"form_input\" type=\"text\" placeholder=\"{{ field.placeholder }}\" data-ng-model=\"field.value\">\n                    </div>\n\n                    <div data-ng-switch-when=\"date\" class=\"clearfix\">\n                        <label class=\"form_label\">{{ field.label }}</label>\n                        <date-picker data-model=\"field.value\"></date-picker>\n                    </div>\n\n                    <div data-ng-switch-when=\"select\" class=\"clearfix\">\n                        <label class=\"form_label\">{{ field.label }}</label>\n                        <div class=\"magic_select form_input\">\n                            <select data-ng-model=\"field.value\" data-ng-options=\"item.value as item.text for item in field.data\"></select>\n                        </div>\n                    </div>\n\n                    <div data-ng-switch-when=\"phone\" class=\"clearfix\">\n                        <label class=\"form_label\">{{ field.label }}</label>\n                        <input class=\"form_input\" type=\"text\" data-model-view-value=\"true\" data-ui-mask=\"{{ field.placeholder }}\" data-ng-model=\"field.value\">\n                    </div>\n\n                    <div data-ng-switch-when=\"email\" class=\"clearfix\">\n                        <label class=\"form_label\">{{ field.label }}</label>\n                        <input class=\"form_input\" type=\"email\" placeholder=\"{{ field.placeholder }}\" data-ng-model=\"field.value\">\n                    </div>\n\n                </div>\n\n                <div class=\"answ_text\">\n                    <button type=\"submit\" class=\"sp_btn button_primary\">{{ 'buttons.texts.save' | tools }}</button>\n                </div>\n            </form>\n        </div>\n    </magic-modal>\n\n</div>";
+
+/***/ }),
+/* 172 */
+/***/ (function(module, exports) {
+
+	module.exports = "<div class=\"bns_hist_pager\" data-ng-if=\"1 < pages.length || !autoHide\">\n\n  <a data-ng-if=\"directionLinks\" data-ng-class=\"{ disabled : pagination.current == 1 }\" href=\"\" data-ng-click=\"setCurrent(pagination.current - 1)\">\n    &lsaquo;\n  </a>\n  <a data-ng-repeat=\"pageNumber in pages track by tracker(pageNumber, $index)\" data-ng-class=\"{ active : pagination.current == pageNumber, disabled : pageNumber == '...' }\" href=\"\" data-ng-click=\"setCurrent(pageNumber)\">\n    {{ pageNumber }}\n  </a>\n\n  <a data-ng-if=\"directionLinks\" data-ng-class=\"{ disabled : pagination.current == pagination.last }\" href=\"\" data-ng-click=\"setCurrent(pagination.current + 1)\">\n    &rsaquo;\n  </a>\n\n</div>";
+
+/***/ }),
+/* 173 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(174);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(76)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./profile_nr.less", function() {
+				var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./profile_nr.less");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ }),
+/* 174 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(75)();
+	// imports
+
+
+	// module
+	exports.push([module.id, ".spm_wrapper .spm_profile_nr {\n  width: 100%;\n  max-width: 1000px;\n  margin: 0 auto;\n  box-sizing: border-box;\n  position: relative;\n}\n.spm_wrapper .spm_profile_nr-left {\n  width: 50%;\n  float: left;\n}\n@media screen and (max-width: 850px) {\n  .spm_wrapper .spm_profile_nr-left {\n    width: 100%;\n  }\n}\n.spm_wrapper .spm_profile_nr-right {\n  width: 50%;\n  text-align: right;\n  float: left;\n}\n@media screen and (max-width: 850px) {\n  .spm_wrapper .spm_profile_nr-right {\n    width: 100%;\n    text-align: center;\n    height: 260px;\n    position: relative;\n  }\n}\n@media screen and (max-width: 650px) {\n  .spm_wrapper .spm_profile_nr-right {\n    height: auto;\n  }\n}\n.spm_wrapper .spm_profile_nr-header {\n  font-size: 48px;\n  line-height: 1;\n  font-weight: bold;\n  text-transform: uppercase;\n  position: relative;\n}\n.spm_wrapper .spm_profile_nr-description {\n  font-size: 16px;\n  color: grey;\n  font-weight: 300;\n  max-width: 90%;\n  line-height: 23px;\n  margin-top: 20px;\n}\n.spm_wrapper .spm_profile_nr-buttons {\n  margin-top: 20px;\n}\n.spm_wrapper .spm_profile_nr-buttons a {\n  display: inline-block;\n  vertical-align: middle;\n}\n.spm_wrapper .spm_profile_nr-login {\n  display: inline-block;\n  width: 75%;\n  font-size: 20px;\n  height: 110px;\n  text-align: center;\n  line-height: 110px;\n  color: white;\n  text-transform: uppercase;\n  text-decoration: none;\n  transition: opacity 0.5s ease;\n}\n.spm_wrapper .spm_profile_nr-login:hover {\n  opacity: 0.8;\n}\n@media screen and (max-width: 850px) {\n  .spm_wrapper .spm_profile_nr-login {\n    margin-top: 10px;\n  }\n}\n.spm_wrapper .spm_profile_nr-history.button_primary {\n  display: none;\n}\n.spm_wrapper .spm_profile_nr-avatar {\n  position: absolute;\n  width: 176px;\n  height: 176px;\n  right: 220px;\n  top: 50%;\n  margin-top: -88px;\n  text-align: center;\n  border-radius: 50%;\n  z-index: 3;\n  background-size: contain;\n  background-position: center center;\n  background-repeat: no-repeat;\n  box-shadow: 0px 15px 30px 0px rgba(148, 194, 161, 0.44);\n}\n.spm_wrapper .spm_profile_nr-avatar:before {\n  content: '';\n  position: relative;\n  width: 100%;\n  height: 100%;\n  border: 5px solid rgba(255, 255, 255, 0.3);\n  border-radius: 50%;\n  display: block;\n  left: -5px;\n  top: -5px;\n}\n@media screen and (max-width: 850px) {\n  .spm_wrapper .spm_profile_nr-avatar {\n    right: 52%;\n  }\n}\n@media screen and (max-width: 650px) {\n  .spm_wrapper .spm_profile_nr-avatar {\n    position: relative;\n    right: auto;\n    top: auto;\n    margin: 10px auto 0;\n  }\n}\n.spm_wrapper .spm_profile_nr-balance {\n  position: absolute;\n  width: 250px;\n  right: 0;\n  top: 50%;\n  margin-top: -125px;\n  text-align: center;\n  height: 250px;\n  border-radius: 50%;\n  z-index: 2;\n  background: #43c25c;\n  /* Old browsers */\n  background: -moz-linear-gradient(0deg, #43c25c 0%, #2d964c 100%);\n  /* FF3.6-15 */\n  background: -webkit-linear-gradient(0deg, #43c25c 0%, #2d964c 100%);\n  /* Chrome10-25,Safari5.1-6 */\n  background: linear-gradient(0deg, #43c25c 0%, #2d964c 100%);\n  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */\n  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#43c25c', endColorstr='#2d964c', GradientType=1);\n  /* IE6-9 fallback on horizontal gradient */\n}\n.spm_wrapper .spm_profile_nr-balance-value {\n  font-size: 60px;\n  color: white;\n  margin-top: 80px;\n  font-weight: bold;\n  display: block;\n  line-height: 1;\n  text-align: center;\n}\n.spm_wrapper .spm_profile_nr-balance-placeholder {\n  font-size: 16px;\n  color: white;\n  margin-top: 10px;\n  display: block;\n  font-weight: 300;\n  text-align: center;\n}\n.spm_wrapper .spm_profile_nr-balance:hover span {\n  display: none;\n}\n.spm_wrapper .spm_profile_nr-balance:hover .spm_profile_nr-history {\n  margin-top: 105px;\n  display: inline-block;\n}\n.spm_wrapper .spm_profile_nr-balance-hover {\n  text-align: center;\n  display: inline-block;\n}\n@media screen and (max-width: 850px) {\n  .spm_wrapper .spm_profile_nr-balance {\n    right: 23%;\n  }\n}\n@media screen and (max-width: 650px) {\n  .spm_wrapper .spm_profile_nr-balance {\n    position: relative;\n    right: auto;\n    top: auto;\n    margin: 20px auto;\n  }\n}\n", ""]);
+
+	// exports
+
+
+/***/ }),
+/* 175 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _widget = __webpack_require__(63);
+
+	var _statuses = __webpack_require__(176);
 
 	var _statuses2 = _interopRequireDefault(_statuses);
 
-	__webpack_require__(172);
+	__webpack_require__(177);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -43577,19 +43683,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	});
 
 /***/ }),
-/* 171 */
+/* 176 */
 /***/ (function(module, exports) {
 
 	module.exports = "<div class=\"clearfix container\">\n\n  <div class=\"status-list\">\n\n    <div class=\"next_status_info\" data-ng-show=\"get_next_status().status\">\n\n      <div class=\"next_status_name\">\n        {{ widget.texts.next_status }} <span data-ng-style=\"{ color: get_next_status().status.color  }\">{{ get_next_status().status.status }}</span>\n      </div>\n\n      <div class=\"next_status_offset\">\n        {{ widget.texts.next_status_offset }} {{ get_next_status().offset }}\n      </div>\n\n    </div>\n\n    <div class=\"status-list__wrapper\" data-sailplay-statuses data-ng-cloak>\n\n      <div class=\"status-list__progress element-progress progress_line\"\n           data-ng-style=\"getProgress(purchase_status ? user().purchases.sum : user().user_points, _statuses)\"></div>\n\n      <div class=\"status-list__item element-item\"\n           data-ng-class=\"{ type_active : item.points <= user().user_points.confirmed + user().user_points.spent + user().user_points.spent_extra }\"\n           data-ng-repeat=\"item in _statuses\"\n           data-ng-style=\"generateOffset($index, _statuses)\">\n\n        <div class=\"status-list__item-point element-item-point\"></div>\n\n        <div class=\"element-item-point-inner\" data-ng-style=\"{ backgroundColor: item.color }\"></div>\n\n        <div class=\"status-list__item-name element-item-name\" data-ng-bind=\"item.name\"></div>\n        <div class=\"status-list__item-status element-item-status\" data-ng-if=\"item.status\" data-ng-bind=\"item.status\"\n             style=\"{{ (item.color) ? ('color: ' +  item.color) : '' }}\"></div>\n\n      </div>\n\n    </div>\n\n  </div>\n</div>";
 
 /***/ }),
-/* 172 */
+/* 177 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(173);
+	var content = __webpack_require__(178);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(76)(content, {});
@@ -43609,7 +43715,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ }),
-/* 173 */
+/* 178 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(75)();
