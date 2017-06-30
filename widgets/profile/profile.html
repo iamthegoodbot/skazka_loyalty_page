@@ -49,8 +49,19 @@
                 <label>{{ field.label }}</label>
                 <div class="bns_radio">
                   <div class="bns_radio_item" data-ng-repeat="item in field.data">
-                      <input name="{{field.name}}" data-ng-value="item.value" id="{{'field_' + field.name + '_' + item.value}}" type="radio">
+                      <input data-ng-value="{{item.value}}" data-ng-model="field.value" id="{{'field_' + field.name + '_' + item.value}}" type="radio">
                       <label for="{{'field_' + field.name + '_' + item.value}}">{{ item.text }}</label>
+                  </div>
+                </div>
+              </div>
+
+              <div data-ng-switch-when="radio-tag" class="bns_radio_block bns_zi2">
+                <label>{{ field.label }}</label>
+                <div class="bns_radio">
+                  <div class="bns_radio_item" data-ng-repeat="item in field.data">
+            <!--      {{item}} -->
+                      <input data-ng-value="field.value" data-ng-model="field.model" id="{{'field_' + field.name + '_' + field.value}}" type="radio">
+                      <label for="{{'field_' + field.name + '_' + field.value}}">{{ item.text }}</label>
                   </div>
                 </div>
               </div>

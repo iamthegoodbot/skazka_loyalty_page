@@ -1,6 +1,6 @@
 import { WidgetRegister } from '@core/widget';
 import CardQuestsTemplate from './card-quests.html';
-import './card-quests.less';
+//import './card-quests.less';
 
 WidgetRegister({
 

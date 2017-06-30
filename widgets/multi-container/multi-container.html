@@ -17,10 +17,13 @@
         <h3 class="bns_head">
             <span>Памятные даты</span>
         </h3>
-        <span class="bns_date_name">
-        Анастасия празднует  <br> день
-                рождения завтра
-    </span>
+        <span class="bns_date_name" ng-if="!currentDate.isDefault">
+          <span data-ng-bind="currentDate.name + ' празднует'"></span><br> 
+          <span data-ng-bind="'день рождения ' + currentDate.displayDate"></span>
+        </span>
+        <span class="bns_date_name" ng-if="currentDate.isDefault">
+          <span data-ng-bind="'В ближайшее время событий нет'"></span>
+        </span>
         <span class="bns_over">
                 Здесь Вы можете добавлять даты,
                 о которых хотите получать напоминания. Например, дни рождения дорогих Вам людей

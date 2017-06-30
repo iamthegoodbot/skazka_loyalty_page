@@ -211,10 +211,14 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
           if (!user) return;
           var form = scope.sailplay.fill_profile.form;
           var custom_fields = [];
+          var tags_fields = [];
           form.fields = config.fields.map(function (field) {
             var form_field = new SailPlayFillProfile.Field(field);
             if (field.type == 'variable') 
               custom_fields.push(form_field)
+
+            if (field.type == 'tags') 
+              tags_fields.push(form_field)
             
             //we need to assign received values to form
             switch (form_field.type) {
@@ -281,6 +285,26 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
               angular.forEach(res.vars, variable => {                
                 angular.forEach(custom_fields, field => {
                   if (field.name == variable.name) field.value = variable.value;
+                })
+              })
+            })
+          }                      
+
+          if (tags_fields.length) { 
+            let tags = []; 
+            angular.forEach(tags_fields, field => {                
+              tags = tags.concat(field.data.map(item => item.tag))
+            })    
+            SailPlayApi.call("tags.exist", { tags: tags }, (res) => {
+              angular.forEach(res.tags, tag => {                
+                angular.forEach(tags_fields, field => {
+                   angular.forEach(field.data, tag_field => {   
+                            
+                    if (tag_field.tag == tag.name) {
+                      tag_field.value = tag.exist 
+                      console.log(tag_field, tag)    
+                    }
+                  }) 
                 })
               })
             })

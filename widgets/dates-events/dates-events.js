@@ -173,7 +173,6 @@ WidgetRegister({
       }
 
       datesFactory.getUserDates().then(res=>{
-        console.info(res)
       })
       
 
