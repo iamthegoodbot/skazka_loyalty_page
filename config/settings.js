@@ -1,3 +1,27 @@
+const shareBtns = {
+  "background-color": "#820d41",
+  "color": "white",
+  "text-decoration": "none",
+  "text-transform": "uppercase",
+  "padding": "7px 30px",
+  "font-size": "18px",
+  "border": "none",
+  "display": "inline-block",
+  "font-weight": "300",
+  "cursor": "pointer",
+  "height": "auto",
+  "line-height": "120%",
+  "text-align": "center"
+}
+
+const buttonStyles = {
+  "vk_share_btn": shareBtns,
+  "fb_share_btn": shareBtns,
+  "gp_share_btn": shareBtns,
+  "tw_share_btn": shareBtns,
+  "ok_share_btn": shareBtns
+}
+
 module.exports = {
   "$MAGIC": {
     "widgets": [
@@ -165,20 +189,20 @@ module.exports = {
         }
       },
       "actions": {
-        "system": {
+        "system": { //'https://sailplays3.cdnvideo.ru/media/assets/assetfile/56a5a196f77d4e370bff945388536055.svg'
           "emailBinding": {
             name: "Привяжите E-Mail",
-            pic: "https://sailplays3.cdnvideo.ru/media/assets/assetfile/6ecebe184db25e4708b8d03def71b558.png",
+            pic: "https://sailplays3.cdnvideo.ru/media/assets/assetfile/8d1895bae3f02ff8f579f114d8d60638.svg",
             button_text: "Привяжите E-Mail"
           },
           "fillProfile":{
             name: "Заполните профиль",
-            pic: "https://sailplays3.cdnvideo.ru/media/assets/assetfile/f22be1f2b19c86d6824c936faffa6a0c.png",
+            pic: "https://sailplays3.cdnvideo.ru/media/assets/assetfile/8d1895bae3f02ff8f579f114d8d60638.svg",
             button_text: "Заполните профиль"
           },
           "inviteFriend":{
             name: "Пригласите друга",
-            pic: 'https://sailplays3.cdnvideo.ru/media/assets/assetfile/a6f3c1bc8ea6217bf09cdd16e1f24634.png',
+            pic: "https://sailplays3.cdnvideo.ru/media/assets/assetfile/b1670d058c453ef73c4a808226674720.svg",
             button_text: "Пригласите друга"
           }
         },
@@ -186,64 +210,78 @@ module.exports = {
           "vk": {
             "like": {
               "name": "Вступите в группу VK",
-              pic: 'https://sailplays3.cdnvideo.ru/media/assets/assetfile/7348ae509da7fa250fe8cc5b8d836dd8.png'
+              pic: 'https://sailplays3.cdnvideo.ru/media/assets/assetfile/b47ee69856ae1ab5da892f8c282d96ea.svg',
+              "styles": buttonStyles
             },
             "partner_page": {
               "name": "Рассказать о нашем магазине в VK",
-              pic: 'https://sailplays3.cdnvideo.ru/media/assets/assetfile/7348ae509da7fa250fe8cc5b8d836dd8.png'
+              pic: 'https://sailplays3.cdnvideo.ru/media/assets/assetfile/b47ee69856ae1ab5da892f8c282d96ea.svg',
+              "styles": buttonStyles
             },
             "purchase": {
               "name": "Поделитесь вашей покупкой в VK",
-              pic: 'https://sailplays3.cdnvideo.ru/media/assets/assetfile/7348ae509da7fa250fe8cc5b8d836dd8.png'
+              pic: 'https://sailplays3.cdnvideo.ru/media/assets/assetfile/b47ee69856ae1ab5da892f8c282d96ea.svg',
+              "styles": buttonStyles
             }
           },
           "fb": {
             "like": {
               "name": "Вступите в группу Facebook",
-              pic: 'https://sailplays3.cdnvideo.ru/media/assets/assetfile/135cb1b4fd6ea0a83558b8b7a00d690e.png'
+              pic: 'https://sailplays3.cdnvideo.ru/media/assets/assetfile/b146be18f41441fd1b551dceefaba44f.svg',
+              "styles": buttonStyles
             },
             "partner_page": {
               "name": "Рассказать о нашем магазине в Facebook",
-              pic: 'https://sailplays3.cdnvideo.ru/media/assets/assetfile/135cb1b4fd6ea0a83558b8b7a00d690e.png'
+              pic: 'https://sailplays3.cdnvideo.ru/media/assets/assetfile/b146be18f41441fd1b551dceefaba44f.svg',
+              "styles": buttonStyles
             },
             "purchase": {
               "name": "Поделитесь вашей покупкой в Facebook",
-              pic: 'https://sailplays3.cdnvideo.ru/media/assets/assetfile/135cb1b4fd6ea0a83558b8b7a00d690e.png'
+              pic: 'https://sailplays3.cdnvideo.ru/media/assets/assetfile/b146be18f41441fd1b551dceefaba44f.svg',
+              "styles": buttonStyles
             }
           },
           "gp": {
             "like": {
               "name": "Вступите в группу Google+",
-              pic: 'https://sailplays3.cdnvideo.ru/media/assets/assetfile/d32fbca1089257b6cd36e83352f0da8a.png'
+              pic: 'https://sailplays3.cdnvideo.ru/media/assets/assetfile/d32fbca1089257b6cd36e83352f0da8a.png',
+              "styles": buttonStyles
             },
             "partner_page": {
               "name": "Рассказать о нашем магазине в Google+",
-              pic: 'https://sailplays3.cdnvideo.ru/media/assets/assetfile/d32fbca1089257b6cd36e83352f0da8a.png'
+              pic: 'https://sailplays3.cdnvideo.ru/media/assets/assetfile/d32fbca1089257b6cd36e83352f0da8a.png',
+              "styles": buttonStyles
             },
             "purchase": {
               "name": "Поделитесь вашей покупкой в Google+",
-              pic: 'https://sailplays3.cdnvideo.ru/media/assets/assetfile/d32fbca1089257b6cd36e83352f0da8a.png'
+              pic: 'https://sailplays3.cdnvideo.ru/media/assets/assetfile/d32fbca1089257b6cd36e83352f0da8a.png',
+              "styles": buttonStyles
             }
           },
           "ok": {
             "like": {
-              "name": "Вступите в группу Одноклассники"
+              "name": "Вступите в группу Одноклассники",
+              "styles": buttonStyles
             },
             "partner_page": {
-              "name": "Рассказать о нашем магазине в Одноклассники"
+              "name": "Рассказать о нашем магазине в Одноклассники",
+              "styles": buttonStyles
             },
             "purchase": {
-              "name": "Поделитесь вашей покупкой в Одноклассники"
+              "name": "Поделитесь вашей покупкой в Одноклассники",
+              "styles": buttonStyles
             }
           },
           "tw": {
             "partner_page": {
               "name": "Рассказать о нашем магазине в Twitter",
-              pic: 'dist/img/actions/twitter.png'
+              pic: 'dist/img/actions/twitter.png',
+              "styles": buttonStyles
             },
             "purchase": {
               "name": "Поделитесь вашей покупкой в Twitter",
-              pic: 'dist/img/actions/twitter.png'
+              pic: 'dist/img/actions/twitter.png',
+              "styles": buttonStyles
             }
           }
         }

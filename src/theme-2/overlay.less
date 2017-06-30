@@ -61,6 +61,14 @@
           }
         }
       }
+      &.bns_table_det {
+        tr {
+          td:nth-child(2) {
+            width: 390px;
+            white-space: normal;
+          }
+        }
+      }
       .tr_head {
         td {
           color: #a4b4ba;
@@ -102,7 +110,7 @@
             &.bns_act {
               &:before {
                 background-color: #820d41;
-                background-position: center center;
+                background-position: center 5px;
                 background-repeat: no-repeat;
                 background-image: url("@{burl}gal.png");
               }
@@ -262,7 +270,7 @@
           text-align: center;
 
         }
-        &:hover .bns_toltip_popup {
+        &:hover .bns_toltip_popup, &.bns_act .bns_toltip_popup {
           opacity: 1;
           display: block;
         }
@@ -320,6 +328,7 @@
         &.bns_sel {
           label {
             font-size: 16px;
+            color: #000000;
           }
           .label_top {
             font-size: 13px;
@@ -343,8 +352,10 @@
         input {
           display: none;
           width: 100%;
-          font-size: 13px;
-          color: #878787;
+          border: 0;
+          outline: none;
+          font-size: 16px;
+          color: #000000;
           font-weight: 300;
         }
         &.bns_act {
@@ -437,9 +448,9 @@
           input:checked + label {
             &:before {
               background-color: #820d41;
-              background-position: center center;
+              background-position: center 5px;
               background-repeat: no-repeat;
-              background-image: url(http://localhost/jw/img/gal.png);
+              background-image: url("@{burl}gal.png");
             }
           }
           label {

@@ -67,10 +67,10 @@
                     <td>
                         <span data-ng-bind="item | get_bonus_name"></span>
                     </td>
-                    <td>
+                    <td data-ng-class="{bns_null: (item | get_bonus_add) == 0}">
                         <span data-ng-bind="(item | get_bonus_add) + ' баллов'"></span>
                     </td>
-                    <td>
+                    <td data-ng-class="{bns_null: (item | get_bonus_sub) == 0}">
                         <span data-ng-bind="(item | get_bonus_sub) + ' баллов'""></span>
                     </td>
                     <td>

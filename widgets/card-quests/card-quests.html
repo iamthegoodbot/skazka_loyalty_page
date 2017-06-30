@@ -1,3 +1,42 @@
+<div class="bns_gift" data-sailplay-actions>
+  <h3 class="bns_head">
+      Ваши персональные предложения
+  </h3>
+  <div class="bns_gift_main">
+      <div class="swiper-container">
+
+          <div class="swiper-wrapper">
+            <div class="swiper-slide" data-ng-repeat="action in actions_custom() | offer" title="{{ action.name }}">
+                <a href="#" class="bns_gift_item" data-ng-style="{'background-image': (action.content.image | sailplay_pic | background_image)}">
+                    <div class="bns_gift_item_top">
+                      <span class="bns_gift_name" data-ng-bind="action_data(action).name | chopOfferName">
+                      </span>
+                      <br>
+                      <span class="bns_gift_date" data-ng-bind="'до ' + (action_data(action).dt_end | amDateFormat:'D MMMM')">
+                      </span>
+                      </div>
+                      <div class="bns_gift_over">
+                        <span class="bns_gift_over_desc" data-ng-bind="action_data(action).description">
+                          
+                        </span>
+                        <span class="bns_btn" data-ng-bind="action_data(action).button_text" data-ng-click="action_custom_select(action)">
+                          
+                        </span>
+                    </div>
+                </a>
+            </div>
+          </div>
+          <!-- Add Scrollbar -->
+          <div class="swiper-scrollbar"></div>
+
+          <!-- Add Arrows -->
+          <div class="swiper-button-next"></div>
+          <div class="swiper-button-prev"></div>
+
+
+  </div>
+</div>
+
 <div class="container clearfix" data-sailplay-actions id="magic_actions">
   <div class="bns_qust">
     <div class="bns_head">
@@ -6,7 +45,7 @@
     <div class="bns_qust_main">
       <a href="#" class="bns_qust_item" data-ng-repeat="action in actions().actions | filter:filter" title="{{ action_data(action).name }}">
           <div class="bns_qust_left">
-              <img src="./../../src/img/qust1.png" alt=""> 
+              <img data-ng-src="{{ action_data(action).pic | sailplay_pic }}" alt=""> 
           </div>
           <div class="bns_qust_right">
             <span class="bns_bal" data-ng-show="action.points" data-ng-bind="((action.points || 0) | number) + ' ' + (action.points | sailplay_pluralize:( 'points.texts.pluralize' | tools ))">
@@ -30,7 +69,7 @@
     <!-- custom actions -->
 
     <div class="bns_qust_main">
-      <a href="#" class="bns_qust_item" data-ng-repeat="action in actions_custom() | filter:filter" title="{{ action.name }}">>
+      <a href="#" class="bns_qust_item" data-ng-repeat="action in actions_custom() | noOffer" title="{{ action.name }}">
           <div class="bns_qust_left">
               <img data-ng-src="{{ action.icon | sailplay_pic }}" alt=""> 
           </div>
@@ -43,7 +82,7 @@
             </span>
           </div>
           <div class="bns_qust_over">
-              <span data-ng-click="action_custom_select(action)">{{ action.button_text }}</span>
+              <span class="bns_btn" data-ng-click="action_custom_select(action)" data-ng-click="action_custom_select(action)">{{ action.button_text }}</span>
           </div>
       </a>
     </div>
@@ -51,7 +90,7 @@
 </div>
   
 
-          <div class="spm_col quest_card_container" data-ng-repeat="action in actions_custom() | filter:filter">
+          <div class="spm_col quest_card_container" data-ng-repeat="action in actions_custom() | noOffer">
 
             <div class="quest_card" title="{{ action.name }}">
 
@@ -118,10 +157,26 @@
       </magic-modal>
 
       <magic-modal class="bns_overlay bns_overlay_gift" data-ng-cloak data-show="$parent.action_custom_selected">
-
-        <div data-sailplay-action-custom data-action="action_custom_selected"></div>
+        
+        <div data-ng-show="$parent.action_custom_selected.name.indexOf('offer:') === 0" data-sailplay-action-custom data-action="action_custom_selected"></div>
+        
+          <div class="bns_overlay_inner"  data-ng-if="$parent.action_custom_selected.name.indexOf('offer:') !== 0">
+              <div class="bns_over_left" data-ng-style="{'background-image': ($parent.action_custom_selected.content.image | sailplay_pic | background_image)}">
+                  <h4 class="bns_head" data-ng-bind="$parent.action_custom_selected.content.header">
+                      
+                  </h4>
+                  <a href="#" class="close"></a>
+                  <div class="bns_about" data-ng-bind="$parent.action_custom_selected.content.message">
+                      Описание условий бонусной программы. Расширение производства потребовало увеличения и обновления станочного парка и роста числа сотрудников предприятия. Спрос на ювелирную продукцию был огромным, поэтому завод работал в две, а то и в три смены, и трудилось на нем до полутора тысяч человек.
+                  </div>
+                  <a data-ng-bind="$parent.action_custom_selected.content.button_text" data-ng-href="$parent.action_custom_selected.content.url" class="bns_btn bns_btn_mt_min">
+                  </a>
+              </div>
+          </div>
 
       </magic-modal>
+
+
 
     </div>
 

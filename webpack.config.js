@@ -84,8 +84,14 @@ console.log("widgets: " + widgets)
 
 const styles = path.join(__dirname, 'src', 'theme-2', 'main.less')
 
+/*
+const vendor = [
+  path.join(__dirname, 'src', 'vendor', 'jquery.mCustomScrollbar.js'),
+  path.join(__dirname, 'src', 'vendor', 'jquery.nicescroll.js'),
+]
+*/
 let entry = {
-  'sailplay-magic': [ path.join(__dirname, 'src', app_name) ].concat(widgets).concat(styles)
+  'sailplay-magic': [ path.join(__dirname, 'src', app_name) ].concat(widgets).concat(styles)//.concat(vendor)
 }
 
 const MAGIC_VERSION = PACKAGE.version

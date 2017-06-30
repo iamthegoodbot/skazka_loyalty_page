@@ -1,6 +1,33 @@
-import { WidgetRegister } from '@core/widget';
+import { WidgetRegister, Widget } from '@core/widget';
 import CardQuestsTemplate from './card-quests.html';
+import Swiper from 'swiper';
 //import './card-quests.less';
+
+Widget.filter('chopOfferName', function () {
+  return function (name) {
+
+    if(name.startsWith('offer: ')){
+      return name.slice(7)
+    } else {
+      return name
+    }
+    
+  };
+});
+
+Widget.filter('offer', function () {
+  return function (items) {
+    return items && items.filter(x=>x.name.indexOf('offer: ') === 0)
+    
+  };
+});
+
+Widget.filter('noOffer', function () {
+  return function (items) {
+    return items && items.filter(x=>x.name.indexOf('offer: ') != 0)
+    
+  };
+});
 
 WidgetRegister({
 
@@ -35,6 +62,28 @@ WidgetRegister({
          scope.action_selected = false;
        });
       });
+
+      const config = {
+        scrollbar: '.swiper-scrollbar',
+        scrollbarHide: false,
+        scrollbarDraggable: true,
+        slidesPerView: 4,
+        centeredSlides: false,
+        nextButton: '.swiper-button-next',
+        prevButton: '.swiper-button-prev',
+        spaceBetween: 15,
+        grabCursor: true
+      };
+
+      let swiper;
+
+      scope.$watch(function(){
+        return angular.toJson([SailPlayApi.data('load.actions.custom.list')()])
+      }, function(){
+        setTimeout(function(){
+          swiper = new Swiper('.swiper-container', config);
+        }, 100);
+      })
 
       scope.action_custom_select = function (action) {
 
