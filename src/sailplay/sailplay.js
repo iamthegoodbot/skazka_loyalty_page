@@ -33,6 +33,7 @@ export let SailPlay = angular.module('sailplay', [
 
     SailPlay.on('login.success', function (res) {
 
+      $rootScope.auth_state = true;
       $rootScope.$broadcast('sailplay-login-success', res);
       $rootScope.$apply();
 
@@ -47,6 +48,7 @@ export let SailPlay = angular.module('sailplay', [
 
     SailPlay.on('logout.success', function (res) {
 
+      $rootScope.auth_state = false;
       $rootScope.$broadcast('sailplay-logout-success', res);
       $rootScope.$apply();
 
@@ -89,7 +91,7 @@ export let SailPlay = angular.module('sailplay', [
 
         var sp = $window.SAILPLAY || {};
 
-        sp.authorize = function (type) {
+        sp.authorize = function (type, from) {
 
           type = type || auth_type;
 
@@ -120,6 +122,12 @@ export let SailPlay = angular.module('sailplay', [
               break;
 
             case 'remote':
+
+              if(auth_options && auth_options.disable) {
+                $rootScope.$broadcast('sailplay-login-try', from);
+                sp.send('sailplay-login-try', from);
+                return;
+              }
 
               sp.send('login.remote', auth_options);
 

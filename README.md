@@ -14,7 +14,7 @@
 
 ## Current version
 
-### 2.1.7
+### 2.1.16
 
 ## Description
 

@@ -170,6 +170,8 @@ export default class Magic {
 
       if(this.inited || !res_config.config || !res_config.config.config.$MAGIC) return;
 
+      Core.constant('MAGIC_CONFIG_DATA', res_config.config);
+
       Core.constant('MAGIC_CONFIG', res_config.config.config.$MAGIC);
 
       const app_container = config.root || document.getElementsByTagName('sailplay-magic')[0];

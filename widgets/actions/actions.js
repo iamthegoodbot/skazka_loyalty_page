@@ -9,9 +9,10 @@ WidgetRegister({
   inject: [
     'tools',
     'SailPlayApi',
-    'SailPlay'
+    'SailPlay',
+    '$rootScope'
   ],
-  controller: function (tools, SailPlayApi, SailPlay) {
+  controller: function (tools, SailPlayApi, SailPlay, $rootScope) {
 
     return function (scope, elm, attrs) {
 
@@ -22,11 +23,16 @@ WidgetRegister({
 
       scope.action_select = function (action) {
 
-        if(!SailPlayApi.data('load.user.info')()) return SailPlay.authorize('remote');
+        if(!SailPlayApi.data('load.user.info')()) return SailPlay.authorize('remote', {widget: 'actions', action: 'action_select'});
 
         scope.action_selected = action || false;
 
       };
+
+      scope.open_profile = function() {
+        if(!SailPlayApi.data('load.user.info')()) return SailPlay.authorize('remote', {widget: 'actions', action: 'open_profile'});
+        $rootScope.$broadcast('openProfile')
+      }
 
       SailPlay.on('actions.perform.success', function(){
        scope.$apply(function(){
@@ -36,7 +42,7 @@ WidgetRegister({
 
       scope.action_custom_select = function (action) {
 
-        if(!SailPlayApi.data('load.user.info')()) return SailPlay.authorize('remote');
+        if(!SailPlayApi.data('load.user.info')()) return SailPlay.authorize('remote', {widget: 'actions', action: 'action_custom_select'});
         scope.action_custom_selected = action || false;
 
       };

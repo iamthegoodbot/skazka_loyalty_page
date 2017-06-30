@@ -61,8 +61,19 @@ export let SailPlayBadges = angular.module('sailplay.badges', [])
           return item.points
         });
 
-        var points = user_points ? user_points.confirmed + user_points.spent + user_points.spent_extra : 0;
+        if(status_points[0] !== 0) {
+          return {
+            width: '0'
+          };
+        }
 
+        function isNumeric(n) {
+          return !isNaN(parseFloat(n)) && isFinite(n);
+        }
+
+        var points;
+        if (isNumeric(user_points)) points = user_points;
+        else points = user_points ? user_points.confirmed + user_points.spent + user_points.spent_extra : 0;
 
         if (status_points[status_points.length - 1] && (points > status_points[status_points.length - 1])) {
           return {
@@ -84,16 +95,15 @@ export let SailPlayBadges = angular.module('sailplay.badges', [])
         var total = status_points[0];
 
         if (state === 0) {
-          return {
-            width: '0%'
-          };
+          current = points;
+          total = status_points[state + 1];
         } else {
           current = (points - status_points[state]);
           total = status_points[state + 1] ? (status_points[state + 1] - status_points[state]) : status_points[state];
         }
 
         return {
-          width: parseInt((current * 100 / total / 100 * 10) + (state * multiplier)) + '%'
+          width: parseInt((current * 100 / total / (status_points.length - 1)) + (state * multiplier)) + '%'
         };
 
       };

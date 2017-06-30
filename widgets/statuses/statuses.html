@@ -17,7 +17,7 @@
     <div class="status-list__wrapper" data-sailplay-statuses data-ng-cloak>
 
       <div class="status-list__progress element-progress progress_line"
-           data-ng-style="getProgress(user().user_points, _statuses)"></div>
+           data-ng-style="getProgress(purchase_status ? user().purchases.sum : user().user_points, _statuses)"></div>
 
       <div class="status-list__item element-item"
            data-ng-class="{ type_active : item.points <= user().user_points.confirmed + user().user_points.spent + user().user_points.spent_extra }"

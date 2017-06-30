@@ -14,7 +14,13 @@
 
             <div class="gifts_grid__block clearfix">
 
-                <div class="gifts_grid__item clearfix" data-ng-repeat="gift in blocks[state] track by $index">
+                <div class="gifts_grid__item clearfix"
+                     data-ng-class="{
+                     'gift-available': isAvailableGift(gift),
+                     'gift-unavailable': !isAvailableGift(gift),
+                     'gift-points-not-enough': user().user_points.confirmed < gift.points
+                     }"
+                     data-ng-repeat="gift in blocks[state] | filter:filter | orderBy:orderBy track by $index">
 
                     <span class="gifts_grid__item-name gift_name" data-ng-bind="gift.name"></span>
 
@@ -28,7 +34,7 @@
 
                     <a class="gifts_grid__item-button button_primary" href="#"
                        data-ng-bind="widget.texts.get"
-                       data-ng-click="$parent.selected_gift = gift;$event.preventDefault();"></a>
+                       data-ng-click="$event.preventDefault();open(gift)"></a>
 
 
                 </div>

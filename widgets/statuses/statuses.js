@@ -16,6 +16,7 @@ WidgetRegister({
       scope._statuses = MAGIC_CONFIG.data.statuses;
 
       scope.user = SailPlayApi.data('load.user.info');
+      scope.purchase_status = MAGIC_CONFIG.data.purchase_status;
 
       scope.get_next_status = function () {
 
@@ -32,6 +33,10 @@ WidgetRegister({
 
         let user_points = user.user_points;
         let points =  user_points ? user_points.confirmed + user_points.spent + user_points.spent_extra : 0;
+        if (MAGIC_CONFIG.data.purchase_status) {
+          points = user.purchases && user.purchases.sum || 0;
+          user_points = user.purchases && user.purchases.sum || 0
+        }
 
         let future_statuses = scope._statuses.sort((a, b) => {
           return a.points > b.points;

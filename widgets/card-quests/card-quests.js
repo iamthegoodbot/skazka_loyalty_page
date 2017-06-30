@@ -20,9 +20,12 @@ WidgetRegister({
       scope.action_selected = false;
       scope.action_custom_selected = false;
 
+      scope.filter = scope.widget.options && scope.widget.options.filter || {};
+
       scope.action_select = function (action) {
 
-        if(!SailPlayApi.data('load.user.info')()) return SailPlay.authorize('remote');
+        if(!SailPlayApi.data('load.user.info')()) return SailPlay.authorize('remote', {widget: 'card-quests', action: 'action_select'});
+
 
         scope.action_selected = action || false;
 
@@ -36,7 +39,7 @@ WidgetRegister({
 
       scope.action_custom_select = function (action) {
 
-        if(!SailPlayApi.data('load.user.info')()) return SailPlay.authorize('remote');
+        if(!SailPlayApi.data('load.user.info')()) return SailPlay.authorize('remote', {widget: 'card-quests', action: 'action_custom_select'});
         scope.action_custom_selected = action || false;
 
       };
