@@ -64,11 +64,7 @@
               </span>
           </div>
       </a>
-    </div>
-
     <!-- custom actions -->
-
-    <div class="bns_qust_main">
       <a href="#" class="bns_qust_item" data-ng-repeat="action in actions_custom() | noOffer" title="{{ action.name }}">
           <div class="bns_qust_left">
               <img data-ng-src="{{ action.icon | sailplay_pic }}" alt=""> 
@@ -86,35 +82,10 @@
           </div>
       </a>
     </div>
+
+
   </div>
 </div>
-  
-
-          <div class="spm_col quest_card_container" data-ng-repeat="action in actions_custom() | noOffer">
-
-            <div class="quest_card" title="{{ action.name }}">
-
-              <div class="quest_card_image">
-                <img data-ng-src="{{ action.icon | sailplay_pic }}" alt="">
-              </div>
-
-              <div class="quest_card_tools">
-
-                <div class="quest_card_info">
-                  <span class="quest_card_name ellipsis" data-ng-bind="action.name"></span>
-                  <span class="quest_card_points ellipsis" data-ng-show="action.points" data-ng-bind="((action.points || 0) | number) + ' ' + (action.points | sailplay_pluralize:( 'points.texts.pluralize' | tools ))"></span>
-                </div>
-
-                <div class="quest_card_buttons">
-                  <a class="button_primary" data-ng-click="action_custom_select(action)">{{ action.button_text }}</a>
-                </div>
-
-              </div>
-
-            </div>
-
-
-        </div>
 
 
       <magic-modal class="bns_overlay bns_overlay_gift" data-ng-cloak data-show="$parent.action_selected">
@@ -156,23 +127,24 @@
 
       </magic-modal>
 
-      <magic-modal class="bns_overlay bns_overlay_gift" data-ng-cloak data-show="$parent.action_custom_selected">
-        
-        <div data-ng-show="$parent.action_custom_selected.name.indexOf('offer:') === 0" data-sailplay-action-custom data-action="action_custom_selected"></div>
-        
-          <div class="bns_overlay_inner"  data-ng-if="$parent.action_custom_selected.name.indexOf('offer:') !== 0">
-              <div class="bns_over_left" data-ng-style="{'background-image': ($parent.action_custom_selected.content.image | sailplay_pic | background_image)}">
-                  <h4 class="bns_head" data-ng-bind="$parent.action_custom_selected.content.header">
-                      
-                  </h4>
+      <magic-modal class="bns_overlay bns_overlay_gift" data-ng-cloak data-show="$parent.action_custom_selected">     
+
+        <div data-ng-if="!$parent.action_custom_selected.name.startsWith('offer:')">
+
+          <div data-ng-if="!$parent.action_custom_selected.name.startsWith('offer:')" data-sailplay-action-custom data-action="action_custom_selected"></div>
+          
+          <div class="bns_overlay_inner" data-ng-if="$parent.action_custom_selected.name.startsWith('offer:')">
+              <div class="bns_over_left">
+                <!-- data-ng-style="{'background-image': ($parent.action_custom_selected.content.image | sailplay_pic | background_image)}" -->
+                  <h4 class="bns_head" data-ng-bind="$parent.action_custom_selected.content.header"></h4>
                   <a href="#" class="close"></a>
                   <div class="bns_about" data-ng-bind="$parent.action_custom_selected.content.message">
-                      Описание условий бонусной программы. Расширение производства потребовало увеличения и обновления станочного парка и роста числа сотрудников предприятия. Спрос на ювелирную продукцию был огромным, поэтому завод работал в две, а то и в три смены, и трудилось на нем до полутора тысяч человек.
                   </div>
-                  <a data-ng-bind="$parent.action_custom_selected.content.button_text" data-ng-href="$parent.action_custom_selected.content.url" class="bns_btn bns_btn_mt_min">
+                  <a data-ng-bind="$parent.action_custom_selected.content.button_text" data-ng-href="{{$parent.action_custom_selected.content.url}}" class="bns_btn bns_btn_mt_min">
                   </a>
               </div>
           </div>
+        </div>
 
       </magic-modal>
 
