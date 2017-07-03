@@ -301,7 +301,10 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
                    angular.forEach(field.data, tag_field => {   
                             
                     if (tag_field.tag == tag.name) {
-                      tag_field.value = tag.exist 
+                      tag_field.value = tag.exist
+                      if(tag.exist){
+                        field.value = tag_field.tag
+                      } 
                       console.log(tag_field, tag)    
                     }
                   }) 
@@ -356,13 +359,24 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
 
           var data_user = SailPlayApi.data('load.user.info')() && SailPlayApi.data('load.user.info')().user;         
           var req_user = {},
-            custom_user_vars = {};
+            custom_user_vars = {},
+            custom_user_tags_add = [],
+            custom_user_tags_delete = [];
 
           angular.forEach(scope.sailplay.fill_profile.form.fields, function (item) {
             if (item.type == 'variable') {
               custom_user_vars[item.name] = item.value
-            } else
+            } else if (item.type =="tags"){
+              item.data.forEach(v => {
+                if(v.tag === item.value){
+                  custom_user_tags_add.push(v.tag)
+                } else {
+                  custom_user_tags_delete.push(v.tag)
+                }
+              })
+            } else {
               req_user[item.name] = item.value;
+            }
           });
 
           if (req_user.addPhone && data_user && data_user.phone && data_user.phone.replace(/\D/g, '') == req_user.addPhone.replace(/\D/g, '')) {
@@ -386,6 +400,25 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
 
               if (Object.keys(custom_user_vars).length) {
                 SailPlay.send('vars.add', {custom_vars: custom_user_vars}, (res_vars) => {
+                  if (!res_vars.status == 'ok')
+                    $rootScope.$broadcast('notifier:notify', {
+                    body: res_vars.message
+                  });
+                })
+              }
+
+              if (custom_user_tags_add.length) {
+                console.info(custom_user_tags_add, custom_user_tags_delete)
+                SailPlay.send('tags.add', {tags: custom_user_tags_add}, (res_vars) => {
+                  if (!res_vars.status == 'ok')
+                    $rootScope.$broadcast('notifier:notify', {
+                    body: res_vars.message
+                  });
+                })
+              }
+
+              if (custom_user_tags_delete.length) {
+                SailPlay.send('tags.delete', {tags: custom_user_tags_delete}, (res_vars) => {
                   if (!res_vars.status == 'ok')
                     $rootScope.$broadcast('notifier:notify', {
                     body: res_vars.message

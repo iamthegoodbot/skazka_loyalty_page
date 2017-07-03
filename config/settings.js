@@ -14,6 +14,12 @@ const shareBtns = {
   "text-align": "center"
 }
 
+const iframeStyles = {
+  "actions": {
+    'min-width': '600px'
+  }
+}
+
 const buttonStyles = {
   "vk_share_btn": shareBtns,
   "fb_share_btn": shareBtns,
@@ -185,7 +191,7 @@ module.exports = {
     "data": {
       "custom_actions": {
         "static_page": {
-
+          "styles": iframeStyles
         }
       },
       "actions": {

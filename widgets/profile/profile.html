@@ -60,8 +60,8 @@
                 <div class="bns_radio">
                   <div class="bns_radio_item" data-ng-repeat="item in field.data">
             <!--      {{item}} -->
-                      <input data-ng-value="field.value" data-ng-model="field.model" id="{{'field_' + field.name + '_' + field.value}}" type="radio">
-                      <label for="{{'field_' + field.name + '_' + field.value}}">{{ item.text }}</label>
+                      <input value="{{item.tag}}" data-ng-model="field.value" id="{{'field_' + field.name + '_' + item.tag}}" type="radio">
+                      <label for="{{'field_' + field.name + '_' + item.tag}}">{{ item.text }}</label>
                   </div>
                 </div>
               </div>

@@ -153,10 +153,12 @@ WidgetRegister({
       }
 
       scope.createDate = function(){
-        const dateAsIsoString = moment().set({'year': scope.newDate.date[2], 'month': scope.newDate.date[1]-1, 'date': scope.newDate.date[0]}).toISOString()
-        const newDate = {...scope.newDate, date: dateAsIsoString, id: scope.getNextId()}
-        scope.dates = scope.dates.concat(newDate)
-        datesFactory.setUserDates(scope.dates)
+        if(scope.newDate.name && scope.newDate.secondName && scope.newDate.relation){
+          const dateAsIsoString = moment().set({'year': scope.newDate.date[2], 'month': scope.newDate.date[1]-1, 'date': scope.newDate.date[0]}).toISOString()
+          const newDate = {...scope.newDate, date: dateAsIsoString, id: scope.getNextId()}
+          scope.dates = scope.dates.concat(newDate)
+          datesFactory.setUserDates(scope.dates)
+        }
       }
 
       scope.$on('dates-events-get', (ev, datesArr) => {
