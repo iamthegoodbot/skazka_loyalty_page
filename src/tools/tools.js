@@ -424,7 +424,7 @@ export let Tools = angular.module('magic.tools', [
   let initial_overflow = $document[0].body.style.overflow;
 
   this.body_lock = (state) => {
-    $document[0].body.style.overflow = state ? 'hidden' : initial_overflow;
+//    $document[0].body.style.overflow = state ? 'hidden' : initial_overflow;
   };
 
   this.stringify_widget_css = (prefix, obj) => {

@@ -5,7 +5,7 @@
             <h4 class="bns_head">
                 Ваш профиль
             </h4>
-            <a href="#" class="close"></a>
+            <a href="" class="close" data-ng-click="$parent.close()"></a>
             <form name="fill_profile_form" class="bns_form" data-ng-submit="sailplay.fill_profile.submit(fill_profile_form, profile.fill_profile);">
 
             <div class="" data-ng-repeat="field in sailplay.fill_profile.form.fields" data-ng-switch="field.input">
@@ -69,11 +69,18 @@
               <div data-ng-switch-when="phone" class="bns_input_block">
                 <label>{{ field.label }}</label>
                 <input type="text" data-model-view-value="true" data-ui-mask="{{ field.placeholder }}" data-ng-model="field.value" disabled="true">
+                <div class="bns_toltip">
+                        <span>?</span>
+                        <div class="bns_toltip_popup">
+                            Телефон Вы можете изменить,
+                            отправив запрос на почту
+                            <a href="mailto:change@bronnitsy.info">change@bronnitsy.info</a>
+                        </div>
+                    </div>
               </div>
-
-              <div data-ng-switch-when="email" class="clearfix">
-                <label class="form_label">{{ field.label }}</label>
-                <input class="form_input" type="email" placeholder="{{ field.placeholder }}" data-ng-model="field.value">
+              <div data-ng-switch-when="email" class="bns_input_block">
+                <label>{{ field.label }}</label>
+                <input type="email" placeholder="{{ field.placeholder }}" data-ng-model="field.value">
               </div>
 
             </div>

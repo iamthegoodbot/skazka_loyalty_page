@@ -86,11 +86,25 @@ module.exports = {
             "label": "Фамилия"
           },
           {
+            "input": "text",
+            "type": "system",
+            "placeholder": "Отчество",
+            "name": "middleName",
+            "label": "Отчество"
+          },
+          {
             "input": "phone",
             "type": "system",
             "placeholder": "+7 (012) 345-67-89",
             "name": "addPhone",
             "label": "Телефон"
+          },
+          {
+            "input": "email",
+            "type": "system",
+            "placeholder": "example@example.com",
+            "name": "addEmail",
+            "label": "E-mail"
           },
           {
             "input": "date",

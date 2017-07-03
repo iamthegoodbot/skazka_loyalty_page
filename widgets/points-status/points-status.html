@@ -43,11 +43,11 @@
 -->
     <magic-modal class="bns_overlay bns_overlay_hist" data-show="history">
 
-        <div data-sailplay-history data-sailplay-profile>
+        <div class="bns_overlay_inner" data-sailplay-history data-sailplay-profile>
 
             <h4 class="bns_head" data-ng-bind="widget.texts.history.header">
             </h4>
-            <a href="#" class="close"></a>
+            <a href="#" class="close" data-ng-click = "$parent.$parent.close()"></a>
 
             <table class="bns_table">
                 <tr class="tr_head">

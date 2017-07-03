@@ -1,6 +1,6 @@
 <div class="container" data-ng-show="widget.enabled" data-ng-cloak>
 
-<div class="bns_top">
+<div class="bns_top" data-ng-style="{'background-image': ('https://sailplays3.cdnvideo.ru/media/assets/assetfile/5a7a040bc9a6322d9a229f3c0a8889db.jpg' | background_image)}">
     <h2 class="bns_head" data-ng-bind="user().user.first_name + ', Добро пожаловать'">
     </h2>
     <div class="bns_desc">
@@ -19,7 +19,7 @@
             <h4 class="bns_head">
                 Условия бонусной программы
             </h4>
-            <a href="#" class="close"></a>
+            <a href="#" class="close" data-ng-click="$parent.close()"></a>
             <div class="bns_about">
                 Описание условий бонусной программы. Расширение производства потребовало увеличения и обновления станочного парка и роста числа сотрудников предприятия. Спрос на ювелирную продукцию
                 был огромным, поэтому завод работал в две, а то и в три смены, и трудилось на нем до полутора тысяч человек.

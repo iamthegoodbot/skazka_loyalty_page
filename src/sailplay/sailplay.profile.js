@@ -212,6 +212,7 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
           var form = scope.sailplay.fill_profile.form;
           var custom_fields = [];
           var tags_fields = [];
+          console.info(user)
           form.fields = config.fields.map(function (field) {
             var form_field = new SailPlayFillProfile.Field(field);
             if (field.type == 'variable') 
@@ -221,9 +222,11 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
               tags_fields.push(form_field)
             
             //we need to assign received values to form
+            console.info(form_field)
             switch (form_field.type) {
 
               //we need define type
+
               case 'system':
                 //bind different values to form field
                 switch (form_field.name) {
@@ -414,7 +417,6 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
                         $rootScope.$broadcast('notifier:notify', {
                         body: res_vars.message
                       });
-                      console.error('delete res')
                       res(res_vars.status)
 
                     })
@@ -451,14 +453,13 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
 
                     if (typeof callback == 'function') callback();
 
-                    angular.$setTimeout(function() {
+                    window.setTimeout(function() {
                       SailPlayApi.call('load.user.info', {all: 1});
                     }, 1000);
 
                     
 
                   });
-                  console.error('apply res')
                   res()
                 })
                 

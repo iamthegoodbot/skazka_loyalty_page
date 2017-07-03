@@ -11,9 +11,15 @@
 }  
 
 .bns_overlay {
+  opacity: 0;
+  display: block;
+  visibility: hidden;
   &.visible {
-    display: block;
+    visibility: visible;
+    opacity: 1;
+    transition-delay: 0s;
   }
+  transition: visibility 0s linear 0.5s, opacity 0.4s ease-out;
 }
 
 .bns_btn{
@@ -41,5 +47,5 @@ input[type="text"]:disabled{
 
 .sailplay_action_custom_frame.static_page {
   min-width: 600px;
-  height: 100%;
+  min-height: 400px;
 }

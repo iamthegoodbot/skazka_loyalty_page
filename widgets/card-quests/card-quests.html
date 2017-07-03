@@ -129,22 +129,22 @@
 
       <magic-modal class="bns_overlay bns_overlay_gift" data-ng-cloak data-show="$parent.action_custom_selected">     
 
-        <div data-ng-if="!$parent.action_custom_selected.name.startsWith('offer:')">
-
-          <div class="bns_overlay_inner iframe-inner-modal" data-ng-if="!$parent.action_custom_selected.name.startsWith('offer:')" data-sailplay-action-custom data-action="action_custom_selected"></div>
+        <!-- <div data-ng-if="!$parent.action_custom_selected.name.startsWith('offer:')"> -->
+          <div class="bns_overlay_inner iframe-inner-modal" data-ng-if="!$parent.show.name.startsWith('offer:')" data-sailplay-action-custom 
+          data-action="$parent.$parent.show"></div>
           
-          <div class="bns_overlay_inner" data-ng-if="$parent.action_custom_selected.name.startsWith('offer:')">
+          <div class="bns_overlay_inner" data-ng-if="$parent.show.name.startsWith('offer:')">
               <div class="bns_over_left">
                 <!-- data-ng-style="{'background-image': ($parent.action_custom_selected.content.image | sailplay_pic | background_image)}" -->
-                  <h4 class="bns_head" data-ng-bind="$parent.action_custom_selected.content.header"></h4>
-                  <a href="#" class="close"></a>
-                  <div class="bns_about" data-ng-bind="$parent.action_custom_selected.content.message">
+                  <h4 class="bns_head" data-ng-bind="$parent.$parent.show.content.header"></h4>
+                  <a href="#" class="close" data-ng-click="$event.preventDefault();$parent.$parent.close();"></a>
+                  <div class="bns_about" data-ng-bind="$parent.$parent.show.content.message">
                   </div>
-                  <a data-ng-bind="$parent.action_custom_selected.content.button_text" data-ng-href="{{$parent.action_custom_selected.content.url}}" class="bns_btn bns_btn_mt_min">
+                  <a data-ng-bind="$parent.$parent.show.content.button_text" data-ng-href="{{$parent.$parent.show.content.url}}" class="bns_btn bns_btn_mt_min">
                   </a>
               </div>
           </div>
-        </div>
+        <!-- </div> -->
 
       </magic-modal>
 
