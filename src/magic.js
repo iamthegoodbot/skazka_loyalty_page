@@ -167,17 +167,11 @@ export default class Magic {
 
     SAILPLAY.on('magic.config.success', (res_config) => {
 
-      console.log('sc', res_config)
+      if(this.inited || !res_config.config || !res_config.config.config.$MAGIC) return;
 
-//      if(this.inited || !res_config.config || !res_config.config.config.$MAGIC) return;
+      Core.constant('MAGIC_CONFIG_DATA', res_config.config);
 
-      // temporary hardcode config
-
-      const config = require('../config/settings.js')
-
-      console.log('sc2', config)
-
-      Core.constant('MAGIC_CONFIG', config.$MAGIC);
+      Core.constant('MAGIC_CONFIG', res_config.config.config.$MAGIC);
 
       const app_container = config.root || document.getElementsByTagName('sailplay-magic')[0];
 
