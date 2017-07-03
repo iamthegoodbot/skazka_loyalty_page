@@ -67,12 +67,16 @@ WidgetRegister({
       function getCurrentDate(items) {
         const currentYear = moment().year()
         const nextYear = moment().year()+1
-        const nowTimestamp = moment().valueOf()
+        const now = moment()
+        const nowTimestamp = now.valueOf()
         const nowAfterYearTimestamp = moment().set('year', nextYear).valueOf()
         function getNextBirthday(momentDate){
-          const inCurrentYear = moment(momentDate).set('year', currentYear).valueOf()
-          console.log(nowTimestamp, inCurrentYear)
-          if(nowTimestamp > inCurrentYear){
+          const inCurrentYear = moment(momentDate).set('year', currentYear)
+          const inCurrentYearTimestamp = inCurrentYear.valueOf()
+          console.log(moment(nowTimestamp).isSame(moment(inCurrentYear), '') )
+          if(now.isSame(inCurrentYear, 'day') && now.isSame(inCurrentYear, 'month')){
+            return 'today'
+          } else if(nowTimestamp > inCurrentYear){
             const inNextYear = moment(momentDate).set('year', nextYear).valueOf()
             return inNextYear
           } else {
@@ -92,7 +96,15 @@ WidgetRegister({
             
             const nextBirthdayTimestamp = getNextBirthday(moment(v.date))
 
-            if(nextBirthdayTimestamp < acc.date){
+            if(nextBirthdayTimestamp === 'today'){
+              return {
+                today: true,
+                date: nextBirthdayTimestamp,
+                displayDate: moment(nextBirthdayTimestamp).toISOString(),
+                name: v.name,
+                isDefault: false
+              }
+            } else if(nextBirthdayTimestamp < acc.date){
               return {
                 date: nextBirthdayTimestamp,
                 displayDate: moment(nextBirthdayTimestamp).toISOString(),
@@ -104,6 +116,8 @@ WidgetRegister({
             }
           }, deflt)
         
+
+
           const displayDate = moment(res.displayDate).fromNow()
 
           return {...res, displayDate}

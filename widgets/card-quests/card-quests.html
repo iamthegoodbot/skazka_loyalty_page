@@ -7,7 +7,7 @@
 
           <div class="swiper-wrapper">
             <div class="swiper-slide" data-ng-repeat="action in actions_custom() | offer" title="{{ action.name }}">
-                <a href="#" class="bns_gift_item" data-ng-style="{'background-image': (action.content.image | sailplay_pic | background_image)}">
+                <a href="#" class="bns_gift_item" data-ng-style="{'background-image': (action.content.image | sailplay_pic | background_image)}" data-ng-click="$event.preventDefault()">
                     <div class="bns_gift_item_top">
                       <span class="bns_gift_name" data-ng-bind="action_data(action).name | chopOfferName">
                       </span>
@@ -43,7 +43,7 @@
         Задания за баллы
     </div>
     <div class="bns_qust_main">
-      <a href="#" class="bns_qust_item" data-ng-repeat="action in actions().actions | filter:filter" title="{{ action_data(action).name }}">
+      <a href="#" class="bns_qust_item" data-ng-repeat="action in actions().actions | filter:filter" title="{{ action_data(action).name }}" data-ng-click="$event.preventDefault()">
           <div class="bns_qust_left">
               <img data-ng-src="{{ action_data(action).pic | sailplay_pic }}" alt=""> 
           </div>
@@ -65,7 +65,7 @@
           </div>
       </a>
     <!-- custom actions -->
-      <a href="#" class="bns_qust_item" data-ng-repeat="action in actions_custom() | noOffer" title="{{ action.name }}">
+      <a href="#" class="bns_qust_item" data-ng-repeat="action in actions_custom() | noOffer" title="{{ action.name }}" data-ng-click="$event.preventDefault()">
           <div class="bns_qust_left">
               <img data-ng-src="{{ action.icon | sailplay_pic }}" alt=""> 
           </div>
@@ -129,7 +129,7 @@
 
       <magic-modal class="bns_overlay bns_overlay_gift" data-ng-cloak data-show="$parent.action_custom_selected">     
 
-        <!-- <div data-ng-if="!$parent.action_custom_selected.name.startsWith('offer:')"> -->
+        <!-- <div data-ng-if="!$parent.action_custom_selected.name.startsWith('offer:')"> -->    
           <div class="bns_overlay_inner iframe-inner-modal" data-ng-if="!$parent.show.name.startsWith('offer:')" data-sailplay-action-custom 
           data-action="$parent.$parent.show"></div>
           

@@ -45,7 +45,6 @@ Widget.factory('datesFactory', ($rootScope, SailPlayApi, SailPlay) => {
     })
   }
 
-  console.info('hi')
 
   SailPlay.on('load.user.info.success', getUserDatesFromServer)
 
