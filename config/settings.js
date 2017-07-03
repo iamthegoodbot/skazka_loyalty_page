@@ -15,12 +15,7 @@ const shareBtns = {
 }
 
 const iframeStyles = {
-  bns_over_left: {
-      width: "100%",
-      'max-width': "953px"
-  },
-  bns_btn: {
-    width: "230px",
+  '.button': {
     'line-height': "37px",
     'border-radius': "40px",
     display: "inline-block",
@@ -34,12 +29,10 @@ const iframeStyles = {
     'margin-left': '37px',
     'margin-top': '30px',
     'margin-bottom': '30px',
-    'font-weight': 'normal'
-  },
-  bns_btn_mt_min: {
+    'font-weight': 'normal',
     'margin-top': 0
   },
-  bns_head: {
+  '.header': {
     'font-size': '26px',
     'color': '#000000',
     'text-transform': 'uppercase',
@@ -53,7 +46,7 @@ const iframeStyles = {
     'margin-top': '36px',
     'margin-bottom': '30px'
   },
-  bns_about: {
+  '.message': {
     'padding-left': '37px',
     width: '96%',
     'padding-right': '10px',
@@ -65,7 +58,7 @@ const iframeStyles = {
     'font-weight': '300',
     'overflow-y': 'auto'
   },
-  image: {
+  '.image': {
     display: 'none'
   }
 

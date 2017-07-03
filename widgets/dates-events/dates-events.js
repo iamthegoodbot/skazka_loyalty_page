@@ -17,11 +17,15 @@ Widget.factory('datesFactory', ($rootScope, SailPlayApi, SailPlay) => {
       ]
     }, (vars)=>{
       console.log(vars)
-      const parsedArr = JSON.parse(vars.vars[0].value)
-      console.info('getting datees', vars)
-      obj.vars = vars
-      obj.synced = true
-      $rootScope.$broadcast('dates-events-get', parsedArr)
+      if(vars && vars.length){
+        const parsedArr = JSON.parse(vars.vars[0].value)
+        console.info('getting datees', vars)
+        obj.vars = vars
+        obj.synced = true
+        $rootScope.$broadcast('dates-events-get', parsedArr)
+      } else {
+        $rootScope.$broadcast('dates-events-get', [])
+      }
     })
   }
 
