@@ -15,9 +15,60 @@ const shareBtns = {
 }
 
 const iframeStyles = {
-  "sailplay_action_custom_frame": {
-    'min-width': '600px'
+  bns_over_left: {
+      width: "100%",
+      'max-width': "953px"
+  },
+  bns_btn: {
+    width: "230px",
+    'line-height': "37px",
+    'border-radius': "40px",
+    display: "inline-block",
+    color: "#ffffff",
+    'background-color': "#820d41",
+    "text-align": "center",
+    'font-size': '18px',
+    'padding-top': '3px',
+    'text-transform': 'uppercase',
+    'text-decoration': 'none',
+    'margin-left': '37px',
+    'margin-top': '30px',
+    'margin-bottom': '30px',
+    'font-weight': 'normal'
+  },
+  bns_btn_mt_min: {
+    'margin-top': 0
+  },
+  bns_head: {
+    'font-size': '26px',
+    'color': '#000000',
+    'text-transform': 'uppercase',
+    'width': '100%',
+    'display': 'inline-block',
+    '-webkit-box-sizing': 'border-box',
+    '-moz-box-sizing': 'border-box',
+    'box-sizing': 'border-box',
+    'padding-left': '37px',
+    'font-weight': '300',
+    'margin-top': '36px',
+    'margin-bottom': '30px'
+  },
+  bns_about: {
+    'padding-left': '37px',
+    width: '96%',
+    'padding-right': '10px',
+    'box-sizing': 'border-box',
+    'max-height': '550px',
+    'margin-bottom': '30px',
+    'font-size': '16px',
+    'line-height': '24px',
+    'font-weight': '300',
+    'overflow-y': 'auto'
+  },
+  image: {
+    display: 'none'
   }
+
 }
 
 const buttonStyles = {
@@ -27,6 +78,10 @@ const buttonStyles = {
   "tw_share_btn": shareBtns,
   "ok_share_btn": shareBtns
 }
+
+const headText = 
+  "Описание условий бонусной программы. Расширение производства потребовало увеличения и обновления станочного парка и роста числа сотрудников предприятия. <br> Спрос на ювелирную продукцию был огромным, поэтому завод работал в две, а то и в три смены, и трудилось на нем до полутора тысяч человек."
+
 
 module.exports = {
   "$MAGIC": {
@@ -171,10 +226,12 @@ module.exports = {
     },
     {
       "id": 'top-banner',
-      "texts": {},
+      "texts": {
+        "rules_head": "Условия бонусной программы",
+        "rules_body": headText
+      },
       "enabled": true,
-      "options": {},
-      "texts": {}
+      "options": {}
     },
     {
       "id": 'dates-events',

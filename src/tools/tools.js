@@ -10,6 +10,7 @@ import DatePicker from './datepicker/datepicker';
 import Moment from 'moment';
 import MomentRu from './../../node_modules/moment/locale/ru.js';
 import angularMoment from 'angular-moment';
+import ngSanitize from 'angular-sanitize';
 
 export let Tools = angular.module('magic.tools', [
   NgPagination,
@@ -20,7 +21,8 @@ export let Tools = angular.module('magic.tools', [
   Notifier,
   MagicModal,
   DatePicker,
-  angularMoment
+  angularMoment,
+  ngSanitize
 ])
 
 .run(function(amMoment) {

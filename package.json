@@ -46,6 +46,7 @@
     "webpack": "^1.13.3"
   },
   "devDependencies": {
+    "angular-sanitize": "^1.6.4",
     "connect-static-file": "^1.2.0",
     "file-loader": "^0.11.2",
     "gulp-connect": "^5.0.0",
