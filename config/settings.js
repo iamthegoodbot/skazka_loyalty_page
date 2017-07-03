@@ -15,7 +15,7 @@ const shareBtns = {
 }
 
 const iframeStyles = {
-  "actions": {
+  "sailplay_action_custom_frame": {
     'min-width': '600px'
   }
 }

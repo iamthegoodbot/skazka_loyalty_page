@@ -407,32 +407,64 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
                 })
               }
 
-              if (custom_user_tags_add.length) {
-                console.info(custom_user_tags_add, custom_user_tags_delete)
-                SailPlay.send('tags.add', {tags: custom_user_tags_add}, (res_vars) => {
-                  if (!res_vars.status == 'ok')
-                    $rootScope.$broadcast('notifier:notify', {
-                    body: res_vars.message
-                  });
+              const deleteP = new Promise((res, rej)=>{
+                  if (custom_user_tags_delete.length) {
+                    SailPlay.send('tags.delete', {tags: custom_user_tags_delete}, (res_vars) => {
+                      if (!res_vars.status == 'ok')
+                        $rootScope.$broadcast('notifier:notify', {
+                        body: res_vars.message
+                      });
+                      console.error('delete res')
+                      res(res_vars.status)
+
+                    })
+                  } else {
+                    res()
+                  }
                 })
-              }
 
-              if (custom_user_tags_delete.length) {
-                SailPlay.send('tags.delete', {tags: custom_user_tags_delete}, (res_vars) => {
-                  if (!res_vars.status == 'ok')
-                    $rootScope.$broadcast('notifier:notify', {
-                    body: res_vars.message
-                  });
+              const addP =  deleteP.then(res=>{
+                return new Promise((res, rej) => {
+                  if (custom_user_tags_add.length) {
+                    console.info(custom_user_tags_add, custom_user_tags_delete)
+                    SailPlay.send('tags.add', {tags: custom_user_tags_add}, (res_vars) => {
+                      if (!res_vars.status == 'ok')
+                        $rootScope.$broadcast('notifier:notify', {
+                        body: res_vars.message
+                      });
+                      res(res_vars.status)
+                    })
+                  } else {
+                    res()
+                  }
                 })
-              }
+              })
 
-              scope.$apply(function () {
 
-                if (typeof callback == 'function') callback();
+              
 
-                SailPlayApi.call('load.user.info', {all: 1});
+              
+              
+              const ngApply = addP.then(res=>{
+                return new Promise((res, rej)=>{
+                  scope.$apply(function () {
 
-              });
+                    if (typeof callback == 'function') callback();
+
+                    angular.$setTimeout(function() {
+                      SailPlayApi.call('load.user.info', {all: 1});
+                    }, 1000);
+
+                    
+
+                  });
+                  console.error('apply res')
+                  res()
+                })
+                
+              })
+
+              
 
             } else {
 
