@@ -8,26 +8,28 @@
                     Памятные даты
                 </h4>
                 <a href="#" class="close" data-ng-click="$parent.close(); $event.preventDefault()"></a>
-                <table class="bns_table bns_table_date">
-                    <tr class="tr_head">
-                        <td>Имя</td>
-                        <td>Фамилия</td>
-                        <td>Дата рождения</td>
-                        <td>Родство</td>
-                        <td colspan="3" class="tb_yvd">Уведомления</td>
-                    </tr>
-                    <tr data-dir-paginate="item in dates | itemsPerPage:10" data-pagination-id="dates_pages">
-                        <td data-ng-bind="item.name"></td>
-                        <td data-ng-bind="item.secondName"></td>
-                        <td data-ng-bind="item.date | amDateFormat:'D MMMM Y'"></td>
-                        <td data-ng-bind="item.relation"></td>
-                        <td data-ng-class="{'bns_act': item.email_notify,  'bns_p_cheack': true}">e-mail</td>
-                        <td data-ng-class="{'bns_act': item.sms_notify,  'bns_p_cheack': true}">SMS</td>
-                        <td>
-                            <a href="#" class="bns_remove" data-ng-click="delete_date_by_id(item.id); $event.preventDefault()"></a>
-                        </td>
-                    </tr>
-                </table>
+                <div class="table_wrap">
+                    <table class="bns_table bns_table_date">
+                        <tr class="tr_head">
+                            <td>Имя</td>
+                            <td>Фамилия</td>
+                            <td>Дата рождения</td>
+                            <td>Родство</td>
+                            <td colspan="3" class="tb_yvd">Уведомления</td>
+                        </tr>
+                        <tr data-dir-paginate="item in dates | itemsPerPage:10" data-pagination-id="dates_pages">
+                            <td data-ng-bind="item.name"></td>
+                            <td data-ng-bind="item.secondName"></td>
+                            <td data-ng-bind="item.date | amDateFormat:'D MMMM Y'"></td>
+                            <td data-ng-bind="item.relation"></td>
+                            <td data-ng-class="{'bns_act': item.email_notify,  'bns_p_cheack': true}">e-mail</td>
+                            <td data-ng-class="{'bns_act': item.sms_notify,  'bns_p_cheack': true}">SMS</td>
+                            <td>
+                                <a href="#" class="bns_remove" data-ng-click="delete_date_by_id(item.id); $event.preventDefault()"></a>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
                 <a href="#" class="bns_btn js_add_zap" data-ng-hide="isFormOpened" data-ng-click="isFormOpened = true">
                     Добавить запись
                 </a>

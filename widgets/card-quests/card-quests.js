@@ -64,15 +64,26 @@ WidgetRegister({
       });
 
       const config = {
-        scrollbar: '.swiper-scrollbar',
-        scrollbarHide: false,
-        scrollbarDraggable: true,
-        slidesPerView: 4,
-        centeredSlides: false,
-        nextButton: '.swiper-button-next',
-        prevButton: '.swiper-button-prev',
-        spaceBetween: 15,
-        grabCursor: true
+          scrollbar: '.swiper-scrollbar',
+          scrollbarHide: false,
+          scrollbarDraggable: true,
+          slidesPerView: 4,
+          centeredSlides: false,
+          nextButton: '.swiper-button-next',
+          prevButton: '.swiper-button-prev',
+          spaceBetween: 15,
+          grabCursor: true,
+          breakpoints: {
+              1150: {
+                  slidesPerView: 3
+              },
+              800: {
+                  slidesPerView: 2
+              },
+              500: {
+                  slidesPerView: 1
+              }
+          }
       };
 
       let swiper;

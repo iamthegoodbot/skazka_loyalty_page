@@ -17,7 +17,7 @@ Widget.factory('datesFactory', ($rootScope, SailPlayApi, SailPlay) => {
       ]
     }, (vars)=>{
       console.log(vars)
-      if(vars && vars.length){
+      if(vars.vars && vars.vars.length){
         const parsedArr = JSON.parse(vars.vars[0].value)
         console.info('getting datees', vars)
         obj.vars = vars
@@ -160,6 +160,7 @@ WidgetRegister({
           const dateAsIsoString = moment().set({'year': scope.newDate.date[2], 'month': scope.newDate.date[1]-1, 'date': scope.newDate.date[0]}).toISOString()
           const newDate = {...scope.newDate, date: dateAsIsoString, id: scope.getNextId()}
           scope.dates = scope.dates.concat(newDate)
+          console.info(scope.dates)
           datesFactory.setUserDates(scope.dates)
         }
       }

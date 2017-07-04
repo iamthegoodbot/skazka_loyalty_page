@@ -1,5 +1,170 @@
 
-@media screen and (max-width: 933px){
+@media screen and (max-width: 1350px){
+  .bns_info {
+    .bns_info_item {
+      .bns_ava {
+        width: 120px;
+        height: 120px;
+        right: 30px;
+        top: 59px;
+      }
+    }
+  }
+}
+.table_wrap {
+  width: 100%;
+  overflow-y: auto;
+}
+@media screen and (max-width: 1250px){
+  .bns_qust {
+    .bns_qust_main {
+      .bns_qust_item {
+        width: 48.5%;
+        margin-right: 3%;
+        &:nth-child(3n) {
+          margin-right:3%;
+        }
+        &:nth-child(2n) {
+          margin-right: 0;
+        }
+      }
+    }
+  }
+  .bns_overlay {
+    .bns_overlay_inner {
+      top:50px;
+      transform: translate(0,0);
+      width: 90%;
+      left: 5%;
+      overflow: hidden;
+      .bns_form {
+        width: 100%;
+      }
+    }
+    .bns_overlay_inner.bns_overlay_inner_flex {
+      flex-direction: column;
+      &.bns_open_form  {
+        .bns_over_right {
+          border-left: 0;
+          border-top: 1px solid #d1dde3;
+          width: 100%;
+          max-width: 100%;
+          max-height: 800px;
+          .bns_form {
+            width: 100%;
+          }
+        }
+      }
+    }
 
+  }
 }
 
+@media screen and (max-width: 1180px){
+  .bns_info {
+    .bns_info_item {
+      width: 70%;
+      margin-left: 15%;
+      margin-right: 0;
+      margin-bottom: 18px;
+    }
+  }
+
+}
+@media screen and (max-width: 800px) {
+  .bns_info {
+    .bns_info_item {
+      width: 90%;
+      margin-left: 5%;
+    }
+  }
+  .bns_qust {
+    .bns_qust_main {
+      .bns_qust_item {
+        width: 90%;
+        margin-left: 5%;
+        margin-right: 5%;
+      }
+    }
+  }
+}
+@media screen and (max-width: 450px) {
+  .bns_top {
+    .bns_head {
+      font-size: 26px;
+    }
+    .bns_desc {
+      font-size: 16px;
+      line-height: 20px;
+    }
+    .bns_linck {
+      width: 230px;
+      font-size: 14px
+    }
+  }
+  .bns_info {
+    .bns_info_item {
+      .bns_head {
+        span {
+          font-size: 18px;
+        }
+      }
+      .bns_over {
+        width: 222px;
+        line-height: 20px;
+        font-size: 16px;
+      }
+      .bns_date_name {
+        font-size: 20px;
+        line-height: 29px;
+        box-sizing: border-box;
+      }
+      .bns_ava {
+        display: none;
+      }
+    }
+  }
+  .bns_gift  {
+    .bns_head {
+      font-size: 28px;
+    }
+  }
+  .bns_qust {
+    .bns_head {
+      font-size: 28px;
+      padding: 0 10px;
+      box-sizing: border-box;
+    }
+    .bns_qust_main {
+      .bns_qust_item {
+        .bns_qust_left {
+          img {
+            max-width: 56%;
+            height: auto;
+            max-height: 35%;
+
+          }
+        }
+        .bns_qust_right {
+          .bns_bal {
+            margin-top: 54px;
+            font-size: 20px;
+          }
+        }
+      }
+    }
+  }
+  .bns_overlay {
+    .bns_overlay_inner {
+      .bns_form {
+        .bns_form_bottom .bns_btn {
+          width: 90%;
+          margin-left: 5%;
+          margin-bottom: 20px;
+          box-sizing: border-box;
+          text-align: center;
+        }
+      }
+    }
+  }
+}
