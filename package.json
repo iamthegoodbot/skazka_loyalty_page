@@ -33,7 +33,6 @@
     "gulp": "^3.9.1",
     "html-loader": "^0.4.4",
     "jquery": "^3.2.1",
-    "jquery-mousewheel": "^3.1.13",
     "less": "^2.7.1",
     "less-loader": "^2.2.3",
     "lodash": "^4.17.4",
@@ -53,6 +52,9 @@
     "gulp-ngdocs": "^0.2.13",
     "gulp-nodemon": "^2.2.1",
     "gulp-watch": "^4.3.11",
+    "imports-loader": "^0.7.1",
+    "jquery-mousewheel": "^3.1.13",
+    "malihu-custom-scrollbar-plugin": "^3.1.5",
     "ng-annotate-loader": "^0.2.0",
     "proxy-middleware": "^0.15.0",
     "webpack-dev-server": "^1.16.5"

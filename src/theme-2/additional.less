@@ -5,8 +5,9 @@
   	}
   }
   & ul{
-	max-height: 200px;
+  	max-height: 150px;
     overflow-y: auto;
+    overflow-x: hidden;
   }
 }  
 
@@ -56,6 +57,58 @@ input[type="text"]:disabled{
   }
 }
 
-.spm_tools_widget.points-status, .spm_tools_widget.profile{
+.spm_tools_widget.points-status, .spm_tools_widget.profile, .spm_tools_widget.dates-events{
   float: left;
+}
+
+.spm_wrapper {
+  font-size: initial;
+  font-weight: initial;
+  line-height: initial;
+}
+
+.bns_qust_left img {
+  width: 60%;
+}
+
+.bns_btn_disabled {
+  background-color: #aaa !important;
+}
+
+.bns_input_block_sel .show {
+  display: block !important;
+}
+
+.bns_info .bns_info_item .bns_date_name {
+  width: 90% !important;
+}
+
+.bns_info .bns_info_item .bns_date_name .nowrap {
+  white-space: nowrap;
+  padding-left: 0;
+}
+
+.bonus-table {
+  table-layout: fixed;
+  & td{
+    box-sizing: border-box;
+  }
+  & td:nth-of-type(1){
+    width: 180px;
+  }
+  & td:nth-of-type(2){
+    width: 320px;
+    &span{
+      white-space: normal;
+    }
+  }
+  & td:nth-of-type(3){
+    width: 150px;
+  }
+  & td:nth-of-type(4){
+    width: 130px;
+  }
+  & td:nth-of-type(5){
+    width: 190px;
+  }
 }

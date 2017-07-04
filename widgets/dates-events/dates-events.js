@@ -115,6 +115,8 @@ WidgetRegister({
       ]
       */
 
+      scope.canSubmit = false
+
       scope.dates = []
 
       scope.relationOptions = [
@@ -122,6 +124,7 @@ WidgetRegister({
         'Папа',
         'Сын',
         'Дочь',
+        'Свой вариант',
         'Брат',
         'Сестра',
         'Тётя',
@@ -145,7 +148,7 @@ WidgetRegister({
         }
       }
 
-      scope.newDate = {
+      const defalt = {
         id: void 0,
         name: '',
         secondName: '',
@@ -155,13 +158,44 @@ WidgetRegister({
         sms_notify: false
       }
 
+      scope.newDate = angular.copy(defalt)
+
+      scope.customRelation = ''
+
+      function isDateValid(){
+        return (scope.newDate.name != '' && scope.newDate.secondName != '' && scope.newDate.relation != '' && ((scope.newDate.relation != 'Свой вариант') || (scope.customRelation != '')) && scope.newDate.date.length === 3)
+      }
+
+      scope.$watch('newDate', function(newValue, oldValue) {
+        if(isDateValid()){
+          scope.canSubmit = true
+        } else {
+          scope.canSubmit = false
+        }
+      }, true)
+
+      scope.$watch('customRelation', function(newValue, oldValue) {
+        if(isDateValid()){
+          scope.canSubmit = true
+        } else {
+          scope.canSubmit = false
+        }
+      })
+
       scope.createDate = function(){
-        if(scope.newDate.name && scope.newDate.secondName && scope.newDate.relation){
+        if(scope.newDate.name && scope.newDate.secondName && scope.newDate.relation && isDateValid()){
           const dateAsIsoString = moment().set({'year': scope.newDate.date[2], 'month': scope.newDate.date[1]-1, 'date': scope.newDate.date[0]}).toISOString()
-          const newDate = {...scope.newDate, date: dateAsIsoString, id: scope.getNextId()}
+          let relation = ''
+          if(scope.newDate.relation == 'Свой вариант'){
+            relation = scope.customRelation
+          } else {
+            relation = scope.newDate.relation
+          }
+          const newDate = {...scope.newDate, date: dateAsIsoString, id: scope.getNextId(), relation}
+          
           scope.dates = scope.dates.concat(newDate)
-          console.info(scope.dates)
           datesFactory.setUserDates(scope.dates)
+          scope.newDate = defalt
         }
       }
 

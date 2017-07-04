@@ -55,7 +55,7 @@ let loaders = [
   },
   {
     test: /\.less$/,
-    loader: "style-loader!css-loader!less-loader"
+    loader: "style-loader!css-loader?sourceMap=true!less-loader?sourceMap=true"
   },
   //fonts loaders
   { test: /\.svg$/, loader: 'url?limit=65000&mimetype=image/svg+xml' },
@@ -66,7 +66,10 @@ let loaders = [
   //image loaders
   {
     test: /\.(png|jpe?g)/, loader: 'url?limit=65000&mimetype=image/png'
-  }
+  },
+  // plugin for scroll
+  { test: /jquery-mousewheel/, loader: "imports?define=>false&this=>window" },
+  { test: /malihu-custom-scrollbar-plugin/, loader: "imports?define=>false&this=>window" }
 ];
 
 // common config

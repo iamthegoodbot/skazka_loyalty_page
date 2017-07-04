@@ -15,15 +15,15 @@
                             <td>Фамилия</td>
                             <td>Дата рождения</td>
                             <td>Родство</td>
-                            <td colspan="3" class="tb_yvd">Уведомления</td>
+                            <!-- <td colspan="3" class="tb_yvd">Уведомления</td> -->
                         </tr>
                         <tr data-dir-paginate="item in dates | itemsPerPage:10" data-pagination-id="dates_pages">
                             <td data-ng-bind="item.name"></td>
                             <td data-ng-bind="item.secondName"></td>
                             <td data-ng-bind="item.date | amDateFormat:'D MMMM Y'"></td>
                             <td data-ng-bind="item.relation"></td>
-                            <td data-ng-class="{'bns_act': item.email_notify,  'bns_p_cheack': true}">e-mail</td>
-                            <td data-ng-class="{'bns_act': item.sms_notify,  'bns_p_cheack': true}">SMS</td>
+                            <!-- <td data-ng-class="{'bns_act': item.email_notify,  'bns_p_cheack': true}">e-mail</td>
+                            <td data-ng-class="{'bns_act': item.sms_notify,  'bns_p_cheack': true}">SMS</td> -->
                             <td>
                                 <a href="#" class="bns_remove" data-ng-click="delete_date_by_id(item.id); $event.preventDefault()"></a>
                             </td>
@@ -49,7 +49,7 @@
                     </div>
                     <div class="bns_input_block bns_input_block_sel bns_zi3">
                         <label>{{ newDate.relation || 'Родство' }}</label>
-                        <input type="hidden">
+                        <input type="text" data-ng-class="{show: newDate.relation == 'Свой вариант'}" data-ng-model='$parent.$parent.customRelation'>
                         <ul>
                             <li data-ng-repeat="option in relationOptions">
                               <a href="#" data-ng-bind="option"
@@ -61,6 +61,7 @@
                         <label class="bns_select_date_head">Дата рождения</label>
                         <date-picker data-model="newDate.date"></date-picker>
                     </div>
+                    <!-- 
                     <div class="bns_check_block">
                         <label>Уведомлять заранее</label>
                         <div class="bns_check">
@@ -74,11 +75,12 @@
                             </div>
                         </div>
                     </div>
+                    -->
                     <div class="bns_form_bottom">
-                        <a href="#" class="bns_btn" data-ng-click="createDate()">
+                        <a href="#" data-ng-click="createDate(); $event.preventDefault()" data-ng-class="{bns_btn : true, bns_btn_disabled : !$parent.$parent.canSubmit}">
                             Сохранить
                         </a>
-                        <a href="#" class="bns_btn js_close_form" data-ng-click="isFormOpened = false">
+                        <a href="#" class="bns_btn js_close_form" data-ng-click="isFormOpened = false; $event.preventDefault()">
                             Отмена
                         </a>
                     </div>

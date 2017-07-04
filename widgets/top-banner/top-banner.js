@@ -1,5 +1,8 @@
 import { WidgetRegister, Widget } from '@core/widget';
 import GiftsTemplate from './top-banner.html';
+import $ from 'jquery';
+require("jquery-mousewheel")($);
+require('malihu-custom-scrollbar-plugin')($);
 
 import angular from 'angular';
 
@@ -19,6 +22,10 @@ WidgetRegister({
       scope.user = SailPlayApi.data('load.user.info')
 
       scope.termsOpened = false
+
+      window.setTimeout(function() {
+        $(".bns_about").mCustomScrollbar();
+      }, 500);
 
     }
 

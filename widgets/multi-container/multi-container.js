@@ -14,7 +14,7 @@ Widget.filter('phonenumber', function () {
       return ccode+quoted+remaining
     }
 
-    return 'no number'
+    return 'Загрузка'
     
   };
 });

@@ -68,7 +68,7 @@
 
               <div data-ng-switch-when="phone" class="bns_input_block">
                 <label>{{ field.label }}</label>
-                <input type="text" data-model-view-value="true" data-ui-mask="{{ field.placeholder }}" data-ng-model="field.value" disabled="true">
+                <input type="text" data-model-view-value="true" data-ng-value="field.value | phonenumber" disabled="true">
                 <div class="bns_toltip">
                         <span>?</span>
                         <div class="bns_toltip_popup">
@@ -80,7 +80,7 @@
               </div>
               <div data-ng-switch-when="email" class="bns_input_block">
                 <label>{{ field.label }}</label>
-                <input type="email" placeholder="{{ field.placeholder }}" data-ng-model="field.value">
+                <input type="email" placeholder="{{ field.placeholder }}" data-ng-model="field.value" disabled="true">
               </div>
 
             </div>

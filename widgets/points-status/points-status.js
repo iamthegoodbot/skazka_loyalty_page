@@ -76,7 +76,7 @@ Widget.filter('get_bonus_expiration', function (moment) {
     if(item.action=="extra"){
       const parseResult = tryExtractJsonFromExtraName(item.name)
       if(parseResult.hasJson){
-        const expiration_date = "До " + moment(item.action_date).add(parseResult.nameJson.expiration_period, "days").format('D MMM')
+        const expiration_date = "До " + moment(item.action_date).add(parseResult.nameJson.expiration_period, "days").format('D MMM Y')
         console.log(expiration_date)
         return expiration_date
       } else {
