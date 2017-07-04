@@ -211,15 +211,22 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
           if (!user) return;
           var form = scope.sailplay.fill_profile.form;
           var custom_fields = [];
+          var tags_fields = [];
+          console.info(user)
           form.fields = config.fields.map(function (field) {
             var form_field = new SailPlayFillProfile.Field(field);
             if (field.type == 'variable') 
               custom_fields.push(form_field)
+
+            if (field.type == 'tags') 
+              tags_fields.push(form_field)
             
             //we need to assign received values to form
+            console.info(form_field)
             switch (form_field.type) {
 
               //we need define type
+
               case 'system':
                 //bind different values to form field
                 switch (form_field.name) {
@@ -284,6 +291,29 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
                 })
               })
             })
+          }                      
+
+          if (tags_fields.length) { 
+            let tags = []; 
+            angular.forEach(tags_fields, field => {                
+              tags = tags.concat(field.data.map(item => item.tag))
+            })    
+            SailPlayApi.call("tags.exist", { tags: tags }, (res) => {
+              angular.forEach(res.tags, tag => {                
+                angular.forEach(tags_fields, field => {
+                   angular.forEach(field.data, tag_field => {   
+                            
+                    if (tag_field.tag == tag.name) {
+                      tag_field.value = tag.exist
+                      if(tag.exist){
+                        field.value = tag_field.tag
+                      } 
+                      console.log(tag_field, tag)    
+                    }
+                  }) 
+                })
+              })
+            })
           }
 
           form.auth_hash = SailPlay.config().auth_hash;
@@ -332,13 +362,24 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
 
           var data_user = SailPlayApi.data('load.user.info')() && SailPlayApi.data('load.user.info')().user;         
           var req_user = {},
-            custom_user_vars = {};
+            custom_user_vars = {},
+            custom_user_tags_add = [],
+            custom_user_tags_delete = [];
 
           angular.forEach(scope.sailplay.fill_profile.form.fields, function (item) {
             if (item.type == 'variable') {
               custom_user_vars[item.name] = item.value
-            } else
+            } else if (item.type =="tags"){
+              item.data.forEach(v => {
+                if(v.tag === item.value){
+                  custom_user_tags_add.push(v.tag)
+                } else {
+                  custom_user_tags_delete.push(v.tag)
+                }
+              })
+            } else {
               req_user[item.name] = item.value;
+            }
           });
 
           if (req_user.addPhone && data_user && data_user.phone && data_user.phone.replace(/\D/g, '') == req_user.addPhone.replace(/\D/g, '')) {
@@ -369,13 +410,62 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
                 })
               }
 
-              scope.$apply(function () {
+              const deleteP = new Promise((res, rej)=>{
+                  if (custom_user_tags_delete.length) {
+                    SailPlay.send('tags.delete', {tags: custom_user_tags_delete}, (res_vars) => {
+                      if (!res_vars.status == 'ok')
+                        $rootScope.$broadcast('notifier:notify', {
+                        body: res_vars.message
+                      });
+                      res(res_vars.status)
 
-                if (typeof callback == 'function') callback();
+                    })
+                  } else {
+                    res()
+                  }
+                })
 
-                SailPlayApi.call('load.user.info', {all: 1});
+              const addP =  deleteP.then(res=>{
+                return new Promise((res, rej) => {
+                  if (custom_user_tags_add.length) {
+                    console.info(custom_user_tags_add, custom_user_tags_delete)
+                    SailPlay.send('tags.add', {tags: custom_user_tags_add}, (res_vars) => {
+                      if (!res_vars.status == 'ok')
+                        $rootScope.$broadcast('notifier:notify', {
+                        body: res_vars.message
+                      });
+                      res(res_vars.status)
+                    })
+                  } else {
+                    res()
+                  }
+                })
+              })
 
-              });
+
+              
+
+              
+              
+              const ngApply = addP.then(res=>{
+                return new Promise((res, rej)=>{
+                  scope.$apply(function () {
+
+                    if (typeof callback == 'function') callback();
+
+                    window.setTimeout(function() {
+                      SailPlayApi.call('load.user.info', {all: 1});
+                    }, 1000);
+
+                    
+
+                  });
+                  res()
+                })
+                
+              })
+
+              
 
             } else {
 

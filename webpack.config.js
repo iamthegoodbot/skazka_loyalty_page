@@ -65,7 +65,7 @@ let loaders = [
   { test: /\.eot$/, loader: 'url?limit=65000&mimetype=application/vnd.ms-fontobject' },
   //image loaders
   {
-    test: /\.png/, loader: 'url?limit=65000&mimetype=image/png'
+    test: /\.(png|jpe?g)/, loader: 'url?limit=65000&mimetype=image/png'
   }
 ];
 
@@ -110,15 +110,15 @@ module.exports.development = function(opts){
     entry: devEntry,
     resolve: resolve,
     output: {
-      path: path.join(__dirname, 'dist', 'dev'),
-      publicPath: "/dist/",
+      path: path.join(__dirname, 'dist', 'prod'),
+      publicPath: "/dist/prod/",
       filename: "[name].js",
       libraryTarget: 'umd'
     },
     module: {
       loaders: loaders
     },
-    devtool: "eval",
+    devtool: "eval-source-map",
     plugins: devPlugins
   }
 }
