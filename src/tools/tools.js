@@ -11,6 +11,7 @@ import Moment from 'moment';
 import MomentRu from './../../node_modules/moment/locale/ru.js';
 import angularMoment from 'angular-moment';
 import ngSanitize from 'angular-sanitize';
+require('./../../node_modules/angular-ellipsis/src/angular-ellipsis.js');
 
 export let Tools = angular.module('magic.tools', [
   NgPagination,
@@ -22,7 +23,8 @@ export let Tools = angular.module('magic.tools', [
   MagicModal,
   DatePicker,
   angularMoment,
-  ngSanitize
+  ngSanitize,
+  'dibari.angular-ellipsis'
 ])
 
 .run(function(amMoment) {

@@ -23,10 +23,35 @@
   transition: visibility 0s linear 0.5s, opacity 0.4s ease-out;
 }
 
+.bns_gift_main .bns_gift_over {
+  padding-left: 36px;
+  padding-right: 36px;
+}
+
+.bns_gift_main .bns_gift_over_desc {
+  display: inline-block;
+  height: 75px !important;
+  overflow: hidden;
+  position: relative !important;
+  left: 0 !important;
+  right: 0 !important;
+  top: 60%;
+  text-overflow: ellipsis;
+}
+
 .bns_btn{
 	cursor: pointer;
 	cursor: hand;
 	border: 0;
+  white-space: nowrap;
+}
+
+.bns_gift_main .bns_btn{
+  width: auto !important;
+  min-width: 160px;
+  max-width: 200px;
+  padding-left: 5px;
+  padding-right: 5px;
 }
 
 input[type="text"]:disabled{
@@ -114,5 +139,6 @@ input[type="text"]:disabled{
 }
 
 .sailplay_action_frame{
-  transform: translateX(-15px)
+  transform: translateX(-15px);
+  width: 160px !important;
 }

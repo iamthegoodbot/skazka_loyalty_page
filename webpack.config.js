@@ -69,7 +69,8 @@ let loaders = [
   },
   // plugin for scroll
   { test: /jquery-mousewheel/, loader: "imports?define=>false&this=>window" },
-  { test: /malihu-custom-scrollbar-plugin/, loader: "imports?define=>false&this=>window" }
+  { test: /malihu-custom-scrollbar-plugin/, loader: "imports?define=>false&this=>window" },
+  { test: /angular-ellipsis/, loader: "imports?define=>false&this=>window" }
 ];
 
 // common config
