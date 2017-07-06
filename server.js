@@ -16,7 +16,7 @@ const devServerHost = 'localhost'
 const devServerPort = '3001'
 
 //static directory if needed
-//server.use('/assets', express.static(__dirname + '/assets'));
+server.use('/public', express.static(__dirname + '/public'));
 
 server.use('/dist/prod', proxy(url.parse('http://' + devServerHost + ':' + devServerPort + "/dist/prod")));
 

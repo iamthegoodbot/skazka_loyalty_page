@@ -55,7 +55,7 @@ let loaders = [
   },
   {
     test: /\.less$/,
-    loader: "style-loader!css-loader!less-loader"
+    loader: "style-loader!css-loader?sourceMap=true!less-loader?sourceMap=true"
   },
   //fonts loaders
   { test: /\.svg$/, loader: 'url?limit=65000&mimetype=image/svg+xml' },

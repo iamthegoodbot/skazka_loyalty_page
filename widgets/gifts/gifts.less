@@ -2,6 +2,7 @@
 @import (reference) "../../src/theme/helpers";
 @import (reference) "../../src/theme/colors";
 
+@lightgreen: rgb(79, 182, 102);
 
 .spm_wrapper {
 
@@ -93,13 +94,15 @@
         .bon_item {
           width: 245px;
           height: 360px;
-          border: 1px solid @main_light;
           margin-left: 15px;
           margin-right: 15px;
           background-color: @white;
           text-align: center;
           display: inline-block;
           white-space: normal;
+          border-bottom-right-radius: 5px;
+          border-bottom-left-radius: 5px;
+          border: 1px solid transparent;
           .box-sizing(border-box);
           &:hover {
             border: 1px solid @main;
@@ -116,14 +119,6 @@
               width: 185px;
               text-align: left;
               color: @main_darker;
-            }
-            &:hover span {
-              opacity: 0;
-              visibility: hidden;
-            }
-            &:hover a {
-              opacity: 1;
-              visibility: visible;
             }
             .bon_item_name {
               font-size: 16px;
@@ -147,20 +142,21 @@
             }
             a {
               position: absolute;
-              bottom: 37px;
-              left: 50%;
-              width: 160px;
-              line-height: 35px;
+              bottom: 0;
+              left: 0;
+              width: 100%;
+              line-height: 40px;
               text-decoration: none;
               color: @white;
-              font-size: 14px;
-              font-weight: 500;
-              margin-left: -80px;
+              font-size: 20px;
+              font-weight: 600;
               background-color: @main;
               border-bottom: 1px solid @black;
               text-shadow: 0 0 1px @black;
-              opacity: 0;
-              visibility: hidden;
+              border-bottom-right-radius: 5px;
+              border-bottom-left-radius: 5px;
+              height: 63px !important;
+              .box-sizing(border-box);
             }
           }
         }
