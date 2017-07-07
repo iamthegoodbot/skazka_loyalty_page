@@ -6,7 +6,7 @@
       <div class="swiper-container">
 
           <div class="swiper-wrapper">
-            <div class="swiper-slide" data-ng-repeat="action in actions_custom() | offer" title="{{ action.name }}">
+            <div class="swiper-slide" data-ng-repeat="action in actions_custom() | offer" title="{{ action.name }}" >
                 <a href="#" class="bns_gift_item" data-ng-style="{'background-image': (action.content.image | sailplay_pic | background_image)}" data-ng-click="$event.preventDefault()">
                     <div class="bns_gift_item_top">
                       <span class="bns_gift_name" data-ng-bind="action_data(action).name | chopOfferName">

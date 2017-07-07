@@ -117,7 +117,7 @@ WidgetRegister({
       }, function(){
         setTimeout(function(){
           swiper = new Swiper('.swiper-container', config);
-        }, 300);
+        }, 1000);
       })
 
       scope.action_custom_select = function (action) {
