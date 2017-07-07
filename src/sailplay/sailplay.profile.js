@@ -212,7 +212,6 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
           var form = scope.sailplay.fill_profile.form;
           var custom_fields = [];
           var tags_fields = [];
-          console.info(user)
           form.fields = config.fields.map(function (field) {
             var form_field = new SailPlayFillProfile.Field(field);
             if (field.type == 'variable') 
@@ -321,7 +320,7 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
           //if(ipCookie(FillProfile.cookie_name) && SailPlay.config().auth_hash === ipCookie(FillProfile.cookie_name).user.auth_hash ){
           //  angular.extend(scope.profile_form, ipCookie(FillProfile.cookie_name));
           //}
-          console.dir(form);
+          console.log(form.fields.map(x=>x.value));
           saved_form = angular.copy(form);
 
           if (scope.$root.$$phase != '$digest')
@@ -450,6 +449,23 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
               const ngApply = addP.then(res=>{
                 return new Promise((res, rej)=>{
                   scope.$apply(function () {
+
+                    const form = scope.sailplay.fill_profile.form.fields
+
+                    const isProfileFilled = form.reduce((acc, x)=>{
+                      if( Object.prototype.toString.call( x.value ) === '[object Array]' ) {
+                        return (x.value.length === 3) && Object.keys(x.value).reduce(function(acc, key, index) {
+                           return !!x.value[key] && acc
+                        }, true)
+                      } else {
+                        return acc && !!x.value
+                      }
+                    }, true)
+
+                    if(isProfileFilled){
+                      SailPlay.send('tags.add',{tags:['Клиент заполнил профиль']})
+                      $rootScope.$broadcast('isProfileFilled', true);
+                    }
 
                     if (typeof callback == 'function') callback();
 

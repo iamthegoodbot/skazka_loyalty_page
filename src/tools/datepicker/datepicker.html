@@ -1,6 +1,6 @@
 <div>
 
-  <div class="bns_input_block bns_input_block_sel">
+  <div class="bns_input_block bns_input_block_sel" data-ng-class="{open: is_active1}" data-ng-click="is_active1 = !is_active1">
     <label data-ng-bind="model[0] || date.placeholder.day"></label>
     <ul>
       <li data-ng-repeat="day in range(1, days[model[1] || 1])">
@@ -9,7 +9,7 @@
       </li>
     </ul>
   </div>
-  <div class="bns_input_block bns_input_block_sel">
+  <div class="bns_input_block bns_input_block_sel" data-ng-class="{open: is_active2}" data-ng-click="is_active2 = !is_active2">
     <label data-ng-bind="date.months[model[1]] || date.placeholder.month"></label>
     <ul class="form_date__popup">
       <li data-ng-repeat="(key, value) in date.months track by $index">
@@ -18,7 +18,7 @@
       </li>
     </ul>
   </div>
-  <div class="bns_input_block bns_input_block_sel" >
+  <div class="bns_input_block bns_input_block_sel" data-ng-class="{open: is_active3}" data-ng-click="is_active3 = !is_active3">
     <label data-ng-bind="model[2] || date.placeholder.year"></label>
     <ul class="form_date__popup">
       <li data-ng-repeat="year in years">

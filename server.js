@@ -5,7 +5,7 @@ const url = require('url');
 const path = require('path')
 const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
-const development = require('./webpack.config').development // <-- Contains ES6+
+const development = require('./webpack.config').development//production // <-- Contains ES6+
 
 const server = express();
 
@@ -23,9 +23,9 @@ server.use('/dist/prod', proxy(url.parse('http://' + devServerHost + ':' + devSe
 server.use('/', staticFile('index.html', {}))
 
 const webpackConfig = development({
-	wdsPort: devServerPort,
-	wdsHost: devServerHost
-})
+  wdsHost: devServerHost,
+  wdsPort: devServerPort
+  })
 
 new WebpackDevServer(webpack(webpackConfig), {
   contentBase: webpackConfig.output.path,

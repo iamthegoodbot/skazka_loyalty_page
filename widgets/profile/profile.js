@@ -4,11 +4,32 @@ import HistoryPaginationTemplate from './history_pagination.html';
 import './profile.less';
 import DefaultAvatarImage from './assets/img/avatar_default.png';
 
+
+Widget.factory('isProfileFilled', ($rootScope, SailPlayApi, SailPlay) => {
+  return window.setTimeout(()=>{
+    SailPlayApi.call("tags.exist", { tags: ["Клиент заполнил профиль"] }, (obj)=>{
+        console.info(obj)
+        if(obj.tags[0].exist){
+          $rootScope.$broadcast('isProfileFilled', true)
+        } else {
+          $rootScope.$broadcast('isProfileFilled', false)
+        }
+      }
+    )
+  }, 1000)
+
+  /*
+  $rootScope.$on('isProfileFilled', (event, isProfileFilled)=>{
+
+  });
+  */
+})
+
 const ProfileWidget = {
 
   id: 'profile',
   template: WidgetProfileTemplate,
-  inject: ['$rootScope'],
+  inject: ['$rootScope', 'isProfileFilled'],
   controller: function ($rootScope) {
 
     return function (scope, elm, attrs) {
@@ -17,7 +38,6 @@ const ProfileWidget = {
 
       scope.default_avatar = DefaultAvatarImage;
       scope.$on('openProfile', () => {
-        console.info('profile_open')
         scope.profile.show_fill_profile = true;
       })
       scope.profile = {

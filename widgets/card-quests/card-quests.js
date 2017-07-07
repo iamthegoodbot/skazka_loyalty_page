@@ -36,9 +36,10 @@ WidgetRegister({
   inject: [
     'tools',
     'SailPlayApi',
-    'SailPlay'
+    'SailPlay',
+    '$rootScope'
   ],
-  controller: function (tools, SailPlayApi, SailPlay) {
+  controller: function (tools, SailPlayApi, SailPlay, $rootScope) {
 
     return function (scope, elm, attrs) {
 
@@ -46,6 +47,24 @@ WidgetRegister({
 
       scope.action_selected = false;
       scope.action_custom_selected = false;
+      scope.isProfileFilled = true
+      scope.isProfileFilledAction = {
+        type: 'fillProfile',
+        points: 100,
+        name: 'Заполните профиль',
+        button: 'Заполнить профиль',
+        image: 'https://sailplays3.cdnvideo.ru/media/assets/assetfile/8d1895bae3f02ff8f579f114d8d60638.svg'
+      }
+
+      scope.open_profile = function() {
+        console.info(123)
+        if(!SailPlayApi.data('load.user.info')()) return SailPlay.authorize('remote');        
+        $rootScope.$broadcast('openProfile')
+      }
+
+      $rootScope.$on('isProfileFilled', (event, isProfileFilled) => {
+        scope.isProfileFilled = isProfileFilled
+      })
 
       scope.filter = scope.widget.options && scope.widget.options.filter || {};
 
@@ -58,9 +77,14 @@ WidgetRegister({
       };
 
       SailPlay.on('actions.perform.success', function(){
-       scope.$apply(function(){
-         scope.action_selected = false;
-       });
+        scope.$apply(function(){
+          scope.action_selected = false;
+        });
+        window.setTimeout(()=>{
+          SailPlayApi.call('load.user.info', { all: 1 }, ()=>{});
+          SailPlayApi.call('load.actions.list', ()=>{});
+          SailPlayApi.call('load.user.history', ()=>{});
+        }, 500)
       });
 
       const config = {
@@ -93,7 +117,7 @@ WidgetRegister({
       }, function(){
         setTimeout(function(){
           swiper = new Swiper('.swiper-container', config);
-        }, 100);
+        }, 300);
       })
 
       scope.action_custom_select = function (action) {

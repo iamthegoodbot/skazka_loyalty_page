@@ -149,7 +149,7 @@ let prodLoaders = loaders.concat(
 
 prodResolve.alias.angular = "node_modules/angular/angular.min.js"
 
-let prodPlugins = plugins.concat(
+let prodPlugins = plugins/*.concat(
     new webpack.optimize.UglifyJsPlugin({
         compress: {
           warnings:     false,
@@ -160,7 +160,7 @@ let prodPlugins = plugins.concat(
         mangle: false
       })
     )
-
+*/
 module.exports.production = {
   entry: entry,
   resolve: prodResolve,

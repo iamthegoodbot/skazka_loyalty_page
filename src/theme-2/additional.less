@@ -1,5 +1,5 @@
 .bns_input_block_sel{
-  &:hover, &:active{
+  &.open{
   	& ul{
       display: block !important;
   	}
@@ -9,7 +9,7 @@
     overflow-y: auto;
     overflow-x: hidden;
   }
-}  
+}
 
 .bns_overlay {
   opacity: 0;
@@ -48,10 +48,23 @@
 
 .bns_gift_main .bns_btn{
   width: auto !important;
-  min-width: 160px;
+  min-width: 120px;
   max-width: 200px;
   padding-left: 5px;
   padding-right: 5px;
+}
+
+.card-quests .bns_overlay .bns_overlay_inner{
+  @media screen and (max-height: 600px) {
+    height: 400px; 
+  }
+  @media screen and (min-height: 601px) {
+    height: 600px; 
+  }
+  & iframe{
+    width: 100%;
+    height: 100%;
+  }
 }
 
 input[type="text"]:disabled{
@@ -141,4 +154,8 @@ input[type="text"]:disabled{
 .sailplay_action_frame{
   transform: translateX(-15px);
   width: 160px !important;
+}
+
+.bns_overlay.bns_overlay_date .bns_overlay_inner .bns_table .tr_head td {
+  color: #a4b4ba !important;
 }
