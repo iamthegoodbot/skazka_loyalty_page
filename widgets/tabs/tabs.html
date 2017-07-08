@@ -1,0 +1,15 @@
+<div class="spm_tabs clearfix" data-ng-if="widget.enabled">
+
+    <div class="spm_tab_list">
+        <a href="#" class="spm_tab_list_item" data-ng-class="{type_active: tab.widget==$parent.active_tab }"
+           data-ng-repeat="tab in widget.options.tabs"
+           data-ng-bind="tab.name" data-ng-click="$event.preventDefault();$parent.active_tab=tab.widget;"></a>
+    </div>
+
+    <div class="spm_tabs_content">
+        <widget class="spm_tabs_content_widget"
+                data-ng-repeat="widget in widget.options.widgets" data-widget="widget"
+                data-ng-class="{type_active: active_tab == widget.id}"></widget>
+    </div>
+
+</div>

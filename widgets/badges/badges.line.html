@@ -1,12 +1,17 @@
 <div class="clearfix">
   <div class="bon_item_main clearfix" data-ng-show="line.length">
 
+    <div class="bon_item_main_title" data-ng-if="_config.options.titles && _config.options.titles[index]"
+         data-ng-bind="_config.options.titles[index]"></div>
+
     <div class="bon_slide_cat_item_wrap" data-magic-gallery>
       <div class="bon_slide_cat_item">
 
         <div class="bon_item_line" data-ng-style="{left : left}">
 
-          <sailplay-magic-badge data-magic-slide data-badge="badge" data-on-click="badge_select(badge);" data-ng-repeat="badge in line" data-ng-class="{ last: $last }"></sailplay-magic-badge>
+          <sailplay-magic-badge data-magic-slide data-badge="badge" data-on-click="badge_select(badge);" data-ng-repeat="badge in line"
+                                data-ng-class="{ last: $last, type_active: badge.is_received }"
+          ></sailplay-magic-badge>
 
         </div>
 

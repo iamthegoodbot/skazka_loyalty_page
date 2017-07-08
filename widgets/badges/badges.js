@@ -45,6 +45,7 @@ Widget.directive('sailplayMagicBadgeLine', function(MAGIC_CONFIG, SailPlayShare,
     restrict: "E",
     replace: true,
     scope: {
+      index: '=',
       line: '=',
       _config: '=config'
     },

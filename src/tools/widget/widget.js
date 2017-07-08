@@ -4,7 +4,7 @@ import './widget.less';
 
 export let Widget = angular.module('magic.tools.widget', [])
 
-.directive('widget', function ($compile, MagicWidget, $injector) {
+.directive('widget', function ($compile, MagicWidget, $injector, $rootScope) {
   return {
     restrict: 'E',
     replace: true,
@@ -15,7 +15,6 @@ export let Widget = angular.module('magic.tools.widget', [])
     link: (scope, elm, attrs) => {
 
       let widget_wrapper = angular.element(elm[0].querySelector('[data-widget-wrapper]'));
-      console.dir(widget_wrapper);
 
       scope.$watch('widget', (widget) => {
 
@@ -32,6 +31,10 @@ export let Widget = angular.module('magic.tools.widget', [])
         let widget_scope = scope.$new();
 
         widget_scope.widget = widget;
+
+        widget_scope.widget.auth_state = function(){
+          return $rootScope.auth_state
+        };
 
         WIDGET_CONFIG.controller.$inject = WIDGET_CONFIG.inject || [];
 

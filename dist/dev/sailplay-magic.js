@@ -3474,7 +3474,7 @@ return webpackJsonp([0],[
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var Widget = exports.Widget = _angular2.default.module('magic.tools.widget', []).directive('widget', function ($compile, MagicWidget, $injector) {
+	var Widget = exports.Widget = _angular2.default.module('magic.tools.widget', []).directive('widget', function ($compile, MagicWidget, $injector, $rootScope) {
 	  return {
 	    restrict: 'E',
 	    replace: true,
@@ -3485,7 +3485,6 @@ return webpackJsonp([0],[
 	    link: function link(scope, elm, attrs) {
 
 	      var widget_wrapper = _angular2.default.element(elm[0].querySelector('[data-widget-wrapper]'));
-	      console.dir(widget_wrapper);
 
 	      scope.$watch('widget', function (widget) {
 
@@ -3502,6 +3501,10 @@ return webpackJsonp([0],[
 	        var widget_scope = scope.$new();
 
 	        widget_scope.widget = widget;
+
+	        widget_scope.widget.auth_state = function () {
+	          return $rootScope.auth_state;
+	        };
 
 	        WIDGET_CONFIG.controller.$inject = WIDGET_CONFIG.inject || [];
 
@@ -3549,7 +3552,7 @@ return webpackJsonp([0],[
 /* 77 */
 /***/ (function(module, exports) {
 
-	module.exports = "<div class=\"spm_tools_widget {{ widget.id }}\" data-ng-show=\"widget.enabled\"\n     data-ng-hide=\"widget.options.hiddenAnonymous && !widget.user()\">\n    <widget-style data-widget=\"widget\"></widget-style>\n    <div data-widget-wrapper class=\"clearfix\"\n         data-ng-class=\"{noauth : !$parent.$parent.$parent.auth_state }\"></div>\n</div>";
+	module.exports = "<div class=\"spm_tools_widget {{ widget.id }} {{ !widget.auth_state() ? 'noauth' : '' }}\" data-ng-show=\"widget.enabled\">\n    <widget-style data-widget=\"widget\"></widget-style>\n    <div data-widget-wrapper class=\"clearfix\"></div>\n</div>";
 
 /***/ }),
 /* 78 */
