@@ -195,7 +195,8 @@ WidgetRegister({
           
           scope.dates = scope.dates.concat(newDate)
           datesFactory.setUserDates(scope.dates)
-          scope.newDate = defalt
+          scope.customRelation = ''
+          scope.newDate = angular.copy(defalt)
         }
       }
 

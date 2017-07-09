@@ -3,38 +3,6 @@ import PointsStatusTemplate from './points-status.html';
 import HistoryPaginationTemplate from './history_pagination.html';
 import './points-status.less';
 
-/*
-action
-:
-"purchase"
-action_date
-:
-"2017-06-28T15:52:18.754"
-debited_points_delta
-:
-10
-id
-:
-93695456
-is_completed
-:
-true
-name
-:
-"Покупка"
-order_num
-:
-"test_points_deduction"
-points_delta
-:
-8
-price
-:
-85
-store_department_id
-:
-3489
-*/
 
 function tryExtractJsonFromExtraName(nameField){
   // Some of extra actions has json in it's name field, and some doesn't
@@ -53,6 +21,34 @@ function tryExtractJsonFromExtraName(nameField){
 }
 
 Widget.filter('get_bonus_name', function () {
+
+  const dictonary = {
+          "vk": {
+            "like": "Вступите в группу VK",
+            "partner_page": "Рассказать о нашем магазине в VK",
+            "purchase": "Поделитесь вашей покупкой в VK"
+          },
+          "fb": {
+            "like": "Вступите в группу Facebook",
+            "partner_page": "Рассказать о нашем магазине в Facebook",
+            "purchase": "Поделитесь вашей покупкой в Facebook"
+          },
+          "gp": {
+            "like": "Вступите в группу Google+",
+            "partner_page": "Рассказать о нашем магазине в Google+",
+            "purchase": "Поделитесь вашей покупкой в Google+"
+          },
+          "ok": {
+            "like": "Вступите в группу Одноклассники",
+            "partner_page": "Рассказать о нашем магазине в Одноклассники",
+            "purchase": "Поделитесь вашей покупкой в Одноклассники"
+          },
+          "tw": {
+            "partner_page": "Рассказать о нашем магазине в Twitter",
+            "purchase": "Поделитесь вашей покупкой в Twitter"
+          }
+        }
+
   return function (item) {
 
     if(item.action=="extra"){
@@ -63,6 +59,8 @@ Widget.filter('get_bonus_name', function () {
       } else {
         return item.name
       }
+    } if (item.hasOwnProperty('social_type')){
+      return dictonary[item.social_type][item.social_action]
     } else {
       return item.name
     }

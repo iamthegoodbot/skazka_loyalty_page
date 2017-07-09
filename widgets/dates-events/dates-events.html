@@ -49,13 +49,13 @@
                     </div>
 
 
-                    <div class="bns_input_block bns_input_block_sel bns_zi3" data-ng-class="{open: is_active1}"  data-ng-init="is_active1=false">
-                        <label data-ng-click="is_active1 = !is_active1">{{ newDate.relation || 'Родство' }}</label>
-                        <input type="text" id="customRelInput" data-ng-class="{show: newDate.relation == 'Свой вариант'}" data-ng-model='$parent.$parent.customRelation'>
-                        <ul data-ng-click="is_active1 = !is_active1">
+                    <div class="bns_input_block bns_input_block_sel bns_zi3" data-ng-class="{open: is_active1}" data-ng-click="is_active1 = !is_active1" data-ng-init="is_active1=false">
+                        <label>Родство</label>
+                        <input type="text" id="customRelInput" data-ng-class="{show: newDate.relation != ''}" data-ng-model='$parent.$parent.customRelation' data-ng-disabled="newDate.relation != 'Свой вариант'">
+                        <ul>
                             <li data-ng-repeat="option in relationOptions">
                               <a href="#" data-ng-bind="option"
-                               data-ng-click="$event.preventDefault();newDate.relation = option"></a>
+                               data-ng-click="$event.preventDefault();newDate.relation = option;$parent.$parent.$parent.customRelation = (newDate.relation != 'Свой вариант' ? option : '')"></a>
                             </li>
                         </ul>
                     </div>

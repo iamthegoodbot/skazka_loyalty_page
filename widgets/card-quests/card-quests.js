@@ -64,6 +64,9 @@ WidgetRegister({
 
       $rootScope.$on('isProfileFilled', (event, isProfileFilled) => {
         scope.isProfileFilled = isProfileFilled
+        window.setTimeout(()=>{
+          SailPlayApi.call('load.user.history', ()=>{});
+        }, 600)
       })
 
       scope.filter = scope.widget.options && scope.widget.options.filter || {};
@@ -76,6 +79,14 @@ WidgetRegister({
 
       };
 
+      scope.custom_action_cb = function(){
+        window.setTimeout(()=>{
+          SailPlayApi.call('load.user.info', { all: 1 }, ()=>{});
+          SailPlayApi.call('load.actions.custom.list', ()=>{})
+          SailPlayApi.call('load.user.history', ()=>{});
+        }, 2000)
+      }
+
       SailPlay.on('actions.perform.success', function(){
         scope.$apply(function(){
           scope.action_selected = false;
@@ -84,7 +95,7 @@ WidgetRegister({
           SailPlayApi.call('load.user.info', { all: 1 }, ()=>{});
           SailPlayApi.call('load.actions.list', ()=>{});
           SailPlayApi.call('load.user.history', ()=>{});
-        }, 500)
+        }, 2000)
       });
 
       const config = {
@@ -112,12 +123,16 @@ WidgetRegister({
 
       let swiper;
 
-      scope.$watch(function(){
-        return angular.toJson([SailPlayApi.data('load.actions.custom.list')()])
-      }, function(){
+      function swiperKostyl(){
         setTimeout(function(){
           swiper = new Swiper('.swiper-container', config);
         }, 1000);
+      }
+
+      SailPlay.on('load.actions.custom.list.success', ()=>{
+        swiperKostyl()
+      }, ()=>{
+        swiperKostyl()
       })
 
       scope.action_custom_select = function (action) {

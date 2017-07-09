@@ -1,7 +1,7 @@
 <div class="container" data-ng-show="widget.enabled" data-ng-cloak>
 
 <div class="bns_top" data-ng-style="{'background-image': ('https://sailplays3.cdnvideo.ru/media/assets/assetfile/5a7a040bc9a6322d9a229f3c0a8889db.jpg' | background_image)}">
-    <h2 class="bns_head" data-ng-bind="user().user.first_name + ', Добро пожаловать'">
+    <h2 class="bns_head" data-ng-bind="(!!user().user.first_name ? (user().user.first_name + ', Добро пожаловать') : 'Добро пожаловать' )">
     </h2>
     <div class="bns_desc">
         <p>

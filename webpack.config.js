@@ -166,6 +166,7 @@ module.exports.production = {
   resolve: prodResolve,
   output: {
     path: path.join(__dirname, 'dist', 'prod'),
+    publicPath: "/dist/prod/",
     filename: "[name].js",
     libraryTarget: 'umd'
   },
