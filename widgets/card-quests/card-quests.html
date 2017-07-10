@@ -150,11 +150,13 @@
 
       </magic-modal>
 
-      <magic-modal class="bns_overlay bns_overlay_gift" data-ng-cloak data-show="$parent.action_custom_selected" data-on-close="custom_action_cb">     
+      <magic-modal class="bns_overlay bns_overlay_gift" data-ng-cloak data-show="$parent.action_custom_selected" data-on-close="{{ !$parent.action_custom_selected.name.startsWith('offer:') && 'custom_action_cb' }}">
 
-        <!-- <div data-ng-if="!$parent.action_custom_selected.name.startsWith('offer:')"> -->    
+        <!-- <div data-ng-if="!$parent.action_custom_selected.name.startsWith('offer:')"> -->
           <div class="bns_overlay_inner iframe-inner-modal" data-ng-if="!$parent.show.name.startsWith('offer:')" data-sailplay-action-custom 
-          data-action="$parent.$parent.show"></div>
+          data-action="$parent.$parent.show">
+            <a href="#" class="close" data-ng-click="$event.preventDefault();$parent.$parent.close();"></a>
+          </div>
           
           <div class="bns_overlay_inner" data-ng-if="$parent.show.name.startsWith('offer:')">
               <div class="bns_over_left">

@@ -163,7 +163,22 @@ WidgetRegister({
       scope.customRelation = ''
 
       function isDateValid(){
-        return (scope.newDate.name != '' && scope.newDate.secondName != '' && scope.newDate.relation != '' && ((scope.newDate.relation != 'Свой вариант') || (scope.customRelation != '')) && scope.newDate.date.length === 3)
+        return (scope.newDate.name != '' && 
+          scope.newDate.secondName != '' &&
+           scope.newDate.relation != '' &&
+            ((scope.newDate.relation != 'Свой вариант') || (scope.customRelation != '')) &&
+             scope.newDate.date.length === 3 &&
+              !scope.dates.some(x=>{
+                console.log(scope.newDate.date, x.date)
+                return (x.name === scope.newDate.name) &&
+                  (x.secondName === scope.newDate.secondName) &&
+                  ((scope.newDate.relation != 'Свой вариант') ? 
+                    (x.relation === scope.newDate.relation) :
+                    (x.relation === scope.customRelation)) &&
+                    (parseInt(x.date.slice(0,4)) === scope.newDate.date[2]) &&
+                      (parseInt(x.date.slice(5,7)) === scope.newDate.date[1]) &&
+                        (parseInt(x.date.slice(8,10)) === scope.newDate.date[0])
+              }))
       }
 
       scope.$watch('newDate', function(newValue, oldValue) {
