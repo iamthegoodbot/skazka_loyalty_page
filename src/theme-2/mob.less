@@ -16,6 +16,16 @@
   overflow-y: auto;
 }
 @media screen and (max-width: 1250px){
+  body {
+    &.no_scrol {
+        overflow: hidden;
+    }
+  }
+  html {
+    &.no_scrol {
+      overflow: hidden;
+    }
+  }
   .bns_qust {
     .bns_qust_main {
       .bns_qust_item {
@@ -34,11 +44,31 @@
     .bns_overlay_inner {
       top:50px;
       transform: translate(0,0);
-      width: 90%;
+      width: 90% !important;
       left: 5%;
       overflow: hidden;
       .bns_form {
         width: 100%;
+        .bns_toltip {
+          &:hover .bns_toltip_popup {
+            opacity: 0;
+            display: none;
+          }
+          &.bns_act .bns_toltip_popup {
+            opacity: 1;
+            display: block;
+          }
+          .bns_toltip_popup {
+            right: -2px;
+            left: auto;
+            transform: translateX(0);
+            &:before {
+              right: 6px;
+              left: auto;
+              transform: translateX(0);
+            }
+          }
+        }
       }
     }
     .bns_overlay_inner.bns_overlay_inner_flex {
@@ -87,6 +117,13 @@
       }
     }
   }
+  .bns_overlay {
+    .bns_overlay_inner {
+      .bns_about {
+        max-height: 280px;
+      }
+    }
+  }
 }
 @media screen and (max-width: 450px) {
   .bns_top {
@@ -115,8 +152,8 @@
         font-size: 16px;
       }
       .bns_date_name {
-        font-size: 20px;
-        line-height: 29px;
+        font-size: 18px;
+        line-height: 24px;
         box-sizing: border-box;
       }
       .bns_ava {
@@ -156,6 +193,10 @@
   }
   .bns_overlay {
     .bns_overlay_inner {
+      .bns_head {
+        font-size: 24px;
+        padding-right: 10px;
+      }
       .bns_form {
         .bns_form_bottom .bns_btn {
           width: 90%;

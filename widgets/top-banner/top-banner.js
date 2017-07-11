@@ -24,7 +24,9 @@ WidgetRegister({
       scope.termsOpened = false
 
       window.setTimeout(function() {
-        $(".bns_about").mCustomScrollbar();
+        if($(window).width()>992) {
+            $(".bns_about").mCustomScrollbar();
+        }
       }, 500);
 
     }

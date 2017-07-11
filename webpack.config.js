@@ -102,7 +102,8 @@ const MAGIC_VERSION = PACKAGE.version
 
 let plugins = [
   new webpack.DefinePlugin({
-    MAGIC_VERSION: JSON.stringify(MAGIC_VERSION)
+    MAGIC_VERSION: JSON.stringify(MAGIC_VERSION),
+    SAILPLAY_HOST: 'http://dev.sailplay.ru'
   }),
   new webpack.NoErrorsPlugin()
 ]

@@ -69,7 +69,7 @@
               <div data-ng-switch-when="phone" class="bns_input_block">
                 <label>{{ field.label }}</label>
                 <input type="text" data-model-view-value="true" data-ng-value="field.value | phonenumber" disabled="true">
-                <div class="bns_toltip">
+                <div class="bns_toltip" data-ng-class="{bns_act: is_active_mail}" data-ng-click="is_active_mail = !is_active_mail">
                         <span>?</span>
                         <div class="bns_toltip_popup">
                             Телефон Вы можете изменить,

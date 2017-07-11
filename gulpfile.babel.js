@@ -39,7 +39,8 @@ gulp.task('build.migrator', (callback) => {
 gulp.task('server', () => {
   const server = require('gulp-connect');
   server.server({
-    port: 3000
+    port: 3000,
+    host: '0.0.0.0'
   });
 });
 
