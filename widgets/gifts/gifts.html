@@ -18,7 +18,7 @@
               <div class="bon_item_iner">
                 <img data-ng-src="{{ gift.thumbs.url_250x250 | sailplay_pic }}" alt="{{ gift.name }}">
                 <span class="bon_item_name gift_name" data-ng-bind="gift.name"></span>
-                <span class="bon_item_name gift_description" data-ng-bind="'descrve'"></span> <!--  || gift.descr -->
+                <span class="bon_item_description gift_description" data-ng-bind="'descrve'"></span> <!--  || gift.descr -->
                 <span class="bon_tem_info gift_points" data-ng-bind="(gift.points | number) + ' ' + (gift.points | sailplay_pluralize:('points.texts.pluralize' | tools))"></span>
                 <a href="#" class="button_primary" data-ng-click="gift_select(gift); $event.preventDefault();">{{ widget.texts.get }}</a>
               </div>

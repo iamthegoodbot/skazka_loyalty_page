@@ -10,17 +10,19 @@
     width: 100%;
     padding: 0 5%;
     .box-sizing(border-box);
-    background-color: @main;
+    background-color: transparent;
     //background-image: url(./img/prof_bg.png);
     position: relative;
 
-    .bon_profile_info {
+    & .bon_profile_info {
+      display: flex;
+      flex-flow: row wrap;
       width: 100%;
       float: left;
       position: relative;
       .bon_profile_top_left {
         float: left;
-        width: 580px;
+        width: 60%;
         h3 {
           float: left;
           width: 100%;
@@ -38,10 +40,37 @@
           font-weight: 400;
         }
       }
+      .bon_profile_stat {
+        background-color: rgb(79, 182, 102);
+        color: white !important;
+        cursor: pointer;
+        cursor: hand;
+        height: 100px * 0.75;
+        padding-top: 20px;
+        margin-top: 33px;
+        & .points_confirmed {
+          font-size: 24px;
+          font-weight: 600;
+        }
+        & .points_label{
+//          padding-top: 20px;
+          font-size: 15px;
+        }
+      }
+      .bon_profile_top {
+        order: 2;
+        width: 39%;
+        border-left: 1px solid rgb(79, 182, 102);
+        &>* {
+          padding-left: 60px * 0.75;
+        }
+      }
       .bon_profile_right {
-        float: right;
         width: 265px;
         margin-top: 50px;
+        &>* {
+          float: left;
+        }
         img {
           border-radius: 100%;
           -webkit-box-shadow: 0 2px 7px 1px rgba(0, 0, 0, 0.2);
@@ -50,7 +79,6 @@
         span {
           font-size: 16px;
           font-weight: 700;
-          margin-top: 18px;
         }
         .login_reg_btn {
           float: right;
@@ -59,33 +87,65 @@
           width: auto;
           font-size: 14px;
           margin-top: 9px;
-          color: @white;
+          color: rgb(166, 166, 166);
         }
         .edit_profile_btn {
           font-size: 14px;
           margin-top: 9px;
-          color: @white;
+          color: rgb(83, 173, 69);
+        }
+        .avatar_container {
+          width: 100%;
+        }
+        .controls_container {
+          float: right;
+          width: 60%;
+          &>* {
+            display: block;
+            background-color: transparent;
+            font-weight: 700;
+            font-size: 18px;
+            text-decoration: none
+          }
         }
         .user_avatar {
+          display: inline-block;
+          width: 38%;
+        }
+        .user_avatar img{
           max-width: 81px;
-          float: right;
           text-align: center;
         }
         .user_info {
-          text-align: right;
-          float: left;
-          width: 165px;
-          color: @white;
-          span {
-            word-wrap: break-word;
+          text-align: left;
+          width: 100%;
+          padding-top: 16px;
+          &>*{
+            display: inline-block;
+          }
+          & .user_name {
+            color: black;
+            font-size: 24px;
+          }
+          & .user_status {
+            color: black;
+            font-size: 20px;
+          }
+          & .user_phone {
+            margin-top: 10px;
+            color: rgb(156, 156, 156);
+            font-size: 18px;
+          }
+          & .user_email {
+            color: rgb(156, 156, 156);
+            font-size: 18px;
           }
         }
         .user_avatar_image {
           width: 100%;
         }
       }
-      .bon_profile_stat {
-        float: left;
+      .bps_right {
         width: 100%;
         margin-top: 50px;
         margin-bottom: 78px;
@@ -116,103 +176,97 @@
             color: @white;
           }
         }
-        .bps_right {
-          float: right;
-          width: 70%;
-          margin-top: 12px;
-          margin-right: 20px;
-          .progress_line_main {
-            position: relative;
-            float: left;
-            width: 100%;
-            .progress_line_bg {
-              height: 14px;
-              border-top: 3px solid @black;
-              background-color: @white;
-              background-image: url(./assets/img/progress_line.png);
-              border-radius: 20px;
-            }
-            .progress_line {
+        .progress_line_main {
+          position: relative;
+          float: left;
+          width: 100%;
+          .progress_line_bg {
+            height: 14px;
+            border-top: 3px solid @black;
+            background-color: @white;
+            background-image: url(./assets/img/progress_line.png);
+            border-radius: 20px;
+          }
+          .progress_line {
+            position: absolute;
+            left: 0px;
+            top: 3px;
+            width: 0%;
+            background-color: @white;
+            height: 14px;
+            border-radius: 20px 0px 0px 20px;
+            -webkit-transition: all 1000ms ease;
+            -moz-transition: all 1000ms ease;
+            -ms-transition: all 1000ms ease;
+            -o-transition: all 1000ms ease;
+            transition: all 1000ms ease;
+            .progress_text {
+              min-width: 100px;
               position: absolute;
-              left: 0px;
-              top: 3px;
-              width: 0%;
-              background-color: @white;
-              height: 14px;
-              border-radius: 20px 0px 0px 20px;
-              -webkit-transition: all 1000ms ease;
-              -moz-transition: all 1000ms ease;
-              -ms-transition: all 1000ms ease;
-              -o-transition: all 1000ms ease;
-              transition: all 1000ms ease;
-              .progress_text {
-                min-width: 100px;
-                position: absolute;
-                right: 0px;
-                padding-top: 32px;
-                border-right: 1px solid #fff;
-                top: 0px;
-                z-index: 1;
-                &.right_position {
-                  right: auto;
-                  left: 100%;
-                  border-left: 1px solid #fff;
-                  border-right: none;
-                  span {
-                    border-radius: 0px 5px 5px 0px;
-                  }
-                }
+              right: 0px;
+              padding-top: 32px;
+              border-right: 1px solid #fff;
+              top: 0px;
+              z-index: 1;
+              &.right_position {
+                right: auto;
+                left: 100%;
+                border-left: 1px solid #fff;
+                border-right: none;
                 span {
-                  float: right;
-                  line-height: 30px;
-                  background-color: rgba(255, 255, 255, 0.2);
-                  color: @white;
-                  font-size: 14px;
-                  font-family: 'RotondaC';
-                  border-radius: 5px 0px 0px 5px;
-                  padding-left: 10px;
-                  padding-right: 10px;
+                  border-radius: 0px 5px 5px 0px;
                 }
+              }
+              span {
+                float: right;
+                line-height: 30px;
+                background-color: rgba(255, 255, 255, 0.2);
+                color: @white;
+                font-size: 14px;
+                font-family: 'RotondaC';
+                border-radius: 5px 0px 0px 5px;
+                padding-left: 10px;
+                padding-right: 10px;
               }
             }
-            .gift_item {
+          }
+          .gift_item {
+            position: absolute;
+            top: 50%;
+            width: 36px;
+            height: 36px;
+            margin-top: -19px;
+            margin-left: -19px;
+            background-color: @main_light;
+            border-radius: 6px;
+            -webkit-background-size: 20px 22px;
+            background-size: 20px 22px;
+            background-repeat: no-repeat;
+            background-position: center center;
+            border-top: 3px solid @black;
+            background-image: url(./assets/img/progress_gift.png);
+            &.act {
+              background-color: @white;
+            }
+            &_hint {
+              opacity: 0;
+              visibility: hidden;
+              display: inline-block;
               position: absolute;
-              top: 50%;
-              width: 36px;
-              height: 36px;
-              margin-top: -19px;
-              margin-left: -19px;
-              background-color: @main_light;
-              border-radius: 6px;
-              -webkit-background-size: 20px 22px;
-              background-size: 20px 22px;
-              background-repeat: no-repeat;
-              background-position: center center;
-              border-top: 3px solid @black;
-              background-image: url(./assets/img/progress_gift.png);
-              &.act {
-                background-color: @white;
-              }
-              &_hint {
-                opacity: 0;
-                visibility: hidden;
-                display: inline-block;
-                position: absolute;
-                left: 0;
-                text-align: center;
-                width: 100%;
-                top: 0;
-                font-weight: bold;
-                transition: .3s ease;
-                color: white;
-              }
+              left: 0;
+              text-align: center;
+              width: 100%;
+              top: 0;
+              font-weight: bold;
+              transition: .3s ease;
+              color: white;
+            }
 
-              &:hover {
-                .gift_item_hint {
-                  visibility: visible;
-                  opacity: 1;
-                  top: -20px;
-                }
+            &:hover {
+              .gift_item_hint {
+                visibility: visible;
+                opacity: 1;
+                top: -20px;
               }
             }
           }
@@ -396,3 +450,68 @@
   }
 
 }
+
+.next_status_info {
+  text-align: right;
+  color: rgb(152, 152, 157);
+}
+
+.status-list__item-status{
+  color: rgb(203, 203, 203) !important;
+  font-weight: 800 !important;
+  font-size: 20px !important;
+}
+
+.profile .bns_overlay_iner {
+  width: 900px*0.75;
+
+}
+
+.history_container{
+  margin-top: 10px !important;
+}
+
+.history_entry{
+  min-height: 84px*0.75;
+  padding-top: 14px !important;
+  border-bottom: 1px solid rgb(237, 237, 237) !important;
+  &>*{
+    display: inline-block;
+    text-align: left;
+    &>*{
+      display: block;
+    }
+  }
+  &>div:nth-of-type(1){
+    min-width: 165px*0.75;
+    float: left;
+    &>.modal_history_date{
+      padding-top: 10px;
+      font-size: 18px;
+      color: rgb(127, 127, 127);
+    }
+  }
+  &>div:nth-of-type(2){
+    
+  }
+  &>div:nth-of-type(3){
+    width: 150px;
+    float: right;
+    &>.modal_history_price{
+      color: rgb(79, 182, 102);
+      &+.modal_history_points{
+        padding-top: 8px;
+      }
+      font-size: 20px;
+      font-weight: 600;
+    }
+    &>.modal_history_points{
+      color: rgb(204, 204, 204);
+      font-weight: 900;
+      font-family: 'Proxima Nova Bl';
+      font-size: 21px;
+    }
+  }
+}
+
+

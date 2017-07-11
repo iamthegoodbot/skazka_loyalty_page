@@ -43,7 +43,7 @@
 
 .form_field {
   float: left;
-  width: 50%;
+  width: 100%;
   padding-bottom: 20px;
   padding-right: 40px;
   .box-sizing(border-box);
@@ -51,14 +51,24 @@
   &.type_full {
     width: 100%;
   }
-
-  .form_date {
+  
+  .form_date_container{
     float: left;
     position: relative;
     z-index: 1;
+    padding-left: 25px;
+    width: 65%;
+    font-size: 18px;
+    outline: none;
+    box-sizing: border-box;
+  }
 
+  .form_date {
+    display: inline-block;
+    border: 1px solid rgb(153, 153, 153);
+    border-radius: 5px;
     span {
-      color: @black;
+      color: rgb(153, 153, 153);
       font-size: 18px;
       float: left;
       width: 100%;
@@ -84,9 +94,9 @@
       max-height: 100px;
       overflow-x: hidden;
       overflow-y: auto;
-      background-color: @white;
+      background-color: transparent;
       border-radius: 0 0 3px 3px;
-      border: 1px solid @main_light;
+      border: 1px solid rgb(153, 153, 153);
       text-align: center;
 
       a {
@@ -94,8 +104,8 @@
         width: 100%;
         line-height: 25px;
         text-decoration: none;
-        color: @black;
-        background: @white;
+        color: rgb(153, 153, 153);
+        background: white;
       }
 
     }
@@ -122,8 +132,9 @@
   }
 
   .form_label {
-    width: 100%;
-    line-height: 100%;
+    display: inline-block;
+    width: 32%;
+    line-height: 52px;
     color: @main_darker;
     font-size: 16px;
     float: left;
@@ -134,26 +145,27 @@
     float: left;
     height: 100px;
     resize: none;
-    border: 0;
-    border-top: 2px solid @main_light;
+    border: 1px solid rgb(153, 153, 153);
     border-radius: 5px;
     padding-left: 25px;
-    width: 100%;
+    width: 65%;
     font-size: 18px;
     outline: none;
     box-sizing: border-box;
   }
 
   .form_input {
+    width: 65%;
+    display: inline-block;
     &[type="text"], &[type="email"] {
-      background-color: @white;
+      background-color: transparent;
       float: left;
       height: 57px;
       border: 0;
-      border-top: 2px solid @main_light;
+      color: rgb(153, 153, 153);
+      border: 1px solid rgb(153, 153, 153);
       border-radius: 5px;
       padding-left: 25px;
-      width: 100%;
       font-size: 18px;
       outline: none;
       box-sizing: border-box;

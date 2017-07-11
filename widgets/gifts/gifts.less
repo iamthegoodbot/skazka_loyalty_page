@@ -3,6 +3,7 @@
 @import (reference) "../../src/theme/colors";
 
 @lightgreen: rgb(79, 182, 102);
+@border-color: rgb(225, 225, 225);
 
 .spm_wrapper {
 
@@ -59,7 +60,6 @@
         height: 110px;
         border-radius: 20px 0px 0px 20px;
         background-color: @main_lighter;
-        background-image: url(https://d3sailplay.cdnvideo.ru/media/assets/assetfile/04cbb41a3a145a39e718ff25a37690d5.png);
         background-position: center center;
         background-repeat: no-repeat;
         display: block;
@@ -74,7 +74,6 @@
         height: 110px;
         border-radius: 0px 20px 20px 0px;
         background-color: @main_lighter;
-        background-image: url(https://d3sailplay.cdnvideo.ru/media/assets/assetfile/26bbb44e136d0cf99e7099522eab8fc9.png);
         background-position: center center;
         background-repeat: no-repeat;
         display: block;
@@ -93,19 +92,19 @@
         }
         .bon_item {
           width: 245px;
-          height: 360px;
+          height: 660px*0.75;
           margin-left: 15px;
           margin-right: 15px;
           background-color: @white;
           text-align: center;
           display: inline-block;
           white-space: normal;
-          border-bottom-right-radius: 5px;
-          border-bottom-left-radius: 5px;
+          border-bottom-right-radius: 8px;
+          border-bottom-left-radius: 8px;
           border: 1px solid transparent;
           .box-sizing(border-box);
           &:hover {
-            border: 1px solid @main;
+            border: 1px solid @border-color;
           }
           .bon_item_iner {
             position: relative;
@@ -124,17 +123,23 @@
               font-size: 16px;
               position: absolute;
               left: 0px;
-              bottom: 61px;
-              visibility: visible;
+              bottom: 280px*0.75;
             }
-            .bon_tem_info {
+            .bon_item_description {
               font-size: 14px;
-              opacity: 0.5;
-              visibility: visible;
-              font-weight: 300;
               position: absolute;
               left: 0px;
-              bottom: 37px;
+              bottom: 210px*0.75;
+              color: rgb(126, 126, 126);
+            }
+            .bon_tem_info {
+              font-size: 19px;
+              font-family: ALSMalina;
+              font-weight: 900;
+              position: absolute;
+              left: 0px;
+              bottom: 97px;
+              color: rgb(103, 103, 103);
             }
             img {
               margin-top: 30px;
@@ -150,13 +155,22 @@
               color: @white;
               font-size: 20px;
               font-weight: 600;
-              background-color: @main;
+              background-color: @lightgreen;
               border-bottom: 1px solid @black;
               text-shadow: 0 0 1px @black;
               border-bottom-right-radius: 5px;
               border-bottom-left-radius: 5px;
               height: 63px !important;
               .box-sizing(border-box);
+              visibility: hidden;
+            }
+            &:hover a {
+              visibility: visible;
+            }
+            @media screen and (max-width: 991px) {
+              & a {
+                visibility: visible;
+              }
             }
           }
         }
