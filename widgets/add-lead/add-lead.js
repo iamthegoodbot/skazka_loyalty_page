@@ -14,6 +14,36 @@ WidgetRegister({
   controller: (SailPlayApi, SailPlay, MAGIC_CONFIG, $rootScope) => {
     return (scope, elm, attrs) => {
 
+      // actions block
+      scope.action_selected = false;
+      scope.action_custom_selected = false;      
+      scope.action_select = function (action) {
+
+        if(!SailPlayApi.data('load.user.info')()) return SailPlay.authorize('remote');
+
+        scope.action_selected = action || false;
+
+      };
+
+      SailPlay.on('actions.perform.success', function(){
+       scope.$apply(function(){
+         scope.action_selected = false;
+       });
+      });
+
+      scope.action_custom_select = function (action) {
+
+        if(!SailPlayApi.data('load.user.info')()) return SailPlay.authorize('remote');
+        scope.action_custom_selected = action || false;
+
+      };
+
+      scope.action_styles = function (action_data) {
+        return action_data && action_data.styles && tools.stringify_widget_css('', action_data.styles);
+      };
+
+      // --- end action block
+
       scope.submit = fields => {
 
         let _config = SailPlay.config();
