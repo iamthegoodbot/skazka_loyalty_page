@@ -40,6 +40,25 @@ WidgetRegister({
        });
       });
 
+      scope.custom_action_cb = function(){
+        window.setTimeout(()=>{
+          SailPlayApi.call('load.user.info', { all: 1 }, ()=>{});
+          SailPlayApi.call('load.actions.custom.list', ()=>{})
+          SailPlayApi.call('load.user.history', ()=>{});
+        }, 2000)
+      }
+
+      SailPlay.on('actions.perform.success', function(){
+        scope.$apply(function(){
+          scope.action_selected = false;
+        });
+        window.setTimeout(()=>{
+          SailPlayApi.call('load.user.info', { all: 1 }, ()=>{});
+          SailPlayApi.call('load.actions.list', ()=>{});
+          SailPlayApi.call('load.user.history', ()=>{});
+        }, 2000)
+      });
+
       scope.action_custom_select = function (action) {
 
         if(!SailPlayApi.data('load.user.info')()) return SailPlay.authorize('remote');

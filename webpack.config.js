@@ -157,7 +157,7 @@ let prodPlugins = plugins/*.concat(
           drop_console: true,
           unsafe:       false
         },
-        
+        exclude: /angular-ellipsis.js$/i,
         mangle: false
       })
     )
@@ -175,7 +175,12 @@ module.exports.production = {
     loaders: prodLoaders
   },
   devtool: "source-map",
-  plugins: prodPlugins
+  plugins: prodPlugins,
+  externals: {
+        // require("jquery") is external and available
+        //  on the global var jQuery
+        "jquery": "jQuery"
+  }
 };
 
 /*
