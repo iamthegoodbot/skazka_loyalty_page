@@ -56,14 +56,15 @@
     float: left;
     position: relative;
     z-index: 1;
-    padding-left: 25px;
     width: 65%;
     font-size: 18px;
     outline: none;
     box-sizing: border-box;
+    z-index: 999;
   }
 
   .form_date {
+    position: relative;
     display: inline-block;
     border: 1px solid rgb(153, 153, 153);
     border-radius: 5px;
@@ -73,12 +74,11 @@
       float: left;
       width: 100%;
       box-sizing: border-box;
-      padding-left: 10px;
-      border: 2px solid @main_light;
+      padding-left: 25px;
       border-radius: 5px;
-      line-height: 57px;
-      height: 57px;
-      background-image: url('https://d3sailplay.cdnvideo.ru/media/assets/assetfile/303e1f38393495b1a059952843abeeb0.png');
+      line-height: 50px;
+      height: 50px;
+      background-image: url('http://dev.sailplay.ru/media/assets/assetfile/b9d8ac88dc698978b8b4717981951474.png');
       background-repeat: no-repeat;
       background-position: right 10px center;
       background-size: 10px;
@@ -115,7 +115,7 @@
     }
 
     &__month {
-      width: 48%;
+      width: 44%;
       margin: 0 1%;
     }
 
@@ -123,9 +123,12 @@
       width: 30%;
     }
 
-    &:hover {
+    &.open {
       .form_date__popup {
+        padding-left: 25px;
         display: block;
+        background-color: white;
+        text-align: left;
       }
     }
 
@@ -160,7 +163,7 @@
     &[type="text"], &[type="email"] {
       background-color: transparent;
       float: left;
-      height: 57px;
+      height: 50px;
       border: 0;
       color: rgb(153, 153, 153);
       border: 1px solid rgb(153, 153, 153);
@@ -169,6 +172,88 @@
       font-size: 18px;
       outline: none;
       box-sizing: border-box;
+    }
+    & .bns_radio_item {
+      width: 49%;
+      display: inline-block;
+      line-height: 30px;
+      color: rgb(153, 153, 153);
+    }
+  }
+  & .bns_radio_block>div {
+    padding-top: 10px;
+        /* Base for label styling */
+    [type="checkbox"]:not(:checked),
+    [type="checkbox"]:checked {
+      position: absolute;
+      left: -9999px;
+    }
+    [type="checkbox"]:not(:checked) + label,
+    [type="checkbox"]:checked + label {
+      position: relative;
+      padding-top: 2px;
+      padding-left: 2.2em;
+      cursor: pointer;
+    }
+
+    /* checkbox aspect */
+    [type="checkbox"]:not(:checked) + label:before,
+    [type="checkbox"]:checked + label:before {
+      content: '';
+      z-index: 20;
+      position: absolute;
+      left: 0; top: 0;
+      width: 1.25em; height: 1.25em;
+      border: 1px solid rgba(153, 153, 153, 0.8);
+      border-radius: 5px;
+      background: transparent;
+      box-shadow: inset 0 1px 3px rgba(0,0,0,.1);
+    }
+    /* checked mark aspect */
+    [type="checkbox"]:not(:checked) + label:after,
+    [type="checkbox"]:checked + label:after {
+      content: '';
+      z-index: 10;
+      position: absolute;
+      top: 0em; left: 0em;
+      font-size: 1.3em;
+      line-height: 0.8;
+      color: #09ad7e;
+      width: 21px;
+      height: 21px;
+      border-radius: 5px;
+      background-color: rgb(235, 36, 42);
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-image: url(http://dev.sailplay.ru/media/assets/assetfile/f80a44517ea66bcb425b451e5418c719.png);
+      transition: all .2s;
+    }
+    /* checked mark aspect changes */
+    [type="checkbox"]:not(:checked) + label:after {
+      opacity: 0;
+      transform: scale(0);
+    }
+    [type="checkbox"]:checked + label:after {
+      opacity: 1;
+      transform: scale(1);
+    }
+    /* disabled checkbox */
+    [type="checkbox"]:disabled:not(:checked) + label:before,
+    [type="checkbox"]:disabled:checked + label:before {
+      box-shadow: none;
+      border-color: #bbb;
+      background-color: #ddd;
+    }
+    [type="checkbox"]:disabled:checked + label:after {
+      color: #999;
+    }
+    [type="checkbox"]:disabled + label {
+      color: #aaa;
+    }
+
+    /* hover style just for information */
+    label:hover:before {
+      box-shadow: 0px 0px 3px rgba(235, 36, 42, 0.5) !important;
     }
   }
 
@@ -191,7 +276,6 @@
     width: 100%;
     box-sizing: border-box;
     padding-left: 10px;
-    border: 2px solid @main_light;
     border-radius: 5px;
     line-height: 57px;
     height: 57px;

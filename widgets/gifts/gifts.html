@@ -18,7 +18,7 @@
               <div class="bon_item_iner">
                 <img data-ng-src="{{ gift.thumbs.url_250x250 | sailplay_pic }}" alt="{{ gift.name }}">
                 <span class="bon_item_name gift_name" data-ng-bind="gift.name"></span>
-                <span class="bon_item_description gift_description" data-ng-bind="'descrve'"></span> <!--  || gift.descr -->
+                <span class="bon_item_description gift_description" data-ng-bind="gift.descr"></span> <!--  || gift.descr -->
                 <span class="bon_tem_info gift_points" data-ng-bind="(gift.points | number) + ' ' + (gift.points | sailplay_pluralize:('points.texts.pluralize' | tools))"></span>
                 <a href="#" class="button_primary" data-ng-click="gift_select(gift); $event.preventDefault();">{{ widget.texts.get }}</a>
               </div>
@@ -49,17 +49,17 @@
           <span class="gift_more_points modal_gift_points"
                 data-ng-bind="(modals.selected_gift.points | number) + ' ' + (modals.selected_gift.points | sailplay_pluralize:('points.texts.pluralize' | tools))"></span>
 
-          <p class="gift_more_descr modal_gift_description" data-ng-bind="modals.selected_gift.descr"></p>
-
+          <!--<p class="gift_more_descr modal_gift_description" data-ng-bind="modals.selected_gift.descr"></p>
+-->
+          <p class="gift_more_descr modal_gift_description">Вы уверены что хотите получить подарок?</p>
           <div class="modal_gift_type_block clearfix" data-gift-type data-types="widget.options.gift_types" data-gift="modals.selected_gift"></div>
 
           <div class="modal_gift_buttons">
-            <span class="alink button_primary" data-ng-click="gift_select(false);">{{ 'buttons.texts.close' | tools }}</span>
-
             <span class="alink button_primary"
                   style="margin-left: 5px;"
-                  data-ng-click="gift_confirm();"
-                  data-ng-bind="gift_affordable(modals.selected_gift) ? widget.texts.get : widget.texts.no_points_button_text">{{ widget.texts.get }}</span>
+                  data-ng-click="gift_confirm();">Да</span>
+
+            <span class="alink button_primary" data-ng-click="gift_select(false);">Нет</span>
           </div>
 
         </div>

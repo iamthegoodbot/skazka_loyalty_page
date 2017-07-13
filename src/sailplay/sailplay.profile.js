@@ -157,6 +157,7 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
           this.name = params.name;
           this.label = params.label;
           this.placeholder = params.placeholder;
+          this.optional = !!params.optional
           this.input = params.input || 'text';
 
           if (params.data) {
@@ -222,7 +223,6 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
               tags_fields.push(form_field)
             
             //we need to assign received values to form
-            console.info(form_field)
             switch (form_field.type) {
 
               //we need define type
@@ -302,13 +302,12 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
               angular.forEach(res.tags, tag => {                
                 angular.forEach(tags_fields, field => {
                    angular.forEach(field.data, tag_field => {   
-                            
+                    
                     if (tag_field.tag == tag.name) {
                       tag_field.value = tag.exist
                       if(tag.exist){
                         field.value = tag_field.tag
-                      } 
-                      console.log(tag_field, tag)    
+                      }  
                     }
                   }) 
                 })
@@ -371,11 +370,20 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
               custom_user_vars[item.name] = item.value
             } else if (item.type =="tags"){
               item.data.forEach(v => {
-                if(v.tag === item.value){
-                  custom_user_tags_add.push(v.tag)
+                if(item.hasOwnProperty('value')){
+                  if(v.value){
+                    custom_user_tags_add.push(v.tag)
+                  } else {
+                    custom_user_tags_delete.push(v.tag)
+                  }
                 } else {
-                  custom_user_tags_delete.push(v.tag)
+                  if(v.tag === item.value){
+                    custom_user_tags_add.push(v.tag)
+                  } else {
+                    custom_user_tags_delete.push(v.tag)
+                  }                  
                 }
+
               })
             } else {
               req_user[item.name] = item.value;
@@ -428,7 +436,6 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
               const addP =  deleteP.then(res=>{
                 return new Promise((res, rej) => {
                   if (custom_user_tags_add.length) {
-                    console.info(custom_user_tags_add, custom_user_tags_delete)
                     SailPlay.send('tags.add', {tags: custom_user_tags_add}, (res_vars) => {
                       if (!res_vars.status == 'ok')
                         $rootScope.$broadcast('notifier:notify', {
@@ -450,6 +457,23 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
               const ngApply = addP.then(res=>{
                 return new Promise((res, rej)=>{
                   scope.$apply(function () {
+
+                    const form = scope.sailplay.fill_profile.form.fields
+
+                    const isProfileFilled = form.reduce((acc, x)=>{
+                      if( Object.prototype.toString.call( x.value ) === '[object Array]' ) {
+                        return (x.value.length === 3) && Object.keys(x.value).reduce(function(acc, key, index) {
+                           return !!x.value[key] && acc
+                        }, true)
+                      } else {
+                        return acc && (x.optional || !!x.value)
+                      }
+                    }, true)
+
+                    if(isProfileFilled){
+                      SailPlay.send('tags.add',{tags:['Клиент заполнил профиль']})
+                      $rootScope.$broadcast('isProfileFilled', true);
+                    }
 
                     if (typeof callback == 'function') callback();
 

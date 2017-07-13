@@ -16,17 +16,24 @@
         <div class="spm_row clearfix">
 
           <div class="spm_col" data-ng-repeat="action in actions().actions">
-            <div data-ng-click="action_data(action).just_open_profile ? open_profile() : action_select(action
+            <div data-ng-clickk="action_data(action).just_open_profile ? open_profile() : action_select(action
             )" class="mb_item action" data-ng-style="widget.styles.action">
               <div class="mb_item_left">
                 <span class="action_name" data-ng-bind="action_data(action).name"></span>
                 <span class="action_points" data-ng-show="action.points" data-ng-bind="((action.points || 0) | number) + ' ' + (action.points | sailplay_pluralize:( 'points.texts.pluralize' | tools ))"></span>
               </div>
               <div class="mb_item_right">
-                <img data-ng-src="{{ action_data(action).pic | sailplay_pic }}" alt="">
+                <div class="mb_img_container">
+                  <div class="mb_item_image" data-ng-style="{'background-image': (action_data(action).pic | sailplay_pic | background_image)}" alt=""></div>
+                </div>
               </div>
               <a class="sp_btn button_primary" data-ng-if="action_data(action).just_open_profile" data-ng-click="open_profile()">{{ action_data(action).button_text }}</a>                
-              <a class="sp_btn button_primary" data-ng-if="!action_data(action).just_open_profile" data-ng-click="action_select(action)">{{ action_data(action).button_text }}</a>
+              <a class="sp_btn button_primary" data-ng-if="!action_data(action).just_open_profile">
+                <span data-sailplay-action
+                          data-styles="{{ action_styles(action_data(action)) }}"
+                          data-action="action"
+                          data-text="{{ action_data(action).button_text }}"><span class="">{{ action_data(action).button_text }}</span></span>
+              </a>
             </div>
           </div>
 
@@ -37,7 +44,9 @@
                 <span class="action_points" data-ng-show="action.points" data-ng-bind="((action.points || 0) | number) + ' ' + (action.points | sailplay_pluralize:( 'points.texts.pluralize' | tools ))"></span>
               </div>
               <div class="mb_item_right">
-                <img data-ng-src="{{ action.icon | sailplay_pic }}" alt="">
+                <div class="mb_img_container">
+                  <div class="mb_item_image" data-ng-style="{'background-image': (action.icon | sailplay_pic | background_image)}" alt=""></div>
+                </div>
               </div>
               <a class="sp_btn button_primary" data-ng-click="action_custom_select(action)">{{ action.button_text }}</a>
             </div>
@@ -51,11 +60,31 @@
                 
               </div>
               <div class="mb_item_right">
-                <img data-ng-src="{{ quiz.icon | sailplay_pic }}" alt="">
+                <div class="mb_img_container">
+                  <div class="mb_item_image" data-ng-style="{'background-image': (quiz.icon | sailplay_pic | background_image)}" alt=""></div>
+                </div>
               </div>
               <a class="sp_btn button_primary" data-ng-click="$event.preventDefault();open_quiz(quiz)">{{ quiz.button_text }}</a>
             </div>
           </div>
+
+          <!-- is profile filled -->
+
+          <div data-ng-if="!isProfileFilled" class="spm_col">
+            <div class="mb_item action" data-ng-style="widget.styles.action">
+              <div class="mb_item_left">
+                <span class="action_name" data-ng-bind="$parent.isProfileFilledAction.name"></span>
+                <span class="action_points" data-ng-show="action.points" data-ng-bind="(($parent.isProfileFilledAction.points || 0) | number) + ' ' + (action.points | sailplay_pluralize:( 'points.texts.pluralize' | tools ))"></span>
+              </div>
+              <div class="mb_item_right">
+                <div class="mb_img_container">
+                  <div class="mb_item_image" data-ng-style="{'background-image': ($parent.isProfileFilledAction.image | sailplay_pic | background_image)}" alt=""></div>
+                </div>
+              </div>
+              <a class="sp_btn button_primary" data-ng-click="$parent.$parent.open_profile()" data-ng-bind="$parent.$parent.isProfileFilledAction.button"></a>
+            </div>
+          </div>
+
 
         </div>
 
@@ -100,14 +129,14 @@
 
       </magic-modal>
 
-      <magic-modal class="actions_custom_selected_modal" data-ng-cloak data-show="$parent.action_custom_selected">
+      <magic-modal class="actions_custom_selected_modal" data-ng-cloak data-show="$parent.action_custom_selected" data-on-close="custom_action_cb">
 
         <div data-sailplay-action-custom data-action="action_custom_selected"></div>
 
       </magic-modal>
 
 
-      <magic-modal class="actions_custom_selected_modal" data-ng-cloak data-show="$parent.quiz.show">
+      <magic-modal class="actions_custom_selected_modal" data-ng-cloak data-show="$parent.quiz.show" data-on-close="custom_action_cb">
 
         <div class="quiz_main">
 

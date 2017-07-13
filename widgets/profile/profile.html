@@ -3,10 +3,10 @@
   <div class="bon_profile_info" data-sailplay-profile data-sailplay-gifts>
 
     <div class="bon_profile_top_left">
-      <h3>
+      <h3 class="bon_header">
         <span class="header">{{ widget.texts.header }}</span>
       </h3>
-      <h4>
+      <h4 class="bon_sub_header">
         <span class="caption">{{ widget.texts.spoiler }}</span>
       </h4>
       <div class="bps_right progress_block clearfix">
@@ -62,7 +62,10 @@
       <div class="bon_profile_right clearfix" data-ng-if="user()">
         <div class="avatar_container">
           <div class="user_avatar">
-            <img class="user_avatar_image" data-ng-src="{{ (user().user.pic | sailplay_pic) || default_avatar}}" alt="You">  
+            <img class="user_avatar_image" data-ng-src="{{ (user().user.pic | sailplay_pic) || default_avatar}}" alt="You">
+            <div class="user_avatar_profile_btn_container" data-ng-click="$event.preventDefault(); profile.fill_profile(true);">
+              <img class="user_avatar_profile_btn" src="https://sailplays3.cdnvideo.ru/media/assets/assetfile/67eac019ec6671a75b4141492cfe0769.png">
+            </div>
           </div>
           <div class="controls_container">
             <a href="#" class="edit_profile_btn button_link" data-ng-click="$event.preventDefault(); profile.fill_profile(true);">{{ widget.texts.edit_profile_button }}</a>
@@ -74,9 +77,9 @@
           <br>
           <span class="user_name"  data-ng-bind="user().user.last_name || widget.texts.name_not_defined"></span>
           <br>
-          <span class="user_status" data-ng-bind="user().user.name"></span>
+          <span class="user_status" data-ng-bind="'Ваша скидка: ' + current_status.status"></span>
           <br>
-          <span class="user_phone" data-ng-if="user().user.phone"  data-ng-bind="user().user.phone | tel"></span>
+          <span class="user_phone" data-ng-if="user().user.phone"  data-ng-bind="'+' + (user().user.phone | tel)"></span>
           <span class="user_email" data-ng-if="user().user.email"  data-ng-bind="user().user.email"></span>
         </div>
       </div>
@@ -114,22 +117,31 @@
         <div class="history_entry" data-dir-paginate="item in history() | itemsPerPage:5" data-pagination-id="history_pages">
           <div>
             <span class="modal_history_name" data-ng-bind="item | get_bonus_name"></span>
-            <span class="modal_history_date" data-ng-bind="item.action_date | date:'d/MM/yyyy'"></span>
+            <span class="modal_history_date" data-ng-bind="item.action_date | date:'d.MM.yyyy'"></span>
           </div>
           <div>
-            <span><b class="modal_history_content" data-ng-bind="item | history_item"></b></span>
+            <span class="modal_history_content_container" data-ng-if="item.action=='purchase'" data-ng-click="getHistoryPurchases(item.id)" data-ng-class="{open: item.open}">
+              <span class="modal_history_content_header" data-ng-click="item.open = !item.open">{{item.open ? 'Скрыть <' : 'Показать товары >' }}</span>
+              <ul class="modal_history_content">
+                <li data-ng-repeat="entry in purchases[item.id]">{{ entry.name }}</li>
+              </ul>
+            </span>
           </div>
           <div>
-            <span class="modal_history_price" data-ng-if="item.price" data-ng-bind="(item.price) + 'р'"></span>
             <span class="modal_history_points" data-ng-if="item.points_delta" data-ng-bind="((item.points_delta|number) || 0) + ' ' + (item.points_delta | sailplay_pluralize:('points.texts.pluralize' | tools))"></span>
+            <span class="modal_history_price" data-ng-if="item.price" data-ng-bind="(item.price) + 'р'"></span>
           </div>
         </div>
       </div>
 
-      <dir-pagination-controls data-max-size="7" data-pagination-id="history_pages"
-                               data-template-url="profile.history_pagination"
-                               data-auto-hide="true"></dir-pagination-controls>
+      <div class="modal_history_controls_container">
+        <dir-pagination-controls data-max-size="5" data-pagination-id="history_pages"
+                                 data-template-url="profile.history_pagination"
+                                 data-auto-hide="true"></dir-pagination-controls>
+        <button type="submit" class="sp_btn button_primary modal_history_close" data-ng-click="preventDefault(); $parent.close()">{{ 'buttons.texts.close' | tools }}</button>
+      </div>
     </div>
+
 
 
 
@@ -177,6 +189,16 @@
           <div data-ng-switch-when="email" class="clearfix">
             <label class="form_label">{{ field.label }}</label>
             <input class="form_input" type="email" placeholder="{{ field.placeholder }}" data-ng-model="field.value">
+          </div>
+
+          <div data-ng-switch-when="checkbox-tag" class="bns_radio_block bns_zi2">
+            <label class="form_label">{{ field.label }}</label>
+            <div class="form_input">
+              <div class="bns_radio_item" data-ng-repeat="item in field.data">
+                  <input value="{{item.tag}}" data-ng-model="item.value" id="{{'field_' + field.name + '_' + item.tag}}" type="checkbox">
+                  <label for="{{'field_' + field.name + '_' + item.tag}}">{{ item.text }}</label>
+              </div>
+            </div>
           </div>
 
         </div>

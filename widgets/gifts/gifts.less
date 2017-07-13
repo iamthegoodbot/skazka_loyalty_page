@@ -120,26 +120,26 @@
               color: @main_darker;
             }
             .bon_item_name {
+              font-size: 20px;
+              position: absolute;
+              left: 0px;
+              top: 260px;
+            }
+            .bon_item_description {
               font-size: 16px;
               position: absolute;
               left: 0px;
-              bottom: 280px*0.75;
-            }
-            .bon_item_description {
-              font-size: 14px;
-              position: absolute;
-              left: 0px;
-              bottom: 210px*0.75;
+              bottom: 190px*0.75;
               color: rgb(126, 126, 126);
             }
             .bon_tem_info {
-              font-size: 19px;
-              font-family: ALSMalina;
+              font-size: 22px !important;
+              font-family: Proxima Nova Bl;
               font-weight: 900;
               position: absolute;
               left: 0px;
-              bottom: 97px;
-              color: rgb(103, 103, 103);
+              bottom: 77px;
+              color: rgb(204, 204, 204);
             }
             img {
               margin-top: 30px;
@@ -157,7 +157,7 @@
               font-weight: 600;
               background-color: @lightgreen;
               border-bottom: 1px solid @black;
-              text-shadow: 0 0 1px @black;
+              //text-shadow: 0 0 1px @black;
               border-bottom-right-radius: 5px;
               border-bottom-left-radius: 5px;
               height: 63px !important;
@@ -213,7 +213,9 @@
 
       &_img {
         display: inline-block;
-        width: 30%;
+        height: 180px;
+        background-size: contain;
+        //width: 30%;
         vertical-align: middle;
 
       }
@@ -229,17 +231,20 @@
         display: inline-block;
         width: 100%;
         font-size: 14px;
-        margin-top: 10px;
-        margin-bottom: 20px;
-
+        padding-top: 30px;
+        padding-bottom: 30px;
+        border-top: 1px solid rgb(225, 225, 225);
       }
 
       &_points {
+        font-family: Proxima Nova Bl;
+        font-weight: 900;
+        color: rgb(204, 204, 204);
         display: inline-block;
         width: 100%;
-        opacity: 0.5;
-        font-size: 14px;
-        margin-top: 10px;
+        opacity: 1;
+        font-size: 22px;
+        margin-bottom: 30px;
       }
 
     }
@@ -252,4 +257,29 @@
     }
   }
 
+}
+
+.gifts .modal_gift_buttons>span{
+  width: 40% !important;
+  height: 61px !important;
+  display: inline-block;
+  padding-top: 11px !important;
+  font-size: 25px !important;
+  font-weight: 900;
+  font-family: Proxima Nova Bl;
+  &+span{
+    margin-left: 10%;
+  }
+}
+
+.gifts {
+  & .bon_header, & .bon_sub_header {
+    padding-left: 20px;
+  }
+}
+
+.actions {
+  & .bon_header, & .bon_sub_header {
+    padding-left: 20px;
+  }
 }

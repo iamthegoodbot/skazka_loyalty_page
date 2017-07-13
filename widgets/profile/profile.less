@@ -28,13 +28,12 @@
           width: 100%;
           font-size: 30px;
           color: @white;
-          font-family: 'RotondaC';
           margin-top: 50px;
           margin-bottom: 10px;
         }
         h4 {
           float: left;
-          width: 100%;
+          width: 90%;
           color: @white;
           font-size: 14px;
           font-weight: 400;
@@ -60,6 +59,8 @@
       .bon_profile_top {
         order: 2;
         width: 39%;
+        display: flex;
+        flex-direction: column;
         border-left: 1px solid rgb(79, 182, 102);
         &>* {
           padding-left: 60px * 0.75;
@@ -68,13 +69,27 @@
       .bon_profile_right {
         width: 265px;
         margin-top: 50px;
+        flex-grow: 1;
         &>* {
           float: left;
         }
-        img {
+        img:not(.user_avatar_profile_btn) {
           border-radius: 100%;
           -webkit-box-shadow: 0 2px 7px 1px rgba(0, 0, 0, 0.2);
           box-shadow: 0 2px 7px 1px rgba(0, 0, 0, 0.2);
+        }
+        & .user_avatar_profile_btn_container {
+          height: 29px*0.75;
+          width: 27px*0.75;
+          padding: 1px 3px;
+          background-color: white;
+          position: absolute;
+          border-radius: 50px;
+          top: 2px;
+          right: 18px;
+        }
+        & .user_avatar_profile_btn {
+          width: 100%;
         }
         span {
           font-size: 16px;
@@ -111,6 +126,7 @@
         .user_avatar {
           display: inline-block;
           width: 38%;
+          position: relative;
         }
         .user_avatar img{
           max-width: 81px;
@@ -124,12 +140,14 @@
             display: inline-block;
           }
           & .user_name {
+            font-weight: bold;
             color: black;
             font-size: 24px;
           }
           & .user_status {
             color: black;
             font-size: 20px;
+            padding-top: 3px;
           }
           & .user_phone {
             margin-top: 10px;
@@ -437,7 +455,7 @@
   }
 
   .bns_hist_pager {
-    float: right;
+    
     font-size: 13px;
     a {
       text-decoration: none;
@@ -467,11 +485,73 @@
 
 }
 
-.history_container{
+.history_container {
   margin-top: 10px !important;
 }
 
-.history_entry{
+.modal_history_content_container {
+  & .modal_history_content_header {
+    display: block;
+    color: rgb(153, 153, 153);
+    text-decoration: underline;
+    cursor: pointer;
+    cursor: hand;
+  }
+  & ul {
+    padding-left: 34px;
+    display: none;
+    & li {
+      padding-top: 6px;
+    }
+    padding-bottom: 6px;
+  }
+  &.open {
+    & ul {
+      display: inline-block;
+    }
+  }
+}
+
+.modal_history_content {
+  min-width: 100px;
+  display: inline-block;
+}
+
+.modal_history_controls_container {
+  margin-top: 22px !important;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.bns_hist_pager>a {
+  display: inline-block;
+  height: 33px;
+  width: 33px;
+  background-color: rgb(235, 241, 241);
+  border-radius: 50px;
+  &.active {
+    background-color: rgb(235, 36, 42);  
+    &>span{
+      color: white;
+    }
+  }
+  &>span{
+    font-size: 18px;
+    display: inline-block;
+    color: rgb(155, 157, 157);
+    font-weight: normal;
+    font-family: Proxima Nova Bl;
+    text-align: center;
+    width: 100%;
+    transform: translateY(6px);
+  }
+  &+a{
+    margin-left: 10px !important;
+  }
+}
+
+.history_entry {
   min-height: 84px*0.75;
   padding-top: 14px !important;
   border-bottom: 1px solid rgb(237, 237, 237) !important;
@@ -499,19 +579,20 @@
     float: right;
     &>.modal_history_price{
       color: rgb(79, 182, 102);
-      &+.modal_history_points{
-        padding-top: 8px;
-      }
+      text-align: right;
       font-size: 20px;
       font-weight: 600;
     }
     &>.modal_history_points{
+      text-align: right;
       color: rgb(204, 204, 204);
       font-weight: 900;
       font-family: 'Proxima Nova Bl';
-      font-size: 21px;
+      font-size: 23px;
+      white-space: nowrap;
+      &+.modal_history_price{
+        padding-top: 8px;
+      }
     }
   }
 }
-
-

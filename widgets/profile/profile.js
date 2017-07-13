@@ -20,6 +20,26 @@ function tryExtractJsonFromExtraName(nameField){
   }
 }
 
+Widget.factory('isProfileFilled', ($rootScope, SailPlayApi, SailPlay) => {
+  return window.setTimeout(()=>{
+    SailPlayApi.call("tags.exist", { tags: ["Клиент заполнил профиль"] }, (obj)=>{
+        console.info(obj)
+        if(obj.tags[0].exist){
+          $rootScope.$broadcast('isProfileFilled', true)
+        } else {
+          $rootScope.$broadcast('isProfileFilled', false)
+        }
+      }
+    )
+  }, 1000)
+
+  /*
+  $rootScope.$on('isProfileFilled', (event, isProfileFilled)=>{
+
+  });
+  */
+})
+
 Widget.filter('get_bonus_name', function () {
 
   const dictonary = {
@@ -59,8 +79,10 @@ Widget.filter('get_bonus_name', function () {
       } else {
         return item.name
       }
-    } if (item.hasOwnProperty('social_type')){
+    } else if (item.hasOwnProperty('social_type')){
       return dictonary[item.social_type][item.social_action]
+    } else if (item.action=="purchase"){
+      return 'Покупка'
     } else {
       return item.name
     }
@@ -106,8 +128,8 @@ const ProfileWidget = {
 
   id: 'profile',
   template: WidgetProfileTemplate,
-  inject: ['$rootScope', 'MAGIC_CONFIG', 'SailPlayApi'],
-  controller: function ($rootScope, MAGIC_CONFIG, SailPlayApi) {
+  inject: ['$rootScope', 'MAGIC_CONFIG', 'SailPlayApi', 'SailPlay', 'isProfileFilled'],
+  controller: function ($rootScope, MAGIC_CONFIG, SailPlayApi, SailPlay, isProfileFilled) {
 
     return function (scope, elm, attrs) {
 
@@ -125,11 +147,36 @@ const ProfileWidget = {
         }
       };
 
+      scope.purchases = {
+
+      }
+
+      scope.getHistoryPurchases = function(id) {
+        console.log('hi', Object.keys(scope.purchases))
+        if(!Object.keys(scope.purchases).some(x=>x==id)){
+          SailPlayApi.call('purchases.info', {id})
+        }
+      }
+
+      SailPlay.on('purchases.info.success', (data)=>{
+        const id = data.purchase.id
+        const items = data.cart.cart.positions.map(x=>{
+          return {
+            name: x.product.name,
+            quantity: parseInt(x.quantity)
+          }
+        })
+        scope.purchases[id] = items
+        scope.$apply()
+      })
+
       scope._tools = MAGIC_CONFIG.tools;
       scope._statuses = MAGIC_CONFIG.data.statuses;
 
       scope.user = SailPlayApi.data('load.user.info');
       scope.purchase_status = MAGIC_CONFIG.data.purchase_status;
+
+      scope.current_status = "";
 
       scope.get_next_status = function () {
 
@@ -156,6 +203,10 @@ const ProfileWidget = {
         }).filter((status) => {
           return status.points > points;
         });
+
+        const current_statuses = scope._statuses.filter(x=>x.points<=points)
+
+        scope.current_status = current_statuses.reduce((acc, x)=>((acc.points<x.points) ? x : acc))
 
         return {
           status: future_statuses[0],

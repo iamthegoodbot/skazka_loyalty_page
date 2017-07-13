@@ -22,6 +22,13 @@ export let Modal = angular.module('magic.tools.modal', [])
 
       scope.close = function(){
         $parse(attrs.show).assign(scope.$parent, false);
+
+        const parentScope = scope.$parent
+
+        if(attrs.onClose){
+          parentScope[attrs.onClose]()
+        }
+
         scope.$eval(attrs.onClose);
       };
 

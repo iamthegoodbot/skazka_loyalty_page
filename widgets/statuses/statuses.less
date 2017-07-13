@@ -6,9 +6,9 @@
 
   .status-list {
     float: left;
-    width: 90%;
+    width: 95%;
     position: relative;
-    margin: 0 5%;
+//    margin: 0 5%;
     padding: 30px 0 80px;
     z-index: 1;
 
@@ -24,12 +24,18 @@
     &__wrapper {
       background: #F4F4F4;
       position: relative;
-      height: 20px;
+      height: 86px*0.75;
       border-radius: 5px;
       display: block;
-      margin: 0 20px;
+//      margin: 0 20px;
       @media screen and (max-width: 650px) {
         height: 10px;
+      }
+      &>div:nth-of-type(2) {
+        transform: translate(20px, 20px);
+      }
+      &>div:last-of-type {
+        transform: translate(-20px, 20px);
       }
 
     }
@@ -61,6 +67,7 @@
 
       &-point {
         position: absolute;
+        display: none;
         left: 50%;
         top: 50%;
         width: 50px;
@@ -121,7 +128,7 @@
       &.type_active {
 
         .element-item-point-inner {
-          display: block;
+          display: none;
         }
 
       }
@@ -129,12 +136,14 @@
     }
 
     &__progress {
-      height: 10px;
+      height: 86px*0.75;
       position: absolute;
       width: 0;
-      background: @main_dark;
+      background: url(http://dev.sailplay.ru/media/assets/assetfile/17fe353fb0cd556c8e9e6f14d7bfad1e.png);
+      background-repeat: repeat-x;
+      background-size: contain; 
       z-index: 0;
-      top: 5px;
+      top: 0;
       border-radius: 5px;
 
       @media screen and (max-width: 650px) {
