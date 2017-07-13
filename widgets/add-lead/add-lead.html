@@ -17,28 +17,30 @@
             
             </div>
 
-            <div class="spm_col" style="float: none; display: block" data-ng-repeat="action in actions_custom()">
-              <div class="mb_item action" data-ng-style="widget.styles.action">
-                <div class="icon">
-                  <img width="32" data-ng-src="{{ action.icon | sailplay_pic }}" alt="">
-                </div>
-                <div class="text" style="max-width: 115px; margin-top: 0">
-                  <span class="name" data-ng-bind="action.name"></span>
-                  <span class="points" data-ng-show="action.points" data-ng-bind="((action.points || 0) | number) + ' ' + (action.points | sailplay_pluralize:( 'points.texts.pluralize' | tools ))"></span>
-                  <a class="sp_btn button_primary" data-ng-click="action_custom_select(action)">{{ action.button_text }}</a>
+            <div class="action_container">
+              <div class="spm_col" style="float: none" data-ng-repeat="action in actions_custom()">
+                <div class="mb_item action" data-ng-style="widget.styles.action">
+                  <div class="icon">
+                    <img width="32" data-ng-src="{{ action.icon | sailplay_pic }}" alt="">
+                  </div>
+                  <div class="text" style="max-width: 115px; margin-top: 0">
+                    <span class="name" data-ng-bind="action.name"></span>
+                    <span class="points" data-ng-show="action.points" data-ng-bind="((action.points || 0) | number) + ' ' + (action.points | sailplay_pluralize:( 'points.texts.pluralize' | tools ))"></span>
+                    <a class="sp_btn button_primary" data-ng-click="action_custom_select(action)">{{ action.button_text }}</a>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <div class="spm_col" style="float: none; display: block" data-ng-repeat="quiz in $parent.quiz_list" data-ng-if="quiz_list && quiz_list.length && ((!exist || !exist()) || !checkTag(quiz.tag, exist()))" >
-              <div class="mb_item action"data-ng-style="widget.styles.action">
-                <div class="mb_item_left">
-                  <span class="action_name" data-ng-bind="quiz.name"></span>
-                  <span class="action_points" data-ng-show="quiz.points" data-ng-bind="((quiz.points || 0) | number) + ' ' + (quiz.points | sailplay_pluralize:( 'points.texts.pluralize' | tools ))"></span>
-                  <a class="sp_btn button_primary" data-ng-click="$event.preventDefault();open_quiz(quiz)">{{ quiz.button_text }}</a>
-                </div>
-                <div class="mb_item_right">
-                  <img data-ng-src="{{ quiz.icon | sailplay_pic }}" alt="">
+              <div class="spm_col" style="float: none" data-ng-repeat="quiz in $parent.quiz_list" data-ng-if="quiz_list && quiz_list.length && ((!exist || !exist()) || !checkTag(quiz.tag, exist()))" >
+                <div class="mb_item action"data-ng-style="widget.styles.action">
+                  <div class="mb_item_left">
+                    <span class="action_name" data-ng-bind="quiz.name"></span>
+                    <span class="action_points" data-ng-show="quiz.points" data-ng-bind="((quiz.points || 0) | number) + ' ' + (quiz.points | sailplay_pluralize:( 'points.texts.pluralize' | tools ))"></span>
+                    <a class="sp_btn button_primary" data-ng-click="$event.preventDefault();open_quiz(quiz)">{{ quiz.button_text }}</a>
+                  </div>
+                  <div class="mb_item_right">
+                    <img data-ng-src="{{ quiz.icon | sailplay_pic }}" alt="">
+                  </div>
                 </div>
               </div>
             </div>
