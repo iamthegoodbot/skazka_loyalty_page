@@ -16,7 +16,8 @@
         <form name="fill_profile_form" class="container-left-profile"
               data-ng-submit="$event.preventDefault();sailplay.fill_profile.clear();sailplay.fill_profile.submit(fill_profile_form, profile.fill_profile);">
 
-            <div class="container-left-profile-name" data-ng-bind="user().user.name || widget.texts.empty_name"></div>
+            <div class="container-left-profile-name" data-ng-bind="user().user.name || widget.texts.empty_name"
+                 data-ng-click="$event.preventDefault();sailplay.fill_profile.name.show = true;"></div>
 
             <div class="container-left-profile_field clearfix"
                  data-ng-switch="field.input"
@@ -106,6 +107,19 @@
             </div>
 
         </form>
+
+        <magic-modal class="bns_overlay_hist bns_overlay_password" data-show="sailplay.fill_profile.name.show">
+            <div class="new_password">
+                <input type="text" placeholder="{{ widget.texts.first_name }}"
+                       data-ng-model="sailplay.fill_profile.name.firstName">
+                <input type="text" placeholder="{{ widget.texts.last_name }}"
+                       data-ng-model="sailplay.fill_profile.name.lastName">
+                <button class="button_primary"
+                        data-ng-bind="widget.texts.change_name"
+                        data-ng-disabled="!sailplay.fill_profile.name.firstName || !sailplay.fill_profile.name.lastName"
+                        data-ng-click="sailplay.fill_profile.change_name(sailplay.fill_profile.name);"></button>
+            </div>
+        </magic-modal>
 
         <magic-modal class="bns_overlay_hist bns_overlay_password" data-show="sailplay.fill_profile.password.show">
             <div class="new_password">

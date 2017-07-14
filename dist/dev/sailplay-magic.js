@@ -237,7 +237,7 @@ return webpackJsonp([0],[
 
 	  }]);
 	  return Magic;
-	}(), _class.Widget = _widget.WidgetRegister, _class.version = '2.1.14', _temp);
+	}(), _class.Widget = _widget.WidgetRegister, _class.version = '${MAGIC_VERSION}', _temp);
 
 	//extend SAILPLAY with Magic class
 
@@ -1093,7 +1093,7 @@ return webpackJsonp([0],[
 	      scope.sailplay = scope.sailplay || {};
 
 	      scope.sailplay.fill_profile = {
-	        config: config, form: {}
+	        config: config, form: {}, name: {}
 	      };
 
 	      if (!config) {
@@ -1242,6 +1242,29 @@ return webpackJsonp([0],[
 	        show: false,
 	        pass1: null,
 	        pass2: null
+	      };
+
+	      scope.sailplay.fill_profile.change_name = function (form, callback) {
+	        if (!form) return;
+	        SailPlay.send('users.update', form, function (user_res) {
+	          if (user_res.status === 'ok') {
+	            scope.$apply(function () {
+	              scope.sailplay.fill_profile.name = {
+	                show: false,
+	                first_name: null,
+	                last_name: null
+	              };
+	              if (typeof callback == 'function') callback();
+	              SailPlayApi.call('load.user.info', { all: 1, purchases: 1 });
+	            });
+	          } else {
+	            scope.$apply(function () {
+	              $rootScope.$broadcast('notifier:notify', {
+	                body: user_res.message
+	              });
+	            });
+	          }
+	        });
 	      };
 
 	      scope.sailplay.fill_profile.change_password = function (password, callback) {
@@ -2724,11 +2747,10 @@ return webpackJsonp([0],[
 	            slidesToShow: 1,
 	            slidesToScroll: 1
 	          }
-	        }
-	        // You can unslick at a given breakpoint now by adding:
-	        // settings: "unslick"
-	        // instead of a settings object
-	        ]
+	          // You can unslick at a given breakpoint now by adding:
+	          // settings: "unslick"
+	          // instead of a settings object
+	        }]
 	      };
 
 	      scope.process = false;
