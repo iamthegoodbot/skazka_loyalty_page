@@ -237,7 +237,7 @@ return webpackJsonp([0],[
 
 	  }]);
 	  return Magic;
-	}(), _class.Widget = _widget.WidgetRegister, _class.version = '2.1.14', _temp);
+	}(), _class.Widget = _widget.WidgetRegister, _class.version = '${MAGIC_VERSION}', _temp);
 
 	//extend SAILPLAY with Magic class
 
@@ -1700,7 +1700,7 @@ return webpackJsonp([0],[
 	 * Simple directive for rendering and operating with SailPlay user's history.
 	 *
 	 */
-	.directive('sailplayHistory', function (SailPlayApi) {
+	.directive('sailplayHistory', function (SailPlay, SailPlayApi) {
 
 	  return {
 
@@ -1710,6 +1710,24 @@ return webpackJsonp([0],[
 	    link: function link(scope) {
 
 	      scope.history = SailPlayApi.data('load.user.history');
+
+	      scope.get_purchase_info = function (item) {
+	        if (!item) return;
+	        if (item.purchase_data) {
+	          delete item.purchase_data;
+	        } else {
+	          var params = { id: item.id };
+	          if (SailPlay.config().auth_hash) {
+	            params.auth_hash = SailPlay.config().auth_hash;
+	          }
+	          SailPlay.jsonp.get(SailPlay.config().DOMAIN + '/js-api/' + SailPlay.config().partner.id + '/purchases/get/', params, function (res) {
+	            if (res && res.cart && res.cart.cart && res.cart.cart.positions) {
+	              item.purchase_data = res && res.cart.cart.positions;
+	            }
+	            scope.$digest();
+	          });
+	        }
+	      };
 
 	      scope.history_current_page = 0;
 
@@ -2621,11 +2639,10 @@ return webpackJsonp([0],[
 	            slidesToShow: 1,
 	            slidesToScroll: 1
 	          }
-	        }
-	        // You can unslick at a given breakpoint now by adding:
-	        // settings: "unslick"
-	        // instead of a settings object
-	        ]
+	          // You can unslick at a given breakpoint now by adding:
+	          // settings: "unslick"
+	          // instead of a settings object
+	        }]
 	      };
 
 	      scope.process = false;

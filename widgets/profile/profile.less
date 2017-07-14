@@ -322,17 +322,39 @@
     float: left;
     width: 100%;
     margin-top: 12px;
+    tr {
+      border-top: 2px solid rgba(128, 128, 128, 0.1);
+      &:first-child {
+        border-top: none;
+      }
+    }
     td {
       vertical-align: text-top;
-      padding: 5px 11px;
+      padding: 15px 10px;
     }
     td:nth-child(1) {
       color: @main;
       font-size: 13px;
       line-height: 19px;
       padding-right: 0px;
+      text-align: left;
       padding-left: 0px;
       white-space: nowrap;
+      min-width: 150px;
+      span {
+        display: block;
+        position: relative;
+        z-index: 1;
+        font-size: 14px;
+        color: rgba(128, 128, 128, 0.4);
+        b {
+          color: black;
+          font-size: 16px;
+        }
+      }
+      span:first-child {
+        color: @black;
+      }
     }
     td:nth-child(2) {
       color: @black;
@@ -342,14 +364,27 @@
       position: relative;
       padding-left: 0px;
       width: 570px;
-      &::after {
-        position: absolute;
-        left: 0px;
-        width: 100%;
-        border-top: 1px dotted @main_dark;
-        top: 14px;
-        content: '';
-        display: block;
+      //&::after {
+      //  position: absolute;
+      //  left: 0px;
+      //  width: 100%;
+      //  border-top: 1px dotted @main_dark;
+      //  top: 14px;
+      //  content: '';
+      //  display: block;
+      //}
+      ul {
+        font-size: 16px;
+        padding: 10px 0 0 0;
+      }
+      a {
+        color: rgba(128, 128, 128, 0.4);
+        font-size: 16px;
+        text-decoration: none;
+        border-bottom: 1px dashed rgba(128, 128, 128, 0.4);
+        &:hover {
+          border-bottom: none;
+        }
       }
       span {
         display: block;
@@ -361,6 +396,7 @@
           background-color: @white;
           padding-right: 15px;
           padding-left: 11px;
+          color: black;
           font-weight: 200;
         }
       }
@@ -370,28 +406,64 @@
     }
     td:nth-child(3) {
       color: @main_dark;
-      font-size: 14px;
+      font-size: 16px;
       font-weight: bold;
       text-align: right;
       line-height: 19px;
-      span {
-        display: block;
-        white-space: nowrap;
-        font-size: 13px;
+
+      .modal_history_points {
+
+        &_val {
+          color: #ED2025;
+          font-size: 22px;
+        }
+
+        &_placeholder {
+          font-weight: 100;
+          color: rgba(128, 128, 128, 0.4);
+          font-size: 14px;
+        }
+
       }
+
+      .modal_history_price {
+        font-size: 16px;
+        margin-bottom: 10px;
+      }
+
+      span {
+        white-space: nowrap;
+        display: block;
+      }
+
     }
   }
 
   .bns_hist_pager {
-    float: right;
-    font-size: 13px;
+    float: left;
+    font-size: 14px;
     a {
       text-decoration: none;
-      color: #000;
-      margin-right: 4px;
+      color: white;
+      margin-right: 5px;
+      border-radius: 50%;
+      display: inline-block;
+      width: 25px;
+      height: 25px;
+      background: rgba(128, 128, 128, 0.4);
+      text-align: center;
+      line-height: 25px;
+
       &.active {
-        font-weight: bold;
+        background: #ed2025;
       }
+
+    }
+  }
+
+  .bns_overlay_hist {
+    .bns_overlay_iner {
+      width: 650px;
     }
   }
 
