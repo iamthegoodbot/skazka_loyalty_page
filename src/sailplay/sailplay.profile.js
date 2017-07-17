@@ -333,9 +333,17 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
 
           var data_user = SailPlayApi.data('load.user.info')() && SailPlayApi.data('load.user.info')().user;         
           var req_user = {},
-            custom_user_vars = {};
+            custom_user_vars = {},
+            tag_to_applied;
 
           angular.forEach(scope.sailplay.fill_profile.form.fields, function (item) {
+            switch (item.type) {
+              case 'variable':
+                custom_user_vars[item.name] = item.value
+                break;
+              case 'tags':
+                tag_to_applied        
+            }
             if (item.type == 'variable') {
               custom_user_vars[item.name] = item.value
             } else

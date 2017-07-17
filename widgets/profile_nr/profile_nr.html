@@ -90,7 +90,7 @@
 
             <form name="fill_profile_form" class="mb_popup_main mb_popup_main_mt" data-ng-submit="sailplay.fill_profile.submit(fill_profile_form, profile.fill_profile);">
 
-                <div class="form_field" data-ng-repeat="field in sailplay.fill_profile.form.fields" data-ng-switch="field.input">
+                <div class="form_field" data-ng-repeat="field in sailplay.fill_profile.form.fields" data-ng-switch="field.input" ng-class="{ wide: field.input == 'checkbox' }">
 
                     <div data-ng-switch-when="image" class="avatar_upload clearfix">
                         <img width="160px" data-ng-src="{{ (field.value | sailplay_pic) || 'http://saike.ru/sailplay-magic/dist/img/profile/avatar_default.png'}}" alt="">
@@ -121,6 +121,26 @@
                     <div data-ng-switch-when="email" class="clearfix">
                         <label class="form_label">{{ field.label }}</label>
                         <input class="form_input" type="email" placeholder="{{ field.placeholder }}" data-ng-model="field.value">
+                    </div>
+
+                    <div data-ng-switch-when="radiolist" class="clearfix">
+                        <label class="form_label">{{ field.label }}</label>
+                        <ul class="form_input form_input_listbox">
+                            <li ng-repeat="item in field.data"><label ng-bind="item.text"></label><input type="radio"></li>
+                        </ul>                  
+                    </div>
+
+                    <div data-ng-switch-when="checklist" class="clearfix">
+                        <label class="form_label">{{ field.label }}</label>
+                        <ul class="form_input form_input_listbox">
+                            <li ng-repeat="item in field.data"><label ng-bind="item.text"></label><input type="checkbox"></li>
+                        </ul>                  
+                    </div>
+
+                    <div data-ng-switch-when="checkbox" class="clearfix">
+                        <div class="form_input form_input_checkbox">
+                            <label ng-bind="field.label"></label><input class="form_input" type="checkbox" data-ng-model="field.value">
+                        </div>
                     </div>
 
                 </div>
