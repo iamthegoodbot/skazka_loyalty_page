@@ -29,6 +29,16 @@
         max-width: 800px;
         border-top-left-radius: 15px;
         text-align: center;
+        // fix height
+        min-height: 327px;
+
+        .user_avatar_image_upload {
+          display: block;
+          cursor: pointer;
+          margin-top: 10px;
+          font-size: 20px;
+          color: #d3d3d3;
+        }
 
         &-pic {
           text-align: center;
@@ -43,6 +53,11 @@
 
           @media screen and (max-width: 600px) {
             width: 100%;
+          }
+
+          input {
+            visibility: hidden;
+            opacity: 0;
           }
 
         }

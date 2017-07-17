@@ -11,6 +11,10 @@
         <div class="container-left-pic">
             <img class="user_avatar_image" data-ng-src="{{ (user().user.pic | sailplay_pic) || default_avatar}}"
                  alt="You">
+            <span class="user_avatar_image_upload" data-ng-bind="widget.texts.upload_avatar"
+                    onclick="document.getElementById('sailplay_upload_avatar').click()"></span>
+            <input data-file type="file" name="avatar" id="sailplay_upload_avatar" data-ng-model="sailplay.fill_profile.avatar"
+                   data-ng-change="sailplay.fill_profile.change_avatar()">
         </div>
 
         <form name="fill_profile_form" class="container-left-profile"
@@ -192,7 +196,8 @@
 
                 <tr data-dir-paginate="item in history() | itemsPerPage:10" data-pagination-id="history_pages">
                     <td>
-                        <span class="modal_history_date" data-ng-bind="item.action_date | date:'d/MM/yyyy HH:mm'"></span>
+                        <span class="modal_history_date"
+                              data-ng-bind="item.action_date | date:'d/MM/yyyy HH:mm'"></span>
                     </td>
                     <td>
                         <span>

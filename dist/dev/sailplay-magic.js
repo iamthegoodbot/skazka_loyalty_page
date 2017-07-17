@@ -237,7 +237,7 @@ return webpackJsonp([0],[
 
 	  }]);
 	  return Magic;
-	}(), _class.Widget = _widget.WidgetRegister, _class.version = '${MAGIC_VERSION}', _temp);
+	}(), _class.Widget = _widget.WidgetRegister, _class.version = '2.1.14', _temp);
 
 	//extend SAILPLAY with Magic class
 
@@ -1082,7 +1082,7 @@ return webpackJsonp([0],[
 	 * This directive extends parent scope with property: sailplay.fill_profile
 	 *
 	 */
-	.directive('sailplayFillProfile', function (SailPlay, $rootScope, $q, ipCookie, SailPlayApi, SailPlayFillProfile) {
+	.directive('sailplayFillProfile', function (SailPlay, $rootScope, $q, ipCookie, SailPlayApi, SailPlayFillProfile, $http) {
 
 	  return {
 
@@ -1216,6 +1216,40 @@ return webpackJsonp([0],[
 
 	          arr.push(tag);
 	        }
+	      };
+
+	      scope.sailplay.fill_profile.change_avatar = function () {
+
+	        if (!scope.sailplay.fill_profile.avatar) {
+	          return;
+	        }
+
+	        var callback_name = 'sailplay_change_avatar_callback';
+	        var fd = new FormData();
+
+	        fd.append('avatar', scope.sailplay.fill_profile.avatar);
+
+	        var config = SailPlay.config().DOMAIN + SailPlay.config().urls.users.update;
+
+	        config += '?auth_hash=' + SailPlay.config().auth_hash;
+	        config += '&callback=' + callback_name;
+
+	        window[callback_name] = function (res) {
+	          if (res.status == 'ok') {
+	            SailPlayApi.call('load.user.info', { all: 1, purchases: 1 });
+	          } else {
+	            $rootScope.$broadcast('notifier:notify', {
+	              body: res.message
+	            });
+	          }
+	        };
+
+	        return $http.post(config, fd, {
+	          transformRequest: _angular2.default.identity,
+	          headers: { 'Content-Type': undefined }
+	        }).then(function (res) {
+	          eval(res.data);
+	        });
 	      };
 
 	      scope.sailplay.fill_profile.focus = function (event, field) {
@@ -3085,6 +3119,20 @@ return webpackJsonp([0],[
 
 	        scope.left = '-' + _next * _width + 'px';
 	      };
+	    }
+	  };
+	}).directive('file', function () {
+	  return {
+	    require: "ngModel",
+	    restrict: 'A',
+	    link: function link($scope, el, attrs, ngModel) {
+	      el.bind('change', function (event) {
+	        var files = event.target.files;
+	        var file = files[0];
+
+	        ngModel.$setViewValue(file);
+	        $scope.$apply();
+	      });
 	    }
 	  };
 	}).directive('toolsStyles', function (tools, $document, MAGIC_CONFIG) {

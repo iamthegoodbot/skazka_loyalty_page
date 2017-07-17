@@ -188,7 +188,7 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
    * This directive extends parent scope with property: sailplay.fill_profile
    *
    */
-  .directive('sailplayFillProfile', function (SailPlay, $rootScope, $q, ipCookie, SailPlayApi, SailPlayFillProfile) {
+  .directive('sailplayFillProfile', function (SailPlay, $rootScope, $q, ipCookie, SailPlayApi, SailPlayFillProfile, $http) {
 
     return {
 
@@ -329,6 +329,41 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
 
         };
 
+        scope.sailplay.fill_profile.change_avatar = function () {
+
+          if (!scope.sailplay.fill_profile.avatar) {
+            return;
+          }
+
+          let callback_name = 'sailplay_change_avatar_callback';
+          let fd = new FormData();
+
+          fd.append('avatar', scope.sailplay.fill_profile.avatar);
+
+          let config = SailPlay.config().DOMAIN + SailPlay.config().urls.users.update;
+
+          config += '?auth_hash=' + SailPlay.config().auth_hash;
+          config += '&callback=' + callback_name;
+
+          window[callback_name] = function (res) {
+            if (res.status == 'ok') {
+              SailPlayApi.call('load.user.info', {all: 1, purchases: 1});
+            } else {
+              $rootScope.$broadcast('notifier:notify', {
+                body: res.message
+              });
+            }
+          };
+
+          return $http.post(config, fd, {
+            transformRequest: angular.identity,
+            headers: {'Content-Type': undefined}
+          }).then(function (res) {
+            eval(res.data);
+          });
+
+        };
+
         scope.sailplay.fill_profile.focus = function (event, field) {
           scope.sailplay.fill_profile.clear();
           if (field) field.editing = true;
@@ -355,8 +390,8 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
           pass2: null
         };
 
-        scope.sailplay.fill_profile.change_name =  function (form, callback) {
-          if(!form) return;
+        scope.sailplay.fill_profile.change_name = function (form, callback) {
+          if (!form) return;
           SailPlay.send('users.update', form, function (user_res) {
             if (user_res.status === 'ok') {
               scope.$apply(function () {
@@ -381,7 +416,7 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
         };
 
         scope.sailplay.fill_profile.change_password = function (password, callback) {
-          if(!password) return;
+          if (!password) return;
           var data = {};
           data.addPass = password;
           SailPlay.send('users.update', data, function (user_res) {
