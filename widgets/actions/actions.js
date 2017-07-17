@@ -10,9 +10,10 @@ WidgetRegister({
     'tools',
     'SailPlayApi',
     'SailPlay',
-    '$rootScope'
+    '$rootScope',
+    'isProfileFilled'
   ],
-  controller: function (tools, SailPlayApi, SailPlay, $rootScope) {
+  controller: function (tools, SailPlayApi, SailPlay, $rootScope, isProfileFilled) {
 
     return function (scope, elm, attrs) {
 
@@ -30,9 +31,11 @@ WidgetRegister({
       };
 
       scope.isProfileFilled = true
+
       scope.isProfileFilledAction = {
+        isActive: scope.widget.options.fillProfileActionExist,
         type: 'fillProfile',
-        points: 100,
+        points: scope.widget.options.fillProfileActionPoints,
         name: 'Заполните профиль',
         button: 'ВЫПОЛНИТЬ',
         image: 'https://sailplays3.cdnvideo.ru/media/assets/assetfile/39cb8197b4e3e1a11faf51495f8d73d6.png'

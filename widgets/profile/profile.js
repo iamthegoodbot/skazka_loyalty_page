@@ -21,7 +21,12 @@ function tryExtractJsonFromExtraName(nameField){
 }
 
 Widget.factory('isProfileFilled', ($rootScope, SailPlayApi, SailPlay) => {
-  return window.setTimeout(()=>{
+  
+  const obj = {
+      isProfileFilled: true
+    }
+  
+  const timeout = window.setTimeout(()=>{    
     SailPlayApi.call("tags.exist", { tags: ["Клиент заполнил профиль"] }, (obj)=>{
         console.info(obj)
         if(obj.tags[0].exist){
@@ -33,11 +38,11 @@ Widget.factory('isProfileFilled', ($rootScope, SailPlayApi, SailPlay) => {
     )
   }, 1000)
 
-  /*
-  $rootScope.$on('isProfileFilled', (event, isProfileFilled)=>{
-
+  $rootScope.$on('isProfileFilled', (event, isProfileFilledRes)=>{
+    obj.isProfileFilled = isProfileFilledRes
   });
-  */
+
+  return obj
 })
 
 Widget.filter('get_bonus_name', function () {
@@ -175,6 +180,8 @@ const ProfileWidget = {
 
       scope.user = SailPlayApi.data('load.user.info');
       scope.purchase_status = MAGIC_CONFIG.data.purchase_status;
+
+      scope.isMobile = () => document.body.clientWidth < 768
 
       scope.current_status = "";
 

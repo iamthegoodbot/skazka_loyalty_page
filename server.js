@@ -6,6 +6,7 @@ const path = require('path')
 const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
 const development = require('./webpack.config').development // <-- Contains ES6+
+const prod = require('./webpack.config').production
 
 const server = express();
 

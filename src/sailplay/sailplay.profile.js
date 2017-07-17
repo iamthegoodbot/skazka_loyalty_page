@@ -188,7 +188,7 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
    * This directive extends parent scope with property: sailplay.fill_profile
    *
    */
-  .directive('sailplayFillProfile', function (SailPlay, $rootScope, $q, ipCookie, SailPlayApi, SailPlayFillProfile) {
+  .directive('sailplayFillProfile', function (SailPlay, $rootScope, $q, ipCookie, SailPlayApi, SailPlayFillProfile, isProfileFilled) {
 
     return {
 
@@ -460,7 +460,7 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
 
                     const form = scope.sailplay.fill_profile.form.fields
 
-                    const isProfileFilled = form.reduce((acc, x)=>{
+                    const isProfileFilledNow = form.reduce((acc, x)=>{
                       if( Object.prototype.toString.call( x.value ) === '[object Array]' ) {
                         return (x.value.length === 3) && Object.keys(x.value).reduce(function(acc, key, index) {
                            return !!x.value[key] && acc
@@ -470,7 +470,7 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
                       }
                     }, true)
 
-                    if(isProfileFilled){
+                    if(isProfileFilledNow && !isProfileFilled.isProfileFilled){
                       SailPlay.send('tags.add',{tags:['Клиент заполнил профиль']})
                       $rootScope.$broadcast('isProfileFilled', true);
                     }

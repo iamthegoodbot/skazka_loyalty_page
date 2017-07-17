@@ -50,6 +50,7 @@
         & .points_confirmed {
           font-size: 24px;
           font-weight: 600;
+          font-family: Proxima Nova Bl;
         }
         & .points_label{
 //          padding-top: 20px;
@@ -93,12 +94,13 @@
         }
         span {
           font-size: 16px;
-          font-weight: 700;
+          font-weight: 500;
         }
         .login_reg_btn {
           float: right;
         }
         .logout_btn {
+          display: none !important;
           width: auto;
           font-size: 14px;
           margin-top: 9px;
@@ -115,10 +117,10 @@
         .controls_container {
           float: right;
           width: 60%;
-          &>* {
+          &>.edit_profile_btn {
             display: block;
             background-color: transparent;
-            font-weight: 700;
+            font-weight: 600;
             font-size: 18px;
             text-decoration: none
           }
@@ -187,7 +189,7 @@
             color: @white;
             display: block;
             font-size: 33px;
-            font-family: 'RotondaC bold';
+
           }
           > a {
             font-size: 14px;
@@ -241,7 +243,7 @@
                 background-color: rgba(255, 255, 255, 0.2);
                 color: @white;
                 font-size: 14px;
-                font-family: 'RotondaC';
+                
                 border-radius: 5px 0px 0px 5px;
                 padding-left: 10px;
                 padding-right: 10px;
@@ -594,5 +596,86 @@
         padding-top: 8px;
       }
     }
+  }
+}
+
+.bon_profile_info .header {
+  width: 50%;
+}
+
+@media screen and (max-width: 991px) {
+  .progres_xs{
+    order: 10;
+  }
+  .header {
+    width: 100% !important;
+    font-size: 36px !important;
+  }
+  h4 {
+    width: 100% !important;
+  }
+  .bon_profile_top_left, .bon_profile_top {
+    width: 100% !important;
+    border: 0 !important;
+    flex-direction: row !important;
+  }
+  .bon_profile_top {
+    & > * {
+      padding-left: 0 !important;
+    }
+    & .bon_profile_right {
+      width: 60% !important;
+      display: flex;
+      & .avatar_container {
+        width: auto !important;
+        flex-grow: 1;
+        max-width: 106px !important;
+        & .user_avatar_image {
+          max-width: 100% !important;
+          box-shadow: none !important;
+        }
+        & .user_avatar {
+          width: 90% !important;
+          & .user_avatar_profile_btn_container {
+            top: 0px;
+            right: 0px;
+          }
+        }
+        & .controls_container {
+          display: none !important;
+        }
+      }
+      & .user_info {
+        padding-top: 0 !important;
+        width: auto !important;
+        flex-grow: 2;
+      }
+      
+    }
+    & .bon_profile_stat {
+      width: 35% !important;
+      padding-left: 4% !important;
+      height: 100% !important;
+      & .points_block {
+        & .points_confirmed {
+          padding-top: 10px;
+          display: inline-block;
+        }
+        & .points_label {
+          padding-top: 20px;
+          display: inline-block;
+          &:after {
+            content: '>';
+            display: inline-block;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 1320px) and (min-width: 1200px) {
+  .mb_img_container {
+    transform: translate(16px, 24px) !important;
   }
 }

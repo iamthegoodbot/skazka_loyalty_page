@@ -12,7 +12,7 @@
     .bon_header {
       color: @black;
       font-size: 30px;
-      font-family: 'RotondaC';
+      
     }
     .bon_sub_header {
       font-size: 14px;
@@ -164,6 +164,9 @@
               background-repeat: no-repeat;
               display: inline-block;
             }
+            @media (max-width: 991px) {
+              transform: translate(15px, 24px) !important;
+            }
           }
         }
       }
@@ -204,32 +207,15 @@
             height: auto;
           }
           width: 100%;
-          position: relative;
-          margin-right: 0px;
-          &.act {
-            margin-bottom: 0px;
-            height: 250px;
-          }
           .mb_item_left {
-            float: right;
-            margin-top: 100px;
-            height: 140px;
             width: 100%;
-            span {
-              width: 90%;
-              text-align: center;
-              margin-left: 5%;
-            }
           }
           .mb_item_right {
             float: left;
             width: 100%;
-            position: absolute;
-            top: 0px;
-            left: 0px;
-            height: 100px;
-            img {
-              margin-top: 23px;
+            & .mb_img_container {
+              text-align: center;
+              display: inline-block;
             }
           }
         }

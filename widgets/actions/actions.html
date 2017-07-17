@@ -70,7 +70,7 @@
 
           <!-- is profile filled -->
 
-          <div data-ng-if="!isProfileFilled" class="spm_col">
+          <div data-ng-if="!isProfileFilled && $parent.isProfileFilledAction.isActive" class="spm_col">
             <div class="mb_item action" data-ng-style="widget.styles.action">
               <div class="mb_item_left">
                 <span class="action_name" data-ng-bind="$parent.isProfileFilledAction.name"></span>

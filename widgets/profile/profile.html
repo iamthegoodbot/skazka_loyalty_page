@@ -9,7 +9,7 @@
       <h4 class="bon_sub_header">
         <span class="caption">{{ widget.texts.spoiler }}</span>
       </h4>
-      <div class="bps_right progress_block clearfix">
+      <div data-ng-if="!isMobile()" class="bps_right progress_block clearfix">
         <div class="clearfix container">
 
           <div class="status-list">
@@ -100,6 +100,52 @@
 
     <!-- status -->
 
+    <div data-ng-if="isMobile()" class="bps_right progress_block clearfix progres_xs">
+      <div class="clearfix container">
+
+        <div class="status-list">
+
+          <div class="next_status_info" data-ng-show="get_next_status().status">
+<!--
+            <div class="next_status_name">
+              {{ widget.texts.next_status }} <span data-ng-style="{ color: get_next_status().status.color  }">{{ get_next_status().status.status }}</span>
+            </div>
+-->
+            <div>
+              Осталось               
+            </div>
+            <div class="next_status_offset">
+               {{ get_next_status().offset + ' баллов'}}
+            </div>
+
+          </div>
+
+          <div class="status-list__wrapper" data-sailplay-statuses data-ng-cloak>
+
+            <div class="status-list__progress element-progress progress_line"
+                 data-ng-style="getProgress(purchase_status ? user().purchases.sum : user().user_points, _statuses)"></div>
+
+            <div class="status-list__item element-item"
+                 data-ng-class="{ type_active : item.points <= user().user_points.confirmed + user().user_points.spent + user().user_points.spent_extra }"
+                 data-ng-repeat="item in _statuses"
+                 data-ng-style="generateOffset($index, _statuses)">
+
+              <div class="status-list__item-point element-item-point"></div>
+
+              <div class="element-item-point-inner" data-ng-style="{ backgroundColor: item.color }"></div>
+
+              <div class="status-list__item-name element-item-name" data-ng-bind="item.name"></div>
+              <div class="status-list__item-status element-item-status" data-ng-if="item.status" data-ng-bind="item.status"
+                   style="{{ (item.color) ? ('color: ' +  item.color) : '' }}"></div>
+
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
     
   </div>
 
@@ -121,7 +167,7 @@
           </div>
           <div>
             <span class="modal_history_content_container" data-ng-if="item.action=='purchase'" data-ng-click="getHistoryPurchases(item.id)" data-ng-class="{open: item.open}">
-              <span class="modal_history_content_header" data-ng-click="item.open = !item.open">{{item.open ? 'Скрыть <' : 'Показать товары >' }}</span>
+              <span class="modal_history_content_header" data-ng-click="item.open = !item.open">{{item.open ? 'Скрыть &#60;' : 'Показать товары &#62;' }}</span>
               <ul class="modal_history_content">
                 <li data-ng-repeat="entry in purchases[item.id]">{{ entry.name }}</li>
               </ul>
@@ -138,7 +184,7 @@
         <dir-pagination-controls data-max-size="5" data-pagination-id="history_pages"
                                  data-template-url="profile.history_pagination"
                                  data-auto-hide="true"></dir-pagination-controls>
-        <button type="submit" class="sp_btn button_primary modal_history_close" data-ng-click="preventDefault(); $parent.close()">{{ 'buttons.texts.close' | tools }}</button>
+        <button type="submit" class="sp_btn button_primary modal_history_close" data-ng-click="preventDefault(); $parent.$parent.close()">{{ 'buttons.texts.close' | tools }}</button>
       </div>
     </div>
 

@@ -18,7 +18,7 @@
       margin-left: 5%;
       color: @black;
       font-size: 30px;
-      font-family: 'RotondaC';
+      
       margin-top: 80px;
     }
     .bon_sub_header {
@@ -208,7 +208,9 @@
         width: 70%;
         white-space: normal;
         .box-sizing(border-box);
-        padding-left: 40px;
+        @media (min-width: 992px) {
+          padding-left: 40px;
+        }
       }
 
       &_img {
@@ -281,5 +283,27 @@
 .actions {
   & .bon_header, & .bon_sub_header {
     padding-left: 20px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .arr_left {
+    top: -100px !important;
+    left: 47% !important;
+  }
+  .arr_right {
+    top: -100px !important;
+    right: 47% !important;
+  }
+  .bon_item_main {
+    margin-top: 150px !important;
+  }
+  .bon_item {
+    border-radius: 5px;
+    border: 1px solid #e1e1e1 !important;
+    & .button_primary {
+      border-top-right-radius: 0 !important;
+      border-top-left-radius: 0 !important;
+    }
   }
 }
