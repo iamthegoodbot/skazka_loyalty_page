@@ -4,7 +4,7 @@ import './modal.less';
 
 export let Modal = angular.module('magic.tools.modal', [])
 
-.directive('magicModal', function($parse, tools, MAGIC_CONFIG){
+.directive('magicModal', function($parse, tools, MAGIC_CONFIG, $rootScope){
 
   return {
     restrict: 'E',
@@ -21,6 +21,8 @@ export let Modal = angular.module('magic.tools.modal', [])
       scope.show = false;
 
       scope.close = function(){
+        if ($rootScope.cannot_close) return;
+
         $parse(attrs.show).assign(scope.$parent, false);
         scope.$eval(attrs.onClose);
       };

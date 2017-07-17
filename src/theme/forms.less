@@ -41,6 +41,11 @@
 
 }
 
+.disabled {
+  pointer-events: none;
+  opacity: .5;
+}
+
 .form_field {
   float: left;
   width: 50%;
@@ -145,6 +150,40 @@
   }
 
   .form_input {
+    &.form_input_listbox, &.form_input_checkbox {
+      label {
+        position: relative;
+      }
+
+      input:checked + label {
+        &:before {
+          visibility: initial;
+        }
+      }
+
+      label:before {
+        content: '';
+        background: url('https://sailplays3.cdnvideo.ru/media/assets/assetfile/3af89cb754559a026c09982d84f9fc80.svg');
+        width: 13px;
+        height: 13px;
+        background-size: contain;
+        display: inline-block;
+        margin-right: 1em;
+        visibility: hidden;
+      }
+
+      label:after {
+        content: '';
+        display: block;
+        position: absolute;
+        left: -5px;
+        top: 1px;
+        width: 20px;
+        height: 20px;
+        border: 1px solid #ebebeb;        
+      }
+    }
+
     &[type="text"], &[type="email"] {
       background-color: @white;
       float: left;

@@ -13,6 +13,22 @@
     box-sizing: border-box;
     position: relative;
 
+    .form_field {
+      float: none;
+      display: inline-block;
+      vertical-align: top;
+    }
+
+    .error {
+      &:after, &:before {
+        display: none !important;
+      }
+
+      font-size: 15px;
+      font-weight: 300;
+      color: red;
+    }
+
     &-left {
       width: 50%;
       float: left;

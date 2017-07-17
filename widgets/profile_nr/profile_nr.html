@@ -88,7 +88,7 @@
                 <span class="modal_profile_header">{{ widget.fill_profile.header }}</span>
             </div>
 
-            <form name="fill_profile_form" class="mb_popup_main mb_popup_main_mt" data-ng-submit="sailplay.fill_profile.submit(fill_profile_form, profile.fill_profile);">
+            <form novalidate name="fill_profile_form" class="mb_popup_main mb_popup_main_mt" data-ng-submit="sailplay.fill_profile.submit(fill_profile_form, profile.fill_profile);">
 
                 <div class="form_field" data-ng-repeat="field in sailplay.fill_profile.form.fields" data-ng-switch="field.input" ng-class="{ wide: field.input == 'checkbox' }">
 
@@ -109,8 +109,9 @@
                     <div data-ng-switch-when="select" class="clearfix">
                         <label class="form_label">{{ field.label }}</label>
                         <div class="magic_select form_input">
-                            <select data-ng-model="field.value" data-ng-options="item.value as item.text for item in field.data"></select>
+                            <select ng-attr-name="{{ field.name }}" ng-required="field.required" data-ng-model="field.value" data-ng-options="item.value as item.text for item in field.data"></select>
                         </div>
+                        <label class="error" ng-show="(fill_profile_form[field.name].$dirty || submitted) && fill_profile_form[field.name].$error.required">The field is required</label>                                                
                     </div>
 
                     <div data-ng-switch-when="phone" class="clearfix">
@@ -123,23 +124,25 @@
                         <input class="form_input" type="email" placeholder="{{ field.placeholder }}" data-ng-model="field.value">
                     </div>
 
-                    <div data-ng-switch-when="radiolist" class="clearfix">
+                    <div data-ng-switch-when="radiolist" class="clearfix" ng-class="{ disabled: field.disable }">
                         <label class="form_label">{{ field.label }}</label>
                         <ul class="form_input form_input_listbox">
-                            <li ng-repeat="item in field.data"><label ng-bind="item.text"></label><input type="radio"></li>
-                        </ul>                  
+                            <li ng-repeat="item in field.data"><input ng-required="field.required" ng-model="field.value" ng-value="{{ $index }}" data-ng-attr-id="{{ field.name + '_' + $index }}" ng-attr-name="{{ field.name }}" class="hidden" type="radio"><label ng-attr-for="{{ $parent.field.name + '_' + $index}}" ng-bind="item.text"></label></li>
+                        </ul>   
+                        <label class="error" ng-show="(fill_profile_form[field.name].$dirty || submitted) && fill_profile_form[field.name].$error.required">The field is required</label>                                                                             
                     </div>
 
                     <div data-ng-switch-when="checklist" class="clearfix">
                         <label class="form_label">{{ field.label }}</label>
                         <ul class="form_input form_input_listbox">
-                            <li ng-repeat="item in field.data"><label ng-bind="item.text"></label><input type="checkbox"></li>
+                            <li ng-repeat="item in field.data"><input data-ng-model="field['value_' + $index]" data-ng-attr-id="{{ field.name + '_' + $index }}" class="hidden" type="checkbox"><label ng-attr-for="{{ $parent.field.name + '_' + $index}}" ng-bind="item.text"></label></li>
                         </ul>                  
                     </div>
 
-                    <div data-ng-switch-when="checkbox" class="clearfix">
+                    <div data-ng-switch-when="checkbox" class="clearfix" ng-class="{ disabled: field.disable }">
                         <div class="form_input form_input_checkbox">
-                            <label ng-bind="field.label"></label><input class="form_input" type="checkbox" data-ng-model="field.value">
+                            <input ng-required="field.required" ng-attr-name="{{ field.name }}" ng-attr-id="{{ field.name }}" data-ng-model="field.value" class="form_input hidden" type="checkbox" data-ng-model="field.value"><label ng-attr-for="{{ field.name }}" ng-bind="field.label"></label>
+                            <label class="error" ng-show="(fill_profile_form[field.name].$dirty || submitted) && fill_profile_form[field.name].$error.required">The field is required</label>                                      
                         </div>
                     </div>
 
