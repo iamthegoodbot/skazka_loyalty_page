@@ -36674,8 +36674,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                });
 	              });
 
-	              if (!$rootScope.cannot_close) {
-	                console.log('asd');
+	              if ($rootScope.cannot_close) {
 	                $timeout(function () {
 	                  $rootScope.instant_open_profile = true;
 	                }, 10);

@@ -343,10 +343,9 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
                     })
                   })
 
-                  if (!$rootScope.cannot_close) {
-                    console.log('asd')
+                  if ($rootScope.cannot_close) {
                     $timeout( () => {
-                    $rootScope.instant_open_profile = true;
+                      $rootScope.instant_open_profile = true;
                     }, 10)
                   }
                 })
