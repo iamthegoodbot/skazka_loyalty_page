@@ -313,13 +313,15 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
                 SailPlayApi.call('tags.exist', { tags: temparray }, res => {
                   angular.forEach(res.tags, tag => {
                     angular.forEach(tag_fields, tag_field => {
+                      if (tag_field.required) {
+                        $rootScope.cannot_close = true;
+                      }
+
                       if (!tag_field.data && tag_field.tag_on == tag.name) {
                         if (tag.exist) {
+                          $rootScope.cannot_close = false;                          
                           tag_field.disable = tag_field.once;
                           tag_field.value = true;
-                          
-                        } else if (tag_field.required) {
-                          $rootScope.cannot_close = true;
                         }
                       }
 
@@ -327,6 +329,7 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
                         if (tag_field_item.tag_on == tag.name && tag.exist) {
                           switch (tag_field.input) {
                             case 'radiolist':
+                              $rootScope.cannot_close = false;
                               tag_field.value = index;
                               tag_field.disable = tag_field.once;
                               break;
@@ -334,8 +337,6 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
                               tag_field['value_' + index] = true;
                               break;
                           }
-                        } else if (tag_field.required) {
-                          $rootScope.cannot_close = true;
                         }
                       })
 
@@ -390,6 +391,7 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
             return;
           }
 
+          $rootScope.preloader = true;
           $rootScope.cannot_close = false;
           var data_user = SailPlayApi.data('load.user.info')() && SailPlayApi.data('load.user.info')().user;         
           var req_user = {},
@@ -444,37 +446,37 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
           }
 
           SailPlay.send('users.update', req_user, function (user_res) {
-
-            var i, j, temparray, chunk = 10;
-            for (i = 0,j = tag_to_applied.length; i < j; i += chunk) {
-                temparray = tag_to_applied.slice(i,i+chunk);
-                SailPlay.send('tags.add', { tags: temparray })
-            }
-
-            var i, j, temparray, chunk = 10;
-            for (i = 0,j = tag_to_unapplied.length; i < j; i += chunk) {
-                temparray = tag_to_unapplied.slice(i,i+chunk);
-                SailPlay.send('tags.delete', { tags: temparray })
-            }
-
             if (user_res.status === 'ok') {
 
-              if (Object.keys(custom_user_vars).length) {
-                SailPlay.send('vars.add', {custom_vars: custom_user_vars}, (res_vars) => {
-                  if (!res_vars.status == 'ok')
-                    $rootScope.$broadcast('notifier:notify', {
-                    body: res_vars.message
-                  });
-                })
+              var promises = [];
+
+              var i, j, temparray, chunk = 10;
+              for (i = 0,j = tag_to_applied.length; i < j; i += chunk) {
+                  temparray = tag_to_applied.slice(i,i+chunk);
+                  promises.push(new Promise( resolve => SailPlay.send('tags.add', { tags: temparray }, resolve) ))
               }
 
-              scope.$apply(function () {
 
-                if (typeof callback == 'function') callback();
+              var i, j, temparray, chunk = 10;
+              for (i = 0,j = tag_to_unapplied.length; i < j; i += chunk) {
+                  temparray = tag_to_unapplied.slice(i,i+chunk);
+                  promises.push(new Promise( resolve => SailPlay.send('tags.delete', { tags: temparray }, resolve) ))
+              }
 
-                SailPlayApi.call('load.user.info', {all: 1});
+              if (Object.keys(custom_user_vars).length) {
+                promises.push(new Promise( resolve => SailPlay.send('vars.add', { custom_vars: custom_user_vars }, resolve) ))
+              }
 
-              });
+              Promise.all(promises).then( () => {
+                scope.$apply(function () {
+
+                  if (typeof callback == 'function') callback();
+                  $rootScope.preloader = false;
+
+                  SailPlayApi.call('load.user.info', {all: 1});
+
+                });
+              })
 
             } else {
 
