@@ -1,4 +1,10 @@
 .leads {
+  .bon_header {
+    float: none !important;
+  }
+  .bon_sub_header {
+    float: none !important;
+  }
   .magic_select {
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -18,6 +24,7 @@
     width: 80%;
     margin: 0 auto;
     height: 400px;
+    margin-top: 124px;
     &_status {
       width: 60%;
       
@@ -25,8 +32,33 @@
         height: auto;
       }
     }
+    &_main_header {
+      height: 80px;
+      position: absolute;
+      width: 90%;
+      top: -90px;
+    }
+    &_partners_header {
+      height: 80px;
+      position: absolute;
+      left: 20%;
+      width: 60%;
+      top: -90px;
+    }
+    &_main_header, &_partners_header {
+      text-align: center;
+      &>div{
+        font-family: RotondaC;
+        transform: translate(0, 25px);
+        font-size: 46px;
+        color: black !important;
+        display: inline-block;
+        vertical-align: middle;
+      }
+    }
     &_info {
       float: left;
+      position: relative;
       text-align: left;
       font-size: 22px;
       vertical-align: top;

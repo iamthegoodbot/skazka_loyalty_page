@@ -8,7 +8,10 @@
             <span class="caption">{{ widget.texts.caption }}</span>
         </h4>
 
-        <div ng-hide="data" style="text-align: center">Empty Data</div>
+        <ul class="leaderboard__list" data-ng-if="!data">
+            <div style="text-align: center; font-size: 30px;">No results yet</div>
+        </ul>
+
         <ul class="leaderboard__list" data-ng-if="data">
 
             <li class="leaderboard__list-item type_headers">

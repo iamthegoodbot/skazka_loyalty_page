@@ -10,12 +10,18 @@
     <!--<div data-ng-hide="leads.length" style="text-align: center"> Empty Data </div>-->
     <div class="lead" data-ng-repeat="lead in leads">
       <div class="lead_info" ng-init="currentIndex = 0">
+        <div class="lead_main_header">
+          <div>Lead Source</div>
+        </div>
         <p><span>Name:</span> {{ lead.name }}</p>
         <p><span>Company Name:</span> {{ lead.custom_vars[0].value }}</p>
         <p><span>Phone:</span> {{ lead.phone | tel }}</p>
         <p><span>Email:</span> {{ lead.email }}</p>
       </div>
       <div class="lead_center">
+        <div class="lead_partners_header">
+          <div>Leads</div>
+        </div>
         <div class="lead_partners_controls" ng-show="lead.partners.length">
           <div class="left" data-ng-show="currentIndex > 0" data-ng-click="currentIndex = currentIndex - 1"></div>
           <div class="right" data-ng-show="currentIndex < $parent.Math.floor((lead.partners.length - 1) / 2)" data-ng-click="currentIndex = currentIndex + 1"></div>
