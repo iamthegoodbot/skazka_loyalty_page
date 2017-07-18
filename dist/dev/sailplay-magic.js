@@ -239,7 +239,7 @@ return webpackJsonp([0],[
 
 	  }]);
 	  return Magic;
-	}(), _class.Widget = _widget.WidgetRegister, _class.version = '2.1.16', _temp);
+	}(), _class.Widget = _widget.WidgetRegister, _class.version = '${MAGIC_VERSION}', _temp);
 
 	//extend SAILPLAY with Magic class
 
@@ -1094,7 +1094,7 @@ return webpackJsonp([0],[
 	 * This directive extends parent scope with property: sailplay.fill_profile
 	 *
 	 */
-	.directive('sailplayFillProfile', function (SailPlay, $rootScope, $q, ipCookie, SailPlayApi, SailPlayFillProfile) {
+	.directive('sailplayFillProfile', function (SailPlay, $rootScope, $q, ipCookie, SailPlayApi, SailPlayFillProfile, $timeout) {
 
 	  return {
 
@@ -1248,6 +1248,13 @@ return webpackJsonp([0],[
 	                  });
 	                });
 	              });
+
+	              if (!$rootScope.cannot_close) {
+	                console.log('asd');
+	                $timeout(function () {
+	                  $rootScope.instant_open_profile = true;
+	                }, 10);
+	              }
 	            });
 	          }
 	        }
@@ -1384,7 +1391,7 @@ return webpackJsonp([0],[
 	                if (typeof callback == 'function') callback();
 	                $rootScope.preloader = false;
 
-	                SailPlayApi.call('load.user.info', { all: 1 });
+	                // SailPlayApi.call('load.user.info', {all: 1});
 	              });
 	            });
 	          } else {

@@ -192,7 +192,7 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
    * This directive extends parent scope with property: sailplay.fill_profile
    *
    */
-  .directive('sailplayFillProfile', function (SailPlay, $rootScope, $q, ipCookie, SailPlayApi, SailPlayFillProfile) {
+  .directive('sailplayFillProfile', function (SailPlay, $rootScope, $q, ipCookie, SailPlayApi, SailPlayFillProfile, $timeout) {
 
     return {
 
@@ -342,6 +342,13 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
 
                     })
                   })
+
+                  if (!$rootScope.cannot_close) {
+                    console.log('asd')
+                    $timeout( () => {
+                    $rootScope.instant_open_profile = true;
+                    }, 10)
+                  }
                 })
             }                
           }
@@ -473,7 +480,7 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
                   if (typeof callback == 'function') callback();
                   $rootScope.preloader = false;
 
-                  SailPlayApi.call('load.user.info', {all: 1});
+                  // SailPlayApi.call('load.user.info', {all: 1});
 
                 });
               })
