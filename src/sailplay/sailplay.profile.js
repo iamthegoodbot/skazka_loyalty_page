@@ -345,7 +345,7 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
 
                   if ($rootScope.cannot_close) {
                     $timeout( () => {
-                      $rootScope.instant_open_profile = true;
+                      scope.$emit('open_profile_modal')
                     }, 10)
                   }
                 })

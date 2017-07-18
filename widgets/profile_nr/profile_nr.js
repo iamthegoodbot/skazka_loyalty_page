@@ -11,6 +11,10 @@ const ProfileNrWidget = {
   controller: function ($rootScope, SailPlayApi) {
     return function (scope, elm, attrs) {
 
+      scope.$on('open_profile_modal', () => {
+        scope.profile.show_fill_profile = true;
+      })
+
       scope.profile = {
         history: false,
         show_fill_profile: false,

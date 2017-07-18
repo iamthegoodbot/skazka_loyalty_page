@@ -1249,10 +1249,9 @@ return webpackJsonp([0],[
 	                });
 	              });
 
-	              if (!$rootScope.cannot_close) {
-	                console.log('asd');
+	              if ($rootScope.cannot_close) {
 	                $timeout(function () {
-	                  $rootScope.instant_open_profile = true;
+	                  scope.$emit('open_profile_modal');
 	                }, 10);
 	              }
 	            });
