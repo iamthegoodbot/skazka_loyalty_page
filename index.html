@@ -12,23 +12,9 @@
 
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
   <link rel="shortcut icon" href="favicon.png" type="image/png">
+  <link rel="stylesheet" href="https://sailplays3.cdnvideo.ru/media/assets/assetfile/10fafb7303d019698ece83af02cc7021.css">
 
-  <!--<link rel="stylesheet" href="dist/css/magic.css">-->
-
-  <!--<script src="dist/config/settings.js"></script>-->
-
-  <!--app-->
-  <script src="dist/dev/sailplay-magic-vendor.js"></script>
-  <script src="dist/dev/sailplay-magic.js"></script>
-  <script src="dist/dev/sailplay-magic-widgets.js"></script>
-
-  <!-- prod -->
-  <!--<script src="dist/prod/sailplay-magic.js"></script>-->
-
-  <!-- migrator -->
-  <script src="dist/migrator/sailplay-magic-migrator.js"></script>
-
-
+  <script src="dist/prod/sailplay-magic.js"></script>
   <style>
     body {
       margin: 0;
@@ -39,7 +25,6 @@
 </head>
 <body>
 
-  <!--<script src="dist/prod/2.0.0/sailplay-magic.js"></script>-->
   <sailplay-magic></sailplay-magic>
   <script>
 
@@ -51,7 +36,7 @@
 
       partner_id: params.partner_id || 1,
       dep_id: params.dep_id || '',
-      domain: params.domain || "http://sailplay.net",
+      domain: params.domain || "https://sailplay.net",
       lang:  params.lang || "en",
       config: params.config || "default"
 

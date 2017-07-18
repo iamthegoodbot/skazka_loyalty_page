@@ -83,6 +83,8 @@ export let SailPlayHistory = angular.module('sailplay.history', [])
         return historyItem.name || history_texts.custom_action;
       case 'extra':
         return historyItem.name || history_texts.custom_action;
+      case 'badge':
+        return 'Badge: ' + historyItem.name;
       case 'sharing':
         switch (historyItem.social_action) {
           case 'like':
