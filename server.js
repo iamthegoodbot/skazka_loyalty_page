@@ -11,10 +11,10 @@ const prod = require('./webpack.config').production
 const server = express();
 
 const host = 'localhost'
-const port = '3002'
+const port = '3006'
 
 const devServerHost = 'localhost'
-const devServerPort = '3001'
+const devServerPort = '3005'
 
 //static directory if needed
 server.use('/public', express.static(__dirname + '/public'));
