@@ -16,7 +16,8 @@ WidgetRegister({
 
       // actions block
       scope.action_selected = false;
-      scope.action_custom_selected = false;      
+      scope.action_custom_selected = false;
+      scope.startNewLead = false
       scope.action_select = function (action) {
 
         if(!SailPlayApi.data('load.user.info')()) return SailPlay.authorize('remote');
@@ -82,7 +83,7 @@ WidgetRegister({
             // }
             update_current_user(fields);
             // SAILPLAY.jsonp.get(_config.DOMAIN + tagAdd, set_status)
-            scope.startNewLead = false;
+            scope.$parent.startNewLead = false;
             fields.map(field => {
               field.value = '';
               return field

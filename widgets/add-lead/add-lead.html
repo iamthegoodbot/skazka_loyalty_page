@@ -8,7 +8,7 @@
 
           <div class="spm_row clearfix">
 
-            <div class="lead action" data-ng-click="startNewLead = true">
+            <div class="lead action" data-ng-click="$parent.$parent.startNewLead = true">
               <div class="icon"></div>
               <div class="text">
                 <div class="name">{{ widget.texts.name }}</div>
@@ -144,8 +144,7 @@
         </magic-modal>
 
       </div>  
-  </div>
-  <magic-modal class="add-lead-form" data-ng-cloak data-show="startNewLead">
+  <magic-modal class="add-lead-form" data-ng-cloak data-show="$parent.startNewLead">
     <div class="mb_popup mb_popup_prof">
       <div class="mb_popup_top">
         <span>{{ widget.texts.form_header }}</span>
@@ -180,7 +179,7 @@
           </div>
         </div>
         <div class="answ_left">
-          <button type="button" class="sp_btn button_primary" data-ng-click="$parent.$parent.startNewLead = false">Back</button>
+          <button type="button" class="sp_btn button_primary" data-ng-click="$parent.$parent.$parent.startNewLead = false">Back</button>
         </div>
         <div class="answ_right">
           <button type="submit" class="sp_btn button_primary">{{ widget.texts.submit }}</button>
@@ -188,4 +187,5 @@
       </form>
     </div>
   </magic-modal>
+  </div>
 </div>
