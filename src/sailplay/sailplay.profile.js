@@ -229,7 +229,7 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
       })
     }
     function getProfileTag(){
-      if(MAGIC_CONFIG.data.fill_profile_action.tag_name){
+      if(MAGIC_CONFIG && MAGIC_CONFIG.data && MAGIC_CONFIG.data.fill_profile_action && MAGIC_CONFIG.data.fill_profile_action.tag_name){
         const tagName = MAGIC_CONFIG.data.fill_profile_action.tag_name
         SailPlayApi.call("tags.exist", { tags: [tagName] }, (obj)=>{
           if(obj.tags[0].exist){
