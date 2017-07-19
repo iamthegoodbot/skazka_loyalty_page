@@ -176,7 +176,16 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
 
   })
 
-  //fill profile directive using config.data
+  /**
+   * @ngdoc factory
+   * @name sailplay.profile.factory:fillProfileTag
+   *
+   * @param {object} form   Fields from edit user profile form
+   *
+   * @description
+   * Factory for checking user profile for filling required fields
+   *
+   */
 
   .factory('fillProfileTag', (SailPlay, SailPlayApi, MAGIC_CONFIG, $q, $rootScope) => {
     const obj = {
