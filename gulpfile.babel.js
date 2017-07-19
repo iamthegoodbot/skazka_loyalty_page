@@ -1,13 +1,11 @@
 import gulp from 'gulp';
-import watch from 'gulp-watch';
-import server from 'gulp-connect';
 import run from 'run-sequence';
 
 import fs from 'fs';
-import replace from 'replace-in-file';
+import path from 'path';
 
 import webpack from 'webpack';
-import { development, production, migrator } from './webpack.config.babel'; // <-- Contains ES6+
+import { development, production, migrator } from './webpack.config'; // <-- Contains ES6+
 
 const PACKAGE = JSON.parse(fs.readFileSync('package.json', 'utf8'));
 
@@ -19,11 +17,7 @@ const paths = {
 };
 
 gulp.task('default', (callback) => {
-  run("server", "watch", callback);
-});
-
-gulp.task('dev', (callback) => {
-  run("watch", callback);
+  run("webpack-dev-server", callback);
 });
 
 gulp.task('build.magic', (callback) => {
@@ -42,35 +36,26 @@ gulp.task('build.migrator', (callback) => {
 
 });
 
-gulp.task('watch', () => {
-  return Promise.all([
-    watch([ paths.src, paths.widgets ], () => {
-      gulp.start('build.magic');
-    }),
-    watch([ paths.migrator ], () => {
-      gulp.start('build.migrator');
-    }),
-  ])
-});
-
 gulp.task('server', () => {
+  const server = require('gulp-connect');
   server.server({
     port: 3000
   });
 });
 
-//deploying section
-gulp.task('deploy.version', () => {
+gulp.task("production-server", () => {
+  run('deploy.magic', 'server');
+})
 
-  console.log(`Deploying version: ${PACKAGE.version}`);
-
-  replace({
-    files: paths.dist + '/**/*',
-    replace: /\$\{MAGIC_VERSION\}/g,
-    with: PACKAGE.version
-  });
-
+gulp.task("webpack-dev-server", () => {
+  const nodemon = require('gulp-nodemon')
+  nodemon({
+    script: 'server.js',
+    watch: ['server.js', 'webpack.config.js']
+  })
 });
+
+//deploying section
 
 gulp.task('deploy.magic', (callback) => {
 
@@ -90,6 +75,6 @@ gulp.task('deploy.migrator', (callback) => {
 
 gulp.task('deploy', (callback) => {
 
-  run('deploy.magic', 'deploy.migrator', 'deploy.version', callback);
+  run('deploy.magic', 'deploy.migrator', callback);
 
 });

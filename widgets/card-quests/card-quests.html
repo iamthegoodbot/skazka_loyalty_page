@@ -9,7 +9,6 @@
     <h4 class="card_quests_caption">
       <span class="caption">{{ widget.texts.caption }}</span>
     </h4>
-
     <div data-sailplay-actions class="card_quests_list clearfix">
 
       <div class="spm_row clearfix">
@@ -63,6 +62,36 @@
             </div>
 
           </div>
+
+          <!-- is profile filled -->
+
+          <div data-ng-if="isFillProfileActionNeeded()" class="spm_col quest_card_container">
+
+            <div class="quest_card" title="{{ action.name }}">
+
+              <div class="quest_card_image">
+                <img data-ng-src="{{ $parent.isProfileFilledAction.image | sailplay_pic }}" alt="">
+              </div>
+
+              <div class="quest_card_tools">
+
+                <div class="quest_card_info">
+                  <span class="quest_card_name ellipsis" data-ng-bind="$parent.isProfileFilledAction.name"></span>
+                  <span class="quest_card_points ellipsis" data-ng-bind="(($parent.isProfileFilledAction.points || 0) | number) + ' ' + ($parent.isProfileFilledAction.points | sailplay_pluralize:( 'points.texts.pluralize' | tools ))"></span>
+                </div>
+
+                <div class="quest_card_buttons">
+                  <a class="button_primary" data-sailplay-action
+                              data-ng-click="$parent.$parent.open_profile()">{{ $parent.$parent.isProfileFilledAction.button }}</a>
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+          <!-- is profile filled end -->
 
         </div>
 
