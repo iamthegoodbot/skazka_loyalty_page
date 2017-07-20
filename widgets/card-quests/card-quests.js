@@ -9,9 +9,11 @@ WidgetRegister({
   inject: [
     'tools',
     'SailPlayApi',
-    'SailPlay'
+    'SailPlay',
+    '$rootScope',
+    'fillProfileTag'
   ],
-  controller: function (tools, SailPlayApi, SailPlay) {
+  controller: function (tools, SailPlayApi, SailPlay, $rootScope, fillProfileTag) {
 
     return function (scope, elm, attrs) {
 
@@ -19,6 +21,15 @@ WidgetRegister({
 
       scope.action_selected = false;
       scope.action_custom_selected = false;
+      scope.isFillProfileActionNeeded = () => {
+        return fillProfileTag.active && !fillProfileTag.isProfileFilled
+      }
+      scope.isProfileFilledAction = fillProfileTag.action
+
+      scope.open_profile = function() {
+        if(!SailPlayApi.data('load.user.info')()) return SailPlay.authorize('remote');        
+        $rootScope.$broadcast('openProfile')
+      }
 
       scope.filter = scope.widget.options && scope.widget.options.filter || {};
 
