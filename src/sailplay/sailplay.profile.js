@@ -1,4 +1,5 @@
 import angular from 'angular';
+import 'core-js/fn/array/find';
 
 export let SailPlayProfile = angular.module('sailplay.profile', [])
 
