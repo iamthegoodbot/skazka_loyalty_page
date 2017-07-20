@@ -33,11 +33,11 @@
         min-height: 327px;
 
         .user_avatar_image_upload {
-          display: block;
-          cursor: pointer;
-          margin-top: 10px;
-          font-size: 20px;
-          color: #d3d3d3;
+          //display: block;
+          //cursor: pointer;
+          //margin-top: 10px;
+          //font-size: 20px;
+          //color: #d3d3d3;
         }
 
         &-pic {
@@ -58,6 +58,22 @@
           input {
             visibility: hidden;
             opacity: 0;
+            width: 0;
+            height: 0;
+            position: absolute;
+            left: 0;
+            top: 0;
+            pointer-events: none;
+          }
+
+          &-block {
+            text-align: left;
+            padding-left: 24%;
+
+            .button_link {
+              display: block;
+              margin-top: 10px;
+            }
           }
 
         }
@@ -330,6 +346,10 @@
 
         }
 
+      }
+
+      &-login {
+        text-align: center;
       }
 
     }

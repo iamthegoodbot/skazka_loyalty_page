@@ -188,7 +188,7 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
    * This directive extends parent scope with property: sailplay.fill_profile
    *
    */
-  .directive('sailplayFillProfile', function (SailPlay, $rootScope, $q, ipCookie, SailPlayApi, SailPlayFillProfile, $http) {
+  .directive('sailplayFillProfile', function (SailPlay, $rootScope, $q, ipCookie, SailPlayApi, SailPlayFillProfile, $http, MAGIC_CONFIG) {
 
     return {
 
@@ -522,9 +522,12 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
 
             } else {
 
+
               $rootScope.$broadcast('notifier:notify', {
-                body: user_res.message
+                body: MAGIC_CONFIG.data.profile.errors[user_res.status_code] || user_res.message
               });
+
+              SailPlayApi.call('load.user.info', {all: 1, purchases: 1});
 
               scope.$apply();
 

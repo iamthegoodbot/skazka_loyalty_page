@@ -51,6 +51,13 @@ WidgetRegister({
         return action_data && action_data.styles && tools.stringify_widget_css('', action_data.styles);
       };
 
+      scope.$watch('action_custom_selected', function(new_val, old_val){
+        // if user close popup, update actions list
+        if(old_val && !new_val){
+          SailPlayApi.call('load.actions.custom.list');
+        }
+      });
+
     }
 
   }

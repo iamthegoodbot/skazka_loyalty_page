@@ -1,184 +1,199 @@
 <div data-ng-cloak
-     data-ng-show="widget.enabled && user && user()"
      class="container clearfix"
      data-sailplay-profile>
 
-    <span class="container-oid" data-ng-bind="user().user.origin_user_id || widget.texts.not_defined"></span>
+    <div class="container-not-login" data-ng-show="widget.enabled && user && user()">
 
-    <div class="container-left clearfix" data-sailplay-fill-profile
-         data-config="widget.options.config">
+        <span class="container-oid" data-ng-bind="user().user.origin_user_id || widget.texts.oid_not_defined"></span>
 
-        <div class="container-left-pic">
-            <img class="user_avatar_image" data-ng-src="{{ (user().user.pic | sailplay_pic) || default_avatar}}"
-                 alt="You">
-            <span class="user_avatar_image_upload" data-ng-bind="widget.texts.upload_avatar"
-                    onclick="document.getElementById('sailplay_upload_avatar').click()"></span>
-            <input data-file type="file" name="avatar" id="sailplay_upload_avatar" data-ng-model="sailplay.fill_profile.avatar"
-                   data-ng-change="sailplay.fill_profile.change_avatar()">
-        </div>
+        <div class="container-left clearfix" data-sailplay-fill-profile
+             data-config="widget.options.config">
 
-        <form name="fill_profile_form" class="container-left-profile"
-              data-ng-submit="$event.preventDefault();sailplay.fill_profile.clear();sailplay.fill_profile.submit(fill_profile_form, profile.fill_profile);">
-
-            <div class="container-left-profile-name" data-ng-bind="user().user.name || widget.texts.empty_name"
-                 data-ng-click="$event.preventDefault();sailplay.fill_profile.name.show = true;"></div>
-
-            <div class="container-left-profile_field clearfix"
-                 data-ng-switch="field.input"
-                 data-ng-repeat="field in sailplay.fill_profile.form.fields"
-                 data-ng-class="{'type-editing' : field.editing}">
-
-                <div class="container-left-profile_field-name" data-ng-bind="field.label"></div>
-
-                <div class="container-left-profile_field-value" data-ng-switch-when="info">
-                    <span data-ng-bind="field.data[field.value] && field.data[field.value].text || widget.texts.not_defined"></span>
+            <div class="container-left-pic">
+                <img class="user_avatar_image" data-ng-src="{{ (user().user.pic | sailplay_pic) || default_avatar}}"
+                     alt="You">
+                <div class="container-left-pic-block">
+                    <span class="button_link user_avatar_image_upload"
+                          onclick="document.getElementById('sailplay_upload_avatar').click()">
+                        {{ widget.texts.upload_avatar }}
+                        <input data-file type="file" name="avatar" id="sailplay_upload_avatar"
+                               data-ng-model="sailplay.fill_profile.avatar"
+                               data-ng-change="sailplay.fill_profile.change_avatar()">
+                    </span>
+                    <span class="button_link sp_logout" data-ng-bind="widget.texts.logout"
+                          data-ng-click="logout();"></span>
                 </div>
-
-                <div class="container-left-profile_field-value" data-ng-switch-when="select">
-                    <span data-ng-bind="getValue(field) ? getValue(field).text : widget.texts.not_defined"></span>
-                    <select data-ng-model="field.value"
-                            data-ng-change="sailplay.fill_profile.submit(fill_profile_form, profile.fill_profile);"
-                            data-ng-click="$event.preventDefault();$event.stopPropagation();"
-                            data-ng-options="item.value as item.text for item in field.data"></select>
-                    <a href="#"
-                       data-ng-if="field.can_edit"
-                       class="container-left-profile_field-value-edit"
-                       data-ng-click="$event.preventDefault();$event.stopPropagation();field.editing=true;sailplay.fill_profile.focus($event, field);"></a>
-                </div>
-
-                <div class="container-left-profile_field-value" data-ng-switch-when="phone">
-                    <span data-ng-bind="field.value ? (field.value | tel) : widget.texts.not_defined"></span>
-                    <input class="form_input" type="text" data-ng-if="field.editing" data-model-view-value="true"
-                           data-ng-click="$event.preventDefault();$event.stopPropagation();"
-                           data-ui-mask="{{ field.placeholder }}" data-ng-model="field.value">
-                    <a href="#"
-                       data-ng-if="field.can_edit"
-                       class="container-left-profile_field-value-edit"
-                       data-ng-click="$event.preventDefault();$event.stopPropagation();field.editing=true;sailplay.fill_profile.focus($event, field);"></a>
-                </div>
-
-                <div class="container-left-profile_field-value" data-ng-switch-when="email">
-                    <span data-ng-bind="field.value || widget.texts.not_defined"></span>
-                    <input class="form_input" type="email" data-ng-if="field.editing"
-                           data-ng-click="$event.preventDefault();$event.stopPropagation();"
-                           placeholder="{{ field.placeholder }}" data-ng-model="field.value">
-                    <a href="#"
-                       data-ng-if="field.can_edit"
-                       class="container-left-profile_field-value-edit"
-                       data-ng-click="$event.preventDefault();$event.stopPropagation();field.editing=true;sailplay.fill_profile.focus($event, field);"></a>
-
-                </div>
-
-                <div class="container-left-profile_field-value" data-ng-switch-when="text">
-                    <span data-ng-bind="field.value || widget.texts.not_defined"></span>
-                    <input class="form_input" type="text" data-ng-if="field.editing"
-                           data-ng-click="$event.preventDefault();$event.stopPropagation();"
-                           placeholder="{{ field.placeholder }}" data-ng-model="field.value">
-                    <a href="#"
-                       data-ng-if="field.can_edit"
-                       class="container-left-profile_field-value-edit"
-                       data-ng-click="$event.preventDefault();$event.stopPropagation();field.editing=true;sailplay.fill_profile.focus($event, field);"></a>
-                </div>
-
-                <div class="container-left-profile_field-value" data-ng-switch-when="date">
-                    <span data-ng-bind="field.value || widget.texts.not_defined"></span>
-                    <input class="form_input" type="text" data-ng-if="field.editing" data-model-view-value="true"
-                           data-ng-click="$event.preventDefault();$event.stopPropagation();"
-                           data-ui-mask="{{ field.placeholder }}" data-ng-model="field.value">
-                    <a href="#"
-                       data-ng-if="field.can_edit"
-                       class="container-left-profile_field-value-edit"
-                       data-ng-click="$event.preventDefault();$event.stopPropagation();field.editing=true;sailplay.fill_profile.focus($event, field);"></a>
-                </div>
-
-                <div class="container-left-profile_field-value" data-ng-switch-when="subscriptions"
-                     data-ng-show="field.value">
-                    <div class="container-left-profile-subscribe"
-                         data-ng-click="field.value.email = field.value.email == 1 ? 0 : 1;sailplay.fill_profile.submit(fill_profile_form, profile.fill_profile);"
-                         data-ng-class="{'type-checked': field.value.email == 1}"
-                         data-ng-bind="widget.texts.email"></div>
-                    <div class="container-left-profile-subscribe"
-                         data-ng-click="field.value.sms = field.value.sms == 1 ? 0 : 1;sailplay.fill_profile.submit(fill_profile_form, profile.fill_profile);"
-                         data-ng-class="{'type-checked': field.value.sms == 1}"
-                         data-ng-bind="widget.texts.sms"></div>
-                </div>
-
             </div>
 
-            <div class="container-left-profile_field">
-                <a href="#" class="button_link" data-ng-bind="widget.texts.change_password"
-                   data-ng-click="$event.preventDefault();sailplay.fill_profile.password.show = true;"></a>
-            </div>
+            <form name="fill_profile_form" class="container-left-profile"
+                  data-ng-submit="$event.preventDefault();sailplay.fill_profile.clear();sailplay.fill_profile.submit(fill_profile_form, profile.fill_profile);">
 
-        </form>
+                <div class="container-left-profile-name" data-ng-bind="user().user.name || widget.texts.empty_name"
+                     data-ng-click="$event.preventDefault();sailplay.fill_profile.name.show = true;"></div>
 
-        <magic-modal class="bns_overlay_hist bns_overlay_password" data-show="sailplay.fill_profile.name.show">
-            <div class="new_password">
-                <input type="text" placeholder="{{ widget.texts.first_name }}"
-                       data-ng-model="sailplay.fill_profile.name.firstName">
-                <input type="text" placeholder="{{ widget.texts.last_name }}"
-                       data-ng-model="sailplay.fill_profile.name.lastName">
-                <button class="button_primary"
-                        data-ng-bind="widget.texts.change_name"
-                        data-ng-disabled="!sailplay.fill_profile.name.firstName || !sailplay.fill_profile.name.lastName"
-                        data-ng-click="sailplay.fill_profile.change_name(sailplay.fill_profile.name);"></button>
-            </div>
-        </magic-modal>
+                <div class="container-left-profile_field clearfix"
+                     data-ng-switch="field.input"
+                     data-ng-repeat="field in sailplay.fill_profile.form.fields"
+                     data-ng-class="{'type-editing' : field.editing}">
 
-        <magic-modal class="bns_overlay_hist bns_overlay_password" data-show="sailplay.fill_profile.password.show">
-            <div class="new_password">
-                <input type="password" placeholder="{{ widget.texts.password }}"
-                       data-ng-model="sailplay.fill_profile.password.pass1">
-                <input type="password" placeholder="{{ widget.texts.repeat_password }}"
-                       data-ng-model="sailplay.fill_profile.password.pass2">
-                <button class="button_primary"
-                        data-ng-bind="widget.texts.confirm_password"
-                        data-ng-disabled="!sailplay.fill_profile.password.pass1 || !sailplay.fill_profile.password.pass2 || sailplay.fill_profile.password.pass1 != sailplay.fill_profile.password.pass2"
-                        data-ng-click="sailplay.fill_profile.change_password(sailplay.fill_profile.password.pass1);"></button>
-            </div>
-        </magic-modal>
+                    <div class="container-left-profile_field-name" data-ng-bind="field.label"></div>
 
-    </div>
+                    <div class="container-left-profile_field-value" data-ng-switch-when="info">
+                        <span data-ng-bind="field.data[field.value] && field.data[field.value].text || widget.texts.not_defined"></span>
+                    </div>
 
-    <div class="container-right">
-        <span class="container-right-balance" data-ng-bind="user().user_points.confirmed | number"></span>
-        <span class="container-right-placeholder"
-              data-ng-bind="user().user_points.confirmed | sailplay_pluralize: ('points.texts.pluralize' | tools)"></span>
-        <span class="container-right-discount"
-              data-ng-bind="getCurrentStatus(status_list) ? widget.texts.discount + getCurrentStatus(status_list).name : widget.texts.not_discount"></span>
-        <a href="#" class="container-right-history button_primary"
-           data-ng-bind="widget.texts.history" data-ng-click="$event.preventDefault();show_history = true;"></a>
-    </div>
+                    <div class="container-left-profile_field-value" data-ng-switch-when="select">
+                        <span data-ng-bind="getValue(field) ? getValue(field).text : widget.texts.not_defined"></span>
+                        <select data-ng-model="field.value"
+                                data-ng-change="sailplay.fill_profile.submit(fill_profile_form, profile.fill_profile);"
+                                data-ng-click="$event.preventDefault();$event.stopPropagation();"
+                                data-ng-options="item.value as item.text for item in field.data"></select>
+                        <a href="#"
+                           data-ng-if="field.can_edit"
+                           class="container-left-profile_field-value-edit"
+                           data-ng-click="$event.preventDefault();$event.stopPropagation();field.editing=true;sailplay.fill_profile.focus($event, field);"></a>
+                    </div>
 
-    <div class="container-bottom">
-        <div class="container-bottom-line">
+                    <div class="container-left-profile_field-value" data-ng-switch-when="phone">
+                        <span data-ng-bind="field.value ? (field.value | tel) : widget.texts.not_defined"></span>
+                        <input class="form_input" type="text" data-ng-if="field.editing" data-model-view-value="true"
+                               data-ng-click="$event.preventDefault();$event.stopPropagation();"
+                               data-ui-mask="{{ field.placeholder }}" data-ng-model="field.value">
+                        <a href="#"
+                           data-ng-if="field.can_edit"
+                           class="container-left-profile_field-value-edit"
+                           data-ng-click="$event.preventDefault();$event.stopPropagation();field.editing=true;sailplay.fill_profile.focus($event, field);"></a>
+                    </div>
 
-            <div class="container-bottom-line_progress"
-                 data-ng-style="{width: getProgress(user().user_points.confirmed, status_list)}"></div>
+                    <div class="container-left-profile_field-value" data-ng-switch-when="email">
+                        <span data-ng-bind="field.value || widget.texts.not_defined"></span>
+                        <input class="form_input" type="email" data-ng-if="field.editing"
+                               data-ng-click="$event.preventDefault();$event.stopPropagation();"
+                               placeholder="{{ field.placeholder }}" data-ng-model="field.value">
+                        <a href="#"
+                           data-ng-if="field.can_edit"
+                           class="container-left-profile_field-value-edit"
+                           data-ng-click="$event.preventDefault();$event.stopPropagation();field.editing=true;sailplay.fill_profile.focus($event, field);"></a>
 
-            <div class="container-bottom-line_item"
-                 data-ng-repeat="status in status_list track by $index"
-                 data-ng-class="{'type-active': status.points <= user().user_points.confirmed, 'type-received': status.received}"
-                 data-ng-style="{ left: (100/status_list.length * ($index+1)) + '%'}">
+                    </div>
 
-                <div class="container-bottom-line_item_value" data-ng-bind="status.name"></div>
+                    <div class="container-left-profile_field-value" data-ng-switch-when="text">
+                        <span data-ng-bind="field.value || widget.texts.not_defined"></span>
+                        <input class="form_input" type="text" data-ng-if="field.editing"
+                               data-ng-click="$event.preventDefault();$event.stopPropagation();"
+                               placeholder="{{ field.placeholder }}" data-ng-model="field.value">
+                        <a href="#"
+                           data-ng-if="field.can_edit"
+                           class="container-left-profile_field-value-edit"
+                           data-ng-click="$event.preventDefault();$event.stopPropagation();field.editing=true;sailplay.fill_profile.focus($event, field);"></a>
+                    </div>
 
-                <div class="container-bottom-line_item_left" data-ng-if="!status.received"
-                     data-ng-bind="(status.points | number) + ' ' + (status.points | sailplay_pluralize: ('points.texts.pluralize' | tools))"></div>
+                    <div class="container-left-profile_field-value" data-ng-switch-when="date">
+                        <span data-ng-bind="field.value || widget.texts.not_defined"></span>
+                        <input class="form_input" type="text" data-ng-if="field.editing" data-model-view-value="true"
+                               data-ng-click="$event.preventDefault();$event.stopPropagation();"
+                               data-ui-mask="{{ field.placeholder }}" data-ng-model="field.value">
+                        <a href="#"
+                           data-ng-if="field.can_edit"
+                           class="container-left-profile_field-value-edit"
+                           data-ng-click="$event.preventDefault();$event.stopPropagation();field.editing=true;sailplay.fill_profile.focus($event, field);"></a>
+                    </div>
 
-                <div class="container-bottom-line_item_received"
-                     data-ng-if="status.received"
-                     data-ng-bind="widget.texts.received"></div>
+                    <div class="container-left-profile_field-value" data-ng-switch-when="subscriptions"
+                         data-ng-show="field.value">
+                        <div class="container-left-profile-subscribe"
+                             data-ng-click="field.value.email = field.value.email == 1 ? 0 : 1;sailplay.fill_profile.submit(fill_profile_form, profile.fill_profile);"
+                             data-ng-class="{'type-checked': field.value.email == 1}"
+                             data-ng-bind="widget.texts.email"></div>
+                        <div class="container-left-profile-subscribe"
+                             data-ng-click="field.value.sms = field.value.sms == 1 ? 0 : 1;sailplay.fill_profile.submit(fill_profile_form, profile.fill_profile);"
+                             data-ng-class="{'type-checked': field.value.sms == 1}"
+                             data-ng-bind="widget.texts.sms"></div>
+                    </div>
 
-                <a class="container-bottom-line_item_get button_primary"
-                   data-ng-if="!status.received && (status.points <= user().user_points.confirmed) && (!status_list[$index-1] || status_list[$index-1].received)"
-                   data-ng-bind="widget.texts.get"
-                   data-ng-click="$event.preventDefault();getStatus(status)"></a>
+                </div>
 
-            </div>
+                <div class="container-left-profile_field">
+                    <a href="#" class="button_link" data-ng-bind="widget.texts.change_password"
+                       data-ng-click="$event.preventDefault();sailplay.fill_profile.password.show = true;"></a>
+                </div>
+
+            </form>
+
+            <magic-modal class="bns_overlay_hist bns_overlay_password" data-show="sailplay.fill_profile.name.show">
+                <div class="new_password">
+                    <input type="text" placeholder="{{ widget.texts.first_name }}"
+                           data-ng-model="sailplay.fill_profile.name.firstName">
+                    <input type="text" placeholder="{{ widget.texts.last_name }}"
+                           data-ng-model="sailplay.fill_profile.name.lastName">
+                    <button class="button_primary"
+                            data-ng-bind="widget.texts.change_name"
+                            data-ng-disabled="!sailplay.fill_profile.name.firstName || !sailplay.fill_profile.name.lastName"
+                            data-ng-click="sailplay.fill_profile.change_name(sailplay.fill_profile.name);"></button>
+                </div>
+            </magic-modal>
+
+            <magic-modal class="bns_overlay_hist bns_overlay_password" data-show="sailplay.fill_profile.password.show">
+                <div class="new_password">
+                    <input type="password" placeholder="{{ widget.texts.password }}"
+                           data-ng-model="sailplay.fill_profile.password.pass1">
+                    <input type="password" placeholder="{{ widget.texts.repeat_password }}"
+                           data-ng-model="sailplay.fill_profile.password.pass2">
+                    <button class="button_primary"
+                            data-ng-bind="widget.texts.confirm_password"
+                            data-ng-disabled="!sailplay.fill_profile.password.pass1 || !sailplay.fill_profile.password.pass2 || sailplay.fill_profile.password.pass1 != sailplay.fill_profile.password.pass2"
+                            data-ng-click="sailplay.fill_profile.change_password(sailplay.fill_profile.password.pass1);"></button>
+                </div>
+            </magic-modal>
 
         </div>
 
+        <div class="container-right">
+            <span class="container-right-balance" data-ng-bind="user().user_points.confirmed | number"></span>
+            <span class="container-right-placeholder"
+                  data-ng-bind="user().user_points.confirmed | sailplay_pluralize: ('points.texts.pluralize' | tools)"></span>
+            <span class="container-right-discount"
+                  data-ng-bind="getCurrentStatus(status_list) ? widget.texts.discount + getCurrentStatus(status_list).name : widget.texts.not_discount"></span>
+            <a href="#" class="container-right-history button_primary"
+               data-ng-bind="widget.texts.history" data-ng-click="$event.preventDefault();show_history = true;"></a>
+        </div>
+
+        <div class="container-bottom">
+            <div class="container-bottom-line">
+
+                <div class="container-bottom-line_progress"
+                     data-ng-style="{width: getProgress(user().user_points.confirmed, status_list)}"></div>
+
+                <div class="container-bottom-line_item"
+                     data-ng-repeat="status in status_list track by $index"
+                     data-ng-class="{'type-active': status.points <= user().user_points.confirmed, 'type-received': status.received}"
+                     data-ng-style="{ left: (100/status_list.length * ($index+1)) + '%'}">
+
+                    <div class="container-bottom-line_item_value" data-ng-bind="status.name"></div>
+
+                    <div class="container-bottom-line_item_left" data-ng-if="!status.received"
+                         data-ng-bind="(status.points | number) + ' ' + (status.points | sailplay_pluralize: ('points.texts.pluralize' | tools))"></div>
+
+                    <div class="container-bottom-line_item_received"
+                         data-ng-if="status.received"
+                         data-ng-bind="widget.texts.received"></div>
+
+                    <a class="container-bottom-line_item_get button_primary"
+                       data-ng-if="!status.received && (status.points <= user().user_points.confirmed) && (!status_list[$index-1] || status_list[$index-1].received)"
+                       data-ng-bind="widget.texts.get"
+                       data-ng-click="$event.preventDefault();getStatus(status)"></a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="container-login" data-ng-hide="widget.enabled && user && user()">
+        <span class="button_primary sp_login" data-ng-bind="widget.texts.login"
+              data-ng-click="login('remote')"></span>
     </div>
 
     <magic-modal class="bns_overlay_hist" data-show="show_history">
@@ -189,6 +204,7 @@
                 <span class="modal_history_header">{{ widget.texts.history.header }}</span>
             </h3>
             <h4 class="modal_history_caption">{{ widget.texts.history.caption }}</h4>
+            <h4 class="modal_history_caption type_empty" data-ng-if="!history().length">{{ widget.texts.empty_history}}</h4>
 
             <table class="bns_hist_table">
 
