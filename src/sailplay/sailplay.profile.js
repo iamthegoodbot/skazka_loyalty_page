@@ -1,4 +1,5 @@
 import angular from 'angular';
+import 'core-js/fn/array/find';
 
 export let SailPlayProfile = angular.module('sailplay.profile', [])
 
@@ -177,6 +178,79 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
   })
 
   /**
+   * @ngdoc factory
+   * @name sailplay.profile.factory:fillProfileTag
+   *
+   * @param {object} form   Fields from edit user profile form
+   *
+   * @description
+   * Factory for checking user profile for filling required fields
+   *
+   */
+
+  .factory('fillProfileTag', (SailPlay, SailPlayApi, MAGIC_CONFIG, $q, $rootScope) => {
+    const obj = {
+      isProfileFilled: true
+    }
+    if(MAGIC_CONFIG && MAGIC_CONFIG.data && MAGIC_CONFIG.data.fill_profile_action && MAGIC_CONFIG.data.fill_profile_action.active){
+      const config = MAGIC_CONFIG.data.fill_profile_action
+      obj.action = config.action
+      obj.active = config.active
+    }
+    obj.checkSubmitForm = function(form){
+      return $q((res, rej) => {
+        if(MAGIC_CONFIG && MAGIC_CONFIG.data && MAGIC_CONFIG.data.fill_profile_action && MAGIC_CONFIG.data.fill_profile_action.active){
+          const config = MAGIC_CONFIG.data.fill_profile_action
+          const fields = config.required_fields
+          const isProfileFilled = fields.reduce((acc, x)=>{
+            const field = form.find((field)=>{
+              return field.name == x
+            })
+            if( Object.prototype.toString.call( field.value ) === '[object Array]' ) {
+              return (field.value.length === 3) && Object.keys(field.value).reduce(function(acc, key, index) {
+                 return !!field.value[key] && acc
+              }, true)
+            } else {
+              return acc && !!field.value
+            }
+          }, true)
+          if(isProfileFilled && !obj.isProfileFilled){
+            if(MAGIC_CONFIG.data.fill_profile_action.tag_name){
+              const tagName = MAGIC_CONFIG.data.fill_profile_action.tag_name
+              SailPlay.send('tags.add',{tags:[tagName]})
+              $rootScope.$broadcast('isProfileFilled', true);
+            } else {
+              console.error("No fill tag in config")
+            }
+          }
+          res()
+        } else {
+          res()
+        }
+      })
+    }
+    function getProfileTag(){
+      if(MAGIC_CONFIG && MAGIC_CONFIG.data && MAGIC_CONFIG.data.fill_profile_action && MAGIC_CONFIG.data.fill_profile_action.tag_name){
+        const tagName = MAGIC_CONFIG.data.fill_profile_action.tag_name
+        SailPlayApi.call("tags.exist", { tags: [tagName] }, (obj)=>{
+          if(obj.tags[0].exist){
+            $rootScope.$broadcast('isProfileFilled', true)
+          } else {
+            $rootScope.$broadcast('isProfileFilled', false)
+          }
+        })
+      } else {
+        console.error("No fill tag in config")
+      }
+    }
+    $rootScope.$on('isProfileFilled', (event, isProfileFilled) => {
+      obj.isProfileFilled = isProfileFilled
+    })
+    getProfileTag()
+    return obj
+  })
+
+  /**
    * @ngdoc directive
    * @name sailplay.profile.directive:sailplayFillProfile
    * @restrict A
@@ -188,7 +262,7 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
    * This directive extends parent scope with property: sailplay.fill_profile
    *
    */
-  .directive('sailplayFillProfile', function (SailPlay, $rootScope, $q, ipCookie, SailPlayApi, SailPlayFillProfile) {
+  .directive('sailplayFillProfile', function (SailPlay, $rootScope, $q, ipCookie, SailPlayApi, SailPlayFillProfile, fillProfileTag, MAGIC_CONFIG, $timeout) {
 
     return {
 
@@ -293,6 +367,24 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
           //  angular.extend(scope.profile_form, ipCookie(FillProfile.cookie_name));
           //}
           console.dir(form);
+
+          if (MAGIC_CONFIG.data.force_registration && MAGIC_CONFIG.data.force_registration.active && MAGIC_CONFIG.data.force_registration.tag_name && !$rootScope.submited){
+            
+            const tagName = MAGIC_CONFIG.data.force_registration.tag_name
+
+            SailPlay.send('tags.exist', {tags: [tagName]}, function (res) {
+              if (res && res.tags.length) {
+                if (!res.tags[0].exist) {
+                  $timeout(function(){
+                    scope.$parent.reg_incomplete = true;
+                    scope.$parent.preventClose = true;
+                    $rootScope.$broadcast('openProfile');
+                  }, 10)
+                }
+              }
+            })
+          }
+
           saved_form = angular.copy(form);
 
           if (scope.$root.$$phase != '$digest')
@@ -370,13 +462,22 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
                 })
               }
 
-              scope.$apply(function () {
-
-                if (typeof callback == 'function') callback();
-
-                SailPlayApi.call('load.user.info', {all: 1});
-
-              });
+              fillProfileTag.checkSubmitForm(scope.sailplay.fill_profile.form.fields)
+                .then(()=>{
+                  if(scope.$parent.reg_incomplete){
+                    const tagNameToSet = MAGIC_CONFIG.data.force_registration.tag_name
+                    const tagNameMessage = MAGIC_CONFIG.data.force_registration.messageAfterSubmit
+                    SailPlay.send('tags.add', {tags: [tagNameToSet]}, function (tags_res) {
+                      $rootScope.$broadcast('notifier:notify', {
+                        body: tagNameMessage
+                      });
+                    })
+                    angular.element(document.querySelector('.spm_wrapper:not(.disable)')).addClass('disable')
+                    $rootScope.submited = true;
+                  }
+                  if (typeof callback == 'function') callback();
+                  SailPlayApi.call('load.user.info', {all: 1});
+                })
 
             } else {
 

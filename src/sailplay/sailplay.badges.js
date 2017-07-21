@@ -47,6 +47,13 @@ export let SailPlayBadges = angular.module('sailplay.badges', [])
 
       scope.user = SailPlayApi.data('load.user.info');
 
+      scope.generateOffsetFluid = (index, statuses, isFirst, isLast) => {
+        console.log(isFirst, isLast)
+        return {
+          left: ((100 / (statuses.length - 1)) * index) + '%'
+        }
+      }
+
       scope.generateOffset = function (index, statuses) {
         return {
           left: ((100 / (statuses.length - 1)) * index) + '%'

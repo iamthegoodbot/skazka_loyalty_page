@@ -12,21 +12,10 @@
 
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
   <link rel="shortcut icon" href="favicon.png" type="image/png">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600&amp;subset=cyrillic" rel="stylesheet">
+  <link rel="stylesheet" href="https://www.thackercaskets.com/styles/default.css?v=2">
 
-  <!--<link rel="stylesheet" href="dist/css/magic.css">-->
-
-  <!--app-->
-  <script src="dist/dev/sailplay-magic-vendor.js"></script>
-  <script src="dist/dev/sailplay-magic.js"></script>
-  <script src="dist/dev/sailplay-magic-widgets.js"></script>
-
-  <!-- prod -->
-  <!--<script src="dist/prod/sailplay-magic.js"></script>-->
-
-  <!-- migrator -->
-  <script src="dist/migrator/sailplay-magic-migrator.js"></script>
-
-
+  <script src="./dist/prod/sailplay-magic.js"></script>
   <style>
     body {
       margin: 0;
@@ -36,8 +25,6 @@
 
 </head>
 <body>
-
-  <!--<script src="dist/prod/2.0.0/sailplay-magic.js"></script>-->
   <sailplay-magic></sailplay-magic>
   <script>
 
@@ -47,19 +34,13 @@
 
     var magic = new SAILPLAY.Magic({
 
-      partner_id: params.partner_id || 1,
+      partner_id: params.partner_id || 1512,
       dep_id: params.dep_id || '',
-      domain: params.domain || "https://sailplay.net",
+      domain: params.domain || "http://dev.sailplay.ru",
       lang:  params.lang || "en",
-      config: params.config || "default",
-      
-    });
+      config: params.config || "thacker"
 
-    if (params.auth_hash) {
-      SAILPLAY.on('init.success', function() {
-        SAILPLAY.send('login', params.auth_hash)
-      })
-    }
+    });
 
   </script>
 

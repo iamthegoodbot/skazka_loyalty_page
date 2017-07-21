@@ -33,6 +33,7 @@ export let SailPlay = angular.module('sailplay', [
 
     SailPlay.on('login.success', function (res) {
 
+      console.log('ls')
       $rootScope.auth_state = true;
       $rootScope.$broadcast('sailplay-login-success', res);
       $rootScope.$apply();
