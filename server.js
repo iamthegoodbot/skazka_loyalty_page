@@ -10,10 +10,10 @@ const prod = require('./webpack.config').production
 
 const server = express();
 
-const host = 'localhost'
+const host = '0.0.0.0'
 const port = '3004'
 
-const devServerHost = 'localhost'
+const devServerHost = '192.168.1.11'
 const devServerPort = '3003'
 
 //static directory if needed
@@ -34,6 +34,7 @@ new WebpackDevServer(webpack(webpackConfig), {
   hot: true,
   noInfo: false,
   quiet: false,
+  disableHostCheck: true,
   headers: {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': 'X-Requested-With'

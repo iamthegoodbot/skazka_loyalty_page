@@ -4,6 +4,32 @@
 
 .spm_wrapper {
 
+  .action:hover>a {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  .action>a {
+    border-radius: 8px !important;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin-top: 0 !important;
+    margin-right: 0 !important;
+    visibility: hidden;
+    opacity: 0;
+    line-height: 5.2;
+    text-align: center;
+    -webkit-transition: all 200ms ease;
+    -moz-transition: all 200ms ease;
+    -ms-transition: all 200ms ease;
+    -o-transition: all 200ms ease;
+    transition: all 200ms ease;
+
+  }
+
   .more_bonus {
     float: left;
     width: 100%;
@@ -170,38 +196,7 @@
     .more_bonus {
       .more_bonus_main {
         .spm_col {
-          .mb_item {
-            height: auto;
-          }
           width: 100%;
-          position: relative;
-          margin-right: 0px;
-          &.act {
-            margin-bottom: 0px;
-            height: 250px;
-          }
-          .mb_item_left {
-            float: right;
-            margin-top: 100px;
-            height: 140px;
-            width: 100%;
-            span {
-              width: 90%;
-              text-align: center;
-              margin-left: 5%;
-            }
-          }
-          .mb_item_right {
-            float: left;
-            width: 100%;
-            position: absolute;
-            top: 0px;
-            left: 0px;
-            height: 100px;
-            img {
-              margin-top: 23px;
-            }
-          }
         }
       }
     }

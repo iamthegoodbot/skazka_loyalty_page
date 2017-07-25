@@ -1,6 +1,6 @@
 <div class="clearfix container">
 
-  <div class="status-list">
+  <div data-ng-if="user()" class="status-list">
 
     <div class="status-list__wrapper" data-sailplay-statuses data-ng-cloak>
 
@@ -8,9 +8,12 @@
            data-ng-style="getProgress(purchase_status ? user().purchases.sum : user().user_points, _statuses)"></div>
 
       <div class="status-list_item_labels">
-        <div class="status-list_item_label" data-ng-repeat="item in _statuses">
+        <div class="status-list_item_label" data-ng-repeat="item in _statuses" title="{{item.description}}">
           <span class="status-list__item-status" data-ng-bind="item.status"></span>
-          <span></span>
+          <span class="status-list__item-status-img">
+            <svg-img src="true ? item.img_inactive : item.active" active="true" svgid="'svg-'+$id"></svg-img>
+          </span>
+          <span class="status-list__item-status-description" data-ng-bind="item.description"></span>
         </div>
       </div>
 

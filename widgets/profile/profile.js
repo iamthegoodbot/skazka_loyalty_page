@@ -4,16 +4,64 @@ import HistoryPaginationTemplate from './history_pagination.html';
 import './profile.less';
 import DefaultAvatarImage from './assets/img/avatar_default.png';
 
+function tryExtractJsonFromExtraName(nameField){
+  // Some of extra actions has json in it's name field, and some doesn't
+  let nameJson = ""
+  let hasJson = true
+  try {
+    nameJson = JSON.parse(nameField)
+    hasJson = nameJson.promo_name !== void 0
+  } catch(e) {
+    hasJson = false
+  }
+  return {
+    hasJson,
+    nameJson
+  }
+}
+
+Widget.filter('get_bonus_name', function (MAGIC_CONFIG) {
+
+  const dictonary = MAGIC_CONFIG.data.history_dictonary 
+
+  return function (item) {
+
+    if(item.action=="extra"){
+      const parseResult = tryExtractJsonFromExtraName(item.name)
+      if(parseResult.hasJson){
+        const name = parseResult.nameJson.promo_name
+        return name
+      } else {
+        return item.name
+      }
+    } else if (item.hasOwnProperty('social_type')){
+      if(dictonary[item.social_type][item.social_action]){
+        return dictonary[item.social_type][item.social_action]        
+      } else {
+        return dictonary.default_name
+      }
+
+    } else if (item.action=="purchase"){
+      return 'Покупка'
+    } else {
+      return item.name
+    }
+    
+  }
+})
+
 const ProfileWidget = {
 
   id: 'profile',
   template: WidgetProfileTemplate,
-  inject: ['$rootScope'],
-  controller: function ($rootScope) {
+  inject: ['$rootScope', 'badgeProgress', 'SailPlay'],
+  controller: function ($rootScope, badgeProgress, SailPlay) {
 
     return function (scope, elm, attrs) {
 
       // scope._tools = MAGIC_CONFIG.tools;
+
+      scope.currentStatus = badgeProgress
 
       scope.default_avatar = DefaultAvatarImage;
       $rootScope.$on('openProfile', () => {
@@ -27,7 +75,11 @@ const ProfileWidget = {
           scope.profile.show_fill_profile = state || false;
 
         }
-      };
+      }
+
+      SailPlay.on('load.user.info.success', () => {
+        console.info(badgeProgress.getCurrentStatus())
+      })
 
     }
 

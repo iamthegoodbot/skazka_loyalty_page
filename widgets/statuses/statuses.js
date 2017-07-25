@@ -2,11 +2,29 @@ import { Widget, WidgetRegister } from '@core/widget';
 import StatusesWidgetTemplate from './statuses.html';
 import './statuses.less';
 
+Widget.directive('svgImg', function() {
+    return {
+        restrict: 'E',
+        link: function(scope, element, attrs) {
+            const url = scope.$eval(attrs.src);
+            const isActive = scope.$eval(attrs.active)
+            const id = scope.$eval(attrs.svgid)
+            element.replaceWith('<object type="image/svg+xml" id="'+ id +'" data="' + url + '"></object>');
+            
+            setTimeout(()=>{
+              var svgDoc = document.getElementById(id).contentDocument;
+              var styleElement = svgDoc.createElementNS("http://www.w3.org/2000/svg", "style");
+              styleElement.textContent = "svg { fill: #fff }";
+              svgDoc.getElementById("where-to-insert").appendChild(linkElm);
+            }, 1000)
+        }
+    };
+});
+
 Widget.factory('badgeProgress', (MAGIC_CONFIG, SailPlayApi) => {
   const obj = {
     _tools: MAGIC_CONFIG.tools,
-    _statuses: MAGIC_CONFIG.data.statuses,
-    current_status: ""
+    _statuses: MAGIC_CONFIG.data.statuses
   }
   
 
@@ -38,15 +56,21 @@ Widget.factory('badgeProgress', (MAGIC_CONFIG, SailPlayApi) => {
       return status.points > points;
     });
 
-    const current_statuses = obj._statuses.filter(x=>x.points<=points)
-
-    obj.current_status = current_statuses.reduce((acc, x)=>((acc.points<x.points) ? x : acc))
-
     return {
       status: future_statuses[0],
       offset: future_statuses[0] && future_statuses[0].points - points || 0
     };
 
+  }
+
+  obj.getCurrentStatus = () => {
+    if(!obj._statuses) return;
+    let user = _user();
+    let user_points = user.user_points;
+    let points =  user_points ? user_points.confirmed + user_points.spent + user_points.spent_extra : 0;    
+    const current_statuses = obj._statuses.filter(x=>x.points<=points)
+    obj.current_status = current_statuses.reduce((acc, x)=>((acc.points<x.points) ? x : acc))
+    return obj.current_status
   }
 
   return obj
@@ -69,7 +93,7 @@ WidgetRegister({
       scope.get_next_status = badgeProgress.get_next_status
       scope._statuses = badgeProgress._statuses
 
-      console.log(badgeProgress)
+      scope.badgeProgress = badgeProgress
 
     }
   }

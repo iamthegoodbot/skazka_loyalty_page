@@ -60,7 +60,9 @@ export let SailPlayBadges = angular.module('sailplay.badges', [])
         }
       };
 
-      scope.getProgress = function (user_points, statuses) {
+      scope.getProgress = function (user_points, statuses, isHeight) {
+
+        var isHeight = document.body.clientWidth < 992
 
         if (!user_points || !statuses) return;
 
@@ -69,9 +71,11 @@ export let SailPlayBadges = angular.module('sailplay.badges', [])
         });
 
         if(status_points[0] !== 0) {
-          return {
+          return !isHeight ? {
             width: '0'
-          };
+          } : {
+            height: '0'
+          }
         }
 
         function isNumeric(n) {
@@ -83,9 +87,11 @@ export let SailPlayBadges = angular.module('sailplay.badges', [])
         else points = user_points ? user_points.confirmed + user_points.spent + user_points.spent_extra : 0;
 
         if (status_points[status_points.length - 1] && (points > status_points[status_points.length - 1])) {
-          return {
+          return !isHeight ? {
             width: '100%'
-          };
+          } : {
+            height: '100%'
+          }
         }
 
         var multiplier = 100 / (status_points.length - 1);
@@ -109,9 +115,11 @@ export let SailPlayBadges = angular.module('sailplay.badges', [])
           total = status_points[state + 1] ? (status_points[state + 1] - status_points[state]) : status_points[state];
         }
 
-        return {
+        return !isHeight ? {
           width: parseInt((current * 100 / total / (status_points.length - 1)) + (state * multiplier)) + '%'
-        };
+        } : {
+          height : parseInt((current * 100 / total / (status_points.length - 1)) + (state * multiplier)) + '%'
+        }
 
       };
 

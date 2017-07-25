@@ -465,7 +465,7 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
               fillProfileTag.checkSubmitForm(scope.sailplay.fill_profile.form.fields)
                 .then(()=>{
                   if(scope.$parent.reg_incomplete){
-                    const tagNameToSet = MAGIC_CONFIG.data.force_registration.tag_name
+                    const tagNameToSet = MAGIC_CONFIG.data.force_registration.tag_to_set_after_submit
                     const tagNameMessage = MAGIC_CONFIG.data.force_registration.messageAfterSubmit
                     SailPlay.send('tags.add', {tags: [tagNameToSet]}, function (tags_res) {
                       $rootScope.$broadcast('notifier:notify', {

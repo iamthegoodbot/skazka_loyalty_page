@@ -43,9 +43,8 @@
 
 .form_field {
   float: left;
-  width: 50%;
+  width: 100%;
   padding-bottom: 20px;
-  padding-right: 40px;
   .box-sizing(border-box);
 
   &.type_full {
@@ -58,16 +57,17 @@
     z-index: 1;
 
     span {
-      color: @black;
       font-size: 18px;
       float: left;
       width: 100%;
       box-sizing: border-box;
       padding-left: 10px;
-      border: 2px solid @main_light;
-      border-radius: 5px;
       line-height: 57px;
       height: 57px;
+      background-color: rgb(239, 239, 239);
+      color: rgb(152, 152, 152);
+      border-radius: 5px;
+      padding-left: 25px;
       background-image: url('https://d3sailplay.cdnvideo.ru/media/assets/assetfile/303e1f38393495b1a059952843abeeb0.png');
       background-repeat: no-repeat;
       background-position: right 10px center;
@@ -88,14 +88,22 @@
       border-radius: 0 0 3px 3px;
       border: 1px solid @main_light;
       text-align: center;
+      font-size: 18px;
+      padding-left: 10px;
+      line-height: 57px;
+      background-color: rgb(239, 239, 239);
+      color: rgb(152, 152, 152);
 
       a {
+        padding-left: 15px;
         float: left;
         width: 100%;
+        font-size: 18px;
         line-height: 25px;
         text-decoration: none;
-        color: @black;
-        background: @white;
+        background-color: rgb(239, 239, 239);
+        color: rgb(152, 152, 152);
+        text-align: left;
       }
 
     }
@@ -125,8 +133,12 @@
     width: 100%;
     line-height: 100%;
     color: @main_darker;
-    font-size: 16px;
     float: left;
+    padding-bottom: 8px;
+    font-size: 18px;
+    &:not(.date_label){
+      display: none;
+    }
   }
 
   .form_textarea {
@@ -146,11 +158,11 @@
 
   .form_input {
     &[type="text"], &[type="email"] {
-      background-color: @white;
+      background-color: rgb(239, 239, 239);
+      color: rgb(152, 152, 152);
       float: left;
       height: 57px;
       border: 0;
-      border-top: 2px solid @main_light;
       border-radius: 5px;
       padding-left: 25px;
       width: 100%;
@@ -172,7 +184,6 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-
     color: @black;
     font-size: 18px;
     float: left;
@@ -190,7 +201,6 @@
     background-color: transparent;
     outline: none;
   }
-
 }
 
 @media @tablet, @mobile {

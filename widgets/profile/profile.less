@@ -18,11 +18,65 @@
 
     .bon_profile_info {
       width: 100%;
+      display: flex;
       float: left;
       position: relative;
+      @media screen and (max-width: 991px) {
+        flex-wrap: wrap;
+      }
+      & .user_avatar {
+        position: relative;
+        max-width: 100px;
+        float: right;
+        text-align: center;
+        &:hover .user_info{
+          display: block;
+        }
+        & .user_avatar_image {
+          width: 100%;
+          margin-top: 44px;
+          border-radius: 90em;
+        }
+      }
+      .user_info {
+        display: none;
+        position: absolute;
+        top: 10px;
+        width: 200px !important;
+        & a {
+          width: 50% !important;
+          color: white;
+          text-decoration: underline !important;
+        }
+      }
+      img:not(.user_avatar_profile_btn) {
+        border-radius: 100%;
+        -webkit-box-shadow: 0 2px 7px 1px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 2px 7px 1px rgba(0, 0, 0, 0.2);
+      }
+      & .user_avatar_profile_btn_container {
+        height: 29px*0.75;
+        width: 27px*0.75;
+        padding: 1px 3px;
+        background-color: white;
+        position: absolute;
+        border-radius: 50px;
+        top: 42px;
+        right: 8px;
+      }
+      & .user_avatar_profile_btn {
+        width: 100%;
+      }
+      .bon_profile_top {
+        min-width: 50%;
+        flex-grow: 2;
+        @media screen and (max-width: 991px){
+          order: 2;
+        }
+      }
       .bon_profile_top_left {
         float: left;
-        width: 580px;
+        padding-left: 20px;
         h3 {
           float: left;
           width: 100%;
@@ -30,6 +84,9 @@
           color: @white;
           margin-top: 50px;
           margin-bottom: 10px;
+          @media screen and (max-width: 991px){
+            margin-top: 20px !important;         
+          }
         }
         h4 {
           float: left;
@@ -67,11 +124,6 @@
           margin-top: 9px;
           color: @white;
         }
-        .user_avatar {
-          max-width: 81px;
-          float: right;
-          text-align: center;
-        }
         .user_info {
           text-align: right;
           float: left;
@@ -81,15 +133,69 @@
             word-wrap: break-word;
           }
         }
-        .user_avatar_image {
-          width: 100%;
-        }
       }
       .bon_profile_stat {
         float: left;
-        width: 100%;
+        min-width: 420px;
+        display: flex;
         margin-top: 50px;
         margin-bottom: 78px;
+        @media screen and (max-width: 991px){
+          min-width: 180px;
+          flex-grow: 2;
+          margin-bottom: 10px;
+        }
+
+        & .points_block, & .status_block {
+          padding-top: 18px;
+          min-height: 108px;
+          width: 50%;
+          padding-left: 40px;
+          flex-grow: 1;
+          border-left: 1px solid rgb(157, 52, 56);
+          @media screen and (max-width: 991px){
+            padding-left: 15px !important;         
+          }
+          &>span>span:nth-of-type(1) {
+            font-size: 16px;
+            display: block;
+            text-transform: capitalize;
+          }
+          &>span>span:nth-of-type(2) {
+            padding-top: 12px;
+            font-size: 38px;
+            display: block;
+          }
+        }
+
+        & .points_block {
+          padding-right: 40px;
+          @media screen and (max-width: 991px){
+            border-left: none;
+            padding-right: 0;
+          }
+          & .history_button {
+            font-size: 16px;
+            position: absolute;
+            display: none;
+          }
+          &:hover .history_button {
+            display: block;
+          }
+          &>span>span:nth-of-type(2) {
+            padding-top: 14px;
+          }
+        }
+
+        & .status_block {
+          & .status_confirmed_icon {
+            text-transform: capitalize;
+            & object {
+              height: 38px;
+              transform: translateY(5px);
+            }
+          }
+        }
 
         .points_confirmed {
 
@@ -221,6 +327,10 @@
       }
     }
 
+    & .bns_overlay_iner {
+      width: 500px !important;
+    }
+
     .status_block {
       width: 30%;
       display: inline-block;
@@ -245,9 +355,6 @@
             margin-top: 30px;
             margin-right: 0px;
           }
-        }
-        .bon_profile_top_left {
-          width: 60%;
         }
       }
     }
@@ -288,10 +395,6 @@
         width: 100%;
         .bon_profile_right {
           width: 265px;
-        }
-        .bon_profile_top_left {
-          width: 80%;
-          float: left;
         }
         .bon_profile_stat {
           .bps_right {
@@ -384,16 +487,141 @@
   }
 
   .bns_hist_pager {
-    float: right;
+    float: left;
     font-size: 13px;
     a {
       text-decoration: none;
-      color: #000;
+      color: rgb(172, 172, 171);
       margin-right: 4px;
+      line-height: 30px;
+      text-align: center;
+      font-size: 22px;
+      font-weight: 300;
       &.active {
-        font-weight: bold;
+        color: white;
       }
     }
   }
 
+}
+
+.history_container {
+  margin-top: 10px !important;
+}
+
+.modal_history_content_container {
+  & .modal_history_content_header {
+    display: block;
+    color: rgb(153, 153, 153);
+    text-decoration: underline;
+    cursor: pointer;
+    cursor: hand;
+  }
+  & ul {
+    padding-left: 34px;
+    display: none;
+    & li {
+      padding-top: 6px;
+    }
+    padding-bottom: 6px;
+  }
+  &.open {
+    & ul {
+      display: inline-block;
+    }
+  }
+}
+
+.modal_history_content {
+  min-width: 100px;
+  display: inline-block;
+}
+
+.modal_history_controls_container {
+  margin-top: 22px !important;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.bns_hist_pager>a {
+  display: inline-block;
+  height: 33px;
+  width: 33px;
+  background-color: rgb(247, 247, 246);
+  border-radius: 50px;
+  &.active {
+    background-color: rgb(146, 29, 34);  
+    &>span{
+      color: white;
+    }
+  }
+  &>span{
+    font-size: 18px;
+    display: inline-block;
+    color: rgb(155, 157, 157);
+    font-weight: normal;
+    font-family: Open Sans, sans-serif;
+    text-align: center;
+    width: 100%;
+    transform: translateY(6px);
+  }
+  &+a{
+    margin-left: 10px !important;
+  }
+}
+
+.history_entry {
+  min-height: 84px*0.75;
+  padding-top: 14px !important;
+  border-bottom: 1px solid rgb(237, 237, 237) !important;
+  &>*{
+    display: inline-block;
+    text-align: left;
+    &>*{
+      display: block;
+    }
+  }
+  &>div:nth-of-type(1){
+    min-width: 165px*0.75;
+    float: left;
+    &>.modal_history_date{
+      padding-top: 10px;
+      font-size: 18px;
+      color: rgb(127, 127, 127);
+    }
+  }
+  &>div:nth-of-type(2){
+    
+  }
+  &>div:nth-of-type(3){
+    width: 150px;
+    float: right;
+    &>.modal_history_price{
+      color: rgb(79, 182, 102);
+      text-align: right;
+      font-size: 20px;
+      font-weight: 600;
+    }
+    &>.modal_history_points{
+      text-align: right;
+      color: rgb(146, 29, 34);
+      font-weight: 900;
+      font-family: Open Sans, sans-serif;
+      font-size: 19px;
+      padding-top: 5px;
+      white-space: nowrap;
+      &+.modal_history_price{
+        padding-top: 8px;
+      }
+    }
+  }
+}
+
+.modal_history_header{
+  color: rgb(146, 29, 34)
+}
+
+.modal_history_name{
+  font-size: 16px !important;
 }
