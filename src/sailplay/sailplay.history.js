@@ -24,7 +24,7 @@ export let SailPlayHistory = angular.module('sailplay.history', [])
         scope.history = SailPlayApi.data('load.user.history');
 
         scope.get_purchase_info = function (item) {
-          if (!item) return;
+          if (!item || item.action != 'purchase') return;
           if (item.purchase_data) {
             delete item.purchase_data;
           } else {
