@@ -55,9 +55,9 @@
 
                 <tbody>
 
-                <tr data-dir-paginate="item in history() | itemsPerPage:10" data-pagination-id="history_pages">
+                <tr data-dir-paginate="item in history() | filter:removeUnconfimedPurhcases | itemsPerPage:10" data-pagination-id="history_pages">
                     <td>
-                        <span class="modal_history_date" data-ng-bind="item.action_date | date:'d/MM/yyyy'"></span>
+                        <span class="modal_history_date" data-ng-bind="item.action_date | date:'shortDate'"></span>
                     </td>
                     <td>
                         <span><b class="modal_history_content" data-ng-bind="item | history_item"></b></span>

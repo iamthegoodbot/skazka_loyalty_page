@@ -13,7 +13,11 @@ const ProfileNrWidget = {
 
       scope.$on('open_profile_modal', () => {
         scope.profile.show_fill_profile = true;
-      })
+      });
+
+      scope.removeUnconfimedPurhcases = function(item){
+        return item.action != 'purchase' || item.action == 'purchase' && item.is_completed
+      };
 
       scope.profile = {
         history: false,
