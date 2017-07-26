@@ -25,6 +25,9 @@ export let Modal = angular.module('magic.tools.modal', [])
           $parse(attrs.show).assign(scope.$parent, false);
           scope.$eval(attrs.onClose);          
         }
+        // remove noscroll from login
+        window.document.body.className = window.document.body.className.replace(' noscroll', '')
+        window.document.body.style.top = 0;
       };
 
       elm.on('click', function(e){

@@ -474,6 +474,7 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
                     })
                     angular.element(document.querySelector('.spm_wrapper:not(.disable)')).addClass('disable')
                     $rootScope.submited = true;
+                    SailPlayApi.call('logout')
                   }
                   if (typeof callback == 'function') callback();
                   SailPlayApi.call('load.user.info', {all: 1});

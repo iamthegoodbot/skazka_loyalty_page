@@ -63,6 +63,8 @@ const ProfileWidget = {
 
       scope.currentStatus = badgeProgress
 
+      scope.show_login = false
+
       scope.default_avatar = DefaultAvatarImage;
       $rootScope.$on('openProfile', () => {
         scope.profile.show_fill_profile = true;
@@ -77,8 +79,8 @@ const ProfileWidget = {
         }
       }
 
-      SailPlay.on('load.user.info.success', () => {
-        console.info(badgeProgress.getCurrentStatus())
+      SailPlay.on('login.success', ()=>{
+        scope.show_login = false;
       })
 
     }

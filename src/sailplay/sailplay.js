@@ -130,7 +130,8 @@ export let SailPlay = angular.module('sailplay', [
                 return;
               }
 
-              sp.send('login.remote', auth_options);
+              $rootScope.$broadcast('sailplay-login-remote-open', auth_options);
+              // sp.send('login.remote', auth_options);
 
           }
 
@@ -277,17 +278,24 @@ export let SailPlay = angular.module('sailplay', [
       template: '<iframe></iframe>',
       link: function (scope, elm, attrs) {
 
-        var opts = scope.$eval(attrs.sailplayRemoteLogin);
 
-        var options = {
-          node: elm[0]
-        };
+        scope.show = false;
+
+        scope.$on('sailplay-login-remote-open', function(ev, auth_options){
+          console.log('elm',elm)
+          var options = {
+            node: elm[0],
+            ...auth_options
+          };
+          angular.merge(options, opts);
+          SailPlay.config() && SailPlay.config().partner && SailPlay.send('login.remote', options);
+          scope.show = true;
+        })
+
+        var opts = scope.$eval(attrs.sailplayRemoteLogin);
 
         var logged = false;
 
-        console.dir(opts);
-        angular.merge(options, opts);
-        console.dir(options);
 
         scope.$on('sailplay-init-success', function () {
           SailPlay.send('login.remote', options);
@@ -312,8 +320,6 @@ export let SailPlay = angular.module('sailplay', [
           }
 
         });
-
-        SailPlay.config() && SailPlay.config().partner && SailPlay.send('login.remote', options);
 
       }
     }

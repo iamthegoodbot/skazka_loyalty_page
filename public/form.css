@@ -1,0 +1,76 @@
+.password_field {
+    background-color: #efefef;
+    color: #989898;
+    float: left;
+    height: 57px;
+    border: 0;
+    border-radius: 5px;
+    padding-left: 25px;
+    width: 100%;
+    font-size: 18px;
+    outline: none;
+    margin-top: 0 !important;
+    box-sizing: border-box;
+    margin-bottom: 30px;
+}
+
+.phone_code>div {
+    background-color: #efefef;
+    color: #989898;
+    float: left;
+    height: 57px;
+    border: 0;
+    border-radius: 5px;
+    padding-left: 25px;
+    font-size: 18px;
+    outline: none;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+}
+
+.phone>input {
+    background-color: #efefef;
+    color: #989898;
+    float: left;
+    height: 57px;
+    border: 0;
+    border-radius: 5px;
+    padding-left: 25px;
+    font-size: 18px;
+    outline: none;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+}
+
+.orange_btn {
+	background-color: #921d22 !important;
+	border-bottom: 0;
+}
+
+.auth_wrapper:before {
+	content: "SIGN UP";
+	text-align: left;
+	font-weight: 500;
+	font-size: 24px;
+	color: #921d22;
+	font-family: Arial, sans-serif;
+}
+
+.show_restore_pass {
+	color: #989898;
+	font-size: 14px;
+}
+
+body {
+	background-color: white;
+	overflow: hidden;
+}
+
+.auth_wrapper {
+	box-shadow: none;
+	-webkit-box-shadow: none;
+}
+
+.sp_form_buttons td:nth-of-type(2){
+	display: none;
+}

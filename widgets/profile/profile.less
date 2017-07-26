@@ -11,6 +11,9 @@
     float: left;
     width: 100%;
     padding: 0 5%;
+    &>* {
+      min-height: 292px;
+    }
     .box-sizing(border-box);
     background-color: @tred;
     //background-image: url(./img/prof_bg.png);
@@ -67,11 +70,36 @@
       & .user_avatar_profile_btn {
         width: 100%;
       }
+      .bon_profile_avatar {
+        min-width: 100px;
+      }
+      .bon_profile_login {
+        order: 4;
+        width: 40%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        @media screen and (max-width: 991px){
+          width: 100%;
+        }
+        & .button_login {
+          background-color: white;
+          color: @tred;
+          height: 66px;
+          width: 252px;
+          font-size: 24px;
+          font-weight: 400;
+          font-family: Open Sans, sans-serif;
+          margin-right: 0;
+          margin-bottom: 40px;
+        }
+      }
       .bon_profile_top {
         min-width: 50%;
         flex-grow: 2;
         @media screen and (max-width: 991px){
           order: 2;
+          min-height: 200px;
         }
       }
       .bon_profile_top_left {
@@ -82,7 +110,7 @@
           width: 100%;
           font-size: 30px;
           color: @white;
-          margin-top: 50px;
+          margin-top: 80px;
           margin-bottom: 10px;
           @media screen and (max-width: 991px){
             margin-top: 20px !important;         
@@ -624,4 +652,24 @@
 
 .modal_history_name{
   font-size: 16px !important;
+}
+
+.bns_overlay_login {
+  &.visible{
+    animation: 0.5s linear 0s 1 showeffect;
+  }
+
+  & .bns_overlay_iner {
+    width: 300px;
+  }
+  & iframe {
+    width: 100%;
+    height: 500px;
+  }
+}
+
+@keyframes showeffect {
+    0% { display: none; visibility: hidden; }
+    99% { display: none; visibility: hidden; }
+    100% { display: block; visibility: visible;  }
 }
