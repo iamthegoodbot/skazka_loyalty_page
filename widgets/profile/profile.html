@@ -123,7 +123,7 @@
                     </td>
                     <td>
                         <ul class="modal_history_content"
-                            data-ng-if="item.action === 'purchase' && item.purchase_data">
+                            data-ng-if="item.action == 'purchase'">
                             <li data-ng-repeat="info in item.purchase_data" data-ng-bind="info.product.sku || widget.texts.unnamed_cart_item"></li>
                             <li data-ng-if="!item.purchase_data.length" data-ng-bind="widget.texts.empty_cart"></li>
                         </ul>
