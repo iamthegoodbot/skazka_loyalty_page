@@ -376,10 +376,14 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
               if (res && res.tags.length) {
                 if (!res.tags[0].exist) {
                   $timeout(function(){
+                    console.info(scope.$parent.$id)
                     scope.$parent.reg_incomplete = true;
                     scope.$parent.preventClose = true;
                     $rootScope.$broadcast('openProfile');
                   }, 10)
+                } else {
+                  scope.$parent.reg_incomplete = false;
+                  scope.$parent.preventClose = false;
                 }
               }
             })
