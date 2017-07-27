@@ -1,5 +1,6 @@
 import angular from 'angular';
 
+
 export let SailPlayProfile = angular.module('sailplay.profile', [])
 
 /**
@@ -157,6 +158,7 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
           this.name = params.name;
           this.label = params.label;
           this.placeholder = params.placeholder;
+          this.required = params.required
           this.input = params.input || 'text';
 
           if (params.data) {
@@ -176,6 +178,62 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
   })
 
   /**
+   * @ngdoc factory
+   * @name sailplay.profile.factory:fillProfileTag
+   *
+   * @param {object} form   Fields from edit user profile form
+   *
+   * @description
+   * Factory for checking user profile after signup
+   *   
+   */
+
+  .factory('fillProfileTag', (SailPlay, SailPlayApi, MAGIC_CONFIG, $q, $rootScope) => {
+    const obj = {
+    }
+    obj.checkSubmitForm = function(form){
+      return $q((res, rej) => {
+        console.info(form)
+        if(MAGIC_CONFIG.data.force_registration){
+          const config = MAGIC_CONFIG.data.force_registration
+          const requiredFields = config.required_fields
+          const isProfileFilled = requiredFields.reduce((acc, x)=>{
+            const field = form.find((field)=>{
+                return field.name == x
+              })
+            if(field === void 0) {
+              return false
+            }
+            if( Object.prototype.toString.call( field.value ) === '[object Array]' ) {
+              return (field.value.length === 3) && Object.keys(field.value).reduce(function(acc, key, index) {
+                 return !!field.value[key] && acc
+              }, true)
+            } else {
+              return acc && !!field.value
+            }
+          }, true)
+          if(isProfileFilled){
+            if(MAGIC_CONFIG.data.force_registration.tag_to_set_after_submit){
+              const tagName = MAGIC_CONFIG.data.force_registration.tag_to_set_after_submit
+              SailPlay.send('tags.add',{tags:[tagName]},()=>{
+                res(true)
+              })
+            } else {
+              console.error("No fill tag_to_set_after_submit in config")
+              res(true)
+            }
+          } else {
+            res(false)
+          }
+        } else {
+          res(true)
+        }
+      })
+    }
+    return obj
+  })
+
+  /**
    * @ngdoc directive
    * @name sailplay.profile.directive:sailplayFillProfile
    * @restrict A
@@ -187,7 +245,7 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
    * This directive extends parent scope with property: sailplay.fill_profile
    *
    */
-  .directive('sailplayFillProfile', function (SailPlay, $rootScope, $q, ipCookie, SailPlayApi, SailPlayFillProfile, $timeout) {
+  .directive('sailplayFillProfile', function (SailPlay, $rootScope, $q, ipCookie, SailPlayApi, SailPlayFillProfile, $timeout, MAGIC_CONFIG, fillProfileTag) {
 
     return {
 
@@ -208,6 +266,7 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
         var saved_form = false;
 
         SailPlayApi.observe('load.user.info', user => {
+          console.info('in user info')
           if (!user) return;
           var form = scope.sailplay.fill_profile.form;
           var custom_fields = [];
@@ -254,6 +313,11 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
                     form_field.value = user.user.email || '';
                     break;
 
+                  case 'addOid':
+
+                    form_field.value = user.user.origin_user_id || '';
+                    break;
+
                   case 'sex':
 
                     form_field.value = user.user.sex || '';
@@ -274,6 +338,7 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
           //  angular.extend(scope.profile_form, ipCookie(FillProfile.cookie_name));
           //}
           // console.dir(form);
+
           saved_form = angular.copy(form);                        
 
           if (custom_fields.length) {            
@@ -286,24 +351,25 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
             })
           }
 
-          form.auth_hash = SailPlay.config().auth_hash;
-          //angular.extend(scope.profile_form.user, user.user);
-          //if(ipCookie(FillProfile.cookie_name) && SailPlay.config().auth_hash === ipCookie(FillProfile.cookie_name).user.auth_hash ){
-          //  angular.extend(scope.profile_form, ipCookie(FillProfile.cookie_name));
-          //}
+          if (MAGIC_CONFIG.data.force_registration && MAGIC_CONFIG.data.force_registration.active && MAGIC_CONFIG.data.force_registration.tag_name && !$rootScope.submited){
+            
+            const tagName = MAGIC_CONFIG.data.force_registration.tag_name
 
-          SailPlay.send('tags.exist', {tags: ['Filled Profile']}, function (res) {
-            if (res && res.tags.length) {
-              if (!res.tags[0].exist) {
-                $timeout(function(){
-                  $rootScope.$broadcast('openProfile');
-                  scope.$parent.preventClose = true;
-                }, 10)
+            SailPlay.send('tags.exist', {tags: [tagName]}, function (res) {
+              if (res && res.tags.length) {
+                if (!res.tags[0].exist) {
+                  $timeout(function(){
+                    console.info(scope.$parent.$id)
+                    scope.$parent.reg_incomplete = true;
+                    scope.$parent.preventClose = true;
+                    $rootScope.$broadcast('openProfile');
+                  }, 10)
+                }
               }
-            }
-          });
+            })
+          }
 
-          saved_form = angular.copy(form);
+          form.auth_hash = SailPlay.config().auth_hash;
 
           if (scope.$root.$$phase != '$digest')
             scope.$digest();
@@ -360,6 +426,10 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
             delete req_user.addEmail;
           }
 
+          if (req_user.addOid && data_user && data_user.origin_user_id && data_user.origin_user_id == req_user.addOid) {
+            delete req_user.addOid;
+          }
+
           if (req_user.birthDate) {
             var bd = angular.copy(req_user.birthDate);
             bd[0] = parseInt(bd[0]) < 10 ? '0' + parseInt(bd[0]) : bd[0];
@@ -380,14 +450,25 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
                 })
               }
 
-              scope.$apply(function () {
-
-                if (typeof callback == 'function') callback();
-                SailPlay.send('tags.add', {tags: ['Filled Profile']}, () => {
-                  SailPlayApi.call('load.user.info', { all: 1, purchases: 1 });
-                });
-
-              });
+              fillProfileTag.checkSubmitForm(scope.sailplay.fill_profile.form.fields)
+                .then((isValid)=>{
+                  if(isValid){
+                    const tagNameToSet = MAGIC_CONFIG.data.force_registration.tag_to_set_after_submit
+                    const tagNameMessage = MAGIC_CONFIG.data.force_registration.messageAfterSubmit
+                    const tagNameMessageUpdate = MAGIC_CONFIG.data.force_registration.messageAfterSubmitUpdate
+                    SailPlay.send('tags.add', {tags: [tagNameToSet]}, function (tags_res) {
+                      $rootScope.$broadcast('notifier:notify', {
+                        body: scope.$parent.reg_incomplete ? tagNameMessage : tagNameMessageUpdate
+                      });
+                    })
+                    $rootScope.submited = true;
+                    if(scope.$parent.reg_incomplete){
+                      SailPlayApi.call('logout')
+                    }
+                  }
+                  if (typeof callback == 'function') callback();
+                  SailPlayApi.call('load.user.info', {all: 1});
+                })
 
             } else {
 

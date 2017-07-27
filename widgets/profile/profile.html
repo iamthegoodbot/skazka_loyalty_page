@@ -179,12 +179,12 @@
                     <div data-ng-switch-when="text" class="clearfix">
                         <label class="form_label">{{ field.label }}</label>
                         <input class="form_input" type="text" placeholder="{{ field.placeholder }}"
-                               data-ng-model="field.value" data-ng-required="{{ field.required }}">
+                               data-ng-model="field.value" data-ng-required="{{ !!field.required }}">
                     </div>
 
                     <div data-ng-switch-when="date" class="clearfix">
                         <label class="form_label">{{ field.label }}</label>
-                        <date-picker data-model="field.value" data-ng-required="{{ field.required }}"></date-picker>
+                        <date-picker data-model="field.value" data-ng-required="{{ !!field.required }}"></date-picker>
                     </div>
 
                     <div data-ng-switch-when="select" class="clearfix">
@@ -192,7 +192,7 @@
                         <div class="magic_select form_input">
                             <select data-ng-model="field.value"
                                     data-ng-options="item.value as item.text for item in field.data"
-                                    data-ng-required="{{ field.required }}"></select>
+                                    data-ng-required="{{ !!field.required }}"></select>
                         </div>
                     </div>
 
@@ -200,13 +200,13 @@
                         <label class="form_label">{{ field.label }}</label>
                         <input class="form_input" type="text" data-model-view-value="true"
                                data-ui-mask="{{ field.placeholder }}" data-ng-model="field.value"
-                               data-ng-required="{{ field.required }}">
+                               data-ng-required="{{ !!field.required }}">
                     </div>
 
                     <div data-ng-switch-when="email" class="clearfix">
                         <label class="form_label">{{ field.label }}</label>
                         <input class="form_input" type="email" placeholder="{{ field.placeholder }}"
-                               data-ng-model="field.value" data-ng-required="{{ field.required }}">
+                               data-ng-model="field.value" data-ng-required="{{ !!field.required }}">
                     </div>
 
                 </div>
