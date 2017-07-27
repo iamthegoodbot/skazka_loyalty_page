@@ -364,6 +364,9 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
                     scope.$parent.preventClose = true;
                     $rootScope.$broadcast('openProfile');
                   }, 10)
+                } else {
+                  scope.$parent.reg_incomplete = false;
+                  scope.$parent.preventClose = false;
                 }
               }
             })
@@ -467,10 +470,14 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
                     }
                   }
                   if (typeof callback == 'function') callback();
-                  SailPlayApi.call('load.user.info', {all: 1});
+                  SailPlayApi.call('load.user.info', {all: 1, purchases: 1});
                 })
 
             } else {
+
+              if(user_res.status == 'error' && user_res.status_code == "-200012"){
+                user_res.message = MAGIC_CONFIG.data.force_registration.messageDuplicateError
+              }
 
               $rootScope.$broadcast('notifier:notify', {
                 body: user_res.message
