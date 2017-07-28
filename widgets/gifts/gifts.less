@@ -49,11 +49,12 @@
 
     .bon_item_main {
       float: left;
-      width: 100%;
+      width: 90%;
+      padding: 80px 5% 40px 5%;
       .arr_left {
         position: absolute;
         left: 0;
-        margin-left: -26px;
+        margin-left: 0px;
         width: 60px;
         height: 60px;
         border-radius: 20px 0px 0px 20px;
@@ -61,13 +62,19 @@
         background-position: center center;
         background-repeat: no-repeat;
         display: block;
-        top: 52%;
+        top: 62%;
         margin-top: -55px;
+        @media screen and (min-width: 768px) and (max-width: 991px) {
+          margin-left: 18px;
+        }
+        @media screen and (min-width: 992px) {
+          margin-left: 30px;
+        }
       }
       .arr_right {
         position: absolute;
         right: 0;
-        margin-right: -26px;
+        margin-right: 0px;
         width: 60px;
         height: 60px;
         border-radius: 0px 20px 20px 0px;
@@ -75,14 +82,19 @@
         background-position: center center;
         background-repeat: no-repeat;
         display: block;
-        top: 52%;
+        top: 62%;
         margin-top: -55px;
+        @media screen and (min-width: 768px) and (max-width: 991px) {
+          margin-right: 18px;
+        }
+        @media screen and (min-width: 992px) {
+          margin-right: 30px;
+        }
       }
       .bon_slide_cat_item {
         float: left;
         width: 100%;
         white-space: nowrap;
-        overflow: hidden;
         .bon_item_line {
           position: relative;
           left: 0;
@@ -240,4 +252,16 @@
     }
   }
 
+}
+
+.swiper-container {
+  overflow: hidden;
+}
+
+.alink {
+  width: 100% !important;
+  &+.alink {
+    margin-top: 10px !important;
+  }
+  margin-left: 0 !important;
 }

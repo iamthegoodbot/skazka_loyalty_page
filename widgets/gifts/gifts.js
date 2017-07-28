@@ -1,6 +1,7 @@
 import { WidgetRegister, Widget } from '@core/widget';
 import GiftsTemplate from './gifts.html';
 import './gifts.less';
+import Swiper from 'swiper';
 
 import angular from 'angular';
 
@@ -86,6 +87,46 @@ WidgetRegister({
         $rootScope.$apply();
 
       });
+
+      const config = {
+        scrollbar: '.swiper-scrollbar',
+        scrollbarHide: false,
+        scrollbarDraggable: true,
+        slidesPerView: 5,
+        centeredSlides: false,
+        nextButton: '.swiper-button-next',
+        prevButton: '.swiper-button-prev',
+        spaceBetween: 15,
+        grabCursor: true,
+        breakpoints: {
+            1500: {
+                slidesPerView: 4
+            },
+            1200: {
+                slidesPerView: 3
+            },
+            992: {
+                slidesPerView: 2
+            },
+            500: {
+                slidesPerView: 1
+            }
+        }
+      };
+
+      let swiper;
+
+      function swiperKostyl(){
+        setTimeout(function(){
+          swiper = new Swiper('.swiper-container', config);
+        }, 100);
+      }
+
+      SailPlay.on('load.actions.custom.list.success', ()=>{
+        swiperKostyl()
+      }, ()=>{
+        swiperKostyl()
+      })
 
     };
 

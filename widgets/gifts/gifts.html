@@ -7,30 +7,28 @@
   </h4>
 
   <div data-sailplay-gifts class="clearfix">
-    <div class="bon_item_main" data-ng-show="gifts && gifts().length" data-magic-slider>
+    <div class="bon_item_main" data-ng-show="gifts && gifts().length">
+          <div class="swiper-container">
 
-      <div class="bon_slide_cat_item_wrap" data-magic-gallery>
-        <div class="bon_slide_cat_item">
+                  <div class="bon_slide_cat_item swiper-wrapper">
+                    <div class="bon_item gift swiper-slide" data-magic-gift data-ng-repeat="gift in gifts()">
+                      <div class="bon_item_iner">
+                        <img data-ng-src="{{ gift.thumbs.url_250x250 | sailplay_pic }}" alt="{{ gift.name }}">
+                        <span class="bon_item_name gift_name" data-ng-bind="gift.name"></span>
+                        <span class="bon_tem_info gift_points" data-ng-bind="(gift.points | number) + ' ' + (gift.points | sailplay_pluralize:('points.texts.pluralize' | tools))"></span>
+                        <a href="#" class="button_primary" data-ng-click="gift_select(gift); $event.preventDefault();">{{ widget.texts.get }}</a>
+                      </div>
+                    </div>
+                  </div>
+                <!-- Add Scrollbar -->
+                <div class="swiper-scrollbar"></div>
 
-          <div class="bon_item_line" data-ng-style="{left : left}">
+                <!-- Add Arrows -->
+                <a href="#" class="swiper-button-prev arr_left arr_left slider_arrow_left"><div></div></a>
+                <a href="#" class="swiper-button-next arr_right arr_right slider_arrow_right"><div></div></a>
 
-            <div class="bon_item gift" data-magic-slide data-magic-gift data-ng-repeat="gift in gifts()">
-              <div class="bon_item_iner">
-                <img data-ng-src="{{ gift.thumbs.url_250x250 | sailplay_pic }}" alt="{{ gift.name }}">
-                <span class="bon_item_name gift_name" data-ng-bind="gift.name"></span>
-                <span class="bon_tem_info gift_points" data-ng-bind="(gift.points | number) + ' ' + (gift.points | sailplay_pluralize:('points.texts.pluralize' | tools))"></span>
-                <a href="#" class="button_primary" data-ng-click="gift_select(gift); $event.preventDefault();">{{ widget.texts.get }}</a>
-              </div>
-            </div>
-
-          </div>
 
         </div>
-
-        <a href="#" class="arr_left arr_left slider_arrow_left" data-ng-click="$event.preventDefault(); set_position('left');" data-ng-show="show_left"><div></div></a>
-        <a href="#" class="arr_right arr_right slider_arrow_right" data-ng-click="$event.preventDefault(); set_position('right');" data-ng-show="show_right"><div></div></a>
-
-      </div>
 
     </div>
 
