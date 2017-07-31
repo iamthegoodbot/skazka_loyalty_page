@@ -217,15 +217,13 @@
                 </div>
 
                 <input class="form_input" type="checkbox" data-ng-model="isConfirmed" data-ng-init="isConfirmed=false">
-                <span data-ng-binding="sailplay.fill_profile.config.confirmation">
-                  {{ I understand and agree that all items purchased under the discount and credit programs of the Megger ETACS Partner Program cannot be sold to another company, firm, agency, partnership or individual until one year after delivery. Megger reserves the right to determine qualification into the ETACS Partner Program and can disqualify any current or proposed members at any time.  Benefits of the program can be changed at Megger’s discretion. }}
-                </span>
+                <span>{{ sailplay.fill_profile.config.confirmation }}</span>
 
                 <div class="answ_text">
                     <button type="submit" class="sp_btn button_primary" data-ng-click="!isConfirmed && $event.preventDefault()">{{ 'buttons.texts.save' | tools }}</button>
                 </div>
             </form>
-        </div>
+         </div>
     </magic-modal>
 
-</div>
+</div> 
