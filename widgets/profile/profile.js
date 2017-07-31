@@ -4,6 +4,13 @@ import HistoryPaginationTemplate from './history_pagination.html';
 import './profile.less';
 import DefaultAvatarImage from './assets/img/avatar_default.png';
 
+Widget.filter('profileFields', function () {
+  return (fields, groupFields)=>{
+    return fields.filter((field)=>groupFields
+        .some((x)=>x==field.name))
+  }
+})
+
 const ProfileWidget = {
 
   id: 'profile',

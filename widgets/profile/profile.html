@@ -12,7 +12,7 @@
                 </h4>
                 <a class="link" data-ng-href="{{ widget.texts.href }}" data-ng-bind="widget.texts.button"></a>
             </div>
-            <div class="bon_profile_right clearfix" data-ng-if="user()">
+            <div class="bon_profile_right bon_profile_right_logged clearfix" data-ng-if="user()">
                 <div class="user_avatar">
                     <img class="user_avatar_image" data-ng-src="{{ (user().user.pic | sailplay_pic) || default_avatar}}"
                          alt="You">
@@ -31,7 +31,7 @@
                         widget.texts.edit_profile_button }}</a>
                 </div>
             </div>
-            <div class="bon_profile_right clearfix" data-ng-if="!user()">
+            <div class="bon_profile_right bon_profile_right_unlogged clearfix" data-ng-if="!user()">
                 <button type="button" class="sp_btn button_primary login_reg_btn"
                         data-ng-click="$event.preventDefault(); login('remote');">{{ widget.texts.login_reg }}
                 </button>
@@ -157,15 +157,23 @@
 
         <div class="mb_popup mb_popup_prof" data-sailplay-fill-profile data-config="widget.fill_profile.config">
 
-            <div class="mb_popup_top">
-                <span class="modal_profile_header">{{ widget.fill_profile.header }}</span>
-            </div>
+            <!--
+              <div class="mb_popup_top">
+                  <span class="modal_profile_header">{{ widget.fill_profile.header }}</span>
+              </div>
+            -->
 
-            <form name="fill_profile_form" class="mb_popup_main mb_popup_main_mt"
+            <form name="fill_profile_form" class="mb_popup_main"
                   data-ng-submit="sailplay.fill_profile.submit(fill_profile_form, profile.fill_profile);">
+                
+                <div data-ng-repeat="group in sailplay.fill_profile.config.groups">
 
-                <div class="form_field" data-ng-repeat="field in sailplay.fill_profile.form.fields"
-                     data-ng-switch="field.input">
+                  <div class="mb_edit_profile_header">
+                      <span class="modal_profile_header">{{ group.name }}</span>
+                  </div>
+
+                  <div class="form_field" data-ng-repeat="field in sailplay.fill_profile.form.fields | profileFields: group.fields"
+                       data-ng-switch="field.input">
 
                     <div data-ng-switch-when="image" class="avatar_upload clearfix">
                         <img width="160px"
@@ -205,11 +213,16 @@
                         <input class="form_input" type="email" placeholder="{{ field.placeholder }}"
                                data-ng-model="field.value" data-ng-required="{{ !!field.required }}">
                     </div>
-
+                  </div>
                 </div>
 
+                <input class="form_input" type="checkbox" data-ng-model="isConfirmed" data-ng-init="isConfirmed=false">
+                <span data-ng-binding="sailplay.fill_profile.config.confirmation">
+                  {{ I understand and agree that all items purchased under the discount and credit programs of the Megger ETACS Partner Program cannot be sold to another company, firm, agency, partnership or individual until one year after delivery. Megger reserves the right to determine qualification into the ETACS Partner Program and can disqualify any current or proposed members at any time.  Benefits of the program can be changed at Megger’s discretion. }}
+                </span>
+
                 <div class="answ_text">
-                    <button type="submit" class="sp_btn button_primary">{{ 'buttons.texts.save' | tools }}</button>
+                    <button type="submit" class="sp_btn button_primary" data-ng-click="!isConfirmed && $event.preventDefault()">{{ 'buttons.texts.save' | tools }}</button>
                 </div>
             </form>
         </div>

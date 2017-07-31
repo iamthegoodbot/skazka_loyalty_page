@@ -34,17 +34,22 @@
         padding: 0 50px;
         box-sizing: border-box;
         position: relative;
+        @media screen and (max-width: 1199px) {
+          padding: 0 !important;
+        }
       }
 
       &__block {
-        display: block;
         width: 100%;
-        height: auto;
-        float: left;
+        height: auto;        
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-content: space-between;
       }
 
       &__item {
-        width: 33.3%;
+        width: 32%;
         height: auto;
         float: left;
         box-sizing: border-box;
@@ -52,7 +57,7 @@
         position: relative;
 
         @media (max-width: 800px) {
-          width: 50%;
+          width: 49%;
         }
 
         @media (max-width: 500px) {
