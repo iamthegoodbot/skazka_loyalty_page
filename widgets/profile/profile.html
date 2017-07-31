@@ -216,10 +216,8 @@
                   </div>
                 </div>
 
-                <input class="form_input" type="checkbox" data-ng-model="isConfirmed" data-ng-init="isConfirmed=false">
-                <span>{{ sailplay.fill_profile.config.confirmation }}</span>
-
                 <div class="answ_text">
+                  <div><input class="form_input" type="checkbox" data-ng-model="isConfirmed" data-ng-init="isConfirmed=false">{{ sailplay.fill_profile.config.confirmation }}</div>
                     <button type="submit" class="sp_btn button_primary" data-ng-click="!isConfirmed && $event.preventDefault()">{{ 'buttons.texts.save' | tools }}</button>
                 </div>
             </form>
