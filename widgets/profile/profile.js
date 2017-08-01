@@ -6,14 +6,18 @@ import DefaultAvatarImage from './assets/img/avatar_default.png';
 
 Widget.filter('profileFields', ()=>{
   return (fields, groupFields)=>{
-    return fields.filter((field)=>groupFields
+    if (fields) {
+      return fields.filter((field)=>groupFields
         .some((x)=>x==field.name))
+    }
   }
 })
 
 Widget.filter('confirmationField', ()=>{
   return (fields, fieldName)=>{
-    return fields.find(x=>x.name==fieldName)
+    if (fields) {
+      return fields.find(x=>x.name==fieldName)
+    }
   }
 })
 
