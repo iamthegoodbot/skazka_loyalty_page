@@ -50,12 +50,13 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
          * @description
          * Login by type.
          * @param {string}  type   Authorization type.
+         * @param {object}  from   Where it call.
          */
-        scope.login = function (type) {
+          scope.login = function (type, from) {
 
-          SailPlay.authorize(type);
+          SailPlay.authorize(type, from);
 
-        };
+         };
 
         /**
          * @ngdoc method
@@ -265,7 +266,6 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
         var saved_form = false;
 
         SailPlayApi.observe('load.user.info', user => {
-          console.info('in user info')
           if (!user) return;
           var form = scope.sailplay.fill_profile.form;
           var custom_fields = [];
@@ -458,13 +458,11 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
                       const tagNameToSet = MAGIC_CONFIG.data.force_registration.tag_to_set_after_submit
                       const tagNameMessage = MAGIC_CONFIG.data.force_registration.messageAfterSubmit
                       const tagNameMessageUpdate = MAGIC_CONFIG.data.force_registration.messageAfterSubmitUpdate
-                      SailPlay.send('tags.add', {tags: [tagNameToSet]}, function (tags_res) {
-                        if(tagNameMessage || tagNameMessageUpdate){
-                          $rootScope.$broadcast('notifier:notify', {
-                            body: scope.$parent.reg_incomplete ? tagNameMessage : tagNameMessageUpdate
-                          });
-                        }
-                      })
+                      if(tagNameMessage || tagNameMessageUpdate){
+                        $rootScope.$broadcast('notifier:notify', {
+                          body: scope.$parent.reg_incomplete ? tagNameMessage : tagNameMessageUpdate
+                        });
+                      }
                       $rootScope.submited = true;
                       if(scope.$parent.reg_incomplete && MAGIC_CONFIG.data.force_registration.logout_after_submit){
                         SailPlayApi.call('logout')
@@ -480,10 +478,11 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
 
             } else {
 
-              if(user_res.status == 'error' && user_res.status_code == "-200012" &&
+              if(user_res.status == 'error' &&
                 MAGIC_CONFIG.data.force_registration.active &&
-                MAGIC_CONFIG.data.force_registration.messageDuplicateError){
-                user_res.message = MAGIC_CONFIG.data.force_registration.messageDuplicateError
+                MAGIC_CONFIG.data.force_registration.errors &&
+                MAGIC_CONFIG.data.force_registration.errors[user_res.status_code]){
+                user_res.message = MAGIC_CONFIG.data.force_registration.errors[user_res.status_code]
               }
 
               $rootScope.$broadcast('notifier:notify', {
