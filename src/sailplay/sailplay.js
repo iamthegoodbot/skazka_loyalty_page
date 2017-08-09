@@ -93,6 +93,8 @@ export let SailPlay = angular.module('sailplay', [
 
         sp.authorize = function (type, from) {
 
+          $rootScope.submited = false
+
           type = type || auth_type;
 
           switch (type) {
