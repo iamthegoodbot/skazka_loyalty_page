@@ -130,7 +130,7 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
    */
   .provider('SailPlayFillProfile', function () {
 
-    var profile_tag = 'Filled Profile';
+    var profile_tag = 'Completed Profile';
     var cookie_name = 'sailplay_profile_form';
 
     return {
