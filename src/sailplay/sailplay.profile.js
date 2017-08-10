@@ -167,6 +167,7 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
           this.label = params.label;
           this.placeholder = params.placeholder;
           this.input = params.input || 'text';
+          this.required = !!params.required
 
           if (params.data) {
             this.data = params.data;
@@ -304,7 +305,11 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
             SailPlayApi.call("vars.batch", { names: custom_fields.map(field => { return field.name }) }, (res) => {
               angular.forEach(res.vars, variable => {                
                 angular.forEach(custom_fields, field => {
-                  if (field.name == variable.name) field.value = variable.value;
+                  if (field.input == "checkbox" && field.name == variable.name){
+                    field.value = variable.value == "true" ? true : false
+                  } else if (field.name == variable.name) { 
+                    field.value = variable.value;
+                  }
                 })
               })
             })

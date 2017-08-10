@@ -4,6 +4,14 @@ import HistoryPaginationTemplate from './history_pagination.html';
 import './profile.less';
 import DefaultAvatarImage from './assets/img/avatar_default.png';
 
+Widget.filter('confirmationField', ()=>{
+  return (fields, fieldName)=>{
+    if (fields) {
+      return fields.find(x=>x.name==fieldName)
+    }
+  }
+})
+
 const ProfileWidget = {
 
   id: 'profile',
