@@ -32,7 +32,7 @@
                      data-ng-style="{ left: (100/widget.options.status_list.length * ($index)) + '%', 'width': (100/widget.options.status_list.length) + '%' }">
 
                     <img class="gift_item_image" data-ng-if="item.image" data-ng-src="{{ item.image }}">
-                    <span class="gift_item_percents" data-ng-bind="getPercents($index) + '%'"></span>
+                    <span class="gift_item_percents" data-ng-if="!($last && getPercents($index) == '100')" data-ng-bind="getPercents($index) + '%'"></span>
                     <span class="gift_item_title" data-ng-bind="item.title"></span>
                     <span class="gift_item_name" data-ng-bind="item.name"></span>
                     <span class="gift_item_text" data-ng-bind-html="item.description | to_trusted"></span>
