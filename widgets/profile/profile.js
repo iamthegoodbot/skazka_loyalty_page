@@ -26,6 +26,10 @@ const ProfileWidget = {
         }
       };
 
+      scope.openShareAction = ()=>{
+        scope.$emit('openShareAction')
+      }
+
     }
 
   }

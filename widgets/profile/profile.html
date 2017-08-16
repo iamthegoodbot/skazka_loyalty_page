@@ -48,8 +48,8 @@
           </div>
         </a>
         <div class="spend_buttons_container">
-          <a class="button_link spend_button" href="#" scroll-to="cardQuests">{{widget.texts.spend_points}}</a>
-          <a class="button_link spend_button" href="#" scroll-to="cardQuests">{{widget.texts.share_points}}</a>
+          <!--<a class="button_link spend_button" href="#" scroll-to="cardQuests">{{widget.texts.spend_points}}</a>-->
+          <a class="button_link spend_button" data-ng-click="openShareAction()">{{widget.texts.share_points}}</a>
         </div>
       </div>
       <div class="bps_right progress_block clearfix" data-ng-if="progress">

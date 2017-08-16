@@ -1,6 +1,9 @@
-import { WidgetRegister } from '@core/widget';
+import { Widget, WidgetRegister } from '@core/widget';
 import CardQuestsTemplate from './card-quests.html';
 import './card-quests.less';
+import 'core-js/fn/array/find.js'
+
+Widget.filter(()=>{})
 
 WidgetRegister({
 
@@ -9,9 +12,10 @@ WidgetRegister({
   inject: [
     'tools',
     'SailPlayApi',
-    'SailPlay'
+    'SailPlay',
+    '$rootScope'
   ],
-  controller: function (tools, SailPlayApi, SailPlay) {
+  controller: function (tools, SailPlayApi, SailPlay, $rootScope) {
 
     return function (scope, elm, attrs) {
 
@@ -27,6 +31,16 @@ WidgetRegister({
         scope.action_selected = action || false;
 
       };
+
+      const actionId = scope.share_action_id = scope.widget.share_custom_action_id
+
+      $rootScope.$on('openShareAction', ()=>{
+        const shareAction = SailPlayApi.data('load.actions.custom.list')()
+          .find(x=>x.id==actionId)
+        if(shareAction){
+          scope.action_custom_select(shareAction)
+        }
+      })
 
       SailPlay.on('actions.perform.success', function(){
        scope.$apply(function(){

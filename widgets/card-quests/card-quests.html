@@ -41,7 +41,7 @@
 
           </div>
 
-          <div class="spm_col quest_card_container" data-ng-repeat="action in actions_custom()">
+          <div class="spm_col quest_card_container" data-ng-hide="share_action_id==action.id" data-ng-repeat="action in actions_custom()">
 
             <div class="quest_card" title="{{ action.name }}">
 
