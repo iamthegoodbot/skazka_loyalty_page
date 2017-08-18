@@ -238,6 +238,7 @@
       params.dep_id = _config.dep_id || '';
       params.background = opts.background || '';
       params.partner_info = opts.partner_info || 0;
+      params.user_agreement_link = opts.user_agreement_link;
       if(opts.reg_match_email_oid) {
         params.reg_match_email_oid = opts.reg_match_email_oid;
       }
@@ -252,7 +253,7 @@
       params.form_variant = 'hc';
 
       var params_string = [];
-
+      console.log(params)
       var src = _config.DOMAIN + '/users/auth-page/?';
       for (var param_name in params) {
         params_string.push(param_name + "=" + encodeURIComponent(params[param_name]));
