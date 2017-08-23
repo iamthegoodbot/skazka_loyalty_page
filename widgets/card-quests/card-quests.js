@@ -32,9 +32,7 @@ WidgetRegister({
 
       };
 
-      const actionId = scope.share_action_id = scope.widget.share_custom_action_id
-
-      $rootScope.$on('openShareAction', ()=>{
+      $rootScope.$on('openShareAction', (ev, actionId)=>{
         const shareAction = SailPlayApi.data('load.actions.custom.list')()
           .find(x=>x.id==actionId)
         if(shareAction){

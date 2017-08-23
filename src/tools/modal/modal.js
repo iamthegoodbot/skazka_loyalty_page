@@ -4,7 +4,7 @@ import './modal.less';
 
 export let Modal = angular.module('magic.tools.modal', [])
 
-.directive('magicModal', function($parse, tools, MAGIC_CONFIG){
+.directive('magicModal', function($parse, tools, MAGIC_CONFIG, SailPlayApi, $timeout){
 
   return {
     restrict: 'E',
@@ -23,6 +23,10 @@ export let Modal = angular.module('magic.tools.modal', [])
       scope.close = function(){
         $parse(attrs.show).assign(scope.$parent, false);
         scope.$eval(attrs.onClose);
+        $timeout(()=>{
+          SailPlayApi.call('load.user.info', { all: 1, purchases: 1 });
+          SailPlayApi.call('load.user.history');
+        }, 500)
       };
 
       elm.on('click', function(e){

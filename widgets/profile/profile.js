@@ -8,7 +8,12 @@ const ProfileWidget = {
 
   id: 'profile',
   template: WidgetProfileTemplate,
-  controller: function () {
+  inject: [
+    'SailPlayApi',
+    'SailPlay',
+    '$timeout'
+  ],
+  controller: function (SailPlay, SailPlayApi, $timeout) {
 
     return function (scope, elm, attrs) {
 
@@ -27,8 +32,23 @@ const ProfileWidget = {
       };
 
       scope.openShareAction = ()=>{
-        scope.$emit('openShareAction')
+        const actionId = scope.share_action_id = scope.widget.share_custom_action_id
+        scope.$emit('openShareAction', actionId)
       }
+
+      scope.isShareActionAvaliable = false
+
+      SailPlayApi.on('load.actions.custom.list.success', (data)=>{
+        const actionId = scope.share_action_id = scope.widget.share_custom_action_id
+        const shareAction = data
+          .find(x=>x.id==actionId)
+        if(shareAction){
+          scope.isShareActionAvaliable = shareAction.is_available_for_user
+        } else {
+          scope.isShareActionAvaliable = false
+        }
+        scope.$apply()
+      })
 
     }
 
