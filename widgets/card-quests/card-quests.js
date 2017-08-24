@@ -25,7 +25,7 @@ WidgetRegister({
       scope.action_selected = false;
       scope.action_custom_selected = false;
 
-      const share_action_id = MAGIC_CONFIG.data.share_custom_action_id
+      scope.share_action_id = MAGIC_CONFIG.data.share_custom_action_id
 
       scope.action_select = function (action) {
 
