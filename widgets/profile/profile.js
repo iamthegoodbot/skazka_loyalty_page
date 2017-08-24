@@ -11,9 +11,10 @@ const ProfileWidget = {
   inject: [
     'SailPlayApi',
     'SailPlay',
-    '$timeout'
+    '$timeout',
+    'MAGIC_CONFIG'
   ],
-  controller: function (SailPlay, SailPlayApi, $timeout) {
+  controller: function (SailPlay, SailPlayApi, $timeout, MAGIC_CONFIG) {
 
     return function (scope, elm, attrs) {
 
@@ -31,8 +32,10 @@ const ProfileWidget = {
         }
       };
 
+      scope.share_action_id = MAGIC_CONFIG.data.share_custom_action_id
+
       scope.openShareAction = ()=>{
-        const actionId = scope.share_action_id = scope.widget.share_custom_action_id
+        const actionId = scope.share_action_id
         scope.$emit('openShareAction', actionId)
       }
 
