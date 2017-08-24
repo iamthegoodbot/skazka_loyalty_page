@@ -4,6 +4,7 @@ const fs = require('fs');
 const _ = require('lodash');
 //const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
+
 const PACKAGE = JSON.parse(fs.readFileSync('package.json', 'utf8'));
 const app_name = 'magic.js';
 
@@ -105,7 +106,8 @@ let plugins = [
     MAGIC_VERSION: JSON.stringify(MAGIC_VERSION),
     SAILPLAY_HOST: 'http://dev.sailplay.ru'
   }),
-  new webpack.NoErrorsPlugin()
+  new webpack.NoErrorsPlugin(),
+  new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /ru|en/)
 ]
 
 //dev config
@@ -148,9 +150,10 @@ let prodLoaders = loaders.concat(
   }
   )
 
+prodResolve.alias.swiper = "node_modules/swiper/dist/js/swiper.jquery.umd.min.js"
 prodResolve.alias.angular = "node_modules/angular/angular.min.js"
 
-let prodPlugins = plugins/*.concat(
+let prodPlugins = plugins.concat(
     new webpack.optimize.UglifyJsPlugin({
         compress: {
           warnings:     false,
@@ -161,7 +164,7 @@ let prodPlugins = plugins/*.concat(
         mangle: false
       })
     )
-*/
+
 module.exports.production = {
   entry: entry,
   resolve: prodResolve,

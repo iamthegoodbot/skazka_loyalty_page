@@ -2,7 +2,7 @@ import { WidgetRegister, Widget } from '@core/widget';
 import GiftsTemplate from './top-banner.html';
 import $ from 'jquery';
 require("jquery-mousewheel")($);
-require('malihu-custom-scrollbar-plugin')($);
+require('../../node_modules/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js')($);
 
 import angular from 'angular';
 

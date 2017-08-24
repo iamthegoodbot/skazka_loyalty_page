@@ -7,7 +7,7 @@
   "main": "./dist/prod/sailplay-magic.js",
   "scripts": {
     "start": "gulp webpack-dev-server",
-    "prod": "gulp deploy",
+    "prod": "webpack --display-modules --config webpack.conf.js",
     "prod-server": "gulp production-server",
     "bundle": "rm -rf node_modules/ && npm install"
   },
@@ -37,6 +37,7 @@
     "less": "^2.7.1",
     "less-loader": "^2.2.3",
     "lodash": "^4.17.4",
+    "moment": "^2.18.1",
     "run-sequence": "^1.2.2",
     "sailplay-hub": "^2.0.14",
     "sailplay-hub-actions": "^1.0.8",
@@ -59,6 +60,7 @@
     "malihu-custom-scrollbar-plugin": "^3.1.5",
     "ng-annotate-loader": "^0.2.0",
     "proxy-middleware": "^0.15.0",
+    "webpack-closure-compiler": "^2.1.5",
     "webpack-dev-server": "^1.16.5"
   }
 }
