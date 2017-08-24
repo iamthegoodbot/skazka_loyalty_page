@@ -8,8 +8,8 @@ const ProfileWidget = {
 
   id: 'profile',
   template: WidgetProfileTemplate,
-  inject: ['$rootScope'],
-  controller: function ($rootScope) {
+  inject: ['$rootScope', 'SailPlayApi', 'MAGIC_CONFIG'],
+  controller: function ($rootScope, SailPlayApi, MAGIC_CONFIG) {
 
     return function (scope, elm, attrs) {
 
@@ -28,6 +28,17 @@ const ProfileWidget = {
 
         }
       };
+
+      console.log(MAGIC_CONFIG.data)
+
+      const hhTagName = MAGIC_CONFIG.data.hhTagName
+      scope.hhUrl = MAGIC_CONFIG.data.hhImg
+
+      scope.hasHHTag = false
+
+      SailPlayApi.call('tags.exist', {tags: [hhTagName]}, function(tags){
+        scope.hasHHTag = tags.tags[0].exist
+      })
 
     }
 

@@ -18,6 +18,7 @@
         </div>
         <div class="user_info">
           <span class="user_name"  data-ng-bind="user().user.name || widget.texts.name_not_defined"></span>
+          <span data-ng-if="hasHHTag" class="hhimg"><img data-ng-src="{{hhUrl}}"/></span>
           <span class="user_phone" data-ng-if="user().user.phone"  data-ng-bind="user().user.phone | tel"></span>
           <span class="user_email" data-ng-if="user().user.email"  data-ng-bind="user().user.email"></span>
         </div>
