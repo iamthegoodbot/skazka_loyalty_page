@@ -77,6 +77,8 @@ export let SailPlayHistory = angular.module('sailplay.history', [])
 
   return function(historyItem) {
     switch (historyItem.action) {
+      case 'points_transfer': 
+        return historyItem.name
       case 'gift_purchase':
         return history_texts.gift_purchase + ': ' + historyItem.name;
       case 'event':
