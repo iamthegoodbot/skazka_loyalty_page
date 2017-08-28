@@ -21,7 +21,7 @@ export let SailPlayHistory = angular.module('sailplay.history', [])
     scope: true,
     link: function(scope){
 
-      scope.history = SailPlayApi.data('load.user.history');
+      scope.history = SailPlayApi.data('load.user.history')
 
       scope.history_current_page = 0;
 

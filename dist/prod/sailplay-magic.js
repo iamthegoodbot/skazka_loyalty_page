@@ -377,10 +377,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	__webpack_require__(14);
 	var $Object = __webpack_require__(17).Object;
-	module.exports = function defineProperty(it, key, desc) {
+	module.exports = function defineProperty(it, key, desc){
 	  return $Object.defineProperty(it, key, desc);
 	};
-
 
 /***/ }),
 /* 14 */
@@ -388,35 +387,34 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var $export = __webpack_require__(15);
 	// 19.1.2.4 / 15.2.3.6 Object.defineProperty(O, P, Attributes)
-	$export($export.S + $export.F * !__webpack_require__(25), 'Object', { defineProperty: __webpack_require__(21).f });
-
+	$export($export.S + $export.F * !__webpack_require__(25), 'Object', {defineProperty: __webpack_require__(21).f});
 
 /***/ }),
 /* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var global = __webpack_require__(16);
-	var core = __webpack_require__(17);
-	var ctx = __webpack_require__(18);
-	var hide = __webpack_require__(20);
-	var PROTOTYPE = 'prototype';
+	var global    = __webpack_require__(16)
+	  , core      = __webpack_require__(17)
+	  , ctx       = __webpack_require__(18)
+	  , hide      = __webpack_require__(20)
+	  , PROTOTYPE = 'prototype';
 
-	var $export = function (type, name, source) {
-	  var IS_FORCED = type & $export.F;
-	  var IS_GLOBAL = type & $export.G;
-	  var IS_STATIC = type & $export.S;
-	  var IS_PROTO = type & $export.P;
-	  var IS_BIND = type & $export.B;
-	  var IS_WRAP = type & $export.W;
-	  var exports = IS_GLOBAL ? core : core[name] || (core[name] = {});
-	  var expProto = exports[PROTOTYPE];
-	  var target = IS_GLOBAL ? global : IS_STATIC ? global[name] : (global[name] || {})[PROTOTYPE];
-	  var key, own, out;
-	  if (IS_GLOBAL) source = name;
-	  for (key in source) {
+	var $export = function(type, name, source){
+	  var IS_FORCED = type & $export.F
+	    , IS_GLOBAL = type & $export.G
+	    , IS_STATIC = type & $export.S
+	    , IS_PROTO  = type & $export.P
+	    , IS_BIND   = type & $export.B
+	    , IS_WRAP   = type & $export.W
+	    , exports   = IS_GLOBAL ? core : core[name] || (core[name] = {})
+	    , expProto  = exports[PROTOTYPE]
+	    , target    = IS_GLOBAL ? global : IS_STATIC ? global[name] : (global[name] || {})[PROTOTYPE]
+	    , key, own, out;
+	  if(IS_GLOBAL)source = name;
+	  for(key in source){
 	    // contains in native
 	    own = !IS_FORCED && target && target[key] !== undefined;
-	    if (own && key in exports) continue;
+	    if(own && key in exports)continue;
 	    // export native or passed
 	    out = own ? target[key] : source[key];
 	    // prevent global pollution for namespaces
@@ -424,11 +422,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	    // bind timers to global for call from export context
 	    : IS_BIND && own ? ctx(out, global)
 	    // wrap global constructors for prevent change them in library
-	    : IS_WRAP && target[key] == out ? (function (C) {
-	      var F = function (a, b, c) {
-	        if (this instanceof C) {
-	          switch (arguments.length) {
-	            case 0: return new C();
+	    : IS_WRAP && target[key] == out ? (function(C){
+	      var F = function(a, b, c){
+	        if(this instanceof C){
+	          switch(arguments.length){
+	            case 0: return new C;
 	            case 1: return new C(a);
 	            case 2: return new C(a, b);
 	          } return new C(a, b, c);
@@ -439,10 +437,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    // make static versions for prototype methods
 	    })(out) : IS_PROTO && typeof out == 'function' ? ctx(Function.call, out) : out;
 	    // export proto methods to core.%CONSTRUCTOR%.methods.%NAME%
-	    if (IS_PROTO) {
+	    if(IS_PROTO){
 	      (exports.virtual || (exports.virtual = {}))[key] = out;
 	      // export proto methods to core.%CONSTRUCTOR%.prototype.%NAME%
-	      if (type & $export.R && expProto && !expProto[key]) hide(expProto, key, out);
+	      if(type & $export.R && expProto && !expProto[key])hide(expProto, key, out);
 	    }
 	  }
 	};
@@ -454,9 +452,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	$export.B = 16;  // bind
 	$export.W = 32;  // wrap
 	$export.U = 64;  // safe
-	$export.R = 128; // real proto method for `library`
+	$export.R = 128; // real proto method for `library` 
 	module.exports = $export;
-
 
 /***/ }),
 /* 16 */
@@ -464,19 +461,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	// https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
 	var global = module.exports = typeof window != 'undefined' && window.Math == Math
-	  ? window : typeof self != 'undefined' && self.Math == Math ? self
-	  // eslint-disable-next-line no-new-func
-	  : Function('return this')();
-	if (typeof __g == 'number') __g = global; // eslint-disable-line no-undef
-
+	  ? window : typeof self != 'undefined' && self.Math == Math ? self : Function('return this')();
+	if(typeof __g == 'number')__g = global; // eslint-disable-line no-undef
 
 /***/ }),
 /* 17 */
 /***/ (function(module, exports) {
 
-	var core = module.exports = { version: '2.5.0' };
-	if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
-
+	var core = module.exports = {version: '2.4.0'};
+	if(typeof __e == 'number')__e = core; // eslint-disable-line no-undef
 
 /***/ }),
 /* 18 */
@@ -484,136 +477,126 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	// optional / simple context binding
 	var aFunction = __webpack_require__(19);
-	module.exports = function (fn, that, length) {
+	module.exports = function(fn, that, length){
 	  aFunction(fn);
-	  if (that === undefined) return fn;
-	  switch (length) {
-	    case 1: return function (a) {
+	  if(that === undefined)return fn;
+	  switch(length){
+	    case 1: return function(a){
 	      return fn.call(that, a);
 	    };
-	    case 2: return function (a, b) {
+	    case 2: return function(a, b){
 	      return fn.call(that, a, b);
 	    };
-	    case 3: return function (a, b, c) {
+	    case 3: return function(a, b, c){
 	      return fn.call(that, a, b, c);
 	    };
 	  }
-	  return function (/* ...args */) {
+	  return function(/* ...args */){
 	    return fn.apply(that, arguments);
 	  };
 	};
-
 
 /***/ }),
 /* 19 */
 /***/ (function(module, exports) {
 
-	module.exports = function (it) {
-	  if (typeof it != 'function') throw TypeError(it + ' is not a function!');
+	module.exports = function(it){
+	  if(typeof it != 'function')throw TypeError(it + ' is not a function!');
 	  return it;
 	};
-
 
 /***/ }),
 /* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var dP = __webpack_require__(21);
-	var createDesc = __webpack_require__(29);
-	module.exports = __webpack_require__(25) ? function (object, key, value) {
+	var dP         = __webpack_require__(21)
+	  , createDesc = __webpack_require__(29);
+	module.exports = __webpack_require__(25) ? function(object, key, value){
 	  return dP.f(object, key, createDesc(1, value));
-	} : function (object, key, value) {
+	} : function(object, key, value){
 	  object[key] = value;
 	  return object;
 	};
-
 
 /***/ }),
 /* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var anObject = __webpack_require__(22);
-	var IE8_DOM_DEFINE = __webpack_require__(24);
-	var toPrimitive = __webpack_require__(28);
-	var dP = Object.defineProperty;
+	var anObject       = __webpack_require__(22)
+	  , IE8_DOM_DEFINE = __webpack_require__(24)
+	  , toPrimitive    = __webpack_require__(28)
+	  , dP             = Object.defineProperty;
 
-	exports.f = __webpack_require__(25) ? Object.defineProperty : function defineProperty(O, P, Attributes) {
+	exports.f = __webpack_require__(25) ? Object.defineProperty : function defineProperty(O, P, Attributes){
 	  anObject(O);
 	  P = toPrimitive(P, true);
 	  anObject(Attributes);
-	  if (IE8_DOM_DEFINE) try {
+	  if(IE8_DOM_DEFINE)try {
 	    return dP(O, P, Attributes);
-	  } catch (e) { /* empty */ }
-	  if ('get' in Attributes || 'set' in Attributes) throw TypeError('Accessors not supported!');
-	  if ('value' in Attributes) O[P] = Attributes.value;
+	  } catch(e){ /* empty */ }
+	  if('get' in Attributes || 'set' in Attributes)throw TypeError('Accessors not supported!');
+	  if('value' in Attributes)O[P] = Attributes.value;
 	  return O;
 	};
-
 
 /***/ }),
 /* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var isObject = __webpack_require__(23);
-	module.exports = function (it) {
-	  if (!isObject(it)) throw TypeError(it + ' is not an object!');
+	module.exports = function(it){
+	  if(!isObject(it))throw TypeError(it + ' is not an object!');
 	  return it;
 	};
-
 
 /***/ }),
 /* 23 */
 /***/ (function(module, exports) {
 
-	module.exports = function (it) {
+	module.exports = function(it){
 	  return typeof it === 'object' ? it !== null : typeof it === 'function';
 	};
-
 
 /***/ }),
 /* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	module.exports = !__webpack_require__(25) && !__webpack_require__(26)(function () {
-	  return Object.defineProperty(__webpack_require__(27)('div'), 'a', { get: function () { return 7; } }).a != 7;
+	module.exports = !__webpack_require__(25) && !__webpack_require__(26)(function(){
+	  return Object.defineProperty(__webpack_require__(27)('div'), 'a', {get: function(){ return 7; }}).a != 7;
 	});
-
 
 /***/ }),
 /* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// Thank's IE8 for his funny defineProperty
-	module.exports = !__webpack_require__(26)(function () {
-	  return Object.defineProperty({}, 'a', { get: function () { return 7; } }).a != 7;
+	module.exports = !__webpack_require__(26)(function(){
+	  return Object.defineProperty({}, 'a', {get: function(){ return 7; }}).a != 7;
 	});
-
 
 /***/ }),
 /* 26 */
 /***/ (function(module, exports) {
 
-	module.exports = function (exec) {
+	module.exports = function(exec){
 	  try {
 	    return !!exec();
-	  } catch (e) {
+	  } catch(e){
 	    return true;
 	  }
 	};
-
 
 /***/ }),
 /* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var isObject = __webpack_require__(23);
-	var document = __webpack_require__(16).document;
-	// typeof document.createElement is 'object' in old IE
-	var is = isObject(document) && isObject(document.createElement);
-	module.exports = function (it) {
+	var isObject = __webpack_require__(23)
+	  , document = __webpack_require__(16).document
+	  // in old IE typeof document.createElement is 'object'
+	  , is = isObject(document) && isObject(document.createElement);
+	module.exports = function(it){
 	  return is ? document.createElement(it) : {};
 	};
-
 
 /***/ }),
 /* 28 */
@@ -623,29 +606,27 @@ return /******/ (function(modules) { // webpackBootstrap
 	var isObject = __webpack_require__(23);
 	// instead of the ES6 spec version, we didn't implement @@toPrimitive case
 	// and the second argument - flag - preferred type is a string
-	module.exports = function (it, S) {
-	  if (!isObject(it)) return it;
+	module.exports = function(it, S){
+	  if(!isObject(it))return it;
 	  var fn, val;
-	  if (S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it))) return val;
-	  if (typeof (fn = it.valueOf) == 'function' && !isObject(val = fn.call(it))) return val;
-	  if (!S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it))) return val;
+	  if(S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it)))return val;
+	  if(typeof (fn = it.valueOf) == 'function' && !isObject(val = fn.call(it)))return val;
+	  if(!S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it)))return val;
 	  throw TypeError("Can't convert object to primitive value");
 	};
-
 
 /***/ }),
 /* 29 */
 /***/ (function(module, exports) {
 
-	module.exports = function (bitmap, value) {
+	module.exports = function(bitmap, value){
 	  return {
-	    enumerable: !(bitmap & 1),
+	    enumerable  : !(bitmap & 1),
 	    configurable: !(bitmap & 2),
-	    writable: !(bitmap & 4),
-	    value: value
+	    writable    : !(bitmap & 4),
+	    value       : value
 	  };
 	};
-
 
 /***/ }),
 /* 30 */
@@ -1773,45 +1754,43 @@ return /******/ (function(modules) { // webpackBootstrap
 	__webpack_require__(63);
 	module.exports = __webpack_require__(67).f('iterator');
 
-
 /***/ }),
 /* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var $at = __webpack_require__(35)(true);
+	var $at  = __webpack_require__(35)(true);
 
 	// 21.1.3.27 String.prototype[@@iterator]()
-	__webpack_require__(38)(String, 'String', function (iterated) {
+	__webpack_require__(38)(String, 'String', function(iterated){
 	  this._t = String(iterated); // target
 	  this._i = 0;                // next index
 	// 21.1.5.2.1 %StringIteratorPrototype%.next()
-	}, function () {
-	  var O = this._t;
-	  var index = this._i;
-	  var point;
-	  if (index >= O.length) return { value: undefined, done: true };
+	}, function(){
+	  var O     = this._t
+	    , index = this._i
+	    , point;
+	  if(index >= O.length)return {value: undefined, done: true};
 	  point = $at(O, index);
 	  this._i += point.length;
-	  return { value: point, done: false };
+	  return {value: point, done: false};
 	});
-
 
 /***/ }),
 /* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var toInteger = __webpack_require__(36);
-	var defined = __webpack_require__(37);
+	var toInteger = __webpack_require__(36)
+	  , defined   = __webpack_require__(37);
 	// true  -> String#at
 	// false -> String#codePointAt
-	module.exports = function (TO_STRING) {
-	  return function (that, pos) {
-	    var s = String(defined(that));
-	    var i = toInteger(pos);
-	    var l = s.length;
-	    var a, b;
-	    if (i < 0 || i >= l) return TO_STRING ? '' : undefined;
+	module.exports = function(TO_STRING){
+	  return function(that, pos){
+	    var s = String(defined(that))
+	      , i = toInteger(pos)
+	      , l = s.length
+	      , a, b;
+	    if(i < 0 || i >= l)return TO_STRING ? '' : undefined;
 	    a = s.charCodeAt(i);
 	    return a < 0xd800 || a > 0xdbff || i + 1 === l || (b = s.charCodeAt(i + 1)) < 0xdc00 || b > 0xdfff
 	      ? TO_STRING ? s.charAt(i) : a
@@ -1819,105 +1798,101 @@ return /******/ (function(modules) { // webpackBootstrap
 	  };
 	};
 
-
 /***/ }),
 /* 36 */
 /***/ (function(module, exports) {
 
 	// 7.1.4 ToInteger
-	var ceil = Math.ceil;
-	var floor = Math.floor;
-	module.exports = function (it) {
+	var ceil  = Math.ceil
+	  , floor = Math.floor;
+	module.exports = function(it){
 	  return isNaN(it = +it) ? 0 : (it > 0 ? floor : ceil)(it);
 	};
-
 
 /***/ }),
 /* 37 */
 /***/ (function(module, exports) {
 
 	// 7.2.1 RequireObjectCoercible(argument)
-	module.exports = function (it) {
-	  if (it == undefined) throw TypeError("Can't call method on  " + it);
+	module.exports = function(it){
+	  if(it == undefined)throw TypeError("Can't call method on  " + it);
 	  return it;
 	};
-
 
 /***/ }),
 /* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var LIBRARY = __webpack_require__(39);
-	var $export = __webpack_require__(15);
-	var redefine = __webpack_require__(40);
-	var hide = __webpack_require__(20);
-	var has = __webpack_require__(41);
-	var Iterators = __webpack_require__(42);
-	var $iterCreate = __webpack_require__(43);
-	var setToStringTag = __webpack_require__(59);
-	var getPrototypeOf = __webpack_require__(61);
-	var ITERATOR = __webpack_require__(60)('iterator');
-	var BUGGY = !([].keys && 'next' in [].keys()); // Safari has buggy iterators w/o `next`
-	var FF_ITERATOR = '@@iterator';
-	var KEYS = 'keys';
-	var VALUES = 'values';
+	var LIBRARY        = __webpack_require__(39)
+	  , $export        = __webpack_require__(15)
+	  , redefine       = __webpack_require__(40)
+	  , hide           = __webpack_require__(20)
+	  , has            = __webpack_require__(41)
+	  , Iterators      = __webpack_require__(42)
+	  , $iterCreate    = __webpack_require__(43)
+	  , setToStringTag = __webpack_require__(59)
+	  , getPrototypeOf = __webpack_require__(61)
+	  , ITERATOR       = __webpack_require__(60)('iterator')
+	  , BUGGY          = !([].keys && 'next' in [].keys()) // Safari has buggy iterators w/o `next`
+	  , FF_ITERATOR    = '@@iterator'
+	  , KEYS           = 'keys'
+	  , VALUES         = 'values';
 
-	var returnThis = function () { return this; };
+	var returnThis = function(){ return this; };
 
-	module.exports = function (Base, NAME, Constructor, next, DEFAULT, IS_SET, FORCED) {
+	module.exports = function(Base, NAME, Constructor, next, DEFAULT, IS_SET, FORCED){
 	  $iterCreate(Constructor, NAME, next);
-	  var getMethod = function (kind) {
-	    if (!BUGGY && kind in proto) return proto[kind];
-	    switch (kind) {
-	      case KEYS: return function keys() { return new Constructor(this, kind); };
-	      case VALUES: return function values() { return new Constructor(this, kind); };
-	    } return function entries() { return new Constructor(this, kind); };
+	  var getMethod = function(kind){
+	    if(!BUGGY && kind in proto)return proto[kind];
+	    switch(kind){
+	      case KEYS: return function keys(){ return new Constructor(this, kind); };
+	      case VALUES: return function values(){ return new Constructor(this, kind); };
+	    } return function entries(){ return new Constructor(this, kind); };
 	  };
-	  var TAG = NAME + ' Iterator';
-	  var DEF_VALUES = DEFAULT == VALUES;
-	  var VALUES_BUG = false;
-	  var proto = Base.prototype;
-	  var $native = proto[ITERATOR] || proto[FF_ITERATOR] || DEFAULT && proto[DEFAULT];
-	  var $default = $native || getMethod(DEFAULT);
-	  var $entries = DEFAULT ? !DEF_VALUES ? $default : getMethod('entries') : undefined;
-	  var $anyNative = NAME == 'Array' ? proto.entries || $native : $native;
-	  var methods, key, IteratorPrototype;
+	  var TAG        = NAME + ' Iterator'
+	    , DEF_VALUES = DEFAULT == VALUES
+	    , VALUES_BUG = false
+	    , proto      = Base.prototype
+	    , $native    = proto[ITERATOR] || proto[FF_ITERATOR] || DEFAULT && proto[DEFAULT]
+	    , $default   = $native || getMethod(DEFAULT)
+	    , $entries   = DEFAULT ? !DEF_VALUES ? $default : getMethod('entries') : undefined
+	    , $anyNative = NAME == 'Array' ? proto.entries || $native : $native
+	    , methods, key, IteratorPrototype;
 	  // Fix native
-	  if ($anyNative) {
-	    IteratorPrototype = getPrototypeOf($anyNative.call(new Base()));
-	    if (IteratorPrototype !== Object.prototype && IteratorPrototype.next) {
+	  if($anyNative){
+	    IteratorPrototype = getPrototypeOf($anyNative.call(new Base));
+	    if(IteratorPrototype !== Object.prototype){
 	      // Set @@toStringTag to native iterators
 	      setToStringTag(IteratorPrototype, TAG, true);
 	      // fix for some old engines
-	      if (!LIBRARY && !has(IteratorPrototype, ITERATOR)) hide(IteratorPrototype, ITERATOR, returnThis);
+	      if(!LIBRARY && !has(IteratorPrototype, ITERATOR))hide(IteratorPrototype, ITERATOR, returnThis);
 	    }
 	  }
 	  // fix Array#{values, @@iterator}.name in V8 / FF
-	  if (DEF_VALUES && $native && $native.name !== VALUES) {
+	  if(DEF_VALUES && $native && $native.name !== VALUES){
 	    VALUES_BUG = true;
-	    $default = function values() { return $native.call(this); };
+	    $default = function values(){ return $native.call(this); };
 	  }
 	  // Define iterator
-	  if ((!LIBRARY || FORCED) && (BUGGY || VALUES_BUG || !proto[ITERATOR])) {
+	  if((!LIBRARY || FORCED) && (BUGGY || VALUES_BUG || !proto[ITERATOR])){
 	    hide(proto, ITERATOR, $default);
 	  }
 	  // Plug for library
 	  Iterators[NAME] = $default;
-	  Iterators[TAG] = returnThis;
-	  if (DEFAULT) {
+	  Iterators[TAG]  = returnThis;
+	  if(DEFAULT){
 	    methods = {
-	      values: DEF_VALUES ? $default : getMethod(VALUES),
-	      keys: IS_SET ? $default : getMethod(KEYS),
+	      values:  DEF_VALUES ? $default : getMethod(VALUES),
+	      keys:    IS_SET     ? $default : getMethod(KEYS),
 	      entries: $entries
 	    };
-	    if (FORCED) for (key in methods) {
-	      if (!(key in proto)) redefine(proto, key, methods[key]);
+	    if(FORCED)for(key in methods){
+	      if(!(key in proto))redefine(proto, key, methods[key]);
 	    } else $export($export.P + $export.F * (BUGGY || VALUES_BUG), NAME, methods);
 	  }
 	  return methods;
 	};
-
 
 /***/ }),
 /* 39 */
@@ -1925,23 +1900,20 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	module.exports = true;
 
-
 /***/ }),
 /* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	module.exports = __webpack_require__(20);
 
-
 /***/ }),
 /* 41 */
 /***/ (function(module, exports) {
 
 	var hasOwnProperty = {}.hasOwnProperty;
-	module.exports = function (it, key) {
+	module.exports = function(it, key){
 	  return hasOwnProperty.call(it, key);
 	};
-
 
 /***/ }),
 /* 42 */
@@ -1949,46 +1921,44 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	module.exports = {};
 
-
 /***/ }),
 /* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var create = __webpack_require__(44);
-	var descriptor = __webpack_require__(29);
-	var setToStringTag = __webpack_require__(59);
-	var IteratorPrototype = {};
+	var create         = __webpack_require__(44)
+	  , descriptor     = __webpack_require__(29)
+	  , setToStringTag = __webpack_require__(59)
+	  , IteratorPrototype = {};
 
 	// 25.1.2.1.1 %IteratorPrototype%[@@iterator]()
-	__webpack_require__(20)(IteratorPrototype, __webpack_require__(60)('iterator'), function () { return this; });
+	__webpack_require__(20)(IteratorPrototype, __webpack_require__(60)('iterator'), function(){ return this; });
 
-	module.exports = function (Constructor, NAME, next) {
-	  Constructor.prototype = create(IteratorPrototype, { next: descriptor(1, next) });
+	module.exports = function(Constructor, NAME, next){
+	  Constructor.prototype = create(IteratorPrototype, {next: descriptor(1, next)});
 	  setToStringTag(Constructor, NAME + ' Iterator');
 	};
-
 
 /***/ }),
 /* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
-	var anObject = __webpack_require__(22);
-	var dPs = __webpack_require__(45);
-	var enumBugKeys = __webpack_require__(57);
-	var IE_PROTO = __webpack_require__(54)('IE_PROTO');
-	var Empty = function () { /* empty */ };
-	var PROTOTYPE = 'prototype';
+	var anObject    = __webpack_require__(22)
+	  , dPs         = __webpack_require__(45)
+	  , enumBugKeys = __webpack_require__(57)
+	  , IE_PROTO    = __webpack_require__(54)('IE_PROTO')
+	  , Empty       = function(){ /* empty */ }
+	  , PROTOTYPE   = 'prototype';
 
 	// Create object with fake `null` prototype: use iframe Object with cleared prototype
-	var createDict = function () {
+	var createDict = function(){
 	  // Thrash, waste and sodomy: IE GC bug
-	  var iframe = __webpack_require__(27)('iframe');
-	  var i = enumBugKeys.length;
-	  var lt = '<';
-	  var gt = '>';
-	  var iframeDocument;
+	  var iframe = __webpack_require__(27)('iframe')
+	    , i      = enumBugKeys.length
+	    , lt     = '<'
+	    , gt     = '>'
+	    , iframeDocument;
 	  iframe.style.display = 'none';
 	  __webpack_require__(58).appendChild(iframe);
 	  iframe.src = 'javascript:'; // eslint-disable-line no-script-url
@@ -1999,15 +1969,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	  iframeDocument.write(lt + 'script' + gt + 'document.F=Object' + lt + '/script' + gt);
 	  iframeDocument.close();
 	  createDict = iframeDocument.F;
-	  while (i--) delete createDict[PROTOTYPE][enumBugKeys[i]];
+	  while(i--)delete createDict[PROTOTYPE][enumBugKeys[i]];
 	  return createDict();
 	};
 
-	module.exports = Object.create || function create(O, Properties) {
+	module.exports = Object.create || function create(O, Properties){
 	  var result;
-	  if (O !== null) {
+	  if(O !== null){
 	    Empty[PROTOTYPE] = anObject(O);
-	    result = new Empty();
+	    result = new Empty;
 	    Empty[PROTOTYPE] = null;
 	    // add "__proto__" for Object.getPrototypeOf polyfill
 	    result[IE_PROTO] = O;
@@ -2020,68 +1990,64 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var dP = __webpack_require__(21);
-	var anObject = __webpack_require__(22);
-	var getKeys = __webpack_require__(46);
+	var dP       = __webpack_require__(21)
+	  , anObject = __webpack_require__(22)
+	  , getKeys  = __webpack_require__(46);
 
-	module.exports = __webpack_require__(25) ? Object.defineProperties : function defineProperties(O, Properties) {
+	module.exports = __webpack_require__(25) ? Object.defineProperties : function defineProperties(O, Properties){
 	  anObject(O);
-	  var keys = getKeys(Properties);
-	  var length = keys.length;
-	  var i = 0;
-	  var P;
-	  while (length > i) dP.f(O, P = keys[i++], Properties[P]);
+	  var keys   = getKeys(Properties)
+	    , length = keys.length
+	    , i = 0
+	    , P;
+	  while(length > i)dP.f(O, P = keys[i++], Properties[P]);
 	  return O;
 	};
-
 
 /***/ }),
 /* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// 19.1.2.14 / 15.2.3.14 Object.keys(O)
-	var $keys = __webpack_require__(47);
-	var enumBugKeys = __webpack_require__(57);
+	var $keys       = __webpack_require__(47)
+	  , enumBugKeys = __webpack_require__(57);
 
-	module.exports = Object.keys || function keys(O) {
+	module.exports = Object.keys || function keys(O){
 	  return $keys(O, enumBugKeys);
 	};
-
 
 /***/ }),
 /* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var has = __webpack_require__(41);
-	var toIObject = __webpack_require__(48);
-	var arrayIndexOf = __webpack_require__(51)(false);
-	var IE_PROTO = __webpack_require__(54)('IE_PROTO');
+	var has          = __webpack_require__(41)
+	  , toIObject    = __webpack_require__(48)
+	  , arrayIndexOf = __webpack_require__(51)(false)
+	  , IE_PROTO     = __webpack_require__(54)('IE_PROTO');
 
-	module.exports = function (object, names) {
-	  var O = toIObject(object);
-	  var i = 0;
-	  var result = [];
-	  var key;
-	  for (key in O) if (key != IE_PROTO) has(O, key) && result.push(key);
+	module.exports = function(object, names){
+	  var O      = toIObject(object)
+	    , i      = 0
+	    , result = []
+	    , key;
+	  for(key in O)if(key != IE_PROTO)has(O, key) && result.push(key);
 	  // Don't enum bug & hidden keys
-	  while (names.length > i) if (has(O, key = names[i++])) {
+	  while(names.length > i)if(has(O, key = names[i++])){
 	    ~arrayIndexOf(result, key) || result.push(key);
 	  }
 	  return result;
 	};
-
 
 /***/ }),
 /* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// to indexed object, toObject with fallback for non-array-like ES3 strings
-	var IObject = __webpack_require__(49);
-	var defined = __webpack_require__(37);
-	module.exports = function (it) {
+	var IObject = __webpack_require__(49)
+	  , defined = __webpack_require__(37);
+	module.exports = function(it){
 	  return IObject(defined(it));
 	};
-
 
 /***/ }),
 /* 49 */
@@ -2089,11 +2055,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	// fallback for non-array-like ES3 and non-enumerable old V8 strings
 	var cof = __webpack_require__(50);
-	// eslint-disable-next-line no-prototype-builtins
-	module.exports = Object('z').propertyIsEnumerable(0) ? Object : function (it) {
+	module.exports = Object('z').propertyIsEnumerable(0) ? Object : function(it){
 	  return cof(it) == 'String' ? it.split('') : Object(it);
 	};
-
 
 /***/ }),
 /* 50 */
@@ -2101,10 +2065,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var toString = {}.toString;
 
-	module.exports = function (it) {
+	module.exports = function(it){
 	  return toString.call(it).slice(8, -1);
 	};
-
 
 /***/ }),
 /* 51 */
@@ -2112,87 +2075,79 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	// false -> Array#indexOf
 	// true  -> Array#includes
-	var toIObject = __webpack_require__(48);
-	var toLength = __webpack_require__(52);
-	var toAbsoluteIndex = __webpack_require__(53);
-	module.exports = function (IS_INCLUDES) {
-	  return function ($this, el, fromIndex) {
-	    var O = toIObject($this);
-	    var length = toLength(O.length);
-	    var index = toAbsoluteIndex(fromIndex, length);
-	    var value;
+	var toIObject = __webpack_require__(48)
+	  , toLength  = __webpack_require__(52)
+	  , toIndex   = __webpack_require__(53);
+	module.exports = function(IS_INCLUDES){
+	  return function($this, el, fromIndex){
+	    var O      = toIObject($this)
+	      , length = toLength(O.length)
+	      , index  = toIndex(fromIndex, length)
+	      , value;
 	    // Array#includes uses SameValueZero equality algorithm
-	    // eslint-disable-next-line no-self-compare
-	    if (IS_INCLUDES && el != el) while (length > index) {
+	    if(IS_INCLUDES && el != el)while(length > index){
 	      value = O[index++];
-	      // eslint-disable-next-line no-self-compare
-	      if (value != value) return true;
-	    // Array#indexOf ignores holes, Array#includes - not
-	    } else for (;length > index; index++) if (IS_INCLUDES || index in O) {
-	      if (O[index] === el) return IS_INCLUDES || index || 0;
+	      if(value != value)return true;
+	    // Array#toIndex ignores holes, Array#includes - not
+	    } else for(;length > index; index++)if(IS_INCLUDES || index in O){
+	      if(O[index] === el)return IS_INCLUDES || index || 0;
 	    } return !IS_INCLUDES && -1;
 	  };
 	};
-
 
 /***/ }),
 /* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// 7.1.15 ToLength
-	var toInteger = __webpack_require__(36);
-	var min = Math.min;
-	module.exports = function (it) {
+	var toInteger = __webpack_require__(36)
+	  , min       = Math.min;
+	module.exports = function(it){
 	  return it > 0 ? min(toInteger(it), 0x1fffffffffffff) : 0; // pow(2, 53) - 1 == 9007199254740991
 	};
-
 
 /***/ }),
 /* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var toInteger = __webpack_require__(36);
-	var max = Math.max;
-	var min = Math.min;
-	module.exports = function (index, length) {
+	var toInteger = __webpack_require__(36)
+	  , max       = Math.max
+	  , min       = Math.min;
+	module.exports = function(index, length){
 	  index = toInteger(index);
 	  return index < 0 ? max(index + length, 0) : min(index, length);
 	};
-
 
 /***/ }),
 /* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var shared = __webpack_require__(55)('keys');
-	var uid = __webpack_require__(56);
-	module.exports = function (key) {
+	var shared = __webpack_require__(55)('keys')
+	  , uid    = __webpack_require__(56);
+	module.exports = function(key){
 	  return shared[key] || (shared[key] = uid(key));
 	};
-
 
 /***/ }),
 /* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var global = __webpack_require__(16);
-	var SHARED = '__core-js_shared__';
-	var store = global[SHARED] || (global[SHARED] = {});
-	module.exports = function (key) {
+	var global = __webpack_require__(16)
+	  , SHARED = '__core-js_shared__'
+	  , store  = global[SHARED] || (global[SHARED] = {});
+	module.exports = function(key){
 	  return store[key] || (store[key] = {});
 	};
-
 
 /***/ }),
 /* 56 */
 /***/ (function(module, exports) {
 
-	var id = 0;
-	var px = Math.random();
-	module.exports = function (key) {
+	var id = 0
+	  , px = Math.random();
+	module.exports = function(key){
 	  return 'Symbol('.concat(key === undefined ? '' : key, ')_', (++id + px).toString(36));
 	};
-
 
 /***/ }),
 /* 57 */
@@ -2203,63 +2158,57 @@ return /******/ (function(modules) { // webpackBootstrap
 	  'constructor,hasOwnProperty,isPrototypeOf,propertyIsEnumerable,toLocaleString,toString,valueOf'
 	).split(',');
 
-
 /***/ }),
 /* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var document = __webpack_require__(16).document;
-	module.exports = document && document.documentElement;
-
+	module.exports = __webpack_require__(16).document && document.documentElement;
 
 /***/ }),
 /* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var def = __webpack_require__(21).f;
-	var has = __webpack_require__(41);
-	var TAG = __webpack_require__(60)('toStringTag');
+	var def = __webpack_require__(21).f
+	  , has = __webpack_require__(41)
+	  , TAG = __webpack_require__(60)('toStringTag');
 
-	module.exports = function (it, tag, stat) {
-	  if (it && !has(it = stat ? it : it.prototype, TAG)) def(it, TAG, { configurable: true, value: tag });
+	module.exports = function(it, tag, stat){
+	  if(it && !has(it = stat ? it : it.prototype, TAG))def(it, TAG, {configurable: true, value: tag});
 	};
-
 
 /***/ }),
 /* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var store = __webpack_require__(55)('wks');
-	var uid = __webpack_require__(56);
-	var Symbol = __webpack_require__(16).Symbol;
-	var USE_SYMBOL = typeof Symbol == 'function';
+	var store      = __webpack_require__(55)('wks')
+	  , uid        = __webpack_require__(56)
+	  , Symbol     = __webpack_require__(16).Symbol
+	  , USE_SYMBOL = typeof Symbol == 'function';
 
-	var $exports = module.exports = function (name) {
+	var $exports = module.exports = function(name){
 	  return store[name] || (store[name] =
 	    USE_SYMBOL && Symbol[name] || (USE_SYMBOL ? Symbol : uid)('Symbol.' + name));
 	};
 
 	$exports.store = store;
 
-
 /***/ }),
 /* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// 19.1.2.9 / 15.2.3.2 Object.getPrototypeOf(O)
-	var has = __webpack_require__(41);
-	var toObject = __webpack_require__(62);
-	var IE_PROTO = __webpack_require__(54)('IE_PROTO');
-	var ObjectProto = Object.prototype;
+	var has         = __webpack_require__(41)
+	  , toObject    = __webpack_require__(62)
+	  , IE_PROTO    = __webpack_require__(54)('IE_PROTO')
+	  , ObjectProto = Object.prototype;
 
-	module.exports = Object.getPrototypeOf || function (O) {
+	module.exports = Object.getPrototypeOf || function(O){
 	  O = toObject(O);
-	  if (has(O, IE_PROTO)) return O[IE_PROTO];
-	  if (typeof O.constructor == 'function' && O instanceof O.constructor) {
+	  if(has(O, IE_PROTO))return O[IE_PROTO];
+	  if(typeof O.constructor == 'function' && O instanceof O.constructor){
 	    return O.constructor.prototype;
 	  } return O instanceof Object ? ObjectProto : null;
 	};
-
 
 /***/ }),
 /* 62 */
@@ -2267,65 +2216,57 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	// 7.1.13 ToObject(argument)
 	var defined = __webpack_require__(37);
-	module.exports = function (it) {
+	module.exports = function(it){
 	  return Object(defined(it));
 	};
-
 
 /***/ }),
 /* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	__webpack_require__(64);
-	var global = __webpack_require__(16);
-	var hide = __webpack_require__(20);
-	var Iterators = __webpack_require__(42);
-	var TO_STRING_TAG = __webpack_require__(60)('toStringTag');
+	var global        = __webpack_require__(16)
+	  , hide          = __webpack_require__(20)
+	  , Iterators     = __webpack_require__(42)
+	  , TO_STRING_TAG = __webpack_require__(60)('toStringTag');
 
-	var DOMIterables = ('CSSRuleList,CSSStyleDeclaration,CSSValueList,ClientRectList,DOMRectList,DOMStringList,' +
-	  'DOMTokenList,DataTransferItemList,FileList,HTMLAllCollection,HTMLCollection,HTMLFormElement,HTMLSelectElement,' +
-	  'MediaList,MimeTypeArray,NamedNodeMap,NodeList,PaintRequestList,Plugin,PluginArray,SVGLengthList,SVGNumberList,' +
-	  'SVGPathSegList,SVGPointList,SVGStringList,SVGTransformList,SourceBufferList,StyleSheetList,TextTrackCueList,' +
-	  'TextTrackList,TouchList').split(',');
-
-	for (var i = 0; i < DOMIterables.length; i++) {
-	  var NAME = DOMIterables[i];
-	  var Collection = global[NAME];
-	  var proto = Collection && Collection.prototype;
-	  if (proto && !proto[TO_STRING_TAG]) hide(proto, TO_STRING_TAG, NAME);
+	for(var collections = ['NodeList', 'DOMTokenList', 'MediaList', 'StyleSheetList', 'CSSRuleList'], i = 0; i < 5; i++){
+	  var NAME       = collections[i]
+	    , Collection = global[NAME]
+	    , proto      = Collection && Collection.prototype;
+	  if(proto && !proto[TO_STRING_TAG])hide(proto, TO_STRING_TAG, NAME);
 	  Iterators[NAME] = Iterators.Array;
 	}
-
 
 /***/ }),
 /* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var addToUnscopables = __webpack_require__(65);
-	var step = __webpack_require__(66);
-	var Iterators = __webpack_require__(42);
-	var toIObject = __webpack_require__(48);
+	var addToUnscopables = __webpack_require__(65)
+	  , step             = __webpack_require__(66)
+	  , Iterators        = __webpack_require__(42)
+	  , toIObject        = __webpack_require__(48);
 
 	// 22.1.3.4 Array.prototype.entries()
 	// 22.1.3.13 Array.prototype.keys()
 	// 22.1.3.29 Array.prototype.values()
 	// 22.1.3.30 Array.prototype[@@iterator]()
-	module.exports = __webpack_require__(38)(Array, 'Array', function (iterated, kind) {
+	module.exports = __webpack_require__(38)(Array, 'Array', function(iterated, kind){
 	  this._t = toIObject(iterated); // target
 	  this._i = 0;                   // next index
 	  this._k = kind;                // kind
 	// 22.1.5.2.1 %ArrayIteratorPrototype%.next()
-	}, function () {
-	  var O = this._t;
-	  var kind = this._k;
-	  var index = this._i++;
-	  if (!O || index >= O.length) {
+	}, function(){
+	  var O     = this._t
+	    , kind  = this._k
+	    , index = this._i++;
+	  if(!O || index >= O.length){
 	    this._t = undefined;
 	    return step(1);
 	  }
-	  if (kind == 'keys') return step(0, index);
-	  if (kind == 'values') return step(0, O[index]);
+	  if(kind == 'keys'  )return step(0, index);
+	  if(kind == 'values')return step(0, O[index]);
 	  return step(0, [index, O[index]]);
 	}, 'values');
 
@@ -2336,29 +2277,25 @@ return /******/ (function(modules) { // webpackBootstrap
 	addToUnscopables('values');
 	addToUnscopables('entries');
 
-
 /***/ }),
 /* 65 */
 /***/ (function(module, exports) {
 
-	module.exports = function () { /* empty */ };
-
+	module.exports = function(){ /* empty */ };
 
 /***/ }),
 /* 66 */
 /***/ (function(module, exports) {
 
-	module.exports = function (done, value) {
-	  return { value: value, done: !!done };
+	module.exports = function(done, value){
+	  return {value: value, done: !!done};
 	};
-
 
 /***/ }),
 /* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	exports.f = __webpack_require__(60);
-
 
 /***/ }),
 /* 68 */
@@ -2376,196 +2313,195 @@ return /******/ (function(modules) { // webpackBootstrap
 	__webpack_require__(83);
 	module.exports = __webpack_require__(17).Symbol;
 
-
 /***/ }),
 /* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	// ECMAScript 6 symbols shim
-	var global = __webpack_require__(16);
-	var has = __webpack_require__(41);
-	var DESCRIPTORS = __webpack_require__(25);
-	var $export = __webpack_require__(15);
-	var redefine = __webpack_require__(40);
-	var META = __webpack_require__(71).KEY;
-	var $fails = __webpack_require__(26);
-	var shared = __webpack_require__(55);
-	var setToStringTag = __webpack_require__(59);
-	var uid = __webpack_require__(56);
-	var wks = __webpack_require__(60);
-	var wksExt = __webpack_require__(67);
-	var wksDefine = __webpack_require__(72);
-	var keyOf = __webpack_require__(73);
-	var enumKeys = __webpack_require__(74);
-	var isArray = __webpack_require__(77);
-	var anObject = __webpack_require__(22);
-	var toIObject = __webpack_require__(48);
-	var toPrimitive = __webpack_require__(28);
-	var createDesc = __webpack_require__(29);
-	var _create = __webpack_require__(44);
-	var gOPNExt = __webpack_require__(78);
-	var $GOPD = __webpack_require__(80);
-	var $DP = __webpack_require__(21);
-	var $keys = __webpack_require__(46);
-	var gOPD = $GOPD.f;
-	var dP = $DP.f;
-	var gOPN = gOPNExt.f;
-	var $Symbol = global.Symbol;
-	var $JSON = global.JSON;
-	var _stringify = $JSON && $JSON.stringify;
-	var PROTOTYPE = 'prototype';
-	var HIDDEN = wks('_hidden');
-	var TO_PRIMITIVE = wks('toPrimitive');
-	var isEnum = {}.propertyIsEnumerable;
-	var SymbolRegistry = shared('symbol-registry');
-	var AllSymbols = shared('symbols');
-	var OPSymbols = shared('op-symbols');
-	var ObjectProto = Object[PROTOTYPE];
-	var USE_NATIVE = typeof $Symbol == 'function';
-	var QObject = global.QObject;
+	var global         = __webpack_require__(16)
+	  , has            = __webpack_require__(41)
+	  , DESCRIPTORS    = __webpack_require__(25)
+	  , $export        = __webpack_require__(15)
+	  , redefine       = __webpack_require__(40)
+	  , META           = __webpack_require__(71).KEY
+	  , $fails         = __webpack_require__(26)
+	  , shared         = __webpack_require__(55)
+	  , setToStringTag = __webpack_require__(59)
+	  , uid            = __webpack_require__(56)
+	  , wks            = __webpack_require__(60)
+	  , wksExt         = __webpack_require__(67)
+	  , wksDefine      = __webpack_require__(72)
+	  , keyOf          = __webpack_require__(73)
+	  , enumKeys       = __webpack_require__(74)
+	  , isArray        = __webpack_require__(77)
+	  , anObject       = __webpack_require__(22)
+	  , toIObject      = __webpack_require__(48)
+	  , toPrimitive    = __webpack_require__(28)
+	  , createDesc     = __webpack_require__(29)
+	  , _create        = __webpack_require__(44)
+	  , gOPNExt        = __webpack_require__(78)
+	  , $GOPD          = __webpack_require__(80)
+	  , $DP            = __webpack_require__(21)
+	  , $keys          = __webpack_require__(46)
+	  , gOPD           = $GOPD.f
+	  , dP             = $DP.f
+	  , gOPN           = gOPNExt.f
+	  , $Symbol        = global.Symbol
+	  , $JSON          = global.JSON
+	  , _stringify     = $JSON && $JSON.stringify
+	  , PROTOTYPE      = 'prototype'
+	  , HIDDEN         = wks('_hidden')
+	  , TO_PRIMITIVE   = wks('toPrimitive')
+	  , isEnum         = {}.propertyIsEnumerable
+	  , SymbolRegistry = shared('symbol-registry')
+	  , AllSymbols     = shared('symbols')
+	  , OPSymbols      = shared('op-symbols')
+	  , ObjectProto    = Object[PROTOTYPE]
+	  , USE_NATIVE     = typeof $Symbol == 'function'
+	  , QObject        = global.QObject;
 	// Don't use setters in Qt Script, https://github.com/zloirock/core-js/issues/173
 	var setter = !QObject || !QObject[PROTOTYPE] || !QObject[PROTOTYPE].findChild;
 
 	// fallback for old Android, https://code.google.com/p/v8/issues/detail?id=687
-	var setSymbolDesc = DESCRIPTORS && $fails(function () {
+	var setSymbolDesc = DESCRIPTORS && $fails(function(){
 	  return _create(dP({}, 'a', {
-	    get: function () { return dP(this, 'a', { value: 7 }).a; }
+	    get: function(){ return dP(this, 'a', {value: 7}).a; }
 	  })).a != 7;
-	}) ? function (it, key, D) {
+	}) ? function(it, key, D){
 	  var protoDesc = gOPD(ObjectProto, key);
-	  if (protoDesc) delete ObjectProto[key];
+	  if(protoDesc)delete ObjectProto[key];
 	  dP(it, key, D);
-	  if (protoDesc && it !== ObjectProto) dP(ObjectProto, key, protoDesc);
+	  if(protoDesc && it !== ObjectProto)dP(ObjectProto, key, protoDesc);
 	} : dP;
 
-	var wrap = function (tag) {
+	var wrap = function(tag){
 	  var sym = AllSymbols[tag] = _create($Symbol[PROTOTYPE]);
 	  sym._k = tag;
 	  return sym;
 	};
 
-	var isSymbol = USE_NATIVE && typeof $Symbol.iterator == 'symbol' ? function (it) {
+	var isSymbol = USE_NATIVE && typeof $Symbol.iterator == 'symbol' ? function(it){
 	  return typeof it == 'symbol';
-	} : function (it) {
+	} : function(it){
 	  return it instanceof $Symbol;
 	};
 
-	var $defineProperty = function defineProperty(it, key, D) {
-	  if (it === ObjectProto) $defineProperty(OPSymbols, key, D);
+	var $defineProperty = function defineProperty(it, key, D){
+	  if(it === ObjectProto)$defineProperty(OPSymbols, key, D);
 	  anObject(it);
 	  key = toPrimitive(key, true);
 	  anObject(D);
-	  if (has(AllSymbols, key)) {
-	    if (!D.enumerable) {
-	      if (!has(it, HIDDEN)) dP(it, HIDDEN, createDesc(1, {}));
+	  if(has(AllSymbols, key)){
+	    if(!D.enumerable){
+	      if(!has(it, HIDDEN))dP(it, HIDDEN, createDesc(1, {}));
 	      it[HIDDEN][key] = true;
 	    } else {
-	      if (has(it, HIDDEN) && it[HIDDEN][key]) it[HIDDEN][key] = false;
-	      D = _create(D, { enumerable: createDesc(0, false) });
+	      if(has(it, HIDDEN) && it[HIDDEN][key])it[HIDDEN][key] = false;
+	      D = _create(D, {enumerable: createDesc(0, false)});
 	    } return setSymbolDesc(it, key, D);
 	  } return dP(it, key, D);
 	};
-	var $defineProperties = function defineProperties(it, P) {
+	var $defineProperties = function defineProperties(it, P){
 	  anObject(it);
-	  var keys = enumKeys(P = toIObject(P));
-	  var i = 0;
-	  var l = keys.length;
-	  var key;
-	  while (l > i) $defineProperty(it, key = keys[i++], P[key]);
+	  var keys = enumKeys(P = toIObject(P))
+	    , i    = 0
+	    , l = keys.length
+	    , key;
+	  while(l > i)$defineProperty(it, key = keys[i++], P[key]);
 	  return it;
 	};
-	var $create = function create(it, P) {
+	var $create = function create(it, P){
 	  return P === undefined ? _create(it) : $defineProperties(_create(it), P);
 	};
-	var $propertyIsEnumerable = function propertyIsEnumerable(key) {
+	var $propertyIsEnumerable = function propertyIsEnumerable(key){
 	  var E = isEnum.call(this, key = toPrimitive(key, true));
-	  if (this === ObjectProto && has(AllSymbols, key) && !has(OPSymbols, key)) return false;
+	  if(this === ObjectProto && has(AllSymbols, key) && !has(OPSymbols, key))return false;
 	  return E || !has(this, key) || !has(AllSymbols, key) || has(this, HIDDEN) && this[HIDDEN][key] ? E : true;
 	};
-	var $getOwnPropertyDescriptor = function getOwnPropertyDescriptor(it, key) {
-	  it = toIObject(it);
+	var $getOwnPropertyDescriptor = function getOwnPropertyDescriptor(it, key){
+	  it  = toIObject(it);
 	  key = toPrimitive(key, true);
-	  if (it === ObjectProto && has(AllSymbols, key) && !has(OPSymbols, key)) return;
+	  if(it === ObjectProto && has(AllSymbols, key) && !has(OPSymbols, key))return;
 	  var D = gOPD(it, key);
-	  if (D && has(AllSymbols, key) && !(has(it, HIDDEN) && it[HIDDEN][key])) D.enumerable = true;
+	  if(D && has(AllSymbols, key) && !(has(it, HIDDEN) && it[HIDDEN][key]))D.enumerable = true;
 	  return D;
 	};
-	var $getOwnPropertyNames = function getOwnPropertyNames(it) {
-	  var names = gOPN(toIObject(it));
-	  var result = [];
-	  var i = 0;
-	  var key;
-	  while (names.length > i) {
-	    if (!has(AllSymbols, key = names[i++]) && key != HIDDEN && key != META) result.push(key);
+	var $getOwnPropertyNames = function getOwnPropertyNames(it){
+	  var names  = gOPN(toIObject(it))
+	    , result = []
+	    , i      = 0
+	    , key;
+	  while(names.length > i){
+	    if(!has(AllSymbols, key = names[i++]) && key != HIDDEN && key != META)result.push(key);
 	  } return result;
 	};
-	var $getOwnPropertySymbols = function getOwnPropertySymbols(it) {
-	  var IS_OP = it === ObjectProto;
-	  var names = gOPN(IS_OP ? OPSymbols : toIObject(it));
-	  var result = [];
-	  var i = 0;
-	  var key;
-	  while (names.length > i) {
-	    if (has(AllSymbols, key = names[i++]) && (IS_OP ? has(ObjectProto, key) : true)) result.push(AllSymbols[key]);
+	var $getOwnPropertySymbols = function getOwnPropertySymbols(it){
+	  var IS_OP  = it === ObjectProto
+	    , names  = gOPN(IS_OP ? OPSymbols : toIObject(it))
+	    , result = []
+	    , i      = 0
+	    , key;
+	  while(names.length > i){
+	    if(has(AllSymbols, key = names[i++]) && (IS_OP ? has(ObjectProto, key) : true))result.push(AllSymbols[key]);
 	  } return result;
 	};
 
 	// 19.4.1.1 Symbol([description])
-	if (!USE_NATIVE) {
-	  $Symbol = function Symbol() {
-	    if (this instanceof $Symbol) throw TypeError('Symbol is not a constructor!');
+	if(!USE_NATIVE){
+	  $Symbol = function Symbol(){
+	    if(this instanceof $Symbol)throw TypeError('Symbol is not a constructor!');
 	    var tag = uid(arguments.length > 0 ? arguments[0] : undefined);
-	    var $set = function (value) {
-	      if (this === ObjectProto) $set.call(OPSymbols, value);
-	      if (has(this, HIDDEN) && has(this[HIDDEN], tag)) this[HIDDEN][tag] = false;
+	    var $set = function(value){
+	      if(this === ObjectProto)$set.call(OPSymbols, value);
+	      if(has(this, HIDDEN) && has(this[HIDDEN], tag))this[HIDDEN][tag] = false;
 	      setSymbolDesc(this, tag, createDesc(1, value));
 	    };
-	    if (DESCRIPTORS && setter) setSymbolDesc(ObjectProto, tag, { configurable: true, set: $set });
+	    if(DESCRIPTORS && setter)setSymbolDesc(ObjectProto, tag, {configurable: true, set: $set});
 	    return wrap(tag);
 	  };
-	  redefine($Symbol[PROTOTYPE], 'toString', function toString() {
+	  redefine($Symbol[PROTOTYPE], 'toString', function toString(){
 	    return this._k;
 	  });
 
 	  $GOPD.f = $getOwnPropertyDescriptor;
-	  $DP.f = $defineProperty;
+	  $DP.f   = $defineProperty;
 	  __webpack_require__(79).f = gOPNExt.f = $getOwnPropertyNames;
-	  __webpack_require__(76).f = $propertyIsEnumerable;
+	  __webpack_require__(76).f  = $propertyIsEnumerable;
 	  __webpack_require__(75).f = $getOwnPropertySymbols;
 
-	  if (DESCRIPTORS && !__webpack_require__(39)) {
+	  if(DESCRIPTORS && !__webpack_require__(39)){
 	    redefine(ObjectProto, 'propertyIsEnumerable', $propertyIsEnumerable, true);
 	  }
 
-	  wksExt.f = function (name) {
+	  wksExt.f = function(name){
 	    return wrap(wks(name));
-	  };
+	  }
 	}
 
-	$export($export.G + $export.W + $export.F * !USE_NATIVE, { Symbol: $Symbol });
+	$export($export.G + $export.W + $export.F * !USE_NATIVE, {Symbol: $Symbol});
 
-	for (var es6Symbols = (
+	for(var symbols = (
 	  // 19.4.2.2, 19.4.2.3, 19.4.2.4, 19.4.2.6, 19.4.2.8, 19.4.2.9, 19.4.2.10, 19.4.2.11, 19.4.2.12, 19.4.2.13, 19.4.2.14
 	  'hasInstance,isConcatSpreadable,iterator,match,replace,search,species,split,toPrimitive,toStringTag,unscopables'
-	).split(','), j = 0; es6Symbols.length > j;)wks(es6Symbols[j++]);
+	).split(','), i = 0; symbols.length > i; )wks(symbols[i++]);
 
-	for (var wellKnownSymbols = $keys(wks.store), k = 0; wellKnownSymbols.length > k;) wksDefine(wellKnownSymbols[k++]);
+	for(var symbols = $keys(wks.store), i = 0; symbols.length > i; )wksDefine(symbols[i++]);
 
 	$export($export.S + $export.F * !USE_NATIVE, 'Symbol', {
 	  // 19.4.2.1 Symbol.for(key)
-	  'for': function (key) {
+	  'for': function(key){
 	    return has(SymbolRegistry, key += '')
 	      ? SymbolRegistry[key]
 	      : SymbolRegistry[key] = $Symbol(key);
 	  },
 	  // 19.4.2.5 Symbol.keyFor(sym)
-	  keyFor: function keyFor(key) {
-	    if (isSymbol(key)) return keyOf(SymbolRegistry, key);
+	  keyFor: function keyFor(key){
+	    if(isSymbol(key))return keyOf(SymbolRegistry, key);
 	    throw TypeError(key + ' is not a symbol!');
 	  },
-	  useSetter: function () { setter = true; },
-	  useSimple: function () { setter = false; }
+	  useSetter: function(){ setter = true; },
+	  useSimple: function(){ setter = false; }
 	});
 
 	$export($export.S + $export.F * !USE_NATIVE, 'Object', {
@@ -2584,24 +2520,24 @@ return /******/ (function(modules) { // webpackBootstrap
 	});
 
 	// 24.3.2 JSON.stringify(value [, replacer [, space]])
-	$JSON && $export($export.S + $export.F * (!USE_NATIVE || $fails(function () {
+	$JSON && $export($export.S + $export.F * (!USE_NATIVE || $fails(function(){
 	  var S = $Symbol();
 	  // MS Edge converts symbol values to JSON as {}
 	  // WebKit converts symbol values to JSON as null
 	  // V8 throws on boxed symbols
-	  return _stringify([S]) != '[null]' || _stringify({ a: S }) != '{}' || _stringify(Object(S)) != '{}';
+	  return _stringify([S]) != '[null]' || _stringify({a: S}) != '{}' || _stringify(Object(S)) != '{}';
 	})), 'JSON', {
-	  stringify: function stringify(it) {
-	    if (it === undefined || isSymbol(it)) return; // IE8 returns string on undefined
-	    var args = [it];
-	    var i = 1;
-	    var replacer, $replacer;
-	    while (arguments.length > i) args.push(arguments[i++]);
+	  stringify: function stringify(it){
+	    if(it === undefined || isSymbol(it))return; // IE8 returns string on undefined
+	    var args = [it]
+	      , i    = 1
+	      , replacer, $replacer;
+	    while(arguments.length > i)args.push(arguments[i++]);
 	    replacer = args[1];
-	    if (typeof replacer == 'function') $replacer = replacer;
-	    if ($replacer || !isArray(replacer)) replacer = function (key, value) {
-	      if ($replacer) value = $replacer.call(this, key, value);
-	      if (!isSymbol(value)) return value;
+	    if(typeof replacer == 'function')$replacer = replacer;
+	    if($replacer || !isArray(replacer))replacer = function(key, value){
+	      if($replacer)value = $replacer.call(this, key, value);
+	      if(!isSymbol(value))return value;
 	    };
 	    args[1] = replacer;
 	    return _stringify.apply($JSON, args);
@@ -2617,117 +2553,112 @@ return /******/ (function(modules) { // webpackBootstrap
 	// 24.3.3 JSON[@@toStringTag]
 	setToStringTag(global.JSON, 'JSON', true);
 
-
 /***/ }),
 /* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var META = __webpack_require__(56)('meta');
-	var isObject = __webpack_require__(23);
-	var has = __webpack_require__(41);
-	var setDesc = __webpack_require__(21).f;
-	var id = 0;
-	var isExtensible = Object.isExtensible || function () {
+	var META     = __webpack_require__(56)('meta')
+	  , isObject = __webpack_require__(23)
+	  , has      = __webpack_require__(41)
+	  , setDesc  = __webpack_require__(21).f
+	  , id       = 0;
+	var isExtensible = Object.isExtensible || function(){
 	  return true;
 	};
-	var FREEZE = !__webpack_require__(26)(function () {
+	var FREEZE = !__webpack_require__(26)(function(){
 	  return isExtensible(Object.preventExtensions({}));
 	});
-	var setMeta = function (it) {
-	  setDesc(it, META, { value: {
+	var setMeta = function(it){
+	  setDesc(it, META, {value: {
 	    i: 'O' + ++id, // object ID
 	    w: {}          // weak collections IDs
-	  } });
+	  }});
 	};
-	var fastKey = function (it, create) {
+	var fastKey = function(it, create){
 	  // return primitive with prefix
-	  if (!isObject(it)) return typeof it == 'symbol' ? it : (typeof it == 'string' ? 'S' : 'P') + it;
-	  if (!has(it, META)) {
+	  if(!isObject(it))return typeof it == 'symbol' ? it : (typeof it == 'string' ? 'S' : 'P') + it;
+	  if(!has(it, META)){
 	    // can't set metadata to uncaught frozen object
-	    if (!isExtensible(it)) return 'F';
+	    if(!isExtensible(it))return 'F';
 	    // not necessary to add metadata
-	    if (!create) return 'E';
+	    if(!create)return 'E';
 	    // add missing metadata
 	    setMeta(it);
 	  // return object ID
 	  } return it[META].i;
 	};
-	var getWeak = function (it, create) {
-	  if (!has(it, META)) {
+	var getWeak = function(it, create){
+	  if(!has(it, META)){
 	    // can't set metadata to uncaught frozen object
-	    if (!isExtensible(it)) return true;
+	    if(!isExtensible(it))return true;
 	    // not necessary to add metadata
-	    if (!create) return false;
+	    if(!create)return false;
 	    // add missing metadata
 	    setMeta(it);
 	  // return hash weak collections IDs
 	  } return it[META].w;
 	};
 	// add metadata on freeze-family methods calling
-	var onFreeze = function (it) {
-	  if (FREEZE && meta.NEED && isExtensible(it) && !has(it, META)) setMeta(it);
+	var onFreeze = function(it){
+	  if(FREEZE && meta.NEED && isExtensible(it) && !has(it, META))setMeta(it);
 	  return it;
 	};
 	var meta = module.exports = {
-	  KEY: META,
-	  NEED: false,
-	  fastKey: fastKey,
-	  getWeak: getWeak,
+	  KEY:      META,
+	  NEED:     false,
+	  fastKey:  fastKey,
+	  getWeak:  getWeak,
 	  onFreeze: onFreeze
 	};
-
 
 /***/ }),
 /* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var global = __webpack_require__(16);
-	var core = __webpack_require__(17);
-	var LIBRARY = __webpack_require__(39);
-	var wksExt = __webpack_require__(67);
-	var defineProperty = __webpack_require__(21).f;
-	module.exports = function (name) {
+	var global         = __webpack_require__(16)
+	  , core           = __webpack_require__(17)
+	  , LIBRARY        = __webpack_require__(39)
+	  , wksExt         = __webpack_require__(67)
+	  , defineProperty = __webpack_require__(21).f;
+	module.exports = function(name){
 	  var $Symbol = core.Symbol || (core.Symbol = LIBRARY ? {} : global.Symbol || {});
-	  if (name.charAt(0) != '_' && !(name in $Symbol)) defineProperty($Symbol, name, { value: wksExt.f(name) });
+	  if(name.charAt(0) != '_' && !(name in $Symbol))defineProperty($Symbol, name, {value: wksExt.f(name)});
 	};
-
 
 /***/ }),
 /* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var getKeys = __webpack_require__(46);
-	var toIObject = __webpack_require__(48);
-	module.exports = function (object, el) {
-	  var O = toIObject(object);
-	  var keys = getKeys(O);
-	  var length = keys.length;
-	  var index = 0;
-	  var key;
-	  while (length > index) if (O[key = keys[index++]] === el) return key;
+	var getKeys   = __webpack_require__(46)
+	  , toIObject = __webpack_require__(48);
+	module.exports = function(object, el){
+	  var O      = toIObject(object)
+	    , keys   = getKeys(O)
+	    , length = keys.length
+	    , index  = 0
+	    , key;
+	  while(length > index)if(O[key = keys[index++]] === el)return key;
 	};
-
 
 /***/ }),
 /* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// all enumerable object keys, includes symbols
-	var getKeys = __webpack_require__(46);
-	var gOPS = __webpack_require__(75);
-	var pIE = __webpack_require__(76);
-	module.exports = function (it) {
-	  var result = getKeys(it);
-	  var getSymbols = gOPS.f;
-	  if (getSymbols) {
-	    var symbols = getSymbols(it);
-	    var isEnum = pIE.f;
-	    var i = 0;
-	    var key;
-	    while (symbols.length > i) if (isEnum.call(it, key = symbols[i++])) result.push(key);
+	var getKeys = __webpack_require__(46)
+	  , gOPS    = __webpack_require__(75)
+	  , pIE     = __webpack_require__(76);
+	module.exports = function(it){
+	  var result     = getKeys(it)
+	    , getSymbols = gOPS.f;
+	  if(getSymbols){
+	    var symbols = getSymbols(it)
+	      , isEnum  = pIE.f
+	      , i       = 0
+	      , key;
+	    while(symbols.length > i)if(isEnum.call(it, key = symbols[i++]))result.push(key);
 	  } return result;
 	};
-
 
 /***/ }),
 /* 75 */
@@ -2735,13 +2666,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	exports.f = Object.getOwnPropertySymbols;
 
-
 /***/ }),
 /* 76 */
 /***/ (function(module, exports) {
 
 	exports.f = {}.propertyIsEnumerable;
-
 
 /***/ }),
 /* 77 */
@@ -2749,32 +2678,31 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	// 7.2.2 IsArray(argument)
 	var cof = __webpack_require__(50);
-	module.exports = Array.isArray || function isArray(arg) {
+	module.exports = Array.isArray || function isArray(arg){
 	  return cof(arg) == 'Array';
 	};
-
 
 /***/ }),
 /* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// fallback for IE11 buggy Object.getOwnPropertyNames with iframe and window
-	var toIObject = __webpack_require__(48);
-	var gOPN = __webpack_require__(79).f;
-	var toString = {}.toString;
+	var toIObject = __webpack_require__(48)
+	  , gOPN      = __webpack_require__(79).f
+	  , toString  = {}.toString;
 
 	var windowNames = typeof window == 'object' && window && Object.getOwnPropertyNames
 	  ? Object.getOwnPropertyNames(window) : [];
 
-	var getWindowNames = function (it) {
+	var getWindowNames = function(it){
 	  try {
 	    return gOPN(it);
-	  } catch (e) {
+	  } catch(e){
 	    return windowNames.slice();
 	  }
 	};
 
-	module.exports.f = function getOwnPropertyNames(it) {
+	module.exports.f = function getOwnPropertyNames(it){
 	  return windowNames && toString.call(it) == '[object Window]' ? getWindowNames(it) : gOPN(toIObject(it));
 	};
 
@@ -2784,35 +2712,33 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ (function(module, exports, __webpack_require__) {
 
 	// 19.1.2.7 / 15.2.3.4 Object.getOwnPropertyNames(O)
-	var $keys = __webpack_require__(47);
-	var hiddenKeys = __webpack_require__(57).concat('length', 'prototype');
+	var $keys      = __webpack_require__(47)
+	  , hiddenKeys = __webpack_require__(57).concat('length', 'prototype');
 
-	exports.f = Object.getOwnPropertyNames || function getOwnPropertyNames(O) {
+	exports.f = Object.getOwnPropertyNames || function getOwnPropertyNames(O){
 	  return $keys(O, hiddenKeys);
 	};
-
 
 /***/ }),
 /* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var pIE = __webpack_require__(76);
-	var createDesc = __webpack_require__(29);
-	var toIObject = __webpack_require__(48);
-	var toPrimitive = __webpack_require__(28);
-	var has = __webpack_require__(41);
-	var IE8_DOM_DEFINE = __webpack_require__(24);
-	var gOPD = Object.getOwnPropertyDescriptor;
+	var pIE            = __webpack_require__(76)
+	  , createDesc     = __webpack_require__(29)
+	  , toIObject      = __webpack_require__(48)
+	  , toPrimitive    = __webpack_require__(28)
+	  , has            = __webpack_require__(41)
+	  , IE8_DOM_DEFINE = __webpack_require__(24)
+	  , gOPD           = Object.getOwnPropertyDescriptor;
 
-	exports.f = __webpack_require__(25) ? gOPD : function getOwnPropertyDescriptor(O, P) {
+	exports.f = __webpack_require__(25) ? gOPD : function getOwnPropertyDescriptor(O, P){
 	  O = toIObject(O);
 	  P = toPrimitive(P, true);
-	  if (IE8_DOM_DEFINE) try {
+	  if(IE8_DOM_DEFINE)try {
 	    return gOPD(O, P);
-	  } catch (e) { /* empty */ }
-	  if (has(O, P)) return createDesc(!pIE.f.call(O, P), O[P]);
+	  } catch(e){ /* empty */ }
+	  if(has(O, P))return createDesc(!pIE.f.call(O, P), O[P]);
 	};
-
 
 /***/ }),
 /* 81 */
@@ -2826,13 +2752,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	__webpack_require__(72)('asyncIterator');
 
-
 /***/ }),
 /* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	__webpack_require__(72)('observable');
-
 
 /***/ }),
 /* 84 */
@@ -2844,12 +2768,11 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var core = __webpack_require__(17);
-	var $JSON = core.JSON || (core.JSON = { stringify: JSON.stringify });
-	module.exports = function stringify(it) { // eslint-disable-line no-unused-vars
+	var core  = __webpack_require__(17)
+	  , $JSON = core.JSON || (core.JSON = {stringify: JSON.stringify});
+	module.exports = function stringify(it){ // eslint-disable-line no-unused-vars
 	  return $JSON.stringify.apply($JSON, arguments);
 	};
-
 
 /***/ }),
 /* 86 */
@@ -3245,61 +3168,11 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ (function(module, exports) {
 
 	/**
-	 * @license AngularJS v1.6.5
+	 * @license AngularJS v1.6.4
 	 * (c) 2010-2017 Google, Inc. http://angularjs.org
 	 * License: MIT
 	 */
 	(function(window) {'use strict';
-
-	/* exported
-	  minErrConfig,
-	  errorHandlingConfig,
-	  isValidObjectMaxDepth
-	*/
-
-	var minErrConfig = {
-	  objectMaxDepth: 5
-	};
-
-	/**
-	 * @ngdoc function
-	 * @name angular.errorHandlingConfig
-	 * @module ng
-	 * @kind function
-	 *
-	 * @description
-	 * Configure several aspects of error handling in AngularJS if used as a setter or return the
-	 * current configuration if used as a getter. The following options are supported:
-	 *
-	 * - **objectMaxDepth**: The maximum depth to which objects are traversed when stringified for error messages.
-	 *
-	 * Omitted or undefined options will leave the corresponding configuration values unchanged.
-	 *
-	 * @param {Object=} config - The configuration object. May only contain the options that need to be
-	 *     updated. Supported keys:
-	 *
-	 * * `objectMaxDepth`  **{Number}** - The max depth for stringifying objects. Setting to a
-	 *   non-positive or non-numeric value, removes the max depth limit.
-	 *   Default: 5
-	 */
-	function errorHandlingConfig(config) {
-	  if (isObject(config)) {
-	    if (isDefined(config.objectMaxDepth)) {
-	      minErrConfig.objectMaxDepth = isValidObjectMaxDepth(config.objectMaxDepth) ? config.objectMaxDepth : NaN;
-	    }
-	  } else {
-	    return minErrConfig;
-	  }
-	}
-
-	/**
-	 * @private
-	 * @param {Number} maxDepth
-	 * @return {boolean}
-	 */
-	function isValidObjectMaxDepth(maxDepth) {
-	  return isNumber(maxDepth) && maxDepth > 0;
-	}
 
 	/**
 	 * @description
@@ -3352,7 +3225,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      return match;
 	    });
 
-	    message += '\nhttp://errors.angularjs.org/1.6.5/' +
+	    message += '\nhttp://errors.angularjs.org/1.6.4/' +
 	      (module ? module + '/' : '') + code;
 
 	    for (i = 0, paramPrefix = '?'; i < templateArgs.length; i++, paramPrefix = '&') {
@@ -3408,7 +3281,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	  isNumber,
 	  isNumberNaN,
 	  isDate,
-	  isError,
 	  isArray,
 	  isFunction,
 	  isRegExp,
@@ -3492,6 +3364,50 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	var hasOwnProperty = Object.prototype.hasOwnProperty;
+
+	var minErrConfig = {
+	  objectMaxDepth: 5
+	};
+
+	 /**
+	 * @ngdoc function
+	 * @name angular.errorHandlingConfig
+	 * @module ng
+	 * @kind function
+	 *
+	 * @description
+	 * Configure several aspects of error handling in AngularJS if used as a setter or return the
+	 * current configuration if used as a getter. The following options are supported:
+	 *
+	 * - **objectMaxDepth**: The maximum depth to which objects are traversed when stringified for error messages.
+	 *
+	 * Omitted or undefined options will leave the corresponding configuration values unchanged.
+	 *
+	 * @param {Object=} config - The configuration object. May only contain the options that need to be
+	 *     updated. Supported keys:
+	 *
+	 * * `objectMaxDepth`  **{Number}** - The max depth for stringifying objects. Setting to a
+	 *   non-positive or non-numeric value, removes the max depth limit.
+	 *   Default: 5
+	 */
+	function errorHandlingConfig(config) {
+	  if (isObject(config)) {
+	    if (isDefined(config.objectMaxDepth)) {
+	      minErrConfig.objectMaxDepth = isValidObjectMaxDepth(config.objectMaxDepth) ? config.objectMaxDepth : NaN;
+	    }
+	  } else {
+	    return minErrConfig;
+	  }
+	}
+
+	/**
+	 * @private
+	 * @param {Number} maxDepth
+	 * @return {boolean}
+	 */
+	function isValidObjectMaxDepth(maxDepth) {
+	  return isNumber(maxDepth) && maxDepth > 0;
+	}
 
 	/**
 	 * @ngdoc function
@@ -3800,20 +3716,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	* Unlike {@link angular.extend extend()}, `merge()` recursively descends into object properties of source
 	* objects, performing a deep copy.
 	*
-	* @deprecated
-	* sinceVersion="1.6.5"
-	* This function is deprecated, but will not be removed in the 1.x lifecycle.
-	* There are edge cases (see {@link angular.merge#known-issues known issues}) that are not
-	* supported by this function. We suggest
-	* using [lodash's merge()](https://lodash.com/docs/4.17.4#merge) instead.
-	*
-	* @knownIssue
-	* This is a list of (known) object types that are not handled correctly by this function:
-	* - [`Blob`](https://developer.mozilla.org/docs/Web/API/Blob)
-	* - [`MediaStream`](https://developer.mozilla.org/docs/Web/API/MediaStream)
-	* - [`CanvasGradient`](https://developer.mozilla.org/docs/Web/API/CanvasGradient)
-	* - AngularJS {@link $rootScope.Scope scopes};
-	*
 	* @param {Object} dst Destination object.
 	* @param {...Object} src Source object(s).
 	* @returns {Object} Reference to `dst`.
@@ -4022,24 +3924,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @returns {boolean} True if `value` is an `Array`.
 	 */
 	var isArray = Array.isArray;
-
-	/**
-	 * @description
-	 * Determines if a reference is an `Error`.
-	 * Loosely based on https://www.npmjs.com/package/iserror
-	 *
-	 * @param {*} value Reference to check.
-	 * @returns {boolean} True if `value` is an `Error`.
-	 */
-	function isError(value) {
-	  var tag = toString.call(value);
-	  switch (tag) {
-	    case '[object Error]': return true;
-	    case '[object Exception]': return true;
-	    case '[object DOMException]': return true;
-	    default: return value instanceof Error;
-	  }
-	}
 
 	/**
 	 * @ngdoc function
@@ -4721,7 +4605,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var ALL_COLONS = /:/g;
 	function timezoneToOffset(timezone, fallback) {
-	  // Support: IE 9-11 only, Edge 13-15+
+	  // Support: IE 9-11 only, Edge 13-14+
 	  // IE/Edge do not "understand" colon (`:`) in timezone
 	  timezone = timezone.replace(ALL_COLONS, '');
 	  var requestedTimezoneOffset = Date.parse('Jan 01, 1970 00:00:00 ' + timezone) / 60000;
@@ -4748,7 +4632,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @returns {string} Returns the string representation of the element.
 	 */
 	function startingTag(element) {
-	  element = jqLite(element).clone().empty();
+	  element = jqLite(element).clone();
+	  try {
+	    // turns out IE does not let you set .html() on elements which
+	    // are not allowed to have children. So we just ignore it.
+	    element.empty();
+	  } catch (e) { /* empty */ }
 	  var elemHtml = jqLite('<div>').append(element).html();
 	  try {
 	    return element[0].nodeType === NODE_TYPE_TEXT ? lowercase(elemHtml) :
@@ -4886,7 +4775,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	  var script = document.currentScript;
 
 	  if (!script) {
-	    // Support: IE 9-11 only
 	    // IE does not have `document.currentScript`
 	    return true;
 	  }
@@ -5878,7 +5766,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  return dst || src;
 	}
 
-	/* exported toDebugString */
+	/* global toDebugString: true */
 
 	function serializeObject(obj, maxDepth) {
 	  var seen = [];
@@ -5887,9 +5775,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  // and a very deep object can cause a performance issue, so we copy the object
 	  // based on this specific depth and then stringify it.
 	  if (isValidObjectMaxDepth(maxDepth)) {
-	    // This file is also included in `angular-loader`, so `copy()` might not always be available in
-	    // the closure. Therefore, it is lazily retrieved as `angular.copy()` when needed.
-	    obj = angular.copy(obj, null, maxDepth);
+	    obj = copy(obj, null, maxDepth);
 	  }
 	  return JSON.stringify(obj, function(key, val) {
 	    val = toJsonReplacer(key, val);
@@ -6030,11 +5916,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	var version = {
 	  // These placeholder strings will be replaced by grunt's `build` task.
 	  // They need to be double- or single-quoted.
-	  full: '1.6.5',
+	  full: '1.6.4',
 	  major: 1,
 	  minor: 6,
-	  dot: 5,
-	  codeName: 'toffee-salinization'
+	  dot: 4,
+	  codeName: 'phenomenal-footnote'
 	};
 
 
@@ -6180,7 +6066,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      });
 	    }
 	  ])
-	  .info({ angularVersion: '1.6.5' });
+	  .info({ angularVersion: '1.6.4' });
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -8769,7 +8655,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	var $AnimateProvider = ['$provide', /** @this */ function($provide) {
 	  var provider = this;
 	  var classNameFilter = null;
-	  var customFilter = null;
 
 	  this.$$registeredAnimations = Object.create(null);
 
@@ -8824,51 +8709,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * @ngdoc method
-	   * @name $animateProvider#customFilter
-	   *
-	   * @description
-	   * Sets and/or returns the custom filter function that is used to "filter" animations, i.e.
-	   * determine if an animation is allowed or not. When no filter is specified (the default), no
-	   * animation will be blocked. Setting the `customFilter` value will only allow animations for
-	   * which the filter function's return value is truthy.
-	   *
-	   * This allows to easily create arbitrarily complex rules for filtering animations, such as
-	   * allowing specific events only, or enabling animations on specific subtrees of the DOM, etc.
-	   * Filtering animations can also boost performance for low-powered devices, as well as
-	   * applications containing a lot of structural operations.
-	   *
-	   * <div class="alert alert-success">
-	   *   **Best Practice:**
-	   *   Keep the filtering function as lean as possible, because it will be called for each DOM
-	   *   action (e.g. insertion, removal, class change) performed by "animation-aware" directives.
-	   *   See {@link guide/animations#which-directives-support-animations- here} for a list of built-in
-	   *   directives that support animations.
-	   *   Performing computationally expensive or time-consuming operations on each call of the
-	   *   filtering function can make your animations sluggish.
-	   * </div>
-	   *
-	   * **Note:** If present, `customFilter` will be checked before
-	   * {@link $animateProvider#classNameFilter classNameFilter}.
-	   *
-	   * @param {Function=} filterFn - The filter function which will be used to filter all animations.
-	   *   If a falsy value is returned, no animation will be performed. The function will be called
-	   *   with the following arguments:
-	   *   - **node** `{DOMElement}` - The DOM element to be animated.
-	   *   - **event** `{String}` - The name of the animation event (e.g. `enter`, `leave`, `addClass`
-	   *     etc).
-	   *   - **options** `{Object}` - A collection of options/styles used for the animation.
-	   * @return {Function} The current filter function or `null` if there is none set.
-	   */
-	  this.customFilter = function(filterFn) {
-	    if (arguments.length === 1) {
-	      customFilter = isFunction(filterFn) ? filterFn : null;
-	    }
-
-	    return customFilter;
-	  };
-
-	  /**
-	   * @ngdoc method
 	   * @name $animateProvider#classNameFilter
 	   *
 	   * @description
@@ -8878,11 +8718,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * When setting the `classNameFilter` value, animations will only be performed on elements
 	   * that successfully match the filter expression. This in turn can boost performance
 	   * for low-powered devices as well as applications containing a lot of structural operations.
-	   *
-	   * **Note:** If present, `classNameFilter` will be checked after
-	   * {@link $animateProvider#customFilter customFilter}. If `customFilter` is present and returns
-	   * false, `classNameFilter` will not be checked.
-	   *
 	   * @param {RegExp=} expression The className expression which will be checked against all animations
 	   * @return {RegExp} The current CSS className expression value. If null then there is no expression value
 	   */
@@ -11472,8 +11307,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * @ngdoc method
 	   * @name $compileProvider#component
 	   * @module ng
-	   * @param {string|Object} name Name of the component in camelCase (i.e. `myComp` which will match `<my-comp>`),
-	   *    or an object map of components where the keys are the names and the values are the component definition objects.
+	   * @param {string} name Name of the component in camelCase (i.e. `myComp` which will match `<my-comp>`)
 	   * @param {Object} options Component definition object (a simplified
 	   *    {@link ng.$compile#directive-definition-object directive definition object}),
 	   *    with the following properties (all optional):
@@ -11556,11 +11390,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * See also {@link ng.$compileProvider#directive $compileProvider.directive()}.
 	   */
 	  this.component = function registerComponent(name, options) {
-	    if (!isString(name)) {
-	      forEach(name, reverseParams(bind(this, registerComponent)));
-	      return this;
-	    }
-
 	    var controller = options.controller || function() {};
 
 	    function factory($injector) {
@@ -13496,7 +13325,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          }
 	          linkQueue = null;
 	        }).catch(function(error) {
-	          if (isError(error)) {
+	          if (error instanceof Error) {
 	            $exceptionHandler(error);
 	          }
 	        });
@@ -14639,6 +14468,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * {@link ng.$cacheFactory `$cacheFactory`} to enable or disable caching of HTTP responses
 	   * by default. See {@link $http#caching $http Caching} for more information.
 	   *
+	   * - **`defaults.xsrfCookieName`** - {string} - Name of cookie containing the XSRF token.
+	   * Defaults value is `'XSRF-TOKEN'`.
+	   *
+	   * - **`defaults.xsrfHeaderName`** - {string} - Name of HTTP header to populate with the
+	   * XSRF token. Defaults value is `'X-XSRF-TOKEN'`.
+	   *
 	   * - **`defaults.headers`** - {Object} - Default headers for all $http requests.
 	   * Refer to {@link ng.$http#setting-http-headers $http} for documentation on
 	   * setting default headers.
@@ -14647,38 +14482,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *     - **`defaults.headers.put`**
 	   *     - **`defaults.headers.patch`**
 	   *
-	   * - **`defaults.jsonpCallbackParam`** - `{string}` - the name of the query parameter that passes the name of the
-	   * callback in a JSONP request. The value of this parameter will be replaced with the expression generated by the
-	   * {@link $jsonpCallbacks} service. Defaults to `'callback'`.
 	   *
 	   * - **`defaults.paramSerializer`** - `{string|function(Object<string,string>):string}` - A function
 	   *  used to the prepare string representation of request parameters (specified as an object).
 	   *  If specified as string, it is interpreted as a function registered with the {@link auto.$injector $injector}.
 	   *  Defaults to {@link ng.$httpParamSerializer $httpParamSerializer}.
 	   *
-	   * - **`defaults.transformRequest`** -
-	   * `{Array<function(data, headersGetter)>|function(data, headersGetter)}` -
-	   * An array of functions (or a single function) which are applied to the request data.
-	   * By default, this is an array with one request transformation function:
-	   *
-	   *   - If the `data` property of the request configuration object contains an object, serialize it
-	   *     into JSON format.
-	   *
-	   * - **`defaults.transformResponse`** -
-	   * `{Array<function(data, headersGetter, status)>|function(data, headersGetter, status)}` -
-	   * An array of functions (or a single function) which are applied to the response data. By default,
-	   * this is an array which applies one response transformation function that does two things:
-	   *
-	   *  - If XSRF prefix is detected, strip it
-	   *    (see {@link ng.$http#security-considerations Security Considerations in the $http docs}).
-	   *  - If the `Content-Type` is `application/json` or the response looks like JSON,
-	   *    deserialize it using a JSON parser.
-	   *
-	   * - **`defaults.xsrfCookieName`** - {string} - Name of cookie containing the XSRF token.
-	   * Defaults value is `'XSRF-TOKEN'`.
-	   *
-	   * - **`defaults.xsrfHeaderName`** - {string} - Name of HTTP header to populate with the
-	   * XSRF token. Defaults value is `'X-XSRF-TOKEN'`.
+	   * - **`defaults.jsonpCallbackParam`** - `{string}` - the name of the query parameter that passes the name of the
+	   * callback in a JSONP request. The value of this parameter will be replaced with the expression generated by the
+	   * {@link $jsonpCallbacks} service. Defaults to `'callback'`.
 	   *
 	   **/
 	  var defaults = this.defaults = {
@@ -14942,18 +14754,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	     *
 	     * Angular provides the following default transformations:
 	     *
-	     * Request transformations (`$httpProvider.defaults.transformRequest` and `$http.defaults.transformRequest`) is
-	     * an array with one function that does the following:
+	     * Request transformations (`$httpProvider.defaults.transformRequest` and `$http.defaults.transformRequest`):
 	     *
 	     * - If the `data` property of the request configuration object contains an object, serialize it
 	     *   into JSON format.
 	     *
-	     * Response transformations (`$httpProvider.defaults.transformResponse` and `$http.defaults.transformResponse`) is
-	     * an array with one function that does the following:
+	     * Response transformations (`$httpProvider.defaults.transformResponse` and `$http.defaults.transformResponse`):
 	     *
 	     *  - If XSRF prefix is detected, strip it (see Security Considerations section below).
-	     *  - If the `Content-Type` is `application/json` or the response looks like JSON,
-	   *      deserialize it using a JSON parser.
+	     *  - If JSON response is detected, deserialize it using a JSON parser.
 	     *
 	     *
 	     * ### Overriding the Default Transformations Per Request
@@ -16590,7 +16399,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    interval.cancel = function(promise) {
 	      if (promise && promise.$$intervalId in intervals) {
 	        // Interval cancels should not report as unhandled promise.
-	        markQExceptionHandled(intervals[promise.$$intervalId].promise);
+	        intervals[promise.$$intervalId].promise.catch(noop);
 	        intervals[promise.$$intervalId].reject('canceled');
 	        $window.clearInterval(promise.$$intervalId);
 	        delete intervals[promise.$$intervalId];
@@ -17732,14 +17541,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	 *
 	 * The main purpose of this service is to simplify debugging and troubleshooting.
 	 *
-	 * To reveal the location of the calls to `$log` in the JavaScript console,
-	 * you can "blackbox" the AngularJS source in your browser:
-	 *
-	 * [Mozilla description of blackboxing](https://developer.mozilla.org/en-US/docs/Tools/Debugger/How_to/Black_box_a_source).
-	 * [Chrome description of blackboxing](https://developer.chrome.com/devtools/docs/blackboxing).
-	 *
-	 * Note: Not all browsers support blackboxing.
-	 *
 	 * The default is to log `debug` messages. You can use
 	 * {@link ng.$logProvider ng.$logProvider#debugEnabled} to change this.
 	 *
@@ -17861,7 +17662,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    };
 
 	    function formatError(arg) {
-	      if (isError(arg)) {
+	      if (arg instanceof Error) {
 	        if (arg.stack && formatStackTrace) {
 	          arg = (arg.message && arg.stack.indexOf(arg.message) === -1)
 	              ? 'Error: ' + arg.message + '\n' + arg.stack
@@ -17875,17 +17676,29 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    function consoleLog(type) {
 	      var console = $window.console || {},
-	          logFn = console[type] || console.log || noop;
+	          logFn = console[type] || console.log || noop,
+	          hasApply = false;
 
-	      return function() {
-	        var args = [];
-	        forEach(arguments, function(arg) {
-	          args.push(formatError(arg));
-	        });
-	        // Support: IE 9 only
-	        // console methods don't inherit from Function.prototype in IE 9 so we can't
-	        // call `logFn.apply(console, args)` directly.
-	        return Function.prototype.apply.call(logFn, console, args);
+	      // Note: reading logFn.apply throws an error in IE11 in IE8 document mode.
+	      // The reason behind this is that console.log has type "object" in IE8...
+	      try {
+	        hasApply = !!logFn.apply;
+	      } catch (e) { /* empty */ }
+
+	      if (hasApply) {
+	        return function() {
+	          var args = [];
+	          forEach(arguments, function(arg) {
+	            args.push(formatError(arg));
+	          });
+	          return logFn.apply(console, args);
+	        };
+	      }
+
+	      // we are IE which either doesn't have window.console => this is noop and we do nothing,
+	      // or we are IE where console.log doesn't have apply so we log at least first 2 args
+	      return function(arg1, arg2) {
+	        logFn(arg1, arg2 == null ? '' : arg2);
 	      };
 	    }
 	  }];
@@ -18513,47 +18326,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	  return !fn.$stateful;
 	}
 
-	var PURITY_ABSOLUTE = 1;
-	var PURITY_RELATIVE = 2;
-
-	// Detect nodes which could depend on non-shallow state of objects
-	function isPure(node, parentIsPure) {
-	  switch (node.type) {
-	    // Computed members might invoke a stateful toString()
-	    case AST.MemberExpression:
-	      if (node.computed) {
-	        return false;
-	      }
-	      break;
-
-	    // Unary always convert to primative
-	    case AST.UnaryExpression:
-	      return PURITY_ABSOLUTE;
-
-	    // The binary + operator can invoke a stateful toString().
-	    case AST.BinaryExpression:
-	      return node.operator !== '+' ? PURITY_ABSOLUTE : false;
-
-	    // Functions / filters probably read state from within objects
-	    case AST.CallExpression:
-	      return false;
-	  }
-
-	  return (undefined === parentIsPure) ? PURITY_RELATIVE : parentIsPure;
-	}
-
-	function findConstantAndWatchExpressions(ast, $filter, parentIsPure) {
+	function findConstantAndWatchExpressions(ast, $filter) {
 	  var allConstants;
 	  var argsToWatch;
 	  var isStatelessFilter;
-
-	  var astIsPure = ast.isPure = isPure(ast, parentIsPure);
-
 	  switch (ast.type) {
 	  case AST.Program:
 	    allConstants = true;
 	    forEach(ast.body, function(expr) {
-	      findConstantAndWatchExpressions(expr.expression, $filter, astIsPure);
+	      findConstantAndWatchExpressions(expr.expression, $filter);
 	      allConstants = allConstants && expr.expression.constant;
 	    });
 	    ast.constant = allConstants;
@@ -18563,26 +18344,26 @@ return /******/ (function(modules) { // webpackBootstrap
 	    ast.toWatch = [];
 	    break;
 	  case AST.UnaryExpression:
-	    findConstantAndWatchExpressions(ast.argument, $filter, astIsPure);
+	    findConstantAndWatchExpressions(ast.argument, $filter);
 	    ast.constant = ast.argument.constant;
 	    ast.toWatch = ast.argument.toWatch;
 	    break;
 	  case AST.BinaryExpression:
-	    findConstantAndWatchExpressions(ast.left, $filter, astIsPure);
-	    findConstantAndWatchExpressions(ast.right, $filter, astIsPure);
+	    findConstantAndWatchExpressions(ast.left, $filter);
+	    findConstantAndWatchExpressions(ast.right, $filter);
 	    ast.constant = ast.left.constant && ast.right.constant;
 	    ast.toWatch = ast.left.toWatch.concat(ast.right.toWatch);
 	    break;
 	  case AST.LogicalExpression:
-	    findConstantAndWatchExpressions(ast.left, $filter, astIsPure);
-	    findConstantAndWatchExpressions(ast.right, $filter, astIsPure);
+	    findConstantAndWatchExpressions(ast.left, $filter);
+	    findConstantAndWatchExpressions(ast.right, $filter);
 	    ast.constant = ast.left.constant && ast.right.constant;
 	    ast.toWatch = ast.constant ? [] : [ast];
 	    break;
 	  case AST.ConditionalExpression:
-	    findConstantAndWatchExpressions(ast.test, $filter, astIsPure);
-	    findConstantAndWatchExpressions(ast.alternate, $filter, astIsPure);
-	    findConstantAndWatchExpressions(ast.consequent, $filter, astIsPure);
+	    findConstantAndWatchExpressions(ast.test, $filter);
+	    findConstantAndWatchExpressions(ast.alternate, $filter);
+	    findConstantAndWatchExpressions(ast.consequent, $filter);
 	    ast.constant = ast.test.constant && ast.alternate.constant && ast.consequent.constant;
 	    ast.toWatch = ast.constant ? [] : [ast];
 	    break;
@@ -18591,9 +18372,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    ast.toWatch = [ast];
 	    break;
 	  case AST.MemberExpression:
-	    findConstantAndWatchExpressions(ast.object, $filter, astIsPure);
+	    findConstantAndWatchExpressions(ast.object, $filter);
 	    if (ast.computed) {
-	      findConstantAndWatchExpressions(ast.property, $filter, astIsPure);
+	      findConstantAndWatchExpressions(ast.property, $filter);
 	    }
 	    ast.constant = ast.object.constant && (!ast.computed || ast.property.constant);
 	    ast.toWatch = [ast];
@@ -18603,7 +18384,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    allConstants = isStatelessFilter;
 	    argsToWatch = [];
 	    forEach(ast.arguments, function(expr) {
-	      findConstantAndWatchExpressions(expr, $filter, astIsPure);
+	      findConstantAndWatchExpressions(expr, $filter);
 	      allConstants = allConstants && expr.constant;
 	      if (!expr.constant) {
 	        argsToWatch.push.apply(argsToWatch, expr.toWatch);
@@ -18613,8 +18394,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    ast.toWatch = isStatelessFilter ? argsToWatch : [ast];
 	    break;
 	  case AST.AssignmentExpression:
-	    findConstantAndWatchExpressions(ast.left, $filter, astIsPure);
-	    findConstantAndWatchExpressions(ast.right, $filter, astIsPure);
+	    findConstantAndWatchExpressions(ast.left, $filter);
+	    findConstantAndWatchExpressions(ast.right, $filter);
 	    ast.constant = ast.left.constant && ast.right.constant;
 	    ast.toWatch = [ast];
 	    break;
@@ -18622,7 +18403,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    allConstants = true;
 	    argsToWatch = [];
 	    forEach(ast.elements, function(expr) {
-	      findConstantAndWatchExpressions(expr, $filter, astIsPure);
+	      findConstantAndWatchExpressions(expr, $filter);
 	      allConstants = allConstants && expr.constant;
 	      if (!expr.constant) {
 	        argsToWatch.push.apply(argsToWatch, expr.toWatch);
@@ -18635,13 +18416,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	    allConstants = true;
 	    argsToWatch = [];
 	    forEach(ast.properties, function(property) {
-	      findConstantAndWatchExpressions(property.value, $filter, astIsPure);
+	      findConstantAndWatchExpressions(property.value, $filter);
 	      allConstants = allConstants && property.value.constant && !property.computed;
 	      if (!property.value.constant) {
 	        argsToWatch.push.apply(argsToWatch, property.value.toWatch);
 	      }
 	      if (property.computed) {
-	        findConstantAndWatchExpressions(property.key, $filter, astIsPure);
+	        findConstantAndWatchExpressions(property.key, $filter);
 	        if (!property.key.constant) {
 	          argsToWatch.push.apply(argsToWatch, property.key.toWatch);
 	        }
@@ -18726,7 +18507,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var intoId = self.nextId();
 	      self.recurse(watch, intoId);
 	      self.return_(intoId);
-	      self.state.inputs.push({name: fnKey, isPure: watch.isPure});
+	      self.state.inputs.push(fnKey);
 	      watch.watchId = key;
 	    });
 	    this.state.computing = 'fn';
@@ -18762,16 +18543,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  watchFns: function() {
 	    var result = [];
-	    var inputs = this.state.inputs;
+	    var fns = this.state.inputs;
 	    var self = this;
-	    forEach(inputs, function(input) {
-	      result.push('var ' + input.name + '=' + self.generateFunction(input.name, 's'));
-	      if (input.isPure) {
-	        result.push(input.name, '.isPure=' + JSON.stringify(input.isPure) + ';');
-	      }
+	    forEach(fns, function(name) {
+	      result.push('var ' + name + '=' + self.generateFunction(name, 's'));
 	    });
-	    if (inputs.length) {
-	      result.push('fn.inputs=[' + inputs.map(function(i) { return i.name; }).join(',') + '];');
+	    if (fns.length) {
+	      result.push('fn.inputs=[' + fns.join(',') + '];');
 	    }
 	    return result.join('');
 	  },
@@ -19177,7 +18955,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	      inputs = [];
 	      forEach(toWatch, function(watch, key) {
 	        var input = self.recurse(watch);
-	        input.isPure = watch.isPure;
 	        watch.input = input;
 	        inputs.push(input);
 	        watch.watchId = key;
@@ -19692,8 +19469,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	            if (parsedExpression.constant) {
 	              parsedExpression.$$watchDelegate = constantWatchDelegate;
 	            } else if (oneTime) {
-	              parsedExpression.$$watchDelegate = parsedExpression.literal ?
-	                  oneTimeLiteralWatchDelegate : oneTimeWatchDelegate;
+	              parsedExpression.oneTime = true;
+	              parsedExpression.$$watchDelegate = oneTimeWatchDelegate;
 	            } else if (parsedExpression.inputs) {
 	              parsedExpression.$$watchDelegate = inputsWatchDelegate;
 	            }
@@ -19744,7 +19521,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        inputExpressions = inputExpressions[0];
 	        return scope.$watch(function expressionInputWatch(scope) {
 	          var newInputValue = inputExpressions(scope);
-	          if (!expressionInputDirtyCheck(newInputValue, oldInputValueOf, inputExpressions.isPure)) {
+	          if (!expressionInputDirtyCheck(newInputValue, oldInputValueOf, parsedExpression.literal)) {
 	            lastResult = parsedExpression(scope, undefined, undefined, [newInputValue]);
 	            oldInputValueOf = newInputValue && getValueOf(newInputValue);
 	          }
@@ -19764,7 +19541,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	        for (var i = 0, ii = inputExpressions.length; i < ii; i++) {
 	          var newInputValue = inputExpressions[i](scope);
-	          if (changed || (changed = !expressionInputDirtyCheck(newInputValue, oldInputValueOfValues[i], inputExpressions[i].isPure))) {
+	          if (changed || (changed = !expressionInputDirtyCheck(newInputValue, oldInputValueOfValues[i], parsedExpression.literal))) {
 	            oldInputValues[i] = newInputValue;
 	            oldInputValueOfValues[i] = newInputValue && getValueOf(newInputValue);
 	          }
@@ -19779,6 +19556,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 
 	    function oneTimeWatchDelegate(scope, listener, objectEquality, parsedExpression, prettyPrintExpression) {
+	      var isDone = parsedExpression.literal ? isAllDefined : isDefined;
 	      var unwatch, lastValue;
 	      if (parsedExpression.inputs) {
 	        unwatch = inputsWatchDelegate(scope, oneTimeListener, objectEquality, parsedExpression, prettyPrintExpression);
@@ -19795,9 +19573,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	        if (isFunction(listener)) {
 	          listener(value, old, scope);
 	        }
-	        if (isDefined(value)) {
+	        if (isDone(value)) {
 	          scope.$$postDigest(function() {
-	            if (isDefined(lastValue)) {
+	            if (isDone(lastValue)) {
 	              unwatch();
 	            }
 	          });
@@ -19805,31 +19583,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 	    }
 
-	    function oneTimeLiteralWatchDelegate(scope, listener, objectEquality, parsedExpression) {
-	      var unwatch, lastValue;
-	      unwatch = scope.$watch(function oneTimeWatch(scope) {
-	        return parsedExpression(scope);
-	      }, function oneTimeListener(value, old, scope) {
-	        lastValue = value;
-	        if (isFunction(listener)) {
-	          listener(value, old, scope);
-	        }
-	        if (isAllDefined(value)) {
-	          scope.$$postDigest(function() {
-	            if (isAllDefined(lastValue)) unwatch();
-	          });
-	        }
-	      }, objectEquality);
-
-	      return unwatch;
-
-	      function isAllDefined(value) {
-	        var allDefined = true;
-	        forEach(value, function(val) {
-	          if (!isDefined(val)) allDefined = false;
-	        });
-	        return allDefined;
-	      }
+	    function isAllDefined(value) {
+	      var allDefined = true;
+	      forEach(value, function(val) {
+	        if (!isDefined(val)) allDefined = false;
+	      });
+	      return allDefined;
 	    }
 
 	    function constantWatchDelegate(scope, listener, objectEquality, parsedExpression) {
@@ -19845,41 +19604,37 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var watchDelegate = parsedExpression.$$watchDelegate;
 	      var useInputs = false;
 
-	      var regularWatch =
-	          watchDelegate !== oneTimeLiteralWatchDelegate &&
-	          watchDelegate !== oneTimeWatchDelegate;
+	      var isDone = parsedExpression.literal ? isAllDefined : isDefined;
 
-	      var fn = regularWatch ? function regularInterceptedExpression(scope, locals, assign, inputs) {
+	      function regularInterceptedExpression(scope, locals, assign, inputs) {
 	        var value = useInputs && inputs ? inputs[0] : parsedExpression(scope, locals, assign, inputs);
 	        return interceptorFn(value, scope, locals);
-	      } : function oneTimeInterceptedExpression(scope, locals, assign, inputs) {
-	        var value = parsedExpression(scope, locals, assign, inputs);
+	      }
+
+	      function oneTimeInterceptedExpression(scope, locals, assign, inputs) {
+	        var value = useInputs && inputs ? inputs[0] : parsedExpression(scope, locals, assign, inputs);
 	        var result = interceptorFn(value, scope, locals);
 	        // we only return the interceptor's result if the
 	        // initial value is defined (for bind-once)
-	        return isDefined(value) ? result : value;
-	      };
+	        return isDone(value) ? result : value;
+	      }
 
-	      // Propagate $$watchDelegates other then inputsWatchDelegate
+	      var fn = parsedExpression.oneTime ? oneTimeInterceptedExpression : regularInterceptedExpression;
+
+	      // Propogate the literal/oneTime attributes
+	      fn.literal = parsedExpression.literal;
+	      fn.oneTime = parsedExpression.oneTime;
+
+	      // Propagate or create inputs / $$watchDelegates
 	      useInputs = !parsedExpression.inputs;
 	      if (watchDelegate && watchDelegate !== inputsWatchDelegate) {
 	        fn.$$watchDelegate = watchDelegate;
 	        fn.inputs = parsedExpression.inputs;
 	      } else if (!interceptorFn.$stateful) {
-	        // Treat interceptor like filters - assume non-stateful by default and use the inputsWatchDelegate
+	        // If there is an interceptor, but no watchDelegate then treat the interceptor like
+	        // we treat filters - it is assumed to be a pure function unless flagged with $stateful
 	        fn.$$watchDelegate = inputsWatchDelegate;
 	        fn.inputs = parsedExpression.inputs ? parsedExpression.inputs : [parsedExpression];
-	      }
-
-	      if (fn.inputs) {
-	        fn.inputs = fn.inputs.map(function(e) {
-	              // Remove the isPure flag of inputs when it is not absolute because they are now wrapped in a
-	              // potentially non-pure interceptor function.
-	              if (e.isPure === PURITY_RELATIVE) {
-	                return function depurifier(s) { return e(s); };
-	              }
-	              return e;
-	            });
 	      }
 
 	      return fn;
@@ -20167,7 +19922,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @param {function(function)} nextTick Function for executing functions in the next turn.
 	 * @param {function(...*)} exceptionHandler Function into which unexpected exceptions are passed for
 	 *     debugging purposes.
-	 * @param {boolean=} errorOnUnhandledRejections Whether an error should be generated on unhandled
+	 @ param {=boolean} errorOnUnhandledRejections Whether an error should be generated on unhandled
 	 *     promises rejections.
 	 * @returns {object} Promise manager.
 	 */
@@ -20238,7 +19993,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    state.pending = undefined;
 	    try {
 	      for (var i = 0, ii = pending.length; i < ii; ++i) {
-	        markQStateExceptionHandled(state);
+	        state.pur = true;
 	        promise = pending[i][0];
 	        fn = pending[i][state.status];
 	        try {
@@ -20265,10 +20020,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    // eslint-disable-next-line no-unmodified-loop-condition
 	    while (!queueSize && checkQueue.length) {
 	      var toCheck = checkQueue.shift();
-	      if (!isStateExceptionHandled(toCheck)) {
-	        markQStateExceptionHandled(toCheck);
+	      if (!toCheck.pur) {
+	        toCheck.pur = true;
 	        var errorMessage = 'Possibly unhandled rejection: ' + toDebugString(toCheck.value);
-	        if (isError(toCheck.value)) {
+	        if (toCheck.value instanceof Error) {
 	          exceptionHandler(toCheck.value, errorMessage);
 	        } else {
 	          exceptionHandler(errorMessage);
@@ -20278,7 +20033,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 
 	  function scheduleProcessQueue(state) {
-	    if (errorOnUnhandledRejections && !state.pending && state.status === 2 && !isStateExceptionHandled(state)) {
+	    if (errorOnUnhandledRejections && !state.pending && state.status === 2 && !state.pur) {
 	      if (queueSize === 0 && checkQueue.length === 0) {
 	        nextTick(processChecks);
 	      }
@@ -20557,16 +20312,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	  $Q.race = race;
 
 	  return $Q;
-	}
-
-	function isStateExceptionHandled(state) {
-	  return !!state.pur;
-	}
-	function markQStateExceptionHandled(state) {
-	  state.pur = true;
-	}
-	function markQExceptionHandled(q) {
-	  markQStateExceptionHandled(q.$$state);
 	}
 
 	/** @this */
@@ -21049,12 +20794,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	       *   values are examined for changes on every call to `$digest`.
 	       * - The `listener` is called whenever any expression in the `watchExpressions` array changes.
 	       *
-	       * `$watchGroup` is more performant than watching each expression individually, and should be
-	       * used when the listener does not need to know which expression has changed.
-	       * If the listener needs to know which expression has changed,
-	       * {@link ng.$rootScope.Scope#$watch $watch()} or
-	       * {@link ng.$rootScope.Scope#$watchCollection $watchCollection()} should be used.
-	       *
 	       * @param {Array.<string|Function(scope)>} watchExpressions Array of expressions that will be individually
 	       * watched using {@link ng.$rootScope.Scope#$watch $watch()}
 	       *
@@ -21063,34 +20802,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	       *    The `newValues` array contains the current values of the `watchExpressions`, with the indexes matching
 	       *    those of `watchExpression`
 	       *    and the `oldValues` array contains the previous values of the `watchExpressions`, with the indexes matching
-	       *    those of `watchExpression`.
-	       *
-	       *    Note that `newValues` and `oldValues` reflect the differences in each **individual**
-	       *    expression, and not the difference of the values between each call of the listener.
-	       *    That means the difference between `newValues` and `oldValues` cannot be used to determine
-	       *    which expression has changed / remained stable:
-	       *
-	       *    ```js
-	       *
-	       *    $scope.$watchGroup(['v1', 'v2'], function(newValues, oldValues) {
-	       *      console.log(newValues, oldValues);
-	       *    });
-	       *
-	       *    // newValues, oldValues initially
-	       *    // [undefined, undefined], [undefined, undefined]
-	       *
-	       *    $scope.v1 = 'a';
-	       *    $scope.v2 = 'a';
-	       *
-	       *    // ['a', 'a'], [undefined, undefined]
-	       *
-	       *    $scope.v2 = 'b'
-	       *
-	       *    // v1 hasn't changed since it became `'a'`, therefore its oldValue is still `undefined`
-	       *    // ['a', 'b'], [undefined, 'a']
-	       *
-	       *    ```
-	       *
+	       *    those of `watchExpression`
 	       *    The `scope` refers to the current scope.
 	       * @returns {function()} Returns a de-registration function for all listeners.
 	       */
@@ -23665,7 +23377,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    timeout.cancel = function(promise) {
 	      if (promise && promise.$$timeoutId in deferreds) {
 	        // Timeout cancels should not report an unhandled promise.
-	        markQExceptionHandled(deferreds[promise.$$timeoutId].promise);
+	        deferreds[promise.$$timeoutId].promise.catch(noop);
 	        deferreds[promise.$$timeoutId].reject('canceled');
 	        delete deferreds[promise.$$timeoutId];
 	        return $browser.defer.cancel(promise.$$timeoutId);
@@ -24100,7 +23812,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 *
 	 * @param {function(actual, expected)|true|false} [comparator] Comparator which is used in
 	 *     determining if values retrieved using `expression` (when it is not a function) should be
-	 *     considered a match based on the expected value (from the filter expression) and actual
+	 *     considered a match based on the the expected value (from the filter expression) and actual
 	 *     value (from the object in the array).
 	 *
 	 *   Can be one of:
@@ -25019,9 +24731,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @kind function
 	 * @description
 	 * Converts string to lowercase.
-	 *
-	 * See the {@link ng.uppercase uppercase filter documentation} for a functionally identical example.
-	 *
 	 * @see angular.lowercase
 	 */
 	var lowercaseFilter = valueFn(lowercase);
@@ -25033,23 +24742,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @kind function
 	 * @description
 	 * Converts string to uppercase.
-	 * @example
-	   <example module="uppercaseFilterExample" name="filter-uppercase">
-	     <file name="index.html">
-	       <script>
-	         angular.module('uppercaseFilterExample', [])
-	           .controller('ExampleController', ['$scope', function($scope) {
-	             $scope.title = 'This is a title';
-	           }]);
-	       </script>
-	       <div ng-controller="ExampleController">
-	         <!-- This title should be formatted normally -->
-	         <h1>{{title}}</h1>
-	         <!-- This title should be capitalized -->
-	         <h1>{{title | uppercase}}</h1>
-	       </div>
-	     </file>
-	   </example>
+	 * @see angular.uppercase
 	 */
 	var uppercaseFilter = valueFn(uppercase);
 
@@ -25237,9 +24930,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * specified predicates can distinguish between two items, `orderBy` will automatically introduce a
 	 * dummy predicate that returns the item's index as `value`.
 	 * (If you are using a custom comparator, make sure it can handle this predicate as well.)
-	 *
-	 * If a custom comparator still can't distinguish between two items, then they will be sorted based
-	 * on their index using the built-in comparator.
 	 *
 	 * Finally, in an attempt to simplify things, if a predicate returns an object as the extracted
 	 * value for an item, `orderBy` will try to convert that object to a primitive value, before passing
@@ -25787,7 +25477,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	      }
 
-	      return (compare(v1.tieBreaker, v2.tieBreaker) || defaultCompare(v1.tieBreaker, v2.tieBreaker)) * descending;
+	      return compare(v1.tieBreaker, v2.tieBreaker) * descending;
 	    }
 	  };
 
@@ -26390,23 +26080,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @property {boolean} $dirty True if user has already interacted with the form.
 	 * @property {boolean} $valid True if all of the containing forms and controls are valid.
 	 * @property {boolean} $invalid True if at least one containing control or form is invalid.
+	 * @property {boolean} $pending True if at least one containing control or form is pending.
 	 * @property {boolean} $submitted True if user has submitted the form even if its invalid.
 	 *
-	 * @property {Object} $pending An object hash, containing references to controls or forms with
-	 *  pending validators, where:
-	 *
-	 *  - keys are validations tokens (error names).
-	 *  - values are arrays of controls or forms that have a pending validator for the given error name.
-	 *
-	 * See {@link form.FormController#$error $error} for a list of built-in validation tokens.
-	 *
-	 * @property {Object} $error An object hash, containing references to controls or forms with failing
-	 *  validators, where:
+	 * @property {Object} $error Is an object hash, containing references to controls or
+	 *  forms with failing validators, where:
 	 *
 	 *  - keys are validation tokens (error names),
-	 *  - values are arrays of controls or forms that have a failing validator for the given error name.
+	 *  - values are arrays of controls or forms that have a failing validator for given error name.
 	 *
 	 *  Built-in validation tokens:
+	 *
 	 *  - `email`
 	 *  - `max`
 	 *  - `maxlength`
@@ -26652,24 +26336,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @name form.FormController#$setValidity
 	 *
 	 * @description
-	 * Change the validity state of the form, and notify the parent form (if any).
+	 * Sets the validity of a form control.
 	 *
-	 * Application developers will rarely need to call this method directly. It is used internally, by
-	 * {@link ngModel.NgModelController#$setValidity NgModelController.$setValidity()}, to propagate a
-	 * control's validity state to the parent `FormController`.
-	 *
-	 * @param {string} validationErrorKey Name of the validator. The `validationErrorKey` will be
-	 *        assigned to either `$error[validationErrorKey]` or `$pending[validationErrorKey]` (for
-	 *        unfulfilled `$asyncValidators`), so that it is available for data-binding. The
-	 *        `validationErrorKey` should be in camelCase and will get converted into dash-case for
-	 *        class name. Example: `myError` will result in `ng-valid-my-error` and
-	 *        `ng-invalid-my-error` classes and can be bound to as `{{ someForm.$error.myError }}`.
-	 * @param {boolean} isValid Whether the current state is valid (true), invalid (false), pending
-	 *        (undefined),  or skipped (null). Pending is used for unfulfilled `$asyncValidators`.
-	 *        Skipped is used by AngularJS when validators do not run because of parse errors and when
-	 *        `$asyncValidators` do not run because any of the `$validators` failed.
-	 * @param {NgModelController | FormController} controller - The controller whose validity state is
-	 *        triggering the change.
+	 * This method will also propagate to parent forms.
 	 */
 	addSetValidityMethod({
 	  clazz: FormController,
@@ -29514,13 +29183,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return {
 	      restrict: 'AC',
 	      link: function(scope, element, attr) {
-	        var expression = attr[name].trim();
-	        var isOneTime = (expression.charAt(0) === ':') && (expression.charAt(1) === ':');
-
-	        var watchInterceptor = isOneTime ? toFlatValue : toClassString;
-	        var watchExpression = $parse(expression, watchInterceptor);
-	        var watchAction = isOneTime ? ngClassOneTimeWatchAction : ngClassWatchAction;
-
 	        var classCounts = element.data('$classCounts');
 	        var oldModulo = true;
 	        var oldClassString;
@@ -29543,7 +29205,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          scope.$watch(indexWatchExpression, ngClassIndexWatchAction);
 	        }
 
-	        scope.$watch(watchExpression, watchAction, isOneTime);
+	        scope.$watch($parse(attr[name], toClassString), ngClassWatchAction);
 
 	        function addClasses(classString) {
 	          classString = digestClassCounts(split(classString), 1);
@@ -29585,9 +29247,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 
 	        function ngClassIndexWatchAction(newModulo) {
-	          // This watch-action should run before the `ngClass[OneTime]WatchAction()`, thus it
+	          // This watch-action should run before the `ngClassWatchAction()`, thus it
 	          // adds/removes `oldClassString`. If the `ngClass` expression has changed as well, the
-	          // `ngClass[OneTime]WatchAction()` will update the classes.
+	          // `ngClassWatchAction()` will update the classes.
 	          if (newModulo === selector) {
 	            addClasses(oldClassString);
 	          } else {
@@ -29597,15 +29259,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	          oldModulo = newModulo;
 	        }
 
-	        function ngClassOneTimeWatchAction(newClassValue) {
-	          var newClassString = toClassString(newClassValue);
-
-	          if (newClassString !== oldClassString) {
-	            ngClassWatchAction(newClassString);
-	          }
-	        }
-
 	        function ngClassWatchAction(newClassString) {
+	          // When using a one-time binding the newClassString will return
+	          // the pre-interceptor value until the one-time is complete
+	          if (!isString(newClassString)) {
+	            newClassString = toClassString(newClassString);
+	          }
+
 	          if (oldModulo === selector) {
 	            updateClasses(oldClassString, newClassString);
 	          }
@@ -29651,34 +29311,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 
 	    return classString;
-	  }
-
-	  function toFlatValue(classValue) {
-	    var flatValue = classValue;
-
-	    if (isArray(classValue)) {
-	      flatValue = classValue.map(toFlatValue);
-	    } else if (isObject(classValue)) {
-	      var hasUndefined = false;
-
-	      flatValue = Object.keys(classValue).filter(function(key) {
-	        var value = classValue[key];
-
-	        if (!hasUndefined && isUndefined(value)) {
-	          hasUndefined = true;
-	        }
-
-	        return value;
-	      });
-
-	      if (hasUndefined) {
-	        // Prevent the `oneTimeLiteralWatchInterceptor` from unregistering
-	        // the watcher, by including at least one `undefined` value.
-	        flatValue.push(undefined);
-	      }
-	    }
-
-	    return flatValue;
 	  }
 	}
 
@@ -32520,7 +32152,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 *        (for unfulfilled `$asyncValidators`), so that it is available for data-binding.
 	 *        The `validationErrorKey` should be in camelCase and will get converted into dash-case
 	 *        for class name. Example: `myError` will result in `ng-valid-my-error` and `ng-invalid-my-error`
-	 *        classes and can be bound to as `{{ someForm.someControl.$error.myError }}`.
+	 *        class and can be bound to as  `{{someForm.someControl.$error.myError}}` .
 	 * @param {boolean} isValid Whether the current state is valid (true), invalid (false), pending (undefined),
 	 *                          or skipped (null). Pending is used for unfulfilled `$asyncValidators`.
 	 *                          Skipped is used by Angular when validators do not run because of parse errors and
@@ -33595,8 +33227,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 
 
-	  // Support: IE 9 only
-	  // We can't just jqLite('<option>') since jqLite is not smart enough
+	  // we can't just jqLite('<option>') since jqLite is not smart enough
 	  // to create it in <select> and IE barfs otherwise.
 	  var optionTemplate = window.document.createElement('option'),
 	      optGroupTemplate = window.document.createElement('optgroup');
@@ -33616,9 +33247,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	          break;
 	        }
 	      }
-
-	      // The empty option will be compiled and rendered before we first generate the options
-	      selectElement.empty();
 
 	      var providedEmptyOption = !!selectCtrl.emptyOption;
 
@@ -33641,15 +33269,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	      if (!multiple) {
 
 	        selectCtrl.writeValue = function writeNgOptionsValue(value) {
-	          // The options might not be defined yet when ngModel tries to render
-	          if (!options) return;
-
-	          var selectedOption = selectElement[0].options[selectElement[0].selectedIndex];
+	          var selectedOption = options.selectValueMap[selectElement.val()];
 	          var option = options.getOptionFromViewValue(value);
 
 	          // Make sure to remove the selected attribute from the previously selected option
 	          // Otherwise, screen readers might get confused
-	          if (selectedOption) selectedOption.removeAttribute('selected');
+	          if (selectedOption) selectedOption.element.removeAttribute('selected');
 
 	          if (option) {
 	            // Don't update the option when it is already selected.
@@ -33659,6 +33284,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	            if (selectElement[0].value !== option.selectValue) {
 	              selectCtrl.removeUnknownOption();
+	              selectCtrl.unselectEmptyOption();
 
 	              selectElement[0].value = option.selectValue;
 	              option.element.selected = true;
@@ -33666,7 +33292,14 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	            option.element.setAttribute('selected', 'selected');
 	          } else {
-	            selectCtrl.selectUnknownOrEmptyOption(value);
+
+	            if (providedEmptyOption) {
+	              selectCtrl.selectEmptyOption();
+	            } else if (selectCtrl.unknownOption.parent().length) {
+	              selectCtrl.updateUnknownOption(value);
+	            } else {
+	              selectCtrl.renderUnknownOption(value);
+	            }
 	          }
 	        };
 
@@ -33695,11 +33328,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	      } else {
 
 	        selectCtrl.writeValue = function writeNgOptionsMultiple(values) {
-	          // The options might not be defined yet when ngModel tries to render
-	          if (!options) return;
-
 	          // Only set `<option>.selected` if necessary, in order to prevent some browsers from
 	          // scrolling to `<option>` elements that are outside the `<select>` element's viewport.
+
 	          var selectedOptions = values && values.map(getAndUpdateSelectedOption) || [];
 
 	          options.items.forEach(function(option) {
@@ -33741,10 +33372,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	      if (providedEmptyOption) {
 
+	        // we need to remove it before calling selectElement.empty() because otherwise IE will
+	        // remove the label from the element. wtf?
+	        selectCtrl.emptyOption.remove();
+
 	        // compile the element since there might be bindings in it
 	        $compile(selectCtrl.emptyOption)(scope);
-
-	        selectElement.prepend(selectCtrl.emptyOption);
 
 	        if (selectCtrl.emptyOption[0].nodeType === NODE_TYPE_COMMENT) {
 	          // This means the empty option has currently no actual DOM node, probably because
@@ -33763,12 +33396,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	              ngModelCtrl.$render();
 
 	              optionEl.on('$destroy', function() {
-	                var needsRerender = selectCtrl.$isEmptyOptionSelected();
-
 	                selectCtrl.hasEmptyOption = false;
 	                selectCtrl.emptyOption = undefined;
-
-	                if (needsRerender) ngModelCtrl.$render();
 	              });
 	            }
 	          };
@@ -33780,6 +33409,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 
 	      }
+
+	      selectElement.empty();
+
+	      // We need to do this here to ensure that the options object is defined
+	      // when we first hit it in writeNgOptionsValue
+	      updateOptions();
 
 	      // We will re-render the option elements if the option values or labels change
 	      scope.$watchCollection(ngOptions.getWatchables, updateOptions);
@@ -33804,8 +33439,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      function updateOptionElement(option, element) {
 	        option.element = element;
 	        element.disabled = option.disabled;
-	        // Support: IE 11 only, Edge 12-13 only
-	        // NOTE: The label must be set before the value, otherwise IE 11 & Edge create unresponsive
+	        // NOTE: The label must be set before the value, otherwise IE10/11/EDGE create unresponsive
 	        // selects in certain circumstances when multiple selects are next to each other and display
 	        // the option list in listbox style, i.e. the select is [multiple], or specifies a [size].
 	        // See https://github.com/angular/angular.js/issues/11314 for more info.
@@ -33840,6 +33474,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	        options = ngOptions.getOptions();
 
 	        var groupElementMap = {};
+
+	        // Ensure that the empty option is always there if it was explicitly provided
+	        if (providedEmptyOption) {
+	          selectElement.prepend(selectCtrl.emptyOption);
+	        }
 
 	        options.items.forEach(function addOption(option) {
 	          var groupElement;
@@ -33885,6 +33524,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            ngModelCtrl.$render();
 	          }
 	        }
+
 	      }
 	  }
 
@@ -34572,7 +34212,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        // Store a list of elements from previous run. This is a hash where key is the item from the
 	        // iterator, and the value is objects with following properties.
 	        //   - scope: bound scope
-	        //   - clone: previous element.
+	        //   - element: previous element.
 	        //   - index: position
 	        //
 	        // We are using no-proto object so that we don't need to guard against inherited props via
@@ -35675,7 +35315,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var noopNgModelController = { $setViewValue: noop, $render: noop };
 
 	function setOptionSelectedStatus(optionEl, value) {
-	  optionEl.prop('selected', value);
+	  optionEl.prop('selected', value); // needed for IE
 	  /**
 	   * When unselecting an option, setting the property to null / false should be enough
 	   * However, screenreaders might react to the selected attribute instead, see
@@ -35689,120 +35329,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	/**
 	 * @ngdoc type
 	 * @name  select.SelectController
-	 *
 	 * @description
-	 * The controller for the {@link ng.select select} directive. The controller exposes
-	 * a few utility methods that can be used to augment the behavior of a regular or an
-	 * {@link ng.ngOptions ngOptions} select element.
-	 *
-	 * @example
-	 * ### Set a custom error when the unknown option is selected
-	 *
-	 * This example sets a custom error "unknownValue" on the ngModelController
-	 * when the select element's unknown option is selected, i.e. when the model is set to a value
-	 * that is not matched by any option.
-	 *
-	 * <example name="select-unknown-value-error" module="staticSelect">
-	 * <file name="index.html">
-	 * <div ng-controller="ExampleController">
-	 *   <form name="myForm">
-	 *     <label for="testSelect"> Single select: </label><br>
-	 *     <select name="testSelect" ng-model="selected" unknown-value-error>
-	 *       <option value="option-1">Option 1</option>
-	 *       <option value="option-2">Option 2</option>
-	 *     </select><br>
-	 *     <span ng-if="myForm.testSelect.$error.unknownValue">Error: The current model doesn't match any option</span>
-	 *
-	 *     <button ng-click="forceUnknownOption()">Force unknown option</button><br>
-	 *   </form>
-	 * </div>
-	 * </file>
-	 * <file name="app.js">
-	 *  angular.module('staticSelect', [])
-	 *    .controller('ExampleController', ['$scope', function($scope) {
-	 *      $scope.selected = null;
-	 *
-	 *      $scope.forceUnknownOption = function() {
-	 *        $scope.selected = 'nonsense';
-	 *      };
-	 *   }])
-	 *   .directive('unknownValueError', function() {
-	 *     return {
-	 *       require: ['ngModel', 'select'],
-	 *       link: function(scope, element, attrs, ctrls) {
-	 *         var ngModelCtrl = ctrls[0];
-	 *         var selectCtrl = ctrls[1];
-	 *
-	 *         ngModelCtrl.$validators.unknownValue = function(modelValue, viewValue) {
-	 *           if (selectCtrl.$isUnknownOptionSelected()) {
-	 *             return false;
-	 *           }
-	 *
-	 *           return true;
-	 *         };
-	 *       }
-	 *
-	 *     };
-	 *   });
-	 * </file>
-	 *</example>
-	 *
-	 *
-	 * @example
-	 * ### Set the "required" error when the unknown option is selected.
-	 *
-	 * By default, the "required" error on the ngModelController is only set on a required select
-	 * when the empty option is selected. This example adds a custom directive that also sets the
-	 * error when the unknown option is selected.
-	 *
-	 * <example name="select-unknown-value-required" module="staticSelect">
-	 * <file name="index.html">
-	 * <div ng-controller="ExampleController">
-	 *   <form name="myForm">
-	 *     <label for="testSelect"> Select: </label><br>
-	 *     <select name="testSelect" ng-model="selected" unknown-value-required>
-	 *       <option value="option-1">Option 1</option>
-	 *       <option value="option-2">Option 2</option>
-	 *     </select><br>
-	 *     <span ng-if="myForm.testSelect.$error.required">Error: Please select a value</span><br>
-	 *
-	 *     <button ng-click="forceUnknownOption()">Force unknown option</button><br>
-	 *   </form>
-	 * </div>
-	 * </file>
-	 * <file name="app.js">
-	 *  angular.module('staticSelect', [])
-	 *    .controller('ExampleController', ['$scope', function($scope) {
-	 *      $scope.selected = null;
-	 *
-	 *      $scope.forceUnknownOption = function() {
-	 *        $scope.selected = 'nonsense';
-	 *      };
-	 *   }])
-	 *   .directive('unknownValueRequired', function() {
-	 *     return {
-	 *       priority: 1, // This directive must run after the required directive has added its validator
-	 *       require: ['ngModel', 'select'],
-	 *       link: function(scope, element, attrs, ctrls) {
-	 *         var ngModelCtrl = ctrls[0];
-	 *         var selectCtrl = ctrls[1];
-	 *
-	 *         var originalRequiredValidator = ngModelCtrl.$validators.required;
-	 *
-	 *         ngModelCtrl.$validators.required = function() {
-	 *           if (attrs.required && selectCtrl.$isUnknownOptionSelected()) {
-	 *             return false;
-	 *           }
-	 *
-	 *           return originalRequiredValidator.apply(this, arguments);
-	 *         };
-	 *       }
-	 *     };
-	 *   });
-	 * </file>
-	 *</example>
-	 *
-	 *
+	 * The controller for the `<select>` directive. This provides support for reading
+	 * and writing the selected value(s) of the control and also coordinates dynamically
+	 * added `<option>` elements, perhaps by an `ngRepeat` directive.
 	 */
 	var SelectController =
 	        ['$element', '$scope', /** @this */ function($element, $scope) {
@@ -35820,18 +35350,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	  // does not match any of the options. When it is rendered the value of the unknown
 	  // option is '? XXX ?' where XXX is the hashKey of the value that is not known.
 	  //
-	  // Support: IE 9 only
 	  // We can't just jqLite('<option>') since jqLite is not smart enough
 	  // to create it in <select> and IE barfs otherwise.
 	  self.unknownOption = jqLite(window.document.createElement('option'));
 
-	  // The empty option is an option with the value '' that the application developer can
-	  // provide inside the select. It is always selectable and indicates that a "null" selection has
-	  // been made by the user.
-	  // If the select has an empty option, and the model of the select is set to "undefined" or "null",
-	  // the empty option is selected.
-	  // If the model is set to a different unmatched value, the unknown option is rendered and
-	  // selected, i.e both are present, because a "null" selection and an unknown value are different.
+	  // The empty option is an option with the value '' that te application developer can
+	  // provide inside the select. When the model changes to a value that doesn't match an option,
+	  // it is selected - so if an empty option is provided, no unknown option is generated.
+	  // However, the empty option is not removed when the model matches an option. It is always selectable
+	  // and indicates that a "null" selection has been made.
 	  self.hasEmptyOption = false;
 	  self.emptyOption = undefined;
 
@@ -35867,7 +35394,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  self.unselectEmptyOption = function() {
 	    if (self.hasEmptyOption) {
-	      setOptionSelectedStatus(self.emptyOption, false);
+	      self.emptyOption.removeAttr('selected');
 	    }
 	  };
 
@@ -35909,7 +35436,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var selectedOption = $element[0].options[$element[0].selectedIndex];
 	      setOptionSelectedStatus(jqLite(selectedOption), true);
 	    } else {
-	      self.selectUnknownOrEmptyOption(value);
+	      if (value == null && self.emptyOption) {
+	        self.removeUnknownOption();
+	        self.selectEmptyOption();
+	      } else if (self.unknownOption.parent().length) {
+	        self.updateUnknownOption(value);
+	      } else {
+	        self.renderUnknownOption(value);
+	      }
 	    }
 	  };
 
@@ -35952,59 +35486,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return !!optionsMap.get(value);
 	  };
 
-	  /**
-	   * @ngdoc method
-	   * @name select.SelectController#$hasEmptyOption
-	   *
-	   * @description
-	   *
-	   * Returns `true` if the select element currently has an empty option
-	   * element, i.e. an option that signifies that the select is empty / the selection is null.
-	   *
-	   */
-	  self.$hasEmptyOption = function() {
-	    return self.hasEmptyOption;
-	  };
-
-	  /**
-	   * @ngdoc method
-	   * @name select.SelectController#$isUnknownOptionSelected
-	   *
-	   * @description
-	   *
-	   * Returns `true` if the select element's unknown option is selected. The unknown option is added
-	   * and automatically selected whenever the select model doesn't match any option.
-	   *
-	   */
-	  self.$isUnknownOptionSelected = function() {
-	    // Presence of the unknown option means it is selected
-	    return $element[0].options[0] === self.unknownOption[0];
-	  };
-
-	  /**
-	   * @ngdoc method
-	   * @name select.SelectController#$isEmptyOptionSelected
-	   *
-	   * @description
-	   *
-	   * Returns `true` if the select element has an empty option and this empty option is currently
-	   * selected. Returns `false` if the select element has no empty option or it is not selected.
-	   *
-	   */
-	  self.$isEmptyOptionSelected = function() {
-	    return self.hasEmptyOption && $element[0].options[$element[0].selectedIndex] === self.emptyOption[0];
-	  };
-
-	  self.selectUnknownOrEmptyOption = function(value) {
-	    if (value == null && self.emptyOption) {
-	      self.removeUnknownOption();
-	      self.selectEmptyOption();
-	    } else if (self.unknownOption.parent().length) {
-	      self.updateUnknownOption(value);
-	    } else {
-	      self.renderUnknownOption(value);
-	    }
-	  };
 
 	  var renderScheduled = false;
 	  function scheduleRender() {
@@ -36153,9 +35634,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * the content of the `value` attribute or the textContent of the `<option>`, if the value attribute is missing.
 	 * Value and textContent can be interpolated.
 	 *
-	 * The {@link select.SelectController select controller} exposes utility functions that can be used
-	 * to manipulate the select's behavior.
-	 *
 	 * ## Matching model and option values
 	 *
 	 * In general, the match between the model and an option is evaluated by strictly comparing the model
@@ -36207,19 +35685,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * set on the model on selection. See {@link ngOptions `ngOptions`}.
 	 * @param {string=} ngAttrSize sets the size of the select element dynamically. Uses the
 	 * {@link guide/interpolation#-ngattr-for-binding-to-arbitrary-attributes ngAttr} directive.
-	 *
-	 *
-	 * @knownIssue
-	 *
-	 * In Firefox, the select model is only updated when the select element is blurred. For example,
-	 * when switching between options with the keyboard, the select model is only set to the
-	 * currently selected option when the select is blurred, e.g via tab key or clicking the mouse
-	 * outside the select.
-	 *
-	 * This is due to an ambiguity in the select element specification. See the
-	 * [issue on the Firefox bug tracker](https://bugzilla.mozilla.org/show_bug.cgi?id=126379)
-	 * for more information, and this
-	 * [Github comment for a workaround](https://github.com/angular/angular.js/issues/9134#issuecomment-130800488)
 	 *
 	 * @example
 	 * ### Simple `select` elements with static options
@@ -36465,11 +35930,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	                                               includes(value, selectCtrl.selectValueMap[option.value]));
 	            var currentlySelected = option.selected;
 
-	            // Support: IE 9-11 only, Edge 12-15+
-	            // In IE and Edge adding options to the selection via shift+click/UP/DOWN
+	            // IE and Edge, adding options to the selection via shift+click/UP/DOWN,
 	            // will de-select already selected options if "selected" on those options was set
 	            // more than once (i.e. when the options were already selected)
-	            // So we only modify the selected property if necessary.
+	            // So we only modify the selected property if neccessary.
 	            // Note: this behavior cannot be replicated via unit tests because it only shows in the
 	            // actual user interface.
 	            if (shouldBeSelected !== currentlySelected) {
@@ -37181,7 +36645,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	      var sp = $window.SAILPLAY || {};
 
-	      sp.authorize = function (type) {
+	      sp.authorize = function (type, auth_texts) {
 
 	        type = type || auth_type;
 
@@ -37953,37 +37417,34 @@ return /******/ (function(modules) { // webpackBootstrap
 	__webpack_require__(93);
 	module.exports = __webpack_require__(17).Object.keys;
 
-
 /***/ }),
 /* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// 19.1.2.14 Object.keys(O)
-	var toObject = __webpack_require__(62);
-	var $keys = __webpack_require__(46);
+	var toObject = __webpack_require__(62)
+	  , $keys    = __webpack_require__(46);
 
-	__webpack_require__(94)('keys', function () {
-	  return function keys(it) {
+	__webpack_require__(94)('keys', function(){
+	  return function keys(it){
 	    return $keys(toObject(it));
 	  };
 	});
-
 
 /***/ }),
 /* 94 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// most Object methods by ES6 should accept primitives
-	var $export = __webpack_require__(15);
-	var core = __webpack_require__(17);
-	var fails = __webpack_require__(26);
-	module.exports = function (KEY, exec) {
-	  var fn = (core.Object || {})[KEY] || Object[KEY];
-	  var exp = {};
+	var $export = __webpack_require__(15)
+	  , core    = __webpack_require__(17)
+	  , fails   = __webpack_require__(26);
+	module.exports = function(KEY, exec){
+	  var fn  = (core.Object || {})[KEY] || Object[KEY]
+	    , exp = {};
 	  exp[KEY] = exec(fn);
-	  $export($export.S + $export.F * fails(function () { fn(1); }), 'Object', exp);
+	  $export($export.S + $export.F * fails(function(){ fn(1); }), 'Object', exp);
 	};
-
 
 /***/ }),
 /* 95 */
@@ -39070,7 +38531,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ (function(module, exports) {
 
 	/**
-	 * @license AngularJS v1.6.5
+	 * @license AngularJS v1.6.4
 	 * (c) 2010-2017 Google, Inc. http://angularjs.org
 	 * License: MIT
 	 */
@@ -39100,7 +38561,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* global -ngTouch */
 	var ngTouch = angular.module('ngTouch', []);
 
-	ngTouch.info({ angularVersion: '1.6.5' });
+	ngTouch.info({ angularVersion: '1.6.4' });
 
 	ngTouch.provider('$touch', $TouchProvider);
 
@@ -44519,7 +43980,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 184 */
 /***/ (function(module, exports) {
 
-	module.exports = "<div data-ng-cloak\n     class=\"container clearfix\"\n     data-sailplay-profile>\n\n    <div class=\"container-not-login\" data-ng-show=\"widget.enabled && user && user()\">\n\n        <span class=\"container-oid\" data-ng-bind=\"user().user.origin_user_id || widget.texts.oid_not_defined\"></span>\n\n        <div class=\"container-left clearfix\" data-sailplay-fill-profile\n             data-config=\"widget.options.config\">\n\n            <div class=\"container-left-pic\">\n                <img class=\"user_avatar_image\" data-ng-src=\"{{ (user().user.pic | sailplay_pic) || default_avatar}}\"\n                     alt=\"You\">\n                <div class=\"container-left-pic-block\">\n                    <span class=\"button_link user_avatar_image_upload\"\n                          onclick=\"document.getElementById('sailplay_upload_avatar').click()\">\n                        {{ widget.texts.upload_avatar }}\n                        <input data-file type=\"file\" name=\"avatar\" id=\"sailplay_upload_avatar\"\n                               data-ng-model=\"sailplay.fill_profile.avatar\"\n                               data-ng-change=\"sailplay.fill_profile.change_avatar()\">\n                    </span>\n                    <span class=\"button_link sp_logout\" data-ng-bind=\"widget.texts.logout\"\n                          data-ng-click=\"logout();\"></span>\n                </div>\n            </div>\n\n            <form name=\"fill_profile_form\" class=\"container-left-profile\"\n                  data-ng-submit=\"$event.preventDefault();sailplay.fill_profile.clear();sailplay.fill_profile.submit(fill_profile_form, profile.fill_profile);\">\n\n                <div class=\"container-left-profile-name\" data-ng-bind=\"user().user.name || widget.texts.empty_name\"\n                     data-ng-click=\"$event.preventDefault();sailplay.fill_profile.name.show = true;\"></div>\n\n                <div class=\"container-left-profile_field clearfix\"\n                     data-ng-switch=\"field.input\"\n                     data-ng-repeat=\"field in sailplay.fill_profile.form.fields\"\n                     data-ng-class=\"{'type-editing' : field.editing}\">\n\n                    <div class=\"container-left-profile_field-name\" data-ng-bind=\"field.label\"></div>\n\n                    <div class=\"container-left-profile_field-value\" data-ng-switch-when=\"info\">\n                        <span data-ng-bind=\"field.data[field.value] && field.data[field.value].text || widget.texts.not_defined\"></span>\n                    </div>\n\n                    <div class=\"container-left-profile_field-value\" data-ng-switch-when=\"select\">\n                        <span data-ng-bind=\"getValue(field) ? getValue(field).text : widget.texts.not_defined\"></span>\n                        <select data-ng-model=\"field.value\"\n                                data-ng-change=\"sailplay.fill_profile.submit(fill_profile_form, profile.fill_profile);\"\n                                data-ng-click=\"$event.preventDefault();$event.stopPropagation();\"\n                                data-ng-options=\"item.value as item.text for item in field.data\"></select>\n                        <a href=\"#\"\n                           data-ng-if=\"field.can_edit\"\n                           class=\"container-left-profile_field-value-edit\"\n                           data-ng-click=\"$event.preventDefault();$event.stopPropagation();field.editing=true;sailplay.fill_profile.focus($event, field);\"></a>\n                    </div>\n\n                    <div class=\"container-left-profile_field-value\" data-ng-switch-when=\"phone\">\n                        <span data-ng-bind=\"field.value ? (field.value | tel) : widget.texts.not_defined\"></span>\n                        <input class=\"form_input\" type=\"text\" data-ng-if=\"field.editing\" data-model-view-value=\"true\"\n                               data-ng-click=\"$event.preventDefault();$event.stopPropagation();\"\n                               data-ui-mask=\"{{ field.placeholder }}\" data-ng-model=\"field.value\">\n                        <a href=\"#\"\n                           data-ng-if=\"field.can_edit\"\n                           class=\"container-left-profile_field-value-edit\"\n                           data-ng-click=\"$event.preventDefault();$event.stopPropagation();field.editing=true;sailplay.fill_profile.focus($event, field);\"></a>\n                    </div>\n\n                    <div class=\"container-left-profile_field-value\" data-ng-switch-when=\"email\">\n                        <span data-ng-bind=\"field.value || widget.texts.not_defined\"></span>\n                        <input class=\"form_input\" type=\"email\" data-ng-if=\"field.editing\"\n                               data-ng-click=\"$event.preventDefault();$event.stopPropagation();\"\n                               placeholder=\"{{ field.placeholder }}\" data-ng-model=\"field.value\">\n                        <a href=\"#\"\n                           data-ng-if=\"field.can_edit\"\n                           class=\"container-left-profile_field-value-edit\"\n                           data-ng-click=\"$event.preventDefault();$event.stopPropagation();field.editing=true;sailplay.fill_profile.focus($event, field);\"></a>\n\n                    </div>\n\n                    <div class=\"container-left-profile_field-value\" data-ng-switch-when=\"text\">\n                        <span data-ng-bind=\"field.value || widget.texts.not_defined\"></span>\n                        <input class=\"form_input\" type=\"text\" data-ng-if=\"field.editing\"\n                               data-ng-click=\"$event.preventDefault();$event.stopPropagation();\"\n                               placeholder=\"{{ field.placeholder }}\" data-ng-model=\"field.value\">\n                        <a href=\"#\"\n                           data-ng-if=\"field.can_edit\"\n                           class=\"container-left-profile_field-value-edit\"\n                           data-ng-click=\"$event.preventDefault();$event.stopPropagation();field.editing=true;sailplay.fill_profile.focus($event, field);\"></a>\n                    </div>\n\n                    <div class=\"container-left-profile_field-value\" data-ng-switch-when=\"date\">\n                        <span data-ng-bind=\"field.value || widget.texts.not_defined\"></span>\n                        <input class=\"form_input\" type=\"text\" data-ng-if=\"field.editing\" data-model-view-value=\"true\"\n                               data-ng-click=\"$event.preventDefault();$event.stopPropagation();\"\n                               data-ui-mask=\"{{ field.placeholder }}\" data-ng-model=\"field.value\">\n                        <a href=\"#\"\n                           data-ng-if=\"field.can_edit\"\n                           class=\"container-left-profile_field-value-edit\"\n                           data-ng-click=\"$event.preventDefault();$event.stopPropagation();field.editing=true;sailplay.fill_profile.focus($event, field);\"></a>\n                    </div>\n\n                    <div class=\"container-left-profile_field-value\" data-ng-switch-when=\"subscriptions\"\n                         data-ng-show=\"field.value\">\n                        <div class=\"container-left-profile-subscribe\"\n                             data-ng-click=\"field.value.email = field.value.email == 1 ? 0 : 1;sailplay.fill_profile.submit(fill_profile_form, profile.fill_profile);\"\n                             data-ng-class=\"{'type-checked': field.value.email == 1}\"\n                             data-ng-bind=\"widget.texts.email\"></div>\n                        <div class=\"container-left-profile-subscribe\"\n                             data-ng-click=\"field.value.sms = field.value.sms == 1 ? 0 : 1;sailplay.fill_profile.submit(fill_profile_form, profile.fill_profile);\"\n                             data-ng-class=\"{'type-checked': field.value.sms == 1}\"\n                             data-ng-bind=\"widget.texts.sms\"></div>\n                    </div>\n\n                </div>\n\n                <div class=\"container-left-profile_field\">\n                    <a href=\"#\" class=\"button_link\" data-ng-bind=\"widget.texts.change_password\"\n                       data-ng-click=\"$event.preventDefault();sailplay.fill_profile.password.show = true;\"></a>\n                </div>\n\n            </form>\n\n            <magic-modal class=\"bns_overlay_hist bns_overlay_password\" data-show=\"sailplay.fill_profile.name.show\">\n                <div class=\"new_password\">\n                    <input type=\"text\" placeholder=\"{{ widget.texts.first_name }}\"\n                           data-ng-model=\"sailplay.fill_profile.name.firstName\">\n                    <input type=\"text\" placeholder=\"{{ widget.texts.last_name }}\"\n                           data-ng-model=\"sailplay.fill_profile.name.lastName\">\n                    <button class=\"button_primary\"\n                            data-ng-bind=\"widget.texts.change_name\"\n                            data-ng-disabled=\"!sailplay.fill_profile.name.firstName || !sailplay.fill_profile.name.lastName\"\n                            data-ng-click=\"sailplay.fill_profile.change_name(sailplay.fill_profile.name);\"></button>\n                </div>\n            </magic-modal>\n\n            <magic-modal class=\"bns_overlay_hist bns_overlay_password\" data-show=\"sailplay.fill_profile.password.show\">\n                <div class=\"new_password\">\n                    <input type=\"password\" placeholder=\"{{ widget.texts.password }}\"\n                           data-ng-model=\"sailplay.fill_profile.password.pass1\">\n                    <input type=\"password\" placeholder=\"{{ widget.texts.repeat_password }}\"\n                           data-ng-model=\"sailplay.fill_profile.password.pass2\">\n                    <button class=\"button_primary\"\n                            data-ng-bind=\"widget.texts.confirm_password\"\n                            data-ng-disabled=\"!sailplay.fill_profile.password.pass1 || !sailplay.fill_profile.password.pass2 || sailplay.fill_profile.password.pass1 != sailplay.fill_profile.password.pass2\"\n                            data-ng-click=\"sailplay.fill_profile.change_password(sailplay.fill_profile.password.pass1);\"></button>\n                </div>\n            </magic-modal>\n\n        </div>\n\n        <div class=\"container-right\">\n            <span class=\"container-right-balance\" data-ng-bind=\"user().user_points.confirmed | number\"></span>\n            <span class=\"container-right-placeholder\"\n                  data-ng-bind=\"user().user_points.confirmed | sailplay_pluralize: ('points.texts.pluralize' | tools)\"></span>\n            <span class=\"container-right-discount\"\n                  data-ng-bind=\"getCurrentStatus(status_list) ? widget.texts.discount + getCurrentStatus(status_list).name : widget.texts.not_discount\"></span>\n            <a href=\"#\" class=\"container-right-history button_primary\"\n               data-ng-bind=\"widget.texts.history\" data-ng-click=\"$event.preventDefault();show_history = true;\"></a>\n        </div>\n\n        <div class=\"container-bottom\">\n            <div class=\"container-bottom-line\">\n\n                <div class=\"container-bottom-line_progress\"\n                     data-ng-style=\"{width: getProgress(user().user_points.confirmed, status_list)}\"></div>\n\n                <div class=\"container-bottom-line_item\"\n                     data-ng-repeat=\"status in status_list track by $index\"\n                     data-ng-class=\"{'type-active': status.points <= user().user_points.confirmed, 'type-received': status.received}\"\n                     data-ng-style=\"{ left: (100/status_list.length * ($index+1)) + '%'}\">\n\n                    <div class=\"container-bottom-line_item_value\" data-ng-bind=\"status.name\"></div>\n\n                    <div class=\"container-bottom-line_item_left\" data-ng-if=\"!status.received\"\n                         data-ng-bind=\"(status.points | number) + ' ' + (status.points | sailplay_pluralize: ('points.texts.pluralize' | tools))\"></div>\n\n                    <div class=\"container-bottom-line_item_received\"\n                         data-ng-if=\"status.received\"\n                         data-ng-bind=\"widget.texts.received\"></div>\n\n                    <a class=\"container-bottom-line_item_get button_primary\"\n                       data-ng-if=\"!status.received && (status.points <= user().user_points.confirmed) && (!status_list[$index-1] || status_list[$index-1].received)\"\n                       data-ng-bind=\"widget.texts.get\"\n                       data-ng-click=\"$event.preventDefault();getStatus(status)\"></a>\n\n                </div>\n\n            </div>\n\n        </div>\n\n    </div>\n\n    <div class=\"container-login\" data-ng-hide=\"widget.enabled && user && user()\">\n        <span class=\"button_primary sp_login\" data-ng-bind=\"widget.texts.login\"\n              data-ng-click=\"login('remote')\"></span>\n    </div>\n\n    <magic-modal class=\"bns_overlay_hist\" data-show=\"show_history\">\n\n        <div data-sailplay-history data-sailplay-profile>\n\n            <h3>\n                <span class=\"modal_history_header\">{{ widget.texts.history.header }}</span>\n            </h3>\n            <h4 class=\"modal_history_caption\">{{ widget.texts.history.caption }}</h4>\n            <h4 class=\"modal_history_caption type_empty\" data-ng-if=\"!history().length\">{{ widget.texts.empty_history}}</h4>\n\n            <table class=\"bns_hist_table\">\n\n                <tbody>\n\n                <tr data-dir-paginate=\"item in history() | itemsPerPage:10\" data-pagination-id=\"history_pages\">\n                    <td>\n                        <span class=\"modal_history_date\"\n                              data-ng-bind=\"item.action_date | date:'d/MM/yyyy HH:mm'\"></span>\n                    </td>\n                    <td>\n                        <span>\n                            <b data-ng-bind=\"(item | history_item) + (item.order_num  && (' (' + item.order_num + ')'))\"></b>\n                        </span>\n                    </td>\n                    <td>\n                        <span class=\"modal_history_points\" data-ng-if=\"item.points_delta\"\n                              data-ng-bind=\"((item.points_delta|number) || 0) + ' ' + (item.points_delta | sailplay_pluralize:('points.texts.pluralize' | tools))\"></span>\n                    </td>\n                </tr>\n\n                </tbody>\n            </table>\n\n            <dir-pagination-controls data-max-size=\"7\" data-pagination-id=\"history_pages\"\n                                     data-template-url=\"profile.history_pagination\"\n                                     data-auto-hide=\"true\"></dir-pagination-controls>\n        </div>\n\n\n    </magic-modal>\n\n</div>\n";
+	module.exports = "<div data-ng-cloak\n     class=\"container clearfix\"\n     data-sailplay-profile>\n\n    <div class=\"container-not-login\" data-ng-show=\"widget.enabled && user && user()\">\n\n        <span class=\"container-oid\" data-ng-bind=\"user().user.origin_user_id || widget.texts.oid_not_defined\"></span>\n\n        <div class=\"container-left clearfix\" data-sailplay-fill-profile\n             data-config=\"widget.options.config\">\n\n            <div class=\"container-left-pic\">\n                <img class=\"user_avatar_image\" data-ng-src=\"{{ (user().user.pic | sailplay_pic) || default_avatar}}\"\n                     alt=\"You\">\n                <div class=\"container-left-pic-block\">\n                    <span class=\"button_link user_avatar_image_upload\"\n                          onclick=\"document.getElementById('sailplay_upload_avatar').click()\">\n                        {{ widget.texts.upload_avatar }}\n                        <input data-file type=\"file\" name=\"avatar\" id=\"sailplay_upload_avatar\"\n                               data-ng-model=\"sailplay.fill_profile.avatar\"\n                               data-ng-change=\"sailplay.fill_profile.change_avatar()\">\n                    </span>\n                    <span class=\"button_link sp_logout\" data-ng-bind=\"widget.texts.logout\"\n                          data-ng-click=\"logout();\"></span>\n                </div>\n            </div>\n\n            <form name=\"fill_profile_form\" class=\"container-left-profile\"\n                  data-ng-submit=\"$event.preventDefault();sailplay.fill_profile.clear();sailplay.fill_profile.submit(fill_profile_form, profile.fill_profile);\">\n\n                <div class=\"container-left-profile-name\" data-ng-bind=\"user().user.name || widget.texts.empty_name\"\n                     data-ng-click=\"$event.preventDefault();sailplay.fill_profile.name.show = true;\"></div>\n\n                <div class=\"container-left-profile_field clearfix\"\n                     data-ng-switch=\"field.input\"\n                     data-ng-repeat=\"field in sailplay.fill_profile.form.fields\"\n                     data-ng-class=\"{'type-editing' : field.editing}\">\n\n                    <div class=\"container-left-profile_field-name\" data-ng-bind=\"field.label\"></div>\n\n                    <div class=\"container-left-profile_field-value\" data-ng-switch-when=\"info\">\n                        <span data-ng-bind=\"field.data[field.value] && field.data[field.value].text || widget.texts.not_defined\"></span>\n                    </div>\n\n                    <div class=\"container-left-profile_field-value\" data-ng-switch-when=\"select\">\n                        <span data-ng-bind=\"getValue(field) ? getValue(field).text : widget.texts.not_defined\"></span>\n                        <select data-ng-model=\"field.value\"\n                                data-ng-change=\"sailplay.fill_profile.submit(fill_profile_form, profile.fill_profile);\"\n                                data-ng-click=\"$event.preventDefault();$event.stopPropagation();\"\n                                data-ng-options=\"item.value as item.text for item in field.data\"></select>\n                        <a href=\"#\"\n                           data-ng-if=\"field.can_edit\"\n                           class=\"container-left-profile_field-value-edit\"\n                           data-ng-click=\"$event.preventDefault();$event.stopPropagation();field.editing=true;sailplay.fill_profile.focus($event, field);\"></a>\n                    </div>\n\n                    <div class=\"container-left-profile_field-value\" data-ng-switch-when=\"phone\">\n                        <span data-ng-bind=\"field.value ? (field.value | tel) : widget.texts.not_defined\"></span>\n                        <input class=\"form_input\" type=\"text\" data-ng-if=\"field.editing\" data-model-view-value=\"true\"\n                               data-ng-click=\"$event.preventDefault();$event.stopPropagation();\"\n                               data-ui-mask=\"{{ field.placeholder }}\" data-ng-model=\"field.value\">\n                        <a href=\"#\"\n                           data-ng-if=\"field.can_edit\"\n                           class=\"container-left-profile_field-value-edit\"\n                           data-ng-click=\"$event.preventDefault();$event.stopPropagation();field.editing=true;sailplay.fill_profile.focus($event, field);\"></a>\n                    </div>\n\n                    <div class=\"container-left-profile_field-value\" data-ng-switch-when=\"email\">\n                        <span data-ng-bind=\"field.value || widget.texts.not_defined\"></span>\n                        <input class=\"form_input\" type=\"email\" data-ng-if=\"field.editing\"\n                               data-ng-click=\"$event.preventDefault();$event.stopPropagation();\"\n                               placeholder=\"{{ field.placeholder }}\" data-ng-model=\"field.value\">\n                        <a href=\"#\"\n                           data-ng-if=\"field.can_edit\"\n                           class=\"container-left-profile_field-value-edit\"\n                           data-ng-click=\"$event.preventDefault();$event.stopPropagation();field.editing=true;sailplay.fill_profile.focus($event, field);\"></a>\n\n                    </div>\n\n                    <div class=\"container-left-profile_field-value\" data-ng-switch-when=\"text\">\n                        <span data-ng-bind=\"field.value || widget.texts.not_defined\"></span>\n                        <input class=\"form_input\" type=\"text\" data-ng-if=\"field.editing\"\n                               data-ng-click=\"$event.preventDefault();$event.stopPropagation();\"\n                               placeholder=\"{{ field.placeholder }}\" data-ng-model=\"field.value\">\n                        <a href=\"#\"\n                           data-ng-if=\"field.can_edit\"\n                           class=\"container-left-profile_field-value-edit\"\n                           data-ng-click=\"$event.preventDefault();$event.stopPropagation();field.editing=true;sailplay.fill_profile.focus($event, field);\"></a>\n                    </div>\n\n                    <div class=\"container-left-profile_field-value\" data-ng-switch-when=\"date\">\n                        <span data-ng-bind=\"field.value || widget.texts.not_defined\"></span>\n                        <input class=\"form_input\" type=\"text\" data-ng-if=\"field.editing\" data-model-view-value=\"true\"\n                               data-ng-click=\"$event.preventDefault();$event.stopPropagation();\"\n                               data-ui-mask=\"{{ field.placeholder }}\" data-ng-model=\"field.value\">\n                        <a href=\"#\"\n                           data-ng-if=\"field.can_edit\"\n                           class=\"container-left-profile_field-value-edit\"\n                           data-ng-click=\"$event.preventDefault();$event.stopPropagation();field.editing=true;sailplay.fill_profile.focus($event, field);\"></a>\n                    </div>\n\n                    <div class=\"container-left-profile_field-value\" data-ng-switch-when=\"subscriptions\"\n                         data-ng-show=\"field.value\">\n                        <div class=\"container-left-profile-subscribe\"\n                             data-ng-click=\"field.value.email = field.value.email == 1 ? 0 : 1;sailplay.fill_profile.submit(fill_profile_form, profile.fill_profile);\"\n                             data-ng-class=\"{'type-checked': field.value.email == 1}\"\n                             data-ng-bind=\"widget.texts.email\"></div>\n                        <div class=\"container-left-profile-subscribe\"\n                             data-ng-click=\"field.value.sms = field.value.sms == 1 ? 0 : 1;sailplay.fill_profile.submit(fill_profile_form, profile.fill_profile);\"\n                             data-ng-class=\"{'type-checked': field.value.sms == 1}\"\n                             data-ng-bind=\"widget.texts.sms\"></div>\n                    </div>\n\n                </div>\n\n                <div class=\"container-left-profile_field\">\n                    <a href=\"#\" class=\"button_link\" data-ng-bind=\"widget.texts.change_password\"\n                       data-ng-click=\"$event.preventDefault();sailplay.fill_profile.password.show = true;\"></a>\n                </div>\n\n            </form>\n\n            <magic-modal class=\"bns_overlay_hist bns_overlay_password\" data-show=\"sailplay.fill_profile.name.show\">\n                <div class=\"new_password\">\n                    <input type=\"text\" placeholder=\"{{ widget.texts.first_name }}\"\n                           data-ng-model=\"sailplay.fill_profile.name.firstName\">\n                    <input type=\"text\" placeholder=\"{{ widget.texts.last_name }}\"\n                           data-ng-model=\"sailplay.fill_profile.name.lastName\">\n                    <button class=\"button_primary\"\n                            data-ng-bind=\"widget.texts.change_name\"\n                            data-ng-disabled=\"!sailplay.fill_profile.name.firstName || !sailplay.fill_profile.name.lastName\"\n                            data-ng-click=\"sailplay.fill_profile.change_name(sailplay.fill_profile.name);\"></button>\n                </div>\n            </magic-modal>\n\n            <magic-modal class=\"bns_overlay_hist bns_overlay_password\" data-show=\"sailplay.fill_profile.password.show\">\n                <div class=\"new_password\">\n                    <input type=\"password\" placeholder=\"{{ widget.texts.password }}\"\n                           data-ng-model=\"sailplay.fill_profile.password.pass1\">\n                    <input type=\"password\" placeholder=\"{{ widget.texts.repeat_password }}\"\n                           data-ng-model=\"sailplay.fill_profile.password.pass2\">\n                    <button class=\"button_primary\"\n                            data-ng-bind=\"widget.texts.confirm_password\"\n                            data-ng-disabled=\"!sailplay.fill_profile.password.pass1 || !sailplay.fill_profile.password.pass2 || sailplay.fill_profile.password.pass1 != sailplay.fill_profile.password.pass2\"\n                            data-ng-click=\"sailplay.fill_profile.change_password(sailplay.fill_profile.password.pass1);\"></button>\n                </div>\n            </magic-modal>\n\n        </div>\n\n        <div class=\"container-right\">\n            <span class=\"container-right-balance\" data-ng-bind=\"user().user_points.confirmed | number\"></span>\n            <span class=\"container-right-placeholder\"\n                  data-ng-bind=\"user().user_points.confirmed | sailplay_pluralize: ('points.texts.pluralize' | tools)\"></span>\n            <span class=\"container-right-discount\"\n                  data-ng-bind=\"getCurrentStatus(status_list) ? widget.texts.discount + getCurrentStatus(status_list).name : widget.texts.not_discount\"></span>\n            <a href=\"#\" class=\"container-right-history button_primary\"\n               data-ng-bind=\"widget.texts.history\" data-ng-click=\"$event.preventDefault();show_history = true;\"></a>\n        </div>\n\n        <div class=\"container-bottom\">\n            <div class=\"container-bottom-line\">\n\n                <div class=\"container-bottom-line_progress\"\n                     data-ng-style=\"{width: getProgress(user().user_points.confirmed, status_list)}\"></div>\n\n                <div class=\"container-bottom-line_item\"\n                     data-ng-repeat=\"status in status_list track by $index\"\n                     data-ng-class=\"{'type-active': status.points <= user().user_points.confirmed, 'type-received': status.received}\"\n                     data-ng-style=\"{ left: (100/status_list.length * ($index+1)) + '%'}\">\n\n                    <div class=\"container-bottom-line_item_value\" data-ng-bind=\"status.name\"></div>\n\n                    <div class=\"container-bottom-line_item_left\" data-ng-if=\"!status.received\"\n                         data-ng-bind=\"(status.points | number) + ' ' + (status.points | sailplay_pluralize: ('points.texts.pluralize' | tools))\"></div>\n\n                    <div class=\"container-bottom-line_item_received\"\n                         data-ng-if=\"status.received\"\n                         data-ng-bind=\"widget.texts.received\"></div>\n\n                    <a class=\"container-bottom-line_item_get button_primary\"\n                       data-ng-if=\"!status.received && (status.points <= user().user_points.confirmed) && (!status_list[$index-1] || status_list[$index-1].received)\"\n                       data-ng-bind=\"widget.texts.get\"\n                       data-ng-click=\"$event.preventDefault();getStatus(status)\"></a>\n\n                </div>\n\n            </div>\n\n        </div>\n\n    </div>\n\n    <div class=\"container-login\" data-ng-hide=\"widget.enabled && user && user()\">\n        <span class=\"button_primary sp_login\" data-ng-bind=\"widget.texts.login\"\n              data-ng-click=\"login('remote')\"></span>\n    </div>\n\n    <magic-modal class=\"bns_overlay_hist\" data-show=\"show_history\">\n\n        <div data-sailplay-history data-sailplay-profile>\n\n            <h3>\n                <span class=\"modal_history_header\">{{ widget.texts.history.header }}</span>\n            </h3>\n            <h4 class=\"modal_history_caption\">{{ widget.texts.history.caption }}</h4>\n            <h4 class=\"modal_history_caption type_empty\" data-ng-if=\"!history().length\">{{ widget.texts.empty_history}}</h4>\n\n            <table class=\"bns_hist_table\">\n\n                <tbody>\n\n                <tr data-dir-paginate=\"item in history() | itemsPerPage:10\" data-pagination-id=\"history_pages\">\n                    <td>\n                        <span class=\"modal_history_date\"\n                              data-ng-bind=\"item.action_date | date:'d/MM/yyyy HH:mm'\"></span>\n                    </td>\n                    <td>\n                        <span>\n                            <b data-ng-bind=\"(item | history_item) + (item.order_num  && (' (' + item.order_num + ')'))\"></b>\n                        </span>\n                    </td>\n                    <td>\n                        <span class=\"modal_history_points\" data-ng-if=\"item.points_delta\"\n                              data-ng-bind=\"((item.points_delta|number) || 0) + ' ' + (item.points_delta | sailplay_pluralize:('points.texts.pluralize' | tools))\"></span>\n                        <span class=\"modal_history_points debited\" data-ng-if=\"item.action == 'purchase' && item.debited_points_delta > 0 && item.points_delta > 0\"\n                              data-ng-bind=\"((-item.debited_points_delta|number) || 0) + ' ' + (item.debited_points_delta | sailplay_pluralize:('points.texts.pluralize' | tools))\"></span>\n                    </td>\n                    <td>\n                      \n                    </td>\n                </tr>\n\n                </tbody>\n            </table>\n\n            <dir-pagination-controls data-max-size=\"7\" data-pagination-id=\"history_pages\"\n                                     data-template-url=\"profile.history_pagination\"\n                                     data-auto-hide=\"true\"></dir-pagination-controls>\n        </div>\n\n\n    </magic-modal>\n\n</div>\n";
 
 /***/ }),
 /* 185 */

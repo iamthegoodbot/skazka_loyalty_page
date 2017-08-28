@@ -91,7 +91,7 @@ export let SailPlay = angular.module('sailplay', [
 
         var sp = $window.SAILPLAY || {};
 
-        sp.authorize = function (type) {
+        sp.authorize = function (type, auth_texts) {
 
           type = type || auth_type;
 

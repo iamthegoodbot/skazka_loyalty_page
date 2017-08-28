@@ -223,6 +223,11 @@
                     <td>
                         <span class="modal_history_points" data-ng-if="item.points_delta"
                               data-ng-bind="((item.points_delta|number) || 0) + ' ' + (item.points_delta | sailplay_pluralize:('points.texts.pluralize' | tools))"></span>
+                        <span class="modal_history_points debited" data-ng-if="item.action == 'purchase' && item.debited_points_delta > 0 && item.points_delta > 0"
+                              data-ng-bind="((-item.debited_points_delta|number) || 0) + ' ' + (item.debited_points_delta | sailplay_pluralize:('points.texts.pluralize' | tools))"></span>
+                    </td>
+                    <td>
+                      
                     </td>
                 </tr>
 

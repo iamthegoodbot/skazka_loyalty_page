@@ -106,8 +106,9 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	return __webpack_require__(0);
 /******/ })
 /************************************************************************/
-/******/ ([
-/* 0 */
+/******/ ({
+
+/***/ 0:
 /***/ (function(module, exports, __webpack_require__) {
 
 	__webpack_require__(86);
@@ -115,2485 +116,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	__webpack_require__(102);
 	__webpack_require__(107);
 	__webpack_require__(105);
-	__webpack_require__(29);
+	__webpack_require__(143);
 	module.exports = __webpack_require__(85);
 
 
 /***/ }),
-/* 1 */,
-/* 2 */,
-/* 3 */,
-/* 4 */,
-/* 5 */,
-/* 6 */,
-/* 7 */,
-/* 8 */,
-/* 9 */,
-/* 10 */,
-/* 11 */,
-/* 12 */,
-/* 13 */,
-/* 14 */
-/***/ (function(module, exports, __webpack_require__) {
 
-	var global = __webpack_require__(15);
-	var core = __webpack_require__(16);
-	var ctx = __webpack_require__(17);
-	var hide = __webpack_require__(19);
-	var PROTOTYPE = 'prototype';
-
-	var $export = function (type, name, source) {
-	  var IS_FORCED = type & $export.F;
-	  var IS_GLOBAL = type & $export.G;
-	  var IS_STATIC = type & $export.S;
-	  var IS_PROTO = type & $export.P;
-	  var IS_BIND = type & $export.B;
-	  var IS_WRAP = type & $export.W;
-	  var exports = IS_GLOBAL ? core : core[name] || (core[name] = {});
-	  var expProto = exports[PROTOTYPE];
-	  var target = IS_GLOBAL ? global : IS_STATIC ? global[name] : (global[name] || {})[PROTOTYPE];
-	  var key, own, out;
-	  if (IS_GLOBAL) source = name;
-	  for (key in source) {
-	    // contains in native
-	    own = !IS_FORCED && target && target[key] !== undefined;
-	    if (own && key in exports) continue;
-	    // export native or passed
-	    out = own ? target[key] : source[key];
-	    // prevent global pollution for namespaces
-	    exports[key] = IS_GLOBAL && typeof target[key] != 'function' ? source[key]
-	    // bind timers to global for call from export context
-	    : IS_BIND && own ? ctx(out, global)
-	    // wrap global constructors for prevent change them in library
-	    : IS_WRAP && target[key] == out ? (function (C) {
-	      var F = function (a, b, c) {
-	        if (this instanceof C) {
-	          switch (arguments.length) {
-	            case 0: return new C();
-	            case 1: return new C(a);
-	            case 2: return new C(a, b);
-	          } return new C(a, b, c);
-	        } return C.apply(this, arguments);
-	      };
-	      F[PROTOTYPE] = C[PROTOTYPE];
-	      return F;
-	    // make static versions for prototype methods
-	    })(out) : IS_PROTO && typeof out == 'function' ? ctx(Function.call, out) : out;
-	    // export proto methods to core.%CONSTRUCTOR%.methods.%NAME%
-	    if (IS_PROTO) {
-	      (exports.virtual || (exports.virtual = {}))[key] = out;
-	      // export proto methods to core.%CONSTRUCTOR%.prototype.%NAME%
-	      if (type & $export.R && expProto && !expProto[key]) hide(expProto, key, out);
-	    }
-	  }
-	};
-	// type bitmap
-	$export.F = 1;   // forced
-	$export.G = 2;   // global
-	$export.S = 4;   // static
-	$export.P = 8;   // proto
-	$export.B = 16;  // bind
-	$export.W = 32;  // wrap
-	$export.U = 64;  // safe
-	$export.R = 128; // real proto method for `library`
-	module.exports = $export;
-
-
-/***/ }),
-/* 15 */
-/***/ (function(module, exports) {
-
-	// https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
-	var global = module.exports = typeof window != 'undefined' && window.Math == Math
-	  ? window : typeof self != 'undefined' && self.Math == Math ? self
-	  // eslint-disable-next-line no-new-func
-	  : Function('return this')();
-	if (typeof __g == 'number') __g = global; // eslint-disable-line no-undef
-
-
-/***/ }),
-/* 16 */
-/***/ (function(module, exports) {
-
-	var core = module.exports = { version: '2.5.0' };
-	if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
-
-
-/***/ }),
-/* 17 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	// optional / simple context binding
-	var aFunction = __webpack_require__(18);
-	module.exports = function (fn, that, length) {
-	  aFunction(fn);
-	  if (that === undefined) return fn;
-	  switch (length) {
-	    case 1: return function (a) {
-	      return fn.call(that, a);
-	    };
-	    case 2: return function (a, b) {
-	      return fn.call(that, a, b);
-	    };
-	    case 3: return function (a, b, c) {
-	      return fn.call(that, a, b, c);
-	    };
-	  }
-	  return function (/* ...args */) {
-	    return fn.apply(that, arguments);
-	  };
-	};
-
-
-/***/ }),
-/* 18 */
-/***/ (function(module, exports) {
-
-	module.exports = function (it) {
-	  if (typeof it != 'function') throw TypeError(it + ' is not a function!');
-	  return it;
-	};
-
-
-/***/ }),
-/* 19 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	var dP = __webpack_require__(20);
-	var createDesc = __webpack_require__(28);
-	module.exports = __webpack_require__(24) ? function (object, key, value) {
-	  return dP.f(object, key, createDesc(1, value));
-	} : function (object, key, value) {
-	  object[key] = value;
-	  return object;
-	};
-
-
-/***/ }),
-/* 20 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	var anObject = __webpack_require__(21);
-	var IE8_DOM_DEFINE = __webpack_require__(23);
-	var toPrimitive = __webpack_require__(27);
-	var dP = Object.defineProperty;
-
-	exports.f = __webpack_require__(24) ? Object.defineProperty : function defineProperty(O, P, Attributes) {
-	  anObject(O);
-	  P = toPrimitive(P, true);
-	  anObject(Attributes);
-	  if (IE8_DOM_DEFINE) try {
-	    return dP(O, P, Attributes);
-	  } catch (e) { /* empty */ }
-	  if ('get' in Attributes || 'set' in Attributes) throw TypeError('Accessors not supported!');
-	  if ('value' in Attributes) O[P] = Attributes.value;
-	  return O;
-	};
-
-
-/***/ }),
-/* 21 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	var isObject = __webpack_require__(22);
-	module.exports = function (it) {
-	  if (!isObject(it)) throw TypeError(it + ' is not an object!');
-	  return it;
-	};
-
-
-/***/ }),
-/* 22 */
-/***/ (function(module, exports) {
-
-	module.exports = function (it) {
-	  return typeof it === 'object' ? it !== null : typeof it === 'function';
-	};
-
-
-/***/ }),
-/* 23 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	module.exports = !__webpack_require__(24) && !__webpack_require__(25)(function () {
-	  return Object.defineProperty(__webpack_require__(26)('div'), 'a', { get: function () { return 7; } }).a != 7;
-	});
-
-
-/***/ }),
-/* 24 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	// Thank's IE8 for his funny defineProperty
-	module.exports = !__webpack_require__(25)(function () {
-	  return Object.defineProperty({}, 'a', { get: function () { return 7; } }).a != 7;
-	});
-
-
-/***/ }),
-/* 25 */
-/***/ (function(module, exports) {
-
-	module.exports = function (exec) {
-	  try {
-	    return !!exec();
-	  } catch (e) {
-	    return true;
-	  }
-	};
-
-
-/***/ }),
-/* 26 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	var isObject = __webpack_require__(22);
-	var document = __webpack_require__(15).document;
-	// typeof document.createElement is 'object' in old IE
-	var is = isObject(document) && isObject(document.createElement);
-	module.exports = function (it) {
-	  return is ? document.createElement(it) : {};
-	};
-
-
-/***/ }),
-/* 27 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	// 7.1.1 ToPrimitive(input [, PreferredType])
-	var isObject = __webpack_require__(22);
-	// instead of the ES6 spec version, we didn't implement @@toPrimitive case
-	// and the second argument - flag - preferred type is a string
-	module.exports = function (it, S) {
-	  if (!isObject(it)) return it;
-	  var fn, val;
-	  if (S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it))) return val;
-	  if (typeof (fn = it.valueOf) == 'function' && !isObject(val = fn.call(it))) return val;
-	  if (!S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it))) return val;
-	  throw TypeError("Can't convert object to primitive value");
-	};
-
-
-/***/ }),
-/* 28 */
-/***/ (function(module, exports) {
-
-	module.exports = function (bitmap, value) {
-	  return {
-	    enumerable: !(bitmap & 1),
-	    configurable: !(bitmap & 2),
-	    writable: !(bitmap & 4),
-	    value: value
-	  };
-	};
-
-
-/***/ }),
-/* 29 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var _typeof2 = __webpack_require__(30);
-
-	var _typeof3 = _interopRequireDefault(_typeof2);
-
-	var _stringify = __webpack_require__(83);
-
-	var _stringify2 = _interopRequireDefault(_stringify);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	(function () {
-	  var last_scroll = 0;
-	  function disableScroll() {
-	    last_scroll = document.body.scrollTop;
-	    window.document.body.style.top = -last_scroll + 'px';
-	    window.document.body.className += ' noscroll';
-	  }
-
-	  function enableScroll() {
-	    window.document.body.className = window.document.body.className.replace(' noscroll', '');
-	    window.document.body.style.top = 0;
-	    window.scrollTo(0, last_scroll);
-	  }
-
-	  var SAILPLAY = function () {
-
-	    //methods that not supported in old browsers
-	    if (!Array.prototype.indexOf) {
-	      Array.prototype.indexOf = function (elt /*, from*/) {
-	        var len = this.length >>> 0;
-
-	        var from = Number(arguments[1]) || 0;
-	        from = from < 0 ? Math.ceil(from) : Math.floor(from);
-	        if (from < 0) from += len;
-
-	        for (; from < len; from++) {
-	          if (from in this && this[from] === elt) return from;
-	        }
-	        return -1;
-	      };
-	    }
-
-	    var cookies = {
-	      createCookie: function createCookie(name, value, days) {
-	        var expires;
-	        if (days) {
-	          var date = new Date();
-	          date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
-	          expires = "; expires=" + date.toGMTString();
-	        } else expires = "";
-	        document.cookie = name + "=" + value + expires + "; path=/";
-	      },
-	      readCookie: function readCookie(name) {
-	        var nameEQ = name + "=";
-	        var ca = document.cookie.split(';');
-	        for (var i = 0; i < ca.length; i++) {
-	          var c = ca[i];
-	          while (c.charAt(0) == ' ') {
-	            c = c.substring(1, c.length);
-	          }if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
-	        }
-	        return null;
-	      },
-	      eraseCookie: function eraseCookie(name) {
-	        cookies.createCookie(name, "", -1);
-	      }
-	    };
-
-	    //simple jsonp service
-	    var JSONP = {
-	      currentScript: null,
-	      get: function get(url, data, success, error) {
-	        var src = url + (url.indexOf("?") + 1 ? "&" : "?");
-	        var head = document.getElementsByTagName("head")[0];
-	        var newScript = document.createElement("script");
-	        var params = [];
-
-	        data = data || {};
-
-	        //auth_hash checking
-	        if (!_config.auth_hash) {
-	          delete data.auth_hash;
-	        }
-
-	        window.JSONP_CALLBACK = window.JSONP_CALLBACK || {};
-
-	        var callback_name = 'sailplay_' + new Date().getTime() + Math.random().toString().replace('.', '');
-
-	        var jsonpTimeout = setTimeout(function () {
-	          try {
-	            head.removeChild(newScript);
-	          } catch (err) {}
-	          delete window.JSONP_CALLBACK[callback_name];
-	        }, 10000);
-
-	        window.JSONP_CALLBACK[callback_name] = function (data) {
-	          clearTimeout(jsonpTimeout);
-	          try {
-	            head.removeChild(newScript);
-	          } catch (err) {}
-	          delete window.JSONP_CALLBACK[callback_name];
-	          success && success(data);
-	        };
-
-	        data["callback"] = 'JSONP_CALLBACK.' + callback_name;
-	        if (_config.dep_id) data.dep_id = _config.dep_id;
-
-	        for (var param_name in data) {
-	          params.push(param_name + "=" + encodeURIComponent(data[param_name]));
-	        }
-	        src += params.join("&");
-
-	        newScript.type = "text/javascript";
-	        newScript.src = src;
-	        newScript.onerror = function (ex) {
-	          try {
-	            head.removeChild(newScript);
-	          } catch (err) {}
-	          delete window.JSONP_CALLBACK[callback_name];
-	          error && error(ex);
-	        };
-
-	        head.insertBefore(newScript, head.firstChild);
-	      },
-	      success: null
-	    };
-
-	    var sp = {};
-
-	    //observer pattern
-	    var _handlers = {};
-
-	    sp.on = function (event, handler) {
-	      if (typeof _handlers[event] == "undefined") _handlers[event] = [];
-	      _handlers[event].push(handler);
-	    };
-
-	    sp.send = function (event, data, callback) {
-	      if (_handlers[event]) {
-	        for (var i = 0; i < _handlers[event].length; i++) {
-	          _handlers[event][i](data, callback);
-	        }
-	      }
-	    };
-
-	    //private config
-	    var _config = {};
-	    var _remote_login_init = false;
-
-	    function initError() {
-	      alert('Please init SailPlay HUB first!');
-	    }
-
-	    function remoteLogin(opts) {
-
-	      var frame;
-	      disableScroll();
-	      opts = opts || {};
-
-	      if (opts.node && opts.node.nodeType == 1 && opts.node.tagName == 'IFRAME') {
-	        frame = opts.node;
-	      } else {
-	        frame = document.createElement('IFRAME');
-	        frame.style.border = 'none';
-	        frame.style.position = 'fixed';
-	        frame.style.top = '0';
-	        frame.style.left = '0';
-	        frame.style.bottom = '0';
-	        frame.style.right = '0';
-	        frame.style.width = '100%';
-	        frame.style.height = '100%';
-	        frame.created = true;
-	        frame.style.background = 'transparent';
-	        frame.style.margin = 'auto';
-	        frame.style.zIndex = '100000';
-	        document.body.appendChild(frame);
-	      }
-
-	      var frame_id = frame.id || 'sailplay_login_frame_' + new Date().getTime();
-
-	      frame.name = frame_id;
-	      frame.id = frame_id;
-
-	      function onMessage(messageEvent) {
-
-	        var data = {};
-
-	        var _domain = _config.DOMAIN.indexOf('http:') != -1 || _config.DOMAIN.indexOf('https:') != -1 ? _config.DOMAIN : 'http:' + _config.DOMAIN;
-
-	        if (messageEvent.origin == _domain) {
-	          try {
-	            data = JSON.parse(messageEvent.data);
-	          } catch (e) {}
-	        }
-	        if (data.name == 'login.success') {
-	          sp.send('login.do', data.auth_hash);
-	          return;
-	        }
-	        if (data.name == 'login.cancel') {
-	          sp.send('login.cancel');
-	          cancelLogin();
-	          enableScroll();
-	          return;
-	        }
-	        if (data.name == 'login.check') {
-	          if (data.auth_hash == 'None') {
-	            sp.send('logout');
-	          } else {
-	            cancelLogin();
-	            enableScroll();
-	            sp.send('login.do', data.auth_hash, data);
-	          }
-	          return;
-	        }
-	        if (data.name == 'logout.success') {
-	          _config.auth_hash = '';
-	          sp.send('logout.success');
-	        }
-	      }
-
-	      function cancelLogin() {
-	        if (frame.created) {
-	          document.body.removeChild(frame);
-	          window.removeEventListener("message", onMessage, false);
-	          _remote_login_init = false;
-	        }
-	      }
-
-	      var params = {};
-	      params.partner_id = _config.partner.id;
-	      params.dep_id = _config.dep_id || '';
-	      params.background = opts.background || '';
-	      params.partner_info = opts.partner_info || 0;
-	      params.user_agreement_link = opts.user_agreement_link;
-	      if (opts.reg_match_email_oid) {
-	        params.reg_match_email_oid = opts.reg_match_email_oid;
-	      }
-	      if (opts.css_link) {
-	        params.css_link = opts.css_link;
-	      }
-	      if (opts.lang) {
-	        params.lang = opts.lang;
-	      }
-	      params.disabled_options = opts.disabled_options || '';
-	      params.texts = (0, _stringify2.default)(opts.texts || '');
-	      params.form_variant = 'hc';
-
-	      var params_string = [];
-	      console.log(params);
-	      var src = _config.DOMAIN + '/users/auth-page/?';
-	      for (var param_name in params) {
-	        params_string.push(param_name + "=" + encodeURIComponent(params[param_name]));
-	      }
-	      src += params_string.join("&");
-
-	      frame.setAttribute('src', src);
-
-	      if (!_remote_login_init) {
-	        window.addEventListener("message", onMessage, false);
-	        _remote_login_init = true;
-	      }
-	    }
-
-	    //init function
-	    sp.on('init', function (params) {
-	      if (!params) {
-	        alert('SailPlay: provide required parameters');
-	      }
-	      if (!params.partner_id) {
-	        alert('SailPlay: provide partner_id');
-	        return;
-	      }
-	      JSONP.get((params.domain || 'http://sailplay.ru') + '/js-api/' + params.partner_id + '/config/', {
-	        lang: params.lang || 'ru',
-	        dep_id: params.dep_id || ''
-	      }, function (response) {
-	        if (response && response.status == 'ok') {
-
-	          //postmessage events init
-	          //1. bind action events
-	          var onActionMessage = function onActionMessage(messageEvent) {
-	            var data = {};
-	            if (messageEvent.origin == _config.DOMAIN) {
-	              try {
-	                data = JSON.parse(messageEvent.data);
-	              } catch (e) {}
-
-	              switch (data && data.name) {
-	                case 'actions.perform.success':
-	                  sp.send('actions.perform.success', data);
-	                  break;
-	                case 'actions.perform.error':
-	                  sp.send('actions.perform.error', data);
-	                  break;
-	                case 'actions.social.connect.complete':
-	                  sp.send('actions.social.connect.complete', data);
-	                  break;
-	                case 'actions.social.connect.success':
-	                  sp.send('actions.social.connect.success', data);
-	                  break;
-	                case 'actions.social.connect.error':
-	                  sp.send('actions.social.connect.error', data);
-	                  break;
-	                case 'friend_invite_cookie':
-	                  break;
-	                case 'actions.social.gp.like.mouseenter':
-	                  sp.send('actions.social.gp.like.mouseenter');
-	                  break;
-	                case 'actions.social.gp.like.mouseleave':
-	                  sp.send('actions.social.gp.like.mouseleave');
-	                  break;
-	              }
-	            }
-	          };
-
-	          _config = response.config;
-	          _config.DOMAIN = params.domain || 'http://sailplay.ru';
-	          _config.dep_id = params.dep_id || '';
-	          _config.env.staticUrl = params.static_url || _config.env.staticUrl;
-	          _config.social_networks = ['fb', 'vk', 'tw', 'gp', 'ok'];
-	          _config.platform = params.platform || 'desktop';
-
-	          window.addEventListener("message", onActionMessage, false);
-
-	          //2. recieve ref_hash info
-	          // _config.ref_hash = sp.url_params().ref_hash || '';
-	          //var cookie_frame = document.createElement('IFRAME');
-	          //cookie_frame.style.width = 0;
-	          //cookie_frame.style.height = 0;
-	          //cookie_frame.style.top = '-10000px';
-	          //cookie_frame.style.left = '-10000px';
-	          //cookie_frame.src = _config.DOMAIN + '/js-api/' + _config.partner.id + '/actions/social-widget/v2/';
-	          //document.body.appendChild(cookie_frame);
-	          //cookie_frame.onload = function(){
-	          //  document.body.removeChild(cookie_frame);
-	          //};
-
-	          sp.send('init.success', _config);
-	          //        console.dir(_config);
-	        } else {
-	          sp.send('init.error', response);
-	          alert('SailPlay: app load failed!');
-	        }
-	      });
-	    });
-
-	    sp.on('login.remote', function (options) {
-	      remoteLogin(options);
-	    });
-
-	    //////////////////
-	    //bind hub events
-	    sp.on('language.set', function (lang) {
-	      if (_config == {}) {
-	        initError();
-	        return;
-	      }
-	      if (typeof lang == 'string') {
-	        JSONP.get(_config.DOMAIN + '/js-api/' + _config.partner.id + '/config/', { lang: lang }, function (response) {
-	          if (response && response.status == 'ok') {
-	            _config.lang = response.config.lang;
-	            sp.send('language.set.success', _config.lang);
-	            //        console.dir(_config);
-	          } else {
-	            sp.send('language.set.error', response);
-	          }
-	        });
-	      }
-	    });
-
-	    //////////////////
-	    //bind api events
-
-	    //LOGIN & LOGOUT
-	    sp.on('login.do', function (auth_hash) {
-	      _config.auth_hash = auth_hash;
-	      //    cookies.createCookie('sp_auth_hash', _config.auth_hash);
-	      var params = {
-	        auth_hash: _config.auth_hash
-	      };
-	      JSONP.get(_config.DOMAIN + _config.urls.users.info, params, function (res) {
-	        //      console.dir(res);
-	        if (res.status == 'ok') {
-	          sp.send('login.success', res.user);
-	        } else {
-	          _config.auth_hash = '';
-	          //        cookies.eraseCookie('sp_auth_hash');
-	          sp.send('login.error', res);
-	        }
-	      });
-	    });
-
-	    sp.on('login', function (auth_hash) {
-
-	      if (_config == {}) {
-	        initError();
-	        return;
-	      }
-
-	      sp.send('login.do', auth_hash);
-	    });
-
-	    sp.on('logout', function () {
-	      if (_config == {}) {
-	        initError();
-	        return;
-	      }
-	      var req = document.createElement('iframe');
-	      req.width = 0;
-	      req.height = 0;
-	      req.style.border = 'none';
-	      req.src = _config.DOMAIN + '/users/logout/';
-	      document.body.appendChild(req);
-	      req.onload = function () {
-	        document.body.removeChild(req);
-	        _config.auth_hash = '';
-	        cookies.eraseCookie('sp_auth_hash');
-	        sp.send('logout.success');
-	      };
-	    });
-
-	    //USER INFO
-	    sp.on('load.user.info', function (p, callback) {
-	      if (_config == {}) {
-	        initError();
-	        return;
-	      }
-	      var params = {
-	        user_status: 1,
-	        badges: 1,
-	        last_badge: 1
-	      };
-	      if (p && p.purchases) {
-	        params.purchases = p.purchases;
-	      }
-	      if (p && p.all) {
-	        params.all = p.all;
-	      }
-	      if (p && p.user) {
-	        for (var param in p.user) {
-	          params[param] = p.user[param];
-	        }
-	      } else {
-	        params.auth_hash = _config.auth_hash;
-	      }
-	      JSONP.get(_config.DOMAIN + _config.urls.users.info, params, function (res) {
-	        callback && callback(res);
-	        if (res.status == 'ok') {
-	          sp.send('load.user.info.success', res);
-	        } else {
-	          sp.send('load.user.info.error', res);
-	        }
-	      });
-	    });
-
-	    sp.on('users.update', function (params, callback) {
-
-	      if (_config == {}) {
-	        initError();
-	        return;
-	      }
-
-	      params = params || {};
-
-	      if (_config.auth_hash) {
-	        params.auth_hash = _config.auth_hash;
-	      }
-
-	      JSONP.get(_config.DOMAIN + '/js-api/' + _config.partner.id + '/users/update/', params, function (res) {
-
-	        callback && callback(res);
-
-	        if (res.status === 'ok') {
-	          sp.send('users.update.success', res);
-	        } else {
-	          sp.send('users.update.error', res);
-	        }
-	      });
-	    });
-
-	    //user feedback
-	    sp.on('users.feedback', function (params, callback) {
-
-	      if (_config == {}) {
-	        initError();
-	        return;
-	      }
-
-	      params = params || {};
-
-	      if (_config.auth_hash) {
-	        params.auth_hash = _config.auth_hash;
-	      } else {
-	        sp.send('auth.error');
-	        return;
-	      }
-
-	      JSONP.get(_config.DOMAIN + _config.urls.users.feedback, params, function (res) {
-
-	        callback && callback(res);
-
-	        if (res.status === 'ok') {
-	          sp.send('users.feedback.success', res);
-	        } else {
-	          sp.send('users.feedback.error', res);
-	        }
-	      });
-	    });
-
-	    //USER HISTORY
-	    sp.on('load.user.history', function (params) {
-	      if (_config == {}) {
-	        initError();
-	        return;
-	      }
-
-	      params = params || {};
-
-	      if (_config.auth_hash) {
-	        params.auth_hash = _config.auth_hash;
-	      }
-
-	      JSONP.get(_config.DOMAIN + _config.urls.users.history, params, function (res) {
-	        //      console.dir(res);
-	        if (res.status == 'ok') {
-	          sp.send('load.user.history.success', res.history);
-	        } else {
-	          sp.send('load.user.history.error', res);
-	        }
-	      });
-	    });
-
-	    //GIFTS GET INFO
-	    sp.on('gifts.get', function (giftId) {
-	      if (_config == {}) {
-	        initError();
-	        return;
-	      }
-	      var params = {
-	        gift_id: giftId,
-	        auth_hash: _config.auth_hash
-	      };
-	      JSONP.get(_config.DOMAIN + _config.urls.gifts.get, params, function (res) {
-	        //      console.dir(res);
-	        if (res.status == 'ok') {
-	          sp.send('gifts.get.success', res.gift);
-	        } else {
-	          sp.send('gifts.get.error', res);
-	        }
-	      });
-	    });
-
-	    //GIFTS LIST
-	    sp.on('load.gifts.list', function (params) {
-
-	      if (_config == {}) {
-	        initError();
-	        return;
-	      }
-
-	      params = params || {};
-
-	      if (_config.auth_hash) {
-	        params.auth_hash = _config.auth_hash;
-	      }
-
-	      params.lang = params.lang || _config.lang || 'ru';
-
-	      JSONP.get(_config.DOMAIN + _config.urls.gifts.list, params, function (res) {
-	        //      console.dir(res);
-	        if (res.status == 'ok') {
-	          sp.send('load.gifts.list.success', res.gifts);
-	        } else {
-	          sp.send('load.gifts.list.error', res);
-	        }
-	      });
-	    });
-
-	    //GIFT CATEGORIES
-	    sp.on('load.gifts.categories', function (params) {
-
-	      if (_config == {}) {
-	        initError();
-	        return;
-	      }
-
-	      params = params || {};
-
-	      JSONP.get(_config.DOMAIN + _config.urls.gifts.categories_list, params, function (res) {
-	        if (res.status == 'ok') {
-	          sp.send('load.gifts.categories.success', res.categories);
-	        } else {
-	          sp.send('load.gifts.categories.error', res);
-	        }
-	      });
-	    });
-
-	    //GET GIFT
-	    function forceCompleteGiftPurchase(giftPurchase, opts) {
-	      var params = {
-	        gift_public_key: giftPurchase.gift_public_key,
-	        auth_hash: _config.auth_hash
-	      };
-	      if (opts && opts.no_user_sms) {
-	        params.no_user_sms = opts.no_user_sms;
-	      }
-	      JSONP.get(_config.DOMAIN + _config.urls.gifts.purchase.force_confirm, params, function (res) {
-	        if (res.status == 'ok') {
-	          sp.send('gift.purchase.force_complete.success', res);
-	        } else {
-	          sp.send('gift.purchase.force_complete.error', res);
-	        }
-	        //      console.dir(res);
-	      });
-	    }
-
-	    //CREATE GIFT PURCHASE V1
-	    sp.on('gifts.purchase', function (p) {
-	      if (_config == {}) {
-	        initError();
-	        return;
-	      }
-	      var gift = p.gift || {};
-	      if (!_config.auth_hash) {
-	        sp.send('gifts.purchase.auth.error', gift);
-	      } else {
-	        var params = {
-	          gift_id: gift.id,
-	          dep_id: _config.dep_id || _config.partner.depId || '',
-	          auth_hash: _config.auth_hash
-	        };
-	        JSONP.get(_config.DOMAIN + _config.urls.gifts.purchase.purchase, params, function (res) {
-	          if (res.status == 'ok') {
-	            sp.send('gifts.purchase.success', res);
-	            if (res.is_completed) {
-	              var requestedPurchase = res;
-	              if (!requestedPurchase.request_to_partner_url) {
-	                forceCompleteGiftPurchase(requestedPurchase, p.options);
-	              } else {
-	                var reqGiftPurchase = {
-	                  gift_public_key: requestedPurchase['gift_public_key'],
-	                  gift_sku: requestedPurchase['gift_sku'],
-	                  auth_hash: _config.auth_hash
-	                };
-	                if (requestedPurchase['user_phone']) {
-	                  reqGiftPurchase['user_phone'] = requestedPurchase['user_phone'];
-	                }
-	                if (requestedPurchase['email']) {
-	                  reqGiftPurchase['email'] = requestedPurchase['email'];
-	                }
-	                JSONP.get(requestedPurchase.request_to_partner_url, reqGiftPurchase, function (res) {
-	                  sp.send('gifts.purchase.partner_request.success', res);
-	                }, function (res) {
-	                  sp.send('gifts.purchase.partner_request.error', res);
-	                  forceCompleteGiftPurchase(requestedPurchase, p.options);
-	                });
-	              }
-	            }
-	          } else {
-	            sp.send('gift.purchase.error', res);
-	          }
-	          //        console.dir(res);
-	        });
-	      }
-	    });
-
-	    //BADGES LIST
-	    sp.on('load.badges.list', function (p) {
-	      if (_config == {}) {
-	        initError();
-	        return;
-	      }
-	      var params = {
-	        auth_hash: _config.auth_hash,
-	        lang: p && p.lang || _config.lang || 'ru'
-	      };
-	      if (p) {
-	        if (p.include_rules) {
-	          params.include_rules = 1;
-	        }
-	      }
-	      JSONP.get(_config.DOMAIN + _config.urls.badges.list, params, function (res) {
-
-	        //      console.dir(res);
-	        if (res.status == 'ok') {
-	          var create_badge_actions = function create_badge_actions(badge) {
-	            if (badge && badge.is_received) {
-
-	              badge.actions = {};
-
-	              for (var sn in _config.social_networks) {
-
-	                badge.actions[_config.social_networks[sn]] = {
-
-	                  socialType: _config.social_networks[sn],
-	                  action: 'badge',
-	                  shortLink: window.location.href,
-	                  pic: badge.thumbs.url_250x250,
-	                  badgeId: badge.id,
-	                  msg: badge.share_msg
-
-	                };
-	              }
-	            }
-	          };
-
-	          for (var ch in res.multilevel_badges) {
-
-	            var multi_line = res.multilevel_badges[ch];
-
-	            for (var b in multi_line) {
-
-	              create_badge_actions(multi_line[b]);
-	            }
-	          }
-
-	          for (var olb in res.one_level_badges) {
-
-	            create_badge_actions(res.one_level_badges[olb]);
-	          }
-
-	          sp.send('load.badges.list.success', res);
-	        } else {
-	          sp.send('load.badges.list.error', res);
-	        }
-	      });
-	    });
-
-	    //PROMO-CODES SECTION
-	    sp.on('promocodes.apply', function (promocode) {
-	      if (_config == {}) {
-	        initError();
-	        return;
-	      }
-	      promocode.auth_hash = _config.auth_hash;
-	      if (_config.auth_hash) {
-	        JSONP.get(_config.DOMAIN + _config.urls.promocodes.apply, promocode, function (res) {
-	          if (res.status == 'ok') {
-	            sp.send('promocodes.apply.success', res);
-	          } else {
-	            sp.send('promocodes.apply.error', res);
-	          }
-	        });
-	      } else {
-	        sp.send('promocodes.apply.auth.error', action);
-	      }
-	    });
-
-	    // user update
-	    sp.on("user.update", function (params) {
-	      if (_config == {}) {
-	        initError();
-	        return;
-	      }
-	      JSONP.get(_config.DOMAIN + "/js-api/" + _config.partner.id + "/users/update/", params, function (res) {
-	        if (res.status == 'ok') {
-	          sp.send('user.update.success', res);
-	        } else {
-	          sp.send('user.update.error', res);
-	        }
-	      });
-	    });
-
-	    //TAGS SECTIONS
-	    sp.on('tags.add', function (data, callback) {
-	      if (_config == {}) {
-	        initError();
-	        return;
-	      }
-	      if (_config.auth_hash || data.user) {
-	        var tagsObj = {
-	          tags: data.tags && data.tags.join(',') || []
-	        };
-	        if (data.user) {
-	          for (var p in data.user) {
-	            tagsObj[p] = data.user[p];
-	          }
-	        } else {
-	          tagsObj.auth_hash = _config.auth_hash;
-	        }
-	        JSONP.get(_config.DOMAIN + _config.urls.tags.add, tagsObj, function (res) {
-	          callback && callback(res);
-	          if (res.status == 'ok') {
-	            sp.send('tags.add.success', res);
-	          } else {
-	            sp.send('tags.add.error', res);
-	          }
-	        });
-	      } else {
-	        SAILPLAY.send('tags.add.auth.error', data);
-	      }
-	    });
-
-	    sp.on('tags.delete', function (data, callback) {
-	      if (_config == {}) {
-	        initError();
-	        return;
-	      }
-	      if (_config.auth_hash || data.user) {
-	        var tagsObj = {
-	          tags: data.tags && data.tags.join(',') || []
-	        };
-	        if (data.user) {
-	          for (var p in data.user) {
-	            tagsObj[p] = data.user[p];
-	          }
-	        } else {
-	          tagsObj.auth_hash = _config.auth_hash;
-	        }
-	        JSONP.get(_config.DOMAIN + _config.urls.tags.delete, tagsObj, function (res) {
-	          callback && callback(res);
-	          if (res.status == 'ok') {
-	            sp.send('tags.delete.success', res);
-	          } else {
-	            sp.send('tags.delete.error', res);
-	          }
-	        });
-	      } else {
-	        SAILPLAY.send('tags.delete.auth.error', data);
-	      }
-	    });
-
-	    // tag exist
-	    sp.on("tags.exist", function (data, callback) {
-	      if (_config == {}) {
-	        initError();
-	        return;
-	      }
-	      if (_config.auth_hash || data.user) {
-	        var obj = {
-	          tags: (0, _stringify2.default)(data.tags)
-	        };
-	        if (data.user) {
-	          for (var p in data.user) {
-	            obj[p] = data.user[p];
-	          }
-	        } else {
-	          obj.auth_hash = _config.auth_hash;
-	        }
-	        obj.lang = data.lang || _config.lang || 'ru';
-	        JSONP.get(_config.DOMAIN + _config.urls.tags.exist, obj, function (res) {
-	          if (res.status == 'ok') {
-	            sp.send('tags.exist.success', res);
-	          } else {
-	            sp.send('tags.exist.error', res);
-	          }
-	          callback && callback(res);
-	        });
-	      } else {
-	        sp.send('tags.exist.auth.error', data);
-	      }
-	    });
-
-	    /**
-	     * Add variables to user
-	     * @object data {custom_vars:{}, user: {}}
-	     * @function callback
-	     */
-	    sp.on('vars.add', function (data, callback) {
-
-	      if (_config == {}) {
-	        initError();
-	        return;
-	      }
-
-	      if (_config.auth_hash || data.user) {
-
-	        var obj = data.custom_vars;
-
-	        if (data.user) for (var p in data.user) {
-	          obj[p] = data.user[p];
-	        } else obj.auth_hash = _config.auth_hash;
-
-	        obj.lang = data.lang || _config.lang || 'ru';
-
-	        JSONP.get(_config.DOMAIN + _config.urls.users.custom_variables.add, obj, function (res) {
-	          if (res.status == 'ok') sp.send('vars.add.success', res);else sp.send('vars.add.error', res);
-	          callback && callback(res);
-	        });
-	      } else {
-	        sp.send('vars.add.auth.error', data);
-	      }
-	    });
-
-	    /**
-	     * Get user variables
-	     * @object data {names: [], user: {}}
-	     * @function callback
-	     */
-	    sp.on("vars.batch", function (data, callback) {
-
-	      if (_config == {}) {
-	        initError();
-	        return;
-	      }
-
-	      if (_config.auth_hash || data.user) {
-
-	        var obj = {
-	          names: (0, _stringify2.default)(data.names)
-	        };
-
-	        if (data.user) for (var p in data.user) {
-	          obj[p] = data.user[p];
-	        } else obj.auth_hash = _config.auth_hash;
-
-	        obj.lang = data.lang || _config.lang || 'ru';
-
-	        JSONP.get(_config.DOMAIN + _config.urls.users.custom_variables.batch_get, obj, function (res) {
-	          if (res.status == 'ok') sp.send('vars.batch.success', res);else sp.send('vars.batch.error', res);
-	          callback && callback(res);
-	        });
-	      } else {
-	        sp.send('vars.batch.auth.error', data);
-	      }
-	    });
-
-	    //LEADERBOARD SECTION
-	    sp.on('leaderboard.load', function () {
-	      if (_config == {}) {
-	        initError();
-	        return;
-	      }
-	      var tagsObj = {
-	        auth_hash: _config.auth_hash
-	      };
-	      JSONP.get(_config.DOMAIN + _config.urls.leaderboard.data, tagsObj, function (res) {
-	        if (res.status == 'ok') {
-	          sp.send('leaderboard.load.success', res.data);
-	        } else {
-	          sp.send('leaderboard.load.error', res);
-	        }
-	      });
-	    });
-
-	    //REVIEWS SECTION
-	    sp.on('load.reviews.list', function (data) {
-	      if (_config == {}) {
-	        initError();
-	        return;
-	      }
-
-	      var req_data = {};
-
-	      if (data) {
-	        req_data.page = data.page || 1;
-	      }
-
-	      JSONP.get(_config.DOMAIN + _config.urls.reviews.list, req_data, function (res) {
-	        if (res.status == 'ok') {
-	          sp.send('load.reviews.list.success', { page: res.page, pages: res.pages, reviews: res.reviews });
-	        } else {
-	          sp.send('load.reviews.list.error', res);
-	        }
-	      });
-	    });
-
-	    sp.on('reviews.add', function (data) {
-	      if (_config == {}) {
-	        initError();
-	        return;
-	      }
-	      var req_data = {
-	        auth_hash: _config.auth_hash,
-	        rating: data.rating || '',
-	        review: data.review || ''
-	      };
-	      JSONP.get(_config.DOMAIN + _config.urls.reviews.add, req_data, function (res) {
-	        if (res.status == 'ok') {
-	          sp.send('reviews.add.success', res);
-	        } else {
-	          sp.send('reviews.add.error', res);
-	        }
-	      });
-	    });
-
-	    sp.on('purchases.add', function (data) {
-	      if (_config == {}) {
-	        initError();
-	        return;
-	      }
-	      var req_data = {
-	        auth_hash: _config.auth_hash,
-	        price: data.price || '',
-	        order_num: data.order_num || ''
-	      };
-	      JSONP.get(_config.DOMAIN + _config.urls.purchase, req_data, function (res) {
-	        if (res.status == 'ok') {
-	          sp.send('purchases.add.success', res);
-	        } else {
-	          sp.send('purchases.add.error', res);
-	        }
-	      });
-	    });
-
-	    sp.on('magic.config', function (name) {
-	      if (_config == {}) {
-	        initError();
-	        return;
-	      }
-	      JSONP.get(_config.DOMAIN + _config.urls.loyalty_page_config_by_name, { name: name || 'default' }, function (res) {
-	        if (res.status == 'ok') {
-	          sp.send('magic.config.success', res);
-	        } else {
-	          sp.send('magic.config.error', res);
-	        }
-	      });
-	    });
-
-	    //utils
-	    sp.config = function () {
-	      return _config;
-	    };
-
-	    sp.find_by_properties = function (arr, props) {
-	      var filtered_arr = [];
-	      for (var i = 0; i < arr.length; i += 1) {
-	        var seeked = arr[i];
-	        var good = true;
-	        for (var p in props) {
-	          if (props[p] != seeked[p]) {
-	            good = false;
-	          }
-	        }
-	        if (good) filtered_arr.push(seeked);
-	      }
-	      return filtered_arr;
-	    };
-
-	    sp.jsonp = JSONP;
-
-	    sp.cookies = cookies;
-
-	    sp.is_dom = function (obj) {
-	      //Returns true if it is a DOM node
-
-	      function isNode(o) {
-	        return (typeof Node === 'undefined' ? 'undefined' : (0, _typeof3.default)(Node)) === "object" ? o instanceof Node : o && (typeof o === 'undefined' ? 'undefined' : (0, _typeof3.default)(o)) === "object" && typeof o.nodeType === "number" && typeof o.nodeName === "string";
-	      }
-
-	      //Returns true if it is a DOM element
-	      function isElement(o) {
-	        return (typeof HTMLElement === 'undefined' ? 'undefined' : (0, _typeof3.default)(HTMLElement)) === "object" ? o instanceof HTMLElement : //DOM2
-	        o && (typeof o === 'undefined' ? 'undefined' : (0, _typeof3.default)(o)) === "object" && o !== null && o.nodeType === 1 && typeof o.nodeName === "string";
-	      }
-
-	      return isNode(obj) || isElement(obj);
-	    };
-
-	    sp.url_params = function () {
-	      // This function is anonymous, is executed immediately and
-	      // the return value is assigned to QueryString!
-	      var query_string = {};
-	      var query = window.location.search.substring(1);
-	      var vars = query.split("&");
-	      for (var i = 0; i < vars.length; i++) {
-	        var pair = vars[i].split("=");
-	        var uri_component = pair && pair[1] ? pair[1].replace(/%([^\d].)/, "%25$1") : '';
-	        // If first entry with this name
-	        if (typeof query_string[pair[0]] === "undefined") {
-	          query_string[pair[0]] = decodeURIComponent(uri_component);
-	          // If second entry with this name
-	        } else if (typeof query_string[pair[0]] === "string") {
-	          query_string[pair[0]] = [query_string[pair[0]], decodeURIComponent(uri_component)];
-	          // If third or later entry with this name
-	        } else {
-	          query_string[pair[0]].push(decodeURIComponent(uri_component));
-	        }
-	      }
-	      return query_string;
-	    };
-
-	    return sp;
-	  }();
-
-	  if (typeof window !== 'undefined') window.SAILPLAY = SAILPLAY;
-	  if (true) module.exports = SAILPLAY;
-	  if (true) exports = SAILPLAY;
-	})();
-
-/***/ }),
-/* 30 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	exports.__esModule = true;
-
-	var _iterator = __webpack_require__(31);
-
-	var _iterator2 = _interopRequireDefault(_iterator);
-
-	var _symbol = __webpack_require__(67);
-
-	var _symbol2 = _interopRequireDefault(_symbol);
-
-	var _typeof = typeof _symbol2.default === "function" && typeof _iterator2.default === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof _symbol2.default === "function" && obj.constructor === _symbol2.default && obj !== _symbol2.default.prototype ? "symbol" : typeof obj; };
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	exports.default = typeof _symbol2.default === "function" && _typeof(_iterator2.default) === "symbol" ? function (obj) {
-	  return typeof obj === "undefined" ? "undefined" : _typeof(obj);
-	} : function (obj) {
-	  return obj && typeof _symbol2.default === "function" && obj.constructor === _symbol2.default && obj !== _symbol2.default.prototype ? "symbol" : typeof obj === "undefined" ? "undefined" : _typeof(obj);
-	};
-
-/***/ }),
-/* 31 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	module.exports = { "default": __webpack_require__(32), __esModule: true };
-
-/***/ }),
-/* 32 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	__webpack_require__(33);
-	__webpack_require__(62);
-	module.exports = __webpack_require__(66).f('iterator');
-
-
-/***/ }),
-/* 33 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var $at = __webpack_require__(34)(true);
-
-	// 21.1.3.27 String.prototype[@@iterator]()
-	__webpack_require__(37)(String, 'String', function (iterated) {
-	  this._t = String(iterated); // target
-	  this._i = 0;                // next index
-	// 21.1.5.2.1 %StringIteratorPrototype%.next()
-	}, function () {
-	  var O = this._t;
-	  var index = this._i;
-	  var point;
-	  if (index >= O.length) return { value: undefined, done: true };
-	  point = $at(O, index);
-	  this._i += point.length;
-	  return { value: point, done: false };
-	});
-
-
-/***/ }),
-/* 34 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	var toInteger = __webpack_require__(35);
-	var defined = __webpack_require__(36);
-	// true  -> String#at
-	// false -> String#codePointAt
-	module.exports = function (TO_STRING) {
-	  return function (that, pos) {
-	    var s = String(defined(that));
-	    var i = toInteger(pos);
-	    var l = s.length;
-	    var a, b;
-	    if (i < 0 || i >= l) return TO_STRING ? '' : undefined;
-	    a = s.charCodeAt(i);
-	    return a < 0xd800 || a > 0xdbff || i + 1 === l || (b = s.charCodeAt(i + 1)) < 0xdc00 || b > 0xdfff
-	      ? TO_STRING ? s.charAt(i) : a
-	      : TO_STRING ? s.slice(i, i + 2) : (a - 0xd800 << 10) + (b - 0xdc00) + 0x10000;
-	  };
-	};
-
-
-/***/ }),
-/* 35 */
-/***/ (function(module, exports) {
-
-	// 7.1.4 ToInteger
-	var ceil = Math.ceil;
-	var floor = Math.floor;
-	module.exports = function (it) {
-	  return isNaN(it = +it) ? 0 : (it > 0 ? floor : ceil)(it);
-	};
-
-
-/***/ }),
-/* 36 */
-/***/ (function(module, exports) {
-
-	// 7.2.1 RequireObjectCoercible(argument)
-	module.exports = function (it) {
-	  if (it == undefined) throw TypeError("Can't call method on  " + it);
-	  return it;
-	};
-
-
-/***/ }),
-/* 37 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var LIBRARY = __webpack_require__(38);
-	var $export = __webpack_require__(14);
-	var redefine = __webpack_require__(39);
-	var hide = __webpack_require__(19);
-	var has = __webpack_require__(40);
-	var Iterators = __webpack_require__(41);
-	var $iterCreate = __webpack_require__(42);
-	var setToStringTag = __webpack_require__(58);
-	var getPrototypeOf = __webpack_require__(60);
-	var ITERATOR = __webpack_require__(59)('iterator');
-	var BUGGY = !([].keys && 'next' in [].keys()); // Safari has buggy iterators w/o `next`
-	var FF_ITERATOR = '@@iterator';
-	var KEYS = 'keys';
-	var VALUES = 'values';
-
-	var returnThis = function () { return this; };
-
-	module.exports = function (Base, NAME, Constructor, next, DEFAULT, IS_SET, FORCED) {
-	  $iterCreate(Constructor, NAME, next);
-	  var getMethod = function (kind) {
-	    if (!BUGGY && kind in proto) return proto[kind];
-	    switch (kind) {
-	      case KEYS: return function keys() { return new Constructor(this, kind); };
-	      case VALUES: return function values() { return new Constructor(this, kind); };
-	    } return function entries() { return new Constructor(this, kind); };
-	  };
-	  var TAG = NAME + ' Iterator';
-	  var DEF_VALUES = DEFAULT == VALUES;
-	  var VALUES_BUG = false;
-	  var proto = Base.prototype;
-	  var $native = proto[ITERATOR] || proto[FF_ITERATOR] || DEFAULT && proto[DEFAULT];
-	  var $default = $native || getMethod(DEFAULT);
-	  var $entries = DEFAULT ? !DEF_VALUES ? $default : getMethod('entries') : undefined;
-	  var $anyNative = NAME == 'Array' ? proto.entries || $native : $native;
-	  var methods, key, IteratorPrototype;
-	  // Fix native
-	  if ($anyNative) {
-	    IteratorPrototype = getPrototypeOf($anyNative.call(new Base()));
-	    if (IteratorPrototype !== Object.prototype && IteratorPrototype.next) {
-	      // Set @@toStringTag to native iterators
-	      setToStringTag(IteratorPrototype, TAG, true);
-	      // fix for some old engines
-	      if (!LIBRARY && !has(IteratorPrototype, ITERATOR)) hide(IteratorPrototype, ITERATOR, returnThis);
-	    }
-	  }
-	  // fix Array#{values, @@iterator}.name in V8 / FF
-	  if (DEF_VALUES && $native && $native.name !== VALUES) {
-	    VALUES_BUG = true;
-	    $default = function values() { return $native.call(this); };
-	  }
-	  // Define iterator
-	  if ((!LIBRARY || FORCED) && (BUGGY || VALUES_BUG || !proto[ITERATOR])) {
-	    hide(proto, ITERATOR, $default);
-	  }
-	  // Plug for library
-	  Iterators[NAME] = $default;
-	  Iterators[TAG] = returnThis;
-	  if (DEFAULT) {
-	    methods = {
-	      values: DEF_VALUES ? $default : getMethod(VALUES),
-	      keys: IS_SET ? $default : getMethod(KEYS),
-	      entries: $entries
-	    };
-	    if (FORCED) for (key in methods) {
-	      if (!(key in proto)) redefine(proto, key, methods[key]);
-	    } else $export($export.P + $export.F * (BUGGY || VALUES_BUG), NAME, methods);
-	  }
-	  return methods;
-	};
-
-
-/***/ }),
-/* 38 */
-/***/ (function(module, exports) {
-
-	module.exports = true;
-
-
-/***/ }),
-/* 39 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	module.exports = __webpack_require__(19);
-
-
-/***/ }),
-/* 40 */
-/***/ (function(module, exports) {
-
-	var hasOwnProperty = {}.hasOwnProperty;
-	module.exports = function (it, key) {
-	  return hasOwnProperty.call(it, key);
-	};
-
-
-/***/ }),
-/* 41 */
-/***/ (function(module, exports) {
-
-	module.exports = {};
-
-
-/***/ }),
-/* 42 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var create = __webpack_require__(43);
-	var descriptor = __webpack_require__(28);
-	var setToStringTag = __webpack_require__(58);
-	var IteratorPrototype = {};
-
-	// 25.1.2.1.1 %IteratorPrototype%[@@iterator]()
-	__webpack_require__(19)(IteratorPrototype, __webpack_require__(59)('iterator'), function () { return this; });
-
-	module.exports = function (Constructor, NAME, next) {
-	  Constructor.prototype = create(IteratorPrototype, { next: descriptor(1, next) });
-	  setToStringTag(Constructor, NAME + ' Iterator');
-	};
-
-
-/***/ }),
-/* 43 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	// 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
-	var anObject = __webpack_require__(21);
-	var dPs = __webpack_require__(44);
-	var enumBugKeys = __webpack_require__(56);
-	var IE_PROTO = __webpack_require__(53)('IE_PROTO');
-	var Empty = function () { /* empty */ };
-	var PROTOTYPE = 'prototype';
-
-	// Create object with fake `null` prototype: use iframe Object with cleared prototype
-	var createDict = function () {
-	  // Thrash, waste and sodomy: IE GC bug
-	  var iframe = __webpack_require__(26)('iframe');
-	  var i = enumBugKeys.length;
-	  var lt = '<';
-	  var gt = '>';
-	  var iframeDocument;
-	  iframe.style.display = 'none';
-	  __webpack_require__(57).appendChild(iframe);
-	  iframe.src = 'javascript:'; // eslint-disable-line no-script-url
-	  // createDict = iframe.contentWindow.Object;
-	  // html.removeChild(iframe);
-	  iframeDocument = iframe.contentWindow.document;
-	  iframeDocument.open();
-	  iframeDocument.write(lt + 'script' + gt + 'document.F=Object' + lt + '/script' + gt);
-	  iframeDocument.close();
-	  createDict = iframeDocument.F;
-	  while (i--) delete createDict[PROTOTYPE][enumBugKeys[i]];
-	  return createDict();
-	};
-
-	module.exports = Object.create || function create(O, Properties) {
-	  var result;
-	  if (O !== null) {
-	    Empty[PROTOTYPE] = anObject(O);
-	    result = new Empty();
-	    Empty[PROTOTYPE] = null;
-	    // add "__proto__" for Object.getPrototypeOf polyfill
-	    result[IE_PROTO] = O;
-	  } else result = createDict();
-	  return Properties === undefined ? result : dPs(result, Properties);
-	};
-
-
-/***/ }),
-/* 44 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	var dP = __webpack_require__(20);
-	var anObject = __webpack_require__(21);
-	var getKeys = __webpack_require__(45);
-
-	module.exports = __webpack_require__(24) ? Object.defineProperties : function defineProperties(O, Properties) {
-	  anObject(O);
-	  var keys = getKeys(Properties);
-	  var length = keys.length;
-	  var i = 0;
-	  var P;
-	  while (length > i) dP.f(O, P = keys[i++], Properties[P]);
-	  return O;
-	};
-
-
-/***/ }),
-/* 45 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	// 19.1.2.14 / 15.2.3.14 Object.keys(O)
-	var $keys = __webpack_require__(46);
-	var enumBugKeys = __webpack_require__(56);
-
-	module.exports = Object.keys || function keys(O) {
-	  return $keys(O, enumBugKeys);
-	};
-
-
-/***/ }),
-/* 46 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	var has = __webpack_require__(40);
-	var toIObject = __webpack_require__(47);
-	var arrayIndexOf = __webpack_require__(50)(false);
-	var IE_PROTO = __webpack_require__(53)('IE_PROTO');
-
-	module.exports = function (object, names) {
-	  var O = toIObject(object);
-	  var i = 0;
-	  var result = [];
-	  var key;
-	  for (key in O) if (key != IE_PROTO) has(O, key) && result.push(key);
-	  // Don't enum bug & hidden keys
-	  while (names.length > i) if (has(O, key = names[i++])) {
-	    ~arrayIndexOf(result, key) || result.push(key);
-	  }
-	  return result;
-	};
-
-
-/***/ }),
-/* 47 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	// to indexed object, toObject with fallback for non-array-like ES3 strings
-	var IObject = __webpack_require__(48);
-	var defined = __webpack_require__(36);
-	module.exports = function (it) {
-	  return IObject(defined(it));
-	};
-
-
-/***/ }),
-/* 48 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	// fallback for non-array-like ES3 and non-enumerable old V8 strings
-	var cof = __webpack_require__(49);
-	// eslint-disable-next-line no-prototype-builtins
-	module.exports = Object('z').propertyIsEnumerable(0) ? Object : function (it) {
-	  return cof(it) == 'String' ? it.split('') : Object(it);
-	};
-
-
-/***/ }),
-/* 49 */
-/***/ (function(module, exports) {
-
-	var toString = {}.toString;
-
-	module.exports = function (it) {
-	  return toString.call(it).slice(8, -1);
-	};
-
-
-/***/ }),
-/* 50 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	// false -> Array#indexOf
-	// true  -> Array#includes
-	var toIObject = __webpack_require__(47);
-	var toLength = __webpack_require__(51);
-	var toAbsoluteIndex = __webpack_require__(52);
-	module.exports = function (IS_INCLUDES) {
-	  return function ($this, el, fromIndex) {
-	    var O = toIObject($this);
-	    var length = toLength(O.length);
-	    var index = toAbsoluteIndex(fromIndex, length);
-	    var value;
-	    // Array#includes uses SameValueZero equality algorithm
-	    // eslint-disable-next-line no-self-compare
-	    if (IS_INCLUDES && el != el) while (length > index) {
-	      value = O[index++];
-	      // eslint-disable-next-line no-self-compare
-	      if (value != value) return true;
-	    // Array#indexOf ignores holes, Array#includes - not
-	    } else for (;length > index; index++) if (IS_INCLUDES || index in O) {
-	      if (O[index] === el) return IS_INCLUDES || index || 0;
-	    } return !IS_INCLUDES && -1;
-	  };
-	};
-
-
-/***/ }),
-/* 51 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	// 7.1.15 ToLength
-	var toInteger = __webpack_require__(35);
-	var min = Math.min;
-	module.exports = function (it) {
-	  return it > 0 ? min(toInteger(it), 0x1fffffffffffff) : 0; // pow(2, 53) - 1 == 9007199254740991
-	};
-
-
-/***/ }),
-/* 52 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	var toInteger = __webpack_require__(35);
-	var max = Math.max;
-	var min = Math.min;
-	module.exports = function (index, length) {
-	  index = toInteger(index);
-	  return index < 0 ? max(index + length, 0) : min(index, length);
-	};
-
-
-/***/ }),
-/* 53 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	var shared = __webpack_require__(54)('keys');
-	var uid = __webpack_require__(55);
-	module.exports = function (key) {
-	  return shared[key] || (shared[key] = uid(key));
-	};
-
-
-/***/ }),
-/* 54 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	var global = __webpack_require__(15);
-	var SHARED = '__core-js_shared__';
-	var store = global[SHARED] || (global[SHARED] = {});
-	module.exports = function (key) {
-	  return store[key] || (store[key] = {});
-	};
-
-
-/***/ }),
-/* 55 */
-/***/ (function(module, exports) {
-
-	var id = 0;
-	var px = Math.random();
-	module.exports = function (key) {
-	  return 'Symbol('.concat(key === undefined ? '' : key, ')_', (++id + px).toString(36));
-	};
-
-
-/***/ }),
-/* 56 */
-/***/ (function(module, exports) {
-
-	// IE 8- don't enum bug keys
-	module.exports = (
-	  'constructor,hasOwnProperty,isPrototypeOf,propertyIsEnumerable,toLocaleString,toString,valueOf'
-	).split(',');
-
-
-/***/ }),
-/* 57 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	var document = __webpack_require__(15).document;
-	module.exports = document && document.documentElement;
-
-
-/***/ }),
-/* 58 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	var def = __webpack_require__(20).f;
-	var has = __webpack_require__(40);
-	var TAG = __webpack_require__(59)('toStringTag');
-
-	module.exports = function (it, tag, stat) {
-	  if (it && !has(it = stat ? it : it.prototype, TAG)) def(it, TAG, { configurable: true, value: tag });
-	};
-
-
-/***/ }),
-/* 59 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	var store = __webpack_require__(54)('wks');
-	var uid = __webpack_require__(55);
-	var Symbol = __webpack_require__(15).Symbol;
-	var USE_SYMBOL = typeof Symbol == 'function';
-
-	var $exports = module.exports = function (name) {
-	  return store[name] || (store[name] =
-	    USE_SYMBOL && Symbol[name] || (USE_SYMBOL ? Symbol : uid)('Symbol.' + name));
-	};
-
-	$exports.store = store;
-
-
-/***/ }),
-/* 60 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	// 19.1.2.9 / 15.2.3.2 Object.getPrototypeOf(O)
-	var has = __webpack_require__(40);
-	var toObject = __webpack_require__(61);
-	var IE_PROTO = __webpack_require__(53)('IE_PROTO');
-	var ObjectProto = Object.prototype;
-
-	module.exports = Object.getPrototypeOf || function (O) {
-	  O = toObject(O);
-	  if (has(O, IE_PROTO)) return O[IE_PROTO];
-	  if (typeof O.constructor == 'function' && O instanceof O.constructor) {
-	    return O.constructor.prototype;
-	  } return O instanceof Object ? ObjectProto : null;
-	};
-
-
-/***/ }),
-/* 61 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	// 7.1.13 ToObject(argument)
-	var defined = __webpack_require__(36);
-	module.exports = function (it) {
-	  return Object(defined(it));
-	};
-
-
-/***/ }),
-/* 62 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	__webpack_require__(63);
-	var global = __webpack_require__(15);
-	var hide = __webpack_require__(19);
-	var Iterators = __webpack_require__(41);
-	var TO_STRING_TAG = __webpack_require__(59)('toStringTag');
-
-	var DOMIterables = ('CSSRuleList,CSSStyleDeclaration,CSSValueList,ClientRectList,DOMRectList,DOMStringList,' +
-	  'DOMTokenList,DataTransferItemList,FileList,HTMLAllCollection,HTMLCollection,HTMLFormElement,HTMLSelectElement,' +
-	  'MediaList,MimeTypeArray,NamedNodeMap,NodeList,PaintRequestList,Plugin,PluginArray,SVGLengthList,SVGNumberList,' +
-	  'SVGPathSegList,SVGPointList,SVGStringList,SVGTransformList,SourceBufferList,StyleSheetList,TextTrackCueList,' +
-	  'TextTrackList,TouchList').split(',');
-
-	for (var i = 0; i < DOMIterables.length; i++) {
-	  var NAME = DOMIterables[i];
-	  var Collection = global[NAME];
-	  var proto = Collection && Collection.prototype;
-	  if (proto && !proto[TO_STRING_TAG]) hide(proto, TO_STRING_TAG, NAME);
-	  Iterators[NAME] = Iterators.Array;
-	}
-
-
-/***/ }),
-/* 63 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var addToUnscopables = __webpack_require__(64);
-	var step = __webpack_require__(65);
-	var Iterators = __webpack_require__(41);
-	var toIObject = __webpack_require__(47);
-
-	// 22.1.3.4 Array.prototype.entries()
-	// 22.1.3.13 Array.prototype.keys()
-	// 22.1.3.29 Array.prototype.values()
-	// 22.1.3.30 Array.prototype[@@iterator]()
-	module.exports = __webpack_require__(37)(Array, 'Array', function (iterated, kind) {
-	  this._t = toIObject(iterated); // target
-	  this._i = 0;                   // next index
-	  this._k = kind;                // kind
-	// 22.1.5.2.1 %ArrayIteratorPrototype%.next()
-	}, function () {
-	  var O = this._t;
-	  var kind = this._k;
-	  var index = this._i++;
-	  if (!O || index >= O.length) {
-	    this._t = undefined;
-	    return step(1);
-	  }
-	  if (kind == 'keys') return step(0, index);
-	  if (kind == 'values') return step(0, O[index]);
-	  return step(0, [index, O[index]]);
-	}, 'values');
-
-	// argumentsList[@@iterator] is %ArrayProto_values% (9.4.4.6, 9.4.4.7)
-	Iterators.Arguments = Iterators.Array;
-
-	addToUnscopables('keys');
-	addToUnscopables('values');
-	addToUnscopables('entries');
-
-
-/***/ }),
-/* 64 */
-/***/ (function(module, exports) {
-
-	module.exports = function () { /* empty */ };
-
-
-/***/ }),
-/* 65 */
-/***/ (function(module, exports) {
-
-	module.exports = function (done, value) {
-	  return { value: value, done: !!done };
-	};
-
-
-/***/ }),
-/* 66 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	exports.f = __webpack_require__(59);
-
-
-/***/ }),
-/* 67 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	module.exports = { "default": __webpack_require__(68), __esModule: true };
-
-/***/ }),
-/* 68 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	__webpack_require__(69);
-	__webpack_require__(80);
-	__webpack_require__(81);
-	__webpack_require__(82);
-	module.exports = __webpack_require__(16).Symbol;
-
-
-/***/ }),
-/* 69 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-	// ECMAScript 6 symbols shim
-	var global = __webpack_require__(15);
-	var has = __webpack_require__(40);
-	var DESCRIPTORS = __webpack_require__(24);
-	var $export = __webpack_require__(14);
-	var redefine = __webpack_require__(39);
-	var META = __webpack_require__(70).KEY;
-	var $fails = __webpack_require__(25);
-	var shared = __webpack_require__(54);
-	var setToStringTag = __webpack_require__(58);
-	var uid = __webpack_require__(55);
-	var wks = __webpack_require__(59);
-	var wksExt = __webpack_require__(66);
-	var wksDefine = __webpack_require__(71);
-	var keyOf = __webpack_require__(72);
-	var enumKeys = __webpack_require__(73);
-	var isArray = __webpack_require__(76);
-	var anObject = __webpack_require__(21);
-	var toIObject = __webpack_require__(47);
-	var toPrimitive = __webpack_require__(27);
-	var createDesc = __webpack_require__(28);
-	var _create = __webpack_require__(43);
-	var gOPNExt = __webpack_require__(77);
-	var $GOPD = __webpack_require__(79);
-	var $DP = __webpack_require__(20);
-	var $keys = __webpack_require__(45);
-	var gOPD = $GOPD.f;
-	var dP = $DP.f;
-	var gOPN = gOPNExt.f;
-	var $Symbol = global.Symbol;
-	var $JSON = global.JSON;
-	var _stringify = $JSON && $JSON.stringify;
-	var PROTOTYPE = 'prototype';
-	var HIDDEN = wks('_hidden');
-	var TO_PRIMITIVE = wks('toPrimitive');
-	var isEnum = {}.propertyIsEnumerable;
-	var SymbolRegistry = shared('symbol-registry');
-	var AllSymbols = shared('symbols');
-	var OPSymbols = shared('op-symbols');
-	var ObjectProto = Object[PROTOTYPE];
-	var USE_NATIVE = typeof $Symbol == 'function';
-	var QObject = global.QObject;
-	// Don't use setters in Qt Script, https://github.com/zloirock/core-js/issues/173
-	var setter = !QObject || !QObject[PROTOTYPE] || !QObject[PROTOTYPE].findChild;
-
-	// fallback for old Android, https://code.google.com/p/v8/issues/detail?id=687
-	var setSymbolDesc = DESCRIPTORS && $fails(function () {
-	  return _create(dP({}, 'a', {
-	    get: function () { return dP(this, 'a', { value: 7 }).a; }
-	  })).a != 7;
-	}) ? function (it, key, D) {
-	  var protoDesc = gOPD(ObjectProto, key);
-	  if (protoDesc) delete ObjectProto[key];
-	  dP(it, key, D);
-	  if (protoDesc && it !== ObjectProto) dP(ObjectProto, key, protoDesc);
-	} : dP;
-
-	var wrap = function (tag) {
-	  var sym = AllSymbols[tag] = _create($Symbol[PROTOTYPE]);
-	  sym._k = tag;
-	  return sym;
-	};
-
-	var isSymbol = USE_NATIVE && typeof $Symbol.iterator == 'symbol' ? function (it) {
-	  return typeof it == 'symbol';
-	} : function (it) {
-	  return it instanceof $Symbol;
-	};
-
-	var $defineProperty = function defineProperty(it, key, D) {
-	  if (it === ObjectProto) $defineProperty(OPSymbols, key, D);
-	  anObject(it);
-	  key = toPrimitive(key, true);
-	  anObject(D);
-	  if (has(AllSymbols, key)) {
-	    if (!D.enumerable) {
-	      if (!has(it, HIDDEN)) dP(it, HIDDEN, createDesc(1, {}));
-	      it[HIDDEN][key] = true;
-	    } else {
-	      if (has(it, HIDDEN) && it[HIDDEN][key]) it[HIDDEN][key] = false;
-	      D = _create(D, { enumerable: createDesc(0, false) });
-	    } return setSymbolDesc(it, key, D);
-	  } return dP(it, key, D);
-	};
-	var $defineProperties = function defineProperties(it, P) {
-	  anObject(it);
-	  var keys = enumKeys(P = toIObject(P));
-	  var i = 0;
-	  var l = keys.length;
-	  var key;
-	  while (l > i) $defineProperty(it, key = keys[i++], P[key]);
-	  return it;
-	};
-	var $create = function create(it, P) {
-	  return P === undefined ? _create(it) : $defineProperties(_create(it), P);
-	};
-	var $propertyIsEnumerable = function propertyIsEnumerable(key) {
-	  var E = isEnum.call(this, key = toPrimitive(key, true));
-	  if (this === ObjectProto && has(AllSymbols, key) && !has(OPSymbols, key)) return false;
-	  return E || !has(this, key) || !has(AllSymbols, key) || has(this, HIDDEN) && this[HIDDEN][key] ? E : true;
-	};
-	var $getOwnPropertyDescriptor = function getOwnPropertyDescriptor(it, key) {
-	  it = toIObject(it);
-	  key = toPrimitive(key, true);
-	  if (it === ObjectProto && has(AllSymbols, key) && !has(OPSymbols, key)) return;
-	  var D = gOPD(it, key);
-	  if (D && has(AllSymbols, key) && !(has(it, HIDDEN) && it[HIDDEN][key])) D.enumerable = true;
-	  return D;
-	};
-	var $getOwnPropertyNames = function getOwnPropertyNames(it) {
-	  var names = gOPN(toIObject(it));
-	  var result = [];
-	  var i = 0;
-	  var key;
-	  while (names.length > i) {
-	    if (!has(AllSymbols, key = names[i++]) && key != HIDDEN && key != META) result.push(key);
-	  } return result;
-	};
-	var $getOwnPropertySymbols = function getOwnPropertySymbols(it) {
-	  var IS_OP = it === ObjectProto;
-	  var names = gOPN(IS_OP ? OPSymbols : toIObject(it));
-	  var result = [];
-	  var i = 0;
-	  var key;
-	  while (names.length > i) {
-	    if (has(AllSymbols, key = names[i++]) && (IS_OP ? has(ObjectProto, key) : true)) result.push(AllSymbols[key]);
-	  } return result;
-	};
-
-	// 19.4.1.1 Symbol([description])
-	if (!USE_NATIVE) {
-	  $Symbol = function Symbol() {
-	    if (this instanceof $Symbol) throw TypeError('Symbol is not a constructor!');
-	    var tag = uid(arguments.length > 0 ? arguments[0] : undefined);
-	    var $set = function (value) {
-	      if (this === ObjectProto) $set.call(OPSymbols, value);
-	      if (has(this, HIDDEN) && has(this[HIDDEN], tag)) this[HIDDEN][tag] = false;
-	      setSymbolDesc(this, tag, createDesc(1, value));
-	    };
-	    if (DESCRIPTORS && setter) setSymbolDesc(ObjectProto, tag, { configurable: true, set: $set });
-	    return wrap(tag);
-	  };
-	  redefine($Symbol[PROTOTYPE], 'toString', function toString() {
-	    return this._k;
-	  });
-
-	  $GOPD.f = $getOwnPropertyDescriptor;
-	  $DP.f = $defineProperty;
-	  __webpack_require__(78).f = gOPNExt.f = $getOwnPropertyNames;
-	  __webpack_require__(75).f = $propertyIsEnumerable;
-	  __webpack_require__(74).f = $getOwnPropertySymbols;
-
-	  if (DESCRIPTORS && !__webpack_require__(38)) {
-	    redefine(ObjectProto, 'propertyIsEnumerable', $propertyIsEnumerable, true);
-	  }
-
-	  wksExt.f = function (name) {
-	    return wrap(wks(name));
-	  };
-	}
-
-	$export($export.G + $export.W + $export.F * !USE_NATIVE, { Symbol: $Symbol });
-
-	for (var es6Symbols = (
-	  // 19.4.2.2, 19.4.2.3, 19.4.2.4, 19.4.2.6, 19.4.2.8, 19.4.2.9, 19.4.2.10, 19.4.2.11, 19.4.2.12, 19.4.2.13, 19.4.2.14
-	  'hasInstance,isConcatSpreadable,iterator,match,replace,search,species,split,toPrimitive,toStringTag,unscopables'
-	).split(','), j = 0; es6Symbols.length > j;)wks(es6Symbols[j++]);
-
-	for (var wellKnownSymbols = $keys(wks.store), k = 0; wellKnownSymbols.length > k;) wksDefine(wellKnownSymbols[k++]);
-
-	$export($export.S + $export.F * !USE_NATIVE, 'Symbol', {
-	  // 19.4.2.1 Symbol.for(key)
-	  'for': function (key) {
-	    return has(SymbolRegistry, key += '')
-	      ? SymbolRegistry[key]
-	      : SymbolRegistry[key] = $Symbol(key);
-	  },
-	  // 19.4.2.5 Symbol.keyFor(sym)
-	  keyFor: function keyFor(key) {
-	    if (isSymbol(key)) return keyOf(SymbolRegistry, key);
-	    throw TypeError(key + ' is not a symbol!');
-	  },
-	  useSetter: function () { setter = true; },
-	  useSimple: function () { setter = false; }
-	});
-
-	$export($export.S + $export.F * !USE_NATIVE, 'Object', {
-	  // 19.1.2.2 Object.create(O [, Properties])
-	  create: $create,
-	  // 19.1.2.4 Object.defineProperty(O, P, Attributes)
-	  defineProperty: $defineProperty,
-	  // 19.1.2.3 Object.defineProperties(O, Properties)
-	  defineProperties: $defineProperties,
-	  // 19.1.2.6 Object.getOwnPropertyDescriptor(O, P)
-	  getOwnPropertyDescriptor: $getOwnPropertyDescriptor,
-	  // 19.1.2.7 Object.getOwnPropertyNames(O)
-	  getOwnPropertyNames: $getOwnPropertyNames,
-	  // 19.1.2.8 Object.getOwnPropertySymbols(O)
-	  getOwnPropertySymbols: $getOwnPropertySymbols
-	});
-
-	// 24.3.2 JSON.stringify(value [, replacer [, space]])
-	$JSON && $export($export.S + $export.F * (!USE_NATIVE || $fails(function () {
-	  var S = $Symbol();
-	  // MS Edge converts symbol values to JSON as {}
-	  // WebKit converts symbol values to JSON as null
-	  // V8 throws on boxed symbols
-	  return _stringify([S]) != '[null]' || _stringify({ a: S }) != '{}' || _stringify(Object(S)) != '{}';
-	})), 'JSON', {
-	  stringify: function stringify(it) {
-	    if (it === undefined || isSymbol(it)) return; // IE8 returns string on undefined
-	    var args = [it];
-	    var i = 1;
-	    var replacer, $replacer;
-	    while (arguments.length > i) args.push(arguments[i++]);
-	    replacer = args[1];
-	    if (typeof replacer == 'function') $replacer = replacer;
-	    if ($replacer || !isArray(replacer)) replacer = function (key, value) {
-	      if ($replacer) value = $replacer.call(this, key, value);
-	      if (!isSymbol(value)) return value;
-	    };
-	    args[1] = replacer;
-	    return _stringify.apply($JSON, args);
-	  }
-	});
-
-	// 19.4.3.4 Symbol.prototype[@@toPrimitive](hint)
-	$Symbol[PROTOTYPE][TO_PRIMITIVE] || __webpack_require__(19)($Symbol[PROTOTYPE], TO_PRIMITIVE, $Symbol[PROTOTYPE].valueOf);
-	// 19.4.3.5 Symbol.prototype[@@toStringTag]
-	setToStringTag($Symbol, 'Symbol');
-	// 20.2.1.9 Math[@@toStringTag]
-	setToStringTag(Math, 'Math', true);
-	// 24.3.3 JSON[@@toStringTag]
-	setToStringTag(global.JSON, 'JSON', true);
-
-
-/***/ }),
-/* 70 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	var META = __webpack_require__(55)('meta');
-	var isObject = __webpack_require__(22);
-	var has = __webpack_require__(40);
-	var setDesc = __webpack_require__(20).f;
-	var id = 0;
-	var isExtensible = Object.isExtensible || function () {
-	  return true;
-	};
-	var FREEZE = !__webpack_require__(25)(function () {
-	  return isExtensible(Object.preventExtensions({}));
-	});
-	var setMeta = function (it) {
-	  setDesc(it, META, { value: {
-	    i: 'O' + ++id, // object ID
-	    w: {}          // weak collections IDs
-	  } });
-	};
-	var fastKey = function (it, create) {
-	  // return primitive with prefix
-	  if (!isObject(it)) return typeof it == 'symbol' ? it : (typeof it == 'string' ? 'S' : 'P') + it;
-	  if (!has(it, META)) {
-	    // can't set metadata to uncaught frozen object
-	    if (!isExtensible(it)) return 'F';
-	    // not necessary to add metadata
-	    if (!create) return 'E';
-	    // add missing metadata
-	    setMeta(it);
-	  // return object ID
-	  } return it[META].i;
-	};
-	var getWeak = function (it, create) {
-	  if (!has(it, META)) {
-	    // can't set metadata to uncaught frozen object
-	    if (!isExtensible(it)) return true;
-	    // not necessary to add metadata
-	    if (!create) return false;
-	    // add missing metadata
-	    setMeta(it);
-	  // return hash weak collections IDs
-	  } return it[META].w;
-	};
-	// add metadata on freeze-family methods calling
-	var onFreeze = function (it) {
-	  if (FREEZE && meta.NEED && isExtensible(it) && !has(it, META)) setMeta(it);
-	  return it;
-	};
-	var meta = module.exports = {
-	  KEY: META,
-	  NEED: false,
-	  fastKey: fastKey,
-	  getWeak: getWeak,
-	  onFreeze: onFreeze
-	};
-
-
-/***/ }),
-/* 71 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	var global = __webpack_require__(15);
-	var core = __webpack_require__(16);
-	var LIBRARY = __webpack_require__(38);
-	var wksExt = __webpack_require__(66);
-	var defineProperty = __webpack_require__(20).f;
-	module.exports = function (name) {
-	  var $Symbol = core.Symbol || (core.Symbol = LIBRARY ? {} : global.Symbol || {});
-	  if (name.charAt(0) != '_' && !(name in $Symbol)) defineProperty($Symbol, name, { value: wksExt.f(name) });
-	};
-
-
-/***/ }),
-/* 72 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	var getKeys = __webpack_require__(45);
-	var toIObject = __webpack_require__(47);
-	module.exports = function (object, el) {
-	  var O = toIObject(object);
-	  var keys = getKeys(O);
-	  var length = keys.length;
-	  var index = 0;
-	  var key;
-	  while (length > index) if (O[key = keys[index++]] === el) return key;
-	};
-
-
-/***/ }),
-/* 73 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	// all enumerable object keys, includes symbols
-	var getKeys = __webpack_require__(45);
-	var gOPS = __webpack_require__(74);
-	var pIE = __webpack_require__(75);
-	module.exports = function (it) {
-	  var result = getKeys(it);
-	  var getSymbols = gOPS.f;
-	  if (getSymbols) {
-	    var symbols = getSymbols(it);
-	    var isEnum = pIE.f;
-	    var i = 0;
-	    var key;
-	    while (symbols.length > i) if (isEnum.call(it, key = symbols[i++])) result.push(key);
-	  } return result;
-	};
-
-
-/***/ }),
-/* 74 */
-/***/ (function(module, exports) {
-
-	exports.f = Object.getOwnPropertySymbols;
-
-
-/***/ }),
-/* 75 */
-/***/ (function(module, exports) {
-
-	exports.f = {}.propertyIsEnumerable;
-
-
-/***/ }),
-/* 76 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	// 7.2.2 IsArray(argument)
-	var cof = __webpack_require__(49);
-	module.exports = Array.isArray || function isArray(arg) {
-	  return cof(arg) == 'Array';
-	};
-
-
-/***/ }),
-/* 77 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	// fallback for IE11 buggy Object.getOwnPropertyNames with iframe and window
-	var toIObject = __webpack_require__(47);
-	var gOPN = __webpack_require__(78).f;
-	var toString = {}.toString;
-
-	var windowNames = typeof window == 'object' && window && Object.getOwnPropertyNames
-	  ? Object.getOwnPropertyNames(window) : [];
-
-	var getWindowNames = function (it) {
-	  try {
-	    return gOPN(it);
-	  } catch (e) {
-	    return windowNames.slice();
-	  }
-	};
-
-	module.exports.f = function getOwnPropertyNames(it) {
-	  return windowNames && toString.call(it) == '[object Window]' ? getWindowNames(it) : gOPN(toIObject(it));
-	};
-
-
-/***/ }),
-/* 78 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	// 19.1.2.7 / 15.2.3.4 Object.getOwnPropertyNames(O)
-	var $keys = __webpack_require__(46);
-	var hiddenKeys = __webpack_require__(56).concat('length', 'prototype');
-
-	exports.f = Object.getOwnPropertyNames || function getOwnPropertyNames(O) {
-	  return $keys(O, hiddenKeys);
-	};
-
-
-/***/ }),
-/* 79 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	var pIE = __webpack_require__(75);
-	var createDesc = __webpack_require__(28);
-	var toIObject = __webpack_require__(47);
-	var toPrimitive = __webpack_require__(27);
-	var has = __webpack_require__(40);
-	var IE8_DOM_DEFINE = __webpack_require__(23);
-	var gOPD = Object.getOwnPropertyDescriptor;
-
-	exports.f = __webpack_require__(24) ? gOPD : function getOwnPropertyDescriptor(O, P) {
-	  O = toIObject(O);
-	  P = toPrimitive(P, true);
-	  if (IE8_DOM_DEFINE) try {
-	    return gOPD(O, P);
-	  } catch (e) { /* empty */ }
-	  if (has(O, P)) return createDesc(!pIE.f.call(O, P), O[P]);
-	};
-
-
-/***/ }),
-/* 80 */
-/***/ (function(module, exports) {
-
-	
-
-/***/ }),
-/* 81 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	__webpack_require__(71)('asyncIterator');
-
-
-/***/ }),
-/* 82 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	__webpack_require__(71)('observable');
-
-
-/***/ }),
-/* 83 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	module.exports = { "default": __webpack_require__(84), __esModule: true };
-
-/***/ }),
-/* 84 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	var core = __webpack_require__(16);
-	var $JSON = core.JSON || (core.JSON = { stringify: JSON.stringify });
-	module.exports = function stringify(it) { // eslint-disable-line no-unused-vars
-	  return $JSON.stringify.apply($JSON, arguments);
-	};
-
-
-/***/ }),
-/* 85 */
+/***/ 85:
 /***/ (function(module, exports) {
 
 	(function () {
@@ -2974,7 +503,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ }),
-/* 86 */
+
+/***/ 86:
 /***/ (function(module, exports, __webpack_require__) {
 
 	__webpack_require__(87);
@@ -2982,65 +512,16 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ }),
-/* 87 */
+
+/***/ 87:
 /***/ (function(module, exports) {
 
 	/**
-	 * @license AngularJS v1.6.5
+	 * @license AngularJS v1.6.4
 	 * (c) 2010-2017 Google, Inc. http://angularjs.org
 	 * License: MIT
 	 */
 	(function(window) {'use strict';
-
-	/* exported
-	  minErrConfig,
-	  errorHandlingConfig,
-	  isValidObjectMaxDepth
-	*/
-
-	var minErrConfig = {
-	  objectMaxDepth: 5
-	};
-
-	/**
-	 * @ngdoc function
-	 * @name angular.errorHandlingConfig
-	 * @module ng
-	 * @kind function
-	 *
-	 * @description
-	 * Configure several aspects of error handling in AngularJS if used as a setter or return the
-	 * current configuration if used as a getter. The following options are supported:
-	 *
-	 * - **objectMaxDepth**: The maximum depth to which objects are traversed when stringified for error messages.
-	 *
-	 * Omitted or undefined options will leave the corresponding configuration values unchanged.
-	 *
-	 * @param {Object=} config - The configuration object. May only contain the options that need to be
-	 *     updated. Supported keys:
-	 *
-	 * * `objectMaxDepth`  **{Number}** - The max depth for stringifying objects. Setting to a
-	 *   non-positive or non-numeric value, removes the max depth limit.
-	 *   Default: 5
-	 */
-	function errorHandlingConfig(config) {
-	  if (isObject(config)) {
-	    if (isDefined(config.objectMaxDepth)) {
-	      minErrConfig.objectMaxDepth = isValidObjectMaxDepth(config.objectMaxDepth) ? config.objectMaxDepth : NaN;
-	    }
-	  } else {
-	    return minErrConfig;
-	  }
-	}
-
-	/**
-	 * @private
-	 * @param {Number} maxDepth
-	 * @return {boolean}
-	 */
-	function isValidObjectMaxDepth(maxDepth) {
-	  return isNumber(maxDepth) && maxDepth > 0;
-	}
 
 	/**
 	 * @description
@@ -3093,7 +574,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      return match;
 	    });
 
-	    message += '\nhttp://errors.angularjs.org/1.6.5/' +
+	    message += '\nhttp://errors.angularjs.org/1.6.4/' +
 	      (module ? module + '/' : '') + code;
 
 	    for (i = 0, paramPrefix = '?'; i < templateArgs.length; i++, paramPrefix = '&') {
@@ -3149,7 +630,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	  isNumber,
 	  isNumberNaN,
 	  isDate,
-	  isError,
 	  isArray,
 	  isFunction,
 	  isRegExp,
@@ -3233,6 +713,50 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	var hasOwnProperty = Object.prototype.hasOwnProperty;
+
+	var minErrConfig = {
+	  objectMaxDepth: 5
+	};
+
+	 /**
+	 * @ngdoc function
+	 * @name angular.errorHandlingConfig
+	 * @module ng
+	 * @kind function
+	 *
+	 * @description
+	 * Configure several aspects of error handling in AngularJS if used as a setter or return the
+	 * current configuration if used as a getter. The following options are supported:
+	 *
+	 * - **objectMaxDepth**: The maximum depth to which objects are traversed when stringified for error messages.
+	 *
+	 * Omitted or undefined options will leave the corresponding configuration values unchanged.
+	 *
+	 * @param {Object=} config - The configuration object. May only contain the options that need to be
+	 *     updated. Supported keys:
+	 *
+	 * * `objectMaxDepth`  **{Number}** - The max depth for stringifying objects. Setting to a
+	 *   non-positive or non-numeric value, removes the max depth limit.
+	 *   Default: 5
+	 */
+	function errorHandlingConfig(config) {
+	  if (isObject(config)) {
+	    if (isDefined(config.objectMaxDepth)) {
+	      minErrConfig.objectMaxDepth = isValidObjectMaxDepth(config.objectMaxDepth) ? config.objectMaxDepth : NaN;
+	    }
+	  } else {
+	    return minErrConfig;
+	  }
+	}
+
+	/**
+	 * @private
+	 * @param {Number} maxDepth
+	 * @return {boolean}
+	 */
+	function isValidObjectMaxDepth(maxDepth) {
+	  return isNumber(maxDepth) && maxDepth > 0;
+	}
 
 	/**
 	 * @ngdoc function
@@ -3541,20 +1065,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	* Unlike {@link angular.extend extend()}, `merge()` recursively descends into object properties of source
 	* objects, performing a deep copy.
 	*
-	* @deprecated
-	* sinceVersion="1.6.5"
-	* This function is deprecated, but will not be removed in the 1.x lifecycle.
-	* There are edge cases (see {@link angular.merge#known-issues known issues}) that are not
-	* supported by this function. We suggest
-	* using [lodash's merge()](https://lodash.com/docs/4.17.4#merge) instead.
-	*
-	* @knownIssue
-	* This is a list of (known) object types that are not handled correctly by this function:
-	* - [`Blob`](https://developer.mozilla.org/docs/Web/API/Blob)
-	* - [`MediaStream`](https://developer.mozilla.org/docs/Web/API/MediaStream)
-	* - [`CanvasGradient`](https://developer.mozilla.org/docs/Web/API/CanvasGradient)
-	* - AngularJS {@link $rootScope.Scope scopes};
-	*
 	* @param {Object} dst Destination object.
 	* @param {...Object} src Source object(s).
 	* @returns {Object} Reference to `dst`.
@@ -3763,24 +1273,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @returns {boolean} True if `value` is an `Array`.
 	 */
 	var isArray = Array.isArray;
-
-	/**
-	 * @description
-	 * Determines if a reference is an `Error`.
-	 * Loosely based on https://www.npmjs.com/package/iserror
-	 *
-	 * @param {*} value Reference to check.
-	 * @returns {boolean} True if `value` is an `Error`.
-	 */
-	function isError(value) {
-	  var tag = toString.call(value);
-	  switch (tag) {
-	    case '[object Error]': return true;
-	    case '[object Exception]': return true;
-	    case '[object DOMException]': return true;
-	    default: return value instanceof Error;
-	  }
-	}
 
 	/**
 	 * @ngdoc function
@@ -4462,7 +1954,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var ALL_COLONS = /:/g;
 	function timezoneToOffset(timezone, fallback) {
-	  // Support: IE 9-11 only, Edge 13-15+
+	  // Support: IE 9-11 only, Edge 13-14+
 	  // IE/Edge do not "understand" colon (`:`) in timezone
 	  timezone = timezone.replace(ALL_COLONS, '');
 	  var requestedTimezoneOffset = Date.parse('Jan 01, 1970 00:00:00 ' + timezone) / 60000;
@@ -4489,7 +1981,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @returns {string} Returns the string representation of the element.
 	 */
 	function startingTag(element) {
-	  element = jqLite(element).clone().empty();
+	  element = jqLite(element).clone();
+	  try {
+	    // turns out IE does not let you set .html() on elements which
+	    // are not allowed to have children. So we just ignore it.
+	    element.empty();
+	  } catch (e) { /* empty */ }
 	  var elemHtml = jqLite('<div>').append(element).html();
 	  try {
 	    return element[0].nodeType === NODE_TYPE_TEXT ? lowercase(elemHtml) :
@@ -4627,7 +2124,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	  var script = document.currentScript;
 
 	  if (!script) {
-	    // Support: IE 9-11 only
 	    // IE does not have `document.currentScript`
 	    return true;
 	  }
@@ -5619,7 +3115,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  return dst || src;
 	}
 
-	/* exported toDebugString */
+	/* global toDebugString: true */
 
 	function serializeObject(obj, maxDepth) {
 	  var seen = [];
@@ -5628,9 +3124,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  // and a very deep object can cause a performance issue, so we copy the object
 	  // based on this specific depth and then stringify it.
 	  if (isValidObjectMaxDepth(maxDepth)) {
-	    // This file is also included in `angular-loader`, so `copy()` might not always be available in
-	    // the closure. Therefore, it is lazily retrieved as `angular.copy()` when needed.
-	    obj = angular.copy(obj, null, maxDepth);
+	    obj = copy(obj, null, maxDepth);
 	  }
 	  return JSON.stringify(obj, function(key, val) {
 	    val = toJsonReplacer(key, val);
@@ -5771,11 +3265,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	var version = {
 	  // These placeholder strings will be replaced by grunt's `build` task.
 	  // They need to be double- or single-quoted.
-	  full: '1.6.5',
+	  full: '1.6.4',
 	  major: 1,
 	  minor: 6,
-	  dot: 5,
-	  codeName: 'toffee-salinization'
+	  dot: 4,
+	  codeName: 'phenomenal-footnote'
 	};
 
 
@@ -5921,7 +3415,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      });
 	    }
 	  ])
-	  .info({ angularVersion: '1.6.5' });
+	  .info({ angularVersion: '1.6.4' });
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -8510,7 +6004,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	var $AnimateProvider = ['$provide', /** @this */ function($provide) {
 	  var provider = this;
 	  var classNameFilter = null;
-	  var customFilter = null;
 
 	  this.$$registeredAnimations = Object.create(null);
 
@@ -8565,51 +6058,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * @ngdoc method
-	   * @name $animateProvider#customFilter
-	   *
-	   * @description
-	   * Sets and/or returns the custom filter function that is used to "filter" animations, i.e.
-	   * determine if an animation is allowed or not. When no filter is specified (the default), no
-	   * animation will be blocked. Setting the `customFilter` value will only allow animations for
-	   * which the filter function's return value is truthy.
-	   *
-	   * This allows to easily create arbitrarily complex rules for filtering animations, such as
-	   * allowing specific events only, or enabling animations on specific subtrees of the DOM, etc.
-	   * Filtering animations can also boost performance for low-powered devices, as well as
-	   * applications containing a lot of structural operations.
-	   *
-	   * <div class="alert alert-success">
-	   *   **Best Practice:**
-	   *   Keep the filtering function as lean as possible, because it will be called for each DOM
-	   *   action (e.g. insertion, removal, class change) performed by "animation-aware" directives.
-	   *   See {@link guide/animations#which-directives-support-animations- here} for a list of built-in
-	   *   directives that support animations.
-	   *   Performing computationally expensive or time-consuming operations on each call of the
-	   *   filtering function can make your animations sluggish.
-	   * </div>
-	   *
-	   * **Note:** If present, `customFilter` will be checked before
-	   * {@link $animateProvider#classNameFilter classNameFilter}.
-	   *
-	   * @param {Function=} filterFn - The filter function which will be used to filter all animations.
-	   *   If a falsy value is returned, no animation will be performed. The function will be called
-	   *   with the following arguments:
-	   *   - **node** `{DOMElement}` - The DOM element to be animated.
-	   *   - **event** `{String}` - The name of the animation event (e.g. `enter`, `leave`, `addClass`
-	   *     etc).
-	   *   - **options** `{Object}` - A collection of options/styles used for the animation.
-	   * @return {Function} The current filter function or `null` if there is none set.
-	   */
-	  this.customFilter = function(filterFn) {
-	    if (arguments.length === 1) {
-	      customFilter = isFunction(filterFn) ? filterFn : null;
-	    }
-
-	    return customFilter;
-	  };
-
-	  /**
-	   * @ngdoc method
 	   * @name $animateProvider#classNameFilter
 	   *
 	   * @description
@@ -8619,11 +6067,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * When setting the `classNameFilter` value, animations will only be performed on elements
 	   * that successfully match the filter expression. This in turn can boost performance
 	   * for low-powered devices as well as applications containing a lot of structural operations.
-	   *
-	   * **Note:** If present, `classNameFilter` will be checked after
-	   * {@link $animateProvider#customFilter customFilter}. If `customFilter` is present and returns
-	   * false, `classNameFilter` will not be checked.
-	   *
 	   * @param {RegExp=} expression The className expression which will be checked against all animations
 	   * @return {RegExp} The current CSS className expression value. If null then there is no expression value
 	   */
@@ -11213,8 +8656,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * @ngdoc method
 	   * @name $compileProvider#component
 	   * @module ng
-	   * @param {string|Object} name Name of the component in camelCase (i.e. `myComp` which will match `<my-comp>`),
-	   *    or an object map of components where the keys are the names and the values are the component definition objects.
+	   * @param {string} name Name of the component in camelCase (i.e. `myComp` which will match `<my-comp>`)
 	   * @param {Object} options Component definition object (a simplified
 	   *    {@link ng.$compile#directive-definition-object directive definition object}),
 	   *    with the following properties (all optional):
@@ -11297,11 +8739,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * See also {@link ng.$compileProvider#directive $compileProvider.directive()}.
 	   */
 	  this.component = function registerComponent(name, options) {
-	    if (!isString(name)) {
-	      forEach(name, reverseParams(bind(this, registerComponent)));
-	      return this;
-	    }
-
 	    var controller = options.controller || function() {};
 
 	    function factory($injector) {
@@ -13237,7 +10674,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          }
 	          linkQueue = null;
 	        }).catch(function(error) {
-	          if (isError(error)) {
+	          if (error instanceof Error) {
 	            $exceptionHandler(error);
 	          }
 	        });
@@ -14380,6 +11817,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * {@link ng.$cacheFactory `$cacheFactory`} to enable or disable caching of HTTP responses
 	   * by default. See {@link $http#caching $http Caching} for more information.
 	   *
+	   * - **`defaults.xsrfCookieName`** - {string} - Name of cookie containing the XSRF token.
+	   * Defaults value is `'XSRF-TOKEN'`.
+	   *
+	   * - **`defaults.xsrfHeaderName`** - {string} - Name of HTTP header to populate with the
+	   * XSRF token. Defaults value is `'X-XSRF-TOKEN'`.
+	   *
 	   * - **`defaults.headers`** - {Object} - Default headers for all $http requests.
 	   * Refer to {@link ng.$http#setting-http-headers $http} for documentation on
 	   * setting default headers.
@@ -14388,38 +11831,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *     - **`defaults.headers.put`**
 	   *     - **`defaults.headers.patch`**
 	   *
-	   * - **`defaults.jsonpCallbackParam`** - `{string}` - the name of the query parameter that passes the name of the
-	   * callback in a JSONP request. The value of this parameter will be replaced with the expression generated by the
-	   * {@link $jsonpCallbacks} service. Defaults to `'callback'`.
 	   *
 	   * - **`defaults.paramSerializer`** - `{string|function(Object<string,string>):string}` - A function
 	   *  used to the prepare string representation of request parameters (specified as an object).
 	   *  If specified as string, it is interpreted as a function registered with the {@link auto.$injector $injector}.
 	   *  Defaults to {@link ng.$httpParamSerializer $httpParamSerializer}.
 	   *
-	   * - **`defaults.transformRequest`** -
-	   * `{Array<function(data, headersGetter)>|function(data, headersGetter)}` -
-	   * An array of functions (or a single function) which are applied to the request data.
-	   * By default, this is an array with one request transformation function:
-	   *
-	   *   - If the `data` property of the request configuration object contains an object, serialize it
-	   *     into JSON format.
-	   *
-	   * - **`defaults.transformResponse`** -
-	   * `{Array<function(data, headersGetter, status)>|function(data, headersGetter, status)}` -
-	   * An array of functions (or a single function) which are applied to the response data. By default,
-	   * this is an array which applies one response transformation function that does two things:
-	   *
-	   *  - If XSRF prefix is detected, strip it
-	   *    (see {@link ng.$http#security-considerations Security Considerations in the $http docs}).
-	   *  - If the `Content-Type` is `application/json` or the response looks like JSON,
-	   *    deserialize it using a JSON parser.
-	   *
-	   * - **`defaults.xsrfCookieName`** - {string} - Name of cookie containing the XSRF token.
-	   * Defaults value is `'XSRF-TOKEN'`.
-	   *
-	   * - **`defaults.xsrfHeaderName`** - {string} - Name of HTTP header to populate with the
-	   * XSRF token. Defaults value is `'X-XSRF-TOKEN'`.
+	   * - **`defaults.jsonpCallbackParam`** - `{string}` - the name of the query parameter that passes the name of the
+	   * callback in a JSONP request. The value of this parameter will be replaced with the expression generated by the
+	   * {@link $jsonpCallbacks} service. Defaults to `'callback'`.
 	   *
 	   **/
 	  var defaults = this.defaults = {
@@ -14683,18 +12103,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	     *
 	     * Angular provides the following default transformations:
 	     *
-	     * Request transformations (`$httpProvider.defaults.transformRequest` and `$http.defaults.transformRequest`) is
-	     * an array with one function that does the following:
+	     * Request transformations (`$httpProvider.defaults.transformRequest` and `$http.defaults.transformRequest`):
 	     *
 	     * - If the `data` property of the request configuration object contains an object, serialize it
 	     *   into JSON format.
 	     *
-	     * Response transformations (`$httpProvider.defaults.transformResponse` and `$http.defaults.transformResponse`) is
-	     * an array with one function that does the following:
+	     * Response transformations (`$httpProvider.defaults.transformResponse` and `$http.defaults.transformResponse`):
 	     *
 	     *  - If XSRF prefix is detected, strip it (see Security Considerations section below).
-	     *  - If the `Content-Type` is `application/json` or the response looks like JSON,
-	   *      deserialize it using a JSON parser.
+	     *  - If JSON response is detected, deserialize it using a JSON parser.
 	     *
 	     *
 	     * ### Overriding the Default Transformations Per Request
@@ -16331,7 +13748,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    interval.cancel = function(promise) {
 	      if (promise && promise.$$intervalId in intervals) {
 	        // Interval cancels should not report as unhandled promise.
-	        markQExceptionHandled(intervals[promise.$$intervalId].promise);
+	        intervals[promise.$$intervalId].promise.catch(noop);
 	        intervals[promise.$$intervalId].reject('canceled');
 	        $window.clearInterval(promise.$$intervalId);
 	        delete intervals[promise.$$intervalId];
@@ -17473,14 +14890,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	 *
 	 * The main purpose of this service is to simplify debugging and troubleshooting.
 	 *
-	 * To reveal the location of the calls to `$log` in the JavaScript console,
-	 * you can "blackbox" the AngularJS source in your browser:
-	 *
-	 * [Mozilla description of blackboxing](https://developer.mozilla.org/en-US/docs/Tools/Debugger/How_to/Black_box_a_source).
-	 * [Chrome description of blackboxing](https://developer.chrome.com/devtools/docs/blackboxing).
-	 *
-	 * Note: Not all browsers support blackboxing.
-	 *
 	 * The default is to log `debug` messages. You can use
 	 * {@link ng.$logProvider ng.$logProvider#debugEnabled} to change this.
 	 *
@@ -17602,7 +15011,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    };
 
 	    function formatError(arg) {
-	      if (isError(arg)) {
+	      if (arg instanceof Error) {
 	        if (arg.stack && formatStackTrace) {
 	          arg = (arg.message && arg.stack.indexOf(arg.message) === -1)
 	              ? 'Error: ' + arg.message + '\n' + arg.stack
@@ -17616,17 +15025,29 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    function consoleLog(type) {
 	      var console = $window.console || {},
-	          logFn = console[type] || console.log || noop;
+	          logFn = console[type] || console.log || noop,
+	          hasApply = false;
 
-	      return function() {
-	        var args = [];
-	        forEach(arguments, function(arg) {
-	          args.push(formatError(arg));
-	        });
-	        // Support: IE 9 only
-	        // console methods don't inherit from Function.prototype in IE 9 so we can't
-	        // call `logFn.apply(console, args)` directly.
-	        return Function.prototype.apply.call(logFn, console, args);
+	      // Note: reading logFn.apply throws an error in IE11 in IE8 document mode.
+	      // The reason behind this is that console.log has type "object" in IE8...
+	      try {
+	        hasApply = !!logFn.apply;
+	      } catch (e) { /* empty */ }
+
+	      if (hasApply) {
+	        return function() {
+	          var args = [];
+	          forEach(arguments, function(arg) {
+	            args.push(formatError(arg));
+	          });
+	          return logFn.apply(console, args);
+	        };
+	      }
+
+	      // we are IE which either doesn't have window.console => this is noop and we do nothing,
+	      // or we are IE where console.log doesn't have apply so we log at least first 2 args
+	      return function(arg1, arg2) {
+	        logFn(arg1, arg2 == null ? '' : arg2);
 	      };
 	    }
 	  }];
@@ -18254,47 +15675,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	  return !fn.$stateful;
 	}
 
-	var PURITY_ABSOLUTE = 1;
-	var PURITY_RELATIVE = 2;
-
-	// Detect nodes which could depend on non-shallow state of objects
-	function isPure(node, parentIsPure) {
-	  switch (node.type) {
-	    // Computed members might invoke a stateful toString()
-	    case AST.MemberExpression:
-	      if (node.computed) {
-	        return false;
-	      }
-	      break;
-
-	    // Unary always convert to primative
-	    case AST.UnaryExpression:
-	      return PURITY_ABSOLUTE;
-
-	    // The binary + operator can invoke a stateful toString().
-	    case AST.BinaryExpression:
-	      return node.operator !== '+' ? PURITY_ABSOLUTE : false;
-
-	    // Functions / filters probably read state from within objects
-	    case AST.CallExpression:
-	      return false;
-	  }
-
-	  return (undefined === parentIsPure) ? PURITY_RELATIVE : parentIsPure;
-	}
-
-	function findConstantAndWatchExpressions(ast, $filter, parentIsPure) {
+	function findConstantAndWatchExpressions(ast, $filter) {
 	  var allConstants;
 	  var argsToWatch;
 	  var isStatelessFilter;
-
-	  var astIsPure = ast.isPure = isPure(ast, parentIsPure);
-
 	  switch (ast.type) {
 	  case AST.Program:
 	    allConstants = true;
 	    forEach(ast.body, function(expr) {
-	      findConstantAndWatchExpressions(expr.expression, $filter, astIsPure);
+	      findConstantAndWatchExpressions(expr.expression, $filter);
 	      allConstants = allConstants && expr.expression.constant;
 	    });
 	    ast.constant = allConstants;
@@ -18304,26 +15693,26 @@ return /******/ (function(modules) { // webpackBootstrap
 	    ast.toWatch = [];
 	    break;
 	  case AST.UnaryExpression:
-	    findConstantAndWatchExpressions(ast.argument, $filter, astIsPure);
+	    findConstantAndWatchExpressions(ast.argument, $filter);
 	    ast.constant = ast.argument.constant;
 	    ast.toWatch = ast.argument.toWatch;
 	    break;
 	  case AST.BinaryExpression:
-	    findConstantAndWatchExpressions(ast.left, $filter, astIsPure);
-	    findConstantAndWatchExpressions(ast.right, $filter, astIsPure);
+	    findConstantAndWatchExpressions(ast.left, $filter);
+	    findConstantAndWatchExpressions(ast.right, $filter);
 	    ast.constant = ast.left.constant && ast.right.constant;
 	    ast.toWatch = ast.left.toWatch.concat(ast.right.toWatch);
 	    break;
 	  case AST.LogicalExpression:
-	    findConstantAndWatchExpressions(ast.left, $filter, astIsPure);
-	    findConstantAndWatchExpressions(ast.right, $filter, astIsPure);
+	    findConstantAndWatchExpressions(ast.left, $filter);
+	    findConstantAndWatchExpressions(ast.right, $filter);
 	    ast.constant = ast.left.constant && ast.right.constant;
 	    ast.toWatch = ast.constant ? [] : [ast];
 	    break;
 	  case AST.ConditionalExpression:
-	    findConstantAndWatchExpressions(ast.test, $filter, astIsPure);
-	    findConstantAndWatchExpressions(ast.alternate, $filter, astIsPure);
-	    findConstantAndWatchExpressions(ast.consequent, $filter, astIsPure);
+	    findConstantAndWatchExpressions(ast.test, $filter);
+	    findConstantAndWatchExpressions(ast.alternate, $filter);
+	    findConstantAndWatchExpressions(ast.consequent, $filter);
 	    ast.constant = ast.test.constant && ast.alternate.constant && ast.consequent.constant;
 	    ast.toWatch = ast.constant ? [] : [ast];
 	    break;
@@ -18332,9 +15721,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    ast.toWatch = [ast];
 	    break;
 	  case AST.MemberExpression:
-	    findConstantAndWatchExpressions(ast.object, $filter, astIsPure);
+	    findConstantAndWatchExpressions(ast.object, $filter);
 	    if (ast.computed) {
-	      findConstantAndWatchExpressions(ast.property, $filter, astIsPure);
+	      findConstantAndWatchExpressions(ast.property, $filter);
 	    }
 	    ast.constant = ast.object.constant && (!ast.computed || ast.property.constant);
 	    ast.toWatch = [ast];
@@ -18344,7 +15733,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    allConstants = isStatelessFilter;
 	    argsToWatch = [];
 	    forEach(ast.arguments, function(expr) {
-	      findConstantAndWatchExpressions(expr, $filter, astIsPure);
+	      findConstantAndWatchExpressions(expr, $filter);
 	      allConstants = allConstants && expr.constant;
 	      if (!expr.constant) {
 	        argsToWatch.push.apply(argsToWatch, expr.toWatch);
@@ -18354,8 +15743,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    ast.toWatch = isStatelessFilter ? argsToWatch : [ast];
 	    break;
 	  case AST.AssignmentExpression:
-	    findConstantAndWatchExpressions(ast.left, $filter, astIsPure);
-	    findConstantAndWatchExpressions(ast.right, $filter, astIsPure);
+	    findConstantAndWatchExpressions(ast.left, $filter);
+	    findConstantAndWatchExpressions(ast.right, $filter);
 	    ast.constant = ast.left.constant && ast.right.constant;
 	    ast.toWatch = [ast];
 	    break;
@@ -18363,7 +15752,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    allConstants = true;
 	    argsToWatch = [];
 	    forEach(ast.elements, function(expr) {
-	      findConstantAndWatchExpressions(expr, $filter, astIsPure);
+	      findConstantAndWatchExpressions(expr, $filter);
 	      allConstants = allConstants && expr.constant;
 	      if (!expr.constant) {
 	        argsToWatch.push.apply(argsToWatch, expr.toWatch);
@@ -18376,13 +15765,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	    allConstants = true;
 	    argsToWatch = [];
 	    forEach(ast.properties, function(property) {
-	      findConstantAndWatchExpressions(property.value, $filter, astIsPure);
+	      findConstantAndWatchExpressions(property.value, $filter);
 	      allConstants = allConstants && property.value.constant && !property.computed;
 	      if (!property.value.constant) {
 	        argsToWatch.push.apply(argsToWatch, property.value.toWatch);
 	      }
 	      if (property.computed) {
-	        findConstantAndWatchExpressions(property.key, $filter, astIsPure);
+	        findConstantAndWatchExpressions(property.key, $filter);
 	        if (!property.key.constant) {
 	          argsToWatch.push.apply(argsToWatch, property.key.toWatch);
 	        }
@@ -18467,7 +15856,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var intoId = self.nextId();
 	      self.recurse(watch, intoId);
 	      self.return_(intoId);
-	      self.state.inputs.push({name: fnKey, isPure: watch.isPure});
+	      self.state.inputs.push(fnKey);
 	      watch.watchId = key;
 	    });
 	    this.state.computing = 'fn';
@@ -18503,16 +15892,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  watchFns: function() {
 	    var result = [];
-	    var inputs = this.state.inputs;
+	    var fns = this.state.inputs;
 	    var self = this;
-	    forEach(inputs, function(input) {
-	      result.push('var ' + input.name + '=' + self.generateFunction(input.name, 's'));
-	      if (input.isPure) {
-	        result.push(input.name, '.isPure=' + JSON.stringify(input.isPure) + ';');
-	      }
+	    forEach(fns, function(name) {
+	      result.push('var ' + name + '=' + self.generateFunction(name, 's'));
 	    });
-	    if (inputs.length) {
-	      result.push('fn.inputs=[' + inputs.map(function(i) { return i.name; }).join(',') + '];');
+	    if (fns.length) {
+	      result.push('fn.inputs=[' + fns.join(',') + '];');
 	    }
 	    return result.join('');
 	  },
@@ -18918,7 +16304,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	      inputs = [];
 	      forEach(toWatch, function(watch, key) {
 	        var input = self.recurse(watch);
-	        input.isPure = watch.isPure;
 	        watch.input = input;
 	        inputs.push(input);
 	        watch.watchId = key;
@@ -19433,8 +16818,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	            if (parsedExpression.constant) {
 	              parsedExpression.$$watchDelegate = constantWatchDelegate;
 	            } else if (oneTime) {
-	              parsedExpression.$$watchDelegate = parsedExpression.literal ?
-	                  oneTimeLiteralWatchDelegate : oneTimeWatchDelegate;
+	              parsedExpression.oneTime = true;
+	              parsedExpression.$$watchDelegate = oneTimeWatchDelegate;
 	            } else if (parsedExpression.inputs) {
 	              parsedExpression.$$watchDelegate = inputsWatchDelegate;
 	            }
@@ -19485,7 +16870,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        inputExpressions = inputExpressions[0];
 	        return scope.$watch(function expressionInputWatch(scope) {
 	          var newInputValue = inputExpressions(scope);
-	          if (!expressionInputDirtyCheck(newInputValue, oldInputValueOf, inputExpressions.isPure)) {
+	          if (!expressionInputDirtyCheck(newInputValue, oldInputValueOf, parsedExpression.literal)) {
 	            lastResult = parsedExpression(scope, undefined, undefined, [newInputValue]);
 	            oldInputValueOf = newInputValue && getValueOf(newInputValue);
 	          }
@@ -19505,7 +16890,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	        for (var i = 0, ii = inputExpressions.length; i < ii; i++) {
 	          var newInputValue = inputExpressions[i](scope);
-	          if (changed || (changed = !expressionInputDirtyCheck(newInputValue, oldInputValueOfValues[i], inputExpressions[i].isPure))) {
+	          if (changed || (changed = !expressionInputDirtyCheck(newInputValue, oldInputValueOfValues[i], parsedExpression.literal))) {
 	            oldInputValues[i] = newInputValue;
 	            oldInputValueOfValues[i] = newInputValue && getValueOf(newInputValue);
 	          }
@@ -19520,6 +16905,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 
 	    function oneTimeWatchDelegate(scope, listener, objectEquality, parsedExpression, prettyPrintExpression) {
+	      var isDone = parsedExpression.literal ? isAllDefined : isDefined;
 	      var unwatch, lastValue;
 	      if (parsedExpression.inputs) {
 	        unwatch = inputsWatchDelegate(scope, oneTimeListener, objectEquality, parsedExpression, prettyPrintExpression);
@@ -19536,9 +16922,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	        if (isFunction(listener)) {
 	          listener(value, old, scope);
 	        }
-	        if (isDefined(value)) {
+	        if (isDone(value)) {
 	          scope.$$postDigest(function() {
-	            if (isDefined(lastValue)) {
+	            if (isDone(lastValue)) {
 	              unwatch();
 	            }
 	          });
@@ -19546,31 +16932,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 	    }
 
-	    function oneTimeLiteralWatchDelegate(scope, listener, objectEquality, parsedExpression) {
-	      var unwatch, lastValue;
-	      unwatch = scope.$watch(function oneTimeWatch(scope) {
-	        return parsedExpression(scope);
-	      }, function oneTimeListener(value, old, scope) {
-	        lastValue = value;
-	        if (isFunction(listener)) {
-	          listener(value, old, scope);
-	        }
-	        if (isAllDefined(value)) {
-	          scope.$$postDigest(function() {
-	            if (isAllDefined(lastValue)) unwatch();
-	          });
-	        }
-	      }, objectEquality);
-
-	      return unwatch;
-
-	      function isAllDefined(value) {
-	        var allDefined = true;
-	        forEach(value, function(val) {
-	          if (!isDefined(val)) allDefined = false;
-	        });
-	        return allDefined;
-	      }
+	    function isAllDefined(value) {
+	      var allDefined = true;
+	      forEach(value, function(val) {
+	        if (!isDefined(val)) allDefined = false;
+	      });
+	      return allDefined;
 	    }
 
 	    function constantWatchDelegate(scope, listener, objectEquality, parsedExpression) {
@@ -19586,41 +16953,37 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var watchDelegate = parsedExpression.$$watchDelegate;
 	      var useInputs = false;
 
-	      var regularWatch =
-	          watchDelegate !== oneTimeLiteralWatchDelegate &&
-	          watchDelegate !== oneTimeWatchDelegate;
+	      var isDone = parsedExpression.literal ? isAllDefined : isDefined;
 
-	      var fn = regularWatch ? function regularInterceptedExpression(scope, locals, assign, inputs) {
+	      function regularInterceptedExpression(scope, locals, assign, inputs) {
 	        var value = useInputs && inputs ? inputs[0] : parsedExpression(scope, locals, assign, inputs);
 	        return interceptorFn(value, scope, locals);
-	      } : function oneTimeInterceptedExpression(scope, locals, assign, inputs) {
-	        var value = parsedExpression(scope, locals, assign, inputs);
+	      }
+
+	      function oneTimeInterceptedExpression(scope, locals, assign, inputs) {
+	        var value = useInputs && inputs ? inputs[0] : parsedExpression(scope, locals, assign, inputs);
 	        var result = interceptorFn(value, scope, locals);
 	        // we only return the interceptor's result if the
 	        // initial value is defined (for bind-once)
-	        return isDefined(value) ? result : value;
-	      };
+	        return isDone(value) ? result : value;
+	      }
 
-	      // Propagate $$watchDelegates other then inputsWatchDelegate
+	      var fn = parsedExpression.oneTime ? oneTimeInterceptedExpression : regularInterceptedExpression;
+
+	      // Propogate the literal/oneTime attributes
+	      fn.literal = parsedExpression.literal;
+	      fn.oneTime = parsedExpression.oneTime;
+
+	      // Propagate or create inputs / $$watchDelegates
 	      useInputs = !parsedExpression.inputs;
 	      if (watchDelegate && watchDelegate !== inputsWatchDelegate) {
 	        fn.$$watchDelegate = watchDelegate;
 	        fn.inputs = parsedExpression.inputs;
 	      } else if (!interceptorFn.$stateful) {
-	        // Treat interceptor like filters - assume non-stateful by default and use the inputsWatchDelegate
+	        // If there is an interceptor, but no watchDelegate then treat the interceptor like
+	        // we treat filters - it is assumed to be a pure function unless flagged with $stateful
 	        fn.$$watchDelegate = inputsWatchDelegate;
 	        fn.inputs = parsedExpression.inputs ? parsedExpression.inputs : [parsedExpression];
-	      }
-
-	      if (fn.inputs) {
-	        fn.inputs = fn.inputs.map(function(e) {
-	              // Remove the isPure flag of inputs when it is not absolute because they are now wrapped in a
-	              // potentially non-pure interceptor function.
-	              if (e.isPure === PURITY_RELATIVE) {
-	                return function depurifier(s) { return e(s); };
-	              }
-	              return e;
-	            });
 	      }
 
 	      return fn;
@@ -19908,7 +17271,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @param {function(function)} nextTick Function for executing functions in the next turn.
 	 * @param {function(...*)} exceptionHandler Function into which unexpected exceptions are passed for
 	 *     debugging purposes.
-	 * @param {boolean=} errorOnUnhandledRejections Whether an error should be generated on unhandled
+	 @ param {=boolean} errorOnUnhandledRejections Whether an error should be generated on unhandled
 	 *     promises rejections.
 	 * @returns {object} Promise manager.
 	 */
@@ -19979,7 +17342,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    state.pending = undefined;
 	    try {
 	      for (var i = 0, ii = pending.length; i < ii; ++i) {
-	        markQStateExceptionHandled(state);
+	        state.pur = true;
 	        promise = pending[i][0];
 	        fn = pending[i][state.status];
 	        try {
@@ -20006,10 +17369,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    // eslint-disable-next-line no-unmodified-loop-condition
 	    while (!queueSize && checkQueue.length) {
 	      var toCheck = checkQueue.shift();
-	      if (!isStateExceptionHandled(toCheck)) {
-	        markQStateExceptionHandled(toCheck);
+	      if (!toCheck.pur) {
+	        toCheck.pur = true;
 	        var errorMessage = 'Possibly unhandled rejection: ' + toDebugString(toCheck.value);
-	        if (isError(toCheck.value)) {
+	        if (toCheck.value instanceof Error) {
 	          exceptionHandler(toCheck.value, errorMessage);
 	        } else {
 	          exceptionHandler(errorMessage);
@@ -20019,7 +17382,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 
 	  function scheduleProcessQueue(state) {
-	    if (errorOnUnhandledRejections && !state.pending && state.status === 2 && !isStateExceptionHandled(state)) {
+	    if (errorOnUnhandledRejections && !state.pending && state.status === 2 && !state.pur) {
 	      if (queueSize === 0 && checkQueue.length === 0) {
 	        nextTick(processChecks);
 	      }
@@ -20298,16 +17661,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	  $Q.race = race;
 
 	  return $Q;
-	}
-
-	function isStateExceptionHandled(state) {
-	  return !!state.pur;
-	}
-	function markQStateExceptionHandled(state) {
-	  state.pur = true;
-	}
-	function markQExceptionHandled(q) {
-	  markQStateExceptionHandled(q.$$state);
 	}
 
 	/** @this */
@@ -20790,12 +18143,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	       *   values are examined for changes on every call to `$digest`.
 	       * - The `listener` is called whenever any expression in the `watchExpressions` array changes.
 	       *
-	       * `$watchGroup` is more performant than watching each expression individually, and should be
-	       * used when the listener does not need to know which expression has changed.
-	       * If the listener needs to know which expression has changed,
-	       * {@link ng.$rootScope.Scope#$watch $watch()} or
-	       * {@link ng.$rootScope.Scope#$watchCollection $watchCollection()} should be used.
-	       *
 	       * @param {Array.<string|Function(scope)>} watchExpressions Array of expressions that will be individually
 	       * watched using {@link ng.$rootScope.Scope#$watch $watch()}
 	       *
@@ -20804,34 +18151,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	       *    The `newValues` array contains the current values of the `watchExpressions`, with the indexes matching
 	       *    those of `watchExpression`
 	       *    and the `oldValues` array contains the previous values of the `watchExpressions`, with the indexes matching
-	       *    those of `watchExpression`.
-	       *
-	       *    Note that `newValues` and `oldValues` reflect the differences in each **individual**
-	       *    expression, and not the difference of the values between each call of the listener.
-	       *    That means the difference between `newValues` and `oldValues` cannot be used to determine
-	       *    which expression has changed / remained stable:
-	       *
-	       *    ```js
-	       *
-	       *    $scope.$watchGroup(['v1', 'v2'], function(newValues, oldValues) {
-	       *      console.log(newValues, oldValues);
-	       *    });
-	       *
-	       *    // newValues, oldValues initially
-	       *    // [undefined, undefined], [undefined, undefined]
-	       *
-	       *    $scope.v1 = 'a';
-	       *    $scope.v2 = 'a';
-	       *
-	       *    // ['a', 'a'], [undefined, undefined]
-	       *
-	       *    $scope.v2 = 'b'
-	       *
-	       *    // v1 hasn't changed since it became `'a'`, therefore its oldValue is still `undefined`
-	       *    // ['a', 'b'], [undefined, 'a']
-	       *
-	       *    ```
-	       *
+	       *    those of `watchExpression`
 	       *    The `scope` refers to the current scope.
 	       * @returns {function()} Returns a de-registration function for all listeners.
 	       */
@@ -23406,7 +20726,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    timeout.cancel = function(promise) {
 	      if (promise && promise.$$timeoutId in deferreds) {
 	        // Timeout cancels should not report an unhandled promise.
-	        markQExceptionHandled(deferreds[promise.$$timeoutId].promise);
+	        deferreds[promise.$$timeoutId].promise.catch(noop);
 	        deferreds[promise.$$timeoutId].reject('canceled');
 	        delete deferreds[promise.$$timeoutId];
 	        return $browser.defer.cancel(promise.$$timeoutId);
@@ -23841,7 +21161,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 *
 	 * @param {function(actual, expected)|true|false} [comparator] Comparator which is used in
 	 *     determining if values retrieved using `expression` (when it is not a function) should be
-	 *     considered a match based on the expected value (from the filter expression) and actual
+	 *     considered a match based on the the expected value (from the filter expression) and actual
 	 *     value (from the object in the array).
 	 *
 	 *   Can be one of:
@@ -24760,9 +22080,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @kind function
 	 * @description
 	 * Converts string to lowercase.
-	 *
-	 * See the {@link ng.uppercase uppercase filter documentation} for a functionally identical example.
-	 *
 	 * @see angular.lowercase
 	 */
 	var lowercaseFilter = valueFn(lowercase);
@@ -24774,23 +22091,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @kind function
 	 * @description
 	 * Converts string to uppercase.
-	 * @example
-	   <example module="uppercaseFilterExample" name="filter-uppercase">
-	     <file name="index.html">
-	       <script>
-	         angular.module('uppercaseFilterExample', [])
-	           .controller('ExampleController', ['$scope', function($scope) {
-	             $scope.title = 'This is a title';
-	           }]);
-	       </script>
-	       <div ng-controller="ExampleController">
-	         <!-- This title should be formatted normally -->
-	         <h1>{{title}}</h1>
-	         <!-- This title should be capitalized -->
-	         <h1>{{title | uppercase}}</h1>
-	       </div>
-	     </file>
-	   </example>
+	 * @see angular.uppercase
 	 */
 	var uppercaseFilter = valueFn(uppercase);
 
@@ -24978,9 +22279,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * specified predicates can distinguish between two items, `orderBy` will automatically introduce a
 	 * dummy predicate that returns the item's index as `value`.
 	 * (If you are using a custom comparator, make sure it can handle this predicate as well.)
-	 *
-	 * If a custom comparator still can't distinguish between two items, then they will be sorted based
-	 * on their index using the built-in comparator.
 	 *
 	 * Finally, in an attempt to simplify things, if a predicate returns an object as the extracted
 	 * value for an item, `orderBy` will try to convert that object to a primitive value, before passing
@@ -25528,7 +22826,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	      }
 
-	      return (compare(v1.tieBreaker, v2.tieBreaker) || defaultCompare(v1.tieBreaker, v2.tieBreaker)) * descending;
+	      return compare(v1.tieBreaker, v2.tieBreaker) * descending;
 	    }
 	  };
 
@@ -26131,23 +23429,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @property {boolean} $dirty True if user has already interacted with the form.
 	 * @property {boolean} $valid True if all of the containing forms and controls are valid.
 	 * @property {boolean} $invalid True if at least one containing control or form is invalid.
+	 * @property {boolean} $pending True if at least one containing control or form is pending.
 	 * @property {boolean} $submitted True if user has submitted the form even if its invalid.
 	 *
-	 * @property {Object} $pending An object hash, containing references to controls or forms with
-	 *  pending validators, where:
-	 *
-	 *  - keys are validations tokens (error names).
-	 *  - values are arrays of controls or forms that have a pending validator for the given error name.
-	 *
-	 * See {@link form.FormController#$error $error} for a list of built-in validation tokens.
-	 *
-	 * @property {Object} $error An object hash, containing references to controls or forms with failing
-	 *  validators, where:
+	 * @property {Object} $error Is an object hash, containing references to controls or
+	 *  forms with failing validators, where:
 	 *
 	 *  - keys are validation tokens (error names),
-	 *  - values are arrays of controls or forms that have a failing validator for the given error name.
+	 *  - values are arrays of controls or forms that have a failing validator for given error name.
 	 *
 	 *  Built-in validation tokens:
+	 *
 	 *  - `email`
 	 *  - `max`
 	 *  - `maxlength`
@@ -26393,24 +23685,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @name form.FormController#$setValidity
 	 *
 	 * @description
-	 * Change the validity state of the form, and notify the parent form (if any).
+	 * Sets the validity of a form control.
 	 *
-	 * Application developers will rarely need to call this method directly. It is used internally, by
-	 * {@link ngModel.NgModelController#$setValidity NgModelController.$setValidity()}, to propagate a
-	 * control's validity state to the parent `FormController`.
-	 *
-	 * @param {string} validationErrorKey Name of the validator. The `validationErrorKey` will be
-	 *        assigned to either `$error[validationErrorKey]` or `$pending[validationErrorKey]` (for
-	 *        unfulfilled `$asyncValidators`), so that it is available for data-binding. The
-	 *        `validationErrorKey` should be in camelCase and will get converted into dash-case for
-	 *        class name. Example: `myError` will result in `ng-valid-my-error` and
-	 *        `ng-invalid-my-error` classes and can be bound to as `{{ someForm.$error.myError }}`.
-	 * @param {boolean} isValid Whether the current state is valid (true), invalid (false), pending
-	 *        (undefined),  or skipped (null). Pending is used for unfulfilled `$asyncValidators`.
-	 *        Skipped is used by AngularJS when validators do not run because of parse errors and when
-	 *        `$asyncValidators` do not run because any of the `$validators` failed.
-	 * @param {NgModelController | FormController} controller - The controller whose validity state is
-	 *        triggering the change.
+	 * This method will also propagate to parent forms.
 	 */
 	addSetValidityMethod({
 	  clazz: FormController,
@@ -29255,13 +26532,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return {
 	      restrict: 'AC',
 	      link: function(scope, element, attr) {
-	        var expression = attr[name].trim();
-	        var isOneTime = (expression.charAt(0) === ':') && (expression.charAt(1) === ':');
-
-	        var watchInterceptor = isOneTime ? toFlatValue : toClassString;
-	        var watchExpression = $parse(expression, watchInterceptor);
-	        var watchAction = isOneTime ? ngClassOneTimeWatchAction : ngClassWatchAction;
-
 	        var classCounts = element.data('$classCounts');
 	        var oldModulo = true;
 	        var oldClassString;
@@ -29284,7 +26554,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          scope.$watch(indexWatchExpression, ngClassIndexWatchAction);
 	        }
 
-	        scope.$watch(watchExpression, watchAction, isOneTime);
+	        scope.$watch($parse(attr[name], toClassString), ngClassWatchAction);
 
 	        function addClasses(classString) {
 	          classString = digestClassCounts(split(classString), 1);
@@ -29326,9 +26596,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 
 	        function ngClassIndexWatchAction(newModulo) {
-	          // This watch-action should run before the `ngClass[OneTime]WatchAction()`, thus it
+	          // This watch-action should run before the `ngClassWatchAction()`, thus it
 	          // adds/removes `oldClassString`. If the `ngClass` expression has changed as well, the
-	          // `ngClass[OneTime]WatchAction()` will update the classes.
+	          // `ngClassWatchAction()` will update the classes.
 	          if (newModulo === selector) {
 	            addClasses(oldClassString);
 	          } else {
@@ -29338,15 +26608,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	          oldModulo = newModulo;
 	        }
 
-	        function ngClassOneTimeWatchAction(newClassValue) {
-	          var newClassString = toClassString(newClassValue);
-
-	          if (newClassString !== oldClassString) {
-	            ngClassWatchAction(newClassString);
-	          }
-	        }
-
 	        function ngClassWatchAction(newClassString) {
+	          // When using a one-time binding the newClassString will return
+	          // the pre-interceptor value until the one-time is complete
+	          if (!isString(newClassString)) {
+	            newClassString = toClassString(newClassString);
+	          }
+
 	          if (oldModulo === selector) {
 	            updateClasses(oldClassString, newClassString);
 	          }
@@ -29392,34 +26660,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 
 	    return classString;
-	  }
-
-	  function toFlatValue(classValue) {
-	    var flatValue = classValue;
-
-	    if (isArray(classValue)) {
-	      flatValue = classValue.map(toFlatValue);
-	    } else if (isObject(classValue)) {
-	      var hasUndefined = false;
-
-	      flatValue = Object.keys(classValue).filter(function(key) {
-	        var value = classValue[key];
-
-	        if (!hasUndefined && isUndefined(value)) {
-	          hasUndefined = true;
-	        }
-
-	        return value;
-	      });
-
-	      if (hasUndefined) {
-	        // Prevent the `oneTimeLiteralWatchInterceptor` from unregistering
-	        // the watcher, by including at least one `undefined` value.
-	        flatValue.push(undefined);
-	      }
-	    }
-
-	    return flatValue;
 	  }
 	}
 
@@ -32261,7 +29501,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 *        (for unfulfilled `$asyncValidators`), so that it is available for data-binding.
 	 *        The `validationErrorKey` should be in camelCase and will get converted into dash-case
 	 *        for class name. Example: `myError` will result in `ng-valid-my-error` and `ng-invalid-my-error`
-	 *        classes and can be bound to as `{{ someForm.someControl.$error.myError }}`.
+	 *        class and can be bound to as  `{{someForm.someControl.$error.myError}}` .
 	 * @param {boolean} isValid Whether the current state is valid (true), invalid (false), pending (undefined),
 	 *                          or skipped (null). Pending is used for unfulfilled `$asyncValidators`.
 	 *                          Skipped is used by Angular when validators do not run because of parse errors and
@@ -33336,8 +30576,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 
 
-	  // Support: IE 9 only
-	  // We can't just jqLite('<option>') since jqLite is not smart enough
+	  // we can't just jqLite('<option>') since jqLite is not smart enough
 	  // to create it in <select> and IE barfs otherwise.
 	  var optionTemplate = window.document.createElement('option'),
 	      optGroupTemplate = window.document.createElement('optgroup');
@@ -33357,9 +30596,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	          break;
 	        }
 	      }
-
-	      // The empty option will be compiled and rendered before we first generate the options
-	      selectElement.empty();
 
 	      var providedEmptyOption = !!selectCtrl.emptyOption;
 
@@ -33382,15 +30618,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	      if (!multiple) {
 
 	        selectCtrl.writeValue = function writeNgOptionsValue(value) {
-	          // The options might not be defined yet when ngModel tries to render
-	          if (!options) return;
-
-	          var selectedOption = selectElement[0].options[selectElement[0].selectedIndex];
+	          var selectedOption = options.selectValueMap[selectElement.val()];
 	          var option = options.getOptionFromViewValue(value);
 
 	          // Make sure to remove the selected attribute from the previously selected option
 	          // Otherwise, screen readers might get confused
-	          if (selectedOption) selectedOption.removeAttribute('selected');
+	          if (selectedOption) selectedOption.element.removeAttribute('selected');
 
 	          if (option) {
 	            // Don't update the option when it is already selected.
@@ -33400,6 +30633,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	            if (selectElement[0].value !== option.selectValue) {
 	              selectCtrl.removeUnknownOption();
+	              selectCtrl.unselectEmptyOption();
 
 	              selectElement[0].value = option.selectValue;
 	              option.element.selected = true;
@@ -33407,7 +30641,14 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	            option.element.setAttribute('selected', 'selected');
 	          } else {
-	            selectCtrl.selectUnknownOrEmptyOption(value);
+
+	            if (providedEmptyOption) {
+	              selectCtrl.selectEmptyOption();
+	            } else if (selectCtrl.unknownOption.parent().length) {
+	              selectCtrl.updateUnknownOption(value);
+	            } else {
+	              selectCtrl.renderUnknownOption(value);
+	            }
 	          }
 	        };
 
@@ -33436,11 +30677,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	      } else {
 
 	        selectCtrl.writeValue = function writeNgOptionsMultiple(values) {
-	          // The options might not be defined yet when ngModel tries to render
-	          if (!options) return;
-
 	          // Only set `<option>.selected` if necessary, in order to prevent some browsers from
 	          // scrolling to `<option>` elements that are outside the `<select>` element's viewport.
+
 	          var selectedOptions = values && values.map(getAndUpdateSelectedOption) || [];
 
 	          options.items.forEach(function(option) {
@@ -33482,10 +30721,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	      if (providedEmptyOption) {
 
+	        // we need to remove it before calling selectElement.empty() because otherwise IE will
+	        // remove the label from the element. wtf?
+	        selectCtrl.emptyOption.remove();
+
 	        // compile the element since there might be bindings in it
 	        $compile(selectCtrl.emptyOption)(scope);
-
-	        selectElement.prepend(selectCtrl.emptyOption);
 
 	        if (selectCtrl.emptyOption[0].nodeType === NODE_TYPE_COMMENT) {
 	          // This means the empty option has currently no actual DOM node, probably because
@@ -33504,12 +30745,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	              ngModelCtrl.$render();
 
 	              optionEl.on('$destroy', function() {
-	                var needsRerender = selectCtrl.$isEmptyOptionSelected();
-
 	                selectCtrl.hasEmptyOption = false;
 	                selectCtrl.emptyOption = undefined;
-
-	                if (needsRerender) ngModelCtrl.$render();
 	              });
 	            }
 	          };
@@ -33521,6 +30758,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 
 	      }
+
+	      selectElement.empty();
+
+	      // We need to do this here to ensure that the options object is defined
+	      // when we first hit it in writeNgOptionsValue
+	      updateOptions();
 
 	      // We will re-render the option elements if the option values or labels change
 	      scope.$watchCollection(ngOptions.getWatchables, updateOptions);
@@ -33545,8 +30788,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      function updateOptionElement(option, element) {
 	        option.element = element;
 	        element.disabled = option.disabled;
-	        // Support: IE 11 only, Edge 12-13 only
-	        // NOTE: The label must be set before the value, otherwise IE 11 & Edge create unresponsive
+	        // NOTE: The label must be set before the value, otherwise IE10/11/EDGE create unresponsive
 	        // selects in certain circumstances when multiple selects are next to each other and display
 	        // the option list in listbox style, i.e. the select is [multiple], or specifies a [size].
 	        // See https://github.com/angular/angular.js/issues/11314 for more info.
@@ -33581,6 +30823,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	        options = ngOptions.getOptions();
 
 	        var groupElementMap = {};
+
+	        // Ensure that the empty option is always there if it was explicitly provided
+	        if (providedEmptyOption) {
+	          selectElement.prepend(selectCtrl.emptyOption);
+	        }
 
 	        options.items.forEach(function addOption(option) {
 	          var groupElement;
@@ -33626,6 +30873,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            ngModelCtrl.$render();
 	          }
 	        }
+
 	      }
 	  }
 
@@ -34313,7 +31561,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        // Store a list of elements from previous run. This is a hash where key is the item from the
 	        // iterator, and the value is objects with following properties.
 	        //   - scope: bound scope
-	        //   - clone: previous element.
+	        //   - element: previous element.
 	        //   - index: position
 	        //
 	        // We are using no-proto object so that we don't need to guard against inherited props via
@@ -35416,7 +32664,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var noopNgModelController = { $setViewValue: noop, $render: noop };
 
 	function setOptionSelectedStatus(optionEl, value) {
-	  optionEl.prop('selected', value);
+	  optionEl.prop('selected', value); // needed for IE
 	  /**
 	   * When unselecting an option, setting the property to null / false should be enough
 	   * However, screenreaders might react to the selected attribute instead, see
@@ -35430,120 +32678,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	/**
 	 * @ngdoc type
 	 * @name  select.SelectController
-	 *
 	 * @description
-	 * The controller for the {@link ng.select select} directive. The controller exposes
-	 * a few utility methods that can be used to augment the behavior of a regular or an
-	 * {@link ng.ngOptions ngOptions} select element.
-	 *
-	 * @example
-	 * ### Set a custom error when the unknown option is selected
-	 *
-	 * This example sets a custom error "unknownValue" on the ngModelController
-	 * when the select element's unknown option is selected, i.e. when the model is set to a value
-	 * that is not matched by any option.
-	 *
-	 * <example name="select-unknown-value-error" module="staticSelect">
-	 * <file name="index.html">
-	 * <div ng-controller="ExampleController">
-	 *   <form name="myForm">
-	 *     <label for="testSelect"> Single select: </label><br>
-	 *     <select name="testSelect" ng-model="selected" unknown-value-error>
-	 *       <option value="option-1">Option 1</option>
-	 *       <option value="option-2">Option 2</option>
-	 *     </select><br>
-	 *     <span ng-if="myForm.testSelect.$error.unknownValue">Error: The current model doesn't match any option</span>
-	 *
-	 *     <button ng-click="forceUnknownOption()">Force unknown option</button><br>
-	 *   </form>
-	 * </div>
-	 * </file>
-	 * <file name="app.js">
-	 *  angular.module('staticSelect', [])
-	 *    .controller('ExampleController', ['$scope', function($scope) {
-	 *      $scope.selected = null;
-	 *
-	 *      $scope.forceUnknownOption = function() {
-	 *        $scope.selected = 'nonsense';
-	 *      };
-	 *   }])
-	 *   .directive('unknownValueError', function() {
-	 *     return {
-	 *       require: ['ngModel', 'select'],
-	 *       link: function(scope, element, attrs, ctrls) {
-	 *         var ngModelCtrl = ctrls[0];
-	 *         var selectCtrl = ctrls[1];
-	 *
-	 *         ngModelCtrl.$validators.unknownValue = function(modelValue, viewValue) {
-	 *           if (selectCtrl.$isUnknownOptionSelected()) {
-	 *             return false;
-	 *           }
-	 *
-	 *           return true;
-	 *         };
-	 *       }
-	 *
-	 *     };
-	 *   });
-	 * </file>
-	 *</example>
-	 *
-	 *
-	 * @example
-	 * ### Set the "required" error when the unknown option is selected.
-	 *
-	 * By default, the "required" error on the ngModelController is only set on a required select
-	 * when the empty option is selected. This example adds a custom directive that also sets the
-	 * error when the unknown option is selected.
-	 *
-	 * <example name="select-unknown-value-required" module="staticSelect">
-	 * <file name="index.html">
-	 * <div ng-controller="ExampleController">
-	 *   <form name="myForm">
-	 *     <label for="testSelect"> Select: </label><br>
-	 *     <select name="testSelect" ng-model="selected" unknown-value-required>
-	 *       <option value="option-1">Option 1</option>
-	 *       <option value="option-2">Option 2</option>
-	 *     </select><br>
-	 *     <span ng-if="myForm.testSelect.$error.required">Error: Please select a value</span><br>
-	 *
-	 *     <button ng-click="forceUnknownOption()">Force unknown option</button><br>
-	 *   </form>
-	 * </div>
-	 * </file>
-	 * <file name="app.js">
-	 *  angular.module('staticSelect', [])
-	 *    .controller('ExampleController', ['$scope', function($scope) {
-	 *      $scope.selected = null;
-	 *
-	 *      $scope.forceUnknownOption = function() {
-	 *        $scope.selected = 'nonsense';
-	 *      };
-	 *   }])
-	 *   .directive('unknownValueRequired', function() {
-	 *     return {
-	 *       priority: 1, // This directive must run after the required directive has added its validator
-	 *       require: ['ngModel', 'select'],
-	 *       link: function(scope, element, attrs, ctrls) {
-	 *         var ngModelCtrl = ctrls[0];
-	 *         var selectCtrl = ctrls[1];
-	 *
-	 *         var originalRequiredValidator = ngModelCtrl.$validators.required;
-	 *
-	 *         ngModelCtrl.$validators.required = function() {
-	 *           if (attrs.required && selectCtrl.$isUnknownOptionSelected()) {
-	 *             return false;
-	 *           }
-	 *
-	 *           return originalRequiredValidator.apply(this, arguments);
-	 *         };
-	 *       }
-	 *     };
-	 *   });
-	 * </file>
-	 *</example>
-	 *
-	 *
+	 * The controller for the `<select>` directive. This provides support for reading
+	 * and writing the selected value(s) of the control and also coordinates dynamically
+	 * added `<option>` elements, perhaps by an `ngRepeat` directive.
 	 */
 	var SelectController =
 	        ['$element', '$scope', /** @this */ function($element, $scope) {
@@ -35561,18 +32699,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	  // does not match any of the options. When it is rendered the value of the unknown
 	  // option is '? XXX ?' where XXX is the hashKey of the value that is not known.
 	  //
-	  // Support: IE 9 only
 	  // We can't just jqLite('<option>') since jqLite is not smart enough
 	  // to create it in <select> and IE barfs otherwise.
 	  self.unknownOption = jqLite(window.document.createElement('option'));
 
-	  // The empty option is an option with the value '' that the application developer can
-	  // provide inside the select. It is always selectable and indicates that a "null" selection has
-	  // been made by the user.
-	  // If the select has an empty option, and the model of the select is set to "undefined" or "null",
-	  // the empty option is selected.
-	  // If the model is set to a different unmatched value, the unknown option is rendered and
-	  // selected, i.e both are present, because a "null" selection and an unknown value are different.
+	  // The empty option is an option with the value '' that te application developer can
+	  // provide inside the select. When the model changes to a value that doesn't match an option,
+	  // it is selected - so if an empty option is provided, no unknown option is generated.
+	  // However, the empty option is not removed when the model matches an option. It is always selectable
+	  // and indicates that a "null" selection has been made.
 	  self.hasEmptyOption = false;
 	  self.emptyOption = undefined;
 
@@ -35608,7 +32743,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  self.unselectEmptyOption = function() {
 	    if (self.hasEmptyOption) {
-	      setOptionSelectedStatus(self.emptyOption, false);
+	      self.emptyOption.removeAttr('selected');
 	    }
 	  };
 
@@ -35650,7 +32785,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var selectedOption = $element[0].options[$element[0].selectedIndex];
 	      setOptionSelectedStatus(jqLite(selectedOption), true);
 	    } else {
-	      self.selectUnknownOrEmptyOption(value);
+	      if (value == null && self.emptyOption) {
+	        self.removeUnknownOption();
+	        self.selectEmptyOption();
+	      } else if (self.unknownOption.parent().length) {
+	        self.updateUnknownOption(value);
+	      } else {
+	        self.renderUnknownOption(value);
+	      }
 	    }
 	  };
 
@@ -35693,59 +32835,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return !!optionsMap.get(value);
 	  };
 
-	  /**
-	   * @ngdoc method
-	   * @name select.SelectController#$hasEmptyOption
-	   *
-	   * @description
-	   *
-	   * Returns `true` if the select element currently has an empty option
-	   * element, i.e. an option that signifies that the select is empty / the selection is null.
-	   *
-	   */
-	  self.$hasEmptyOption = function() {
-	    return self.hasEmptyOption;
-	  };
-
-	  /**
-	   * @ngdoc method
-	   * @name select.SelectController#$isUnknownOptionSelected
-	   *
-	   * @description
-	   *
-	   * Returns `true` if the select element's unknown option is selected. The unknown option is added
-	   * and automatically selected whenever the select model doesn't match any option.
-	   *
-	   */
-	  self.$isUnknownOptionSelected = function() {
-	    // Presence of the unknown option means it is selected
-	    return $element[0].options[0] === self.unknownOption[0];
-	  };
-
-	  /**
-	   * @ngdoc method
-	   * @name select.SelectController#$isEmptyOptionSelected
-	   *
-	   * @description
-	   *
-	   * Returns `true` if the select element has an empty option and this empty option is currently
-	   * selected. Returns `false` if the select element has no empty option or it is not selected.
-	   *
-	   */
-	  self.$isEmptyOptionSelected = function() {
-	    return self.hasEmptyOption && $element[0].options[$element[0].selectedIndex] === self.emptyOption[0];
-	  };
-
-	  self.selectUnknownOrEmptyOption = function(value) {
-	    if (value == null && self.emptyOption) {
-	      self.removeUnknownOption();
-	      self.selectEmptyOption();
-	    } else if (self.unknownOption.parent().length) {
-	      self.updateUnknownOption(value);
-	    } else {
-	      self.renderUnknownOption(value);
-	    }
-	  };
 
 	  var renderScheduled = false;
 	  function scheduleRender() {
@@ -35894,9 +32983,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * the content of the `value` attribute or the textContent of the `<option>`, if the value attribute is missing.
 	 * Value and textContent can be interpolated.
 	 *
-	 * The {@link select.SelectController select controller} exposes utility functions that can be used
-	 * to manipulate the select's behavior.
-	 *
 	 * ## Matching model and option values
 	 *
 	 * In general, the match between the model and an option is evaluated by strictly comparing the model
@@ -35948,19 +33034,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * set on the model on selection. See {@link ngOptions `ngOptions`}.
 	 * @param {string=} ngAttrSize sets the size of the select element dynamically. Uses the
 	 * {@link guide/interpolation#-ngattr-for-binding-to-arbitrary-attributes ngAttr} directive.
-	 *
-	 *
-	 * @knownIssue
-	 *
-	 * In Firefox, the select model is only updated when the select element is blurred. For example,
-	 * when switching between options with the keyboard, the select model is only set to the
-	 * currently selected option when the select is blurred, e.g via tab key or clicking the mouse
-	 * outside the select.
-	 *
-	 * This is due to an ambiguity in the select element specification. See the
-	 * [issue on the Firefox bug tracker](https://bugzilla.mozilla.org/show_bug.cgi?id=126379)
-	 * for more information, and this
-	 * [Github comment for a workaround](https://github.com/angular/angular.js/issues/9134#issuecomment-130800488)
 	 *
 	 * @example
 	 * ### Simple `select` elements with static options
@@ -36206,11 +33279,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	                                               includes(value, selectCtrl.selectValueMap[option.value]));
 	            var currentlySelected = option.selected;
 
-	            // Support: IE 9-11 only, Edge 12-15+
-	            // In IE and Edge adding options to the selection via shift+click/UP/DOWN
+	            // IE and Edge, adding options to the selection via shift+click/UP/DOWN,
 	            // will de-select already selected options if "selected" on those options was set
 	            // more than once (i.e. when the options were already selected)
-	            // So we only modify the selected property if necessary.
+	            // So we only modify the selected property if neccessary.
 	            // Note: this behavior cannot be replicated via unit tests because it only shows in the
 	            // actual user interface.
 	            if (shouldBeSelected !== currentlySelected) {
@@ -36818,17 +33890,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	!window.angular.$$csp().noInlineStyle && window.angular.element(document.head).prepend('<style type="text/css">@charset "UTF-8";[ng\\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\\:form{display:block;}.ng-animate-shim{visibility:hidden;}.ng-anchor{position:absolute;}</style>');
 
 /***/ }),
-/* 88 */,
-/* 89 */,
-/* 90 */,
-/* 91 */,
-/* 92 */,
-/* 93 */,
-/* 94 */,
-/* 95 */,
-/* 96 */,
-/* 97 */,
-/* 98 */
+
+/***/ 98:
 /***/ (function(module, exports, __webpack_require__) {
 
 	__webpack_require__(99);
@@ -36836,7 +33899,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ }),
-/* 99 */
+
+/***/ 99:
 /***/ (function(module, exports) {
 
 	/*
@@ -36967,9 +34031,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ }),
-/* 100 */,
-/* 101 */,
-/* 102 */
+
+/***/ 102:
 /***/ (function(module, exports, __webpack_require__) {
 
 	__webpack_require__(103);
@@ -36977,11 +34040,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ }),
-/* 103 */
+
+/***/ 103:
 /***/ (function(module, exports) {
 
 	/**
-	 * @license AngularJS v1.6.5
+	 * @license AngularJS v1.6.4
 	 * (c) 2010-2017 Google, Inc. http://angularjs.org
 	 * License: MIT
 	 */
@@ -37011,7 +34075,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* global -ngTouch */
 	var ngTouch = angular.module('ngTouch', []);
 
-	ngTouch.info({ angularVersion: '1.6.5' });
+	ngTouch.info({ angularVersion: '1.6.4' });
 
 	ngTouch.provider('$touch', $TouchProvider);
 
@@ -37732,8 +34796,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ }),
-/* 104 */,
-/* 105 */
+
+/***/ 105:
 /***/ (function(module, exports, __webpack_require__) {
 
 	__webpack_require__(106);
@@ -37741,7 +34805,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ }),
-/* 106 */
+
+/***/ 106:
 /***/ (function(module, exports) {
 
 	/**
@@ -38386,7 +35451,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ }),
-/* 107 */
+
+/***/ 107:
 /***/ (function(module, exports, __webpack_require__) {
 
 	//https://github.com/angular/angular.js/pull/10732
@@ -38398,7 +35464,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ }),
-/* 108 */
+
+/***/ 108:
 /***/ (function(module, exports) {
 
 	/*!
@@ -39177,7 +36244,1146 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	}());
 
+/***/ }),
+
+/***/ 143:
+/***/ (function(module, exports, __webpack_require__) {
+
+	(function () {
+
+	  var last_scroll = 0;
+	  function disableScroll() {
+	    last_scroll = document.body.scrollTop;
+	    window.document.body.style.top = -last_scroll + 'px';
+	    window.document.body.className += ' noscroll'
+	  }
+
+	  function enableScroll() {
+	    window.document.body.className = window.document.body.className.replace(' noscroll', '')
+	    window.document.body.style.top = 0;    
+	    window.scrollTo(0, last_scroll)
+	  }  
+
+	  var SAILPLAY = (function () {
+
+	    //methods that not supported in old browsers
+	    if (!Array.prototype.indexOf) {
+	      Array.prototype.indexOf = function (elt /*, from*/) {
+	        var len = this.length >>> 0;
+
+	        var from = Number(arguments[1]) || 0;
+	        from = (from < 0) ? Math.ceil(from) : Math.floor(from);
+	        if (from < 0)
+	          from += len;
+
+	        for (; from < len; from++) {
+	          if (from in this &&
+	            this[from] === elt)
+	            return from;
+	        }
+	        return -1;
+	      };
+	    }
+
+	    var cookies = {
+	      createCookie: function (name, value, days) {
+	        var expires;
+	        if (days) {
+	          var date = new Date();
+	          date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+	          expires = "; expires=" + date.toGMTString();
+	        }
+	        else expires = "";
+	        document.cookie = name + "=" + value + expires + "; path=/";
+	      },
+	      readCookie: function (name) {
+	        var nameEQ = name + "=";
+	        var ca = document.cookie.split(';');
+	        for (var i = 0; i < ca.length; i++) {
+	          var c = ca[i];
+	          while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+	          if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+	        }
+	        return null;
+	      },
+	      eraseCookie: function (name) {
+	        cookies.createCookie(name, "", -1);
+	      }
+	    };
+
+	    //simple jsonp service
+	    var JSONP = {
+	      currentScript: null,
+	      get: function (url, data, success, error) {
+	        var src = url + (url.indexOf("?") + 1 ? "&" : "?");
+	        var head = document.getElementsByTagName("head")[0];
+	        var newScript = document.createElement("script");
+	        var params = [];
+
+	        data = data || {};
+
+	        //auth_hash checking
+	        if (!_config.auth_hash) {
+	          delete data.auth_hash;
+	        }
+
+	        window.JSONP_CALLBACK = window.JSONP_CALLBACK || {};
+
+	        var callback_name = 'sailplay_' + new Date().getTime() + Math.random().toString().replace('.', '');
+
+	        var jsonpTimeout = setTimeout(function () {
+	          try {
+	            head.removeChild(newScript);
+	          }
+	          catch (err) {
+	          }
+	          delete window.JSONP_CALLBACK[callback_name];
+	        }, 10000);
+
+	        window.JSONP_CALLBACK[callback_name] = function (data) {
+	          clearTimeout(jsonpTimeout);
+	          try {
+	            head.removeChild(newScript);
+	          }
+	          catch (err) {
+	          }
+	          delete window.JSONP_CALLBACK[callback_name];
+	          success && success(data);
+	        };
+
+	        data["callback"] = 'JSONP_CALLBACK.' + callback_name;
+	        if (_config.dep_id) data.dep_id = _config.dep_id;
+
+	        for (var param_name in data) {
+	          params.push(param_name + "=" + encodeURIComponent(data[param_name]));
+	        }
+	        src += params.join("&");
+
+	        newScript.type = "text/javascript";
+	        newScript.src = src;
+	        newScript.onerror = function (ex) {
+	          try {
+	            head.removeChild(newScript);
+	          }
+	          catch (err) {
+	          }
+	          delete window.JSONP_CALLBACK[callback_name];
+	          error && error(ex);
+	        };
+
+	        head.insertBefore(newScript, head.firstChild);
+	      },
+	      success: null
+	    };
+
+	    var sp = {};
+
+	    //observer pattern
+	    var _handlers = {};
+
+	    sp.on = function (event, handler) {
+	      if (typeof (_handlers[event]) == "undefined")
+	        _handlers[event] = [];
+	      _handlers[event].push(handler);
+	    };
+
+	    sp.send = function (event, data, callback) {
+	      if (_handlers[event]) {
+	        for (var i = 0; i < _handlers[event].length; i++) {
+	          _handlers[event][i](data, callback);
+	        }
+	      }
+	    };
+
+	    //private config
+	    var _config = {};
+	    var _remote_login_init = false;
+
+	    function initError() {
+	      alert('Please init SailPlay HUB first!');
+	    }
+
+	    function remoteLogin(opts) {
+
+	      var frame;
+	      disableScroll();
+	      opts = opts || {};
+
+	      if (opts.node && opts.node.nodeType == 1 && opts.node.tagName == 'IFRAME') {
+	        frame = opts.node;
+	      }
+	      else {
+	        frame = document.createElement('IFRAME');
+	        frame.style.border = 'none';
+	        frame.style.position = 'fixed';
+	        frame.style.top = '0';
+	        frame.style.left = '0';
+	        frame.style.bottom = '0';
+	        frame.style.right = '0';
+	        frame.style.width = '410px';
+	        frame.style.height = '510px';
+	        frame.created = true;
+	        frame.style.background = 'transparent';
+	        frame.style.margin = 'auto';
+	        frame.style.zIndex = '100000';
+	        document.body.appendChild(frame);
+
+	      }
+
+	      var frame_id = frame.id || 'sailplay_login_frame_' + new Date().getTime();
+
+	      frame.name = frame_id;
+	      frame.id = frame_id;
+
+	      function onMessage(messageEvent) {
+
+	        var data = {};
+
+	        var _domain = _config.DOMAIN.indexOf('http:') != -1 || _config.DOMAIN.indexOf('https:') != -1 ? _config.DOMAIN : 'http:' + _config.DOMAIN;
+
+	        if (messageEvent.origin == _domain) {
+	          try {
+	            data = JSON.parse(messageEvent.data);
+	          }
+	          catch (e) {
+
+	          }
+	        }
+	        if (data.name == 'login.success') {
+	          sp.send('login.do', data.auth_hash);
+	          return;
+	        }
+	        if (data.name == 'login.cancel') {
+	          sp.send('login.cancel');
+	          cancelLogin();
+	          enableScroll();          
+	          return;
+	        }
+	        if (data.name == 'login.check') {
+	          if (data.auth_hash == 'None') {
+	            sp.send('logout');
+	          }
+	          else {
+	            cancelLogin();
+	            enableScroll();            
+	            sp.send('login.do', data.auth_hash, data)
+	          }
+	          return;
+	        }
+	        if (data.name == 'logout.success') {
+	          _config.auth_hash = '';
+	          sp.send('logout.success');
+	        }
+
+	      }
+
+	      function cancelLogin() {
+	        if (frame.created) {
+	          document.body.removeChild(frame);
+	          window.removeEventListener("message", onMessage, false);
+	          _remote_login_init = false;
+	        }
+	      }
+
+	      var params = {};
+	      params.partner_id = _config.partner.id;
+	      params.dep_id = _config.dep_id || '';
+	      params.background = opts.background || '';
+	      params.partner_info = opts.partner_info || 0;
+	      if(opts.reg_match_email_oid) {
+	        params.reg_match_email_oid = opts.reg_match_email_oid;
+	      }
+	      if(opts.css_link) {
+	        params.css_link = opts.css_link;
+	      }
+	      if (opts.lang) {
+	        params.lang = opts.lang;
+	      }
+	      params.disabled_options = opts.disabled_options || '';
+	      params.texts = JSON.stringify(opts.texts || '');
+
+
+	      var params_string = [];
+
+	      var src = _config.DOMAIN + '/users/auth-page/?';
+	      for (var param_name in params) {
+	        params_string.push(param_name + "=" + encodeURIComponent(params[param_name]));
+	      }
+	      src += params_string.join("&");
+
+	      frame.setAttribute('src', src);
+
+	      if (!_remote_login_init) {
+	        window.addEventListener("message", onMessage, false);
+	        _remote_login_init = true;
+	      }
+
+	    }
+
+	    //init function
+	    sp.on('init', function (params) {
+	      if (!params) {
+	        alert('SailPlay: provide required parameters');
+	      }
+	      if (!params.partner_id) {
+	        alert('SailPlay: provide partner_id');
+	        return;
+	      }
+	      JSONP.get((params.domain || 'http://sailplay.ru') + '/js-api/' + params.partner_id + '/config/', {
+	        lang: params.lang || 'ru',
+	        dep_id: (params.dep_id || '')
+	      }, function (response) {
+	        if (response && response.status == 'ok') {
+
+	          _config = response.config;
+	          _config.DOMAIN = (params.domain || 'http://sailplay.ru');
+	          _config.dep_id = params.dep_id || '';
+	          _config.env.staticUrl = params.static_url || _config.env.staticUrl;
+	          _config.social_networks = ['fb', 'vk', 'tw', 'gp', 'ok'];
+	          _config.platform = params.platform || 'desktop';
+
+	          //postmessage events init
+	          //1. bind action events
+	          function onActionMessage(messageEvent) {
+	            var data = {};
+	            if (messageEvent.origin == _config.DOMAIN) {
+	              try {
+	                data = JSON.parse(messageEvent.data);
+	              }
+	              catch (e) {
+
+	              }
+
+	              switch (data && data.name) {
+	                case 'actions.perform.success':
+	                  sp.send('actions.perform.success', data);
+	                  break;
+	                case 'actions.perform.error':
+	                  sp.send('actions.perform.error', data);
+	                  break;
+	                case 'actions.social.connect.complete':
+	                  sp.send('actions.social.connect.complete', data);
+	                  break;
+	                case 'actions.social.connect.success':
+	                  sp.send('actions.social.connect.success', data);
+	                  break;
+	                case 'actions.social.connect.error':
+	                  sp.send('actions.social.connect.error', data);
+	                  break;
+	                case 'friend_invite_cookie':
+	                  break;
+	                case 'actions.social.gp.like.mouseenter':
+	                  sp.send('actions.social.gp.like.mouseenter');
+	                  break;
+	                case 'actions.social.gp.like.mouseleave':
+	                  sp.send('actions.social.gp.like.mouseleave');
+	                  break;
+	              }
+
+	            }
+	          }
+
+	          window.addEventListener("message", onActionMessage, false);
+
+	          //2. recieve ref_hash info
+	          // _config.ref_hash = sp.url_params().ref_hash || '';
+	          //var cookie_frame = document.createElement('IFRAME');
+	          //cookie_frame.style.width = 0;
+	          //cookie_frame.style.height = 0;
+	          //cookie_frame.style.top = '-10000px';
+	          //cookie_frame.style.left = '-10000px';
+	          //cookie_frame.src = _config.DOMAIN + '/js-api/' + _config.partner.id + '/actions/social-widget/v2/';
+	          //document.body.appendChild(cookie_frame);
+	          //cookie_frame.onload = function(){
+	          //  document.body.removeChild(cookie_frame);
+	          //};
+
+	          sp.send('init.success', _config);
+	          //        console.dir(_config);
+	        } else {
+	          sp.send('init.error', response);
+	          alert('SailPlay: app load failed!');
+	        }
+	      });
+
+	    });
+
+	    sp.on('login.remote', function (options) {
+	      remoteLogin(options);
+	    });
+
+	    //////////////////
+	    //bind hub events
+	    sp.on('language.set', function (lang) {
+	      if (_config == {}) {
+	        initError();
+	        return;
+	      }
+	      if (typeof lang == 'string') {
+	        JSONP.get(_config.DOMAIN + '/js-api/' + _config.partner.id + '/config/', {lang: lang}, function (response) {
+	          if (response && response.status == 'ok') {
+	            _config.lang = response.config.lang;
+	            sp.send('language.set.success', _config.lang);
+	            //        console.dir(_config);
+	          } else {
+	            sp.send('language.set.error', response);
+	          }
+	        });
+	      }
+	    });
+
+	    //////////////////
+	    //bind api events
+
+	    //LOGIN & LOGOUT
+	    sp.on('login.do', function (auth_hash) {
+	      _config.auth_hash = auth_hash;
+	//    cookies.createCookie('sp_auth_hash', _config.auth_hash);
+	      var params = {
+	        auth_hash: _config.auth_hash
+	      };
+	      JSONP.get(_config.DOMAIN + _config.urls.users.info, params, function (res) {
+	        //      console.dir(res);
+	        if (res.status == 'ok') {
+	          sp.send('login.success', res.user);
+	        } else {
+	          _config.auth_hash = '';
+	//        cookies.eraseCookie('sp_auth_hash');
+	          sp.send('login.error', res);
+	        }
+	      });
+	    });
+
+	    sp.on('login', function (auth_hash) {
+
+	      if (_config == {}) {
+	        initError();
+	        return;
+	      }
+
+	      sp.send('login.do', auth_hash);
+
+	    });
+
+	    sp.on('logout', function () {
+	      if (_config == {}) {
+	        initError();
+	        return;
+	      }
+	      var req = document.createElement('iframe');
+	      req.width = 0;
+	      req.height = 0;
+	      req.style.border = 'none';
+	      req.src = _config.DOMAIN + '/users/logout/';
+	      document.body.appendChild(req);
+	      req.onload = function () {
+	        document.body.removeChild(req);
+	        _config.auth_hash = '';
+	        cookies.eraseCookie('sp_auth_hash');
+	        sp.send('logout.success');
+	      };
+
+
+	    });
+
+	    //USER INFO
+	    sp.on('load.user.info', function (p, callback) {
+	      if (_config == {}) {
+	        initError();
+	        return;
+	      }
+	      var params = {
+	        user_status: 1,
+	        badges: 1,
+	        last_badge: 1
+	      };
+	      if (p && p.purchases) {
+	        params.purchases = p.purchases;
+	      }
+	      if (p && p.all) {
+	        params.all = p.all;
+	      }
+	      if (p && p.user) {
+	        for (var param in p.user) {
+	          params[param] = p.user[param];
+	        }
+	      }
+	      else {
+	        params.auth_hash = _config.auth_hash;
+	      }
+	      JSONP.get(_config.DOMAIN + _config.urls.users.info, params, function (res) {
+	        callback && callback(res);
+	        if (res.status == 'ok') {
+	          sp.send('load.user.info.success', res);
+	        } else {
+	          sp.send('load.user.info.error', res);
+	        }
+	      });
+	    });
+
+	    sp.on('users.update', function (params, callback) {
+
+	      if (_config == {}) {
+	        initError();
+	        return;
+	      }
+
+	      params = params || {};
+
+	      if (_config.auth_hash) {
+	        params.auth_hash = _config.auth_hash;
+	      }
+
+	      JSONP.get(_config.DOMAIN + '/js-api/' + _config.partner.id + '/users/update/', params, function (res) {
+
+	        callback && callback(res);
+
+	        if (res.status === 'ok') {
+	          sp.send('users.update.success', res);
+	        }
+	        else {
+	          sp.send('users.update.error', res);
+	        }
+	      });
+
+	    });
+
+	    //user feedback
+	    sp.on('users.feedback', function (params, callback) {
+
+	      if (_config == {}) {
+	        initError();
+	        return;
+	      }
+
+	      params = params || {};
+
+	      if (_config.auth_hash) {
+	        params.auth_hash = _config.auth_hash;
+	      }
+	      else {
+	        sp.send('auth.error');
+	        return;
+	      }
+
+	      JSONP.get(_config.DOMAIN + _config.urls.users.feedback, params, function (res) {
+
+	        callback && callback(res);
+
+	        if (res.status === 'ok') {
+	          sp.send('users.feedback.success', res);
+	        }
+	        else {
+	          sp.send('users.feedback.error', res);
+	        }
+	      });
+
+	    });
+
+	    //USER HISTORY
+	    sp.on('load.user.history', function (params) {
+	      if (_config == {}) {
+	        initError();
+	        return;
+	      }
+
+	      params = params || {};
+
+	      if (_config.auth_hash) {
+	        params.auth_hash = _config.auth_hash;
+	      }
+
+	      JSONP.get(_config.DOMAIN + _config.urls.users.history, params, function (res) {
+	        //      console.dir(res);
+	        if (res.status == 'ok') {
+	          sp.send('load.user.history.success', res.history);
+	        } else {
+	          sp.send('load.user.history.error', res);
+	        }
+	      });
+	    });
+
+	    //GIFTS GET INFO
+	    sp.on('gifts.get', function (giftId) {
+	      if (_config == {}) {
+	        initError();
+	        return;
+	      }
+	      var params = {
+	        gift_id: giftId,
+	        auth_hash: _config.auth_hash
+	      };
+	      JSONP.get(_config.DOMAIN + _config.urls.gifts.get, params, function (res) {
+	        //      console.dir(res);
+	        if (res.status == 'ok') {
+	          sp.send('gifts.get.success', res.gift);
+	        } else {
+	          sp.send('gifts.get.error', res);
+	        }
+	      });
+	    });
+
+	    //GIFTS LIST
+	    sp.on('load.gifts.list', function (params) {
+
+	      if (_config == {}) {
+	        initError();
+	        return;
+	      }
+
+	      params = params || {};
+
+	      if (_config.auth_hash) {
+	        params.auth_hash = _config.auth_hash;
+	      }
+
+	      params.lang = params.lang || _config.lang || 'ru';
+
+	      JSONP.get(_config.DOMAIN + _config.urls.gifts.list, params, function (res) {
+	        //      console.dir(res);
+	        if (res.status == 'ok') {
+	          sp.send('load.gifts.list.success', res.gifts);
+	        } else {
+	          sp.send('load.gifts.list.error', res);
+	        }
+	      });
+	    });
+
+	    //GIFT CATEGORIES
+	    sp.on('load.gifts.categories', function (params) {
+
+	      if (_config == {}) {
+	        initError();
+	        return;
+	      }
+
+	      params = params || {};
+
+	      JSONP.get(_config.DOMAIN + _config.urls.gifts.categories_list, params, function (res) {
+	        if (res.status == 'ok') {
+	          sp.send('load.gifts.categories.success', res.categories);
+	        } else {
+	          sp.send('load.gifts.categories.error', res);
+	        }
+	      });
+
+	    });
+
+	    //GET GIFT
+	    function forceCompleteGiftPurchase(giftPurchase, opts) {
+	      var params = {
+	        gift_public_key: giftPurchase.gift_public_key,
+	        auth_hash: _config.auth_hash
+	      };
+	      if (opts && opts.no_user_sms) {
+	        params.no_user_sms = opts.no_user_sms;
+	      }
+	      JSONP.get(_config.DOMAIN + _config.urls.gifts.purchase.force_confirm, params, function (res) {
+	        if (res.status == 'ok') {
+	          sp.send('gift.purchase.force_complete.success', res);
+	        } else {
+	          sp.send('gift.purchase.force_complete.error', res);
+	        }
+	        //      console.dir(res);
+	      });
+	    }
+
+	    //CREATE GIFT PURCHASE V1
+	    sp.on('gifts.purchase', function (p) {
+	      if (_config == {}) {
+	        initError();
+	        return;
+	      }
+	      var gift = p.gift || {};
+	      if (!_config.auth_hash) {
+	        sp.send('gifts.purchase.auth.error', gift);
+	      } else {
+	        var params = {
+	          gift_id: gift.id,
+	          dep_id: _config.dep_id || _config.partner.depId || '',
+	          auth_hash: _config.auth_hash
+	        };
+	        JSONP.get(_config.DOMAIN + _config.urls.gifts.purchase.purchase, params, function (res) {
+	          if (res.status == 'ok') {
+	            sp.send('gifts.purchase.success', res);
+	            if (res.is_completed) {
+	              var requestedPurchase = res;
+	              if (!requestedPurchase.request_to_partner_url) {
+	                forceCompleteGiftPurchase(requestedPurchase, p.options);
+	              } else {
+	                var reqGiftPurchase = {
+	                  gift_public_key: requestedPurchase['gift_public_key'],
+	                  gift_sku: requestedPurchase['gift_sku'],
+	                  auth_hash: _config.auth_hash
+	                };
+	                if (requestedPurchase['user_phone']) {
+	                  reqGiftPurchase['user_phone'] = requestedPurchase['user_phone'];
+	                }
+	                if (requestedPurchase['email']) {
+	                  reqGiftPurchase['email'] = requestedPurchase['email'];
+	                }
+	                JSONP.get(requestedPurchase.request_to_partner_url, reqGiftPurchase, function (res) {
+	                  sp.send('gifts.purchase.partner_request.success', res);
+	                }, function (res) {
+	                  sp.send('gifts.purchase.partner_request.error', res);
+	                  forceCompleteGiftPurchase(requestedPurchase, p.options);
+	                });
+	              }
+	            }
+	          } else {
+	            sp.send('gift.purchase.error', res);
+	          }
+	          //        console.dir(res);
+	        });
+	      }
+	    });
+
+	    //BADGES LIST
+	    sp.on('load.badges.list', function (p) {
+	      if (_config == {}) {
+	        initError();
+	        return;
+	      }
+	      var params = {
+	        auth_hash: _config.auth_hash,
+	        lang: p && p.lang || _config.lang || 'ru'
+	      };
+	      if(p){
+	        if(p.include_rules) {
+	          params.include_rules = 1;
+	        }
+	      }
+	      JSONP.get(_config.DOMAIN + _config.urls.badges.list, params, function (res) {
+
+	        //      console.dir(res);
+	        if (res.status == 'ok') {
+
+	          function create_badge_actions(badge) {
+	            if (badge && badge.is_received) {
+
+	              badge.actions = {};
+
+	              for (var sn in _config.social_networks) {
+
+	                badge.actions[_config.social_networks[sn]] = {
+
+	                  socialType: _config.social_networks[sn],
+	                  action: 'badge',
+	                  shortLink: window.location.href,
+	                  pic: badge.thumbs.url_250x250,
+	                  badgeId: badge.id,
+	                  msg: badge.share_msg
+
+	                };
+
+	              }
+	            }
+	          }
+
+	          for (var ch in res.multilevel_badges) {
+
+	            var multi_line = res.multilevel_badges[ch];
+
+	            for (var b in multi_line) {
+
+	              create_badge_actions(multi_line[b]);
+
+	            }
+
+	          }
+
+	          for (var olb in res.one_level_badges) {
+
+	            create_badge_actions(res.one_level_badges[olb]);
+
+	          }
+
+	          sp.send('load.badges.list.success', res);
+	        } else {
+	          sp.send('load.badges.list.error', res);
+	        }
+	      });
+	    });
+
+	    //PROMO-CODES SECTION
+	    sp.on('promocodes.apply', function (promocode) {
+	      if (_config == {}) {
+	        initError();
+	        return;
+	      }
+	      promocode.auth_hash = _config.auth_hash;
+	      if (_config.auth_hash) {
+	        JSONP.get(_config.DOMAIN + _config.urls.promocodes.apply, promocode, function (res) {
+	          if (res.status == 'ok') {
+	            sp.send('promocodes.apply.success', res);
+	          } else {
+	            sp.send('promocodes.apply.error', res);
+	          }
+	        });
+	      } else {
+	        sp.send('promocodes.apply.auth.error', action);
+	      }
+	    });
+
+	    // user update
+	    sp.on("user.update", function (params) {
+	      if (_config == {}) {
+	        initError();
+	        return;
+	      }
+	      JSONP.get(_config.DOMAIN + "/js-api/" + _config.partner.id + "/users/update/", params, function (res) {
+	        if (res.status == 'ok') {
+	          sp.send('user.update.success', res);
+	        } else {
+	          sp.send('user.update.error', res);
+	        }
+	      })
+	    });
+
+	    //TAGS SECTIONS
+	    sp.on('tags.add', function (data, callback) {
+	      if (_config == {}) {
+	        initError();
+	        return;
+	      }
+	      if (_config.auth_hash || data.user) {
+	        var tagsObj = {
+	          tags: data.tags && data.tags.join(',') || []
+	        };
+	        if (data.user) {
+	          for (var p in data.user) {
+	            tagsObj[p] = data.user[p];
+	          }
+	        }
+	        else {
+	          tagsObj.auth_hash = _config.auth_hash;
+	        }
+	        JSONP.get(_config.DOMAIN + _config.urls.tags.add, tagsObj, function (res) {
+	          callback && callback(res);
+	          if (res.status == 'ok') {
+	            sp.send('tags.add.success', res);
+	          } else {
+	            sp.send('tags.add.error', res);
+	          }
+	        });
+	      } else {
+	        SAILPLAY.send('tags.add.auth.error', data);
+	      }
+	    });
+
+	    sp.on('tags.delete', function (data, callback) {
+	      if (_config == {}) {
+	        initError();
+	        return;
+	      }
+	      if (_config.auth_hash || data.user) {
+	        var tagsObj = {
+	          tags: data.tags && data.tags.join(',') || []
+	        };
+	        if (data.user) {
+	          for (var p in data.user) {
+	            tagsObj[p] = data.user[p];
+	          }
+	        }
+	        else {
+	          tagsObj.auth_hash = _config.auth_hash;
+	        }
+	        JSONP.get(_config.DOMAIN + _config.urls.tags.delete, tagsObj, function (res) {
+	          callback && callback(res);
+	          if (res.status == 'ok') {
+	            sp.send('tags.delete.success', res);
+	          } else {
+	            sp.send('tags.delete.error', res);
+	          }
+	        });
+	      } else {
+	        SAILPLAY.send('tags.delete.auth.error', data);
+	      }
+	    });
+
+	    // tag exist
+	    sp.on("tags.exist", function (data, callback) {
+	      if (_config == {}) {
+	        initError();
+	        return;
+	      }
+	      if (_config.auth_hash || data.user) {
+	        var obj = {
+	          tags: JSON.stringify(data.tags)
+	        };
+	        if (data.user) {
+	          for (var p in data.user) {
+	            obj[p] = data.user[p];
+	          }
+	        }
+	        else {
+	          obj.auth_hash = _config.auth_hash;
+	        }
+	        obj.lang = data.lang || _config.lang || 'ru';
+	        JSONP.get(_config.DOMAIN + _config.urls.tags.exist, obj, function (res) {
+	          if (res.status == 'ok') {
+	            sp.send('tags.exist.success', res);
+	          } else {
+	            sp.send('tags.exist.error', res);
+	          }
+	          callback && callback(res);
+	        });
+	      } else {
+	        sp.send('tags.exist.auth.error', data);
+	      }
+
+	    });
+
+	    /**
+	     * Add variables to user
+	     * @object data {custom_vars:{}, user: {}}
+	     * @function callback
+	     */
+	    sp.on('vars.add', function (data, callback) {
+
+	      if (_config == {}) {
+	        initError();
+	        return;
+	      }
+
+	      if (_config.auth_hash || data.user) {
+
+	        var obj = data.custom_vars;
+
+	        if (data.user)
+	          for (var p in data.user) obj[p] = data.user[p];
+	        else
+	          obj.auth_hash = _config.auth_hash;
+
+	        obj.lang = data.lang || _config.lang || 'ru';
+
+	        JSONP.get(_config.DOMAIN + _config.urls.users.custom_variables.add, obj, function (res) {
+	          if (res.status == 'ok')
+	            sp.send('vars.add.success', res);
+	          else
+	            sp.send('vars.add.error', res);
+	          callback && callback(res);
+	        });
+
+	      } else {
+	        sp.send('vars.add.auth.error', data);
+	      }
+
+	    });
+
+	    /**
+	     * Get user variables
+	     * @object data {names: [], user: {}}
+	     * @function callback
+	     */
+	    sp.on("vars.batch", function (data, callback) {
+
+	      if (_config == {}) {
+	        initError();
+	        return;
+	      }
+
+	      if (_config.auth_hash || data.user) {
+
+	        var obj = {
+	          names: JSON.stringify(data.names)
+	        };
+
+	        if (data.user)
+	          for (var p in data.user) obj[p] = data.user[p];
+	        else
+	          obj.auth_hash = _config.auth_hash;
+
+	        obj.lang = data.lang || _config.lang || 'ru';
+
+	        JSONP.get(_config.DOMAIN + _config.urls.users.custom_variables.batch_get, obj, function (res) {
+	          if (res.status == 'ok')
+	            sp.send('vars.batch.success', res);
+	          else
+	            sp.send('vars.batch.error', res);
+	          callback && callback(res);
+	        });
+
+	      } else {
+	        sp.send('vars.batch.auth.error', data);
+	      }
+
+	    });
+
+	    //LEADERBOARD SECTION
+	    sp.on('leaderboard.load', function () {
+	      if (_config == {}) {
+	        initError();
+	        return;
+	      }
+	      var tagsObj = {
+	        auth_hash: _config.auth_hash
+	      };
+	      JSONP.get(_config.DOMAIN + _config.urls.leaderboard.data, tagsObj, function (res) {
+	        if (res.status == 'ok') {
+	          sp.send('leaderboard.load.success', res.data);
+	        } else {
+	          sp.send('leaderboard.load.error', res);
+	        }
+	      });
+	    });
+
+	    //REVIEWS SECTION
+	    sp.on('load.reviews.list', function (data) {
+	      if (_config == {}) {
+	        initError();
+	        return;
+	      }
+
+	      var req_data = {};
+
+	      if (data) {
+	        req_data.page = data.page || 1
+	      }
+
+	      JSONP.get(_config.DOMAIN + _config.urls.reviews.list, req_data, function (res) {
+	        if (res.status == 'ok') {
+	          sp.send('load.reviews.list.success', {page: res.page, pages: res.pages, reviews: res.reviews});
+	        } else {
+	          sp.send('load.reviews.list.error', res);
+	        }
+	      });
+	    });
+
+	    sp.on('reviews.add', function (data) {
+	      if (_config == {}) {
+	        initError();
+	        return;
+	      }
+	      var req_data = {
+	        auth_hash: _config.auth_hash,
+	        rating: data.rating || '',
+	        review: data.review || ''
+	      };
+	      JSONP.get(_config.DOMAIN + _config.urls.reviews.add, req_data, function (res) {
+	        if (res.status == 'ok') {
+	          sp.send('reviews.add.success', res);
+	        } else {
+	          sp.send('reviews.add.error', res);
+	        }
+	      });
+	    });
+
+	    sp.on('purchases.add', function (data) {
+	      if (_config == {}) {
+	        initError();
+	        return;
+	      }
+	      var req_data = {
+	        auth_hash: _config.auth_hash,
+	        price: data.price || '',
+	        order_num: data.order_num || ''
+	      };
+	      JSONP.get(_config.DOMAIN + _config.urls.purchase, req_data, function (res) {
+	        if (res.status == 'ok') {
+	          sp.send('purchases.add.success', res);
+	        } else {
+	          sp.send('purchases.add.error', res);
+	        }
+	      });
+	    });
+
+	    sp.on('magic.config', function (name) {
+	      if (_config == {}) {
+	        initError();
+	        return;
+	      }
+	      JSONP.get(_config.DOMAIN + _config.urls.loyalty_page_config_by_name, { name: name || 'default' }, function (res) {
+	        if (res.status == 'ok') {
+	          sp.send('magic.config.success', res);
+	        } else {
+	          sp.send('magic.config.error', res);
+	        }
+	      });
+	    });
+
+	    //utils
+	    sp.config = function () {
+	      return _config;
+	    };
+
+	    sp.find_by_properties = function (arr, props) {
+	      var filtered_arr = [];
+	      for (var i = 0; i < arr.length; i += 1) {
+	        var seeked = arr[i];
+	        var good = true;
+	        for (var p in props) {
+	          if (props[p] != seeked[p]) {
+	            good = false;
+	          }
+	        }
+	        if (good) filtered_arr.push(seeked);
+	      }
+	      return filtered_arr;
+	    };
+
+	    sp.jsonp = JSONP;
+
+	    sp.cookies = cookies;
+
+	    sp.is_dom = function (obj) {
+	      //Returns true if it is a DOM node
+
+	      function isNode(o) {
+	        return (
+	          typeof Node === "object" ? o instanceof Node :
+	          o && typeof o === "object" && typeof o.nodeType === "number" && typeof o.nodeName === "string"
+	        );
+	      }
+
+	      //Returns true if it is a DOM element
+	      function isElement(o) {
+	        return (
+	          typeof HTMLElement === "object" ? o instanceof HTMLElement : //DOM2
+	          o && typeof o === "object" && o !== null && o.nodeType === 1 && typeof o.nodeName === "string"
+	        );
+	      }
+
+	      return isNode(obj) || isElement(obj);
+
+	    };
+
+	    sp.url_params = function () {
+	      // This function is anonymous, is executed immediately and
+	      // the return value is assigned to QueryString!
+	      var query_string = {};
+	      var query = window.location.search.substring(1);
+	      var vars = query.split("&");
+	      for (var i = 0; i < vars.length; i++) {
+	        var pair = vars[i].split("=");
+	        var uri_component = pair && pair[1] ? pair[1].replace(/%([^\d].)/, "%25$1") : '';
+	        // If first entry with this name
+	        if (typeof query_string[pair[0]] === "undefined") {
+	          query_string[pair[0]] = decodeURIComponent(uri_component);
+	          // If second entry with this name
+	        } else if (typeof query_string[pair[0]] === "string") {
+	          query_string[pair[0]] = [query_string[pair[0]], decodeURIComponent(uri_component)];
+	          // If third or later entry with this name
+	        } else {
+	          query_string[pair[0]].push(decodeURIComponent(uri_component));
+	        }
+	      }
+	      return query_string;
+	    };
+
+	    return sp;
+
+	  }());
+
+	  if(typeof window !== 'undefined') window.SAILPLAY = SAILPLAY;
+	  if(true) module.exports = SAILPLAY;
+	  if(true) exports = SAILPLAY;
+
+	}());
+
+
 /***/ })
-/******/ ])
+
+/******/ })
 });
 ;
