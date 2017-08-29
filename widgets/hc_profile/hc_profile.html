@@ -152,6 +152,7 @@
             <span class="container-right-balance" data-ng-bind="user().user_points.confirmed | number"></span>
             <span class="container-right-placeholder"
                   data-ng-bind="user().user_points.confirmed | sailplay_pluralize: ('points.texts.pluralize' | tools)"></span>
+            <span class="container-right-unconfirmed" data-ng-bind="user().user_points.unconfirmed + ' неподтверждённых'"></span>
             <span class="container-right-discount"
                   data-ng-bind="getCurrentStatus(status_list) ? widget.texts.discount + getCurrentStatus(status_list).name : widget.texts.not_discount"></span>
             <a href="#" class="container-right-history button_primary"
