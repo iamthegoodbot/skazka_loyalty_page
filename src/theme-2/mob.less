@@ -15,6 +15,21 @@
   width: 100%;
   overflow-y: auto;
 }
+@media screen and (max-width: 840px){
+    .bns_overlay {
+    .bns_overlay_inner {
+      margin-top: 65px;
+    }}
+
+    .bns_toltip {
+      .bns_toltip_popup {
+        transform: translateX(-90%);
+        &:before {
+          left: 90%;
+        }
+      }
+    }
+}
 @media screen and (max-width: 1250px){
   body {
     &.no_scrol {

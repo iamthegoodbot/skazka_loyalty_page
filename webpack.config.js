@@ -46,8 +46,9 @@ let loaders = [
     loader: 'babel',
     query: {
       cacheDirectory: true,
-      plugins: ['transform-decorators-legacy', 'transform-runtime' ],
-      presets: ['es2015', 'es2017', 'es2016', 'stage-0']
+      // plugins: ['transform-decorators-legacy', 'transform-runtime' ],
+      // presets: ['es2015', 'es2017', 'es2016', 'stage-0']
+      presets: ['es2015']
     }
   },
   {

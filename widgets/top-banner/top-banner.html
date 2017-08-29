@@ -19,7 +19,7 @@
             <h4 class="bns_head">
                 Условия бонусной программы
             </h4>
-            <a href="#" class="close" data-ng-click="$parent.close()"></a>
+            <a href="#" class="close" data-ng-click="$parent.close(); $event.preventDefault()"></a>
             <div class="bns_about" data-ng-bind-html="$parent.$parent.widget.texts.rules_body">
         </div>
     </div>

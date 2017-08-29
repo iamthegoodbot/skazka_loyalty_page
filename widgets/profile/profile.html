@@ -81,6 +81,14 @@
               <div data-ng-switch-when="email" class="bns_input_block">
                 <label>{{ field.label }}</label>
                 <input type="email" placeholder="{{ field.placeholder }}" data-ng-model="field.value" disabled="true">
+                <div class="bns_toltip" data-ng-class="{bns_act: is_active_mail}" data-ng-click="is_active_mail = !is_active_mail">
+                        <span>?</span>
+                        <div class="bns_toltip_popup">
+                            Email Вы можете изменить,
+                            отправив запрос на почту
+                            <a href="mailto:change@bronnitsy.info">change@bronnitsy.info</a>
+                        </div>
+                    </div>
               </div>
 
             </div>

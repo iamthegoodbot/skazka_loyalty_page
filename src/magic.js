@@ -199,11 +199,11 @@ export default class Magic {
 
   }
 
-  static Widget = WidgetRegister;
+  // static Widget = WidgetRegister;
 
   //////////////// const from package.json
 
-  static version = MAGIC_VERSION;
+  // static version = MAGIC_VERSION;
 
 }
 
