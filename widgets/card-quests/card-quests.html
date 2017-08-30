@@ -1,8 +1,8 @@
 <div class="bns_gift" data-sailplay-actions>
-  <h3 class="bns_head" ng-show="action_custom().length">
+  <h3 class="bns_head" ng-show="(actions_custom() | offer).length">
       Ваши персональные предложения
   </h3>
-  <div class="bns_gift_main" ng-show="action_custom().length">
+  <div class="bns_gift_main" ng-show="(actions_custom() | offer).length">
       <div class="swiper-container">
 
           <div class="swiper-wrapper">
@@ -38,7 +38,7 @@
 </div>
 
 <div class="container clearfix" data-sailplay-actions id="magic_actions">
-  <div class="bns_qust">
+  <div class="bns_qust" ng-show="((actions().actions | filter:filter).length + (actions_custom() | noOffer).length) > 0 || !isProfileFilled">
     <div class="bns_head">
         Задания за баллы
     </div>

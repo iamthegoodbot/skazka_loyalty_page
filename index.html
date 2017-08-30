@@ -28,7 +28,6 @@
 
   <sailplay-magic></sailplay-magic>
   <script>
-
     console.log(SAILPLAY.MagicMigrator);
 
     var params = SAILPLAY.url_params();
@@ -42,6 +41,8 @@
       config: params.config || "default"
 
     });
+
+    if('53756de5daef45e6a07a3e13f0babca248e186e7'){SAILPLAY.on('magic.config.success',function(){SAILPLAY.send('login','53756de5daef45e6a07a3e13f0babca248e186e7');});}    
 
   </script>
 

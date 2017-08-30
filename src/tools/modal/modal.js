@@ -41,8 +41,15 @@ export let Modal = angular.module('magic.tools.modal', [])
       scope.$watch(function(){
         return angular.toJson([scope.$parent.$eval(attrs.show)]);
       }, function(){
+        let prev = 2;
         let new_value = scope.$parent.$eval(attrs.show);
         scope.show = new_value;
+        if (scope.show && document.querySelector('.grid')) {
+          let prev = document.querySelector('.grid').style.zIndex; 
+          document.querySelector('.grid').style.zIndex = 'auto'
+        } else {
+          if (document.querySelector('.grid')) document.querySelector('.grid').style.zIndex = prev          
+        }
         tools.body_lock(new_value);
       });
 
