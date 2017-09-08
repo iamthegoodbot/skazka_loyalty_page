@@ -64,8 +64,25 @@
 
         </div>
       </div>
+      <div data-ng-show="!!widget.texts.faq.text" class="bps_faq_btn" data-ng-bind="widget.texts.faq.button" data-ng-click="$event.preventDefault(); profile.openFaq=true;"></div>
     </div>
   </div>
+
+<!-- faq section -->
+<magic-modal class="faq_modal" data-show="profile.openFaq">
+
+  <div class="mb_popup mb_popup_prof" data-sailplay-fill-profile data-config="widget.fill_profile.config">
+
+    <div class="mb_popup_top">
+      <span class="modal_faq_header">{{ widget.texts.faq.header }}</span>
+    </div>
+
+    <div class="mb_popup_text">
+      <div class="modal_faq_text" data-ng-bind-html="widget.texts.faq.text | to_trusted"></div>
+    </div>    
+    
+  </div>
+</magic-modal>
 
   <magic-modal class="bns_overlay_hist" data-show="profile.history">
 
