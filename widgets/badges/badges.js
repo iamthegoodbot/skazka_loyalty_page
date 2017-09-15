@@ -6,10 +6,14 @@ import './badges.less';
 
 WidgetRegister({
   id: 'badges',
+  inject: [
+    'parallaxHelper'
+  ],
   template: BadgesWidgetTemplate,
-  controller: () => {
+  controller: (parallaxHelper) => {
     return (scope, elm, attrs) => {
-
+      scope.background = parallaxHelper.createAnimator(-0.2);
+      scope.background2 = parallaxHelper.createAnimator(-0.4);
     }
   }
 });
@@ -62,6 +66,18 @@ Widget.directive('sailplayMagicBadgeLine', function(MAGIC_CONFIG, SailPlayShare,
       scope.badge_share = function (network, badge) {
         SailPlayShare(network, scope._config.texts.share_url || $window.location.href, badge.name, badge.descr, badge.thumbs.url_250x250);
       };
+
+      scope.getLineLength = (line) => {
+        if(!line){
+          return 0;
+        }
+        const receivedArray = line.filter(x=>x.is_received)
+        if (receivedArray.length === 0) {
+          return '0% 180%'
+        } else {
+          return ((receivedArray.length-1) * 50 + 30) +'% 180%'
+        }
+      }
 
     }
 

@@ -9,11 +9,15 @@ WidgetRegister({
   inject: [
     'SailPlayApi',
     'SailPlay',
-    '$rootScope'
+    '$rootScope',
+    'parallaxHelper'
   ],
-  controller: function (SailPlayApi, SailPlay, $rootScope) {
+  controller: function (SailPlayApi, SailPlay, $rootScope, parallaxHelper) {
 
     return function (scope, elm, attrs) {
+
+      scope.background = parallaxHelper.createAnimator(-0.2);
+      scope.background2 = parallaxHelper.createAnimator(-0.4);
 
       // User model
       scope.user = SailPlayApi.data('load.user.info');
@@ -22,6 +26,8 @@ WidgetRegister({
       scope.blocks = [];
 
       scope.gifts = [];
+
+      scope.showMore = false
 
       scope.filter = scope.widget.options && scope.widget.options.filter || {};
 

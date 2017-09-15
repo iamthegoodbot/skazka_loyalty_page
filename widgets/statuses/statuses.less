@@ -1,6 +1,9 @@
 @import (reference) "../../src/theme/mixins";
 @import (reference) "../../src/theme/helpers";
 @import (reference) "../../src/theme/colors";
+@gray: rgb(242,242,242);
+@lgray: rgb(168,168,168);
+@yellow: rgb(245,234,81);
 
 .spm_wrapper {
 
@@ -9,27 +12,35 @@
     width: 90%;
     position: relative;
     margin: 0 5%;
-    padding: 30px 0 80px;
+    padding: 30px 0 160px;
     z-index: 1;
 
     .next_status_info {
       margin-bottom: 30px;
+      visibility: hidden;
+      display: block !important;
+      &.ng-hide {
+        visibility: hidden;
+        display: block !important;
+      }
     }
 
     @media screen and (max-width: 650px) {
       width: 80%;
+      height: 400px;
       margin-left: 10% !important;
     }
 
     &__wrapper {
       background: #F4F4F4;
       position: relative;
-      height: 20px;
+      height: 10px;
       border-radius: 5px;
       display: block;
       margin: 0 20px;
       @media screen and (max-width: 650px) {
-        height: 10px;
+        transform: rotate(90deg) translate(160px, 120px);
+        min-width: 360px;
       }
 
     }
@@ -38,24 +49,31 @@
       position: absolute;
       height: 100%;
       width: 0;
+      @media screen and (max-width: 650px) {
+        transform: rotate(-90deg);
+      }
 
       .element-item-point-inner {
+
         z-index: 1;
         content: '';
         position: absolute;
-        width: 30px;
-        height: 30px;
+        width: 86px;
+        height: 86px;
         display: none;
-        margin-top: -15px;
-        margin-left: -15px;
+        background-color: @yellow;
         top: 50%;
         left: 50%;
         border-radius: 50%;
-        background: @main_dark;
+        transform: translate3d(-50%, -50%, 0);
+        z-index: 3;
+        background-image: url(https://sailplays3.cdnvideo.ru/media/assets/assetfile/a7595a1572739ef9fa8c26f9d9833023.png);
+        background-position: center;
+        background-repeat: no-repeat;
         @media screen and (max-width: 650px) {
-          width: 20px;
-          height: 20px;
-          margin: -10px 0 0 -10px;
+          width: 76px;
+          height: 76px;
+          //margin: -10px 0 0 -10px;
         }
       }
 
@@ -63,15 +81,19 @@
         position: absolute;
         left: 50%;
         top: 50%;
-        width: 50px;
-        height: 50px;
+        width: 86px;
+        height: 86px;
         transform: translate3d(-50%, -50%, 0);
         border-radius: 50%;
         background: #f4f4f4;
-        z-index: -1;
+        z-index: 2;
+        background-image: url(https://sailplays3.cdnvideo.ru/media/assets/assetfile/8fb4c013cdbf519ce36d45e91de36f03.png);
+        background-position: center;
+        background-repeat: no-repeat;
+
         @media screen and (max-width: 650px) {
-          width: 30px;
-          height: 30px;
+          width: 76px;
+          height: 76px;
         }
 
       }
@@ -84,17 +106,53 @@
         top: 60px;
         transform: translateX(-50%);
         text-align: center;
+        font-family: "raleway";
+        font-style: italic;
+        font-weight: 700;
+        color: #303030;
 
         @media screen and (max-width: 650px) {
-          font-size: 14px;
+          transform: translate(80px, -90px);
         }
 
-        @media screen and (max-width: 450px) {
-          font-size: 12px;
-          min-width: 100%;
-          top: 50px;
+      }
+      &-description {
+        display: none;
+        min-width: 100px;
+        left: 0;
+        position: absolute;
+        top: 60px;
+        transform: translateX(-50%);
+        text-align: center;
+        font-family: 'open sans condensed';
+        color: rgba(0,0,0,0.3);
+
+        @media screen and (max-width: 650px) {
+          display: inline-block;
+          transform: translate(80px, -70px);
         }
 
+      }
+
+      &-number {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 20px;
+        height: 20px;
+        transform: translate(25px, -10px);
+        border: 4px solid @gray;
+        background-color: white;
+        border-radius: 100px;
+        color: @lgray;
+        z-index: 3;
+        position: absolute;
+        text-align: center;
+        &.last {
+          @media screen and (min-width: 651px) {
+            transform: translate(-60px, -10px);
+          }  
+        }
       }
 
       &-name {
@@ -124,18 +182,42 @@
           display: block;
         }
 
+        .status-list__item-number {
+          color: black;
+          border-color: @yellow;
+        }
+
       }
 
     }
 
     &__progress {
+      z-index: 9999;
       height: 10px;
       position: absolute;
       width: 0;
-      background: @main_dark;
+      background: @yellow;
       z-index: 0;
-      top: 5px;
       border-radius: 5px;
+      text-align: right;
+      &.progress-line-avatar {
+        background-color: transparent;
+        z-index: 999;
+      }
+
+      .avatar_container {
+        display: inline-block;
+        height: auto;
+        width: auto;
+        border-radius: 60px;
+        border: 3px solid @yellow;
+        box-sizing: border-box;
+        transform: translate(25px, -21px);
+        background-size: contain;
+        background-color: white;
+        width: 50px;
+        height: 50px;
+      }
 
       @media screen and (max-width: 650px) {
         height: 5px;

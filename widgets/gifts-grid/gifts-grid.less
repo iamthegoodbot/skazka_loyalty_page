@@ -6,18 +6,46 @@
 
   .gifts_grid_widget {
 
+    .parallax-img {
+      height: inherit;
+      width: 100vw;
+      position: absolute;
+    }
+
+    .triangle {
+      border-color: white transparent transparent transparent;
+    }
+
+    background-color: #229fd3;
+
+    padding-bottom: 60px;
+
     .gifts_grid {
 
-      &__header {
+      &___header {
         width: 90%;
         display: block;
         margin: 0 auto;
+        color: white;
+        text-align: center;
+        padding-top: 50px;
+        font-family: "raleway";
+        font-style: italic;
+        font-weight: 700;
+        font-size: 26px;
       }
 
-      &__caption {
+      &___caption {
+        padding-top: 5px;
         width: 90%;
         display: block;
         margin: 0 auto;
+        color: white;
+        text-align: center;
+        padding-bottom: 70px;
+        font-family: "raleway";
+        font-weight: normal;
+        font-size: 17px;
       }
 
       &__wrapper {
@@ -37,45 +65,94 @@
       }
 
       &__block {
-        display: block;
+        display: flex;
         width: 100%;
         height: auto;
-        float: left;
+        justify-content: space-around;
+        flex-wrap: wrap;
+      }
+
+      &__more_btn {
+        display: block;
+        background-color: transparent;
+        color: white;
+        border: 1px solid white;
+        width: 120px;
+        margin: 0 auto;
+        padding: 10px;
+        text-align: center;
       }
 
       &__item {
-        width: 33.3%;
+        border-radius: 12px;
+        background-color: white;
+        width: 24%;
         height: auto;
         float: left;
         box-sizing: border-box;
         padding: 3%;
         position: relative;
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 30px;
 
-        @media (max-width: 800px) {
+        @media (min-width: 651px) and (max-width: 800px) {
           width: 50%;
         }
 
-        @media (max-width: 500px) {
+        @media (max-width: 650px) {
           width: 100%;
+          height: 100%;
+          max-width: 360px;
         }
 
         &-img {
           display: inline-block;
           width: 100%;
+          @media screen and (max-width: 650px) {
+            width: 90%;
+            height: auto;
+            margin: auto;
+            max-width: 250px;
+          }
         }
 
         &-name {
+          margin-bottom: 10px;
+          padding-top: 20px;
+          font-size: 20px;
           display: inline-block;
           width: 100%;
+          line-height: 1.1;
+          font-family: "open sans condensed";
+          font-weight: bold;
+          text-transform: uppercase;
         }
 
         &-points {
           display: inline-block;
           width: 100%;
+          font-size: 24px;
         }
 
         &-button {
+          color: #229fd3;
           display: inline-block;
+          padding: 10px;
+          padding-left: 0px;
+          font-family: "raleway";
+          font-style: italic;
+          font-size: 22px;
+          &:hover {
+            padding-left: 10px;
+            background-color: black;
+            color:white;
+          }
+          @media screen and (max-width: 650px) {
+            padding-left: 10px;
+            background-color: black;
+            color:white;
+          }
         }
 
       }
@@ -102,7 +179,56 @@
       }
 
     }
+    @media screen and (min-width: 651px) {
+      .xs-gifts {
+        display: none;
+      }
+    }
 
+    @media screen and (max-width: 650px) {
+      .gifts_grid__wrapper {
+        display: none;
+      }
+      .bon_item {
+        display: inline-flex !important;
+        justify-content: center;
+      }
+      .controls {
+        margin: 0 auto;
+        height: 50px;
+        width: 180px;
+        border: 1px solid white;
+        border-radius: 8px;
+        box-sizing: border-box;
+        display: flex;
+        & .right {
+          transform: rotate(180deg);
+        }
+        & .left, & .right {
+          height: 100%;
+          width: 30%;
+          box-sizing: border-box;
+          background-image: url(https://sailplays3.cdnvideo.ru/media/assets/assetfile/be2020d8e68e175f24134dfac5f1b684.png);
+          background-size: 12px;
+          background-repeat: no-repeat;
+          background-position: center;
+        }
+        & .current {
+          height: 100%;
+          width: 40%; 
+          border-left: 1px solid white;
+          border-right: 1px solid white;
+          box-sizing: border-box;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          color: white;
+          font-family: "arial";
+          font-size: 20px;
+        }
+      }
+    }
   }
 
 }
+

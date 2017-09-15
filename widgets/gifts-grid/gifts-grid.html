@@ -1,5 +1,10 @@
 <div class="bon_choice_main container clearfix gifts_grid_widget">
 
+    <img class="parallax-img" src="https://sailplays3.cdnvideo.ru/media/assets/assetfile/27aca06cec5fc389f18344184acf0600.png" du-parallax y="background" alt="" />
+    <img class="parallax-img" src="https://sailplays3.cdnvideo.ru/media/assets/assetfile/ac608e3e5c832865660d52f987df428d.png" du-parallax y="background2" alt="" />
+
+    <div class="triangle"></div>
+
     <h3 class="gifts_grid___header">
         <span class="header" data-ng-bind="widget.texts.header"></span>
     </h3>
@@ -8,13 +13,59 @@
         <span class="caption" data-ng-bind="widget.texts.caption"></span>
     </h4>
 
+    <div data-sailplay-gifts class="clearfix xs-gifts">
+      <div class="bon_item_main" data-ng-show="gifts && gifts().length" data-magic-slider>
+
+        <div class="controls">
+          <div class="left" data-ng-click="$event.preventDefault(); set_position('left');"></div>
+          <div class="current" data-ng-bind="current_position+1 + ' / ' + gifts().length"></div>
+          <div class="right" data-ng-click="$event.preventDefault(); set_position('right');"></div>
+        </div>
+        
+        <div class="bon_slide_cat_item_wrap" data-magic-gallery>
+          <div class="bon_slide_cat_item">
+
+            <div class="bon_item_line" data-ng-style="{left : left}">
+
+
+              <div class="bon_item gift" data-magic-slide data-magic-gift data-ng-repeat="gift in gifts()">
+                <div class="gifts_grid__item"
+                     data-ng-class="{
+                     'gift-available': isAvailableGift(gift),
+                     'gift-unavailable': !isAvailableGift(gift),
+                     'gift-points-not-enough': user().user_points.confirmed < gift.points
+                     }">
+
+                    <img class="gifts_grid__item-img gift_img"
+                         data-ng-src="{{ gift.thumbs.url_250x250 | sailplay_pic }}"
+                         alt="{{ gift.name }}">
+
+                    <span class="gifts_grid__item-name gift_name" data-ng-bind="gift.name"></span>
+
+                    <a class="gifts_grid__item-button button_primary" href="#"
+                       data-ng-click="$event.preventDefault();open(gift)"
+                       data-ng-bind="(gift.points | number) + ' ' + (gift.points | sailplay_pluralize:('points.texts.pluralize' | tools))"></a>
+
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
     <div class="gifts_grid__wrapper clearfix">
 
         <div class="gifts_grid__blocks clearfix">
 
-            <div class="gifts_grid__block clearfix">
+            <div class="gifts_grid__block">
 
                 <div class="gifts_grid__item clearfix"
+                     data-ng-hide="!showMore && $index>3"
                      data-ng-class="{
                      'gift-available': isAvailableGift(gift),
                      'gift-unavailable': !isAvailableGift(gift),
@@ -22,24 +73,21 @@
                      }"
                      data-ng-repeat="gift in blocks[state] | filter:filter | orderBy:orderBy track by $index">
 
-                    <span class="gifts_grid__item-name gift_name" data-ng-bind="gift.name"></span>
-
-                    <span class="gifts_grid__item-points gift_points"
-                          data-ng-bind="(gift.points | number) + ' ' + (gift.points | sailplay_pluralize:('points.texts.pluralize' | tools))"></span>
-
                     <img class="gifts_grid__item-img gift_img"
                          data-ng-src="{{ gift.thumbs.url_250x250 | sailplay_pic }}"
                          alt="{{ gift.name }}">
 
+                    <span class="gifts_grid__item-name gift_name" data-ng-bind="gift.name"></span>
 
                     <a class="gifts_grid__item-button button_primary" href="#"
-                       data-ng-bind="widget.texts.get"
-                       data-ng-click="$event.preventDefault();open(gift)"></a>
-
+                       data-ng-click="$event.preventDefault();open(gift)"
+                       data-ng-bind="(gift.points | number) + ' ' + (gift.points | sailplay_pluralize:('points.texts.pluralize' | tools))"></a>
 
                 </div>
 
             </div>
+
+            <a class="gifts_grid__more_btn button_primary" data-ng-hide="showMore" data-ng-click="showMore = true" data-ng-bind="widget.texts.more"></a>
 
         </div>
 

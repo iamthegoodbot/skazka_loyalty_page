@@ -8,12 +8,14 @@ const ProfileWidget = {
 
   id: 'profile',
   template: WidgetProfileTemplate,
-  inject: ['$rootScope'],
-  controller: function ($rootScope) {
+  inject: ['$rootScope', 'badgeProgress'],
+  controller: function ($rootScope, badgeProgress) {
 
     return function (scope, elm, attrs) {
 
       // scope._tools = MAGIC_CONFIG.tools;
+
+      scope.currentStatus = badgeProgress
 
       scope.default_avatar = DefaultAvatarImage;
       $rootScope.$on('openProfile', () => {

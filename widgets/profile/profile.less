@@ -14,6 +14,10 @@
     //background-image: url(./img/prof_bg.png);
     position: relative;
 
+    @media screen and (min-width: 651px) {
+      padding: 0 10%;
+    }
+
     .bon_profile_info {
       width: 100%;
       float: left;
@@ -28,20 +32,52 @@
           color: @white;
           font-family: 'RotondaC';
           margin-top: 50px;
-          margin-bottom: 10px;
+          margin-bottom: 20px;
         }
         h4 {
           float: left;
           width: 100%;
           color: @white;
-          font-size: 14px;
+          font-size: 18px;
+          font-family: 'raleway';
           font-weight: 400;
         }
+        .btn_more {
+          margin-top: 20px;
+          border: 1px solid white;
+          background-color: transparent;
+          padding: 8px;
+          color: white;
+          font-family: "raleway";
+          font-style: italic;
+          font-size: 20px;
+          font-weight: 700;
+          padding: 5px 40px;
+        }
+      }
+      .bon_profile_top {
+        display: flex;
+        justify-content: space-around;
       }
       .bon_profile_right {
         float: right;
-        width: 265px;
+        width: 360px;
+        border-radius: 600px;
+        background-color: white;
+        height: 180px;
+        flex-direction: row;
+        display: flex;
         margin-top: 50px;
+        & .user_profile_container {
+          display: flex;
+          flex-direction: column;
+          width: 140px;
+          align-items: flex-end;
+        }
+        & .user_points_container {
+          display: flex;
+          flex-direction: column;
+        }
         img {
           border-radius: 100%;
           -webkit-box-shadow: 0 2px 7px 1px rgba(0, 0, 0, 0.2);
@@ -56,32 +92,96 @@
           float: right;
         }
         .logout_btn {
-          width: auto;
-          font-size: 14px;
-          margin-top: 9px;
-          color: @white;
+          position: absolute;
+          right: 0;
+          top: 0;
+          width: 30px;
+          height: 30px;
+          background-image: url('https://sailplays3.cdnvideo.ru/media/assets/assetfile/cd9b14afb3331b90328891d1a418f444.png');
+          display: block;
+          background-position: center;
+          background-size: contain;
+          background-repeat: no-repeat;
         }
         .edit_profile_btn {
-          font-size: 14px;
-          margin-top: 9px;
-          color: @white;
+          position: absolute;
+          right: 0;
+          bottom: 0;
+          width: 30px;
+          height: 30px;
+          background-image: url('https://sailplays3.cdnvideo.ru/media/assets/assetfile/06a57d91558ea2a1aa2cfe5dc3225c65.png');
+          display: block;
+          background-position: center;
+          background-size: contain;
+          background-repeat: no-repeat;
         }
         .user_avatar {
-          max-width: 81px;
+          max-width: 100px;
           float: right;
           text-align: center;
         }
         .user_info {
           text-align: right;
-          float: left;
-          width: 165px;
-          color: @white;
+          height: 60px;
+          width: 60px;
+          position: relative;
           span {
             word-wrap: break-word;
           }
         }
         .user_avatar_image {
-          width: 100%;
+          width: 100px;
+          height: 100px;
+        }
+        .user_points_container {
+          display: flex;
+          align-items: flex-start;
+          padding-left: 5px;
+          padding-top: 20px;
+        }
+        .user_name {
+          color: #aaa;
+          font-family: "raleway";
+          font-style: italic;
+          font-size: 22px;
+          font-weight: 700;
+          text-transform: capitalize;
+        }
+        .status_name {
+          text-transform: uppercase;
+          color: #595959;
+          font-family: "open sans condensed";
+          font-size: 14px;
+        }
+        .points_confirmed {
+          font-style: italic;
+          color: #229fd3;
+          & .points_confirmed_value {
+            font-size: 28px;
+          }
+          & .points_confirmed_name {
+            font-family: "raleway";
+          }
+        }
+        .points_unconfirmed {
+          font-family: "open sans condensed";
+          font-weight: 700;
+          color: #aaa;
+          font-size: 14px;
+        }
+        .history_button {
+          color: white;
+          background-color: #333;
+          font-family: "raleway";
+          font-style: italic;
+          text-align: center;
+          padding: 6px;
+          width: 80%;
+          font-weight: 700;
+          text-transform: none;
+          text-decoration: none;
+          margin-top: 6px;
+          border: none !important;
         }
       }
       .bon_profile_stat {
@@ -89,18 +189,6 @@
         width: 100%;
         margin-top: 50px;
         margin-bottom: 78px;
-
-        .points_confirmed {
-
-          span {
-            color: inherit;
-            font-family: inherit;
-          }
-
-          &_name {
-            margin-left: 2px;
-          }
-        }
 
         .bps_left {
           float: left;
@@ -286,11 +374,15 @@
       .bon_profile_info {
         width: 100%;
         .bon_profile_right {
-          width: 265px;
+          
+        }
+        .bon_profile_top {
+          flex-direction: column;
+          align-items: center;
         }
         .bon_profile_top_left {
-          width: 80%;
-          float: left;
+          width: 100%;
+          text-align: center;
         }
         .bon_profile_stat {
           .bps_right {
@@ -319,15 +411,15 @@
 
   //history section
   .bns_hist_table {
-    float: left;
     width: 100%;
     margin-top: 12px;
+    min-height: 400px;
     td {
       vertical-align: text-top;
       padding: 5px 11px;
     }
     td:nth-child(1) {
-      color: @main;
+      color: white;
       font-size: 13px;
       line-height: 19px;
       padding-right: 0px;
@@ -335,18 +427,17 @@
       white-space: nowrap;
     }
     td:nth-child(2) {
-      color: @black;
+      color: white;
       font-size: 12px;
       font-weight: 200;
       line-height: 19px;
       position: relative;
       padding-left: 0px;
-      width: 570px;
+      width: 500px;
       &::after {
         position: absolute;
         left: 0px;
         width: 100%;
-        border-top: 1px dotted @main_dark;
         top: 14px;
         content: '';
         display: block;
@@ -356,41 +447,61 @@
         position: relative;
         z-index: 1;
         font-size: 13px;
-        color: @main_darker;
+        color: white;
+        text-transform: uppercase;
         b {
-          background-color: @white;
+          color: white;
+          font-family: "open sans condensed";
+          font-size: 18px;
           padding-right: 15px;
           padding-left: 11px;
           font-weight: 200;
         }
       }
       span:first-child {
-        color: @black;
+        color: white;
       }
     }
     td:nth-child(3) {
-      color: @main_dark;
+      color: white;
       font-size: 14px;
       font-weight: bold;
       text-align: right;
       line-height: 19px;
+      font-family: "raleway";
+      font-size: 18px;
+      font-weight: 700;
+      font-style: italic;
       span {
         display: block;
         white-space: nowrap;
-        font-size: 13px;
       }
     }
   }
 
   .bns_hist_pager {
-    float: right;
     font-size: 13px;
+    display: flex;
+    justify-content: center;
     a {
       text-decoration: none;
       color: #000;
       margin-right: 4px;
+      color: white;
+      height: 30px;
+      width: 30px;
+      border-radius: 60px;
+      border: 1px solid white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'open sans condensed';
+      font-size: 20px;
       &.active {
         font-weight: bold;
+        color: black;
+        background-color: #f8e851;
+        border-color: #f8e851;
       }
     }
   }

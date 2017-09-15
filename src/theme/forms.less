@@ -9,22 +9,35 @@
   float: left;
   height: 57px;
   border: 0;
-  border-top: 2px solid @main_light;
+  border: 1px solid white;
   border-radius: 5px;
   padding-left: 25px;
   font-size: 18px;
   outline: none;
   box-sizing: border-box;
-  background-color: @white;
+  background-color: transparent;
   position: relative;
   display: inline-block;
+  color: white;
 
-  background-image: url(https://d3sailplay.cdnvideo.ru/media/assets/assetfile/303e1f38393495b1a059952843abeeb0.png);
-  background-repeat: no-repeat;
-  background-position: right 10px center;
-  background-size: 10px;
+  &:before {
+    content: "";
+    position: absolute;
+    width: 30px;
+    height: 100%;
+    top: 0;
+    right: 0;
+    z-index: -1;
+    background-image: url(https://sailplays3.cdnvideo.ru/media/assets/assetfile/be2020d8e68e175f24134dfac5f1b684.png);
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 10px;
+    background-color: transparent;
+    transform: rotate(-90deg);
+  }
 
   select {
+    color: white;
     position: absolute;
     background: transparent;
     border: none;
@@ -43,7 +56,7 @@
 
 .form_field {
   float: left;
-  width: 50%;
+  width: 100%;
   padding-bottom: 20px;
   padding-right: 40px;
   .box-sizing(border-box);
@@ -58,20 +71,31 @@
     z-index: 1;
 
     span {
-      color: @black;
+      color: white;
       font-size: 18px;
       float: left;
       width: 100%;
       box-sizing: border-box;
       padding-left: 10px;
-      border: 2px solid @main_light;
+      border: 1px solid white;
       border-radius: 5px;
       line-height: 57px;
       height: 57px;
-      background-image: url('https://d3sailplay.cdnvideo.ru/media/assets/assetfile/303e1f38393495b1a059952843abeeb0.png');
-      background-repeat: no-repeat;
-      background-position: right 10px center;
-      background-size: 10px;
+      &:before {
+        content: "";
+        position: absolute;
+        width: 30px;
+        height: 100%;
+        top: 0;
+        right: 0;
+        z-index: -1;
+        background-image: url(https://sailplays3.cdnvideo.ru/media/assets/assetfile/be2020d8e68e175f24134dfac5f1b684.png);
+        background-repeat: no-repeat;
+        background-position: right 10px center;
+        background-size: 10px;
+        background-color: transparent;
+        transform: rotate(-90deg);
+      }
     }
 
     &__popup {
@@ -116,26 +140,130 @@
     &:hover {
       .form_date__popup {
         display: block;
+        background-color: transparent;
+        border: 1px solid white;
+        border-radius: 5px;
+        text-align: left;
+        padding-left: 10px;
+        background-color: rgba(255, 255, 255, 1);
+        & a {
+          line-height: 2;
+          background-color: transparent;
+          color: black;
+        }
       }
     }
 
   }
 
+  .bns_radio_block {
+    display: flex;
+    justify-content: space-around;
+    &>label {
+      color: white;
+      font-family: 'open sans condensed';
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .bns_radio {
+      min-width: 400px;
+      display: flex;
+      justify-content: space-around;
+      &>div {
+        color: white;
+        font-family: 'open sans condensed';
+        font-weight: 700;
+      }
+      .control {
+          color: white;
+          font-family: 'open sans condensed';
+          font-weight: 700;
+          display: block;
+          position: relative;
+          padding-left: 30px;
+          margin-bottom: 5px;
+          padding-top: 3px;
+          cursor: pointer;
+          font-size: 16px;
+      }
+      .control input {
+          position: absolute;
+          z-index: -1;
+          opacity: 0;
+      }
+      .control_indicator {
+          position: absolute;
+          top: 2px;
+          left: 0;
+          height: 20px;
+          width: 20px;
+          background: white;
+          border: 0px solid #000000;
+      }
+      .control-radio .control_indicator {
+          border-radius: 100%;
+      }
+
+      .control:hover input ~ .control_indicator,
+      .control input:focus ~ .control_indicator {
+          background: white;
+      }
+
+      .control input:checked ~ .control_indicator {
+          background: white;
+      }
+      .control:hover input:not([disabled]):checked ~ .control_indicator,
+      .control input:checked:focus ~ .control_indicator {
+          background: white;
+      }
+      .control input:disabled ~ .control_indicator {
+          background: white;
+          opacity: 0.6;
+          pointer-events: none;
+      }
+      .control_indicator:after {
+          box-sizing: unset;
+          content: '';
+          position: absolute;
+          display: none;
+      }
+      .control input:checked ~ .control_indicator:after {
+          display: block;
+      }
+      .control-radio .control_indicator:after {
+          left: 4px;
+          top: 4px;
+          height: 12px;
+          width: 12px;
+          border-radius: 50%;
+          background: #FF0000;
+      }
+      .control-radio input:disabled ~ .control_indicator:after {
+          background: #7b7b7b;
+      }
+    }
+  }
+
   .form_label {
     width: 100%;
     line-height: 100%;
-    color: @main_darker;
+    color: white;
     font-size: 16px;
     float: left;
+    font-family: 'open sans condensed';
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 5px;
   }
 
   .form_textarea {
-    background-color: @white;
+    background-color: transparent;
     float: left;
     height: 100px;
     resize: none;
     border: 0;
-    border-top: 2px solid @main_light;
+    border: 1px solid white;
     border-radius: 5px;
     padding-left: 25px;
     width: 100%;
@@ -146,11 +274,12 @@
 
   .form_input {
     &[type="text"], &[type="email"] {
-      background-color: @white;
+      background-color: transparent;
       float: left;
+      color: white;
       height: 57px;
       border: 0;
-      border-top: 2px solid @main_light;
+      border: 1px solid white;
       border-radius: 5px;
       padding-left: 25px;
       width: 100%;
@@ -173,22 +302,48 @@
     text-overflow: ellipsis;
     white-space: nowrap;
 
-    color: @black;
+    color: white;
     font-size: 18px;
     float: left;
     width: 100%;
     box-sizing: border-box;
     padding-left: 10px;
-    border: 2px solid @main_light;
+    border: 1px solid @main_light;
     border-radius: 5px;
     line-height: 57px;
     height: 57px;
-    background-image: url('https://d3sailplay.cdnvideo.ru/media/assets/assetfile/303e1f38393495b1a059952843abeeb0.png');
-    background-repeat: no-repeat;
-    background-position: right 10px center;
-    background-size: 10px;
-    background-color: transparent;
     outline: none;
+    &:before {
+      content: "";
+      position: absolute;
+      width: 30px;
+      height: 100%;
+      top: 0;
+      right: 0;
+      z-index: -1;
+      background-image: url(https://sailplays3.cdnvideo.ru/media/assets/assetfile/be2020d8e68e175f24134dfac5f1b684.png);
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      background-size: 10px;
+      background-color: transparent;
+      transform: rotate(-90deg);
+    }
+  }
+
+  input::-webkit-input-placeholder {
+    color:    rgba(255, 255, 255, 0.4);
+  }
+  input:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color:    rgba(255, 255, 255, 0.4);
+  }
+  input::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color:    rgba(255, 255, 255, 0.4);
+  }
+  input:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color:    rgba(255, 255, 255, 0.4);
+  }
+  input::-ms-input-placeholder { /* Microsoft Edge */
+    color:    rgba(255, 255, 255, 0.4);
   }
 
 }

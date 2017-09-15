@@ -1,5 +1,7 @@
 <div class="container clearfix" id="magic_actions">
 
+  <div class="triangle"></div>
+
   <div class="card_quests">
 
     <h3 class="card_quests_header">
@@ -18,19 +20,20 @@
 
             <div class="quest_card" title="{{ action_data(action).name }}">
 
-              <div class="quest_card_image">
-                <img data-ng-src="{{ action_data(action).pic | sailplay_pic }}" alt="">
+              <div class="quest_card_image" data-ng-style="{'background-image': 'url('+((action_data(action).pic | sailplay_pic) || default_avatar)+')' }">
               </div>
 
               <div class="quest_card_tools">
 
                 <div class="quest_card_info">
-                  <span class="quest_card_name ellipsis" data-ng-bind="action_data(action).name"></span>
-                  <span class="quest_card_points ellipsis" data-ng-show="action.points" data-ng-bind="((action.points || 0) | number) + ' ' + (action.points | sailplay_pluralize:( 'points.texts.pluralize' | tools ))"></span>
-                </div>
-
-                <div class="quest_card_buttons">
-                  <a class="button_primary" data-ng-click="action_select(action)">{{ action_data(action).button_text }}</a>
+                  <span class="quest_card_name" data-ng-bind="action_data(action).name"></span>
+                  <span class="quest_card_points" data-ng-show="action.points" data-ng-bind="((action.points || 0) | number) + ' ' + (action.points | sailplay_pluralize:( 'points.texts.pluralize' | tools ))"></span>
+                  <span class="quest_card_button" data-sailplay-action
+                  data-styles="{{ action_styles(action_data(action)) }}"
+                  data-action="action"
+                  data-text="{{ ((action.points || 0) | number) + ' ' + (action.points | sailplay_pluralize:( 'points.texts.pluralize' | tools)) }}">
+                    <span class="button_primary" data-ng-bind="((action.points || 0) | number) + ' ' + (action.points | sailplay_pluralize:( 'points.texts.pluralize' | tools ))"></span>
+                  </span>
                 </div>
 
               </div>
@@ -43,19 +46,16 @@
 
             <div class="quest_card" title="{{ action.name }}">
 
-              <div class="quest_card_image">
-                <img data-ng-src="{{ action.icon | sailplay_pic }}" alt="">
+              <div class="quest_card_image" data-ng-style="{'background-image': 'url('+((action.icon | sailplay_pic) || default_avatar)+')' }">
               </div>
 
               <div class="quest_card_tools">
 
                 <div class="quest_card_info">
-                  <span class="quest_card_name ellipsis" data-ng-bind="action.name"></span>
-                  <span class="quest_card_points ellipsis" data-ng-show="action.points" data-ng-bind="((action.points || 0) | number) + ' ' + (action.points | sailplay_pluralize:( 'points.texts.pluralize' | tools ))"></span>
-                </div>
-
-                <div class="quest_card_buttons">
-                  <a class="button_primary" data-ng-click="action_custom_select(action)">{{ action.button_text }}</a>
+                  <span class="quest_card_name" data-ng-bind="action.name"></span>
+                  <span class="quest_card_points" data-ng-show="action.points" data-ng-bind="((action.points || 0) | number) + ' ' + (action.points | sailplay_pluralize:( 'points.texts.pluralize' | tools ))"></span>
+                  <span class="button_primary quest_card_button" data-ng-bind="!action.points ? action.button_text : ((action.points || 0) | number) + ' ' + (action.points | sailplay_pluralize:( 'points.texts.pluralize' | tools ))"></span>
+                  </span>
                 </div>
 
               </div>

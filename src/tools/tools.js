@@ -7,6 +7,8 @@ import Notifier from './notifier/notifier'
 import MagicModal from './modal/modal';
 import Fonts from './fonts/fonts';
 import DatePicker from './datepicker/datepicker';
+require('angular-parallax-es6');
+require('angular-scroll');
 
 export let Tools = angular.module('magic.tools', [
   NgPagination,
@@ -16,7 +18,9 @@ export let Tools = angular.module('magic.tools', [
   Widget,
   Notifier,
   MagicModal,
-  DatePicker
+  DatePicker,
+  'duParallax',
+  'duScroll'
 ])
 
 .filter('tools', function (MAGIC_CONFIG, $parse) {
