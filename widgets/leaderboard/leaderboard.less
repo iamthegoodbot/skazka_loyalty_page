@@ -15,41 +15,166 @@
     }
 
     .bon_header {
-      color: @black;
-      font-size: 30px;
-      font-family: 'RotondaC';
+        width: 90%;
+        display: block;
+        margin: 0 auto;
+        color: #333333;
+        text-align: center;
+        padding-top: 50px;
+        font-family: "raleway";
+        font-style: italic;
+        font-weight: 700;
+        font-size: 26px;
     }
     .bon_sub_header {
-      font-size: 14px;
-      color: @black;
-      margin-top: 10px;
+        padding-top: 5px;
+        width: 90%;
+        display: block;
+        margin: 0 auto;
+        color: #333333;
+        text-align: center;
+        padding-bottom: 70px;
+        font-family: "raleway";
+        font-weight: normal;
+        font-size: 17px;
     }
 
     ul li{
       list-style: none;
     }
 
+    & .leaderboard-headers {
+      margin: 0 auto 20px !important;
+      display: none;
+      max-width: 1000px;
+      justify-content: space-around;
+      color: #343434;
+      opacity: 0.5;
+      font-family: 'open sans condensed';
+      font-weight: 700;
+    }
+    @media screen and (min-width: 1101px) {
+      & .leaderboard-headers.md {
+        display: flex;
+      }
+    }
+    @media screen and (max-width: 1100px) and (min-width: 651px) {
+      & .leaderboard-headers.sm {
+        display: flex;
+      }
+    }
+    @media screen and (max-width: 650px) {
+      & .leaderboard-headers.xs {
+        display: flex;
+      }
+    }
+
     .leaderboard__list {
-      max-width: 600px;
+      max-width: 1000px;
       box-sizing: border-box;
       padding: 0 10px;
       margin: 0 auto 20px !important;
       float: none;
+      flex-direction: column;
+      flex-wrap: wrap;
+      height: 600px;
+      display: flex;
+      align-items: center;
+      @media screen and (max-width: 1100px) and (min-width: 651px) {
+        height: 1000px;
+      }
+      @media screen and (max-width: 650px) {
+        height: auto;
+      }
 
       &-item {
-        display: inline-block;
-        width: 100%;
+        margin-top: 20px;
+        display: flex;
+        width: 300px;
         position: relative;
         box-sizing: border-box;
         z-index: 1;
         font-size: 0;
         padding: 5px;
+        border-radius: 20px;
+        align-items: center;
+        background-color: #f2f2f2;
+        flex-basis: 27%;
+
+        @media screen and (max-width: 1100px) and (min-width: 651px) {
+          flex-basis: 15%;
+        }
+        @media screen and (max-width: 650px) {
+          flex-basis: 100%;
+          min-height: 150px;
+        }
+
+        & .item_left {
+          width: 40%;
+          position: relative;
+          & .avatar_container {
+            display: block;
+            border-radius: 300px;
+            margin-left: 20px;
+            height: 80px;
+            width: 80px;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
+          }
+          & .rank {
+            font-family: 'open sans condensed';
+            font-weight: 700;
+            color: black;
+            border-radius: 300px;
+            background-color: #f9ea54;
+            margin-left: 20px;
+            display: block;
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 36px;
+            width: 36px;
+            font-size: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+          }
+        }
+
+        & .item_right {
+          width: 60%;
+          height: auto;
+
+          & .name {
+            font-family: 'open sans condensed';
+            font-weight: 700;
+            color: #333333;
+            font-size: 22px;
+            text-transform: uppercase;
+          }
+          & .status {
+            font-size: 18px;
+            font-family: 'open sans condensed';
+            color: #a6a6a6;
+            line-height: 0.7;
+            text-transform: uppercase;
+          }
+          & .score {
+            margin-top: 24px;
+            font-family: 'raleway';
+            font-weight: 700;
+            font-style: italic;
+            color: #229fd3;
+            font-size: 20px;
+          }
+        }
 
         &.type_current {
-          background: #6385b5;
+          background-color: #f9ea54;
 
-          span {
-            color: white;
+          & .rank {
+            background-color: white;
           }
 
         }
@@ -62,16 +187,6 @@
             font-size: 18px;
           }
 
-        }
-
-        span {
-          display: inline-block;
-          vertical-align: middle;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          color: #676767;
-          white-space: nowrap;
-          line-height: 18px;
         }
 
         &__photo {

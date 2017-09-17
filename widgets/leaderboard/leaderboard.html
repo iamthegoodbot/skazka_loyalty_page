@@ -8,38 +8,57 @@
             <span class="caption">{{ widget.texts.caption }}</span>
         </h4>
 
-        <ul class="leaderboard__list" data-ng-if="data && data()">
+        <div class="leaderboard__lists" data-ng-if="top9">
 
-            <li class="leaderboard__list-item type_headers">
 
-                <span class="leaderboard__list-item__rank rows headers">{{ widget.texts.rank }}</span>
+            <div class="leaderboard-container">
 
-                <span class="leaderboard__list-item__name rows headers">{{ widget.texts.full_name }}</span>
+                <div class="leaderboard-headers md">
 
-                <span class="leaderboard__list-item__score rows headers">{{ widget.texts.score }}</span>
+                    <span class="leaderboard__list-header rows headers" data-ng-bind="'1-3'"></span>
 
-            </li>
+                    <span class="leaderboard__list-header rows headers" data-ng-bind="'1-3'"></span>
 
-            <li class="leaderboard__list-item" data-ng-repeat="member in $parent.data().members.members"
-                data-ng-class="{ type_current : member.is_current_user }">
+                    <span class="leaderboard__list-header rows headers" data-ng-bind="isInTop ? '7-9' : '7-8, ' + currentUser.rank"></span>
 
-                <span class="leaderboard__list-item__rank rank rows" data-ng-bind="member.rank"></span>
+                </div>
 
-                <span class="leaderboard__list-item__name full_name rows">
+                <div class="leaderboard-headers sm">
 
-                    <img class="leaderboard__list-item__photo photo" data-ng-if="member.pic"
-                         data-ng-src="{{ $parent.member.pic | sailplay_pic }}"
-                         alt="{{ $parent.member.full_name || 'n/a' }}">
+                    <span class="leaderboard__list-header rows headers" data-ng-bind="'1-5'"></span>
 
-                    {{ member.full_name || 'n/a' }}
+                    <span class="leaderboard__list-header rows headers" data-ng-bind="isInTop ? '4-9' : '4-8, ' + currentUser.rank"></span>
 
-                </span>
+                </div>
 
-                <span class="leaderboard__list-item__score score rows" data-ng-bind="member.score"></span>
+                <div class="leaderboard-headers xs">
 
-            </li>
+                    <span class="leaderboard__list-header rows headers" data-ng-bind="isInTop ? '1-9' : '1-8, ' + currentUser.rank"></span>
 
-        </ul>
+                </div>
+
+                <div class="leaderboard__list">
+                    <div class="leaderboard__list-item" data-ng-repeat="member in top9"
+                    data-ng-class="{ type_current : !!member.is_current_user }">
+
+                        <div class="item_left">
+                            <span class="avatar_container" data-ng-style="{'background-image': 'url('+((member.pic | sailplay_pic) || default_avatar)+')' }"></span>
+
+                            <span class="leaderboard__list-item__rank rank rows" data-ng-bind="member.rank"></span>
+                        </div>
+
+                        <div class="item_right">
+                            <div class="name" data-ng-bind="member.full_name || 'n/a'"></div>
+                            <div class="status">somestatus</div>
+                            <div class="score rows" data-ng-bind="(member.score | number) + ' ' + (member.score | sailplay_pluralize:('points.texts.pluralize' | tools))"></div>
+                        </div>
+                    
+                    </div>                    
+                </div>
+
+            </div>
+
+        </div>
 
 
     </div>

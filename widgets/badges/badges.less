@@ -107,6 +107,11 @@
         padding-top: 60px;
         white-space: nowrap;
         overflow: hidden;
+        @media screen and (max-width: 650px) {
+          flex-direction: column;
+          height: auto;
+          padding-top: 0px;
+        }
         .bon_item_line {
           position: relative;
           left: 0;
@@ -115,21 +120,27 @@
           display: flex;
           justify-content: space-between;
           & div {
-            height: 100px;
-            width: 100px;
-            border-radius: 600px;
-          }
-          &>div:nth-child(2n-1) {
-            transform: translate(0px, -60px);
-            & .badge_info_container {
-              transform: translateY(0px);
+              height: 100px;
+              width: 100px;
+              border-radius: 600px;
             }
+          @media screen and (max-width: 650px) {
+            flex-direction: column;
+            height: 600px;
           }
-          &>div:nth-child(2n) {
-            transform: translate(0px, 140px);
-            & .badge_info_container {
-              transform: translateY(-200px);
+          @media screen and (min-width: 651px) {
+            &>div:nth-child(2n-1) {
+              transform: translate(0px, -60px);
+              & .badge_info_container {
+                transform: translateY(0px);
+              }
             }
+            &>div:nth-child(2n) {
+              transform: translate(0px, 140px);
+              & .badge_info_container {
+                transform: translateY(-200px);
+              }
+            }  
           }
         }
         & .line-svg {
@@ -139,6 +150,9 @@
           position: absolute;
           height: 200px;
           width: 100%;
+          @media screen and (max-width: 650px) {
+            display: none;
+          }
           & #path616 {
           }
           & #path617 {
@@ -223,12 +237,20 @@
             font-weight: 700;
           }
           &.badge_points {
-            transform: translate(14px, 20px);
+            @media screen and (min-width: 651px) {
+              transform: translate(14px, 20px);  
+            }
+            @media screen and (max-width: 650px) {
+              transform: translate(150px);  
+            }
             color: #219ed1;
             font-family: 'Raleway';
             font-weight: 700;
             font-style: italic;
             font-size: 16px;
+          }
+          @media screen and (max-width: 650px) {
+            transform: translate(150px, -20px);
           }
         }
         .badge_pic {
