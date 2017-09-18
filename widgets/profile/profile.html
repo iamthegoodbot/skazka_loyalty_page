@@ -12,6 +12,10 @@
         </h4>
       </div>
       <div class="bon_profile_right clearfix" data-ng-if="user()">
+        <div class="user_avatar blackcard" data-ng-show="black_card">
+            <img class="user_avatar_image" data-ng-src="https://sailplays3.cdnvideo.ru/media/assets/assetfile/39510af944058690d972d044d97185b1.png" alt="You">
+          </div>
+  
         <div class="user_avatar">
           <img class="user_avatar_image" data-ng-src="{{ (user().user.pic | sailplay_pic) || default_avatar}}" alt="You">
           <a href="#" class="logout_btn button_link" data-ng-click="$event.preventDefault(); logout();">{{ widget.texts.logout }}</a>

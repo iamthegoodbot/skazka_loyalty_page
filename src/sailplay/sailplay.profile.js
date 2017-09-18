@@ -350,10 +350,15 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
             })
           }
 
+          SailPlay.send('tags.exist', {tags: ['Black Card']}, function (res) {
+            if (res.tags[0].exist)
+              scope.$parent.$parent.black_card = true;          
+          })
+
           if (MAGIC_CONFIG.data.force_registration && MAGIC_CONFIG.data.force_registration.active && MAGIC_CONFIG.data.force_registration.tag_name && !$rootScope.submited){
             
             const tagName = MAGIC_CONFIG.data.force_registration.tag_name
-
+              
             SailPlay.send('tags.exist', {tags: [tagName]}, function (res) {
               if (res && res.tags.length) {
                 if (!res.tags[0].exist) {
