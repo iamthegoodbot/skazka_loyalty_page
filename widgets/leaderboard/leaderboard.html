@@ -42,7 +42,7 @@
                     data-ng-class="{ type_current : !!member.is_current_user }">
 
                         <div class="item_left">
-                            <span class="avatar_container" data-ng-style="{'background-image': 'url('+((member.pic | sailplay_pic) || default_avatar)+')' }"></span>
+                            <span class="avatar_container" data-ng-style="{'background-image': 'url('+((member.pic | sailplay_pic) || widget.default_avatar)+')' }"></span>
 
                             <span class="leaderboard__list-item__rank rank rows" data-ng-bind="member.rank"></span>
                         </div>

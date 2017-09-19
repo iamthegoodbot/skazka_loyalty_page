@@ -6,10 +6,25 @@
 
   .gifts_grid_widget {
 
-    .parallax-img {
+    overflow: visible;
+
+    & .parallax-img, & .parallax-img-s {
       height: inherit;
       width: 100vw;
       position: absolute;
+      display: none;
+    }
+
+    @media screen and (max-width: 650px) {
+      & .parallax-img-s {
+        display: block;
+      }
+    }
+
+    @media screen and (min-width: 651px) {
+      & .parallax-img {
+        display: block;
+      }
     }
 
     .triangle {
@@ -18,7 +33,7 @@
 
     background-color: #229fd3;
 
-    padding-bottom: 60px;
+    padding-bottom: 6px;
 
     .gifts_grid {
 
@@ -50,7 +65,7 @@
 
       &__wrapper {
         width: 100%;
-        max-width: 1200px;
+        max-width: 1300px;
         height: auto;
         margin: 0 auto;
         position: relative;
@@ -62,44 +77,65 @@
         padding: 0 50px;
         box-sizing: border-box;
         position: relative;
+        margin: 0 auto;
+        &.spoilered {
+          @media screen and (min-width: 651px) {
+            max-height: 520px;
+            overflow: hidden;
+          }
+        }
+        @media (min-width: 940px) and (max-width: 1220px) {
+          max-width: 960px;
+        }
+        @media (min-width: 651px) and (max-width: 939px) {
+          max-width: 660px;
+        }
       }
 
       &__block {
         display: flex;
         width: 100%;
         height: auto;
-        justify-content: space-around;
+        justify-content: flex-start;
         flex-wrap: wrap;
       }
 
+      &__spoiler {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        background: linear-gradient(to bottom, transparent 0%,#229fd3 100%);
+      }
+
       &__more_btn {
+        transform: translateY(30px);
+        text-transform: lowercase;
+        font-family: 'raleway';
+        font-style: italic;
+        font-size: 22px;
         display: block;
-        background-color: transparent;
+        background-color: black;
         color: white;
-        border: 1px solid white;
-        width: 120px;
+        width: 180px;
         margin: 0 auto;
-        padding: 10px;
+        padding: 15px;
         text-align: center;
       }
 
       &__item {
-        border-radius: 12px;
+        border-radius: 10px;
         background-color: white;
-        width: 24%;
+        width: 20%;
         height: auto;
         float: left;
         box-sizing: border-box;
-        padding: 3%;
+        padding: 30px;
         position: relative;
         display: flex;
         flex-direction: column;
-        margin-bottom: 30px;
+        margin: 10px;
         min-height: 389px;
-
-        @media (min-width: 651px) and (max-width: 800px) {
-          width: 50%;
-        }
+        min-width: 260px;
 
         @media (max-width: 650px) {
           width: 100%;
@@ -109,20 +145,21 @@
 
         &-img {
           display: inline-block;
-          width: 100%;
+          width: 150px;
+          margin: 10px auto;
           @media screen and (max-width: 650px) {
-            width: 90%;
             height: auto;
-            margin: auto;
+            margin: 10px auto;
             max-width: 250px;
           }
         }
 
         &-name {
           margin-bottom: 10px;
-          padding-top: 20px;
+          padding-top: 30px;
           font-size: 20px;
           display: inline-block;
+          text-align: left;
           width: 100%;
           line-height: 1.1;
           font-family: "open sans condensed";
@@ -138,6 +175,7 @@
 
         &-button {
           color: #229fd3;
+          background-color: transparent !important;
           display: inline-block;
           padding: 10px;
           padding-left: 0px;
@@ -146,9 +184,10 @@
           font-size: 22px;
           position: absolute;
           bottom: 30px;
-          &:hover {
+          &:not(.modal):hover {
+            min-width: 160px;
             padding-left: 10px;
-            background-color: black;
+            background-color: black !important;
             color:white;
           }
           @media screen and (max-width: 650px) {
@@ -229,6 +268,38 @@
           font-family: "arial";
           font-size: 20px;
         }
+      }
+    }
+    .modal_gift_container .bon_item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      .headers-container {
+        color: white;
+        margin: 0 auto;
+        width: 300px;
+      }
+      & h4 {
+        color: white;
+        font-family: 'open sans condensed';
+        font-weight: 300;
+        opacity: 1;
+        font-size: 19px;
+      } 
+      & h3 {
+        font-style: italic;
+        font-family: 'raleway';
+        font-weight: 900;
+      }
+      & .gifts_grid__item {
+        width: 270px;
+        height: 360px;
+        margin-bottom: 24px;
+      }
+      & .button_primary {
+        width: 300px;
+        padding: 5px;
+        font-size: 20px;
       }
     }
   }

@@ -1,0 +1,30 @@
+<div class="clearfix">
+    <div class="container" data-ng-show="widget.enabled" data-ng-cloak>
+
+        <div class="navbar navbar-s">
+            <div class="hamburger-menu-container">
+                <div class="hamburger-menu" data-ng-click="isOpen = !isOpen; preventDefault()">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+            </div>
+            <ul  data-ng-class="{'open': isOpen}">
+                <li data-ng-repeat="item in widget.items" data-ng-click="scrollToElement(item.selector)">
+                    <span data-ng-bind="item.name"></span>
+                </li>
+            </ul>
+        </div>
+
+        <div class="navbar navbar-m">
+            <ul>
+                <li data-ng-repeat="item in widget.items" data-ng-click="scrollToElement(item.selector)">
+                    <span data-ng-bind="item.name"></span>
+                </li>
+            </ul>
+        </div>
+
+
+    </div>
+</div>
+

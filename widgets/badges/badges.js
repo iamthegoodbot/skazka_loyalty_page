@@ -79,6 +79,18 @@ Widget.directive('sailplayMagicBadgeLine', function(MAGIC_CONFIG, SailPlayShare,
         }
       }
 
+      scope.getLineLengthSmall = (line) => {
+        if(!line){
+          return '1%';
+        }
+        const receivedArray = line.filter(x=>x.is_received)
+        if (receivedArray.length === 0) {
+          return '1%'
+        } else {
+          return ((receivedArray.length) * 13) + ((receivedArray.length-1) * 2) +'%'
+        }
+      }
+
     }
 
   };

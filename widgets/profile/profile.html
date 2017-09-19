@@ -18,7 +18,7 @@
             <a href="#" class="edit_profile_btn button_link" data-ng-click="$event.preventDefault(); profile.fill_profile(true);"></a>
           </div>
           <div class="user_avatar">
-            <img class="user_avatar_image" data-ng-src="{{ (user().user.pic | sailplay_pic) || default_avatar}}" alt="You">
+            <img class="user_avatar_image" data-ng-src="{{ (user().user.avatar['250x250'] | sailplay_pic) || default_avatar}}" alt="You">
           </div>
           <div class="user_info">
             <a href="#" class="logout_btn button_link" data-ng-click="$event.preventDefault(); logout();"></a>

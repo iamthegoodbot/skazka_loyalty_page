@@ -2,6 +2,8 @@
 
     <img class="parallax-img" src="https://sailplays3.cdnvideo.ru/media/assets/assetfile/27aca06cec5fc389f18344184acf0600.png" du-parallax y="background" alt="" />
     <img class="parallax-img" src="https://sailplays3.cdnvideo.ru/media/assets/assetfile/ac608e3e5c832865660d52f987df428d.png" du-parallax y="background2" alt="" />
+    <img class="parallax-img-s" src="https://sailplays3.cdnvideo.ru/media/assets/assetfile/5b18512292795fe5d9d297f98a743b54.png" du-parallax y="background" alt="" />
+    <img class="parallax-img-s" src="https://sailplays3.cdnvideo.ru/media/assets/assetfile/8d0d86eed95e2930d69687239e0a0c94.png" du-parallax y="background2" alt="" />
 
     <div class="triangle"></div>
 
@@ -15,20 +17,14 @@
 
     <div data-sailplay-gifts class="clearfix xs-gifts">
       <div class="bon_item_main" data-ng-show="gifts && gifts().length" data-magic-slider>
-
-        <div class="controls">
-          <div class="left" data-ng-click="$event.preventDefault(); set_position('left');"></div>
-          <div class="current" data-ng-bind="current_position+1 + ' / ' + gifts().length"></div>
-          <div class="right" data-ng-click="$event.preventDefault(); set_position('right');"></div>
-        </div>
         
-        <div class="bon_slide_cat_item_wrap" data-magic-gallery>
+        <div class="bon_slide_cat_item_wrap">
           <div class="bon_slide_cat_item">
 
             <div class="bon_item_line" data-ng-style="{left : left}">
 
 
-              <div class="bon_item gift" data-magic-slide data-magic-gift data-ng-repeat="gift in gifts()">
+              <div class="bon_item gift" data-magic-gift data-ng-repeat="gift in gifts()">
                 <div class="gifts_grid__item"
                      data-ng-class="{
                      'gift-available': isAvailableGift(gift),
@@ -43,7 +39,7 @@
                     <span class="gifts_grid__item-name gift_name" data-ng-bind="gift.name"></span>
 
                     <a class="gifts_grid__item-button button_primary" href="#"
-                       data-ng-click="$event.preventDefault();open(gift)"
+                       data-ng-click="$event.preventDefault();$parent.giftSuccessgiftSuccess = false;open(gift)"
                        data-ng-bind="(gift.points | number) + ' ' + (gift.points | sailplay_pluralize:('points.texts.pluralize' | tools))"></a>
 
                 </div>
@@ -60,12 +56,11 @@
 
     <div class="gifts_grid__wrapper clearfix">
 
-        <div class="gifts_grid__blocks clearfix">
+        <div class="gifts_grid__blocks clearfix" data-ng-class="{spoilered: !showMore}">
 
             <div class="gifts_grid__block">
 
                 <div class="gifts_grid__item clearfix"
-                     data-ng-hide="!showMore && $index>3"
                      data-ng-class="{
                      'gift-available': isAvailableGift(gift),
                      'gift-unavailable': !isAvailableGift(gift),
@@ -80,24 +75,18 @@
                     <span class="gifts_grid__item-name gift_name" data-ng-bind="gift.name"></span>
 
                     <a class="gifts_grid__item-button button_primary" href="#"
-                       data-ng-click="$event.preventDefault();open(gift)"
+                       data-ng-click="$event.preventDefault();$parent.giftSuccess = false;open(gift)"
                        data-ng-bind="(gift.points | number) + ' ' + (gift.points | sailplay_pluralize:('points.texts.pluralize' | tools))"></a>
 
                 </div>
 
             </div>
 
-            <a class="gifts_grid__more_btn button_primary" data-ng-hide="showMore" data-ng-click="showMore = true" data-ng-bind="widget.texts.more"></a>
-
         </div>
 
-        <a href="#" class="gifts_grid__arrow gifts_grid__arrow_l slider_arrow_left"
-           data-ng-if="state"
-           data-ng-click="$event.preventDefault(); move(-1);"></a>
-
-        <a href="#" class="gifts_grid__arrow gifts_grid__arrow_r slider_arrow_right"
-           data-ng-if="blocks.length && state != (blocks.length-1)"
-           data-ng-click="$event.preventDefault(); move(1);"></a>
+        <div class="gifts_grid__spoiler" data-ng-hide="showMore">
+          <a class="gifts_grid__more_btn button_primary" data-ng-click="showMore = true" data-ng-bind="widget.texts.more"></a>
+        </div>
 
     </div>
 
@@ -105,10 +94,40 @@
 
         <div class="modal_gift_container">
 
-            <img class="gift_more_img" data-ng-src="{{ selected_gift.thumbs.url_250x250 | sailplay_pic }}"
-                 alt="{{ selected_gift.name }}">
+            <div class="bon_item gift">
 
-            <div class="gift_more_block">
+              <div data-ng-show="giftSuccess" class="headers-container">
+                <h3 data-ng-bind="widget.texts.giftSuccessHeader"></h3>
+                <h4 data-ng-bind="widget.texts.giftSuccessContent"></h4>
+              </div>
+
+
+              <div class="gifts_grid__item">
+
+                <img class="gifts_grid__item-img gift_img"
+                       data-ng-src="{{ selected_gift.thumbs.url_250x250 | sailplay_pic }}"
+                       alt="{{ selected_gift.name }}">
+
+                <span class="gifts_grid__item-name gift_name" data-ng-bind="selected_gift.name"></span>
+
+                <a class="gifts_grid__item-button button_primary modal" href="#"
+                     data-ng-bind="(selected_gift.points | number) + ' ' + (selected_gift.points | sailplay_pluralize:('points.texts.pluralize' | tools))"></a>
+              </div>
+              <div class="modal_gift_buttons">
+
+                  <span data-ng-show="giftSuccess" class="alink button_primary" data-ng-click="$parent.$parent.selected_gift=null">{{ 'buttons.texts.ok' | tools }}</span>
+
+                  <span data-ng-hide="giftSuccess" class="alink button_primary"
+                        style="margin-left: 5px;"
+                        data-ng-click="gift_confirm(selected_gift);"
+                        data-ng-bind="widget.texts.get"></span>
+                
+                </div>
+            </div>
+
+            
+
+            <!--div class="gift_more_block">
 
                 <span data-ng-bind="selected_gift"></span>
 
@@ -119,17 +138,8 @@
 
                 <p class="gift_more_descr modal_gift_description" data-ng-bind="selected_gift.descr"></p>
 
-                <div class="modal_gift_buttons">
 
-                    <span class="alink button_primary" data-ng-click="$parent.$parent.selected_gift=null">{{ 'buttons.texts.close' | tools }}</span>
-
-                    <span class="alink button_primary"
-                          style="margin-left: 5px;"
-                          data-ng-click="gift_confirm(selected_gift);"
-                          data-ng-bind="widget.texts.get"></span>
-                </div>
-
-            </div>
+            </div-->
         </div>
 
 

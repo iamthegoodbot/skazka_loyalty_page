@@ -170,18 +170,41 @@ WidgetRegister({
         }
       };
 
+      const giftSuccessTemplate = `
+        <div class="gifts_grid__item"
+           data-ng-class="{
+           'gift-available': isAvailableGift(gift),
+           'gift-unavailable': !isAvailableGift(gift),
+           'gift-points-not-enough': user()
+           }">
+
+          <img class="gifts_grid__item-img gift_img"
+               data-ng-src="{{ gift.thumbs.url_250x250 | sailplay_pic }}"
+               alt="{{ gift.name }}">
+
+          <span class="gifts_grid__item-name gift_name" data-ng-bind="gift.name"></span>
+
+          <a class="gifts_grid__item-button button_primary" href="#"
+             data-ng-click="$event.preventDefault();open(gift)"
+               data-ng-bind="(gift.points | number) + ' ' + (gift.points | sailplay_pluralize:('points.texts.pluralize' | tools))"></a>
+
+        </div>
+      `
+
       /**
        * Track success gift purchase
        */
       SailPlay.on('gifts.purchase.success', (res) => {
         $rootScope.$apply(() => {
-          scope.selected_gift = null;
+          //scope.selected_gift = null;
+          scope.giftSuccess = true
           SailPlayApi.call('load.gifts.list');
           SailPlayApi.call('load.user.info');
+          /*
           $rootScope.$broadcast('notifier:notify', {
             header: scope.widget.texts.purchase_success_header,
             body: (res.coupon_number && (scope.widget.texts.coupon_number + ' ' + res.coupon_number)) || res.success_message || scope.widget.texts.gift_received
-          });
+          });*/
         });
       });
 

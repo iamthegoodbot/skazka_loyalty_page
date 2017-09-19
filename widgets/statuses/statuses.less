@@ -117,12 +117,12 @@
 
       }
       &-description {
-        display: none;
+        display: block;
         min-width: 100px;
         left: 0;
         position: absolute;
         top: 60px;
-        transform: translateX(-50%);
+        transform: translate(-50%, 20px);
         text-align: center;
         font-family: 'open sans condensed';
         color: rgba(0,0,0,0.3);
@@ -222,6 +222,9 @@
       @media screen and (max-width: 650px) {
         height: 5px;
         top: 2.5px;
+        .avatar_container {
+          transform: translate(25px, -21px) rotate(-90deg);
+        }
       }
 
     }

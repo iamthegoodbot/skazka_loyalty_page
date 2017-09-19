@@ -1,6 +1,6 @@
 <div class="container clearfix" id="magic_actions">
 
-  <div class="triangle"></div>
+  <!--div class="triangle"></div-->
 
   <div class="card_quests">
 
@@ -19,6 +19,10 @@
           <div class="spm_col quest_card_container" data-ng-repeat="action in actions().actions | filter:filter">
 
             <div class="quest_card" title="{{ action_data(action).name }}">
+
+              <div class="bg-active-container">
+                <div class="bg-active"></div>
+              </div>
 
               <div class="quest_card_image" data-ng-style="{'background-image': 'url('+((action_data(action).pic | sailplay_pic) || default_avatar)+')' }">
               </div>
@@ -45,6 +49,10 @@
           <div class="spm_col quest_card_container" data-ng-repeat="action in actions_custom() | filter:filter">
 
             <div class="quest_card" title="{{ action.name }}">
+
+              <div class="bg-active-container">
+                <div class="bg-active"></div>
+              </div>
 
               <div class="quest_card_image" data-ng-style="{'background-image': 'url('+((action.icon | sailplay_pic) || default_avatar)+')' }">
               </div>
@@ -92,7 +100,7 @@
 
 
             <p class="action_buttons">
-            <span data-sailplay-action
+              <span data-sailplay-action
                   data-styles="{{ action_styles(action_data(action_selected)) }}"
                   data-action="action_selected"
                   data-text="{{ action_data(action_selected).button_text }}">

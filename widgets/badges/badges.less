@@ -14,10 +14,23 @@
     background-color: @main_lighter;
     overflow: hidden;
 
-    .parallax-img {
+    & .parallax-img, & .parallax-img-s {
       height: inherit;
       width: 100vw;
       position: absolute;
+      display: none;
+    }
+
+    @media screen and (max-width: 650px) {
+      & .parallax-img-s {
+        display: block;
+      }
+    }
+
+    @media screen and (min-width: 651px) {
+      & .parallax-img {
+        display: block;
+      }
     }
 
     .container {
@@ -143,7 +156,22 @@
             }  
           }
         }
-        & .line-svg {
+        & .line-svg-s {
+          box-sizing: border-box;
+          padding-left: 25px;
+          padding-right: 25px;
+          position: absolute;
+          margin-top: 2%;
+          height: 96%;
+          width: 10px;
+          transform: translate(41px);
+          @media screen and (min-width: 651px) {
+            display: none;
+          }
+          & #rect432 {
+          }
+        }
+        & .line-svg-m {
           box-sizing: border-box;
           padding-left: 25px;
           padding-right: 25px;

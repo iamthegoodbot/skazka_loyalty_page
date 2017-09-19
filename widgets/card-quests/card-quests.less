@@ -51,7 +51,7 @@
       width: 25%;
       margin-top: 15px;
       height: 300px;
-      padding: 0 40px;
+      padding: 0 5%;
     }
 
     @media @tablet {
@@ -71,14 +71,20 @@
     }
 
     .quest_card {
+      position: relative;
 
       .quest_card_image {
         margin: 0 auto;
         height: 100px;
         width: 100px;
+        z-index: 5;
         background-size: contain;
         background-repeat: no-repeat;
         background-position: center;
+        @media screen and (max-width: 650px) {
+          height: 60px;
+          width: 60px;
+        }
 
         img {
           max-height: 150px;
@@ -90,7 +96,52 @@
 
       }
 
+      & .bg-active-container {
+        position: absolute;
+        visibility: hidden;
+        & .bg-active {
+          margin: 0 auto;
+          transform: translateY(-10px);
+          content: '';
+          transform: scale(0.1);
+          border-radius: 600px;
+          background-color: #f5ea51;
+          transition: transform 0.5s;
+          width: 120px;
+          height: 120px;
+        }
+      }
+
       &:hover {
+        & .bg-active-container {
+          visibility: visible;
+          height: 120px;
+          width: 100%;
+          z-index: -3;
+          & .bg-active {
+            transform: scale(1);
+          }
+        }
+        & .quest_card_tools {
+          & .quest_card_points {
+            display: none !important;
+          }
+          & .quest_card_button {
+            display: block !important;
+          }
+        }
+      }
+      @media screen and (max-width: 992px) {
+        & .bg-active-container {
+          visibility: visible;
+          height: 120px;
+          width: 100%;
+          z-index: -3;
+          & .bg-active {
+            transform: scale(1);
+          }
+        }
+        
         & .quest_card_tools {
           & .quest_card_points {
             display: none !important;
@@ -105,6 +156,7 @@
         position: relative;
         display: inline-block;
         width: 100%;
+        z-index: 5;
         .box-sizing(border-box);
 
         .quest_card_info {
@@ -137,7 +189,7 @@
           }
           .quest_card_button {
             .box-sizing(border-box);
-            padding: 8px;
+            padding: 8px 0;
             font-size: 20px;
             display: none;
             background-color: #303030;
