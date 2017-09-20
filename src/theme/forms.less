@@ -72,7 +72,7 @@
 
     span {
       color: white;
-      font-size: 18px;
+      font-size: 20px;
       float: left;
       width: 100%;
       box-sizing: border-box;
@@ -81,6 +81,7 @@
       border-radius: 5px;
       line-height: 57px;
       height: 57px;
+      font-family: 'open sans condensed';
       &:before {
         content: "";
         position: absolute;
@@ -167,7 +168,7 @@
     }
 
     .bns_radio {
-      min-width: 400px;
+      min-width: 326px;
       display: flex;
       justify-content: space-around;
       &>div {
@@ -176,16 +177,17 @@
         font-weight: 700;
       }
       .control {
+          text-transform: lowercase;
           color: white;
           font-family: 'open sans condensed';
-          font-weight: 700;
+          font-weight: 300;
           display: block;
           position: relative;
           padding-left: 30px;
-          margin-bottom: 5px;
-          padding-top: 3px;
+          padding-bottom: 8px;
+          margin-bottom: 6px;
           cursor: pointer;
-          font-size: 16px;
+          font-size: 18px;
       }
       .control input {
           position: absolute;
@@ -283,7 +285,8 @@
       border-radius: 5px;
       padding-left: 25px;
       width: 100%;
-      font-size: 18px;
+      font-family: 'open sans condensed';
+      font-size: 20px;
       outline: none;
       box-sizing: border-box;
     }

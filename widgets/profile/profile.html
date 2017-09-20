@@ -36,7 +36,7 @@
             <span class="points_confirmed_name" data-ng-bind="widget.texts.unconfirmed_points"></span>
             <span class="points_confirmed_name" data-ng-bind="user().user_points.unconfirmed | sailplay_pluralize: ('points.texts.pluralize' | tools)"></span>
           </div>
-          <a class="button_link history_button" href="#" data-ng-click="$event.preventDefault(); profile.history = true;">{{ widget.texts.history }}</a>
+          <a class="button_link history_button" href="#" data-ng-click="$event.preventDefault(); profile.history = true;">{{ widget.texts.history.button_name }}</a>
         </div>
       </div>
       <div class="bon_profile_right clearfix" data-ng-if="!user()">
@@ -91,7 +91,7 @@
 
         <tbody>
 
-        <tr data-dir-paginate="item in history() | itemsPerPage:10" data-pagination-id="history_pages">
+        <tr data-dir-paginate="item in history() | itemsPerPage:6" data-pagination-id="history_pages">
           <td>
             <span class="modal_history_date" data-ng-bind="item.action_date | date:'d.MM.yyyy'"></span>
           </td>
@@ -134,34 +134,34 @@
           </div>
 
           <div data-ng-switch-when="text" class="clearfix">
-            <label data-ng-hide="true" class="form_label">{{ field.label }}</label>
+            <label data-ng-show="$parent.field.showLabel" class="form_label">{{ field.label }}</label>
             <input class="form_input" type="text" placeholder="{{ field.placeholder }}" data-ng-model="field.value">
           </div>
 
           <div data-ng-switch-when="date" class="clearfix">
-            <label class="form_label">{{ field.label }}</label>
+            <label data-ng-show="$parent.field.showLabel" class="form_label">{{ field.label }}</label>
             <date-picker data-model="field.value"></date-picker>
           </div>
 
           <div data-ng-switch-when="select" class="clearfix">
-            <label class="form_label">{{ field.label }}</label>
+            <label data-ng-show="$parent.field.showLabel" class="form_label">{{ field.label }}</label>
             <div class="magic_select form_input">
               <select data-ng-model="field.value" data-ng-options="item.value as item.text for item in field.data"></select>
             </div>
           </div>
 
           <div data-ng-switch-when="phone" class="clearfix">
-            <label class="form_label">{{ field.label }}</label>
+            <label data-ng-show="$parent.field.showLabel" class="form_label">{{ field.label }}</label>
             <input class="form_input" type="text" data-model-view-value="true" data-ui-mask="{{ field.placeholder }}" data-ng-model="field.value">
           </div>
 
-          <div data-ng-hide="true" data-ng-switch-when="email" class="clearfix">
-            <label class="form_label">{{ field.label }}</label>
+          <div data-ng-switch-when="email" class="clearfix">
+            <label data-ng-show="$parent.field.showLabel" class="form_label">{{ field.label }}</label>
             <input class="form_input" type="email" placeholder="{{ field.placeholder }}" data-ng-model="field.value">
           </div>
 
           <div data-ng-switch-when="radio" class="bns_radio_block bns_zi2">
-            <label>{{ field.label }}</label>
+            <label data-ng-show="$parent.field.showLabel">{{ field.label }}</label>
             <div class="bns_radio">
               <!--div class="bns_radio_item" data-ng-repeat="item in field.data">
                   <input data-ng-value="{{item.value}}" data-ng-model="field.value" id="{{'field_' + field.name + '_' + item.value}}" type="radio">
@@ -179,7 +179,7 @@
         </div>
 
         <div class="answ_text">
-          <button type="submit" class="sp_btn button_primary">{{ 'buttons.texts.save' | tools }}</button>
+          <button type="submit" class="sp_btn button_primary">{{ widget.texts.editProfile }}</button>
         </div>
       </form>
     </div>

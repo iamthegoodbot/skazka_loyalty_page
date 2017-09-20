@@ -161,6 +161,7 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
           this.placeholder = params.placeholder;
           this.required = params.required
           this.input = params.input || 'text';
+          this.showLabel = params.showLabel;
 
           if (params.data) {
             this.data = params.data;

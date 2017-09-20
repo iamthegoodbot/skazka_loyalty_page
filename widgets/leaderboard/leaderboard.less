@@ -6,6 +6,10 @@
 
   .spm_tools_widget.leaderboard {
 
+    .triangle {
+      border-color: #eeeeee transparent transparent transparent;
+    }
+
     .container {
 
       width: 100%;
@@ -147,6 +151,8 @@
           height: auto;
 
           & .name {
+            line-height: 1;
+            margin-bottom: 5px;
             font-family: 'open sans condensed';
             font-weight: 700;
             color: #333333;
@@ -161,7 +167,8 @@
             text-transform: uppercase;
           }
           & .score {
-            margin-top: 24px;
+            position: absolute;
+            bottom: 20px;
             font-family: 'raleway';
             font-weight: 700;
             font-style: italic;
