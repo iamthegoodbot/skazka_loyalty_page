@@ -55,25 +55,6 @@
       <div class="bps_left points_block clearfix" data-ng-if="user()">
 
       </div>
-      <div class="bps_right progress_block clearfix" data-ng-if="false && progress">
-        <div class="progress_line_main">
-          <div class="progress_line_bg progress_bar progress_bar_border"></div>
-          <div class="progress_line progress_bar_filled" data-procent="0" data-ng-style="{ width: progress.plenum + '%' }">
-            <div class="progress_text progress_bar_flag" data-ng-show="progress.next.item" data-ng-class="{ right_position: progress.plenum < 50 }">
-              <span class="progress_bar_flag_text" data-ng-bind="progress.next.offset + ' ' + (progress.next.offset | sailplay_pluralize:('points.texts.pluralize' | tools)) + ' ' + widget.texts.before_gift"></span>
-            </div>
-          </div>
-
-          <div class="gift_item progress_bar_border" data-ng-repeat="item in progress.items track by $index"
-               data-ng-class="{ act : item.reached, progress_bar_gift_filled: item.reached, progress_bar_gift: !item.reached}"
-               data-ng-style="{ left: item.get_left() }">
-
-            <span class="gift_item_hint" data-ng-bind="item.gifts[0].points"></span>
-
-          </div>
-
-        </div>
-      </div>
     </div>
   </div>
 
