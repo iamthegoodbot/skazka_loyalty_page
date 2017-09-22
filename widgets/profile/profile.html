@@ -5,7 +5,7 @@
     <div class="bon_profile_top clearfix">
       <div class="bon_profile_top_left">
         <h3>
-          <span class="header">{{ (user().user.name || widget.texts.name_not_defined) + ', ' + widget.texts.header }}</span>
+          <span class="header">{{ user().user.name ? (user().user.name + ', ' + widget.texts.header) : widget.texts.header}}</span>
         </h3>
         <h4>
           <span class="caption">{{ widget.texts.spoiler }}</span>
@@ -39,8 +39,8 @@
           <a class="button_link history_button" href="#" data-ng-click="$event.preventDefault(); profile.history = true;">{{ widget.texts.history.button_name }}</a>
         </div>
       </div>
-      <div class="bon_profile_right clearfix" data-ng-if="!user()">
-        <button type="button" class="sp_btn button_primary login_reg_btn" data-ng-click="$event.preventDefault(); login('remote', {widget: 'profile', element: 'profile_login_button'});">{{ widget.texts.login_reg }}</button>
+      <div class="bon_profile_right unlogged clearfix" data-ng-if="!user()" data-ng-click="$event.preventDefault(); login('remote', {widget: 'profile', element: 'profile_login_button'});">
+        {{ widget.texts.login_reg }}
       </div>
     </div>
 

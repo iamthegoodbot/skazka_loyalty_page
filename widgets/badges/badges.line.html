@@ -68,36 +68,35 @@
 
   <magic-modal class="modal_badge_selected" data-ng-cloak data-show="badge_selected">
 
-    <div>
+    <div class="modal_badge_container">
 
-      <div class="modal_badge_image">
+      <div class="modal_badge_image" data-ng-class="{not_received: !badge_selected.is_received}">
         <img class="gift_more_img" data-ng-src="{{ badge_selected.thumbs.url_250x250 | sailplay_pic }}"
              alt="{{ badge_selected.name }}">
       </div>
 
       <div class="modal_badge_tools">
 
-        <p>
-          <span class="modal_badge_name" data-ng-bind="badge_selected.name"></span>
-        </p>
+        <div class="modal_badge_name" data-ng-bind="badge_selected.name"></div>
 
         <!--<p style="margin-top: 10px;">-->
           <!--<span class="modal_badge_points" data-ng-bind="(action_selected.points | number) + ' ' + (selected_gift.points | sailplay_pluralize:_tools.points.texts.pluralize)"></span>-->
         <!--</p>-->
 
-        <p style="margin-top: 10px;">
-          <span class="modal_badge_description" data-ng-bind="badge_selected.descr"></span>
-        </p>
-
+        <div class="modal_badge_points" data-ng-hide="!badge_selected.points" data-ng-bind="(badge_selected.points | number) + ' ' + (badge_selected.points | sailplay_pluralize:_tools.points.texts.pluralize)"></div>
+        <div class="modal_badge_description" data-ng-bind="badge_selected.descr"></div>
+        
+        <div class="modal_badge_share"> {{ _config.texts.share }} </div>
         <p class="modal_badge_buttons">
           <span class="badge_share_button fb_icon" data-ng-click="badge_share('fb', badge_selected)">
             {{ _config.texts.share_fb }}
           </span>
-          <span class="badge_share_button tw_icon" style="margin-right: 20px;" data-ng-click="badge_share('tw', badge_selected)">
+          <span class="badge_share_button tw_icon" data-ng-click="badge_share('tw', badge_selected)">
             {{ _config.texts.share_tw }}
           </span>
-          <span class="sp_btn button_primary" data-ng-click="badge_select(false);">{{ _tools.buttons.texts.close }}</span>
         </p>
+
+        <div class="sp_btn button_primary" data-ng-click="badge_select(false);">{{ _tools.buttons.texts.ok }}</div>
 
       </div>
 
