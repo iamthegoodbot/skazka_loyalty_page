@@ -6,7 +6,7 @@
     <span data-ng-hide="true" class="badge_name" data-ng-bind="badge.name"></span>
     <div class="badge_info_container">
     	<span class="bon_tem_info badge_name" data-ng-bind="badge.name"></span>
-    	<span class="bon_tem_info badge_points" data-ng-hide="!badge.points" data-ng-bind="(badge.points | number) + ' ' + (badge.points | sailplay_pluralize:_tools.points.texts.pluralize)"></span>
+    	<span class="bon_tem_info badge_points" data-ng-hide="!badge.points" data-ng-bind="'+' + (badge.points | number) + ' ' + (badge.points | sailplay_pluralize:_tools.points.texts.pluralize)"></span>
     </div>
   </div>
   <div class="badge_arrow">

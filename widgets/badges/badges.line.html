@@ -83,7 +83,7 @@
           <!--<span class="modal_badge_points" data-ng-bind="(action_selected.points | number) + ' ' + (selected_gift.points | sailplay_pluralize:_tools.points.texts.pluralize)"></span>-->
         <!--</p>-->
 
-        <div class="modal_badge_points" data-ng-hide="!badge_selected.points" data-ng-bind="(badge_selected.points | number) + ' ' + (badge_selected.points | sailplay_pluralize:_tools.points.texts.pluralize)"></div>
+        <div class="modal_badge_points" data-ng-hide="!badge_selected.points" data-ng-bind="'+' + (badge_selected.points | number) + ' ' + (badge_selected.points | sailplay_pluralize:_tools.points.texts.pluralize)"></div>
         <div class="modal_badge_description" data-ng-bind="badge_selected.descr"></div>
         
         <div class="modal_badge_share"> {{ _config.texts.share }} </div>

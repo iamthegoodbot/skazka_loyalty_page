@@ -145,13 +145,13 @@
             &>div:nth-child(2n-1) {
               transform: translate(0px, -60px);
               & .badge_info_container {
-                transform: translateY(0px);
+                transform: translate(-24px, 0px);
               }
             }
             &>div:nth-child(2n) {
               transform: translate(0px, 140px);
               & .badge_info_container {
-                transform: translateY(-220px);
+                transform: translate(-30px, -220px);
               }
             }  
           }
@@ -262,17 +262,26 @@
             color: #333;
             font-family: 'open sans condensed';
             font-weight: 700;
+            @media screen and (min-width: 651px) {
+              font-size: 18px;
+              width: 160px;
+            }
           }
           &.badge_points {
             @media screen and (min-width: 651px) {
-              transform: translate(0, 20px);  
+              transform: translate(0, 24px);
+              font-size: 20px;
+              width: 160px;
             }
             @media screen and (max-width: 650px) {
-              transform: translate(150px);  
+              transform: translate(150px, 5px);
+              text-align: left;
+              font-size: 22px;
+              width: 160px;
             }
             color: #219ed1;
             font-family: 'Raleway';
-            font-weight: 700;
+            font-weight: 900;
             font-style: italic;
             font-size: 16px;
             width: 100%;
@@ -280,6 +289,8 @@
           }
           @media screen and (max-width: 650px) {
             transform: translate(150px, -20px);
+            text-align: left;
+            font-size: 20px;
           }
         }
         .badge_pic {
