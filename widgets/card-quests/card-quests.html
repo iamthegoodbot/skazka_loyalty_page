@@ -3,6 +3,10 @@
   <!--div class="triangle"></div-->
 
   <div class="card_quests">
+    <div class="grid_buttons_container">
+      <a class="gifts_grid__more_btn button_primary" data-ng-show="!showMore" data-ng-click="showMoreUpdate(true)" data-ng-bind="widget.texts.more"></a>
+      <a class="gifts_grid__more_btn button_primary" data-ng-show="showMore" data-ng-click="showMoreUpdate(false)" data-ng-bind="widget.texts.less"></a>
+    </div>
 
     <h3 class="card_quests_header">
       <span class="header">{{ widget.texts.header }}</span>

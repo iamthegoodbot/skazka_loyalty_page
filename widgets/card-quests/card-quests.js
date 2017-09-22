@@ -9,9 +9,10 @@ WidgetRegister({
   inject: [
     'tools',
     'SailPlayApi',
-    'SailPlay'
+    'SailPlay',
+    '$rootScope'
   ],
-  controller: function (tools, SailPlayApi, SailPlay) {
+  controller: function (tools, SailPlayApi, SailPlay, $rootScope) {
 
     return function (scope, elm, attrs) {
 
@@ -21,6 +22,16 @@ WidgetRegister({
       scope.action_custom_selected = false;
 
       scope.filter = scope.widget.options && scope.widget.options.filter || {};
+
+      scope.showMore = false;
+
+      scope.showMoreUpdate = (bool) => {
+        $rootScope.$broadcast('showMore', bool)
+      }
+
+      scope.$on('showMore', (ev, showMore)=>{
+        scope.showMore = showMore
+      })
 
       scope.action_select = function (action) {
 

@@ -29,6 +29,10 @@ WidgetRegister({
 
       scope.showMore = false
 
+      scope.$on('showMore', (ev, showMore)=>{
+        scope.showMore = showMore
+      })
+
       scope.filter = scope.widget.options && scope.widget.options.filter || {};
 
       scope.orderBy = scope.widget.options && scope.widget.options.orderBy || 'points';

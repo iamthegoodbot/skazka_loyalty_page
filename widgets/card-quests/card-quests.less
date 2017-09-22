@@ -3,7 +3,7 @@
 @import (reference) "../../src/theme/colors";
 
 .spm_tools_widget.card-quests {
-  z-index: -3;
+  z-index: 8;
 }
 
 .spm_wrapper {
@@ -13,6 +13,25 @@
   }
 
   .card_quests {
+
+    .grid_buttons_container {
+      position: absolute;
+      width: inherit;
+      transform: translateY(-70px);
+      .gifts_grid__more_btn {
+        text-transform: lowercase;
+        font-family: 'raleway';
+        font-style: italic;
+        font-size: 22px;
+        display: block;
+        background-color: #333;
+        color: white;
+        width: 180px;
+        margin: 0 auto;
+        padding: 15px;
+        text-align: center;
+      }
+    }
 
     width: 90%;
     margin: 40px 5%;
