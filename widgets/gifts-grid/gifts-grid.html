@@ -39,7 +39,7 @@
                     <span class="gifts_grid__item-name gift_name" data-ng-bind="gift.name"></span>
 
                     <a class="gifts_grid__item-button button_primary" href="#"
-                       data-ng-click="$event.preventDefault();$parent.giftSuccessgiftSuccess = false;open(gift)"
+                       data-ng-click="$event.preventDefault();$parent.giftSuccess = false;open(gift)"
                        data-ng-bind="(gift.points | number) + ' ' + (gift.points | sailplay_pluralize:('points.texts.pluralize' | tools))"></a>
 
                 </div>
@@ -92,7 +92,7 @@
 
         <div class="modal_gift_container">
 
-            <div class="bon_item gift">
+            <div class="bon_item gift modal">
 
               <div data-ng-show="giftSuccess" class="headers-container">
                 <h3 data-ng-bind="widget.texts.giftSuccessHeader"></h3>
@@ -113,7 +113,7 @@
               </div>
               <div class="modal_gift_buttons">
 
-                  <span data-ng-show="giftSuccess" class="alink button_primary" data-ng-click="$parent.$parent.selected_gift=null">{{ 'buttons.texts.ok' | tools }}</span>
+                  <span data-ng-show="giftSuccess" class="alink button_primary" data-ng-click="$parent.$parent.selected_gift=null; $parent.$parent.giftSuccess=false">{{ 'buttons.texts.ok' | tools }}</span>
 
                   <span data-ng-hide="giftSuccess" class="alink button_primary"
                         style="margin-left: 5px;"

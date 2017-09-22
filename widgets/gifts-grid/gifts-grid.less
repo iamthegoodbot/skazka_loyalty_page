@@ -155,6 +155,7 @@
         }
 
         &-name {
+          word-wrap: break-word;
           margin-bottom: 10px;
           padding-top: 30px;
           font-size: 20px;
@@ -191,9 +192,11 @@
             color:white;
           }
           @media screen and (max-width: 650px) {
-            padding-left: 10px;
-            background-color: #333 !important;
-            color:white;
+            &:not(.modal) {
+              padding-left: 10px;
+              background-color: #333 !important;
+              color:white;
+            }
           }
         }
 
@@ -231,7 +234,7 @@
       .gifts_grid__wrapper {
         display: none;
       }
-      .bon_item {
+      .bon_item:not(.modal) {
         display: inline-flex !important;
         justify-content: center;
       }
@@ -300,6 +303,12 @@
         width: 300px;
         padding: 5px;
         font-size: 20px;
+        @media screen and (max-width: 650px) {
+          &.gifts_grid__item-button.modal {
+            width: auto;
+            padding: 8px 0;
+          }
+        }
       }
     }
   }

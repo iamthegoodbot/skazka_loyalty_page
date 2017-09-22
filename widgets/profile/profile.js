@@ -22,6 +22,7 @@ const ProfileWidget = {
         scope.profile.show_fill_profile = true;
       })
       scope.profile = {
+        more: false,
         history: false,
         show_fill_profile: false,
         fill_profile: function(state){

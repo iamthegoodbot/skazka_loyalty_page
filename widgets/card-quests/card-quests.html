@@ -66,7 +66,7 @@
                 <div class="quest_card_info">
                   <span class="quest_card_name" data-ng-bind="action.name"></span>
                   <span class="quest_card_points" data-ng-show="action.points" data-ng-bind="((action.points || 0) | number) + ' ' + (action.points | sailplay_pluralize:( 'points.texts.pluralize' | tools ))"></span>
-                  <span class="button_primary quest_card_button" data-ng-bind="!action.points ? action.button_text : ((action.points || 0) | number) + ' ' + (action.points | sailplay_pluralize:( 'points.texts.pluralize' | tools ))"></span>
+                  <span class="button_primary quest_card_button" data-ng-click="action_custom_select(action)" data-ng-bind="!action.points ? action.button_text : ((action.points || 0) | number) + ' ' + (action.points | sailplay_pluralize:( 'points.texts.pluralize' | tools ))"></span>
                   </span>
                 </div>
 

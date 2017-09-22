@@ -75,8 +75,12 @@
         background-color: white;
         height: 280px;
         flex-direction: row;
+        align-items: center;
         display: flex;
         margin-top: 100px;
+        @media screen and (max-width: 650px) {
+          min-width: auto;
+        }
         &.unlogged {
           color: rgb(34, 159, 211);
           font-family: "raleway";
@@ -103,6 +107,9 @@
         @media screen and (max-width: 992px) {
           width: 100%;
           border-radius: 0;
+        }
+        @media screen and (min-width: 650px) and (max-width: 992px) {
+          border-radius: 600px;
         }
         & .user_profile_container {
           padding-right: 30px;
@@ -170,6 +177,10 @@
         .user_avatar_image {
           width: 140px;
           height: 140px;
+          @media screen and (max-width: 500px) {
+            width: 80px;
+            height: 80px;
+          }
         }
         .user_name {
           color: #aaa;
@@ -512,6 +523,22 @@
       span {
         display: block;
         white-space: nowrap;
+      }
+    }
+    @media screen and (max-width: 767px) {
+      & tr {
+        margin: 20px 0;
+        display: flex;
+        flex-direction: column;
+        & td:nth-of-type(3) {
+          padding-top: 0 !important;
+        }
+        & * {
+          width: auto !important;
+          padding-bottom: 0 !important;
+          text-align: left !important;
+          padding-left: 0 !important;
+        }
       }
     }
   }
