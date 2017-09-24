@@ -20,7 +20,8 @@
           data-ng-style="getProgress(purchase_status ? user().purchases.sum : user().user_points, _statuses)">
       </div>
       <div class="status-list__progress element-progress progress_line progress-line-avatar"
-          data-ng-style="getProgress(purchase_status ? user().purchases.sum : user().user_points, _statuses)">
+          data-ng-style="getProgress(purchase_status ? user().purchases.sum : user().user_points, _statuses)"
+          data-ng-if="user()">
         <span class="avatar_container" data-ng-style="{'background-image': 'url('+((user().user.pic | sailplay_pic) || default_avatar)+')' }"></span>
       </div>
 

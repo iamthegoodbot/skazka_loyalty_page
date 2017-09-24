@@ -10,7 +10,7 @@
 
     & .parallax-img, & .parallax-img-s {
       height: inherit;
-      width: 100vw;
+      width: 95%;
       position: absolute;
       display: none;
     }
@@ -185,19 +185,20 @@
           font-size: 22px;
           position: absolute;
           bottom: 30px;
-          &:not(.modal):hover {
-            min-width: 160px;
-            padding-left: 10px;
-            background-color: black !important;
-            color:white;
-          }
-          @media screen and (max-width: 650px) {
+          @media screen and (max-width: 767px) {
             &:not(.modal) {
               padding-left: 10px;
               background-color: #333 !important;
               color:white;
             }
           }
+        }
+
+        &:hover .gifts_grid__item-button:not(.modal) {
+          min-width: 160px;
+          padding-left: 10px;
+          background-color: black !important;
+          color:white;
         }
 
       }
