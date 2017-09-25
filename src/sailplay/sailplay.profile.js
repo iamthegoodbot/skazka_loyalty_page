@@ -378,13 +378,13 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
             hasUpdatedEmailCondition = false;
 
           angular.forEach(scope.sailplay.fill_profile.form.fields, function (item) {
-            if(!(item.value === item.oldVal)){
-              console.log(item)
+            if(!(item.value === item.oldVal) && !(item.oldVal === void 0 && !!item.value)){
+              console.log(item, 'changed field')
               hasChangesTagCondition = true
             }
             if (item.type == 'variable') {
               custom_user_vars[item.name] = item.value
-            } else if (item.type =="tags"){
+            } else if (item.type =="tags" && !(item.value === item.oldVal)){
               item.data.forEach(v => {
                 if(v.tag === item.value){
                   custom_user_tags_add.push(v.tag)
@@ -392,7 +392,7 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
                   custom_user_tags_delete.push(v.tag)
                 }
               })
-            } else {
+            } else if (item.type !="tags") {
               req_user[item.name] = item.value;
             }
           });

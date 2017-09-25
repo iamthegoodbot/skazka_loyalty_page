@@ -15,7 +15,7 @@
   <link rel="stylesheet" href="https://www.bronnitsy.com/static/theme/template_styles.css?v=17">
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
-  <script src="/dist/prod/sailplay-magic.js"></script>
+  <script src="./dist/prod/sailplay-magic.js"></script>
   <style>
     body {
       margin: 0;
@@ -42,7 +42,9 @@
 
     });
 
-    if('53756de5daef45e6a07a3e13f0babca248e186e7'){SAILPLAY.on('magic.config.success',function(){SAILPLAY.send('login','53756de5daef45e6a07a3e13f0babca248e186e7');});}    
+    if(params.auth_hash){
+      SAILPLAY.on('magic.config.success',function(){SAILPLAY.send('login',params.auth_hash);});
+    }    
 
   </script>
 
