@@ -378,7 +378,7 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
             hasUpdatedEmailCondition = false;
 
           angular.forEach(scope.sailplay.fill_profile.form.fields, function (item) {
-            if(!(item.value === item.oldVal) && !(item.oldVal === void 0 && !!item.value)){
+            if(!(item.value === item.oldVal) && !(!item.hasOwnProperty('oldVal') && item.value == "")){
               console.log(item, 'changed field')
               hasChangesTagCondition = true
             }
@@ -400,13 +400,13 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
 
           if (req_user.addPhone && data_user && data_user.phone && data_user.phone.replace(/\D/g, '') == req_user.addPhone.replace(/\D/g, '')) {
             delete req_user.addPhone;
-          } else {
+          } else if(req_user.addPhone!=""){
             hasUpdatedPhoneCondition = true
           }
 
           if (req_user.addEmail && data_user && data_user.email && data_user.email == req_user.addEmail) {
             delete req_user.addEmail;
-          } else {
+          } else if(req_user.addEmail!=""){
             hasUpdatedEmailCondition = true
           }
 
