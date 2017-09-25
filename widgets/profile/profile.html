@@ -66,32 +66,45 @@
                 </div>
               </div>
 
-              <div data-ng-switch-when="phone" class="bns_input_block">
+              <div data-ng-switch-when="phone" class="bns_input_block" data-ng-class="{error: $parent.$parent.phone_error}">
                 <label>{{ field.label }}</label>
-                <input type="text" data-model-view-value="true" data-ng-value="field.value | phonenumber" disabled="true">
+                <input type="text" data-ui-options="{
+                  maskDefinitions: phoneMask,
+                  clearOnBlur: false}" 
+                  data-ui-mask="{{ field.placeholder }}" data-ng-model="field.value">
                 <div class="bns_toltip" data-ng-class="{bns_act: is_active_mail}" data-ng-click="is_active_mail = !is_active_mail">
-                        <span>?</span>
-                        <div class="bns_toltip_popup">
-                            Телефон Вы можете изменить,
-                            отправив запрос на почту
-                            <a href="mailto:change@shop.bronnitsy.com">change@shop.bronnitsy.com</a>
-                        </div>
+                    <span>?</span>
+                    <div class="bns_toltip_popup">
+                        Телефон Вы можете изменить,
+                        отправив запрос на почту
+                        <a href="mailto:change@shop.bronnitsy.com">change@shop.bronnitsy.com</a>
                     </div>
+                </div>
+                
               </div>
-              <div data-ng-switch-when="email" class="bns_input_block">
+              <div data-ng-switch-when="email" class="bns_input_block" data-ng-class="{error: $parent.$parent.email_error}">
                 <label>{{ field.label }}</label>
-                <input type="email" placeholder="{{ field.placeholder }}" data-ng-model="field.value" disabled="true">
+                <input type="email" placeholder="{{ field.placeholder }}" data-ng-model="field.value">
                 <div class="bns_toltip" data-ng-class="{bns_act: is_active_mail}" data-ng-click="is_active_mail = !is_active_mail">
-                        <span>?</span>
-                        <div class="bns_toltip_popup">
-                            Email Вы можете изменить,
-                            отправив запрос на почту
-                            <a href="mailto:change@shop.bronnitsy.com">change@shop.bronnitsy.com</a>
-                        </div>
+                    <span>?</span>
+                    <div class="bns_toltip_popup">
+                        Email Вы можете изменить,
+                        отправив запрос на почту
+                        <a href="mailto:change@shop.bronnitsy.com">change@shop.bronnitsy.com</a>
                     </div>
+                </div>
               </div>
-
+            
+              <div data-ng-switch="field.input">
+                <div data-ng-switch-when="phone" data-ng-show="$parent.$parent.phone_error" class="bns_error_block">
+                  {{widget.texts.phone_error}}
+                </div>
+                <div data-ng-switch-when="email" data-ng-show="$parent.$parent.email_error" class="bns_error_block">
+                  {{widget.texts.email_error}}
+                </div>
+              </div>
             </div>
+            
             <div class="bns_form_bottom bns_form_bottom_mt answ_text">
               <button type="submit" class="bns_btn">
                 {{ 'buttons.texts.save' | tools }}
