@@ -400,13 +400,13 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
 
           if (req_user.addPhone && data_user && data_user.phone && data_user.phone.replace(/\D/g, '') == req_user.addPhone.replace(/\D/g, '')) {
             delete req_user.addPhone;
-          } else if(req_user.addPhone!=""){
+          } else {
             hasUpdatedPhoneCondition = true
           }
 
           if (req_user.addEmail && data_user && data_user.email && data_user.email == req_user.addEmail) {
             delete req_user.addEmail;
-          } else if(req_user.addEmail!=""){
+          } else {
             hasUpdatedEmailCondition = true
           }
 

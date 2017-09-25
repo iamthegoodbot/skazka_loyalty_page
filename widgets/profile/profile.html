@@ -16,7 +16,7 @@
 
               <div data-ng-switch-when="text" class="bns_input_block">
                 <label>{{ field.label }}</label>
-                <input type="text" placeholder="{{ field.placeholder }}" data-ng-model="field.value">
+                <input name="{{field.name}}" type="text" placeholder="{{ field.placeholder }}" data-ng-model="field.value">
               </div>
 
               <div data-ng-switch-when="date" class="bns_select_date bns_zi3">
@@ -27,7 +27,7 @@
               <div data-ng-switch-when="select" class="clearfix">
                 <label class="form_label">{{ field.label }}</label>
                 <div class="magic_select form_input">
-                  <select data-ng-model="field.value" data-ng-options="item.value as item.text for item in field.data"></select>
+                  <select name="{{field.name}}" data-ng-model="field.value" data-ng-options="item.value as item.text for item in field.data"></select>
                 </div>
               </div>
 <!--
@@ -49,7 +49,7 @@
                 <label>{{ field.label }}</label>
                 <div class="bns_radio">
                   <div class="bns_radio_item" data-ng-repeat="item in field.data">
-                      <input data-ng-value="{{item.value}}" data-ng-model="field.value" id="{{'field_' + field.name + '_' + item.value}}" type="radio">
+                      <input name="{{field.name}}" data-ng-value="{{item.value}}" data-ng-model="field.value" id="{{'field_' + field.name + '_' + item.value}}" type="radio">
                       <label for="{{'field_' + field.name + '_' + item.value}}">{{ item.text }}</label>
                   </div>
                 </div>
@@ -60,18 +60,18 @@
                 <div class="bns_radio">
                   <div class="bns_radio_item" data-ng-repeat="item in field.data">
             <!--      {{item}} -->
-                      <input value="{{item.tag}}" data-ng-model="field.value" id="{{'field_' + field.name + '_' + item.tag}}" type="radio">
+                      <input value="{{item.tag}}" name="{{field.name}}" data-ng-model="field.value" id="{{'field_' + field.name + '_' + item.tag}}" type="radio">
                       <label for="{{'field_' + field.name + '_' + item.tag}}">{{ item.text }}</label>
                   </div>
                 </div>
               </div>
 
-              <div data-ng-switch-when="phone" class="bns_input_block" data-ng-class="{error: $parent.$parent.phone_error}">
+              <div data-ng-switch-when="phone" class="bns_input_block" data-ng-class="{error: $parent.$parent.phone_error || fill_profile_form[field.name].$invalid}">
                 <label>{{ field.label }}</label>
-                <input type="text" data-ui-options="{
+                <input type="text" name="{{field.name}}" data-ui-options="{
                   maskDefinitions: phoneMask,
                   clearOnBlur: false}" 
-                  data-ui-mask="{{ field.placeholder }}" data-ng-model="field.value">
+                  data-ui-mask="{{ field.placeholder }}" data-ng-model="field.value" data-ng-required="true">
                 <div class="bns_toltip" data-ng-class="{bns_act: is_active_mail}" data-ng-click="is_active_mail = !is_active_mail">
                     <span>?</span>
                     <div class="bns_toltip_popup">
@@ -82,9 +82,9 @@
                 </div>
                 
               </div>
-              <div data-ng-switch-when="email" class="bns_input_block" data-ng-class="{error: $parent.$parent.email_error}">
+              <div data-ng-switch-when="email" class="bns_input_block" data-ng-class="{error: ($parent.$parent.email_error || fill_profile_form[field.name].$invalid)}">
                 <label>{{ field.label }}</label>
-                <input type="email" placeholder="{{ field.placeholder }}" data-ng-model="field.value">
+                <input name="{{field.name}}" data-ng-required="true" type="email" placeholder="{{ field.placeholder }}" data-ng-model="field.value">
                 <div class="bns_toltip" data-ng-class="{bns_act: is_active_mail}" data-ng-click="is_active_mail = !is_active_mail">
                     <span>?</span>
                     <div class="bns_toltip_popup">
