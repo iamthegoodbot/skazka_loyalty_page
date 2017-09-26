@@ -113,10 +113,12 @@
               </div>
               <div class="modal_gift_buttons">
 
-                  <span data-ng-show="giftSuccess" class="alink button_primary" data-ng-click="$parent.$parent.selected_gift=null; $parent.$parent.giftSuccess=false">{{ 'buttons.texts.ok' | tools }}</span>
+                  <span data-ng-show="giftSuccess" class="alink button_primary" 
+                        data-ng-click="$parent.$parent.selected_gift=null; $parent.$parent.giftSuccess=false"
+                        style="margin: 5px;">{{ 'buttons.texts.ok' | tools }}</span>
 
                   <span data-ng-hide="giftSuccess" class="alink button_primary"
-                        style="margin-left: 5px;"
+                        style="margin: 5px;"
                         data-ng-click="gift_confirm(selected_gift);"
                         data-ng-bind="widget.texts.get"></span>
                 
