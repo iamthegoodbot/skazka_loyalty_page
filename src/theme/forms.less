@@ -165,12 +165,18 @@
       font-family: 'open sans condensed';
       font-weight: 700;
       text-transform: uppercase;
+      @media screen and (max-width: 949px) {
+        flex-grow: 1;
+      }
     }
 
     .bns_radio {
       min-width: 326px;
       display: flex;
       justify-content: space-around;
+      @media screen and (max-width: 949px) {
+        min-width: 190px;
+      }
       &>div {
         color: white;
         font-family: 'open sans condensed';

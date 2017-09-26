@@ -20,7 +20,7 @@
 
                     <span class="leaderboard__list-header rows headers" data-ng-bind="'4-6'"></span>
 
-                    <span class="leaderboard__list-header rows headers" data-ng-bind="isInTop9 ? '7-9' : '7-8, ' + currentUser.rank"></span>
+                    <span class="leaderboard__list-header rows headers" data-ng-bind="isInTop9 ? '7-9' : ('7-8, ' + currentUser.rank)"></span>
 
                 </div>
 
@@ -28,13 +28,13 @@
 
                     <span class="leaderboard__list-header rows headers" data-ng-bind="'1-5'"></span>
 
-                    <span class="leaderboard__list-header rows headers" data-ng-bind="isInTop9 ? '4-9' : '4-8, ' + currentUser.rank"></span>
+                    <span class="leaderboard__list-header rows headers" data-ng-bind="isInTop9 ? '4-9' : ('4-8, ' + currentUser.rankcurrentUser.rank)"></span>
 
                 </div>
 
                 <div class="leaderboard-headers xs">
 
-                    <span class="leaderboard__list-header rows headers" data-ng-bind="isInTop9 ? '1-9' : '1-8, ' + currentUser.rank"></span>
+                    <span class="leaderboard__list-header rows headers" data-ng-bind="isInTop9 ? '1-9' : ('1-8, ' + currentUser.rank)"></span>
 
                 </div>
 
