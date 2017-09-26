@@ -2,11 +2,14 @@
 
   <magic-modal class="bns_overlay bns_overlay_prof" data-ng-cloak data-show="profile.show_fill_profile">
         <div class="bns_overlay_inner" data-sailplay-fill-profile data-config="widget.fill_profile.config">
-            <h4 class="bns_head">
+            <h4 class="bns_head" data-ng-hide="formState != 'default'">
                 Ваш профиль
             </h4>
+            <h4 class="bns_head" data-ng-hide="formState != 'phone'">
+                Подтверждение
+            </h4>
             <a href="" class="close" data-ng-click="$parent.close()"></a>
-            <form name="fill_profile_form" class="bns_form" data-ng-submit="sailplay.fill_profile.submit(fill_profile_form, profile.fill_profile);">
+            <form data-ng-hide="formState != 'default'" name="fill_profile_form" class="bns_form" data-ng-submit="sailplay.fill_profile.submit(fill_profile_form, profile.fill_profile);">
 
             <div class="" data-ng-repeat="field in sailplay.fill_profile.form.fields" data-ng-switch="field.input">
 
@@ -106,13 +109,27 @@
             </div>
             
             <div class="bns_form_bottom bns_form_bottom_mt answ_text">
-              <button type="submit" class="bns_btn">
+              <button type="submit" class="bns_btn" id="profileFormSubmit">
                 {{ 'buttons.texts.save' | tools }}
               </button>
             </div>
 
           </form>
-            
+          <div class="phone_confirm_form bns_form" data-ng-hide="formState != 'phone'">
+            <div class="confirm_caption" data-ng-bind="widget.texts.phone_confirm + ' ' + (fill_profile_form.addPhone.$viewValue)"></div>
+            <div class="confirm_field">
+              <label>Код подтверждения</label>
+              <input type="text" name="phone_code" data-ng-model="phone_code">
+            </div>
+            <div class="bns_form_bottom bns_form_bottom_mt answ_text">
+              <button class="bns_btn" data-ng-click="$parent.$parent.formState = 'default'">
+                {{ 'buttons.texts.back' | tools }}
+              </button>
+              <button class="bns_btn" data-ng-click="sailplay.fill_profile.checkSmsCode(phone_code)">
+                {{ 'buttons.texts.save' | tools }}
+              </button>
+            </div>
+          </div>
         </div>
   </magic-modal>
 </div>

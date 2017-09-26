@@ -362,7 +362,43 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
 
         };
 
+        scope.sailplay.fill_profile.checkSmsCode = function(code) {
+          const data = {
+            auth_hash: SailPlay.config().auth_hash,
+            phone: SailPlayApi.data('load.user.info')().user.phone,
+            identifier: 'phone',
+            value: code
+          }
+          $q(function (resolve) {
+            SailPlay.jsonp.get(SailPlay.config().DOMAIN + SailPlay.config().urls.users.verification.code.check, data, function (res) {
+              resolve(res);
+            });
+          }).then((res)=>{
+            if(true || res.status == "ok"){
+              scope.sailplay.fill_profile.submit(scope.fill_profile_form, scope.profile.fill_profile)
+              scope.$parent.$parent.formState = "default"
+            }
+          })
+        }
+
+        const updatePhone = function(newPhone) {
+          scope.$parent.$parent.formState = "phone"
+          const data = {
+            auth_hash: SailPlay.config().auth_hash,
+            phone: SailPlayApi.data('load.user.info')().user.phone,
+            identifier: 'phone',
+            value: newPhone
+          }
+          $q(function (resolve) {
+            SailPlay.jsonp.get(SailPlay.config().DOMAIN + SailPlay.config().urls.users.verification.code.send, data, function (res) {
+              resolve(res);
+            });
+          })
+        }
+
         scope.sailplay.fill_profile.submit = function (form, callback) {
+
+
 
           if (!form || !form.$valid) {
             return;
@@ -398,8 +434,13 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
           });
           console.log(data_user, req_user)
 
+          console.info(scope)
+
           if (req_user.addPhone && data_user && data_user.phone && data_user.phone.replace(/\D/g, '') == req_user.addPhone.replace(/\D/g, '')) {
             delete req_user.addPhone;
+          } else if(scope.$parent.$parent.formState == "default"){
+            updatePhone(req_user.addPhone)
+            return false;
           } else {
             hasUpdatedPhoneCondition = true
           }

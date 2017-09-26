@@ -36,6 +36,9 @@ const ProfileWidget = {
 
       // scope._tools = MAGIC_CONFIG.tools;
 
+      // state default or phone
+      scope.formState = 'default'
+
       scope.phoneMask = { '7': /7/,'9': /\d/, 'A': /[a-zA-Z]/, '*': /[a-zA-Z0-9]/ }
 
       scope.default_avatar = DefaultAvatarImage;
