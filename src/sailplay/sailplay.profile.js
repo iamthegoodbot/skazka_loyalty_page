@@ -305,7 +305,7 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
                     break;
 
                   case 'addPhone':
-                    form_field.value = user.user.phone.slice(1) || '';
+                    form_field.value = !!user.user.phone && user.user.phone.slice(1) || '';
                     break;
 
                   case 'addEmail':
@@ -423,7 +423,7 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
           if (req_user.addPhone && data_user && data_user.phone && data_user.phone.replace(/\D/g, '') == req_user.addPhone.replace(/\D/g, '')) {
             delete req_user.addPhone;
           }
-          
+
           if (req_user.addEmail && data_user && data_user.email && data_user.email == req_user.addEmail) {
             delete req_user.addEmail;
           }
