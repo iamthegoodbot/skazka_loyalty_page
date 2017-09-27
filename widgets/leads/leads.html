@@ -35,7 +35,7 @@
                 <div class="value select">
                   <select class="magic_select" ng-model="partner.tag" data-ng-change="$parent.setTag(partner.phone, partner.tag, lead.phone)">
                   <option value="closed">{{ widget.texts.closed }}</option>
-                  <option value="open">{{ widget.texts.open }}</option>
+                  <option disabled value="open">{{ widget.texts.open }}</option>
                   <option value="booked">{{ widget.texts.booked }}</option>
                 </select>
                 </div>
