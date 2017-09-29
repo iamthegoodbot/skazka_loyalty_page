@@ -363,42 +363,70 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
         };
 
         scope.sailplay.fill_profile.checkSmsCode = function(code) {
+          const confirmation_id = scope.confirmation_id
           const data = {
             auth_hash: SailPlay.config().auth_hash,
-            phone: SailPlayApi.data('load.user.info')().user.phone,
-            identifier: 'phone',
-            value: code
+            code,
+            confirmation_id
           }
           $q(function (resolve) {
-            SailPlay.jsonp.get(SailPlay.config().DOMAIN + SailPlay.config().urls.users.verification.code.check, data, function (res) {
+            SailPlay.jsonp.get(SailPlay.config().DOMAIN + SailPlay.config().urls.users.confirm_update_phone, data, function (res) {
               resolve(res);
             });
           }).then((res)=>{
-            if(true || res.status == "ok"){
+            if(res.confirmed){
               scope.sailplay.fill_profile.submit(scope.fill_profile_form, scope.profile.fill_profile)
               scope.$parent.$parent.formState = "default"
+              scope.phone_error2 = false
+            } else if(res.status_code === -5117){
+              scope.phone_confirm_error = "attemptsExpired"
+              scope.phone_error2 = true
+            } else if(res.attempts_left == 0){
+              scope.phone_confirm_error = "attemptsExpired"
+              scope.phone_error2 = true
+            } else {
+              scope.attemptsLeft = res.attempts_left
+              scope.phone_error2 = true
+              scope.phone_confirm_error = "failedAttempt"
             }
           })
         }
 
-        const updatePhone = function(newPhone) {
-          scope.$parent.$parent.formState = "phone"
+        scope.sailplay.fill_profile.updatePhone = function(phone) {
           const data = {
             auth_hash: SailPlay.config().auth_hash,
-            phone: SailPlayApi.data('load.user.info')().user.phone,
-            identifier: 'phone',
-            value: newPhone
+            phone
           }
           $q(function (resolve) {
-            SailPlay.jsonp.get(SailPlay.config().DOMAIN + SailPlay.config().urls.users.verification.code.send, data, function (res) {
-              resolve(res);
+            SailPlay.jsonp.get(SailPlay.config().DOMAIN + SailPlay.config().urls.users.update_phone, data, function (res) {
+              console.info(res)
+              if(res.status == "ok"){
+                scope.$parent.$parent.formState = "phone"
+                scope.confirmation_id = res.confirmation_id
+                scope.$parent.$parent.timerStart(scope.$parent.$parent.widget.phone_confirm_countdown, ()=>{
+                  scope.confirmation_id = void 0
+                  scope.phone_confirm_error = "timeExpired"
+                  scope.phone_error2 = true
+                })
+                scope.phone_confirm_error = void 0
+                scope.phone_error2 = false
+                scope.attemptsLeft = void 0
+                resolve(res)
+              } else if(res.status_code === -5119){
+                scope.phone_error = true
+                scope.phone_error2 = true
+                scope.phone_send_error = "resendLimit"
+                scope.phone_confirm_error = "resendLimit"
+                scope.$apply()
+              } else {
+                scope.phone_error = true
+                scope.phone_send_error = "alreadyInUse"
+              }
             });
           })
         }
 
         scope.sailplay.fill_profile.submit = function (form, callback) {
-
-
 
           if (!form || !form.$valid) {
             return;
@@ -439,9 +467,10 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
           if (req_user.addPhone && data_user && data_user.phone && data_user.phone.replace(/\D/g, '') == req_user.addPhone.replace(/\D/g, '')) {
             delete req_user.addPhone;
           } else if(scope.$parent.$parent.formState == "default"){
-            updatePhone(req_user.addPhone)
+            scope.sailplay.fill_profile.updatePhone(req_user.addPhone)
             return false;
           } else {
+            delete req_user.addPhone;
             hasUpdatedPhoneCondition = true
           }
 

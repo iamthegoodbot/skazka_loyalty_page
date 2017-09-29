@@ -29,8 +29,8 @@ const ProfileWidget = {
 
   id: 'profile',
   template: WidgetProfileTemplate,
-  inject: ['$rootScope', 'isProfileFilled'],
-  controller: function ($rootScope) {
+  inject: ['$rootScope', '$interval','isProfileFilled'],
+  controller: function ($rootScope, $interval) {
 
     return function (scope, elm, attrs) {
 
@@ -53,6 +53,24 @@ const ProfileWidget = {
           scope.profile.show_fill_profile = state || false;
 
         }
+      }
+
+      scope.timer = void 0
+      scope.timerEndCb = void 0
+      scope.timerVal = 0
+      scope.timerStart = (seconds, endCb) => {
+        $interval.cancel(scope.timer)
+        scope.timerVal = seconds
+        scope.timerEndCb = endCb
+        scope.timer = $interval(()=>{
+          if(scope.timerVal < 0) {
+            scope.timerEndCb & scope.timerEndCb()
+            $interval.cancel(scope.timer)
+          } else {
+            scope.timerVal--
+          }
+        },1000)
+        return scope.timer
       }
 
     }

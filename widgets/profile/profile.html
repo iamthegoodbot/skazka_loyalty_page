@@ -99,8 +99,9 @@
               </div>
             
               <div data-ng-switch="field.input">
-                <div data-ng-switch-when="phone" data-ng-show="$parent.$parent.phone_error" class="bns_error_block">
-                  {{widget.texts.phone_error}}
+                <div data-ng-switch-when="phone" data-ng-show="$parent.$parent.phone_error" data-ng-switch="$parent.$parent.phone_send_error" class="bns_error_block">
+                  <span data-ng-switch-when="alreadyInUse">{{widget.texts.phone_confirm_errors.phone_already_in_use}}</span>
+                  <span data-ng-switch-when="resendLimit">{{widget.texts.phone_confirm_errors.phone_resend_limit}}</span>
                 </div>
                 <div data-ng-switch-when="email" data-ng-show="$parent.$parent.email_error" class="bns_error_block">
                   {{widget.texts.email_error}}
@@ -115,21 +116,44 @@
             </div>
 
           </form>
-          <div class="phone_confirm_form bns_form" data-ng-hide="formState != 'phone'">
+          <form class="phone_confirm_form bns_form" name="phone_confirm" data-ng-hide="formState != 'phone'">
             <div class="confirm_caption" data-ng-bind="widget.texts.phone_confirm + ' ' + (fill_profile_form.addPhone.$viewValue)"></div>
             <div class="confirm_field">
               <label>Код подтверждения</label>
-              <input type="text" name="phone_code" data-ng-model="phone_code">
+              <input type="text" name="phone_code" data-ng-model="phone_code" data-ng-pattern="/^\d{4}$/" data-ng-required="true" data-ng-bind>
+            </div>
+            <div data-ng-show="phone_error2" class="bns_error_block" data-ng-switch="phone_confirm_error">
+              <span data-ng-switch-when="failedAttempt">
+                {{widget.texts.phone_code_error_p1 + attemptsLeft + widget.texts.phone_code_error_p2}}
+              </span>
+              <span data-ng-switch-when="attemptsExpired">
+                {{widget.texts.phone_confirm_errors.phone_code_error_limit}}
+              </span>
+              <span data-ng-switch-when="timeExpired">
+                {{widget.texts.phone_confirm_errors.phone_countdown_end}}
+              </span>
+              <span data-ng-switch-when="resendLimit">
+                {{widget.texts.phone_confirm_errors.phone_resend_limit}}
+              </span>
+            </div>
+            <div class="bns_confirm_block" data-ng-hide="$parent.$parent.timerVal<1">
+              {{widget.texts.phone_code_time_remaining + ' ' + $parent.$parent.timerVal + ' ' + 'сек.'}}
+            </div>
+            <div class="bns_resend_block" data-ng-click="sailplay.fill_profile.updatePhone(fill_profile_form.addPhone.$viewValue)">
+              {{widget.texts.phone_resend_btn}}
+            </div>
+            <div>
+              <div></div>
             </div>
             <div class="bns_form_bottom bns_form_bottom_mt answ_text">
               <button class="bns_btn" data-ng-click="$parent.$parent.formState = 'default'">
                 {{ 'buttons.texts.back' | tools }}
               </button>
-              <button class="bns_btn" data-ng-click="sailplay.fill_profile.checkSmsCode(phone_code)">
+              <button type="submit" class="bns_btn" data-ng-click="sailplay.fill_profile.checkSmsCode(phone_code)" data-ng-class="{disabled: phone_comfirm.phone_code.$invalid}" >
                 {{ 'buttons.texts.save' | tools }}
               </button>
             </div>
-          </div>
+          </form>
         </div>
   </magic-modal>
 </div>
