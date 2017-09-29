@@ -421,6 +421,7 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
               } else {
                 scope.phone_error = true
                 scope.phone_send_error = "alreadyInUse"
+                scope.$apply()
               }
             });
           })
