@@ -313,8 +313,8 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
                       if(tag.exist){
                         field.value = tag_field.tag
                         field.oldVal = field.value
-                      } else {
-
+                      } else if (!field.oldVal){
+                        field.oldVal = ""
                       }
                       console.log(tag_field, tag)    
                     }
@@ -371,11 +371,16 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
           }
           $q(function (resolve) {
             SailPlay.jsonp.get(SailPlay.config().DOMAIN + SailPlay.config().urls.users.confirm_update_phone, data, function (res) {
+              var conditionalProfileTags = []
+              conditionalProfileTags.push(MAGIC_CONFIG.data.profile_update_tags.profile_general)
+              conditionalProfileTags.push(MAGIC_CONFIG.data.profile_update_tags.phone)
+              SailPlay.send('tags.add',{tags:conditionalProfileTags})
               resolve(res);
             });
           }).then((res)=>{
+            console.log(res)
             if(res.confirmed){
-              scope.sailplay.fill_profile.submit(scope.fill_profile_form, scope.profile.fill_profile)
+              scope.sailplay.fill_profile.submit(scope.fill_profile_form, scope.profile.fill_profile, {profileUpdatedTagAlreadySet: true})
               scope.$parent.$parent.formState = "default"
               scope.phone_error2 = false
             } else if(res.status_code === -5117){
@@ -427,10 +432,14 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
           })
         }
 
-        scope.sailplay.fill_profile.submit = function (form, callback) {
+        scope.sailplay.fill_profile.submit = function (form, callback, options) {
 
           if (!form || !form.$valid) {
             return;
+          }
+
+          if(!options) {
+            options = {}
           }
 
           var data_user = SailPlayApi.data('load.user.info')() && SailPlayApi.data('load.user.info')().user;         
@@ -439,7 +448,6 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
             custom_user_tags_add = [],
             custom_user_tags_delete = [],
             hasChangesTagCondition = false,
-            hasUpdatedPhoneCondition = false,
             hasUpdatedEmailCondition = false;
 
           angular.forEach(scope.sailplay.fill_profile.form.fields, function (item) {
@@ -472,16 +480,13 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
             return false;
           } else {
             delete req_user.addPhone;
-            hasUpdatedPhoneCondition = true
           }
 
           if (req_user.addEmail && data_user && data_user.email && data_user.email == req_user.addEmail) {
             delete req_user.addEmail;
-          } else {
-            hasUpdatedEmailCondition = true
           }
 
-          console.log(hasChangesTagCondition, hasUpdatedPhoneCondition, hasUpdatedEmailCondition, MAGIC_CONFIG)
+          console.log(hasChangesTagCondition, hasUpdatedEmailCondition, MAGIC_CONFIG)
 
           if (req_user.birthDate) {
             var bd = angular.copy(req_user.birthDate);
@@ -563,13 +568,10 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
                       SailPlay.send('tags.add',{tags:['Клиент заполнил профиль']})
                       $rootScope.$broadcast('isProfileFilled', true);
                     }
-                    if (hasChangesTagCondition || hasUpdatedPhoneCondition || hasUpdatedEmailCondition) {
+                    if (hasChangesTagCondition || hasUpdatedEmailCondition) {
                       var conditionalProfileTags = []
-                      if(hasChangesTagCondition) {
+                      if(hasChangesTagCondition && !options.profileUpdatedTagAlreadySet) {
                         conditionalProfileTags.push(MAGIC_CONFIG.data.profile_update_tags.profile_general)
-                      }
-                      if(hasUpdatedPhoneCondition) {
-                        conditionalProfileTags.push(MAGIC_CONFIG.data.profile_update_tags.phone)
                       }
                       if(hasUpdatedEmailCondition) {
                         conditionalProfileTags.push(MAGIC_CONFIG.data.profile_update_tags.email)
