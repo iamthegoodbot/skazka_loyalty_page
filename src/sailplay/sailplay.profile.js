@@ -226,6 +226,9 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
                 !res.tags[0].exist) {
                   scope.profile.message = MAGIC_CONFIG.data.not_applied_message;
                   SailPlay.send('logout');
+                  setTimeout(function(){
+                    $rootScope.$broadcast('closeProfile');
+                  }, 500)
                 } else {
                   $rootScope.hide_all = false;
                 }

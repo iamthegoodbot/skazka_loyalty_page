@@ -26,15 +26,17 @@ const ProfileWidget = {
       scope.default_avatar = DefaultAvatarImage;
       $rootScope.hide_all = true;
       $rootScope.$on('openProfile', () => scope.profile.show_fill_profile = true);
+      $rootScope.$on('closeProfile', () => scope.profile.show_fill_profile = false);      
 
       scope.profile = {
         history: false,
         show_fill_profile: false,
         fill_profile: function(state){
-
-          scope.profile.show_fill_profile = state || false;
+          
+            scope.profile.show_fill_profile = state || false;
 
         }
+
       };
 
     }
