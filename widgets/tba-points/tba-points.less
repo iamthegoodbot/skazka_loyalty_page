@@ -1,0 +1,218 @@
+.draw-progress(@progress) when (@progress <= 50) {
+  .pie {
+    .right-side {
+      display: none;
+    }
+  }
+}
+
+.draw-progress(@progress) when (@progress > 50) {
+  .pie {
+    clip: rect(auto, auto, auto, auto);
+
+    .right-side {
+      transform: rotate(180deg);
+    }
+  }
+}
+
+.draw-progress(@progress) {
+  .pie {
+    .half-circle {
+      border-color: #3e3e3f;
+    }
+
+    .left-side {
+      @rotate: @progress * 3.6;
+      transform: rotate(~'@{rotate}deg');
+    }
+  }
+}
+
+.spm_wrapper {
+  .spm_tools_widget.tba-points {
+    color: #3e3e3f;
+    @size: 400px;
+
+    .pie-wrapper {
+      height: @size;
+      width: @size;
+      float: left;
+      position: relative;
+      
+      &:nth-child(3n+1) {
+        clear: both;
+      }
+
+      .pie {
+        height: 100%;
+        width: 100%;
+        clip: rect(0, @size, @size, @size / 2);
+        left: 0;
+        position: absolute;
+        top: 0;
+
+        .half-circle {
+          height: 100%;
+          width: 100%;
+          border: 20px solid #3e3e3f;
+          border-radius: 50%;
+          clip: rect(0, @size / 2, @size, 0);
+          left: 0;
+          position: absolute;
+          top: 0;
+        }
+      }
+
+      .label {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        border-radius: 50%;
+        color: #8b8b8d;
+        cursor: default;
+        font-size: 50px;
+        font-weight: 600;
+        position: absolute;
+        width: 400px;
+        height: 400px;
+        text-align: center;
+
+        .value {
+          color: #3e3e3f;
+          font-size: 64px;
+        }
+      }
+
+      .shadow {
+        height: 100%;
+        width: 100%;
+        border: 20px solid #939598;
+        border-radius: 50%;
+      }
+
+      &.progress {
+        @stopPercent: 100;
+        @class: progress;
+
+        .loopTypes (@percent) when (@percent =< @stopPercent) {
+          @class: @percent;
+          &-@{class} {
+            .draw-progress(@percent)
+          }
+
+          .loopTypes(@percent + 1);
+        }
+
+        .loopTypes(1);
+      }
+    }
+
+    .title {
+      text-align: center;
+      font-size: 42px;
+      font-weight: 600;
+      text-transform: uppercase;
+      padding-top: 65px;
+    }
+
+    .days-left {
+      text-align: center;
+      font-size: 34px;
+      font-weight: 600;
+      margin-top: 12px;      
+    }
+
+    .group {
+      display: flex;
+      justify-content: space-around;
+    }
+
+    .total-earned {
+      width: 400px;
+      height: 400px;
+      background: #3e3e3f;
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      text-transform: uppercase;
+      font-size: 36px;
+      font-weight: 600;
+      line-height: 1.6em;
+
+      .value {
+        font-size: 50px;
+      }
+    }
+
+    .gift-gauge {
+      box-sizing: border-box;
+      height: 400px;
+      width: 400px;
+      position: relative;
+
+      * {
+        box-sizing: border-box;
+      }
+
+      .arrow-container {
+        width: 400px;
+        height: 400px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        pointer-events: none;
+        transform: rotateZ(312deg);
+        z-index: 100;
+        .arrow {
+          width: 50px;
+          height: 50px;
+          transform: rotateZ(186deg);
+          top: -14px;
+          position: absolute;
+          left: 49%;
+        }
+      }
+
+      .gift {
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        background: #939598;
+        position: absolute;
+
+        margin-left: -22.5px;
+        z-index: 10;
+
+        &.p1 {
+          top: -12.5px;
+          left: 50%;
+        }
+
+        &.p2 {
+          top: 17%;
+          left: 89%;
+        }
+
+        &.p3 {
+          top: 71%;
+          left: 11%;
+        }
+
+        &.p4 {
+          top: 24%;
+          left: 7%;
+        }
+      }
+
+      &:after {
+        clear: both;
+        content: "";
+        display: table;
+      }
+    }
+  }
+}
