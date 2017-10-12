@@ -6,7 +6,7 @@ WidgetRegister({
   id: 'tba-points',
   template: Template,
   controller: function () {
-    return () => {
+    return (scope) => {
       console.log()
     };
   }

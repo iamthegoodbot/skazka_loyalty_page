@@ -4,13 +4,13 @@
     <div class="renewal">Renewal Date: 28/02/2018</div>
 
     <div class="member-line">
-        <div class="check-point active" style="left: 0px" title="Normal member"></div>
-        <div class="check-point" style="left: 20%" title="Silver member" description="$1,500 purchase"></div>
-        <div class="check-point last" title="Gold member" description="$4,000 purchase"></div>
-        <div class="fill-line">
-            <div class="text">$1,600</div>
+        <div class="check-point active" style="left: 0px" ng-attr-title="{{ statuses[0].name }}"></div>
+        <div class="check-point" ng-class="{ 'active': second_active }" style="left: 30%" title="{{ statuses[1].name }}" ng-attr-description="{{ (statuses[1].points | currency:'$':0) + ' purchase' }}"></div>
+        <div class="check-point last" ng-class="{ 'active': third_active }" title="{{ statuses[2].name }}" ng-attr-description="{{ (statuses[2].points | currency:'$':0) + ' purchase' }}"></div>
+        <div class="fill-line" ng-style="{ 'width': get_status_progress(2500) }">
+            <div class="text" ng-if="purchases_sum">{{ purchases_sum | currency:"$":0 }}</div>
             <div class="line"></div>
-            <svg class="arrow" x="0px" y="0px" viewBox="0 0 1000 1000">
+            <svg class="arrow" ng-hide="third_active" x="0px" y="0px" viewBox="0 0 1000 1000">
                 <g fill="#3e3e3f">
                     <path d="M761.5,180.8L447,499.5l314.5,318.6c9.7,9.7,17,20.8,21.9,33.3c4.9,12.5,7.3,25.2,7.3,38c0,12.8-2.4,25.3-7.3,37.5c-4.9,12.2-12.2,23.1-21.9,32.8C742,979.9,718.8,990,691.7,990c-27.1,0-50.3-10.1-69.8-30.2L241.9,576.5c-9.7-9.7-17.3-21.4-22.9-34.9c-5.6-13.6-8.7-27.3-9.4-41.2c-0.7-13.9,1-27.2,5.3-40.1c4.2-12.8,11.1-23.5,20.8-31.8L622,39.1C641.4,19.7,664.7,10,691.7,10c27.1,0,50.3,9.7,69.7,29.1c9.7,9.7,17,20.8,21.9,33.3c4.9,12.5,7.3,25.2,7.3,38c0,12.8-2.4,25.3-7.3,37.5C778.5,160.1,771.2,171.1,761.5,180.8L761.5,180.8z"
                     />
@@ -20,12 +20,12 @@
     </div>
     <div class="motivation-block">
         <div class="group">
-            <div class="price">$1,400+</div>
-            <div class="text">Renew as Silver Member</div>
+            <div class="price">{{ need_to_silver | currency:"$":0 }}+</div>
+            <div class="text">Renew as {{ statuses[1].name }}</div>
         </div>
         <div class="group">
-            <div class="price">$2,900+</div>
-            <div class="text">Become Gold Member</div>
+            <div class="price">{{ need_to_gold | currency:"$":0 }}+</div>
+            <div class="text">Become {{ statuses[2].name }}</div>
         </div>
     </div>
     <div class="buttons">
