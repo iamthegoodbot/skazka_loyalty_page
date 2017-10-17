@@ -41,7 +41,7 @@ WidgetRegister({
 
       process = function (points) {
         function Mathan(_first_point, _last_point, index, multiplier) {
-          let far = _last_point - _first_point + 14;
+          let far = _last_point - _first_point + (index > 0 ? 14 : 0);
           let percent = scope.points / scope.status_gifts[index].points * 100;
           let progress = Math.floor(far * percent / 100);
           if (multiplier) progress += multiplier;
