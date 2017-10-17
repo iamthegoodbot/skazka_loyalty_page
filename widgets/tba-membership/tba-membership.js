@@ -1,6 +1,11 @@
-import { WidgetRegister } from '@core/widget';
+import { WidgetRegister, Widget } from '@core/widget';
 import TbaMembershipWidgetTemplate from './tba-membership.html';
 import './tba-membership.less';
+import HistoryPaginationTemplate from './history_pagination.html';
+
+Widget.run(function ($templateCache) {
+  $templateCache.put('profile.history_pagination', HistoryPaginationTemplate);
+});
 
 WidgetRegister({
   id: 'tba-membership',
@@ -16,10 +21,15 @@ WidgetRegister({
       
       SailPlayApi.observe('load.user.info', user => {
         scope.purchases_sum = user.purchases.sum;
+        scope.status = user.user_status;        
       })
 
       scope.need_to_silver = scope.statuses[1].points;
       scope.need_to_gold = scope.statuses[2].points;      
+
+      scope.profile = {
+        history: false,
+      };
 
       scope.get_status_progress = function (points) {
         if (scope.purchases_sum == undefined)

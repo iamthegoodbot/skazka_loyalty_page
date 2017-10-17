@@ -73,7 +73,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	__webpack_require__(170);
 	__webpack_require__(175);
 	__webpack_require__(179);
-	module.exports = __webpack_require__(183);
+	module.exports = __webpack_require__(184);
 
 
 /***/ }),
@@ -37594,7 +37594,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	    scope: true,
 	    link: function link(scope) {
 
-	      scope.actions = SailPlayApi.data('load.actions.list');
+	      function chunk(arr) {
+	        var newArr = [];
+	        newArr.push(arr.slice(0, Math.floor(arr.length / 2)));
+	        newArr.push(arr.slice(Math.floor(arr.length / 2)));
+	        return newArr;
+	      }
+
+	      SailPlayApi.observe('load.actions.list', function () {
+	        scope.actions = SailPlayApi.data('load.actions.list');
+	        scope.chunked = chunk(scope.actions().actions);
+	      });
+
 	      scope.actions_custom = SailPlayApi.data('load.actions.custom.list');
 
 	      scope.exist = SailPlayApi.data('tags.exist');
@@ -38229,7 +38240,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ (function(module, exports) {
 
 	/**
-	 * @license AngularJS v1.6.5
+	 * @license AngularJS v1.6.6
 	 * (c) 2010-2017 Google, Inc. http://angularjs.org
 	 * License: MIT
 	 */
@@ -38259,7 +38270,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* global -ngTouch */
 	var ngTouch = angular.module('ngTouch', []);
 
-	ngTouch.info({ angularVersion: '1.6.5' });
+	ngTouch.info({ angularVersion: '1.6.6' });
 
 	ngTouch.provider('$touch', $TouchProvider);
 
@@ -42098,7 +42109,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 106 */
 /***/ (function(module, exports) {
 
-	module.exports = "<div class=\"{{ widget.id }} clearfix\">\n\n  <div id=\"magic_actions\" class=\"more_bonus container\" data-ng-show=\"widget.enabled\" data-ng-cloak>\n\n    <h3 class=\"bon_header\">\n      <span class=\"header\">{{ widget.texts.header }}</span>\n    </h3>\n    <h4 class=\"bon_sub_header\">\n      <span class=\"caption\">{{ widget.texts.caption }}</span>\n    </h4>\n\n    <div data-sailplay-actions class=\"clearfix\">\n\n      <div class=\"more_bonus_main\">\n\n        <div class=\"spm_row clearfix\">\n\n          <div class=\"spm_col\" data-ng-repeat=\"action in actions().actions\">\n            <div class=\"mb_item action\" data-ng-style=\"widget.styles.action\">\n              <div class=\"mb_item_left\">\n                <span class=\"action_name\" data-ng-bind=\"action_data(action).name\"></span>\n                <span class=\"action_points\" data-ng-show=\"action.points\" data-ng-bind=\"((action.points || 0) | number) + ' ' + (action.points | sailplay_pluralize:( 'points.texts.pluralize' | tools ))\"></span>\n                <a class=\"sp_btn button_primary\" data-ng-if=\"action_data(action).just_open_profile\" data-ng-click=\"open_profile()\">{{ action_data(action).button_text }}</a>                \n                <a class=\"sp_btn button_primary\" data-ng-if=\"!action_data(action).just_open_profile\" data-ng-click=\"action_select(action)\">{{ action_data(action).button_text }}</a>\n              </div>\n              <div class=\"mb_item_right\">\n                <img data-ng-src=\"{{ action_data(action).pic | sailplay_pic }}\" alt=\"\">\n              </div>\n            </div>\n          </div>\n\n          <div class=\"spm_col\" data-ng-repeat=\"action in actions_custom()\">\n            <div class=\"mb_item action\" data-ng-style=\"widget.styles.action\">\n              <div class=\"mb_item_left\">\n                <span class=\"action_name\" data-ng-bind=\"action.name\"></span>\n                <span class=\"action_points\" data-ng-show=\"action.points\" data-ng-bind=\"((action.points || 0) | number) + ' ' + (action.points | sailplay_pluralize:( 'points.texts.pluralize' | tools ))\"></span>\n                <a class=\"sp_btn button_primary\" data-ng-click=\"action_custom_select(action)\">{{ action.button_text }}</a>\n              </div>\n              <div class=\"mb_item_right\">\n                <img data-ng-src=\"{{ action.icon | sailplay_pic }}\" alt=\"\">\n              </div>\n            </div>\n          </div>\n\n          <div class=\"spm_col\" data-ng-repeat=\"quiz in $parent.quiz_list\" data-ng-if=\"quiz_list && quiz_list.length && ((!exist || !exist()) || !checkTag(quiz.tag, exist()))\" >\n            <div class=\"mb_item action\"data-ng-style=\"widget.styles.action\">\n              <div class=\"mb_item_left\">\n                <span class=\"action_name\" data-ng-bind=\"quiz.name\"></span>\n                <span class=\"action_points\" data-ng-show=\"quiz.points\" data-ng-bind=\"((quiz.points || 0) | number) + ' ' + (quiz.points | sailplay_pluralize:( 'points.texts.pluralize' | tools ))\"></span>\n                <a class=\"sp_btn button_primary\" data-ng-click=\"$event.preventDefault();open_quiz(quiz)\">{{ quiz.button_text }}</a>\n              </div>\n              <div class=\"mb_item_right\">\n                <img data-ng-src=\"{{ quiz.icon | sailplay_pic }}\" alt=\"\">\n              </div>\n            </div>\n          </div>\n\n        </div>\n\n      </div>\n\n      <magic-modal class=\"actions_selected_modal\" data-ng-cloak data-show=\"$parent.action_selected\">\n\n        <div>\n\n          <div class=\"action_image\">\n            <img class=\"gift_more_img\" data-ng-src=\"{{ action_data(action_selected).pic | sailplay_pic }}\"\n                 alt=\"{{ action_data(action_selected).name }}\">\n          </div>\n\n          <div class=\"action_tools\">\n\n            <p>\n              <span class=\"modal_action_name\" data-ng-bind=\"action_data(action_selected).name\"></span>\n            </p>\n\n            <p style=\"margin-top: 10px;\">\n              <span class=\"modal_action_points\" data-ng-bind=\"(action_selected.points | number) + ' ' + (selected_gift.points | sailplay_pluralize:( 'points.texts.pluralize' | tools ))\"></span>\n            </p>\n\n            <p style=\"margin-top: 10px;\">\n              <span class=\"modal_action_description\" data-ng-bind=\"action_data(action_selected).description\"></span>\n            </p>\n\n\n            <p class=\"action_buttons\">\n            <span data-sailplay-action\n                  data-styles=\"{{ action_styles(action_data(action_selected)) }}\"\n                  data-action=\"action_selected\"\n                  data-text=\"{{ action_data(action_selected).button_text }}\">\n              <span class=\"sp_btn button_primary\">{{ action_data(action_selected).button_text }}</span>\n            </span>\n            </p>\n\n          </div>\n\n        </div>\n\n      </magic-modal>\n\n      <magic-modal class=\"actions_custom_selected_modal\" data-ng-cloak data-show=\"$parent.action_custom_selected\">\n\n        <div data-sailplay-action-custom data-action=\"action_custom_selected\"></div>\n\n      </magic-modal>\n\n\n      <magic-modal class=\"actions_custom_selected_modal\" data-ng-cloak data-show=\"$parent.quiz.show\">\n\n        <div class=\"quiz_main\">\n\n          <div class=\"quiz_block\" data-ng-if=\"$parent.quiz.data\">\n\n            <div class=\"quiz_block__title\" data-ng-bind=\"$parent.quiz.data.name\"></div>\n\n            <div class=\"quiz_block__counter\" data-ng-bind=\"$parent.quiz.step + ' / ' + $parent.quiz.data.data.length\"></div>\n\n            <div class=\"quiz_block__name\" data-ng-bind=\"getCurrentTest().name\"></div>\n\n            <label data-ng-repeat=\"question in getCurrentTest().answers\"\n                   data-ng-switch=\"getCurrentTest().type\"\n                   data-ng-click=\"$event.preventDefault();change(question, getCurrentTest());\">\n\n              <input data-ng-switch-when=\"many\" type=\"checkbox\"\n                     name=\"quiz_[[ $index ]]\"\n                     data-ng-checked=\"check(question)\">\n\n              <input data-ng-switch-when=\"one\" type=\"radio\"\n                     name=\"quiz\"\n                     data-ng-checked=\"check(question)\">\n\n              <span data-ng-bind=\"question.text\"></span>\n\n            </label>\n\n            <textarea name=\"variable\" data-ng-show=\"needToShowVariable()\"\n                      data-ng-model=\"models.variable\"></textarea>\n\n            <div class=\"button_wrapper clearfix\">\n\n                <span data-ng-click=\"prev();\" class=\"quiz_block__btn prev\"\n                      data-ng-class=\"{type_disabled: $parent.quiz.step == 1}\">Prev</span>\n\n              <span data-ng-click=\"next();\" class=\"quiz_block__btn next\"\n                    data-ng-class=\"{type_disabled: !canPressNext() }\"\n                    data-ng-bind=\"step == $parent.quiz.data.data.length ? 'Finish' : 'Next' \">next</span>\n\n            </div>\n\n          </div>\n\n        </div>\n\n      </magic-modal>\n\n    </div>\n\n  </div>\n</div>";
+	module.exports = "<div class=\"{{ widget.id }} clearfix\">\n\n  <div id=\"magic_actions\" class=\"more_bonus container\" data-ng-show=\"widget.enabled\" data-ng-cloak>\n\n    <h3 class=\"bon_header\">\n      <span class=\"header\">{{ widget.texts.header }}</span>\n    </h3>\n    <h4 class=\"bon_sub_header\">\n      <span class=\"caption\">{{ widget.texts.caption }}</span>\n    </h4>\n\n    <div data-sailplay-actions class=\"clearfix\">\n\n      <div class=\"more_bonus_main\">\n\n        <div class=\"spm_row clearfix\">\n\n          <div class=\"actions_group spm_col\" data-ng-repeat=\"group in chunked\">            \n            <div ng-repeat=\"action in group\">\n              <div class=\"mb_item action\" data-ng-style=\"widget.styles.action\">\n                <div class=\"mb_item_left\">\n                  <span class=\"action_name\" data-ng-bind=\"action_data(action).name\"></span>\n                  <span class=\"action_points\" data-ng-show=\"action.points\" data-ng-bind=\"((action.points || 0) | number) + ' ' + (action.points | sailplay_pluralize:( 'points.texts.pluralize' | tools ))\"></span>\n                  <a class=\"sp_btn button_primary\" data-ng-if=\"action_data(action).just_open_profile\" data-ng-click=\"open_profile()\">{{ action_data(action).button_text }}</a>                \n                  <a class=\"sp_btn button_primary\" data-ng-if=\"!action_data(action).just_open_profile\" data-ng-click=\"action_select(action)\">{{ action_data(action).button_text }}</a>\n                </div>\n                <div class=\"mb_item_right\">\n                  <img data-ng-src=\"{{ action_data(action).pic | sailplay_pic }}\" alt=\"\">\n                </div>\n              </div>\n            </div>\n          </div>\n\n          <div class=\"spm_col\" data-ng-repeat=\"action in actions_custom()\">\n            <div class=\"mb_item action\" data-ng-style=\"widget.styles.action\">\n              <div class=\"mb_item_left\">\n                <span class=\"action_name\" data-ng-bind=\"action.name\"></span>\n                <span class=\"action_points\" data-ng-show=\"action.points\" data-ng-bind=\"((action.points || 0) | number) + ' ' + (action.points | sailplay_pluralize:( 'points.texts.pluralize' | tools ))\"></span>\n                <a class=\"sp_btn button_primary\" data-ng-click=\"action_custom_select(action)\">{{ action.button_text }}</a>\n              </div>\n              <div class=\"mb_item_right\">\n                <img data-ng-src=\"{{ action.icon | sailplay_pic }}\" alt=\"\">\n              </div>\n            </div>\n          </div>\n\n          <div class=\"spm_col\" data-ng-repeat=\"quiz in $parent.quiz_list\" data-ng-if=\"quiz_list && quiz_list.length && ((!exist || !exist()) || !checkTag(quiz.tag, exist()))\" >\n            <div class=\"mb_item action\"data-ng-style=\"widget.styles.action\">\n              <div class=\"mb_item_left\">\n                <span class=\"action_name\" data-ng-bind=\"quiz.name\"></span>\n                <span class=\"action_points\" data-ng-show=\"quiz.points\" data-ng-bind=\"((quiz.points || 0) | number) + ' ' + (quiz.points | sailplay_pluralize:( 'points.texts.pluralize' | tools ))\"></span>\n                <a class=\"sp_btn button_primary\" data-ng-click=\"$event.preventDefault();open_quiz(quiz)\">{{ quiz.button_text }}</a>\n              </div>\n              <div class=\"mb_item_right\">\n                <img data-ng-src=\"{{ quiz.icon | sailplay_pic }}\" alt=\"\">\n              </div>\n            </div>\n          </div>\n\n        </div>\n\n      </div>\n\n      <magic-modal class=\"actions_selected_modal\" data-ng-cloak data-show=\"$parent.action_selected\">\n\n        <div>\n\n          <div class=\"action_image\">\n            <img class=\"gift_more_img\" data-ng-src=\"{{ action_data(action_selected).pic | sailplay_pic }}\"\n                 alt=\"{{ action_data(action_selected).name }}\">\n          </div>\n\n          <div class=\"action_tools\">\n\n            <p>\n              <span class=\"modal_action_name\" data-ng-bind=\"action_data(action_selected).name\"></span>\n            </p>\n\n            <p style=\"margin-top: 10px;\">\n              <span class=\"modal_action_points\" data-ng-bind=\"(action_selected.points | number) + ' ' + (selected_gift.points | sailplay_pluralize:( 'points.texts.pluralize' | tools ))\"></span>\n            </p>\n\n            <p style=\"margin-top: 10px;\">\n              <span class=\"modal_action_description\" data-ng-bind=\"action_data(action_selected).description\"></span>\n            </p>\n\n\n            <p class=\"action_buttons\">\n            <span data-sailplay-action\n                  data-styles=\"{{ action_styles(action_data(action_selected)) }}\"\n                  data-action=\"action_selected\"\n                  data-text=\"{{ action_data(action_selected).button_text }}\">\n              <span class=\"sp_btn button_primary\">{{ action_data(action_selected).button_text }}</span>\n            </span>\n            </p>\n\n          </div>\n\n        </div>\n\n      </magic-modal>\n\n      <magic-modal class=\"actions_custom_selected_modal\" data-ng-cloak data-show=\"$parent.action_custom_selected\">\n\n        <div data-sailplay-action-custom data-action=\"action_custom_selected\"></div>\n\n      </magic-modal>\n\n\n      <magic-modal class=\"actions_custom_selected_modal\" data-ng-cloak data-show=\"$parent.quiz.show\">\n\n        <div class=\"quiz_main\">\n\n          <div class=\"quiz_block\" data-ng-if=\"$parent.quiz.data\">\n\n            <div class=\"quiz_block__title\" data-ng-bind=\"$parent.quiz.data.name\"></div>\n\n            <div class=\"quiz_block__counter\" data-ng-bind=\"$parent.quiz.step + ' / ' + $parent.quiz.data.data.length\"></div>\n\n            <div class=\"quiz_block__name\" data-ng-bind=\"getCurrentTest().name\"></div>\n\n            <label data-ng-repeat=\"question in getCurrentTest().answers\"\n                   data-ng-switch=\"getCurrentTest().type\"\n                   data-ng-click=\"$event.preventDefault();change(question, getCurrentTest());\">\n\n              <input data-ng-switch-when=\"many\" type=\"checkbox\"\n                     name=\"quiz_[[ $index ]]\"\n                     data-ng-checked=\"check(question)\">\n\n              <input data-ng-switch-when=\"one\" type=\"radio\"\n                     name=\"quiz\"\n                     data-ng-checked=\"check(question)\">\n\n              <span data-ng-bind=\"question.text\"></span>\n\n            </label>\n\n            <textarea name=\"variable\" data-ng-show=\"needToShowVariable()\"\n                      data-ng-model=\"models.variable\"></textarea>\n\n            <div class=\"button_wrapper clearfix\">\n\n                <span data-ng-click=\"prev();\" class=\"quiz_block__btn prev\"\n                      data-ng-class=\"{type_disabled: $parent.quiz.step == 1}\">Prev</span>\n\n              <span data-ng-click=\"next();\" class=\"quiz_block__btn next\"\n                    data-ng-class=\"{type_disabled: !canPressNext() }\"\n                    data-ng-bind=\"step == $parent.quiz.data.data.length ? 'Finish' : 'Next' \">next</span>\n\n            </div>\n\n          </div>\n\n        </div>\n\n      </magic-modal>\n\n    </div>\n\n  </div>\n</div>";
 
 /***/ }),
 /* 107 */
@@ -43089,7 +43100,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 132 */
 /***/ (function(module, exports) {
 
-	module.exports = "<div class=\"bon_choice_main container\" data-ng-show=\"widget.enabled\" data-ng-cloak>\n  <h3 class=\"bon_header\">\n    <span class=\"header\">{{ widget.texts.header }}</span>\n  </h3>\n  <h4 class=\"bon_sub_header\">\n    <span class=\"caption\">{{ widget.texts.caption }}</span>\n  </h4>\n\n  <div data-sailplay-gifts class=\"clearfix\">\n    <div class=\"bon_item_main\" data-ng-show=\"gifts && gifts().length\" data-magic-slider>\n\n      <div class=\"bon_slide_cat_item_wrap\" data-magic-gallery>\n        <div class=\"bon_slide_cat_item\">\n\n          <div class=\"bon_item_line\" data-ng-style=\"{left : left}\">\n\n            <div class=\"bon_item gift\" data-magic-slide data-magic-gift data-ng-repeat=\"gift in gifts()\">\n              <div class=\"bon_item_iner\">\n                <img data-ng-src=\"{{ gift.thumbs.url_250x250 | sailplay_pic }}\" alt=\"{{ gift.name }}\">\n                <span class=\"bon_item_name gift_name\" data-ng-bind=\"gift.name\"></span>\n                <span class=\"bon_tem_info gift_points\" data-ng-bind=\"(gift.points | number) + ' ' + (gift.points | sailplay_pluralize:('points.texts.pluralize' | tools))\"></span>\n                <a href=\"#\" class=\"button_primary\" data-ng-click=\"gift_select(gift); $event.preventDefault();\">{{ widget.texts.get }}</a>\n              </div>\n            </div>\n\n          </div>\n\n        </div>\n\n        <a href=\"#\" class=\"arr_left arr_left slider_arrow_left\" data-ng-click=\"$event.preventDefault(); set_position('left');\" data-ng-show=\"show_left\"></a>\n        <a href=\"#\" class=\"arr_right arr_right slider_arrow_right\" data-ng-click=\"$event.preventDefault(); set_position('right');\" data-ng-show=\"show_right\"></a>\n\n      </div>\n\n    </div>\n\n    <magic-modal class=\"bns_overlay_gift\" data-ng-cloak data-show=\"modals.selected_gift\">\n\n      <div class=\"modal_gift_container\">\n\n        <img class=\"gift_more_img\" data-ng-src=\"{{ modals.selected_gift.thumbs.url_250x250 | sailplay_pic }}\"\n             alt=\"{{ modals.selected_gift.name }}\">\n\n        <div class=\"gift_more_block\">\n\n          <span class=\"gift_more_name modal_gift_name\" data-ng-bind=\"modals.selected_gift.name\"></span>\n\n          <span class=\"gift_more_points modal_gift_points\"\n                data-ng-bind=\"(modals.selected_gift.points | number) + ' ' + (modals.selected_gift.points | sailplay_pluralize:('points.texts.pluralize' | tools))\"></span>\n\n          <p class=\"gift_more_descr modal_gift_description\" data-ng-bind=\"modals.selected_gift.descr\"></p>\n\n          <div class=\"modal_gift_type_block clearfix\" data-gift-type data-types=\"widget.options.gift_types\" data-gift=\"modals.selected_gift\"></div>\n\n          <div class=\"modal_gift_buttons\">\n            <span class=\"alink button_primary\" data-ng-click=\"gift_select(false);\">{{ 'buttons.texts.close' | tools }}</span>\n\n            <span class=\"alink button_primary\"\n                  style=\"margin-left: 5px;\"\n                  data-ng-click=\"gift_confirm();\"\n                  data-ng-bind=\"gift_affordable(modals.selected_gift) ? widget.texts.get : widget.texts.no_points_button_text\">{{ widget.texts.get }}</span>\n          </div>\n\n        </div>\n      </div>\n\n    </magic-modal>\n\n    <magic-modal class=\"bns_overlay_gift_not_points\" data-ng-cloak data-show=\"modals.no_points_error\">\n      <div>\n        <p class=\"modal_gift_description\">\n          {{ widget.texts.no_points_message }}\n        </p>\n        <a class=\"alink button_primary earn_points_button\" href=\"#magic_actions\" data-ng-click=\"gift_unconfirm()\">{{ widget.texts.earn_points }}</a>\n        <a class=\"alink button_primary service_button\" target=\"_blank\" href=\"{{ widget.texts.partner_service_url }}\" data-ng-click=\"gift_unconfirm()\">{{ widget.texts.service }}</a>\n      </div>\n    </magic-modal>\n\n    <magic-modal class=\"bns_overlay_gift_complete\" data-ng-cloak data-show=\"modals.confirmed_gift\">\n      <div>\n        <p class=\"modal_gift_description\">\n          {{ widget.texts.confirm_message_start }}\n          {{ (modals.confirmed_gift.points | number) + ' ' + (modals.confirmed_gift.points | sailplay_pluralize:('points.texts.pluralize' | tools)) }}.\n          {{ widget.texts.confirm_message_end }}\n        </p>\n        <span class=\"alink button_primary\" data-ng-click=\"gift_unconfirm();\">{{ 'buttons.texts.close' | tools }}</span>\n        <span class=\"alink button_primary\" data-ng-click=\"gift_purchase(modals.confirmed_gift);\">{{ 'buttons.texts.get' | tools }}</span>\n      </div>\n    </magic-modal>\n  </div>\n\n\n</div>";
+	module.exports = "<div class=\"bon_choice_main container\" data-ng-show=\"widget.enabled\" data-ng-cloak>\n  <h3 class=\"bon_header\">\n    <span class=\"header\">{{ widget.texts.header }}</span>\n  </h3>\n  <h4 class=\"bon_sub_header\">\n    <span class=\"caption\">{{ widget.texts.caption }}</span>\n  </h4>\n\n  <div data-sailplay-gifts class=\"clearfix\">\n    <div class=\"bon_item_main\" data-ng-show=\"gifts && gifts().length\" data-magic-slider>\n\n      <div class=\"bon_slide_cat_item_wrap\" data-magic-gallery>\n        <div class=\"bon_slide_cat_item\">\n\n          <div class=\"bon_item_line\" data-ng-style=\"{left : left}\">\n\n            <div class=\"bon_item gift\" data-magic-slide data-magic-gift data-ng-repeat=\"gift in gifts()\">\n              <div class=\"bon_item_iner\">\n                <img data-ng-src=\"{{ gift.thumbs.url_250x250 | sailplay_pic }}\" alt=\"{{ gift.name }}\">\n                <span class=\"bon_item_name gift_name\" data-ng-bind=\"gift.name\"></span>\n                <div class=\"bon_item_info gift_points_group\">\n                  <div class=\"bon_tem_info gift_points\" data-ng-bind=\"(gift.points | number)\"></div>\n                  <div class=\"bon_tem_info gift_points\" data-ng-bind=\" (gift.points | sailplay_pluralize:('points.texts.pluralize' | tools))\"></div>\n\n                </div>\n                <a href=\"#\" class=\"button_primary\" data-ng-click=\"gift_select(gift); $event.preventDefault();\">{{ widget.texts.get }}</a>\n              </div>\n            </div>\n\n          </div>\n\n        </div>\n\n        <a href=\"#\" class=\"arr_left arr_left slider_arrow_left\" data-ng-click=\"$event.preventDefault(); set_position('left');\" data-ng-show=\"show_left\"></a>\n        <a href=\"#\" class=\"arr_right arr_right slider_arrow_right\" data-ng-click=\"$event.preventDefault(); set_position('right');\" data-ng-show=\"show_right\"></a>\n\n      </div>\n\n    </div>\n\n    <magic-modal class=\"bns_overlay_gift\" data-ng-cloak data-show=\"modals.selected_gift\">\n\n      <div class=\"modal_gift_container\">\n\n        <img class=\"gift_more_img\" data-ng-src=\"{{ modals.selected_gift.thumbs.url_250x250 | sailplay_pic }}\"\n             alt=\"{{ modals.selected_gift.name }}\">\n\n        <div class=\"gift_more_block\">\n\n          <span class=\"gift_more_name modal_gift_name\" data-ng-bind=\"modals.selected_gift.name\"></span>\n\n          <span class=\"gift_more_points modal_gift_points\"\n                data-ng-bind=\"(modals.selected_gift.points | number) + ' ' + (modals.selected_gift.points | sailplay_pluralize:('points.texts.pluralize' | tools))\"></span>\n\n          <p class=\"gift_more_descr modal_gift_description\" data-ng-bind=\"modals.selected_gift.descr\"></p>\n\n          <div class=\"modal_gift_type_block clearfix\" data-gift-type data-types=\"widget.options.gift_types\" data-gift=\"modals.selected_gift\"></div>\n\n          <div class=\"modal_gift_buttons\">\n            <span class=\"alink button_primary\" data-ng-click=\"gift_select(false);\">{{ 'buttons.texts.close' | tools }}</span>\n\n            <span class=\"alink button_primary\"\n                  style=\"margin-left: 5px;\"\n                  data-ng-click=\"gift_confirm();\"\n                  data-ng-bind=\"gift_affordable(modals.selected_gift) ? widget.texts.get : widget.texts.no_points_button_text\">{{ widget.texts.get }}</span>\n          </div>\n\n        </div>\n      </div>\n\n    </magic-modal>\n\n    <magic-modal class=\"bns_overlay_gift_not_points\" data-ng-cloak data-show=\"modals.no_points_error\">\n      <div>\n        <p class=\"modal_gift_description\">\n          {{ widget.texts.no_points_message }}\n        </p>\n        <a class=\"alink button_primary earn_points_button\" href=\"#magic_actions\" data-ng-click=\"gift_unconfirm()\">{{ widget.texts.earn_points }}</a>\n        <a class=\"alink button_primary service_button\" target=\"_blank\" href=\"{{ widget.texts.partner_service_url }}\" data-ng-click=\"gift_unconfirm()\">{{ widget.texts.service }}</a>\n      </div>\n    </magic-modal>\n\n    <magic-modal class=\"bns_overlay_gift_complete\" data-ng-cloak data-show=\"modals.confirmed_gift\">\n      <div>\n        <p class=\"modal_gift_description\">\n          {{ widget.texts.confirm_message_start }}\n          {{ (modals.confirmed_gift.points | number) + ' ' + (modals.confirmed_gift.points | sailplay_pluralize:('points.texts.pluralize' | tools)) }}.\n          {{ widget.texts.confirm_message_end }}\n        </p>\n        <span class=\"alink button_primary\" data-ng-click=\"gift_unconfirm();\">{{ 'buttons.texts.close' | tools }}</span>\n        <span class=\"alink button_primary\" data-ng-click=\"gift_purchase(modals.confirmed_gift);\">{{ 'buttons.texts.get' | tools }}</span>\n      </div>\n    </magic-modal>\n  </div>\n\n\n</div>";
 
 /***/ }),
 /* 133 */
@@ -44404,13 +44415,64 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	__webpack_require__(181);
 
+	var _history_pagination = __webpack_require__(183);
+
+	var _history_pagination2 = _interopRequireDefault(_history_pagination);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	_widget.Widget.run(["$templateCache", function ($templateCache) {
+	  $templateCache.put('profile.history_pagination', _history_pagination2.default);
+	}]);
 
 	(0, _widget.WidgetRegister)({
 	  id: 'tba-membership',
 	  template: _tbaMembership2.default,
-	  controller: function controller() {
-	    return function () {};
+	  inject: ['SailPlayApi', 'MAGIC_CONFIG'],
+	  controller: function controller(SailPlayApi, MAGIC_CONFIG) {
+	    return function (scope) {
+	      scope.statuses = MAGIC_CONFIG.data.statuses;
+
+	      SailPlayApi.observe('load.user.info', function (user) {
+	        scope.purchases_sum = user.purchases.sum;
+	        scope.status = user.user_status;
+	      });
+
+	      scope.need_to_silver = scope.statuses[1].points;
+	      scope.need_to_gold = scope.statuses[2].points;
+
+	      scope.profile = {
+	        history: false
+	      };
+
+	      scope.get_status_progress = function (points) {
+	        if (scope.purchases_sum == undefined) return;
+
+	        var first_point = 10;
+	        var second_point = 40;
+	        var third_point = 100;
+
+	        if (points) scope.purchases_sum = points;
+
+	        if (scope.purchases_sum < scope.statuses[1].points) {
+	          // 1500
+	          var far = second_point - first_point;
+	          var percent = scope.purchases_sum / scope.statuses[1].points * 100;
+
+	          return far * percent / 100 + 10 + '%';
+	        } else if (scope.purchases_sum >= scope.statuses[2].points) {
+	          scope.second_active = true;
+	          scope.third_active = true;
+	          return '100%';
+	        } else {
+	          scope.second_active = true;
+	          var _far = third_point - second_point;
+	          var _percent = scope.purchases_sum / scope.statuses[2].points * 100;
+
+	          return _far * _percent / 100 + first_point + 8 + '%';
+	        }
+	      };
+	    };
 	  }
 	});
 
@@ -44418,7 +44480,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 180 */
 /***/ (function(module, exports) {
 
-	module.exports = "<div class=\"clearfix membership container\">\n    <div class=\"title\">{{ widget.texts.title }}</div>\n    <div class=\"status-name\">SILVER MEMBER</div>\n    <div class=\"renewal\">Renewal Date: 28/02/2018</div>\n\n    <div class=\"member-line\">\n        <div class=\"check-point active\" style=\"left: 0px\" title=\"Normal member\"></div>\n        <div class=\"check-point\" style=\"left: 20%\" title=\"Silver member\" description=\"$1,500 purchase\"></div>\n        <div class=\"check-point last\" title=\"Gold member\" description=\"$4,000 purchase\"></div>\n        <div class=\"fill-line\">\n            <div class=\"text\">$1,600</div>\n            <div class=\"line\"></div>\n            <svg class=\"arrow\" x=\"0px\" y=\"0px\" viewBox=\"0 0 1000 1000\">\n                <g fill=\"#3e3e3f\">\n                    <path d=\"M761.5,180.8L447,499.5l314.5,318.6c9.7,9.7,17,20.8,21.9,33.3c4.9,12.5,7.3,25.2,7.3,38c0,12.8-2.4,25.3-7.3,37.5c-4.9,12.2-12.2,23.1-21.9,32.8C742,979.9,718.8,990,691.7,990c-27.1,0-50.3-10.1-69.8-30.2L241.9,576.5c-9.7-9.7-17.3-21.4-22.9-34.9c-5.6-13.6-8.7-27.3-9.4-41.2c-0.7-13.9,1-27.2,5.3-40.1c4.2-12.8,11.1-23.5,20.8-31.8L622,39.1C641.4,19.7,664.7,10,691.7,10c27.1,0,50.3,9.7,69.7,29.1c9.7,9.7,17,20.8,21.9,33.3c4.9,12.5,7.3,25.2,7.3,38c0,12.8-2.4,25.3-7.3,37.5C778.5,160.1,771.2,171.1,761.5,180.8L761.5,180.8z\"\n                    />\n                </g>\n            </svg>\n        </div>\n    </div>\n    <div class=\"motivation-block\">\n        <div class=\"group\">\n            <div class=\"price\">$1,400+</div>\n            <div class=\"text\">Renew as Silver Member</div>\n        </div>\n        <div class=\"group\">\n            <div class=\"price\">$2,900+</div>\n            <div class=\"text\">Become Gold Member</div>\n        </div>\n    </div>\n    <div class=\"buttons\">\n        <a href=\"\" class=\"sp_btn button_primary\">Purchase history></a>\n        <a href=\"\" class=\"sp_btn button_primary\">Shopping privileges></a>\n    </div>\n</div>";
+	module.exports = "<div class=\"clearfix membership container\">\n    <div class=\"title\">{{ widget.texts.title }}</div>\n    <div class=\"status-name\">{{ status.name }} MEMBER</div>\n    <!--<div class=\"renewal\">Renewal Date: 28/02/2018</div>-->\n\n    <div class=\"member-line\">\n        <div class=\"check-point active\" style=\"left: 0px\" ng-attr-title=\"{{ statuses[0].name }}\"></div>\n        <div class=\"check-point\" ng-class=\"{ 'active': second_active }\" style=\"left: 30%\" title=\"{{ statuses[1].name }}\" ng-attr-description=\"{{ (statuses[1].points | currency:'$':0) + ' purchase' }}\"></div>\n        <div class=\"check-point last\" ng-class=\"{ 'active': third_active }\" title=\"{{ statuses[2].name }}\" ng-attr-description=\"{{ (statuses[2].points | currency:'$':0) + ' purchase' }}\"></div>\n        <div class=\"fill-line\" ng-style=\"{ 'width': get_status_progress() }\">\n            <div class=\"text\" ng-if=\"purchases_sum\">{{ purchases_sum | currency:\"$\":0 }}</div>\n            <div class=\"line\"></div>\n            <svg class=\"arrow\" ng-hide=\"third_active\" x=\"0px\" y=\"0px\" viewBox=\"0 0 1000 1000\">\n                <g fill=\"#3e3e3f\">\n                    <path d=\"M761.5,180.8L447,499.5l314.5,318.6c9.7,9.7,17,20.8,21.9,33.3c4.9,12.5,7.3,25.2,7.3,38c0,12.8-2.4,25.3-7.3,37.5c-4.9,12.2-12.2,23.1-21.9,32.8C742,979.9,718.8,990,691.7,990c-27.1,0-50.3-10.1-69.8-30.2L241.9,576.5c-9.7-9.7-17.3-21.4-22.9-34.9c-5.6-13.6-8.7-27.3-9.4-41.2c-0.7-13.9,1-27.2,5.3-40.1c4.2-12.8,11.1-23.5,20.8-31.8L622,39.1C641.4,19.7,664.7,10,691.7,10c27.1,0,50.3,9.7,69.7,29.1c9.7,9.7,17,20.8,21.9,33.3c4.9,12.5,7.3,25.2,7.3,38c0,12.8-2.4,25.3-7.3,37.5C778.5,160.1,771.2,171.1,761.5,180.8L761.5,180.8z\"\n                    />\n                </g>\n            </svg>\n        </div>\n    </div>\n    <div class=\"motivation-block\">\n        <div class=\"group\">\n            <div class=\"price\">{{ need_to_silver | currency:\"$\":0 }}+</div>\n            <div class=\"text\">Renew as {{ statuses[1].name }}</div>\n        </div>\n        <div class=\"group\">\n            <div class=\"price\">{{ need_to_gold | currency:\"$\":0 }}+</div>\n            <div class=\"text\">Become {{ statuses[2].name }}</div>\n        </div>\n    </div>\n    <div class=\"buttons\">\n        <a href=\"\" class=\"sp_btn button_primary\" ng-click=\"$event.preventDefault(); profile.history = true;\">Purchase history></a>\n        <a ng-attr-href=\"{{ widget.privileges_link }}\" class=\"sp_btn button_primary\">Shopping privileges></a>\n    </div>\n\n    <magic-modal class=\"bns_overlay_hist\" data-show=\"profile.history\">\n\n        <div data-sailplay-history data-sailplay-profile>\n\n        <h3>\n            <span class=\"modal_history_header\">{{ widget.texts.history.header }}</span>\n            <!--<b>У вас {{ user().user_points.confirmed + ' ' + (user().user_points.confirmed | sailplay_pluralize:_tools.points.texts.pluralize) }}</b>-->\n        </h3>\n        <h4 class=\"modal_history_caption\">{{ widget.texts.history.caption }}</h4>\n\n        <table class=\"bns_hist_table\">\n\n            <tbody>\n\n            <tr data-dir-paginate=\"item in history() | itemsPerPage:10\" data-pagination-id=\"history_pages\">\n            <td>\n                <span class=\"modal_history_date\" data-ng-bind=\"item.action_date | date:'d/MM/yyyy'\"></span>\n            </td>\n            <td>\n                <span><b class=\"modal_history_content\" data-ng-bind=\"item | history_item\"></b></span>\n            </td>\n            <td>\n                <span class=\"modal_history_points\" data-ng-if=\"item.points_delta\" data-ng-bind=\"((item.points_delta|number) || 0) + ' ' + (item.points_delta | sailplay_pluralize:('points.texts.pluralize' | tools))\"></span>\n            </td>\n            </tr>\n\n            </tbody>\n        </table>\n\n        <dir-pagination-controls data-max-size=\"7\" data-pagination-id=\"history_pages\"\n                                data-template-url=\"profile.history_pagination\"\n                                data-auto-hide=\"true\"></dir-pagination-controls>\n        </div>\n\n\n\n    </magic-modal>\n</div>";
 
 /***/ }),
 /* 181 */
@@ -44455,51 +44517,786 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	// module
-	exports.push([module.id, ".spm_wrapper .spm_tools_widget.tba-membership .container {\n  background: #e6e7e9;\n}\n.spm_wrapper .spm_tools_widget.tba-membership .motivation-block {\n  display: flex;\n  margin-top: 200px;\n  justify-content: space-around;\n}\n.spm_wrapper .spm_tools_widget.tba-membership .motivation-block .group {\n  display: inherit;\n}\n.spm_wrapper .spm_tools_widget.tba-membership .motivation-block .group .price {\n  font-size: 30px;\n  font-weight: 600;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  background: white;\n  width: 140px;\n  height: 140px;\n  border-radius: 50%;\n}\n.spm_wrapper .spm_tools_widget.tba-membership .motivation-block .group .text {\n  font-size: 30px;\n  line-height: 140px;\n  font-weight: 600;\n  margin-left: 1em;\n}\n.spm_wrapper .spm_tools_widget.tba-membership .buttons {\n  display: flex;\n  justify-content: space-around;\n  margin-top: 70px;\n  margin-bottom: 70px;\n}\n.spm_wrapper .spm_tools_widget.tba-membership .title {\n  text-align: center;\n  font-size: 42px;\n  font-weight: 600;\n  text-transform: uppercase;\n  padding-top: 65px;\n}\n.spm_wrapper .spm_tools_widget.tba-membership .status-name {\n  text-align: center;\n  font-size: 34px;\n  font-weight: 600;\n  text-transform: uppercase;\n  margin-top: 12px;\n}\n.spm_wrapper .spm_tools_widget.tba-membership .renewal {\n  text-align: center;\n  font-size: 34px;\n  margin-top: 12px;\n  font-weight: 400;\n}\n.spm_wrapper .spm_tools_widget.tba-membership .member-line {\n  width: 75%;\n  height: 16px;\n  border-radius: 10px;\n  background: #bcbdc0;\n  margin: 90px auto 0;\n  position: relative;\n}\n.spm_wrapper .spm_tools_widget.tba-membership .member-line .fill-line {\n  position: absolute;\n  width: 15%;\n  box-sizing: border-box;\n  padding: 0 2px;\n}\n.spm_wrapper .spm_tools_widget.tba-membership .member-line .fill-line .text {\n  font-size: 34px;\n  font-weight: 600;\n  white-space: nowrap;\n  position: absolute;\n  top: -54px;\n  left: 50%;\n  transform: translateX(-50%);\n  -webkit-transform: translateX(-50%);\n}\n.spm_wrapper .spm_tools_widget.tba-membership .member-line .fill-line .line {\n  height: 16px;\n  background: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-membership .member-line .fill-line .arrow {\n  position: absolute;\n  top: -18px;\n  right: -15px;\n  height: 52px;\n  width: 52px;\n  transform: rotateZ(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-membership .member-line .check-point {\n  position: absolute;\n  left: 0;\n  top: -8px;\n  width: 32px;\n  height: 32px;\n  border-radius: 50%;\n  background: #bcbdc0;\n}\n.spm_wrapper .spm_tools_widget.tba-membership .member-line .check-point:after {\n  content: attr(title);\n  display: block;\n  text-align: center;\n  font-weight: 600;\n  position: absolute;\n  font-size: 32px;\n  text-transform: uppercase;\n  margin-top: 60px;\n  transform: translateX(-35%);\n  -webkit-transform: translateX(-35%);\n}\n.spm_wrapper .spm_tools_widget.tba-membership .member-line .check-point:before {\n  content: attr(description);\n  display: block;\n  text-align: center;\n  font-weight: 400;\n  position: absolute;\n  font-size: 24px;\n  white-space: nowrap;\n  text-transform: uppercase;\n  margin-top: 145px;\n  transform: translateX(-40%);\n  -webkit-transform: translateX(-40%);\n}\n.spm_wrapper .spm_tools_widget.tba-membership .member-line .check-point.active {\n  background: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-membership .member-line .check-point.last {\n  left: calc(100% - 32px);\n}\n", ""]);
+	exports.push([module.id, ".spm_wrapper .spm_tools_widget.tba-membership .container {\n  background: #e6e7e9;\n}\n.spm_wrapper .spm_tools_widget.tba-membership .motivation-block {\n  display: flex;\n  margin-top: 200px;\n  justify-content: space-around;\n}\n.spm_wrapper .spm_tools_widget.tba-membership .motivation-block .group {\n  display: inherit;\n}\n.spm_wrapper .spm_tools_widget.tba-membership .motivation-block .group .price {\n  font-size: 30px;\n  font-weight: 600;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  background: white;\n  width: 140px;\n  height: 140px;\n  border-radius: 50%;\n}\n.spm_wrapper .spm_tools_widget.tba-membership .motivation-block .group .text {\n  font-size: 30px;\n  line-height: 140px;\n  font-weight: 600;\n  margin-left: 1em;\n}\n.spm_wrapper .spm_tools_widget.tba-membership .buttons {\n  display: flex;\n  justify-content: space-around;\n  margin-top: 70px;\n  margin-bottom: 70px;\n}\n.spm_wrapper .spm_tools_widget.tba-membership .title {\n  text-align: center;\n  font-size: 42px;\n  font-weight: 600;\n  text-transform: uppercase;\n  padding-top: 65px;\n}\n.spm_wrapper .spm_tools_widget.tba-membership .status-name {\n  text-align: center;\n  font-size: 34px;\n  font-weight: 600;\n  text-transform: uppercase;\n  margin-top: 12px;\n}\n.spm_wrapper .spm_tools_widget.tba-membership .renewal {\n  text-align: center;\n  font-size: 34px;\n  margin-top: 12px;\n  font-weight: 400;\n}\n.spm_wrapper .spm_tools_widget.tba-membership .member-line {\n  width: 75%;\n  height: 16px;\n  border-radius: 10px;\n  background: #bcbdc0;\n  margin: 90px auto 0;\n  position: relative;\n}\n.spm_wrapper .spm_tools_widget.tba-membership .member-line .fill-line {\n  position: absolute;\n  width: 10%;\n  box-sizing: border-box;\n  padding: 0 2px;\n  transition: all 0.25s ease-out;\n  -webkit-transition: all 0.25s ease-out;\n}\n.spm_wrapper .spm_tools_widget.tba-membership .member-line .fill-line .text {\n  font-size: 34px;\n  font-weight: 600;\n  white-space: nowrap;\n  position: absolute;\n  top: -54px;\n  left: 50%;\n  transform: translateX(-50%);\n  -webkit-transform: translateX(-50%);\n}\n.spm_wrapper .spm_tools_widget.tba-membership .member-line .fill-line .line {\n  height: 16px;\n  background: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-membership .member-line .fill-line .arrow {\n  position: absolute;\n  top: -18px;\n  right: -15px;\n  height: 52px;\n  width: 52px;\n  transform: rotateZ(180deg);\n  -webkit-transform: rotateZ(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-membership .member-line .check-point {\n  position: absolute;\n  left: 0;\n  top: -8px;\n  width: 32px;\n  height: 32px;\n  border-radius: 50%;\n  background: #bcbdc0;\n  transition: all 0.25s ease-out;\n  -webkit-transition: all 0.25s ease-out;\n}\n.spm_wrapper .spm_tools_widget.tba-membership .member-line .check-point:after,\n.spm_wrapper .spm_tools_widget.tba-membership .member-line .check-point:before {\n  opacity: .6;\n  transition: opacity 0.25s ease-out;\n  -webkit-transition: opacity 0.25s ease-out;\n}\n.spm_wrapper .spm_tools_widget.tba-membership .member-line .check-point:after {\n  content: attr(title);\n  display: block;\n  text-align: center;\n  font-weight: 600;\n  position: absolute;\n  font-size: 32px;\n  text-transform: uppercase;\n  margin-top: 60px;\n  transform: translateX(-35%);\n  -webkit-transform: translateX(-35%);\n}\n.spm_wrapper .spm_tools_widget.tba-membership .member-line .check-point:before {\n  content: attr(description);\n  display: block;\n  text-align: center;\n  font-weight: 400;\n  position: absolute;\n  font-size: 24px;\n  white-space: nowrap;\n  text-transform: uppercase;\n  margin-top: 145px;\n  transform: translateX(-40%);\n  -webkit-transform: translateX(-40%);\n}\n.spm_wrapper .spm_tools_widget.tba-membership .member-line .check-point.active {\n  background: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-membership .member-line .check-point.active:after,\n.spm_wrapper .spm_tools_widget.tba-membership .member-line .check-point.active:before {\n  opacity: 1;\n}\n.spm_wrapper .spm_tools_widget.tba-membership .member-line .check-point.last {\n  left: calc(100% - 32px);\n}\n", ""]);
 
 	// exports
 
 
 /***/ }),
 /* 183 */
+/***/ (function(module, exports) {
+
+	module.exports = "<div class=\"bns_hist_pager\" data-ng-if=\"1 < pages.length || !autoHide\">\n\n  <a data-ng-if=\"directionLinks\" data-ng-class=\"{ disabled : pagination.current == 1 }\" href=\"\" data-ng-click=\"setCurrent(pagination.current - 1)\">\n    &lsaquo;\n  </a>\n  <a data-ng-repeat=\"pageNumber in pages track by tracker(pageNumber, $index)\" data-ng-class=\"{ active : pagination.current == pageNumber, disabled : pageNumber == '...' }\" href=\"\" data-ng-click=\"setCurrent(pageNumber)\">\n    {{ pageNumber }}\n  </a>\n\n  <a data-ng-if=\"directionLinks\" data-ng-class=\"{ disabled : pagination.current == pagination.last }\" href=\"\" data-ng-click=\"setCurrent(pagination.current + 1)\">\n    &rsaquo;\n  </a>\n\n</div>";
+
+/***/ }),
+/* 184 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	'use strict';
+	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
+
+	var _getIterator2 = __webpack_require__(186);
+
+	var _getIterator3 = _interopRequireDefault(_getIterator2);
 
 	var _widget = __webpack_require__(63);
 
-	var _tbaPoints = __webpack_require__(184);
+	var _tbaPoints = __webpack_require__(208);
 
 	var _tbaPoints2 = _interopRequireDefault(_tbaPoints);
 
-	__webpack_require__(185);
+	__webpack_require__(209);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	(0, _widget.WidgetRegister)({
 	  id: 'tba-points',
 	  template: _tbaPoints2.default,
-	  controller: function controller() {
-	    return function () {
-	      console.log();
+	  inject: ['SailPlayApi'],
+	  controller: function controller(SailPlayApi) {
+	    return function (scope) {
+
+	      SailPlayApi.observe('load.user.info', function (user) {
+	        scope.points = user.user_points.total;
+	      });
+
+	      SailPlayApi.observe('load.user.history', function (history) {
+	        var last_purchase = void 0;
+	        var _iteratorNormalCompletion = true;
+	        var _didIteratorError = false;
+	        var _iteratorError = undefined;
+
+	        try {
+	          for (var _iterator = (0, _getIterator3.default)(history), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+	            var item = _step.value;
+
+	            if (item.action == 'purchase') {
+	              last_purchase = item;
+	              break;
+	            }
+	          }
+	        } catch (err) {
+	          _didIteratorError = true;
+	          _iteratorError = err;
+	        } finally {
+	          try {
+	            if (!_iteratorNormalCompletion && _iterator.return) {
+	              _iterator.return();
+	            }
+	          } finally {
+	            if (_didIteratorError) {
+	              throw _iteratorError;
+	            }
+	          }
+	        }
+
+	        var date1 = new Date(last_purchase.action_date);
+	        date1.setDate(date1.getDate() + (scope.widget.days_left || 690));
+	        var date2 = new Date();
+	        var timeDiff = Math.abs(date2.getTime() - date1.getTime());
+	        var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+	        scope.days_left = diffDays;
+	      });
+
+	      SailPlayApi.observe('load.gifts.list', function (gifts) {
+	        scope.status_gifts = gifts.slice(0, 4);
+	        process();
+	      });
+
+	      scope.can_obtain = function (gift_index) {
+	        return scope['p' + gift_index + '_can_obtain'];
+	      };
+
+	      process = function process(points) {
+	        function Mathan(_first_point, _last_point, index, multiplier) {
+	          var far = _last_point - _first_point + 14;
+	          var percent = scope.points / scope.status_gifts[index].points * 100;
+	          var progress = Math.floor(far * percent / 100);
+	          if (multiplier) progress += multiplier;
+	          if (progress < _first_point) scope.progress = _first_point;else scope.progress = Math.floor(far * percent / 100) + (multiplier || 0);
+	          scope.arrow_progress = scope.progress * 360 / 100;
+	        }
+
+	        if (points) scope.points = points;
+
+	        var first_point = 5;
+	        var second_point = 20;
+	        var third_point = 71;
+	        var fourth_point = 87;
+
+	        if (scope.points < scope.status_gifts[0].points) {
+	          Mathan(first_point, second_point, 0);
+	          scope.points_to_go = scope.status_gifts[0].points - scope.points;
+	        } else if (scope.points < scope.status_gifts[1].points) {
+	          scope.p1_can_obtain = true;
+	          Mathan(second_point, third_point, 1);
+	          scope.points_to_go = scope.status_gifts[1].points - scope.points;
+	        } else if (scope.points < scope.status_gifts[2].points) {
+	          scope.p1_can_obtain = true;
+	          scope.p2_can_obtain = true;
+	          Mathan(third_point, fourth_point, 2, third_point - second_point);
+	          scope.points_to_go = scope.status_gifts[2].points - scope.points;
+	        } else if (scope.points < scope.status_gifts[3].points) {
+	          scope.p1_can_obtain = true;
+	          scope.p2_can_obtain = true;
+	          scope.p3_can_obtain = true;
+	          Mathan(fourth_point, 100, 3, fourth_point - second_point + first_point);
+	          scope.points_to_go = scope.status_gifts[3].points - scope.points;
+	        } else {
+	          scope.p1_can_obtain = true;
+	          scope.p2_can_obtain = true;
+	          scope.p3_can_obtain = true;
+	          scope.p4_can_obtain = true;
+	          scope.points_to_go = 0;
+	          scope.progress = 100;
+	          scope.arrow_progress = 0;
+	        }
+	      };
 	    };
 	  }
 	});
-
-/***/ }),
-/* 184 */
-/***/ (function(module, exports) {
-
-	module.exports = "<div class=\"clearfix membership container\">\n  <div class=\"title\">{{ widget.texts.title }}</div>\n  <div class=\"days-left\">690 days left</div>\n  <div class=\"group\">\n    <div class=\"total-earned\">\n      <div>You gained</div>\n      <div class=\"value\">21,000</div>\n      <div>points</div>\n    </div>\n    <div class=\"gift-gauge\">\n      <div class=\"arrow-container\">\n        <svg class=\"arrow\" x=\"0px\" y=\"0px\" viewBox=\"0 0 1000 1000\">\n            <g fill=\"#3e3e3f\">\n                <path d=\"M761.5,180.8L447,499.5l314.5,318.6c9.7,9.7,17,20.8,21.9,33.3c4.9,12.5,7.3,25.2,7.3,38c0,12.8-2.4,25.3-7.3,37.5c-4.9,12.2-12.2,23.1-21.9,32.8C742,979.9,718.8,990,691.7,990c-27.1,0-50.3-10.1-69.8-30.2L241.9,576.5c-9.7-9.7-17.3-21.4-22.9-34.9c-5.6-13.6-8.7-27.3-9.4-41.2c-0.7-13.9,1-27.2,5.3-40.1c4.2-12.8,11.1-23.5,20.8-31.8L622,39.1C641.4,19.7,664.7,10,691.7,10c27.1,0,50.3,9.7,69.7,29.1c9.7,9.7,17,20.8,21.9,33.3c4.9,12.5,7.3,25.2,7.3,38c0,12.8-2.4,25.3-7.3,37.5C778.5,160.1,771.2,171.1,761.5,180.8L761.5,180.8z\"\n                />\n            </g>\n        </svg>        \n      </div>\n      <div class=\"gift p1\"></div>\n      <div class=\"gift p2\"></div>\n      <div class=\"gift p3\"></div>\n      <div class=\"gift p4\"></div>\n      \n      <div class=\"pie-wrapper progress-30\">\n        <span class=\"label\">\n          <div class=\"value\">29,000</div>\n          <div>points</div>\n          <div>to go</div>\n        </span>\n        <div class=\"pie\">\n          <div class=\"left-side half-circle\"></div>\n          <div class=\"right-side half-circle\"></div>\n        </div>\n        <div class=\"shadow\"></div>\n      </div>\n    </div>\n  </div>\n</div>";
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(185)))
 
 /***/ }),
 /* 185 */
+/***/ (function(module, exports) {
+
+	// shim for using process in browser
+	var process = module.exports = {};
+
+	// cached from whatever global is present so that test runners that stub it
+	// don't break things.  But we need to wrap it in a try catch in case it is
+	// wrapped in strict mode code which doesn't define any globals.  It's inside a
+	// function because try/catches deoptimize in certain engines.
+
+	var cachedSetTimeout;
+	var cachedClearTimeout;
+
+	function defaultSetTimout() {
+	    throw new Error('setTimeout has not been defined');
+	}
+	function defaultClearTimeout () {
+	    throw new Error('clearTimeout has not been defined');
+	}
+	(function () {
+	    try {
+	        if (typeof setTimeout === 'function') {
+	            cachedSetTimeout = setTimeout;
+	        } else {
+	            cachedSetTimeout = defaultSetTimout;
+	        }
+	    } catch (e) {
+	        cachedSetTimeout = defaultSetTimout;
+	    }
+	    try {
+	        if (typeof clearTimeout === 'function') {
+	            cachedClearTimeout = clearTimeout;
+	        } else {
+	            cachedClearTimeout = defaultClearTimeout;
+	        }
+	    } catch (e) {
+	        cachedClearTimeout = defaultClearTimeout;
+	    }
+	} ())
+	function runTimeout(fun) {
+	    if (cachedSetTimeout === setTimeout) {
+	        //normal enviroments in sane situations
+	        return setTimeout(fun, 0);
+	    }
+	    // if setTimeout wasn't available but was latter defined
+	    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+	        cachedSetTimeout = setTimeout;
+	        return setTimeout(fun, 0);
+	    }
+	    try {
+	        // when when somebody has screwed with setTimeout but no I.E. maddness
+	        return cachedSetTimeout(fun, 0);
+	    } catch(e){
+	        try {
+	            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
+	            return cachedSetTimeout.call(null, fun, 0);
+	        } catch(e){
+	            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
+	            return cachedSetTimeout.call(this, fun, 0);
+	        }
+	    }
+
+
+	}
+	function runClearTimeout(marker) {
+	    if (cachedClearTimeout === clearTimeout) {
+	        //normal enviroments in sane situations
+	        return clearTimeout(marker);
+	    }
+	    // if clearTimeout wasn't available but was latter defined
+	    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+	        cachedClearTimeout = clearTimeout;
+	        return clearTimeout(marker);
+	    }
+	    try {
+	        // when when somebody has screwed with setTimeout but no I.E. maddness
+	        return cachedClearTimeout(marker);
+	    } catch (e){
+	        try {
+	            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
+	            return cachedClearTimeout.call(null, marker);
+	        } catch (e){
+	            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
+	            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
+	            return cachedClearTimeout.call(this, marker);
+	        }
+	    }
+
+
+
+	}
+	var queue = [];
+	var draining = false;
+	var currentQueue;
+	var queueIndex = -1;
+
+	function cleanUpNextTick() {
+	    if (!draining || !currentQueue) {
+	        return;
+	    }
+	    draining = false;
+	    if (currentQueue.length) {
+	        queue = currentQueue.concat(queue);
+	    } else {
+	        queueIndex = -1;
+	    }
+	    if (queue.length) {
+	        drainQueue();
+	    }
+	}
+
+	function drainQueue() {
+	    if (draining) {
+	        return;
+	    }
+	    var timeout = runTimeout(cleanUpNextTick);
+	    draining = true;
+
+	    var len = queue.length;
+	    while(len) {
+	        currentQueue = queue;
+	        queue = [];
+	        while (++queueIndex < len) {
+	            if (currentQueue) {
+	                currentQueue[queueIndex].run();
+	            }
+	        }
+	        queueIndex = -1;
+	        len = queue.length;
+	    }
+	    currentQueue = null;
+	    draining = false;
+	    runClearTimeout(timeout);
+	}
+
+	process.nextTick = function (fun) {
+	    var args = new Array(arguments.length - 1);
+	    if (arguments.length > 1) {
+	        for (var i = 1; i < arguments.length; i++) {
+	            args[i - 1] = arguments[i];
+	        }
+	    }
+	    queue.push(new Item(fun, args));
+	    if (queue.length === 1 && !draining) {
+	        runTimeout(drainQueue);
+	    }
+	};
+
+	// v8 likes predictible objects
+	function Item(fun, array) {
+	    this.fun = fun;
+	    this.array = array;
+	}
+	Item.prototype.run = function () {
+	    this.fun.apply(null, this.array);
+	};
+	process.title = 'browser';
+	process.browser = true;
+	process.env = {};
+	process.argv = [];
+	process.version = ''; // empty string to avoid regexp issues
+	process.versions = {};
+
+	function noop() {}
+
+	process.on = noop;
+	process.addListener = noop;
+	process.once = noop;
+	process.off = noop;
+	process.removeListener = noop;
+	process.removeAllListeners = noop;
+	process.emit = noop;
+	process.prependListener = noop;
+	process.prependOnceListener = noop;
+
+	process.listeners = function (name) { return [] }
+
+	process.binding = function (name) {
+	    throw new Error('process.binding is not supported');
+	};
+
+	process.cwd = function () { return '/' };
+	process.chdir = function (dir) {
+	    throw new Error('process.chdir is not supported');
+	};
+	process.umask = function() { return 0; };
+
+
+/***/ }),
+/* 186 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	module.exports = { "default": __webpack_require__(187), __esModule: true };
+
+/***/ }),
+/* 187 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	__webpack_require__(188);
+	__webpack_require__(203);
+	module.exports = __webpack_require__(205);
+
+
+/***/ }),
+/* 188 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	__webpack_require__(189);
+	var global = __webpack_require__(16);
+	var hide = __webpack_require__(20);
+	var Iterators = __webpack_require__(192);
+	var TO_STRING_TAG = __webpack_require__(201)('toStringTag');
+
+	var DOMIterables = ('CSSRuleList,CSSStyleDeclaration,CSSValueList,ClientRectList,DOMRectList,DOMStringList,' +
+	  'DOMTokenList,DataTransferItemList,FileList,HTMLAllCollection,HTMLCollection,HTMLFormElement,HTMLSelectElement,' +
+	  'MediaList,MimeTypeArray,NamedNodeMap,NodeList,PaintRequestList,Plugin,PluginArray,SVGLengthList,SVGNumberList,' +
+	  'SVGPathSegList,SVGPointList,SVGStringList,SVGTransformList,SourceBufferList,StyleSheetList,TextTrackCueList,' +
+	  'TextTrackList,TouchList').split(',');
+
+	for (var i = 0; i < DOMIterables.length; i++) {
+	  var NAME = DOMIterables[i];
+	  var Collection = global[NAME];
+	  var proto = Collection && Collection.prototype;
+	  if (proto && !proto[TO_STRING_TAG]) hide(proto, TO_STRING_TAG, NAME);
+	  Iterators[NAME] = Iterators.Array;
+	}
+
+
+/***/ }),
+/* 189 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var addToUnscopables = __webpack_require__(190);
+	var step = __webpack_require__(191);
+	var Iterators = __webpack_require__(192);
+	var toIObject = __webpack_require__(44);
+
+	// 22.1.3.4 Array.prototype.entries()
+	// 22.1.3.13 Array.prototype.keys()
+	// 22.1.3.29 Array.prototype.values()
+	// 22.1.3.30 Array.prototype[@@iterator]()
+	module.exports = __webpack_require__(193)(Array, 'Array', function (iterated, kind) {
+	  this._t = toIObject(iterated); // target
+	  this._i = 0;                   // next index
+	  this._k = kind;                // kind
+	// 22.1.5.2.1 %ArrayIteratorPrototype%.next()
+	}, function () {
+	  var O = this._t;
+	  var kind = this._k;
+	  var index = this._i++;
+	  if (!O || index >= O.length) {
+	    this._t = undefined;
+	    return step(1);
+	  }
+	  if (kind == 'keys') return step(0, index);
+	  if (kind == 'values') return step(0, O[index]);
+	  return step(0, [index, O[index]]);
+	}, 'values');
+
+	// argumentsList[@@iterator] is %ArrayProto_values% (9.4.4.6, 9.4.4.7)
+	Iterators.Arguments = Iterators.Array;
+
+	addToUnscopables('keys');
+	addToUnscopables('values');
+	addToUnscopables('entries');
+
+
+/***/ }),
+/* 190 */
+/***/ (function(module, exports) {
+
+	module.exports = function () { /* empty */ };
+
+
+/***/ }),
+/* 191 */
+/***/ (function(module, exports) {
+
+	module.exports = function (done, value) {
+	  return { value: value, done: !!done };
+	};
+
+
+/***/ }),
+/* 192 */
+/***/ (function(module, exports) {
+
+	module.exports = {};
+
+
+/***/ }),
+/* 193 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var LIBRARY = __webpack_require__(194);
+	var $export = __webpack_require__(15);
+	var redefine = __webpack_require__(195);
+	var hide = __webpack_require__(20);
+	var has = __webpack_require__(43);
+	var Iterators = __webpack_require__(192);
+	var $iterCreate = __webpack_require__(196);
+	var setToStringTag = __webpack_require__(200);
+	var getPrototypeOf = __webpack_require__(202);
+	var ITERATOR = __webpack_require__(201)('iterator');
+	var BUGGY = !([].keys && 'next' in [].keys()); // Safari has buggy iterators w/o `next`
+	var FF_ITERATOR = '@@iterator';
+	var KEYS = 'keys';
+	var VALUES = 'values';
+
+	var returnThis = function () { return this; };
+
+	module.exports = function (Base, NAME, Constructor, next, DEFAULT, IS_SET, FORCED) {
+	  $iterCreate(Constructor, NAME, next);
+	  var getMethod = function (kind) {
+	    if (!BUGGY && kind in proto) return proto[kind];
+	    switch (kind) {
+	      case KEYS: return function keys() { return new Constructor(this, kind); };
+	      case VALUES: return function values() { return new Constructor(this, kind); };
+	    } return function entries() { return new Constructor(this, kind); };
+	  };
+	  var TAG = NAME + ' Iterator';
+	  var DEF_VALUES = DEFAULT == VALUES;
+	  var VALUES_BUG = false;
+	  var proto = Base.prototype;
+	  var $native = proto[ITERATOR] || proto[FF_ITERATOR] || DEFAULT && proto[DEFAULT];
+	  var $default = $native || getMethod(DEFAULT);
+	  var $entries = DEFAULT ? !DEF_VALUES ? $default : getMethod('entries') : undefined;
+	  var $anyNative = NAME == 'Array' ? proto.entries || $native : $native;
+	  var methods, key, IteratorPrototype;
+	  // Fix native
+	  if ($anyNative) {
+	    IteratorPrototype = getPrototypeOf($anyNative.call(new Base()));
+	    if (IteratorPrototype !== Object.prototype && IteratorPrototype.next) {
+	      // Set @@toStringTag to native iterators
+	      setToStringTag(IteratorPrototype, TAG, true);
+	      // fix for some old engines
+	      if (!LIBRARY && !has(IteratorPrototype, ITERATOR)) hide(IteratorPrototype, ITERATOR, returnThis);
+	    }
+	  }
+	  // fix Array#{values, @@iterator}.name in V8 / FF
+	  if (DEF_VALUES && $native && $native.name !== VALUES) {
+	    VALUES_BUG = true;
+	    $default = function values() { return $native.call(this); };
+	  }
+	  // Define iterator
+	  if ((!LIBRARY || FORCED) && (BUGGY || VALUES_BUG || !proto[ITERATOR])) {
+	    hide(proto, ITERATOR, $default);
+	  }
+	  // Plug for library
+	  Iterators[NAME] = $default;
+	  Iterators[TAG] = returnThis;
+	  if (DEFAULT) {
+	    methods = {
+	      values: DEF_VALUES ? $default : getMethod(VALUES),
+	      keys: IS_SET ? $default : getMethod(KEYS),
+	      entries: $entries
+	    };
+	    if (FORCED) for (key in methods) {
+	      if (!(key in proto)) redefine(proto, key, methods[key]);
+	    } else $export($export.P + $export.F * (BUGGY || VALUES_BUG), NAME, methods);
+	  }
+	  return methods;
+	};
+
+
+/***/ }),
+/* 194 */
+/***/ (function(module, exports) {
+
+	module.exports = true;
+
+
+/***/ }),
+/* 195 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__(20);
+
+
+/***/ }),
+/* 196 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var create = __webpack_require__(197);
+	var descriptor = __webpack_require__(29);
+	var setToStringTag = __webpack_require__(200);
+	var IteratorPrototype = {};
+
+	// 25.1.2.1.1 %IteratorPrototype%[@@iterator]()
+	__webpack_require__(20)(IteratorPrototype, __webpack_require__(201)('iterator'), function () { return this; });
+
+	module.exports = function (Constructor, NAME, next) {
+	  Constructor.prototype = create(IteratorPrototype, { next: descriptor(1, next) });
+	  setToStringTag(Constructor, NAME + ' Iterator');
+	};
+
+
+/***/ }),
+/* 197 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	// 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
+	var anObject = __webpack_require__(22);
+	var dPs = __webpack_require__(198);
+	var enumBugKeys = __webpack_require__(54);
+	var IE_PROTO = __webpack_require__(51)('IE_PROTO');
+	var Empty = function () { /* empty */ };
+	var PROTOTYPE = 'prototype';
+
+	// Create object with fake `null` prototype: use iframe Object with cleared prototype
+	var createDict = function () {
+	  // Thrash, waste and sodomy: IE GC bug
+	  var iframe = __webpack_require__(27)('iframe');
+	  var i = enumBugKeys.length;
+	  var lt = '<';
+	  var gt = '>';
+	  var iframeDocument;
+	  iframe.style.display = 'none';
+	  __webpack_require__(199).appendChild(iframe);
+	  iframe.src = 'javascript:'; // eslint-disable-line no-script-url
+	  // createDict = iframe.contentWindow.Object;
+	  // html.removeChild(iframe);
+	  iframeDocument = iframe.contentWindow.document;
+	  iframeDocument.open();
+	  iframeDocument.write(lt + 'script' + gt + 'document.F=Object' + lt + '/script' + gt);
+	  iframeDocument.close();
+	  createDict = iframeDocument.F;
+	  while (i--) delete createDict[PROTOTYPE][enumBugKeys[i]];
+	  return createDict();
+	};
+
+	module.exports = Object.create || function create(O, Properties) {
+	  var result;
+	  if (O !== null) {
+	    Empty[PROTOTYPE] = anObject(O);
+	    result = new Empty();
+	    Empty[PROTOTYPE] = null;
+	    // add "__proto__" for Object.getPrototypeOf polyfill
+	    result[IE_PROTO] = O;
+	  } else result = createDict();
+	  return Properties === undefined ? result : dPs(result, Properties);
+	};
+
+
+/***/ }),
+/* 198 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var dP = __webpack_require__(21);
+	var anObject = __webpack_require__(22);
+	var getKeys = __webpack_require__(41);
+
+	module.exports = __webpack_require__(25) ? Object.defineProperties : function defineProperties(O, Properties) {
+	  anObject(O);
+	  var keys = getKeys(Properties);
+	  var length = keys.length;
+	  var i = 0;
+	  var P;
+	  while (length > i) dP.f(O, P = keys[i++], Properties[P]);
+	  return O;
+	};
+
+
+/***/ }),
+/* 199 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var document = __webpack_require__(16).document;
+	module.exports = document && document.documentElement;
+
+
+/***/ }),
+/* 200 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var def = __webpack_require__(21).f;
+	var has = __webpack_require__(43);
+	var TAG = __webpack_require__(201)('toStringTag');
+
+	module.exports = function (it, tag, stat) {
+	  if (it && !has(it = stat ? it : it.prototype, TAG)) def(it, TAG, { configurable: true, value: tag });
+	};
+
+
+/***/ }),
+/* 201 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var store = __webpack_require__(52)('wks');
+	var uid = __webpack_require__(53);
+	var Symbol = __webpack_require__(16).Symbol;
+	var USE_SYMBOL = typeof Symbol == 'function';
+
+	var $exports = module.exports = function (name) {
+	  return store[name] || (store[name] =
+	    USE_SYMBOL && Symbol[name] || (USE_SYMBOL ? Symbol : uid)('Symbol.' + name));
+	};
+
+	$exports.store = store;
+
+
+/***/ }),
+/* 202 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	// 19.1.2.9 / 15.2.3.2 Object.getPrototypeOf(O)
+	var has = __webpack_require__(43);
+	var toObject = __webpack_require__(39);
+	var IE_PROTO = __webpack_require__(51)('IE_PROTO');
+	var ObjectProto = Object.prototype;
+
+	module.exports = Object.getPrototypeOf || function (O) {
+	  O = toObject(O);
+	  if (has(O, IE_PROTO)) return O[IE_PROTO];
+	  if (typeof O.constructor == 'function' && O instanceof O.constructor) {
+	    return O.constructor.prototype;
+	  } return O instanceof Object ? ObjectProto : null;
+	};
+
+
+/***/ }),
+/* 203 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var $at = __webpack_require__(204)(true);
+
+	// 21.1.3.27 String.prototype[@@iterator]()
+	__webpack_require__(193)(String, 'String', function (iterated) {
+	  this._t = String(iterated); // target
+	  this._i = 0;                // next index
+	// 21.1.5.2.1 %StringIteratorPrototype%.next()
+	}, function () {
+	  var O = this._t;
+	  var index = this._i;
+	  var point;
+	  if (index >= O.length) return { value: undefined, done: true };
+	  point = $at(O, index);
+	  this._i += point.length;
+	  return { value: point, done: false };
+	});
+
+
+/***/ }),
+/* 204 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var toInteger = __webpack_require__(49);
+	var defined = __webpack_require__(40);
+	// true  -> String#at
+	// false -> String#codePointAt
+	module.exports = function (TO_STRING) {
+	  return function (that, pos) {
+	    var s = String(defined(that));
+	    var i = toInteger(pos);
+	    var l = s.length;
+	    var a, b;
+	    if (i < 0 || i >= l) return TO_STRING ? '' : undefined;
+	    a = s.charCodeAt(i);
+	    return a < 0xd800 || a > 0xdbff || i + 1 === l || (b = s.charCodeAt(i + 1)) < 0xdc00 || b > 0xdfff
+	      ? TO_STRING ? s.charAt(i) : a
+	      : TO_STRING ? s.slice(i, i + 2) : (a - 0xd800 << 10) + (b - 0xdc00) + 0x10000;
+	  };
+	};
+
+
+/***/ }),
+/* 205 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var anObject = __webpack_require__(22);
+	var get = __webpack_require__(206);
+	module.exports = __webpack_require__(17).getIterator = function (it) {
+	  var iterFn = get(it);
+	  if (typeof iterFn != 'function') throw TypeError(it + ' is not iterable!');
+	  return anObject(iterFn.call(it));
+	};
+
+
+/***/ }),
+/* 206 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var classof = __webpack_require__(207);
+	var ITERATOR = __webpack_require__(201)('iterator');
+	var Iterators = __webpack_require__(192);
+	module.exports = __webpack_require__(17).getIteratorMethod = function (it) {
+	  if (it != undefined) return it[ITERATOR]
+	    || it['@@iterator']
+	    || Iterators[classof(it)];
+	};
+
+
+/***/ }),
+/* 207 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	// getting tag from 19.1.3.6 Object.prototype.toString()
+	var cof = __webpack_require__(46);
+	var TAG = __webpack_require__(201)('toStringTag');
+	// ES3 wrong here
+	var ARG = cof(function () { return arguments; }()) == 'Arguments';
+
+	// fallback for IE11 Script Access Denied error
+	var tryGet = function (it, key) {
+	  try {
+	    return it[key];
+	  } catch (e) { /* empty */ }
+	};
+
+	module.exports = function (it) {
+	  var O, T, B;
+	  return it === undefined ? 'Undefined' : it === null ? 'Null'
+	    // @@toStringTag case
+	    : typeof (T = tryGet(O = Object(it), TAG)) == 'string' ? T
+	    // builtinTag case
+	    : ARG ? cof(O)
+	    // ES3 arguments fallback
+	    : (B = cof(O)) == 'Object' && typeof O.callee == 'function' ? 'Arguments' : B;
+	};
+
+
+/***/ }),
+/* 208 */
+/***/ (function(module, exports) {
+
+	module.exports = "<div class=\"clearfix membership container\">\n  <div class=\"title\">{{ widget.texts.title }}</div>\n  <div class=\"days-left\">{{ days_left }} days left</div>\n  <div class=\"group\">\n    <div class=\"total-earned\">\n      <div>You gained</div>\n      <div class=\"value\" ng-bind=\"points\">21,000</div>\n      <div>points</div>\n    </div>\n    <div class=\"gift-gauge\">\n      <div class=\"arrow-container\" ng-hide=\"arrow_progress == 0\" ng-style=\"{ transform: 'rotateZ(' + (arrow_progress - 9) + 'deg)' }\">\n        <svg class=\"arrow\" x=\"0px\" y=\"0px\" viewBox=\"0 0 1000 1000\">\n            <g fill=\"#3e3e3f\">\n                <path d=\"M761.5,180.8L447,499.5l314.5,318.6c9.7,9.7,17,20.8,21.9,33.3c4.9,12.5,7.3,25.2,7.3,38c0,12.8-2.4,25.3-7.3,37.5c-4.9,12.2-12.2,23.1-21.9,32.8C742,979.9,718.8,990,691.7,990c-27.1,0-50.3-10.1-69.8-30.2L241.9,576.5c-9.7-9.7-17.3-21.4-22.9-34.9c-5.6-13.6-8.7-27.3-9.4-41.2c-0.7-13.9,1-27.2,5.3-40.1c4.2-12.8,11.1-23.5,20.8-31.8L622,39.1C641.4,19.7,664.7,10,691.7,10c27.1,0,50.3,9.7,69.7,29.1c9.7,9.7,17,20.8,21.9,33.3c4.9,12.5,7.3,25.2,7.3,38c0,12.8-2.4,25.3-7.3,37.5C778.5,160.1,771.2,171.1,761.5,180.8L761.5,180.8z\"\n                />\n            </g>\n        </svg>        \n      </div>\n      <div class=\"gift p{{ $index + 1 }}\" ng-class=\"{ active: can_obtain($index + 1) }\" ng-repeat=\"gift in status_gifts\">\n        <div class=\"description\" ng-bind=\"gift.name\"></div>\n      </div>\n      \n      <div class=\"pie-wrapper\" ng-class=\"'progress-' + progress\">\n        <span class=\"label\">\n          <div class=\"value\" ng-show=\"points_to_go\" ng-bind=\"points_to_go\"></div>\n          <div>points</div>\n          <div>to go</div>\n        </span>\n        <div class=\"pie\">\n          <div class=\"left-side half-circle\"></div>\n          <div class=\"right-side half-circle\"></div>\n        </div>\n        <div class=\"shadow\"></div>\n      </div>\n    </div>\n  </div>\n</div>";
+
+/***/ }),
+/* 209 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(186);
+	var content = __webpack_require__(210);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(76)(content, {});
@@ -44519,7 +45316,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ }),
-/* 186 */
+/* 210 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(75)();
@@ -44527,7 +45324,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	// module
-	exports.push([module.id, ".spm_wrapper .spm_tools_widget.tba-points {\n  color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper {\n  height: 400px;\n  width: 400px;\n  float: left;\n  position: relative;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper:nth-child(3n+1) {\n  clear: both;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper .pie {\n  height: 100%;\n  width: 100%;\n  clip: rect(0, 400px, 400px, 200px);\n  left: 0;\n  position: absolute;\n  top: 0;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper .pie .half-circle {\n  height: 100%;\n  width: 100%;\n  border: 20px solid #3e3e3f;\n  border-radius: 50%;\n  clip: rect(0, 200px, 400px, 0);\n  left: 0;\n  position: absolute;\n  top: 0;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper .label {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  border-radius: 50%;\n  color: #8b8b8d;\n  cursor: default;\n  font-size: 50px;\n  font-weight: 600;\n  position: absolute;\n  width: 400px;\n  height: 400px;\n  text-align: center;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper .label .value {\n  color: #3e3e3f;\n  font-size: 64px;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper .shadow {\n  height: 100%;\n  width: 100%;\n  border: 20px solid #939598;\n  border-radius: 50%;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-1 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-1 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-1 .pie .left-side {\n  transform: rotate(3.6deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-2 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-2 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-2 .pie .left-side {\n  transform: rotate(7.2deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-3 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-3 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-3 .pie .left-side {\n  transform: rotate(10.8deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-4 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-4 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-4 .pie .left-side {\n  transform: rotate(14.4deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-5 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-5 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-5 .pie .left-side {\n  transform: rotate(18deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-6 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-6 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-6 .pie .left-side {\n  transform: rotate(21.6deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-7 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-7 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-7 .pie .left-side {\n  transform: rotate(25.2deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-8 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-8 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-8 .pie .left-side {\n  transform: rotate(28.8deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-9 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-9 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-9 .pie .left-side {\n  transform: rotate(32.4deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-10 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-10 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-10 .pie .left-side {\n  transform: rotate(36deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-11 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-11 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-11 .pie .left-side {\n  transform: rotate(39.6deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-12 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-12 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-12 .pie .left-side {\n  transform: rotate(43.2deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-13 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-13 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-13 .pie .left-side {\n  transform: rotate(46.800000000000004deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-14 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-14 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-14 .pie .left-side {\n  transform: rotate(50.4deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-15 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-15 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-15 .pie .left-side {\n  transform: rotate(54deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-16 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-16 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-16 .pie .left-side {\n  transform: rotate(57.6deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-17 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-17 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-17 .pie .left-side {\n  transform: rotate(61.2deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-18 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-18 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-18 .pie .left-side {\n  transform: rotate(64.8deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-19 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-19 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-19 .pie .left-side {\n  transform: rotate(68.4deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-20 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-20 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-20 .pie .left-side {\n  transform: rotate(72deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-21 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-21 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-21 .pie .left-side {\n  transform: rotate(75.60000000000001deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-22 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-22 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-22 .pie .left-side {\n  transform: rotate(79.2deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-23 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-23 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-23 .pie .left-side {\n  transform: rotate(82.8deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-24 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-24 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-24 .pie .left-side {\n  transform: rotate(86.4deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-25 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-25 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-25 .pie .left-side {\n  transform: rotate(90deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-26 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-26 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-26 .pie .left-side {\n  transform: rotate(93.60000000000001deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-27 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-27 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-27 .pie .left-side {\n  transform: rotate(97.2deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-28 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-28 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-28 .pie .left-side {\n  transform: rotate(100.8deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-29 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-29 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-29 .pie .left-side {\n  transform: rotate(104.4deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-30 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-30 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-30 .pie .left-side {\n  transform: rotate(108deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-31 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-31 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-31 .pie .left-side {\n  transform: rotate(111.60000000000001deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-32 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-32 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-32 .pie .left-side {\n  transform: rotate(115.2deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-33 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-33 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-33 .pie .left-side {\n  transform: rotate(118.8deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-34 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-34 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-34 .pie .left-side {\n  transform: rotate(122.4deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-35 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-35 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-35 .pie .left-side {\n  transform: rotate(126deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-36 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-36 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-36 .pie .left-side {\n  transform: rotate(129.6deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-37 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-37 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-37 .pie .left-side {\n  transform: rotate(133.20000000000002deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-38 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-38 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-38 .pie .left-side {\n  transform: rotate(136.8deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-39 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-39 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-39 .pie .left-side {\n  transform: rotate(140.4deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-40 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-40 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-40 .pie .left-side {\n  transform: rotate(144deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-41 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-41 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-41 .pie .left-side {\n  transform: rotate(147.6deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-42 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-42 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-42 .pie .left-side {\n  transform: rotate(151.20000000000002deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-43 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-43 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-43 .pie .left-side {\n  transform: rotate(154.8deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-44 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-44 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-44 .pie .left-side {\n  transform: rotate(158.4deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-45 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-45 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-45 .pie .left-side {\n  transform: rotate(162deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-46 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-46 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-46 .pie .left-side {\n  transform: rotate(165.6deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-47 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-47 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-47 .pie .left-side {\n  transform: rotate(169.20000000000002deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-48 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-48 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-48 .pie .left-side {\n  transform: rotate(172.8deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-49 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-49 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-49 .pie .left-side {\n  transform: rotate(176.4deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-50 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-50 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-50 .pie .left-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-51 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-51 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-51 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-51 .pie .left-side {\n  transform: rotate(183.6deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-52 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-52 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-52 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-52 .pie .left-side {\n  transform: rotate(187.20000000000002deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-53 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-53 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-53 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-53 .pie .left-side {\n  transform: rotate(190.8deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-54 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-54 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-54 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-54 .pie .left-side {\n  transform: rotate(194.4deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-55 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-55 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-55 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-55 .pie .left-side {\n  transform: rotate(198deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-56 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-56 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-56 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-56 .pie .left-side {\n  transform: rotate(201.6deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-57 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-57 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-57 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-57 .pie .left-side {\n  transform: rotate(205.20000000000002deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-58 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-58 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-58 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-58 .pie .left-side {\n  transform: rotate(208.8deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-59 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-59 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-59 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-59 .pie .left-side {\n  transform: rotate(212.4deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-60 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-60 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-60 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-60 .pie .left-side {\n  transform: rotate(216deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-61 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-61 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-61 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-61 .pie .left-side {\n  transform: rotate(219.6deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-62 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-62 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-62 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-62 .pie .left-side {\n  transform: rotate(223.20000000000002deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-63 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-63 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-63 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-63 .pie .left-side {\n  transform: rotate(226.8deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-64 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-64 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-64 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-64 .pie .left-side {\n  transform: rotate(230.4deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-65 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-65 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-65 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-65 .pie .left-side {\n  transform: rotate(234deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-66 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-66 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-66 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-66 .pie .left-side {\n  transform: rotate(237.6deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-67 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-67 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-67 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-67 .pie .left-side {\n  transform: rotate(241.20000000000002deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-68 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-68 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-68 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-68 .pie .left-side {\n  transform: rotate(244.8deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-69 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-69 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-69 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-69 .pie .left-side {\n  transform: rotate(248.4deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-70 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-70 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-70 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-70 .pie .left-side {\n  transform: rotate(252deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-71 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-71 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-71 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-71 .pie .left-side {\n  transform: rotate(255.6deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-72 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-72 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-72 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-72 .pie .left-side {\n  transform: rotate(259.2deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-73 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-73 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-73 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-73 .pie .left-side {\n  transform: rotate(262.8deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-74 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-74 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-74 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-74 .pie .left-side {\n  transform: rotate(266.40000000000003deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-75 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-75 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-75 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-75 .pie .left-side {\n  transform: rotate(270deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-76 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-76 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-76 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-76 .pie .left-side {\n  transform: rotate(273.6deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-77 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-77 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-77 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-77 .pie .left-side {\n  transform: rotate(277.2deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-78 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-78 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-78 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-78 .pie .left-side {\n  transform: rotate(280.8deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-79 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-79 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-79 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-79 .pie .left-side {\n  transform: rotate(284.40000000000003deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-80 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-80 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-80 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-80 .pie .left-side {\n  transform: rotate(288deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-81 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-81 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-81 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-81 .pie .left-side {\n  transform: rotate(291.6deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-82 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-82 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-82 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-82 .pie .left-side {\n  transform: rotate(295.2deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-83 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-83 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-83 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-83 .pie .left-side {\n  transform: rotate(298.8deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-84 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-84 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-84 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-84 .pie .left-side {\n  transform: rotate(302.40000000000003deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-85 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-85 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-85 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-85 .pie .left-side {\n  transform: rotate(306deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-86 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-86 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-86 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-86 .pie .left-side {\n  transform: rotate(309.6deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-87 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-87 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-87 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-87 .pie .left-side {\n  transform: rotate(313.2deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-88 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-88 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-88 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-88 .pie .left-side {\n  transform: rotate(316.8deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-89 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-89 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-89 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-89 .pie .left-side {\n  transform: rotate(320.40000000000003deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-90 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-90 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-90 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-90 .pie .left-side {\n  transform: rotate(324deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-91 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-91 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-91 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-91 .pie .left-side {\n  transform: rotate(327.6deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-92 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-92 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-92 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-92 .pie .left-side {\n  transform: rotate(331.2deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-93 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-93 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-93 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-93 .pie .left-side {\n  transform: rotate(334.8deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-94 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-94 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-94 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-94 .pie .left-side {\n  transform: rotate(338.40000000000003deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-95 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-95 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-95 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-95 .pie .left-side {\n  transform: rotate(342deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-96 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-96 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-96 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-96 .pie .left-side {\n  transform: rotate(345.6deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-97 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-97 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-97 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-97 .pie .left-side {\n  transform: rotate(349.2deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-98 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-98 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-98 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-98 .pie .left-side {\n  transform: rotate(352.8deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-99 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-99 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-99 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-99 .pie .left-side {\n  transform: rotate(356.40000000000003deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-100 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-100 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-100 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-100 .pie .left-side {\n  transform: rotate(360deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .title {\n  text-align: center;\n  font-size: 42px;\n  font-weight: 600;\n  text-transform: uppercase;\n  padding-top: 65px;\n}\n.spm_wrapper .spm_tools_widget.tba-points .days-left {\n  text-align: center;\n  font-size: 34px;\n  font-weight: 600;\n  margin-top: 12px;\n}\n.spm_wrapper .spm_tools_widget.tba-points .group {\n  display: flex;\n  justify-content: space-around;\n}\n.spm_wrapper .spm_tools_widget.tba-points .total-earned {\n  width: 400px;\n  height: 400px;\n  background: #3e3e3f;\n  color: white;\n  border-radius: 50%;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  flex-direction: column;\n  text-transform: uppercase;\n  font-size: 36px;\n  font-weight: 600;\n  line-height: 1.6em;\n}\n.spm_wrapper .spm_tools_widget.tba-points .total-earned .value {\n  font-size: 50px;\n}\n.spm_wrapper .spm_tools_widget.tba-points .gift-gauge {\n  box-sizing: border-box;\n  height: 400px;\n  width: 400px;\n  position: relative;\n}\n.spm_wrapper .spm_tools_widget.tba-points .gift-gauge * {\n  box-sizing: border-box;\n}\n.spm_wrapper .spm_tools_widget.tba-points .gift-gauge .arrow-container {\n  width: 400px;\n  height: 400px;\n  position: absolute;\n  top: 0;\n  left: 0;\n  pointer-events: none;\n  transform: rotateZ(312deg);\n  z-index: 100;\n}\n.spm_wrapper .spm_tools_widget.tba-points .gift-gauge .arrow-container .arrow {\n  width: 50px;\n  height: 50px;\n  transform: rotateZ(186deg);\n  top: -14px;\n  position: absolute;\n  left: 49%;\n}\n.spm_wrapper .spm_tools_widget.tba-points .gift-gauge .gift {\n  width: 45px;\n  height: 45px;\n  border-radius: 50%;\n  background: #939598;\n  position: absolute;\n  margin-left: -22.5px;\n  z-index: 10;\n}\n.spm_wrapper .spm_tools_widget.tba-points .gift-gauge .gift.p1 {\n  top: -12.5px;\n  left: 50%;\n}\n.spm_wrapper .spm_tools_widget.tba-points .gift-gauge .gift.p2 {\n  top: 17%;\n  left: 89%;\n}\n.spm_wrapper .spm_tools_widget.tba-points .gift-gauge .gift.p3 {\n  top: 71%;\n  left: 11%;\n}\n.spm_wrapper .spm_tools_widget.tba-points .gift-gauge .gift.p4 {\n  top: 24%;\n  left: 7%;\n}\n.spm_wrapper .spm_tools_widget.tba-points .gift-gauge:after {\n  clear: both;\n  content: \"\";\n  display: table;\n}\n", ""]);
+	exports.push([module.id, ".spm_wrapper .spm_tools_widget.tba-points {\n  color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper {\n  height: 400px;\n  width: 400px;\n  float: left;\n  position: relative;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper:nth-child(3n+1) {\n  clear: both;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper .pie {\n  height: 100%;\n  width: 100%;\n  clip: rect(0, 400px, 400px, 200px);\n  left: 0;\n  position: absolute;\n  top: 0;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper .pie .half-circle {\n  height: 100%;\n  width: 100%;\n  border: 20px solid #3e3e3f;\n  border-radius: 50%;\n  clip: rect(0, 200px, 400px, 0);\n  left: 0;\n  position: absolute;\n  top: 0;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper .label {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  border-radius: 50%;\n  color: #8b8b8d;\n  cursor: default;\n  font-size: 50px;\n  font-weight: 600;\n  position: absolute;\n  width: 400px;\n  height: 400px;\n  text-align: center;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper .label .value {\n  color: #3e3e3f;\n  font-size: 64px;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper .shadow {\n  height: 100%;\n  width: 100%;\n  border: 20px solid #939598;\n  border-radius: 50%;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-1 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-1 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-1 .pie .left-side {\n  transform: rotate(3.6deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-2 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-2 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-2 .pie .left-side {\n  transform: rotate(7.2deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-3 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-3 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-3 .pie .left-side {\n  transform: rotate(10.8deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-4 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-4 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-4 .pie .left-side {\n  transform: rotate(14.4deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-5 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-5 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-5 .pie .left-side {\n  transform: rotate(18deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-6 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-6 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-6 .pie .left-side {\n  transform: rotate(21.6deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-7 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-7 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-7 .pie .left-side {\n  transform: rotate(25.2deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-8 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-8 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-8 .pie .left-side {\n  transform: rotate(28.8deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-9 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-9 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-9 .pie .left-side {\n  transform: rotate(32.4deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-10 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-10 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-10 .pie .left-side {\n  transform: rotate(36deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-11 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-11 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-11 .pie .left-side {\n  transform: rotate(39.6deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-12 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-12 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-12 .pie .left-side {\n  transform: rotate(43.2deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-13 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-13 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-13 .pie .left-side {\n  transform: rotate(46.800000000000004deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-14 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-14 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-14 .pie .left-side {\n  transform: rotate(50.4deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-15 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-15 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-15 .pie .left-side {\n  transform: rotate(54deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-16 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-16 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-16 .pie .left-side {\n  transform: rotate(57.6deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-17 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-17 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-17 .pie .left-side {\n  transform: rotate(61.2deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-18 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-18 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-18 .pie .left-side {\n  transform: rotate(64.8deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-19 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-19 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-19 .pie .left-side {\n  transform: rotate(68.4deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-20 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-20 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-20 .pie .left-side {\n  transform: rotate(72deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-21 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-21 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-21 .pie .left-side {\n  transform: rotate(75.60000000000001deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-22 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-22 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-22 .pie .left-side {\n  transform: rotate(79.2deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-23 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-23 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-23 .pie .left-side {\n  transform: rotate(82.8deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-24 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-24 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-24 .pie .left-side {\n  transform: rotate(86.4deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-25 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-25 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-25 .pie .left-side {\n  transform: rotate(90deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-26 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-26 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-26 .pie .left-side {\n  transform: rotate(93.60000000000001deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-27 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-27 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-27 .pie .left-side {\n  transform: rotate(97.2deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-28 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-28 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-28 .pie .left-side {\n  transform: rotate(100.8deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-29 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-29 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-29 .pie .left-side {\n  transform: rotate(104.4deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-30 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-30 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-30 .pie .left-side {\n  transform: rotate(108deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-31 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-31 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-31 .pie .left-side {\n  transform: rotate(111.60000000000001deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-32 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-32 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-32 .pie .left-side {\n  transform: rotate(115.2deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-33 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-33 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-33 .pie .left-side {\n  transform: rotate(118.8deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-34 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-34 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-34 .pie .left-side {\n  transform: rotate(122.4deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-35 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-35 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-35 .pie .left-side {\n  transform: rotate(126deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-36 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-36 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-36 .pie .left-side {\n  transform: rotate(129.6deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-37 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-37 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-37 .pie .left-side {\n  transform: rotate(133.20000000000002deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-38 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-38 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-38 .pie .left-side {\n  transform: rotate(136.8deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-39 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-39 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-39 .pie .left-side {\n  transform: rotate(140.4deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-40 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-40 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-40 .pie .left-side {\n  transform: rotate(144deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-41 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-41 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-41 .pie .left-side {\n  transform: rotate(147.6deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-42 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-42 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-42 .pie .left-side {\n  transform: rotate(151.20000000000002deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-43 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-43 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-43 .pie .left-side {\n  transform: rotate(154.8deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-44 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-44 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-44 .pie .left-side {\n  transform: rotate(158.4deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-45 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-45 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-45 .pie .left-side {\n  transform: rotate(162deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-46 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-46 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-46 .pie .left-side {\n  transform: rotate(165.6deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-47 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-47 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-47 .pie .left-side {\n  transform: rotate(169.20000000000002deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-48 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-48 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-48 .pie .left-side {\n  transform: rotate(172.8deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-49 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-49 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-49 .pie .left-side {\n  transform: rotate(176.4deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-50 .pie .right-side {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-50 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-50 .pie .left-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-51 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-51 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-51 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-51 .pie .left-side {\n  transform: rotate(183.6deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-52 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-52 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-52 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-52 .pie .left-side {\n  transform: rotate(187.20000000000002deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-53 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-53 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-53 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-53 .pie .left-side {\n  transform: rotate(190.8deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-54 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-54 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-54 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-54 .pie .left-side {\n  transform: rotate(194.4deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-55 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-55 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-55 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-55 .pie .left-side {\n  transform: rotate(198deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-56 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-56 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-56 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-56 .pie .left-side {\n  transform: rotate(201.6deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-57 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-57 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-57 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-57 .pie .left-side {\n  transform: rotate(205.20000000000002deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-58 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-58 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-58 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-58 .pie .left-side {\n  transform: rotate(208.8deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-59 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-59 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-59 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-59 .pie .left-side {\n  transform: rotate(212.4deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-60 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-60 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-60 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-60 .pie .left-side {\n  transform: rotate(216deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-61 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-61 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-61 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-61 .pie .left-side {\n  transform: rotate(219.6deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-62 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-62 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-62 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-62 .pie .left-side {\n  transform: rotate(223.20000000000002deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-63 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-63 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-63 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-63 .pie .left-side {\n  transform: rotate(226.8deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-64 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-64 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-64 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-64 .pie .left-side {\n  transform: rotate(230.4deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-65 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-65 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-65 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-65 .pie .left-side {\n  transform: rotate(234deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-66 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-66 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-66 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-66 .pie .left-side {\n  transform: rotate(237.6deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-67 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-67 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-67 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-67 .pie .left-side {\n  transform: rotate(241.20000000000002deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-68 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-68 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-68 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-68 .pie .left-side {\n  transform: rotate(244.8deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-69 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-69 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-69 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-69 .pie .left-side {\n  transform: rotate(248.4deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-70 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-70 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-70 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-70 .pie .left-side {\n  transform: rotate(252deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-71 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-71 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-71 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-71 .pie .left-side {\n  transform: rotate(255.6deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-72 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-72 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-72 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-72 .pie .left-side {\n  transform: rotate(259.2deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-73 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-73 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-73 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-73 .pie .left-side {\n  transform: rotate(262.8deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-74 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-74 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-74 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-74 .pie .left-side {\n  transform: rotate(266.40000000000003deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-75 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-75 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-75 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-75 .pie .left-side {\n  transform: rotate(270deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-76 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-76 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-76 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-76 .pie .left-side {\n  transform: rotate(273.6deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-77 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-77 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-77 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-77 .pie .left-side {\n  transform: rotate(277.2deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-78 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-78 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-78 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-78 .pie .left-side {\n  transform: rotate(280.8deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-79 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-79 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-79 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-79 .pie .left-side {\n  transform: rotate(284.40000000000003deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-80 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-80 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-80 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-80 .pie .left-side {\n  transform: rotate(288deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-81 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-81 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-81 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-81 .pie .left-side {\n  transform: rotate(291.6deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-82 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-82 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-82 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-82 .pie .left-side {\n  transform: rotate(295.2deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-83 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-83 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-83 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-83 .pie .left-side {\n  transform: rotate(298.8deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-84 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-84 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-84 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-84 .pie .left-side {\n  transform: rotate(302.40000000000003deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-85 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-85 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-85 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-85 .pie .left-side {\n  transform: rotate(306deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-86 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-86 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-86 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-86 .pie .left-side {\n  transform: rotate(309.6deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-87 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-87 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-87 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-87 .pie .left-side {\n  transform: rotate(313.2deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-88 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-88 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-88 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-88 .pie .left-side {\n  transform: rotate(316.8deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-89 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-89 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-89 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-89 .pie .left-side {\n  transform: rotate(320.40000000000003deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-90 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-90 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-90 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-90 .pie .left-side {\n  transform: rotate(324deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-91 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-91 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-91 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-91 .pie .left-side {\n  transform: rotate(327.6deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-92 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-92 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-92 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-92 .pie .left-side {\n  transform: rotate(331.2deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-93 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-93 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-93 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-93 .pie .left-side {\n  transform: rotate(334.8deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-94 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-94 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-94 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-94 .pie .left-side {\n  transform: rotate(338.40000000000003deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-95 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-95 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-95 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-95 .pie .left-side {\n  transform: rotate(342deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-96 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-96 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-96 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-96 .pie .left-side {\n  transform: rotate(345.6deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-97 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-97 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-97 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-97 .pie .left-side {\n  transform: rotate(349.2deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-98 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-98 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-98 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-98 .pie .left-side {\n  transform: rotate(352.8deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-99 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-99 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-99 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-99 .pie .left-side {\n  transform: rotate(356.40000000000003deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-100 .pie {\n  clip: rect(auto, auto, auto, auto);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-100 .pie .right-side {\n  transform: rotate(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-100 .pie .half-circle {\n  border-color: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .pie-wrapper.progress-100 .pie .left-side {\n  transform: rotate(360deg);\n}\n.spm_wrapper .spm_tools_widget.tba-points .title {\n  text-align: center;\n  font-size: 42px;\n  font-weight: 600;\n  text-transform: uppercase;\n  padding-top: 65px;\n}\n.spm_wrapper .spm_tools_widget.tba-points .days-left {\n  text-align: center;\n  font-size: 34px;\n  font-weight: 600;\n  margin-top: 12px;\n}\n.spm_wrapper .spm_tools_widget.tba-points .group {\n  display: flex;\n  justify-content: space-around;\n  margin-bottom: 90px;\n}\n.spm_wrapper .spm_tools_widget.tba-points .total-earned {\n  width: 400px;\n  height: 400px;\n  background: #3e3e3f;\n  color: white;\n  border-radius: 50%;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  flex-direction: column;\n  text-transform: uppercase;\n  font-size: 36px;\n  font-weight: 600;\n  line-height: 1.6em;\n}\n.spm_wrapper .spm_tools_widget.tba-points .total-earned .value {\n  font-size: 50px;\n}\n.spm_wrapper .spm_tools_widget.tba-points .gift-gauge {\n  box-sizing: border-box;\n  height: 400px;\n  width: 400px;\n  position: relative;\n}\n.spm_wrapper .spm_tools_widget.tba-points .gift-gauge * {\n  box-sizing: border-box;\n}\n.spm_wrapper .spm_tools_widget.tba-points .gift-gauge .arrow-container {\n  width: 400px;\n  height: 400px;\n  position: absolute;\n  top: 0;\n  left: 0;\n  pointer-events: none;\n  transform: rotateZ(312deg);\n  z-index: 100;\n}\n.spm_wrapper .spm_tools_widget.tba-points .gift-gauge .arrow-container .arrow {\n  width: 50px;\n  height: 50px;\n  transform: rotateZ(186deg);\n  top: -14px;\n  position: absolute;\n  left: 49%;\n}\n.spm_wrapper .spm_tools_widget.tba-points .gift-gauge .gift {\n  width: 45px;\n  height: 45px;\n  border-radius: 50%;\n  background: #939598;\n  position: absolute;\n  margin-left: -22.5px;\n  z-index: 10;\n}\n.spm_wrapper .spm_tools_widget.tba-points .gift-gauge .gift.active {\n  background: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-points .gift-gauge .gift.p4 {\n  top: -12.5px;\n  left: 50%;\n}\n.spm_wrapper .spm_tools_widget.tba-points .gift-gauge .gift.p4 .description {\n  bottom: 56px;\n  position: relative;\n}\n.spm_wrapper .spm_tools_widget.tba-points .gift-gauge .gift.p1 {\n  top: 17%;\n  left: 89%;\n}\n.spm_wrapper .spm_tools_widget.tba-points .gift-gauge .gift.p1 .description {\n  margin-left: 56px;\n  margin-top: -27px;\n}\n.spm_wrapper .spm_tools_widget.tba-points .gift-gauge .gift.p2 {\n  top: 71%;\n  left: 11%;\n}\n.spm_wrapper .spm_tools_widget.tba-points .gift-gauge .gift.p2 .description {\n  top: 20px;\n  left: -139px;\n  text-align: right;\n  position: relative;\n  width: 120px;\n}\n.spm_wrapper .spm_tools_widget.tba-points .gift-gauge .gift.p3 {\n  top: 24%;\n  left: 7%;\n}\n.spm_wrapper .spm_tools_widget.tba-points .gift-gauge .gift.p3 .description {\n  position: relative;\n  left: -129px;\n  text-align: right;\n  width: 120px;\n  top: -20px;\n}\n.spm_wrapper .spm_tools_widget.tba-points .gift-gauge:after {\n  clear: both;\n  content: \"\";\n  display: table;\n}\n", ""]);
 
 	// exports
 

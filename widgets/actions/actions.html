@@ -15,16 +15,18 @@
 
         <div class="spm_row clearfix">
 
-          <div class="spm_col" data-ng-repeat="action in actions().actions">
-            <div class="mb_item action" data-ng-style="widget.styles.action">
-              <div class="mb_item_left">
-                <span class="action_name" data-ng-bind="action_data(action).name"></span>
-                <span class="action_points" data-ng-show="action.points" data-ng-bind="((action.points || 0) | number) + ' ' + (action.points | sailplay_pluralize:( 'points.texts.pluralize' | tools ))"></span>
-                <a class="sp_btn button_primary" data-ng-if="action_data(action).just_open_profile" data-ng-click="open_profile()">{{ action_data(action).button_text }}</a>                
-                <a class="sp_btn button_primary" data-ng-if="!action_data(action).just_open_profile" data-ng-click="action_select(action)">{{ action_data(action).button_text }}</a>
-              </div>
-              <div class="mb_item_right">
-                <img data-ng-src="{{ action_data(action).pic | sailplay_pic }}" alt="">
+          <div class="actions_group spm_col" data-ng-repeat="group in chunked">            
+            <div ng-repeat="action in group">
+              <div class="mb_item action" data-ng-style="widget.styles.action">
+                <div class="mb_item_left">
+                  <span class="action_name" data-ng-bind="action_data(action).name"></span>
+                  <span class="action_points" data-ng-show="action.points" data-ng-bind="((action.points || 0) | number) + ' ' + (action.points | sailplay_pluralize:( 'points.texts.pluralize' | tools ))"></span>
+                  <a class="sp_btn button_primary" data-ng-if="action_data(action).just_open_profile" data-ng-click="open_profile()">{{ action_data(action).button_text }}</a>                
+                  <a class="sp_btn button_primary" data-ng-if="!action_data(action).just_open_profile" data-ng-click="action_select(action)">{{ action_data(action).button_text }}</a>
+                </div>
+                <div class="mb_item_right">
+                  <img data-ng-src="{{ action_data(action).pic | sailplay_pic }}" alt="">
+                </div>
               </div>
             </div>
           </div>

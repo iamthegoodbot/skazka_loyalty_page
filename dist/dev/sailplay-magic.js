@@ -239,7 +239,7 @@ return webpackJsonp([0],[
 
 	  }]);
 	  return Magic;
-	}(), _class.Widget = _widget.WidgetRegister, _class.version = '${MAGIC_VERSION}', _temp);
+	}(), _class.Widget = _widget.WidgetRegister, _class.version = '2.1.16', _temp);
 
 	//extend SAILPLAY with Magic class
 
@@ -2110,7 +2110,18 @@ return webpackJsonp([0],[
 	    scope: true,
 	    link: function link(scope) {
 
-	      scope.actions = SailPlayApi.data('load.actions.list');
+	      function chunk(arr) {
+	        var newArr = [];
+	        newArr.push(arr.slice(0, Math.floor(arr.length / 2)));
+	        newArr.push(arr.slice(Math.floor(arr.length / 2)));
+	        return newArr;
+	      }
+
+	      SailPlayApi.observe('load.actions.list', function () {
+	        scope.actions = SailPlayApi.data('load.actions.list');
+	        scope.chunked = chunk(scope.actions().actions);
+	      });
+
 	      scope.actions_custom = SailPlayApi.data('load.actions.custom.list');
 
 	      scope.exist = SailPlayApi.data('tags.exist');

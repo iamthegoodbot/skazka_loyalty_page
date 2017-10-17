@@ -188,7 +188,18 @@ export let SailPlayActions = angular.module('sailplay.actions', [])
     scope: true,
     link: function(scope){
 
-      scope.actions = SailPlayApi.data('load.actions.list');
+      function chunk(arr) {
+        let newArr = [];
+        newArr.push(arr.slice(0, Math.floor(arr.length/2)));
+        newArr.push(arr.slice(Math.floor(arr.length/2)))
+        return newArr;
+      }
+
+      SailPlayApi.observe('load.actions.list', function(){
+        scope.actions = SailPlayApi.data('load.actions.list');
+        scope.chunked = chunk(scope.actions().actions);
+      })
+
       scope.actions_custom = SailPlayApi.data('load.actions.custom.list');
 
       scope.exist = SailPlayApi.data('tags.exist');
