@@ -126,6 +126,7 @@
     .group {
       display: flex;
       justify-content: space-around;
+      margin-bottom: 90px;
     }
 
     .total-earned {
@@ -187,24 +188,50 @@
         margin-left: -22.5px;
         z-index: 10;
 
-        &.p1 {
-          top: -12.5px;
-          left: 50%;
-        }
-
-        &.p2 {
-          top: 17%;
-          left: 89%;
-        }
-
-        &.p3 {
-          top: 71%;
-          left: 11%;
+        &.active {
+          background: #3e3e3f;
         }
 
         &.p4 {
+          top: -12.5px;
+          left: 50%;
+          .description {
+            bottom: 56px;
+            position: relative;
+          }
+        }
+
+        &.p1 {
+          top: 17%;
+          left: 89%;
+          .description {
+            margin-left: 56px;
+            margin-top: -27px;
+          }
+        }
+
+        &.p2 {
+          top: 71%;
+          left: 11%;
+          .description {
+            top: 20px;
+            left: -139px;
+            text-align: right;
+            position: relative;
+            width: 120px;
+          }
+        }
+
+        &.p3 {
           top: 24%;
           left: 7%;
+          .description {
+            position: relative;
+            left: -129px;
+            text-align: right;
+            width: 120px;
+            top: -20px;
+          }
         }
       }
 

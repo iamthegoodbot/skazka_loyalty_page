@@ -13,6 +13,7 @@ WidgetRegister({
     return (scope) => {
       scope.statuses = MAGIC_CONFIG.data.statuses;
 
+      
       SailPlayApi.observe('load.user.info', user => {
         scope.purchases_sum = user.purchases.sum;
       })

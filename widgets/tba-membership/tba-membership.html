@@ -7,7 +7,7 @@
         <div class="check-point active" style="left: 0px" ng-attr-title="{{ statuses[0].name }}"></div>
         <div class="check-point" ng-class="{ 'active': second_active }" style="left: 30%" title="{{ statuses[1].name }}" ng-attr-description="{{ (statuses[1].points | currency:'$':0) + ' purchase' }}"></div>
         <div class="check-point last" ng-class="{ 'active': third_active }" title="{{ statuses[2].name }}" ng-attr-description="{{ (statuses[2].points | currency:'$':0) + ' purchase' }}"></div>
-        <div class="fill-line" ng-style="{ 'width': get_status_progress(2500) }">
+        <div class="fill-line" ng-style="{ 'width': get_status_progress() }">
             <div class="text" ng-if="purchases_sum">{{ purchases_sum | currency:"$":0 }}</div>
             <div class="line"></div>
             <svg class="arrow" ng-hide="third_active" x="0px" y="0px" viewBox="0 0 1000 1000">
