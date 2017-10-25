@@ -27,7 +27,11 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
          *
          * @returns {Object} User's profile data
          */
+
         scope.user = SailPlayApi.data('load.user.info');
+        SailPlayApi.observe('load.user.info', user => {
+          scope.user = SailPlayApi.data('load.user.info');        
+        })          
 
         /**
          * @ngdoc method

@@ -52,6 +52,9 @@ WidgetRegister({
       };
 
       SailPlay.on('gifts.purchase.success', function(res){
+        
+        
+        setTimeout(() => SailPlay.send('load.user.info'), 100)
 
         $rootScope.$broadcast('notifier:notify', {
 
