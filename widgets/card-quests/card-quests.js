@@ -31,7 +31,13 @@ WidgetRegister({
         $rootScope.$broadcast('openProfile')
       }
 
-      scope.filter = scope.widget.options && scope.widget.options.filter || {};
+      var filterRegex = new RegExp(scope.widget.options && scope.widget.options.filterTypeRegex)
+
+      scope.filter = scope.widget.options && 
+      (scope.widget.options.filterTypeRegex && ((item)=>{
+        console.log(item['type'], filterRegex)
+        return filterRegex.test(item['type'])
+      })) || scope.widget.options.filter || {};
 
       scope.action_select = function (action) {
 

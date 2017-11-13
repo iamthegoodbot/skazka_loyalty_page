@@ -30,7 +30,11 @@
     console.log(SAILPLAY.MagicMigrator);
 
     var params = SAILPLAY.url_params();
-
+    
+    SAILPLAY.on('magic.config.success',function(){
+        SAILPLAY.send('login',params.auth_hash || '');
+    });
+    
     var magic = new SAILPLAY.Magic({
 
       partner_id: params.partner_id || 1637,
