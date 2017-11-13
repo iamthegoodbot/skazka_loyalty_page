@@ -83,7 +83,7 @@
         <dir-pagination-controls data-max-size="5" data-pagination-id="history_pages"
                                  data-template-url="profile.history_pagination"
                                  data-auto-hide="true"></dir-pagination-controls>
-        <button type="submit" class="sp_btn button_primary modal_history_close" data-ng-click="preventDefault(); $parent.$parent.close()">{{ 'buttons.texts.close' | tools }}</button>
+        <button type="nothing" class="sp_btn button_primary modal_history_close" data-ng-click="$event.preventDefault(); $parent.$parent.close()">{{ 'buttons.texts.close' | tools }}</button>
       </div>
     </div>
 

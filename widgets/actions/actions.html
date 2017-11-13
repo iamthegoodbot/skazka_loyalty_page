@@ -1,6 +1,6 @@
 <div class="{{ widget.id }} clearfix">
 
-  <div id="magic_actions" class="more_bonus container" data-ng-show="widget.enabled" data-ng-cloak>
+  <div data-sailplay-profile id="magic_actions" class="more_bonus container" data-ng-show="widget.enabled && user()" data-ng-cloak>
 
     <h3 class="bon_header">
       <span class="header">{{ widget.texts.header }}</span>

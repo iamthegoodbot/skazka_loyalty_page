@@ -1,0 +1,10 @@
+http://uat.thacker.agencyq.com/Rewards/	index
+http://uat.thacker.agencyq.com/	default
+http://uat.thacker.agencyq.com/Login-Page/	default_001
+http://uat.thacker.agencyq.com/Contact-Us/	default_002
+http://uat.thacker.agencyq.com/The-Thacker-Difference/	default_003
+http://uat.thacker.agencyq.com/our-products/	default_004
+http://uat.thacker.agencyq.com/Our-Services/	default_005
+http://uat.thacker.agencyq.com/About-Thacker/	default_006
+http://uat.thacker.agencyq.com/Privacy-Policy/	default_007
+http://uat.thacker.agencyq.com/Terms-of-Use/	default_008

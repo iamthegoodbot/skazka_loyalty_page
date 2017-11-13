@@ -56,7 +56,7 @@ export let Tools = angular.module('magic.tools', [
 .controller('slick_config', function($scope){
 
   $scope.gift_slider_config = {
-    slidesToShow: 3,
+    slidesToShow: 5,
     slidesToScroll: 1,
     speed: 150,
     infinite: false,
@@ -67,13 +67,13 @@ export let Tools = angular.module('magic.tools', [
       {
         breakpoint: 1000,
         settings: {
-          slidesToShow: 2
+          slidesToShow: 3
         }
       },
       {
         breakpoint: 600,
         settings: {
-          slidesToShow: 1
+          slidesToShow: 2
         }
       }
     ]
@@ -462,7 +462,7 @@ export let Tools = angular.module('magic.tools', [
 
 })
 
-.directive('magicSlider', function(MAGIC_CONFIG){
+.directive('magicSlider', function(MAGIC_CONFIG, $timeout){
 
   return {
     restrict: 'A',
@@ -481,6 +481,7 @@ export let Tools = angular.module('magic.tools', [
 
       // Переделать
       scope.set_position = function (position) {
+        console.log('stp')
 
         var slides = elm[0].querySelectorAll('[data-magic-slide]');
         var wrapper = elm[0].querySelectorAll('[data-magic-gallery]')[0];
@@ -491,11 +492,11 @@ export let Tools = angular.module('magic.tools', [
 
         var _width = slides[0].offsetWidth || 0;
 
-        _width = _width ? _width + 30 : 0;
+        _width = _width ? _width + 6 : 0;
 
         var _limits = {
           min: 1,
-          max: 4
+          max: 5
         };
 
         if (!_width) return;
@@ -509,7 +510,8 @@ export let Tools = angular.module('magic.tools', [
         _width = Math.floor(_wrap_width / _count_show);
 
         angular.forEach(slides, function(slide){
-          slide.style.width = (_width - 30) + 'px';
+          console.log('zzz')
+          slide.style.width = (_width - 6) + 'px';
         });
 
         var _max = Math.ceil(slides.length - _count_show);
@@ -548,6 +550,10 @@ export let Tools = angular.module('magic.tools', [
         scope.left = '-' + (_next * _width) + 'px';
 
       };
+
+      $timeout(()=>scope.set_position(0), 1500)
+
+
 
     }
   }

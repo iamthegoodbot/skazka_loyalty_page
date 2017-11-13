@@ -1,0 +1,68 @@
+/* ::::: https://app.smartsheet.com/b/css/webForm.2x_57.2.8.css ::::: */
+
+.ui-helper-clearfix::before, .ui-helper-clearfix::after { content: ""; display: table; border-collapse: collapse; }
+.ui-helper-clearfix::after { clear: both; }
+html { margin: 0px; }
+body { font-family: "Arial","Verdana","Helvetica","Segoe UI Emoji","Segoe UI Symbol"; font-size: 13px; font-weight: normal; color: rgb(68, 68, 68); margin: 0px; }
+#formContent br { display: none; }
+#bodyBranded { background-color: rgb(58, 102, 147); padding: 20px 0px; }
+#formContent textarea { font-family: "Arial","Verdana","Helvetica","Segoe UI Emoji","Segoe UI Symbol"; resize: none; }
+#formContent div {  }
+.clsCaption { text-align: left; text-decoration: none; }
+.clsCaptionBold { font-weight: bold; text-align: left; }
+#logo { padding: 5px 20px 10px; box-sizing: border-box; max-height: 75px; text-align: center; margin-top: -15px; }
+#formBackground { position: relative; z-index: 0; overflow: hidden; box-sizing: border-box; }
+#bodyBranded #formBackground { width: 90%; min-width: 250px; max-width: 560px; margin: 0px auto; background: rgb(237, 237, 237) none repeat scroll 0% 0%; border-radius: 6px; box-shadow: 8px 15px 60px rgba(0, 0, 0, 0.45); padding: 10px 30px 30px; }
+#formContent { width: 100%; overflow-wrap: break-word; overflow: hidden; }
+.clsFormHeader { font-weight: bold; font-size: 21px; margin: 20px 0px 30px; }
+.clsButton { display: inline-block; padding: 0px 10px; border-radius: 3px; border: medium none; max-width: 100%; font-size: 14px; color: rgb(255, 255, 255); text-shadow: 0px -1px rgba(0, 0, 0, 0.4); text-decoration: none; cursor: default; background: rgb(60, 117, 157) linear-gradient(to bottom, rgb(82, 144, 180), rgb(60, 117, 157)) repeat scroll 0% 0%; box-shadow: 0px -1px 0px rgba(0, 0, 0, 0.65), 0px 1px 0px rgba(255, 255, 255, 0.65); box-sizing: border-box; }
+.clsSubmitButton { padding: 7px 40px; margin-top: 20px; }
+.clsSubmitButton:hover, .clsSubmitButtonQuirksHover { background: rgb(42, 89, 122) linear-gradient(to bottom, rgb(62, 119, 158), rgb(42, 89, 122)) repeat scroll 0% 0%; }
+.clsHeading .clsFieldLabel { font-size: 18px; }
+.clsDivider { display: block; margin: 5px 0px; border-top: 1px solid rgb(153, 153, 153); }
+.clsTextField input, .clsDateField input, .clsEmailField input, .clsFakeInput, .clsFileInput, #formContent textarea, #formContent select { border: 1px solid rgb(153, 153, 153); border-radius: 3px; margin: 0px; box-sizing: border-box; font-family: "Arial","Verdana","Helvetica","Segoe UI Emoji","Segoe UI Symbol"; }
+.clsTextField input, .clsDateField input, .clsEmailField input, .clsFakeInput, #formContent select { height: 24px; }
+.clsTextField input, .clsDateField input, .clsEmailField input, .clsFakeInput, #formContent textarea { padding: 3px 5px; width: 100%; }
+#formContent select { white-space: nowrap; min-width: 120px; max-width: 100%; }
+.clsField { margin: 20px 0px; }
+.clsFieldLabel { display: block; margin-bottom: 5px; }
+.clsHelpText { display: block; margin-bottom: 5px; }
+.clsFieldLabel + br + .clsHelpText { margin-top: -2px; }
+#progressOverlay { display: none; position: absolute; z-index: 10; top: 0px; left: 0px; width: 100%; background: rgb(0, 0, 0) none repeat scroll 0% 0%; opacity: 0.5; }
+#progressBox { display: none; position: absolute; z-index: 20; width: 70%; max-width: 240px; padding: 30px; text-align: center; border: 1px solid rgb(153, 153, 153); background: rgb(237, 237, 237) none repeat scroll 0% 0%; border-radius: 6px; box-shadow: 8px 15px 60px rgba(0, 0, 0, 0.45); box-sizing: border-box; }
+#progressBox img { margin-top: 30px; }
+.clsCheckBox, .clsRadioOption, .clsRadioOptionNoImages { position: relative; min-height: 16px; display: block; }
+.clsCheckBox input, .clsRadioOption input { position: absolute; left: 0px; padding: 0px; margin: 0px; height: 15px; width: 15px; opacity: 0; }
+.clsCheckBox label, .clsRadioOption label { position: relative; min-height: 16px; cursor: default; }
+.clsInputLabelText { border: 1px dotted transparent; line-height: 16px; }
+.clsCheckBox > input:disabled + label > * { opacity: 0.3; }
+.clsCheckBox .clsCheckBoxControlRow { position: relative; line-height: 16px; min-height: 16px; margin-top: -1px; }
+.clsInputLabelImage { position: absolute; height: 15px; width: 15px; background-image: url('img_sprite_inputcontrols_9.png'); background-repeat: no-repeat; }
+.clsCheckBox .clsCheckBoxControlRow .clsInputLabelText, .clsRadioOption .clsInputLabelText { margin-left: 19px; }
+.clsCheckBox > input:focus + label .clsInputLabelText, .clsCheckBox > input:active:not([disabled]) + label .clsInputLabelText, .clsCheckBox > input:not([disabled]) + label:active .clsInputLabelText, .clsRadioOption > input:focus + label > .clsInputLabelText, .clsRadioOption > input:active:not([disabled]) + label > .clsInputLabelText .clsRadioOption > input:not([disabled]) + label:active > .clsInputLabelText { border-color: rgb(68, 68, 68); }
+.clsCheckBox > input + label .clsInputLabelImage { background-position: -10px -10px; }
+.clsCheckBox > input:checked + label .clsInputLabelImage { background-position: -10px -85px; }
+.clsCheckBox > input:hover:not([disabled]) + label .clsInputLabelImage, .clsCheckBox > input:not([disabled]) + label:hover .clsInputLabelImage { background-position: -10px -35px; }
+.clsCheckBox > input:hover:checked:not([disabled]) + label .clsInputLabelImage, .clsCheckBox > input:checked:not([disabled]) + label:hover .clsInputLabelImage { background-position: -10px -110px; }
+.clsCheckBoxStar > input:hover:not([disabled]) + label .clsInputLabelImage, .clsCheckBoxStar > input:not([disabled]) + label:hover .clsInputLabelImage { background-position: -10px -186px; }
+.clsCheckBoxStar > input:hover:checked:not([disabled]) + label .clsInputLabelImage, .clsCheckBoxStar > input:checked:not([disabled]) + label:hover .clsInputLabelImage { background-position: -10px -264px; }
+.clsCheckBoxFlag > input:hover:not([disabled]) + label .clsInputLabelImage, .clsCheckBoxFlag > input:not([disabled]) + label:hover .clsInputLabelImage { background-position: -10px -342px; }
+.clsCheckBoxFlag > input:hover:checked:not([disabled]) + label .clsInputLabelImage, .clsCheckBoxFlag > input:checked:not([disabled]) + label:hover .clsInputLabelImage { background-position: -10px -420px; }
+.clsCheckBoxStarLight > input:hover:not([disabled]) + label .clsInputLabelImage, .clsCheckBoxStarLight > input:not([disabled]) + label:hover .clsInputLabelImage { background-position: -10px -648px; }
+.clsCheckBoxStarLight > input:hover:checked:not([disabled]) + label .clsInputLabelImage, .clsCheckBoxStarLight > input:checked:not([disabled]) + label:hover .clsInputLabelImage { background-position: -10px -726px; }
+.clsRadioOption > input:hover:not([disabled]) + label .clsInputLabelImage, .clsRadioOption > input:not([disabled]) + label:hover .clsInputLabelImage { background-position: -10px -497px; }
+.clsRadioOption > input:hover:checked:not([disabled]) + label .clsInputLabelImage, .clsRadioOption > input:checked:not([disabled]) + label:hover .clsInputLabelImage { background-position: -10px -572px; }
+.clsCheckBoxSkype > input:hover:not([disabled]) + label .clsInputLabelImage, .clsCheckBoxSkype > input:not([disabled]) + label:hover .clsInputLabelImage { background-position: -10px -35px; }
+.clsCheckBoxSkype > input:hover:checked:not([disabled]) + label .clsInputLabelImage, .clsCheckBoxSkype > input:checked:not([disabled]) + label:hover .clsInputLabelImage { background-position: -10px -802px; }
+.clsCheckBox > input:active:not([disabled]) + label .clsInputLabelImage, .clsCheckBox > input:not([disabled]) + label:hover:active .clsInputLabelImage { background-position: -10px -60px; }
+.clsCheckBox > input:active:checked:not([disabled]) + label .clsInputLabelImage, .clsCheckBox > input:checked:not([disabled]) + label:hover:active .clsInputLabelImage { background-position: -10px -135px; }
+.clsCheckBoxStar > input:active:not([disabled]) + label .clsInputLabelImage, .clsCheckBoxStar > input:not([disabled]) + label:hover:active .clsInputLabelImage { background-position: -10px -212px; }
+.clsCheckBoxStar > input:active:checked:not([disabled]) + label .clsInputLabelImage, .clsCheckBoxStar > input:checked:not([disabled]) + label:hover:active .clsInputLabelImage { background-position: -10px -290px; }
+.clsCheckBoxFlag > input:active:not([disabled]) + label .clsInputLabelImage, .clsCheckBoxFlag > input:not([disabled]) + label:hover:active .clsInputLabelImage { background-position: -10px -368px; }
+.clsCheckBoxFlag > input:active:checked:not([disabled]) + label .clsInputLabelImage, .clsCheckBoxFlag > input:checked:not([disabled]) + label:hover:active .clsInputLabelImage { background-position: -10px -446px; }
+.clsCheckBoxStarLight > input:active:not([disabled]) + label .clsInputLabelImage, .clsCheckBoxStarLight > input:not([disabled]) + label:hover:active .clsInputLabelImage { background-position: -10px -674px; }
+.clsCheckBoxStarLight > input:active:checked:not([disabled]) + label .clsInputLabelImage, .clsCheckBoxStarLight > input:checked:not([disabled]) + label:hover:active .clsInputLabelImage { background-position: -10px -752px; }
+.clsRadioOption > input:active:not([disabled]) + label .clsInputLabelImage, .clsRadioOption > input:not([disabled]) + label:hover:active .clsInputLabelImage { background-position: -10px -522px; }
+.clsRadioOption > input:active:checked:not([disabled]) + label .clsInputLabelImage, .clsRadioOption > input:checked:not([disabled]) + label:hover:active .clsInputLabelImage { background-position: -10px -597px; }
+.clsCheckBoxSkype > input:active:not([disabled]) + label .clsInputLabelImage, .clsCheckBoxSkype > input:not([disabled]) + label:hover:active .clsInputLabelImage { background-position: -10px -60px; }
+.clsCheckBoxSkype > input:active:checked:not([disabled]) + label .clsInputLabelImage, .clsCheckBoxSkype > input:checked:not([disabled]) + label:hover:active .clsInputLabelImage { background-position: -10px -827px; }

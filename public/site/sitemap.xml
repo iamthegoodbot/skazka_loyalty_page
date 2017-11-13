@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="../../sitemap.xsl" type="text/xsl" media="all"?>
+<site>
+<page file="index.html" text="Thacker - Rewards" title="Thacker - Rewards">
+<page file="default.html" text="" title="Thacker - Rewards"/>
+<page file="default_001.html" text="Login" title="Thacker - Rewards"/>
+<page file="default_002.html" text="                 Contact Us             " title="Thacker - Login Page"/>
+<page file="default_003.html" text="                             The Thacker Difference                         " title="Thacker - The Thacker Difference"/>
+<page file="default_004.html" text="                             Our Products                         " title="Thacker - Our Products"/>
+<page file="default_005.html" text="                             Our Services                         " title="Thacker - Our Services"/>
+<page file="default_006.html" text="                             About Thacker                         " title="Thacker - About Thacker"/>
+<page file="default_007.html" text="             Privacy Policy         " title="Thacker - Privacy Policy"/>
+<page file="default_008.html" text="             Terms of Use         " title="Thacker - Terms of Use"/>
+</page>
+</site>

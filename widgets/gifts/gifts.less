@@ -13,7 +13,7 @@
     .bon_header {
       float: left;
       width: 90%;
-      margin-left: 5%;
+      margin-left: 0;
       color: @black;
       font-size: 30px;
       font-family: 'RotondaC';
@@ -22,7 +22,7 @@
     .bon_sub_header {
       float: left;
       width: 90%;
-      margin-left: 5%;
+      margin-left: 0;
       font-size: 14px;
       color: @black;
       margin-top: 10px;
@@ -30,8 +30,8 @@
 
     .bon_slide_cat_item_wrap {
       float: left;
-      width: 74%;
-      margin-left: 13%;
+      width: 94%;
+      margin-left: 3%;
       margin-top: 60px;
       margin-bottom: 60px;
       position: relative;
@@ -53,30 +53,28 @@
       .arr_left {
         position: absolute;
         left: 0;
-        margin-left: -26px;
-        width: 60px;
-        height: 60px;
+        margin-left: -20px;
+        width: 40px;
+        height: 40px;
         border-radius: 20px 0px 0px 20px;
         background-color: transparent;
         background-position: center center;
         background-repeat: no-repeat;
         display: block;
-        top: 52%;
-        margin-top: -55px;
+        top: 40%;
       }
       .arr_right {
         position: absolute;
         right: 0;
-        margin-right: -26px;
-        width: 60px;
-        height: 60px;
+        margin-right: -20px;
+        width: 40px;
+        height: 40px;
         border-radius: 0px 20px 20px 0px;
         background-color: transparent;
         background-position: center center;
         background-repeat: no-repeat;
         display: block;
-        top: 52%;
-        margin-top: -55px;
+        top: 40%;
       }
       .bon_slide_cat_item {
         float: left;
@@ -89,11 +87,11 @@
           transition: .3s ease;
         }
         .bon_item {
-          width: 245px;
-          height: 360px;
+          width: 150px;
+          height: 232px;
           border: 1px solid @main_light;
-          margin-left: 15px;
-          margin-right: 15px;
+          margin-left: 3px;
+          margin-right: 3px;
           background-color: @white;
           text-align: center;
           display: inline-block;
@@ -110,7 +108,7 @@
             span {
               white-space: normal;
               float: left;
-              margin-left: 30px;
+              padding: 0 10px;
               width: 185px;
               text-align: left;
               color: @main_darker;
@@ -124,11 +122,13 @@
               visibility: visible;
             }
             .bon_item_name {
-              font-size: 16px;
+              font-size: 13px;
+              max-width: 100%;
+              box-sizing: border-box;
               position: absolute;
               left: 0px;
-              bottom: 61px;
               visibility: visible;
+              display: inline-block;
             }
             .bon_tem_info {
               font-size: 14px;
@@ -137,11 +137,12 @@
               font-weight: 300;
               position: absolute;
               left: 0px;
-              bottom: 37px;
+              bottom: 33px;
             }
             img {
-              margin-top: 30px;
+              margin-top: 14px;
               max-height: 200px;
+              max-width: 135px;
             }
             a {
               position: absolute;
