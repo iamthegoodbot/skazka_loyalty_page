@@ -551,7 +551,7 @@ export let Tools = angular.module('magic.tools', [
 
       };
 
-      $timeout(()=>scope.set_position(0), 1500)
+      $timeout(()=>scope.set_position(0), 2100)
 
 
 
