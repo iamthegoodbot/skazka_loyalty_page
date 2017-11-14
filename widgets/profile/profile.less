@@ -51,6 +51,7 @@
           font-weight: 300;
         }
         .btn_more {
+          cursor: pointer;
           margin-top: 20px;
           border: 1px solid white;
           background-color: transparent;
@@ -66,11 +67,12 @@
       .bon_profile_top {
         display: flex;
         justify-content: space-around;
+        padding: 0 5%;
       }
       .bon_profile_right {
         float: right;
         width: 40%;
-        min-width: 560px;
+        min-width: 500px;
         border-radius: 600px;
         background-color: white;
         height: 280px;
@@ -80,6 +82,7 @@
         margin-top: 100px;
         @media screen and (max-width: 650px) {
           min-width: auto;
+          margin-top: 60px;
         }
         &.unlogged {
           color: rgb(34, 159, 211);
@@ -99,16 +102,17 @@
           cursor: pointer;
           max-height: 80px;
           @media screen and (min-width: 951px) {
-            margin-top: 140px;
+            margin-top: 160px;
             min-width: 200px;
             padding: 20px 70px;
+            margin-left: 40px
           }
           @media screen and (max-width: 767px) {
             font-size: 30px;
           }
         }
         @media screen and (max-width: 992px) {
-          width: 100%;
+          width: 100vw;
           border-radius: 0;
         }
         @media screen and (min-width: 650px) and (max-width: 992px) {
@@ -237,8 +241,8 @@
       .bon_profile_stat {
         float: left;
         width: 100%;
-        margin-top: 50px;
-        margin-bottom: 78px;
+        margin-top: 30px;
+        margin-bottom: 30px;
 
         .bps_left {
           float: left;

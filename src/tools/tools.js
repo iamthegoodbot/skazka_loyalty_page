@@ -417,10 +417,18 @@ export let Tools = angular.module('magic.tools', [
 
 .service('tools', function($document){
 
-  let initial_overflow = $document[0].body.style.overflow;
+  let initial_overflow = 'auto' //$document[0].body.style.overflow;
 
   this.body_lock = (state) => {
-    $document[0].body.style.overflow = state ? 'hidden' : initial_overflow;
+    if(state) {
+      initial_overflow = $document[0].body.style.overflow;
+      document.querySelector('.page_header').style['z-index'] = -10
+      $document[0].body.style.overflow = 'hidden'
+    } else {
+      document.querySelector('.page_header').style['z-index'] = ''
+      $document[0].body.style.overflow = initial_overflow
+    }
+    
   };
 
   this.stringify_widget_css = (prefix, obj) => {
