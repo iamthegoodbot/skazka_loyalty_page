@@ -27,10 +27,16 @@
                     <span class="gifts_grid__item-points gift_points"
                           data-ng-bind="(gift.points | number) + ' ' + (gift.points | sailplay_pluralize:('points.texts.pluralize' | tools))"></span>
 
-                    <img class="gifts_grid__item-img gift_img"
+                    <div class="image-container">
+                      <img class="gifts_grid__item-img gift_img"
                          data-ng-src="{{ gift.thumbs.url_250x250 | sailplay_pic }}"
                          alt="{{ gift.name }}">
 
+                      <img class="sold_out_img" 
+                           data-ng-src="{{ widget.images.sold_out }}"
+                           alt="sold out"
+                           data-ng-show="gift.quantity<=0 || gift.is_over_quantity_per_user">
+                    </div>
 
                     <a class="gifts_grid__item-button button_primary" href="#"
                        data-ng-bind="widget.texts.get"
@@ -75,10 +81,14 @@
 
                     <span class="alink button_primary" data-ng-click="$parent.$parent.selected_gift=null">{{ 'buttons.texts.close' | tools }}</span>
 
-                    <span class="alink button_primary"
+                    <span data-ng-if="!(selected_gift.quantity<=0 || selected_gift.is_over_quantity_per_user)" class="alink button_primary"
                           style="margin-left: 5px;"
                           data-ng-click="gift_confirm(selected_gift);"
                           data-ng-bind="widget.texts.get"></span>
+                    
+                    <span data-ng-if="selected_gift.quantity<=0 || selected_gift.is_over_quantity_per_user"      class="alink button_primary disabled"
+                          style="margin-left: 5px;"
+                          data-ng-bind="widget.texts.sold_out"></span>
                 </div>
 
             </div>

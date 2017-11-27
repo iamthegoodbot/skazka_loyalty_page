@@ -6,6 +6,22 @@
 
   .gifts_grid_widget {
 
+    & .image-container {
+      position: relative;
+    }
+
+    & .sold_out_img {
+      width: 100%;
+      position: absolute;
+      top: 25%;
+      left: 0;
+    }
+
+    & .alink.disabled {
+      pointer-events: none;
+      background-color: #ddd;
+    }
+
     .gifts_grid {
 
       &__header {

@@ -20,7 +20,7 @@ export let Core = angular.module('magic.core', [
     SailPlayApi.call('load.badges.list', {include_rules: 1});
     SailPlayApi.call('load.actions.list');
     SailPlayApi.call('load.actions.custom.list');
-    SailPlayApi.call('load.gifts.list');
+    SailPlayApi.call('load.gifts.list', {verbose: 1});
     SailPlayApi.call('leaderboard.load');
   }
 
@@ -48,7 +48,7 @@ export let Core = angular.module('magic.core', [
     SailPlayApi.call('load.actions.custom.list');
     SailPlayApi.call('load.user.history');
     SailPlayApi.call('tags.exist', {tags: TAGS});
-    SailPlayApi.call('load.gifts.list');
+    SailPlayApi.call('load.gifts.list', {verbose: 1});
     SailPlayApi.call('leaderboard.load');
   });
 
