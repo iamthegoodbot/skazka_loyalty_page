@@ -1,7 +1,7 @@
 <div class="clearfix membership container">
     <div class="title">{{ widget.texts.title }}</div>
     <div class="status-name">{{ status.name }} MEMBER</div>
-    <!--<div class="renewal">Renewal Date: 28/02/2018</div>-->
+    <div class="renewal" data-ng-bind="widget.texts.renewal_date"></div>
 
     <div class="member-line">
         <div class="check-point active" style="left: 0px" ng-attr-title="{{ statuses[0].name }}"></div>
@@ -19,13 +19,13 @@
         </div>
     </div>
     <div class="motivation-block">
-        <div class="group">
-            <div class="price">{{ need_to_silver | currency:"$":0 }}+</div>
-            <div class="text">Renew as {{ statuses[1].name }}</div>
+        <div class="group" data-ng-hide="need_to_gold_relative<=0">
+            <div class="price" data-ng-show="need_to_silver_relative>0" >{{ need_to_silver_relative | currency:"$":0 }}</div>
+            <div class="text">{{need_to_silver_relative>0 ? 'Become ' + statuses[1].name : 'You will renew as ' + statuses[1].name }}</div>
         </div>
         <div class="group">
-            <div class="price">{{ need_to_gold | currency:"$":0 }}+</div>
-            <div class="text">Become {{ statuses[2].name }}</div>
+            <div class="price" data-ng-show="need_to_gold_relative>0">{{ need_to_gold_relative | currency:"$":0 }}</div>
+            <div data-ng-class="{nomargin: need_to_gold_relative<=0}" class="text">{{need_to_gold_relative>0 ? 'Become ' + statuses[2].name : 'You will renew as ' + statuses[2].name }}</div>
         </div>
     </div>
     <div class="buttons">

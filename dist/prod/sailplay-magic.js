@@ -477,7 +477,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 17 */
 /***/ (function(module, exports) {
 
-	var core = module.exports = { version: '2.5.0' };
+	var core = module.exports = { version: '2.5.1' };
 	if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
 
 
@@ -1981,32 +1981,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  });
 
-	  // SOCIAL GOOGLE PLUS CHANGE HEIGHT
-	  sp.on('actions.social.gp.like.mouseenter', function(){
-	    var elms = document.querySelectorAll('iframe[iframe-action-gp-like], iframe.gp.like');
-	    var originWidth,
-	      w,
-	      h = 500;
-	    for(var i = 0, len = elms.length; i < len; i++){
-	      elms[i].removeAttribute("style");
-	      originWidth = elms[i].parentNode. offsetWidth;
-	      w = +originWidth + 70;
-	      elms[i].style.cssText = 'width: ' + w + 'px !important;height: ' + h + 'px !important;margin-left: -35px !important;z-index: 10 !important;';
-	      elms[i].parentNode.style.setProperty ("overflow", "visible", "important");
-	    }
-	  });
-
-	  sp.on('actions.social.gp.like.mouseleave', function(){
-	    var elms = document.querySelectorAll('iframe[iframe-action-gp-like], iframe.gp.like');
-	    var w = 150,
-	      h = 27;
-	    for(var i = 0, len = elms.length; i < len; i++){
-	      elms[i].removeAttribute("style");
-	      elms[i].style.cssText = 'width: ' + w + 'px !important;height: ' + h + 'px !important;margin-left: auto !important;';
-	      elms[i].parentNode.style.setProperty ("overflow", "hidden", "important");
-	    }
-	  });
-
 	  var Actions = {};
 
 	  Actions.social_init = function(actions){
@@ -2181,7 +2155,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ (function(module, exports) {
 
 	/**
-	 * @license AngularJS v1.6.6
+	 * @license AngularJS v1.6.7
 	 * (c) 2010-2017 Google, Inc. http://angularjs.org
 	 * License: MIT
 	 */
@@ -2288,7 +2262,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      return match;
 	    });
 
-	    message += '\nhttp://errors.angularjs.org/1.6.6/' +
+	    message += '\nhttp://errors.angularjs.org/1.6.7/' +
 	      (module ? module + '/' : '') + code;
 
 	    for (i = 0, paramPrefix = '?'; i < templateArgs.length; i++, paramPrefix = '&') {
@@ -2411,13 +2385,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @installation
 	 * @description
 	 *
-	 * # ng (core module)
 	 * The ng module is loaded by default when an AngularJS application is started. The module itself
 	 * contains the essential components for an AngularJS application to function. The table below
 	 * lists a high level breakdown of each of the services/factories, filters, directives and testing
 	 * components available within this core module.
 	 *
-	 * <div doc-module-components="ng"></div>
 	 */
 
 	var REGEX_STRING_REGEXP = /^\/(.+)\/([a-z]*)$/;
@@ -3158,7 +3130,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          <button ng-click="update(user)">SAVE</button>
 	        </form>
 	        <pre>form = {{user | json}}</pre>
-	        <pre>master = {{master | json}}</pre>
+	        <pre>leader = {{leader | json}}</pre>
 	      </div>
 	    </file>
 	    <file name="script.js">
@@ -3166,16 +3138,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	      angular.
 	        module('copyExample', []).
 	        controller('ExampleController', ['$scope', function($scope) {
-	          $scope.master = {};
+	          $scope.leader = {};
 
 	          $scope.reset = function() {
 	            // Example with 1 argument
-	            $scope.user = angular.copy($scope.master);
+	            $scope.user = angular.copy($scope.leader);
 	          };
 
 	          $scope.update = function(user) {
 	            // Example with 2 arguments
-	            angular.copy(user, $scope.master);
+	            angular.copy(user, $scope.leader);
 	          };
 
 	          $scope.reset();
@@ -3911,6 +3883,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * document would not be compiled, the `AppController` would not be instantiated and the `{{ a+b }}`
 	 * would not be resolved to `3`.
 	 *
+	 * @example
+	 *
+	 * ### Simple Usage
+	 *
 	 * `ngApp` is the easiest, and most common way to bootstrap an application.
 	 *
 	 <example module="ngAppDemo" name="ng-app">
@@ -3926,6 +3902,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	   });
 	   </file>
 	 </example>
+	 *
+	 * @example
+	 *
+	 * ### With `ngStrictDi`
 	 *
 	 * Using `ngStrictDi`, you would see something like this:
 	 *
@@ -4966,11 +4946,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	var version = {
 	  // These placeholder strings will be replaced by grunt's `build` task.
 	  // They need to be double- or single-quoted.
-	  full: '1.6.6',
+	  full: '1.6.7',
 	  major: 1,
 	  minor: 6,
-	  dot: 6,
-	  codeName: 'interdimensional-cable'
+	  dot: 7,
+	  codeName: 'imperial-backstroke'
 	};
 
 
@@ -5116,7 +5096,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      });
 	    }
 	  ])
-	  .info({ angularVersion: '1.6.6' });
+	  .info({ angularVersion: '1.6.7' });
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -5539,13 +5519,18 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function jqLiteRemoveClass(element, cssClasses) {
 	  if (cssClasses && element.setAttribute) {
+	    var existingClasses = (' ' + (element.getAttribute('class') || '') + ' ')
+	                            .replace(/[\n\t]/g, ' ');
+	    var newClasses = existingClasses;
+
 	    forEach(cssClasses.split(' '), function(cssClass) {
-	      element.setAttribute('class', trim(
-	          (' ' + (element.getAttribute('class') || '') + ' ')
-	          .replace(/[\n\t]/g, ' ')
-	          .replace(' ' + trim(cssClass) + ' ', ' '))
-	      );
+	      cssClass = trim(cssClass);
+	      newClasses = newClasses.replace(' ' + cssClass + ' ', ' ');
 	    });
+
+	    if (newClasses !== existingClasses) {
+	      element.setAttribute('class', trim(newClasses));
+	    }
 	  }
 	}
 
@@ -5553,15 +5538,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	  if (cssClasses && element.setAttribute) {
 	    var existingClasses = (' ' + (element.getAttribute('class') || '') + ' ')
 	                            .replace(/[\n\t]/g, ' ');
+	    var newClasses = existingClasses;
 
 	    forEach(cssClasses.split(' '), function(cssClass) {
 	      cssClass = trim(cssClass);
-	      if (existingClasses.indexOf(' ' + cssClass + ' ') === -1) {
-	        existingClasses += cssClass + ' ';
+	      if (newClasses.indexOf(' ' + cssClass + ' ') === -1) {
+	        newClasses += cssClass + ' ';
 	      }
 	    });
 
-	    element.setAttribute('class', trim(existingClasses));
+	    if (newClasses !== existingClasses) {
+	      element.setAttribute('class', trim(newClasses));
+	    }
 	  }
 	}
 
@@ -6469,7 +6457,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 *   })).toBe($injector);
 	 * ```
 	 *
-	 * # Injection Function Annotation
+	 * ## Injection Function Annotation
 	 *
 	 * JavaScript does not have annotations, and annotations are needed for dependency injection. The
 	 * following are all valid ways of annotating function with injection arguments and are equivalent.
@@ -6487,7 +6475,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 *   $injector.invoke(['serviceA', function(serviceA){}]);
 	 * ```
 	 *
-	 * ## Inference
+	 * ### Inference
 	 *
 	 * In JavaScript calling `toString()` on a function returns the function definition. The definition
 	 * can then be parsed and the function arguments can be extracted. This method of discovering
@@ -6495,10 +6483,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * *NOTE:* This does not work with minification, and obfuscation tools since these tools change the
 	 * argument names.
 	 *
-	 * ## `$inject` Annotation
+	 * ### `$inject` Annotation
 	 * By adding an `$inject` property onto a function the injection parameters can be specified.
 	 *
-	 * ## Inline
+	 * ### Inline
 	 * As an array of injection names, where the last item in the array is the function to call.
 	 */
 
@@ -6586,7 +6574,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * function is invoked. There are three ways in which the function can be annotated with the needed
 	 * dependencies.
 	 *
-	 * # Argument names
+	 * #### Argument names
 	 *
 	 * The simplest form is to extract the dependencies from the arguments of the function. This is done
 	 * by converting the function into a string using `toString()` method and extracting the argument
@@ -6606,7 +6594,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * This method does not work with code minification / obfuscation. For this reason the following
 	 * annotation strategies are supported.
 	 *
-	 * # The `$inject` property
+	 * #### The `$inject` property
 	 *
 	 * If a function has an `$inject` property and its value is an array of strings, then the strings
 	 * represent names of services to be injected into the function.
@@ -6622,7 +6610,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 *   expect(injector.annotate(MyController)).toEqual(['$scope', '$route']);
 	 * ```
 	 *
-	 * # The array notation
+	 * #### The array notation
 	 *
 	 * It is often desirable to inline Injected functions and that's when setting the `$inject` property
 	 * is very inconvenient. In these situations using the array notation to specify the dependencies in
@@ -6659,7 +6647,45 @@ return /******/ (function(modules) { // webpackBootstrap
 	 *
 	 * @returns {Array.<string>} The names of the services which the function requires.
 	 */
-
+	/**
+	 * @ngdoc method
+	 * @name $injector#loadNewModules
+	 *
+	 * @description
+	 *
+	 * **This is a dangerous API, which you use at your own risk!**
+	 *
+	 * Add the specified modules to the current injector.
+	 *
+	 * This method will add each of the injectables to the injector and execute all of the config and run
+	 * blocks for each module passed to the method.
+	 *
+	 * If a module has already been loaded into the injector then it will not be loaded again.
+	 *
+	 * * The application developer is responsible for loading the code containing the modules; and for
+	 * ensuring that lazy scripts are not downloaded and executed more often that desired.
+	 * * Previously compiled HTML will not be affected by newly loaded directives, filters and components.
+	 * * Modules cannot be unloaded.
+	 *
+	 * You can use {@link $injector#modules `$injector.modules`} to check whether a module has been loaded
+	 * into the injector, which may indicate whether the script has been executed already.
+	 *
+	 * @example
+	 * Here is an example of loading a bundle of modules, with a utility method called `getScript`:
+	 *
+	 * ```javascript
+	 * app.factory('loadModule', function($injector) {
+	 *   return function loadModule(moduleName, bundleUrl) {
+	 *     return getScript(bundleUrl).then(function() { $injector.loadNewModules([moduleName]); });
+	 *   };
+	 * })
+	 * ```
+	 *
+	 * @param {Array<String|Function|Array>=} mods an array of modules to load into the application.
+	 *     Each item in the array should be the name of a predefined module or a (DI annotated)
+	 *     function that will be invoked by the injector as a `config` block.
+	 *     See: {@link angular.module modules}
+	 */
 
 
 	/**
@@ -7022,6 +7048,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	  instanceInjector = protoInstanceInjector.get('$injector');
 	  instanceInjector.strictDi = strictDi;
 	  forEach(runBlocks, function(fn) { if (fn) instanceInjector.invoke(fn); });
+
+	  instanceInjector.loadNewModules = function(mods) {
+	    forEach(loadModules(mods), function(fn) { if (fn) instanceInjector.invoke(fn); });
+	  };
+
 
 	  return instanceInjector;
 
@@ -8964,8 +8995,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	       *
 	       * @description
 	       * A cache object used to store and retrieve data, primarily used by
-	       * {@link $http $http} and the {@link ng.directive:script script} directive to cache
-	       * templates and other data.
+	       * {@link $templateRequest $templateRequest} and the {@link ng.directive:script script}
+	       * directive to cache templates and other data.
 	       *
 	       * ```js
 	       *  angular.module('superCache')
@@ -9218,9 +9249,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @this
 	 *
 	 * @description
+	 * `$templateCache` is a {@link $cacheFactory.Cache Cache object} created by the
+	 * {@link ng.$cacheFactory $cacheFactory}.
+	 *
 	 * The first time a template is used, it is loaded in the template cache for quick retrieval. You
-	 * can load templates directly into the cache in a `script` tag, or by consuming the
-	 * `$templateCache` service directly.
+	 * can load templates directly into the cache in a `script` tag, by using {@link $templateRequest},
+	 * or by consuming the `$templateCache` service directly.
 	 *
 	 * Adding via the `script` tag:
 	 *
@@ -9231,8 +9265,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * ```
 	 *
 	 * **Note:** the `script` tag containing the template does not need to be included in the `head` of
-	 * the document, but it must be a descendent of the {@link ng.$rootElement $rootElement} (IE,
-	 * element with ng-app attribute), otherwise the template will be ignored.
+	 * the document, but it must be a descendent of the {@link ng.$rootElement $rootElement} (e.g.
+	 * element with {@link ngApp} attribute), otherwise the template will be ignored.
 	 *
 	 * Adding via the `$templateCache` service:
 	 *
@@ -9254,8 +9288,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * ```js
 	 * $templateCache.get('templateId.html')
 	 * ```
-	 *
-	 * See {@link ng.$cacheFactory $cacheFactory}.
 	 *
 	 */
 	function $TemplateCacheProvider() {
@@ -9770,8 +9802,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * $sce#getTrustedResourceUrl $sce.getTrustedResourceUrl}.
 	 *
 	 *
-	 * #### `replace` ([*DEPRECATED*!], will be removed in next major release - i.e. v2.0)
-	 * specify what the template should replace. Defaults to `false`.
+	 * #### `replace` (*DEPRECATED*)
+	 *
+	 * `replace` will be removed in next major release - i.e. v2.0).
+	 *
+	 * Specifies what the template should replace. Defaults to `false`.
 	 *
 	 * * `true` - the template will replace the directive's element.
 	 * * `false` - the template will replace the contents of the directive's element.
@@ -10626,7 +10661,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * binding information and a reference to the current scope on to DOM elements.
 	   * If enabled, the compiler will add the following to DOM elements that have been bound to the scope
 	   * * `ng-binding` CSS class
+	   * * `ng-scope` and `ng-isolated-scope` CSS classes
 	   * * `$binding` data property containing an array of the binding expressions
+	   * * Data properties used by the {@link angular.element#methods `scope()`/`isolateScope()` methods} to return
+	   *   the element's scope.
+	   * * Placeholder comments will contain information about what directive and binding caused the placeholder.
+	   *   E.g. `<!-- ngIf: shouldShow() -->`.
 	   *
 	   * You may want to disable this in production for a significant performance boost. See
 	   * {@link guide/production#disabling-debug-data Disabling Debug Data} for more.
@@ -12927,7 +12967,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	function directiveNormalize(name) {
 	  return name
 	    .replace(PREFIX_REGEXP, '')
-	    .replace(SPECIAL_CHARS_REGEXP, fnCamelCaseReplace);
+	    .replace(SPECIAL_CHARS_REGEXP, function(_, letter, offset) {
+	      return offset ? letter.toUpperCase() : letter;
+	    });
 	}
 
 	/**
@@ -14448,7 +14490,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	     *
 	     * @param {string|TrustedObject} url Absolute or relative URL of the resource that is being requested;
 	     *                                   or an object created by a call to `$sce.trustAsResourceUrl(url)`.
-	     * @param {Object=} config Optional configuration object
+	     * @param {Object=} config Optional configuration object. See https://docs.angularjs.org/api/ng/service/$http#usage
 	     * @returns {HttpPromise} Future object
 	     */
 
@@ -14461,7 +14503,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	     *
 	     * @param {string|TrustedObject} url Absolute or relative URL of the resource that is being requested;
 	     *                                   or an object created by a call to `$sce.trustAsResourceUrl(url)`.
-	     * @param {Object=} config Optional configuration object
+	     * @param {Object=} config Optional configuration object. See https://docs.angularjs.org/api/ng/service/$http#usage
 	     * @returns {HttpPromise} Future object
 	     */
 
@@ -14474,7 +14516,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	     *
 	     * @param {string|TrustedObject} url Absolute or relative URL of the resource that is being requested;
 	     *                                   or an object created by a call to `$sce.trustAsResourceUrl(url)`.
-	     * @param {Object=} config Optional configuration object
+	     * @param {Object=} config Optional configuration object. See https://docs.angularjs.org/api/ng/service/$http#usage
 	     * @returns {HttpPromise} Future object
 	     */
 
@@ -14490,6 +14532,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * You can trust a URL by adding it to the whitelist via
 	     * {@link $sceDelegateProvider#resourceUrlWhitelist  `$sceDelegateProvider.resourceUrlWhitelist`} or
 	     * by explicitly trusting the URL via {@link $sce#trustAsResourceUrl `$sce.trustAsResourceUrl(url)`}.
+	     *
+	     * You should avoid generating the URL for the JSONP request from user provided data.
+	     * Provide additional query parameters via `params` property of the `config` parameter, rather than
+	     * modifying the URL itself.
 	     *
 	     * JSONP requests must specify a callback to be used in the response from the server. This callback
 	     * is passed as a query parameter in the request. You must specify the name of this parameter by
@@ -14512,7 +14558,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	     *
 	     * @param {string|TrustedObject} url Absolute or relative URL of the resource that is being requested;
 	     *                                   or an object created by a call to `$sce.trustAsResourceUrl(url)`.
-	     * @param {Object=} config Optional configuration object
+	     * @param {Object=} config Optional configuration object. See https://docs.angularjs.org/api/ng/service/$http#usage
 	     * @returns {HttpPromise} Future object
 	     */
 	    createShortMethods('get', 'delete', 'head', 'jsonp');
@@ -14526,7 +14572,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	     *
 	     * @param {string} url Relative or absolute URL specifying the destination of the request
 	     * @param {*} data Request content
-	     * @param {Object=} config Optional configuration object
+	     * @param {Object=} config Optional configuration object. See https://docs.angularjs.org/api/ng/service/$http#usage
 	     * @returns {HttpPromise} Future object
 	     */
 
@@ -14539,7 +14585,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	     *
 	     * @param {string} url Relative or absolute URL specifying the destination of the request
 	     * @param {*} data Request content
-	     * @param {Object=} config Optional configuration object
+	     * @param {Object=} config Optional configuration object. See https://docs.angularjs.org/api/ng/service/$http#usage
 	     * @returns {HttpPromise} Future object
 	     */
 
@@ -14552,7 +14598,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      *
 	      * @param {string} url Relative or absolute URL specifying the destination of the request
 	      * @param {*} data Request content
-	      * @param {Object=} config Optional configuration object
+	      * @param {Object=} config Optional configuration object. See https://docs.angularjs.org/api/ng/service/$http#usage
 	      * @returns {HttpPromise} Future object
 	      */
 	    createShortMethodsWithData('post', 'put', 'patch');
@@ -14766,20 +14812,26 @@ return /******/ (function(modules) { // webpackBootstrap
 	      return url;
 	    }
 
-	    function sanitizeJsonpCallbackParam(url, key) {
-	      if (/[&?][^=]+=JSON_CALLBACK/.test(url)) {
-	        // Throw if the url already contains a reference to JSON_CALLBACK
-	        throw $httpMinErr('badjsonp', 'Illegal use of JSON_CALLBACK in url, "{0}"', url);
+	    function sanitizeJsonpCallbackParam(url, cbKey) {
+	      var parts = url.split('?');
+	      if (parts.length > 2) {
+	        // Throw if the url contains more than one `?` query indicator
+	        throw $httpMinErr('badjsonp', 'Illegal use more than one "?", in url, "{1}"', url);
 	      }
-
-	      var callbackParamRegex = new RegExp('[&?]' + key + '=');
-	      if (callbackParamRegex.test(url)) {
-	        // Throw if the callback param was already provided
-	        throw $httpMinErr('badjsonp', 'Illegal use of callback param, "{0}", in url, "{1}"', key, url);
-	      }
+	      var params = parseKeyValue(parts[1]);
+	      forEach(params, function(value, key) {
+	        if (value === 'JSON_CALLBACK') {
+	          // Throw if the url already contains a reference to JSON_CALLBACK
+	          throw $httpMinErr('badjsonp', 'Illegal use of JSON_CALLBACK in url, "{0}"', url);
+	        }
+	        if (key === cbKey) {
+	          // Throw if the callback param was already provided
+	          throw $httpMinErr('badjsonp', 'Illegal use of callback param, "{0}", in url, "{1}"', cbKey, url);
+	        }
+	      });
 
 	      // Add in the JSON_CALLBACK callback param value
-	      url += ((url.indexOf('?') === -1) ? '?' : '&') + key + '=JSON_CALLBACK';
+	      url += ((url.indexOf('?') === -1) ? '?' : '&') + cbKey + '=JSON_CALLBACK';
 
 	      return url;
 	    }
@@ -15705,7 +15757,23 @@ return /******/ (function(modules) { // webpackBootstrap
 	      i = segments.length;
 
 	  while (i--) {
-	    segments[i] = encodeUriSegment(segments[i]);
+	    // decode forward slashes to prevent them from being double encoded
+	    segments[i] = encodeUriSegment(segments[i].replace(/%2F/g, '/'));
+	  }
+
+	  return segments.join('/');
+	}
+
+	function decodePath(path, html5Mode) {
+	  var segments = path.split('/'),
+	      i = segments.length;
+
+	  while (i--) {
+	    segments[i] = decodeURIComponent(segments[i]);
+	    if (html5Mode) {
+	      // encode forward slashes to prevent them from being mistaken for path separators
+	      segments[i] = segments[i].replace(/\//g, '%2F');
+	    }
 	  }
 
 	  return segments.join('/');
@@ -15720,7 +15788,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 	var DOUBLE_SLASH_REGEX = /^\s*[\\/]{2,}/;
-	function parseAppUrl(url, locationObj) {
+	function parseAppUrl(url, locationObj, html5Mode) {
 
 	  if (DOUBLE_SLASH_REGEX.test(url)) {
 	    throw $locationMinErr('badpath', 'Invalid url "{0}".', url);
@@ -15731,8 +15799,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    url = '/' + url;
 	  }
 	  var match = urlResolve(url);
-	  locationObj.$$path = decodeURIComponent(prefixed && match.pathname.charAt(0) === '/' ?
-	      match.pathname.substring(1) : match.pathname);
+	  var path = prefixed && match.pathname.charAt(0) === '/' ? match.pathname.substring(1) : match.pathname;
+	  locationObj.$$path = decodePath(path, html5Mode);
 	  locationObj.$$search = parseKeyValue(match.search);
 	  locationObj.$$hash = decodeURIComponent(match.hash);
 
@@ -15807,7 +15875,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          appBaseNoFile);
 	    }
 
-	    parseAppUrl(pathUrl, this);
+	    parseAppUrl(pathUrl, this, true);
 
 	    if (!this.$$path) {
 	      this.$$path = '/';
@@ -15910,7 +15978,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 	    }
 
-	    parseAppUrl(withoutHashUrl, this);
+	    parseAppUrl(withoutHashUrl, this, false);
 
 	    this.$$path = removeWindowsDriveName(this.$$path, withoutHashUrl, appBase);
 
@@ -16095,7 +16163,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 
 	    var match = PATH_MATCH.exec(url);
-	    if (match[1] || url === '') this.path(decodeURIComponent(match[1]));
+	    if (match[1] || url === '') this.path(decodeURI(match[1]));
 	    if (match[2] || match[1] || url === '') this.search(match[3] || '');
 	    this.hash(match[5] || '');
 
@@ -18889,7 +18957,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * $q can be used in two fashions --- one which is more similar to Kris Kowal's Q or jQuery's Deferred
 	 * implementations, and the other which resembles ES6 (ES2015) promises to some degree.
 	 *
-	 * # $q constructor
+	 * ## $q constructor
 	 *
 	 * The streamlined ES6 style promise is essentially just using $q as a constructor which takes a `resolver`
 	 * function as the first argument. This is similar to the native Promise implementation from ES6,
@@ -18977,7 +19045,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * For more on this please see the [Q documentation](https://github.com/kriskowal/q) especially the
 	 * section on serial or parallel joining of promises.
 	 *
-	 * # The Deferred API
+	 * ## The Deferred API
 	 *
 	 * A new instance of deferred is constructed by calling `$q.defer()`.
 	 *
@@ -18999,7 +19067,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * - promise – `{Promise}` – promise object associated with this deferred.
 	 *
 	 *
-	 * # The Promise API
+	 * ## The Promise API
 	 *
 	 * A new promise instance is created when a deferred instance is created and can be retrieved by
 	 * calling `deferred.promise`.
@@ -19031,7 +19099,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 *   specification](https://github.com/kriskowal/q/wiki/API-Reference#promisefinallycallback) for
 	 *   more information.
 	 *
-	 * # Chaining promises
+	 * ## Chaining promises
 	 *
 	 * Because calling the `then` method of a promise returns a new derived promise, it is easily
 	 * possible to create a chain of promises:
@@ -19051,7 +19119,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * $http's response interceptors.
 	 *
 	 *
-	 * # Differences between Kris Kowal's Q and $q
+	 * ## Differences between Kris Kowal's Q and $q
 	 *
 	 *  There are two main differences:
 	 *
@@ -19061,7 +19129,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * - Q has many more features than $q, but that comes at a cost of bytes. $q is tiny, but contains
 	 *   all the important functionality needed for common async tasks.
 	 *
-	 * # Testing
+	 * ## Testing
 	 *
 	 *  ```js
 	 *    it('should simulate promise', inject(function($q, $rootScope) {
@@ -19238,6 +19306,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	          }
 	        } catch (e) {
 	          rejectPromise(promise, e);
+	          // This error is explicitly marked for being passed to the $exceptionHandler
+	          if (e && e.$$passToExceptionHandler === true) {
+	            exceptionHandler(e);
+	          }
 	        }
 	      }
 	    } finally {
@@ -19730,7 +19802,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * an in-depth introduction and usage examples.
 	     *
 	     *
-	     * # Inheritance
+	     * ## Inheritance
 	     * A scope can inherit from a parent scope, as in this example:
 	     * ```js
 	         var parent = $rootScope;
@@ -19905,7 +19977,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	       *
 	       *
 	       *
-	       * # Example
+	       * @example
 	       * ```js
 	           // let's assume that scope was dependency injected as the $rootScope
 	           var scope = $rootScope;
@@ -20156,7 +20228,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	       *   adding, removing, and moving items belonging to an object or array.
 	       *
 	       *
-	       * # Example
+	       * @example
 	       * ```js
 	          $scope.names = ['igor', 'matias', 'misko', 'james'];
 	          $scope.dataCount = 4;
@@ -20354,7 +20426,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	       *
 	       * In unit tests, you may need to call `$digest()` to simulate the scope life cycle.
 	       *
-	       * # Example
+	       * @example
 	       * ```js
 	           var scope = ...;
 	           scope.name = 'misko';
@@ -20583,7 +20655,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	       * the expression are propagated (uncaught). This is useful when evaluating Angular
 	       * expressions.
 	       *
-	       * # Example
+	       * @example
 	       * ```js
 	           var scope = ng.$rootScope.Scope();
 	           scope.a = 1;
@@ -20665,9 +20737,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	       * cycle of {@link ng.$exceptionHandler exception handling},
 	       * {@link ng.$rootScope.Scope#$digest executing watches}.
 	       *
-	       * ## Life cycle
+	       * **Life cycle: Pseudo-Code of `$apply()`**
 	       *
-	       * # Pseudo-Code of `$apply()`
 	       * ```js
 	           function $apply(expr) {
 	             try {
@@ -20795,7 +20866,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return function() {
 	          var indexOfListener = namedListeners.indexOf(listener);
 	          if (indexOfListener !== -1) {
-	            namedListeners[indexOfListener] = null;
+	            // Use delete in the hope of the browser deallocating the memory for the array entry,
+	            // while not shifting the array indexes of other listeners.
+	            // See issue https://github.com/angular/angular.js/issues/16135
+	            delete namedListeners[indexOfListener];
 	            decrementListenerCount(self, 1, name);
 	          }
 	        };
@@ -20862,8 +20936,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          }
 	          //if any listener on the current scope stops propagation, prevent bubbling
 	          if (stopPropagation) {
-	            event.currentScope = null;
-	            return event;
+	            break;
 	          }
 	          //traverse upwards
 	          scope = scope.$parent;
@@ -21039,7 +21112,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * Private service to sanitize uris for links and images. Used by $compile and $sanitize.
 	 */
 	function $$SanitizeUriProvider() {
-	  var aHrefSanitizationWhitelist = /^\s*(https?|ftp|mailto|tel|file):/,
+	  var aHrefSanitizationWhitelist = /^\s*(https?|s?ftp|mailto|tel|file):/,
 	    imgSrcSanitizationWhitelist = /^\s*((https?|ftp|file|blob):|data:image\/)/;
 
 	  /**
@@ -21095,7 +21168,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return function sanitizeUri(uri, isImage) {
 	      var regex = isImage ? imgSrcSanitizationWhitelist : aHrefSanitizationWhitelist;
 	      var normalizedVal;
-	      normalizedVal = urlResolve(uri).href;
+	      normalizedVal = urlResolve(uri && uri.trim()).href;
 	      if (normalizedVal !== '' && !normalizedVal.match(regex)) {
 	        return 'unsafe:' + normalizedVal;
 	      }
@@ -21567,13 +21640,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	 *
 	 * `$sce` is a service that provides Strict Contextual Escaping services to AngularJS.
 	 *
-	 * # Strict Contextual Escaping
+	 * ## Strict Contextual Escaping
 	 *
 	 * Strict Contextual Escaping (SCE) is a mode in which AngularJS constrains bindings to only render
 	 * trusted values. Its goal is to assist in writing code in a way that (a) is secure by default, and
 	 * (b) makes auditing for security vulnerabilities such as XSS, clickjacking, etc. a lot easier.
 	 *
-	 * ## Overview
+	 * ### Overview
 	 *
 	 * To systematically block XSS security bugs, AngularJS treats all values as untrusted by default in
 	 * HTML or sensitive URL bindings. When binding untrusted values, AngularJS will automatically
@@ -21589,7 +21662,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 *
 	 * As of version 1.2, AngularJS ships with SCE enabled by default.
 	 *
-	 * ## In practice
+	 * ### In practice
 	 *
 	 * Here's an example of a binding in a privileged context:
 	 *
@@ -21626,7 +21699,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * (and shorthand methods such as {@link ng.$sce#trustAsHtml $sce.trustAsHtml}, etc.) to
 	 * build the trusted versions of your values.
 	 *
-	 * ## How does it work?
+	 * ### How does it work?
 	 *
 	 * In privileged contexts, directives and code will bind to the result of {@link ng.$sce#getTrusted
 	 * $sce.getTrusted(context, value)} rather than to the value directly.  Think of this function as
@@ -21650,7 +21723,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * }];
 	 * ```
 	 *
-	 * ## Impact on loading templates
+	 * ### Impact on loading templates
 	 *
 	 * This applies both to the {@link ng.directive:ngInclude `ng-include`} directive as well as
 	 * `templateUrl`'s specified by {@link guide/directive directives}.
@@ -21670,7 +21743,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * won't work on all browsers.  Also, loading templates from `file://` URL does not work on some
 	 * browsers.
 	 *
-	 * ## This feels like too much overhead
+	 * ### This feels like too much overhead
 	 *
 	 * It's important to remember that SCE only applies to interpolation expressions.
 	 *
@@ -21694,7 +21767,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * security onto an application later.
 	 *
 	 * <a name="contexts"></a>
-	 * ## What trusted context types are supported?
+	 * ### What trusted context types are supported?
 	 *
 	 * | Context             | Notes          |
 	 * |---------------------|----------------|
@@ -21710,7 +21783,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * in AngularJS currently, so their corresponding `$sce.trustAs` functions aren't useful yet. This
 	 * might evolve.
 	 *
-	 * ## Format of items in {@link ng.$sceDelegateProvider#resourceUrlWhitelist resourceUrlWhitelist}/{@link ng.$sceDelegateProvider#resourceUrlBlacklist Blacklist} <a name="resourceUrlPatternItem"></a>
+	 * ### Format of items in {@link ng.$sceDelegateProvider#resourceUrlWhitelist resourceUrlWhitelist}/{@link ng.$sceDelegateProvider#resourceUrlBlacklist Blacklist} <a name="resourceUrlPatternItem"></a>
 	 *
 	 *  Each element in these arrays must be one of the following:
 	 *
@@ -21757,7 +21830,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 *
 	 * Refer {@link ng.$sceDelegateProvider $sceDelegateProvider} for an example.
 	 *
-	 * ## Show me an example using SCE.
+	 * ### Show me an example using SCE.
 	 *
 	 * <example module="mySceApp" deps="angular-sanitize.js" name="sce-service">
 	 * <file name="index.html">
@@ -22386,6 +22459,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * If you want to pass custom options to the `$http` service, such as setting the Accept header you
 	   * can configure this via {@link $templateRequestProvider#httpOptions}.
+	   *
+	   * `$templateRequest` is used internally by {@link $compile}, {@link ngRoute.$route}, and directives such
+	   * as {@link ngInclude} to download and cache templates.
+	   *
+	   * 3rd party modules should use `$templateRequest` if their services or directives are loading
+	   * templates.
 	   *
 	   * @param {string|TrustedResourceUrl} tpl The HTTP request template URL
 	   * @param {boolean=} ignoreRequestError Whether or not to ignore the exception when the request fails or the template is empty
@@ -25117,14 +25196,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @example
 	    <example name="ng-checked">
 	      <file name="index.html">
-	        <label>Check me to check both: <input type="checkbox" ng-model="master"></label><br/>
-	        <input id="checkSlave" type="checkbox" ng-checked="master" aria-label="Slave input">
+	        <label>Check me to check both: <input type="checkbox" ng-model="leader"></label><br/>
+	        <input id="checkFollower" type="checkbox" ng-checked="leader" aria-label="Follower input">
 	      </file>
 	      <file name="protractor.js" type="protractor">
 	        it('should check both checkBoxes', function() {
-	          expect(element(by.id('checkSlave')).getAttribute('checked')).toBeFalsy();
-	          element(by.model('master')).click();
-	          expect(element(by.id('checkSlave')).getAttribute('checked')).toBeTruthy();
+	          expect(element(by.id('checkFollower')).getAttribute('checked')).toBeFalsy();
+	          element(by.model('leader')).click();
+	          expect(element(by.id('checkFollower')).getAttribute('checked')).toBeTruthy();
 	        });
 	      </file>
 	    </example>
@@ -25719,7 +25798,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * If the `name` attribute is specified, the form controller is published onto the current scope under
 	 * this name.
 	 *
-	 * # Alias: {@link ng.directive:ngForm `ngForm`}
+	 * ## Alias: {@link ng.directive:ngForm `ngForm`}
 	 *
 	 * In Angular, forms can be nested. This means that the outer form is valid when all of the child
 	 * forms are valid as well. However, browsers do not allow nesting of `<form>` elements, so
@@ -25727,7 +25806,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * `form` but can be nested. Nested forms can be useful, for example, if the validity of a sub-group
 	 * of controls needs to be determined.
 	 *
-	 * # CSS classes
+	 * ## CSS classes
 	 *  - `ng-valid` is set if the form is valid.
 	 *  - `ng-invalid` is set if the form is invalid.
 	 *  - `ng-pending` is set if the form is pending.
@@ -25738,7 +25817,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * Keep in mind that ngAnimate can detect each of these classes when added and removed.
 	 *
 	 *
-	 * # Submitting a form and preventing the default action
+	 * ## Submitting a form and preventing the default action
 	 *
 	 * Since the role of forms in client-side Angular applications is different than in classical
 	 * roundtrip apps, it is desirable for the browser not to translate the form submission into a full
@@ -25771,8 +25850,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * submitted. Note that `ngClick` events will occur before the model is updated. Use `ngSubmit`
 	 * to have access to the updated model.
 	 *
-	 * ## Animation Hooks
-	 *
+	 * @animations
 	 * Animations in ngForm are triggered when any of the associated CSS classes are added and removed.
 	 * These classes are: `.ng-pristine`, `.ng-dirty`, `.ng-invalid` and `.ng-valid` as well as any
 	 * other validations that are performed within the form. Animations in ngForm are similar to how
@@ -27135,8 +27213,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *                  Can be interpolated.
 	   * @param {string=} step Sets the `step` validation to ensure that the value entered matches the `step`
 	   *                  Can be interpolated.
-	   * @param {string=} ngChange Angular expression to be executed when the ngModel value changes due
-	   *                  to user interaction with the input element.
+	   * @param {expression=} ngChange AngularJS expression to be executed when the ngModel value changes due
+	   *                      to user interaction with the input element.
 	   * @param {expression=} ngChecked If the expression is truthy, then the `checked` attribute will be set on the
 	   *                      element. **Note** : `ngChecked` should not be used alongside `ngModel`.
 	   *                      Checkout {@link ng.directive:ngChecked ngChecked} for usage.
@@ -28121,6 +28199,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	/**
 	 * @ngdoc directive
 	 * @name ngValue
+	 * @restrict A
+	 * @priority 100
 	 *
 	 * @description
 	 * Binds the given expression to the value of the element.
@@ -28133,8 +28213,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * It can also be used to achieve one-way binding of a given expression to an input element
 	 * such as an `input[text]` or a `textarea`, when that element does not use ngModel.
 	 *
-	 * @element input
-	 * @param {string=} ngValue angular expression, whose value will be bound to the `value` attribute
+	 * @element ANY
+	 * @param {string=} ngValue AngularJS expression, whose value will be bound to the `value` attribute
 	 * and `value` property of the element.
 	 *
 	 * @example
@@ -28418,6 +28498,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	/**
 	 * @ngdoc directive
 	 * @name ngChange
+	 * @restrict A
 	 *
 	 * @description
 	 * Evaluate the given expression when the user changes the input.
@@ -28436,7 +28517,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 *
 	 * Note, this directive requires `ngModel` to be present.
 	 *
-	 * @element input
+	 * @element ANY
 	 * @param {expression} ngChange {@link guide/expression Expression} to evaluate upon change
 	 * in input value.
 	 *
@@ -28678,6 +28759,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @ngdoc directive
 	 * @name ngClass
 	 * @restrict AC
+	 * @element ANY
 	 *
 	 * @description
 	 * The `ngClass` directive allows you to dynamically set CSS classes on an HTML element by databinding
@@ -28713,14 +28795,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * | {@link ng.$animate#addClass addClass}       | just before the class is applied to the element   |
 	 * | {@link ng.$animate#removeClass removeClass} | just before the class is removed from the element |
 	 *
-	 * @element ANY
+	 * ### ngClass and pre-existing CSS3 Transitions/Animations
+	   The ngClass directive still supports CSS3 Transitions/Animations even if they do not follow the ngAnimate CSS naming structure.
+	   Upon animation ngAnimate will apply supplementary CSS classes to track the start and end of an animation, but this will not hinder
+	   any pre-existing CSS transitions already on the element. To get an idea of what happens during a class-based animation, be sure
+	   to view the step by step details of {@link $animate#addClass $animate.addClass} and
+	   {@link $animate#removeClass $animate.removeClass}.
+	 *
 	 * @param {expression} ngClass {@link guide/expression Expression} to eval. The result
 	 *   of the evaluation can be a string representing space delimited class
 	 *   names, an array, or a map of class names to boolean values. In the case of a map, the
 	 *   names of the properties whose values are truthy will be added as css classes to the
 	 *   element.
 	 *
-	 * @example Example that demonstrates basic bindings via ngClass directive.
+	 * @example
+	 * ### Basic
 	   <example name="ng-class">
 	     <file name="index.html">
 	       <p ng-class="{strike: deleted, bold: important, 'has-error': error}">Map Syntax Example</p>
@@ -28810,7 +28899,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	     </file>
 	   </example>
 
-	   ## Animations
+	   @example
+	   ### Animations
 
 	   The example below demonstrates how to perform animations using ngClass.
 
@@ -28848,14 +28938,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	       });
 	     </file>
 	   </example>
-
-
-	   ## ngClass and pre-existing CSS3 Transitions/Animations
-	   The ngClass directive still supports CSS3 Transitions/Animations even if they do not follow the ngAnimate CSS naming structure.
-	   Upon animation ngAnimate will apply supplementary CSS classes to track the start and end of an animation, but this will not hinder
-	   any pre-existing CSS transitions already on the element. To get an idea of what happens during a class-based animation, be sure
-	   to view the step by step details of {@link $animate#addClass $animate.addClass} and
-	   {@link $animate#removeClass $animate.removeClass}.
 	 */
 	var ngClassDirective = classDirective('', true);
 
@@ -29329,6 +29411,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * E.g.`<body ng-csp="no-inline-style;no-unsafe-eval">`
 	 *
 	 * @example
+	 *
 	 * This example shows how to apply the `ngCsp` directive to the `html` tag.
 	   ```html
 	     <!doctype html>
@@ -29337,122 +29420,122 @@ return /******/ (function(modules) { // webpackBootstrap
 	     ...
 	     </html>
 	   ```
-	  * @example
-	      <!-- Note: the `.csp` suffix in the example name triggers CSP mode in our http server! -->
-	      <example name="example.csp" module="cspExample" ng-csp="true">
-	        <file name="index.html">
-	          <div ng-controller="MainController as ctrl">
-	            <div>
-	              <button ng-click="ctrl.inc()" id="inc">Increment</button>
-	              <span id="counter">
-	                {{ctrl.counter}}
-	              </span>
-	            </div>
 
-	            <div>
-	              <button ng-click="ctrl.evil()" id="evil">Evil</button>
-	              <span id="evilError">
-	                {{ctrl.evilError}}
-	              </span>
-	            </div>
-	          </div>
-	        </file>
-	        <file name="script.js">
-	           angular.module('cspExample', [])
-	             .controller('MainController', function MainController() {
-	                this.counter = 0;
-	                this.inc = function() {
-	                  this.counter++;
-	                };
-	                this.evil = function() {
-	                  try {
-	                    eval('1+2'); // eslint-disable-line no-eval
-	                  } catch (e) {
-	                    this.evilError = e.message;
-	                  }
-	                };
-	              });
-	        </file>
-	        <file name="protractor.js" type="protractor">
-	          var util, webdriver;
+	  <!-- Note: the `.csp` suffix in the example name triggers CSP mode in our http server! -->
+	  <example name="example.csp" module="cspExample" ng-csp="true">
+	    <file name="index.html">
+	      <div ng-controller="MainController as ctrl">
+	        <div>
+	          <button ng-click="ctrl.inc()" id="inc">Increment</button>
+	          <span id="counter">
+	            {{ctrl.counter}}
+	          </span>
+	        </div>
 
-	          var incBtn = element(by.id('inc'));
-	          var counter = element(by.id('counter'));
-	          var evilBtn = element(by.id('evil'));
-	          var evilError = element(by.id('evilError'));
-
-	          function getAndClearSevereErrors() {
-	            return browser.manage().logs().get('browser').then(function(browserLog) {
-	              return browserLog.filter(function(logEntry) {
-	                return logEntry.level.value > webdriver.logging.Level.WARNING.value;
-	              });
-	            });
-	          }
-
-	          function clearErrors() {
-	            getAndClearSevereErrors();
-	          }
-
-	          function expectNoErrors() {
-	            getAndClearSevereErrors().then(function(filteredLog) {
-	              expect(filteredLog.length).toEqual(0);
-	              if (filteredLog.length) {
-	                console.log('browser console errors: ' + util.inspect(filteredLog));
+	        <div>
+	          <button ng-click="ctrl.evil()" id="evil">Evil</button>
+	          <span id="evilError">
+	            {{ctrl.evilError}}
+	          </span>
+	        </div>
+	      </div>
+	    </file>
+	    <file name="script.js">
+	       angular.module('cspExample', [])
+	         .controller('MainController', function MainController() {
+	            this.counter = 0;
+	            this.inc = function() {
+	              this.counter++;
+	            };
+	            this.evil = function() {
+	              try {
+	                eval('1+2'); // eslint-disable-line no-eval
+	              } catch (e) {
+	                this.evilError = e.message;
 	              }
-	            });
+	            };
+	          });
+	    </file>
+	    <file name="protractor.js" type="protractor">
+	      var util, webdriver;
+
+	      var incBtn = element(by.id('inc'));
+	      var counter = element(by.id('counter'));
+	      var evilBtn = element(by.id('evil'));
+	      var evilError = element(by.id('evilError'));
+
+	      function getAndClearSevereErrors() {
+	        return browser.manage().logs().get('browser').then(function(browserLog) {
+	          return browserLog.filter(function(logEntry) {
+	            return logEntry.level.value > webdriver.logging.Level.WARNING.value;
+	          });
+	        });
+	      }
+
+	      function clearErrors() {
+	        getAndClearSevereErrors();
+	      }
+
+	      function expectNoErrors() {
+	        getAndClearSevereErrors().then(function(filteredLog) {
+	          expect(filteredLog.length).toEqual(0);
+	          if (filteredLog.length) {
+	            console.log('browser console errors: ' + util.inspect(filteredLog));
 	          }
+	        });
+	      }
 
-	          function expectError(regex) {
-	            getAndClearSevereErrors().then(function(filteredLog) {
-	              var found = false;
-	              filteredLog.forEach(function(log) {
-	                if (log.message.match(regex)) {
-	                  found = true;
-	                }
-	              });
-	              if (!found) {
-	                throw new Error('expected an error that matches ' + regex);
-	              }
-	            });
+	      function expectError(regex) {
+	        getAndClearSevereErrors().then(function(filteredLog) {
+	          var found = false;
+	          filteredLog.forEach(function(log) {
+	            if (log.message.match(regex)) {
+	              found = true;
+	            }
+	          });
+	          if (!found) {
+	            throw new Error('expected an error that matches ' + regex);
 	          }
+	        });
+	      }
 
-	          beforeEach(function() {
-	            util = require('util');
-	            webdriver = require('selenium-webdriver');
-	          });
+	      beforeEach(function() {
+	        util = require('util');
+	        webdriver = require('selenium-webdriver');
+	      });
 
-	          // For now, we only test on Chrome,
-	          // as Safari does not load the page with Protractor's injected scripts,
-	          // and Firefox webdriver always disables content security policy (#6358)
-	          if (browser.params.browser !== 'chrome') {
-	            return;
-	          }
+	      // For now, we only test on Chrome,
+	      // as Safari does not load the page with Protractor's injected scripts,
+	      // and Firefox webdriver always disables content security policy (#6358)
+	      if (browser.params.browser !== 'chrome') {
+	        return;
+	      }
 
-	          it('should not report errors when the page is loaded', function() {
-	            // clear errors so we are not dependent on previous tests
-	            clearErrors();
-	            // Need to reload the page as the page is already loaded when
-	            // we come here
-	            browser.driver.getCurrentUrl().then(function(url) {
-	              browser.get(url);
-	            });
-	            expectNoErrors();
-	          });
+	      it('should not report errors when the page is loaded', function() {
+	        // clear errors so we are not dependent on previous tests
+	        clearErrors();
+	        // Need to reload the page as the page is already loaded when
+	        // we come here
+	        browser.driver.getCurrentUrl().then(function(url) {
+	          browser.get(url);
+	        });
+	        expectNoErrors();
+	      });
 
-	          it('should evaluate expressions', function() {
-	            expect(counter.getText()).toEqual('0');
-	            incBtn.click();
-	            expect(counter.getText()).toEqual('1');
-	            expectNoErrors();
-	          });
+	      it('should evaluate expressions', function() {
+	        expect(counter.getText()).toEqual('0');
+	        incBtn.click();
+	        expect(counter.getText()).toEqual('1');
+	        expectNoErrors();
+	      });
 
-	          it('should throw and report an error when using "eval"', function() {
-	            evilBtn.click();
-	            expect(evilError.getText()).toMatch(/Content Security Policy/);
-	            expectError(/Content Security Policy/);
-	          });
-	        </file>
-	      </example>
+	      it('should throw and report an error when using "eval"', function() {
+	        evilBtn.click();
+	        expect(evilError.getText()).toMatch(/Content Security Policy/);
+	        expectError(/Content Security Policy/);
+	      });
+	    </file>
+	  </example>
 	  */
 
 	// `ngCsp` is not implemented as a proper directive any more, because we need it be processed while
@@ -29462,13 +29545,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	/**
 	 * @ngdoc directive
 	 * @name ngClick
+	 * @restrict A
+	 * @element ANY
+	 * @priority 0
 	 *
 	 * @description
 	 * The ngClick directive allows you to specify custom behavior when
 	 * an element is clicked.
 	 *
-	 * @element ANY
-	 * @priority 0
 	 * @param {expression} ngClick {@link guide/expression Expression} to evaluate upon
 	 * click. ({@link guide/expression#-event- Event object is available as `$event`})
 	 *
@@ -29538,12 +29622,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	/**
 	 * @ngdoc directive
 	 * @name ngDblclick
+	 * @restrict A
+	 * @element ANY
+	 * @priority 0
 	 *
 	 * @description
 	 * The `ngDblclick` directive allows you to specify custom behavior on a dblclick event.
 	 *
-	 * @element ANY
-	 * @priority 0
 	 * @param {expression} ngDblclick {@link guide/expression Expression} to evaluate upon
 	 * a dblclick. (The Event object is available as `$event`)
 	 *
@@ -29562,12 +29647,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	/**
 	 * @ngdoc directive
 	 * @name ngMousedown
+	 * @restrict A
+	 * @element ANY
+	 * @priority 0
 	 *
 	 * @description
 	 * The ngMousedown directive allows you to specify custom behavior on mousedown event.
 	 *
-	 * @element ANY
-	 * @priority 0
 	 * @param {expression} ngMousedown {@link guide/expression Expression} to evaluate upon
 	 * mousedown. ({@link guide/expression#-event- Event object is available as `$event`})
 	 *
@@ -29586,12 +29672,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	/**
 	 * @ngdoc directive
 	 * @name ngMouseup
+	 * @restrict A
+	 * @element ANY
+	 * @priority 0
 	 *
 	 * @description
 	 * Specify custom behavior on mouseup event.
 	 *
-	 * @element ANY
-	 * @priority 0
 	 * @param {expression} ngMouseup {@link guide/expression Expression} to evaluate upon
 	 * mouseup. ({@link guide/expression#-event- Event object is available as `$event`})
 	 *
@@ -29609,12 +29696,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	/**
 	 * @ngdoc directive
 	 * @name ngMouseover
+	 * @restrict A
+	 * @element ANY
+	 * @priority 0
 	 *
 	 * @description
 	 * Specify custom behavior on mouseover event.
 	 *
-	 * @element ANY
-	 * @priority 0
 	 * @param {expression} ngMouseover {@link guide/expression Expression} to evaluate upon
 	 * mouseover. ({@link guide/expression#-event- Event object is available as `$event`})
 	 *
@@ -29633,12 +29721,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	/**
 	 * @ngdoc directive
 	 * @name ngMouseenter
+	 * @restrict A
+	 * @element ANY
+	 * @priority 0
 	 *
 	 * @description
 	 * Specify custom behavior on mouseenter event.
 	 *
-	 * @element ANY
-	 * @priority 0
 	 * @param {expression} ngMouseenter {@link guide/expression Expression} to evaluate upon
 	 * mouseenter. ({@link guide/expression#-event- Event object is available as `$event`})
 	 *
@@ -29657,12 +29746,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	/**
 	 * @ngdoc directive
 	 * @name ngMouseleave
+	 * @restrict A
+	 * @element ANY
+	 * @priority 0
 	 *
 	 * @description
 	 * Specify custom behavior on mouseleave event.
 	 *
-	 * @element ANY
-	 * @priority 0
 	 * @param {expression} ngMouseleave {@link guide/expression Expression} to evaluate upon
 	 * mouseleave. ({@link guide/expression#-event- Event object is available as `$event`})
 	 *
@@ -29681,12 +29771,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	/**
 	 * @ngdoc directive
 	 * @name ngMousemove
+	 * @restrict A
+	 * @element ANY
+	 * @priority 0
 	 *
 	 * @description
 	 * Specify custom behavior on mousemove event.
 	 *
-	 * @element ANY
-	 * @priority 0
 	 * @param {expression} ngMousemove {@link guide/expression Expression} to evaluate upon
 	 * mousemove. ({@link guide/expression#-event- Event object is available as `$event`})
 	 *
@@ -29705,12 +29796,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	/**
 	 * @ngdoc directive
 	 * @name ngKeydown
+	 * @restrict A
+	 * @element ANY
+	 * @priority 0
 	 *
 	 * @description
 	 * Specify custom behavior on keydown event.
 	 *
-	 * @element ANY
-	 * @priority 0
 	 * @param {expression} ngKeydown {@link guide/expression Expression} to evaluate upon
 	 * keydown. (Event object is available as `$event` and can be interrogated for keyCode, altKey, etc.)
 	 *
@@ -29727,12 +29819,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	/**
 	 * @ngdoc directive
 	 * @name ngKeyup
+	 * @restrict A
+	 * @element ANY
+	 * @priority 0
 	 *
 	 * @description
 	 * Specify custom behavior on keyup event.
 	 *
-	 * @element ANY
-	 * @priority 0
 	 * @param {expression} ngKeyup {@link guide/expression Expression} to evaluate upon
 	 * keyup. (Event object is available as `$event` and can be interrogated for keyCode, altKey, etc.)
 	 *
@@ -29754,11 +29847,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	/**
 	 * @ngdoc directive
 	 * @name ngKeypress
+	 * @restrict A
+	 * @element ANY
 	 *
 	 * @description
 	 * Specify custom behavior on keypress event.
 	 *
-	 * @element ANY
 	 * @param {expression} ngKeypress {@link guide/expression Expression} to evaluate upon
 	 * keypress. ({@link guide/expression#-event- Event object is available as `$event`}
 	 * and can be interrogated for keyCode, altKey, etc.)
@@ -29776,6 +29870,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	/**
 	 * @ngdoc directive
 	 * @name ngSubmit
+	 * @restrict A
+	 * @element form
+	 * @priority 0
 	 *
 	 * @description
 	 * Enables binding angular expressions to onsubmit events.
@@ -29791,8 +29888,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * for a detailed discussion of when `ngSubmit` may be triggered.
 	 * </div>
 	 *
-	 * @element form
-	 * @priority 0
 	 * @param {expression} ngSubmit {@link guide/expression Expression} to eval.
 	 * ({@link guide/expression#-event- Event object is available as `$event`})
 	 *
@@ -29839,6 +29934,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	/**
 	 * @ngdoc directive
 	 * @name ngFocus
+	 * @restrict A
+	 * @element window, input, select, textarea, a
+	 * @priority 0
 	 *
 	 * @description
 	 * Specify custom behavior on focus event.
@@ -29847,8 +29945,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * AngularJS executes the expression using `scope.$evalAsync` if the event is fired
 	 * during an `$apply` to ensure a consistent state.
 	 *
-	 * @element window, input, select, textarea, a
-	 * @priority 0
 	 * @param {expression} ngFocus {@link guide/expression Expression} to evaluate upon
 	 * focus. ({@link guide/expression#-event- Event object is available as `$event`})
 	 *
@@ -29859,6 +29955,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	/**
 	 * @ngdoc directive
 	 * @name ngBlur
+	 * @restrict A
+	 * @element window, input, select, textarea, a
+	 * @priority 0
 	 *
 	 * @description
 	 * Specify custom behavior on blur event.
@@ -29871,8 +29970,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * AngularJS executes the expression using `scope.$evalAsync` if the event is fired
 	 * during an `$apply` to ensure a consistent state.
 	 *
-	 * @element window, input, select, textarea, a
-	 * @priority 0
 	 * @param {expression} ngBlur {@link guide/expression Expression} to evaluate upon
 	 * blur. ({@link guide/expression#-event- Event object is available as `$event`})
 	 *
@@ -29883,12 +29980,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	/**
 	 * @ngdoc directive
 	 * @name ngCopy
+	 * @restrict A
+	 * @element window, input, select, textarea, a
+	 * @priority 0
 	 *
 	 * @description
 	 * Specify custom behavior on copy event.
 	 *
-	 * @element window, input, select, textarea, a
-	 * @priority 0
 	 * @param {expression} ngCopy {@link guide/expression Expression} to evaluate upon
 	 * copy. ({@link guide/expression#-event- Event object is available as `$event`})
 	 *
@@ -29904,12 +30002,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	/**
 	 * @ngdoc directive
 	 * @name ngCut
+	 * @restrict A
+	 * @element window, input, select, textarea, a
+	 * @priority 0
 	 *
 	 * @description
 	 * Specify custom behavior on cut event.
 	 *
-	 * @element window, input, select, textarea, a
-	 * @priority 0
 	 * @param {expression} ngCut {@link guide/expression Expression} to evaluate upon
 	 * cut. ({@link guide/expression#-event- Event object is available as `$event`})
 	 *
@@ -29925,12 +30024,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	/**
 	 * @ngdoc directive
 	 * @name ngPaste
+	 * @restrict A
+	 * @element window, input, select, textarea, a
+	 * @priority 0
 	 *
 	 * @description
 	 * Specify custom behavior on paste event.
 	 *
-	 * @element window, input, select, textarea, a
-	 * @priority 0
 	 * @param {expression} ngPaste {@link guide/expression Expression} to evaluate upon
 	 * paste. ({@link guide/expression#-event- Event object is available as `$event`})
 	 *
@@ -30073,6 +30173,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @ngdoc directive
 	 * @name ngInclude
 	 * @restrict ECA
+	 * @scope
+	 * @priority -400
 	 *
 	 * @description
 	 * Fetches, compiles and includes an external HTML fragment.
@@ -30099,10 +30201,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 *
 	 * The enter and leave animation occur concurrently.
 	 *
-	 * @scope
-	 * @priority 400
-	 *
-	 * @param {string} ngInclude|src angular expression evaluating to URL. If the source is a string constant,
+	 * @param {string} ngInclude|src AngularJS expression evaluating to URL. If the source is a string constant,
 	 *                 make sure you wrap it in **single** quotes, e.g. `src="'myPartialTemplate.html'"`.
 	 * @param {string=} onload Expression to evaluate when a new partial is loaded.
 	 *                  <div class="alert alert-warning">
@@ -30379,6 +30478,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @ngdoc directive
 	 * @name ngInit
 	 * @restrict AC
+	 * @priority 450
+	 * @element ANY
+	 *
+	 * @param {expression} ngInit {@link guide/expression Expression} to eval.
 	 *
 	 * @description
 	 * The `ngInit` directive allows you to evaluate an expression in the
@@ -30386,10 +30489,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	 *
 	 * <div class="alert alert-danger">
 	 * This directive can be abused to add unnecessary amounts of logic into your templates.
-	 * There are only a few appropriate uses of `ngInit`, such as for aliasing special properties of
-	 * {@link ng.directive:ngRepeat `ngRepeat`}, as seen in the demo below; and for injecting data via
-	 * server side scripting. Besides these few cases, you should use {@link guide/controller controllers}
-	 * rather than `ngInit` to initialize values on a scope.
+	 * There are only a few appropriate uses of `ngInit`:
+	 * <ul>
+	 *   <li>aliasing special properties of {@link ng.directive:ngRepeat `ngRepeat`},
+	 *     as seen in the demo below.</li>
+	 *   <li>initializing data during development, or for examples, as seen throughout these docs.</li>
+	 *   <li>injecting data via server side scripting.</li>
+	 * </ul>
+	 *
+	 * Besides these few cases, you should use {@link guide/component Components} or
+	 * {@link guide/controller Controllers} rather than `ngInit` to initialize values on a scope.
 	 * </div>
 	 *
 	 * <div class="alert alert-warning">
@@ -30399,11 +30508,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * `<div ng-init="test1 = ($index | toString)"></div>`
 	 * </pre>
 	 * </div>
-	 *
-	 * @priority 450
-	 *
-	 * @element ANY
-	 * @param {expression} ngInit {@link guide/expression Expression} to eval.
 	 *
 	 * @example
 	   <example module="initExample" name="ng-init">
@@ -30447,6 +30551,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	/**
 	 * @ngdoc directive
 	 * @name ngList
+	 * @restrict A
+	 * @priority 100
+	 *
+	 * @param {string=} ngList optional delimiter that should be used to split the value.
 	 *
 	 * @description
 	 * Text input that converts between a delimited string and an array of strings. The default
@@ -30462,7 +30570,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	 *   when joining the list items back together) and whitespace around each list item is stripped
 	 *   before it is added to the model.
 	 *
-	 * ### Example with Validation
+	 * @example
+	 * ### Validation
 	 *
 	 * <example name="ngList-directive" module="listExample">
 	 *   <file name="app.js">
@@ -30509,7 +30618,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	 *   </file>
 	 * </example>
 	 *
-	 * ### Example - splitting on newline
+	 * @example
+	 * ### Splitting on newline
+	 *
 	 * <example name="ngList-directive-newlines">
 	 *   <file name="index.html">
 	 *    <textarea ng-model="list" ng-list="&#10;" ng-trim="false"></textarea>
@@ -30525,8 +30636,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	 *   </file>
 	 * </example>
 	 *
-	 * @element input
-	 * @param {string=} ngList optional delimiter that should be used to split the value.
 	 */
 	var ngListDirective = function() {
 	  return {
@@ -30597,7 +30706,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	/**
 	 * @ngdoc type
 	 * @name ngModel.NgModelController
-	 *
 	 * @property {*} $viewValue The actual value from the control's view. For `input` elements, this is a
 	 * String. See {@link ngModel.NgModelController#$setViewValue} for information about when the $viewValue
 	 * is set.
@@ -31044,6 +31152,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * input which may have such events pending. This is important in order to make sure that the
 	   * input field will be updated with the new model value and any pending operations are cancelled.
 	   *
+	   * @example
 	   * <example name="ng-model-cancel-update" module="cancel-update-example">
 	   *   <file name="app.js">
 	   *     angular.module('cancel-update-example', [])
@@ -31450,6 +31559,153 @@ return /******/ (function(modules) { // webpackBootstrap
 	   */
 	  $overrideModelOptions: function(options) {
 	    this.$options = this.$options.createChild(options);
+	  },
+
+	  /**
+	   * @ngdoc method
+	   *
+	   * @name  ngModel.NgModelController#$processModelValue
+
+	   * @description
+	   *
+	   * Runs the model -> view pipeline on the current
+	   * {@link ngModel.NgModelController#$modelValue $modelValue}.
+	   *
+	   * The following actions are performed by this method:
+	   *
+	   * - the `$modelValue` is run through the {@link ngModel.NgModelController#$formatters $formatters}
+	   * and the result is set to the {@link ngModel.NgModelController#$viewValue $viewValue}
+	   * - the `ng-empty` or `ng-not-empty` class is set on the element
+	   * - if the `$viewValue` has changed:
+	   *   - {@link ngModel.NgModelController#$render $render} is called on the control
+	   *   - the {@link ngModel.NgModelController#$validators $validators} are run and
+	   *   the validation status is set.
+	   *
+	   * This method is called by ngModel internally when the bound scope value changes.
+	   * Application developers usually do not have to call this function themselves.
+	   *
+	   * This function can be used when the `$viewValue` or the rendered DOM value are not correctly
+	   * formatted and the `$modelValue` must be run through the `$formatters` again.
+	   *
+	   * @example
+	   * Consider a text input with an autocomplete list (for fruit), where the items are
+	   * objects with a name and an id.
+	   * A user enters `ap` and then selects `Apricot` from the list.
+	   * Based on this, the autocomplete widget will call `$setViewValue({name: 'Apricot', id: 443})`,
+	   * but the rendered value will still be `ap`.
+	   * The widget can then call `ctrl.$processModelValue()` to run the model -> view
+	   * pipeline again, which formats the object to the string `Apricot`,
+	   * then updates the `$viewValue`, and finally renders it in the DOM.
+	   *
+	   * <example module="inputExample" name="ng-model-process">
+	     <file name="index.html">
+	      <div ng-controller="inputController" style="display: flex;">
+	        <div style="margin-right: 30px;">
+	          Search Fruit:
+	          <basic-autocomplete items="items" on-select="selectedFruit = item"></basic-autocomplete>
+	        </div>
+	        <div>
+	          Model:<br>
+	          <pre>{{selectedFruit | json}}</pre>
+	        </div>
+	      </div>
+	     </file>
+	     <file name="app.js">
+	      angular.module('inputExample', [])
+	        .controller('inputController', function($scope) {
+	          $scope.items = [
+	            {name: 'Apricot', id: 443},
+	            {name: 'Clementine', id: 972},
+	            {name: 'Durian', id: 169},
+	            {name: 'Jackfruit', id: 982},
+	            {name: 'Strawberry', id: 863}
+	          ];
+	        })
+	        .component('basicAutocomplete', {
+	          bindings: {
+	            items: '<',
+	            onSelect: '&'
+	          },
+	          templateUrl: 'autocomplete.html',
+	          controller: function($element, $scope) {
+	            var that = this;
+	            var ngModel;
+
+	            that.$postLink = function() {
+	              ngModel = $element.find('input').controller('ngModel');
+
+	              ngModel.$formatters.push(function(value) {
+	                return (value && value.name) || value;
+	              });
+
+	              ngModel.$parsers.push(function(value) {
+	                var match = value;
+	                for (var i = 0; i < that.items.length; i++) {
+	                  if (that.items[i].name === value) {
+	                    match = that.items[i];
+	                    break;
+	                  }
+	                }
+
+	                return match;
+	              });
+	            };
+
+	            that.selectItem = function(item) {
+	              ngModel.$setViewValue(item);
+	              ngModel.$processModelValue();
+	              that.onSelect({item: item});
+	            };
+	          }
+	        });
+	     </file>
+	     <file name="autocomplete.html">
+	       <div>
+	         <input type="search" ng-model="$ctrl.searchTerm" />
+	         <ul>
+	           <li ng-repeat="item in $ctrl.items | filter:$ctrl.searchTerm">
+	             <button ng-click="$ctrl.selectItem(item)">{{ item.name }}</button>
+	           </li>
+	         </ul>
+	       </div>
+	     </file>
+	   * </example>
+	   *
+	   */
+	  $processModelValue: function() {
+	    var viewValue = this.$$format();
+
+	    if (this.$viewValue !== viewValue) {
+	      this.$$updateEmptyClasses(viewValue);
+	      this.$viewValue = this.$$lastCommittedViewValue = viewValue;
+	      this.$render();
+	      // It is possible that model and view value have been updated during render
+	      this.$$runValidators(this.$modelValue, this.$viewValue, noop);
+	    }
+	  },
+
+	  /**
+	   * This method is called internally to run the $formatters on the $modelValue
+	   */
+	  $$format: function() {
+	    var formatters = this.$formatters,
+	        idx = formatters.length;
+
+	    var viewValue = this.$modelValue;
+	    while (idx--) {
+	      viewValue = formatters[idx](viewValue);
+	    }
+
+	    return viewValue;
+	  },
+
+	  /**
+	   * This method is called internally when the bound scope value changes.
+	   */
+	  $$setModelValue: function(modelValue) {
+	    this.$modelValue = this.$$rawModelValue = modelValue;
+	    this.$$parserValid = undefined;
+	    this.$processModelValue();
 	  }
 	};
 
@@ -31466,30 +31722,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var modelValue = ctrl.$$ngModelGet(scope);
 
 	    // if scope model value and ngModel value are out of sync
-	    // TODO(perf): why not move this to the action fn?
+	    // This cannot be moved to the action function, because it would not catch the
+	    // case where the model is changed in the ngChange function or the model setter
 	    if (modelValue !== ctrl.$modelValue &&
-	       // checks for NaN is needed to allow setting the model to NaN when there's an asyncValidator
-	        // eslint-disable-next-line no-self-compare
-	       (ctrl.$modelValue === ctrl.$modelValue || modelValue === modelValue)
+	      // checks for NaN is needed to allow setting the model to NaN when there's an asyncValidator
+	      // eslint-disable-next-line no-self-compare
+	      (ctrl.$modelValue === ctrl.$modelValue || modelValue === modelValue)
 	    ) {
-	      ctrl.$modelValue = ctrl.$$rawModelValue = modelValue;
-	      ctrl.$$parserValid = undefined;
-
-	      var formatters = ctrl.$formatters,
-	          idx = formatters.length;
-
-	      var viewValue = modelValue;
-	      while (idx--) {
-	        viewValue = formatters[idx](viewValue);
-	      }
-	      if (ctrl.$viewValue !== viewValue) {
-	        ctrl.$$updateEmptyClasses(viewValue);
-	        ctrl.$viewValue = ctrl.$$lastCommittedViewValue = viewValue;
-	        ctrl.$render();
-
-	        // It is possible that model and view value have been updated during render
-	        ctrl.$$runValidators(ctrl.$modelValue, ctrl.$viewValue, noop);
-	      }
+	      ctrl.$$setModelValue(modelValue);
 	    }
 
 	    return modelValue;
@@ -31532,9 +31772,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	/**
 	 * @ngdoc directive
 	 * @name ngModel
-	 *
-	 * @element input
+	 * @restrict A
 	 * @priority 1
+	 * @param {expression} ngModel assignable {@link guide/expression Expression} to bind to.
 	 *
 	 * @description
 	 * The `ngModel` directive binds an `input`,`select`, `textarea` (or custom form control) to a
@@ -31576,7 +31816,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 *  - {@link ng.directive:select select}
 	 *  - {@link ng.directive:textarea textarea}
 	 *
-	 * # Complex Models (objects or collections)
+	 * ## Complex Models (objects or collections)
 	 *
 	 * By default, `ngModel` watches the model by reference, not value. This is important to know when
 	 * binding inputs to models that are objects (e.g. `Date`) or collections (e.g. arrays). If only properties of the
@@ -31592,7 +31832,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * first level of the object (or only changing the properties of an item in the collection if it's an array) will still
 	 * not trigger a re-rendering of the model.
 	 *
-	 * # CSS classes
+	 * ## CSS classes
 	 * The following CSS classes are added and removed on the associated input/select/textarea element
 	 * depending on the validity of the model.
 	 *
@@ -31611,8 +31851,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 *
 	 * Keep in mind that ngAnimate can detect each of these classes when added and removed.
 	 *
-	 * ## Animation Hooks
-	 *
+	 * @animations
 	 * Animations within models are triggered when any of the associated CSS classes are added and removed
 	 * on the input element which is attached to the model. These classes include: `.ng-pristine`, `.ng-dirty`,
 	 * `.ng-invalid` and `.ng-valid` as well as any other validations that are performed on the model itself.
@@ -31636,6 +31875,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * </pre>
 	 *
 	 * @example
+	 * ### Basic Usage
 	 * <example deps="angular-animate.js" animations="true" fixBase="true" module="inputExample" name="ng-model">
 	     <file name="index.html">
 	       <script>
@@ -31665,7 +31905,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	     </file>
 	 * </example>
 	 *
-	 * ## Binding to a getter/setter
+	 * @example
+	 * ### Binding to a getter/setter
 	 *
 	 * Sometimes it's helpful to bind `ngModel` to a getter/setter function.  A getter/setter is a
 	 * function that returns a representation of the model when called with zero arguments, and sets
@@ -31873,6 +32114,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	/**
 	 * @ngdoc directive
 	 * @name ngModelOptions
+	 * @restrict A
+	 * @priority 10
 	 *
 	 * @description
 	 * This directive allows you to modify the behaviour of {@link ngModel} directives within your
@@ -32151,6 +32394,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @name ngNonBindable
 	 * @restrict AC
 	 * @priority 1000
+	 * @element ANY
 	 *
 	 * @description
 	 * The `ngNonBindable` directive tells Angular not to compile or bind the contents of the current
@@ -32158,25 +32402,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * bindings but which should be ignored by Angular. This could be the case if you have a site that
 	 * displays snippets of code, for instance.
 	 *
-	 * @element ANY
-	 *
 	 * @example
 	 * In this example there are two locations where a simple interpolation binding (`{{}}`) is present,
 	 * but the one wrapped in `ngNonBindable` is left alone.
 	 *
-	 * @example
-	    <example name="ng-non-bindable">
-	      <file name="index.html">
-	        <div>Normal: {{1 + 2}}</div>
-	        <div ng-non-bindable>Ignored: {{1 + 2}}</div>
-	      </file>
-	      <file name="protractor.js" type="protractor">
-	       it('should check ng-non-bindable', function() {
-	         expect(element(by.binding('1 + 2')).getText()).toContain('3');
-	         expect(element.all(by.css('div')).last().getText()).toMatch(/1 \+ 2/);
-	       });
-	      </file>
-	    </example>
+	  <example name="ng-non-bindable">
+	    <file name="index.html">
+	      <div>Normal: {{1 + 2}}</div>
+	      <div ng-non-bindable>Ignored: {{1 + 2}}</div>
+	    </file>
+	    <file name="protractor.js" type="protractor">
+	     it('should check ng-non-bindable', function() {
+	       expect(element(by.binding('1 + 2')).getText()).toContain('3');
+	       expect(element.all(by.css('div')).last().getText()).toMatch(/1 \+ 2/);
+	     });
+	    </file>
+	  </example>
 	 */
 	var ngNonBindableDirective = ngDirective({ terminal: true, priority: 1000 });
 
@@ -32909,7 +33150,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * [plural categories](http://unicode.org/repos/cldr-tmp/trunk/diff/supplemental/language_plural_rules.html)
 	 * and the strings to be displayed.
 	 *
-	 * # Plural categories and explicit number rules
+	 * ## Plural categories and explicit number rules
 	 * There are two
 	 * [plural categories](http://unicode.org/repos/cldr-tmp/trunk/diff/supplemental/language_plural_rules.html)
 	 * in Angular's default en-US locale: "one" and "other".
@@ -32919,7 +33160,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * explicit number rule for "3" matches the number 3. There are examples of plural categories
 	 * and explicit number rules throughout the rest of this documentation.
 	 *
-	 * # Configuring ngPluralize
+	 * ## Configuring ngPluralize
 	 * You configure ngPluralize by providing 2 attributes: `count` and `when`.
 	 * You can also provide an optional attribute, `offset`.
 	 *
@@ -32953,7 +33194,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * If no rule is defined for a category, then an empty string is displayed and a warning is generated.
 	 * Note that some locales define more categories than `one` and `other`. For example, fr-fr defines `few` and `many`.
 	 *
-	 * # Configuring ngPluralize with offset
+	 * ## Configuring ngPluralize with offset
 	 * The `offset` attribute allows further customization of pluralized text, which can result in
 	 * a better user experience. For example, instead of the message "4 people are viewing this document",
 	 * you might display "John, Kate and 2 others are viewing this document".
@@ -33165,7 +33406,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * </div>
 	 *
 	 *
-	 * # Iterating over object properties
+	 * ## Iterating over object properties
 	 *
 	 * It is possible to get `ngRepeat` to iterate over the properties of an object using the following
 	 * syntax:
@@ -33195,7 +33436,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * or implement a `$watch` on the object yourself.
 	 *
 	 *
-	 * # Tracking and Duplicates
+	 * ## Tracking and Duplicates
 	 *
 	 * `ngRepeat` uses {@link $rootScope.Scope#$watchCollection $watchCollection} to detect changes in
 	 * the collection. When a change happens, `ngRepeat` then makes the corresponding changes to the DOM:
@@ -33275,7 +33516,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * ```
 	 *
 	 *
-	 * # Special repeat start and end points
+	 * ## Special repeat start and end points
 	 * To repeat a series of elements instead of just one parent element, ngRepeat (as well as other ng directives) supports extending
 	 * the range of the repeater by defining explicit start and end points by using **ng-repeat-start** and **ng-repeat-end** respectively.
 	 * The **ng-repeat-start** directive works the same as **ng-repeat**, but will repeat all the HTML code (including the tag it's defined on)
@@ -33384,7 +33625,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @example
 	 * This example uses `ngRepeat` to display a list of people. A filter is used to restrict the displayed
 	 * results by name or by age. New (entering) and removed (leaving) items are animated.
-	  <example module="ngRepeat" name="ngRepeat" deps="angular-animate.js" animations="true" name="ng-repeat">
+	  <example module="ngRepeat" name="ngRepeat" deps="angular-animate.js" animations="true">
 	    <file name="index.html">
 	      <div ng-controller="repeatController">
 	        I have {{friends.length}} friends. They are:
@@ -33762,7 +34003,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * By default you don't need to override anything in CSS and the animations will work around the
 	 * display style.
 	 *
-	 * ## A note about animations with `ngShow`
+	 * @animations
+	 * | Animation                                           | Occurs                                                                                                        |
+	 * |-----------------------------------------------------|---------------------------------------------------------------------------------------------------------------|
+	 * | {@link $animate#addClass addClass} `.ng-hide`       | After the `ngShow` expression evaluates to a non truthy value and just before the contents are set to hidden. |
+	 * | {@link $animate#removeClass removeClass} `.ng-hide` | After the `ngShow` expression evaluates to a truthy value and just before contents are set to visible.        |
 	 *
 	 * Animations in `ngShow`/`ngHide` work with the show and hide events that are triggered when the
 	 * directive expression is true and false. This system works like the animation system present with
@@ -33783,12 +34028,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	 *
 	 * Keep in mind that, as of AngularJS version 1.3, there is no need to change the display property
 	 * to block during animation states - ngAnimate will automatically handle the style toggling for you.
-	 *
-	 * @animations
-	 * | Animation                                           | Occurs                                                                                                        |
-	 * |-----------------------------------------------------|---------------------------------------------------------------------------------------------------------------|
-	 * | {@link $animate#addClass addClass} `.ng-hide`       | After the `ngShow` expression evaluates to a non truthy value and just before the contents are set to hidden. |
-	 * | {@link $animate#removeClass removeClass} `.ng-hide` | After the `ngShow` expression evaluates to a truthy value and just before contents are set to visible.        |
 	 *
 	 * @element ANY
 	 * @param {expression} ngShow If the {@link guide/expression expression} is truthy/falsy then the
@@ -33964,7 +34203,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * By default you don't need to override in CSS anything and the animations will work around the
 	 * display style.
 	 *
-	 * ## A note about animations with `ngHide`
+	 * @animations
+	 * | Animation                                           | Occurs                                                                                                     |
+	 * |-----------------------------------------------------|------------------------------------------------------------------------------------------------------------|
+	 * | {@link $animate#addClass addClass} `.ng-hide`       | After the `ngHide` expression evaluates to a truthy value and just before the contents are set to hidden.  |
+	 * | {@link $animate#removeClass removeClass} `.ng-hide` | After the `ngHide` expression evaluates to a non truthy value and just before contents are set to visible. |
 	 *
 	 * Animations in `ngShow`/`ngHide` work with the show and hide events that are triggered when the
 	 * directive expression is true and false. This system works like the animation system present with
@@ -33985,13 +34228,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	 *
 	 * Keep in mind that, as of AngularJS version 1.3, there is no need to change the display property
 	 * to block during animation states - ngAnimate will automatically handle the style toggling for you.
-	 *
-	 * @animations
-	 * | Animation                                           | Occurs                                                                                                     |
-	 * |-----------------------------------------------------|------------------------------------------------------------------------------------------------------------|
-	 * | {@link $animate#addClass addClass} `.ng-hide`       | After the `ngHide` expression evaluates to a truthy value and just before the contents are set to hidden.  |
-	 * | {@link $animate#removeClass removeClass} `.ng-hide` | After the `ngHide` expression evaluates to a non truthy value and just before contents are set to visible. |
-	 *
 	 *
 	 * @element ANY
 	 * @param {expression} ngHide If the {@link guide/expression expression} is truthy/falsy then the
@@ -34705,7 +34941,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	 *       <option value="option-1">Option 1</option>
 	 *       <option value="option-2">Option 2</option>
 	 *     </select><br>
-	 *     <span ng-if="myForm.testSelect.$error.unknownValue">Error: The current model doesn't match any option</span>
+	 *     <span class="error" ng-if="myForm.testSelect.$error.unknownValue">
+	 *       Error: The current model doesn't match any option</span><br>
 	 *
 	 *     <button ng-click="forceUnknownOption()">Force unknown option</button><br>
 	 *   </form>
@@ -34754,11 +34991,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * <div ng-controller="ExampleController">
 	 *   <form name="myForm">
 	 *     <label for="testSelect"> Select: </label><br>
-	 *     <select name="testSelect" ng-model="selected" unknown-value-required>
+	 *     <select name="testSelect" ng-model="selected" required unknown-value-required>
 	 *       <option value="option-1">Option 1</option>
 	 *       <option value="option-2">Option 2</option>
 	 *     </select><br>
-	 *     <span ng-if="myForm.testSelect.$error.required">Error: Please select a value</span><br>
+	 *     <span class="error" ng-if="myForm.testSelect.$error.required">Error: Please select a value</span><br>
 	 *
 	 *     <button ng-click="forceUnknownOption()">Force unknown option</button><br>
 	 *   </form>
@@ -34793,6 +35030,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	 *       }
 	 *     };
 	 *   });
+	 * </file>
+	 * <file name="protractor.js" type="protractor">
+	 *  it('should show the error message when the unknown option is selected', function() {
+
+	      var error = element(by.className('error'));
+
+	      expect(error.getText()).toBe('Error: Please select a value');
+
+	      element(by.cssContainingText('option', 'Option 1')).click();
+
+	      expect(error.isPresent()).toBe(false);
+
+	      element(by.tagName('button')).click();
+
+	      expect(error.getText()).toBe('Error: Please select a value');
+	    });
 	 * </file>
 	 *</example>
 	 *
@@ -35264,6 +35517,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * </file>
 	 *</example>
 	 *
+	 * @example
 	 * ### Using `ngRepeat` to generate `select` options
 	 * <example name="select-ngrepeat" module="ngrepeatSelect">
 	 * <file name="index.html">
@@ -35293,6 +35547,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * </file>
 	 *</example>
 	 *
+	 * @example
 	 * ### Using `ngValue` to bind the model to an array of objects
 	 * <example name="select-ngvalue" module="ngvalueSelect">
 	 * <file name="index.html">
@@ -35325,6 +35580,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * </file>
 	 *</example>
 	 *
+	 * @example
 	 * ### Using `select` with `ngOptions` and setting a default value
 	 * See the {@link ngOptions ngOptions documentation} for more `ngOptions` usage examples.
 	 *
@@ -35356,7 +35612,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * </file>
 	 *</example>
 	 *
-	 *
+	 * @example
 	 * ### Binding `select` to a non-string value via `ngModel` parsing / formatting
 	 *
 	 * <example name="select-with-non-string-options" module="nonStringSelect">
@@ -35557,6 +35813,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @name ngRequired
 	 * @restrict A
 	 *
+	 * @param {expression} ngRequired AngularJS expression. If it evaluates to `true`, it sets the
+	 *                                `required` attribute to the element and adds the `required`
+	 *                                {@link ngModel.NgModelController#$validators `validator`}.
+	 *
 	 * @description
 	 *
 	 * ngRequired adds the required {@link ngModel.NgModelController#$validators `validator`} to {@link ngModel `ngModel`}.
@@ -35633,6 +35893,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	/**
 	 * @ngdoc directive
 	 * @name ngPattern
+	 * @restrict A
+	 *
+	 * @param {expression|RegExp} ngPattern AngularJS expression that must evaluate to a `RegExp` or a `String`
+	 *                                      parsable into a `RegExp`, or a `RegExp` literal. See above for
+	 *                                      more details.
 	 *
 	 * @description
 	 *
@@ -35640,11 +35905,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * It is most often used for text-based {@link input `input`} controls, but can also be applied to custom text-based controls.
 	 *
 	 * The validator sets the `pattern` error key if the {@link ngModel.NgModelController#$viewValue `ngModel.$viewValue`}
-	 * does not match a RegExp which is obtained by evaluating the Angular expression given in the
-	 * `ngPattern` attribute value:
-	 * * If the expression evaluates to a RegExp object, then this is used directly.
-	 * * If the expression evaluates to a string, then it will be converted to a RegExp after wrapping it
-	 * in `^` and `$` characters. For instance, `"abc"` will be converted to `new RegExp('^abc$')`.
+	 * does not match a RegExp which is obtained from the `ngPattern` attribute value:
+	 * - the value is an AngularJS expression:
+	 *   - If the expression evaluates to a RegExp object, then this is used directly.
+	 *   - If the expression evaluates to a string, then it will be converted to a RegExp after wrapping it
+	 *     in `^` and `$` characters. For instance, `"abc"` will be converted to `new RegExp('^abc$')`.
+	 * - If the value is a RegExp literal, e.g. `ngPattern="/^\d+$/"`, it is used directly.
 	 *
 	 * <div class="alert alert-info">
 	 * **Note:** Avoid using the `g` flag on the RegExp, as it will cause each successive search to
@@ -35739,6 +36005,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	/**
 	 * @ngdoc directive
 	 * @name ngMaxlength
+	 * @restrict A
+	 *
+	 * @param {expression} ngMaxlength AngularJS expression that must evaluate to a `Number` or `String`
+	 *                                 parsable into a `Number`. Used as value for the `maxlength`
+	 *                                 {@link ngModel.NgModelController#$validators validator}.
 	 *
 	 * @description
 	 *
@@ -35825,6 +36096,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	/**
 	 * @ngdoc directive
 	 * @name ngMinlength
+	 * @restrict A
+	 *
+	 * @param {expression} ngMinlength AngularJS expression that must evaluate to a `Number` or `String`
+	 *                                 parsable into a `Number`. Used as value for the `minlength`
+	 *                                 {@link ngModel.NgModelController#$validators validator}.
 	 *
 	 * @description
 	 *
@@ -38240,7 +38516,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ (function(module, exports) {
 
 	/**
-	 * @license AngularJS v1.6.6
+	 * @license AngularJS v1.6.7
 	 * (c) 2010-2017 Google, Inc. http://angularjs.org
 	 * License: MIT
 	 */
@@ -38253,16 +38529,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @name ngTouch
 	 * @description
 	 *
-	 * # ngTouch
-	 *
-	 * The `ngTouch` module provides touch events and other helpers for touch-enabled devices.
+	 * The `ngTouch` module provides helpers for touch-enabled devices.
 	 * The implementation is based on jQuery Mobile touch event handling
-	 * ([jquerymobile.com](http://jquerymobile.com/)).
-	 *
+	 * ([jquerymobile.com](http://jquerymobile.com/)). *
 	 *
 	 * See {@link ngTouch.$swipe `$swipe`} for usage.
-	 *
-	 * <div doc-module-components="ngTouch"></div>
 	 *
 	 */
 
@@ -38270,7 +38541,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* global -ngTouch */
 	var ngTouch = angular.module('ngTouch', []);
 
-	ngTouch.info({ angularVersion: '1.6.6' });
+	ngTouch.info({ angularVersion: '1.6.7' });
 
 	ngTouch.provider('$touch', $TouchProvider);
 
@@ -42250,7 +42521,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 112 */
 /***/ (function(module, exports) {
 
-	module.exports = "<div class=\"clearfix\">\n  <div class=\"bon_item_main clearfix\" data-ng-show=\"line.length\">\n\n    <div class=\"bon_slide_cat_item_wrap\" data-magic-gallery>\n      <div class=\"bon_slide_cat_item\">\n\n        <div class=\"bon_item_line\" data-ng-style=\"{left : left}\">\n\n          <sailplay-magic-badge data-magic-slide data-badge=\"badge\" data-on-click=\"badge_select(badge);\" data-ng-repeat=\"badge in line\" data-ng-class=\"{ last: $last }\"></sailplay-magic-badge>\n\n        </div>\n\n      </div>\n\n      <!--<a href=\"#\" class=\"arr_left arr_left slider_arrow_left\" data-ng-click=\"$event.preventDefault(); set_position('left');\" data-ng-show=\"show_left\"></a>-->\n      <!--<a href=\"#\" class=\"arr_right arr_right slider_arrow_right\" data-ng-click=\"$event.preventDefault(); set_position('right');\" data-ng-show=\"show_right\"></a>-->\n\n    </div>\n\n  </div>\n\n  <magic-modal class=\"modal_badge_selected\" data-ng-cloak data-show=\"badge_selected\">\n\n    <div>\n\n      <div class=\"modal_badge_image\">\n        <img class=\"gift_more_img\" data-ng-src=\"{{ badge_selected.thumbs.url_250x250 | sailplay_pic }}\"\n             alt=\"{{ badge_selected.name }}\">\n      </div>\n\n      <div class=\"modal_badge_tools\">\n\n        <p>\n          <span class=\"modal_badge_name\" data-ng-bind=\"badge_selected.name\"></span>\n        </p>\n\n        <!--<p style=\"margin-top: 10px;\">-->\n          <!--<span class=\"modal_badge_points\" data-ng-bind=\"(action_selected.points | number) + ' ' + (selected_gift.points | sailplay_pluralize:_tools.points.texts.pluralize)\"></span>-->\n        <!--</p>-->\n\n        <p style=\"margin-top: 10px;\">\n          <span class=\"modal_badge_description\" data-ng-bind=\"badge_selected.descr\"></span>\n        </p>\n\n        <p class=\"modal_badge_buttons\">\n          <span class=\"badge_share_button fb_icon\" data-ng-click=\"badge_share('fb', badge_selected)\">\n            {{ _config.texts.share_fb }}\n          </span>\n          <span class=\"badge_share_button tw_icon\" style=\"margin-right: 20px;\" data-ng-click=\"badge_share('tw', badge_selected)\">\n            {{ _config.texts.share_tw }}\n          </span>\n          <span class=\"sp_btn button_primary\" data-ng-click=\"badge_select(false);\">{{ _tools.buttons.texts.close }}</span>\n        </p>\n\n      </div>\n\n    </div>\n\n  </magic-modal>\n\n</div>";
+	module.exports = "<div class=\"clearfix\">\n  <div class=\"bon_item_main clearfix\" data-ng-show=\"line.length\">\n\n    <div class=\"bon_slide_cat_item_wrap\" data-magic-gallery>\n      <div class=\"bon_slide_cat_item\">\n\n        <div class=\"bon_item_line\" data-ng-style=\"{left : left}\">\n\n          <sailplay-magic-badge data-magic-slide data-badge=\"badge\" data-on-click=\"badge_select(badge);\" data-ng-repeat=\"badge in line\" data-ng-class=\"{ last: $last }\"></sailplay-magic-badge>\n\n        </div>\n\n      </div>\n\n      <!--<a href=\"#\" class=\"arr_left arr_left slider_arrow_left\" data-ng-click=\"$event.preventDefault(); set_position('left');\" data-ng-show=\"show_left\"></a>-->\n      <!--<a href=\"#\" class=\"arr_right arr_right slider_arrow_right\" data-ng-click=\"$event.preventDefault(); set_position('right');\" data-ng-show=\"show_right\"></a>-->\n\n    </div>\n\n  </div>\n\n  <magic-modal class=\"modal_badge_selected\" data-ng-cloak data-show=\"badge_selected\">\n\n    <div>\n\n      <div class=\"modal_badge_image\">\n        <img class=\"gift_more_img\" data-ng-src=\"{{ badge_selected.thumbs.url_250x250 | sailplay_pic }}\"\n             alt=\"{{ badge_selected.name }}\">\n      </div>\n\n      <div class=\"modal_badge_tools\">\n\n        <p>\n          <span class=\"modal_badge_name\" data-ng-bind=\"badge_selected.name\"></span>\n        </p>\n\n        <!--<p style=\"margin-top: 10px;\">-->\n          <!--<span class=\"modal_badge_points\" data-ng-bind=\"(action_selected.points | number) + ' ' + (selected_gift.points | sailplay_pluralize:_tools.points.texts.pluralize)\"></span>-->\n        <!--</p>-->\n\n        <p style=\"margin-top: 10px;\">\n          <span class=\"modal_badge_description\" data-ng-bind=\"badge_selected.descr\"></span>\n        </p>\n\n        <p class=\"modal_badge_buttons\">\n          <!--span class=\"badge_share_button fb_icon\" data-ng-click=\"badge_share('fb', badge_selected)\">\n            {{ _config.texts.share_fb }}\n          </span>\n          <span class=\"badge_share_button tw_icon\" style=\"margin-right: 20px;\" data-ng-click=\"badge_share('tw', badge_selected)\">\n            {{ _config.texts.share_tw }}\n          </span!-->\n          <span class=\"sp_btn button_primary\" data-ng-click=\"badge_select(false);\">{{ _tools.buttons.texts.close }}</span>\n        </p>\n\n      </div>\n\n    </div>\n\n  </magic-modal>\n\n</div>";
 
 /***/ }),
 /* 113 */
@@ -42287,7 +42558,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	// module
-	exports.push([module.id, ".spm_wrapper .spm_tools_widget.badges {\n  float: left;\n  width: 100%;\n  background-color: #eeeeee;\n  overflow: hidden;\n}\n.spm_wrapper .spm_tools_widget.badges .container {\n  width: 100%;\n  padding: 80px 5% 40px 5%;\n  -webkit-box-sizing: border-box;\n  -moz-box-sizing: border-box;\n  box-sizing: border-box;\n}\n.spm_wrapper .spm_tools_widget.badges .bon_header {\n  color: #000000;\n  font-size: 30px;\n  font-family: 'RotondaC', 'Roboto', sans-serif;\n}\n.spm_wrapper .spm_tools_widget.badges .bon_sub_header {\n  font-size: 14px;\n  color: #000000;\n  margin-top: 10px;\n}\n.spm_wrapper .spm_tools_widget.badges .bon_slide_cat_item_wrap {\n  float: left;\n  width: 100%;\n  margin-top: 30px;\n  margin-bottom: 30px;\n  position: relative;\n}\n.spm_wrapper .spm_tools_widget.badges .bon_slide_cat_item_wrap.cycle-slide {\n  display: none !important;\n}\n.spm_wrapper .spm_tools_widget.badges .bon_slide_cat_item_wrap.cycle-slide.cycle-slide-active {\n  display: block !important;\n}\n.spm_wrapper .spm_tools_widget.badges .bon_slide_cat_item_wrap.cycle-slide.cycle-sentinel {\n  display: block !important;\n}\n.spm_wrapper .spm_tools_widget.badges .bon_item_main {\n  float: left;\n  width: 100%;\n}\n.spm_wrapper .spm_tools_widget.badges .bon_item_main .arr_left {\n  position: absolute;\n  left: 0;\n  margin-left: -110px;\n  width: 100px;\n  height: 110px;\n  border-radius: 20px 0px 0px 20px;\n  background-color: #eeeeee;\n  background-position: center center;\n  background-repeat: no-repeat;\n  background-image: url(https://d3sailplay.cdnvideo.ru/media/assets/assetfile/04cbb41a3a145a39e718ff25a37690d5.png);\n  display: block;\n  top: 50%;\n  margin-top: -55px;\n}\n.spm_wrapper .spm_tools_widget.badges .bon_item_main .arr_right {\n  position: absolute;\n  right: 0;\n  margin-right: -110px;\n  width: 100px;\n  height: 110px;\n  border-radius: 0px 20px 20px 0px;\n  background-color: #eeeeee;\n  background-position: center center;\n  background-repeat: no-repeat;\n  background-image: url(https://d3sailplay.cdnvideo.ru/media/assets/assetfile/26bbb44e136d0cf99e7099522eab8fc9.png);\n  display: block;\n  top: 50%;\n  margin-top: -55px;\n}\n.spm_wrapper .spm_tools_widget.badges .bon_item_main .bon_slide_cat_item {\n  float: left;\n  width: 100%;\n  white-space: nowrap;\n  overflow: hidden;\n}\n.spm_wrapper .spm_tools_widget.badges .bon_item_main .bon_slide_cat_item .bon_item_line {\n  position: relative;\n  left: 0;\n  transition: .3s ease;\n}\n.spm_wrapper .spm_tools_widget.badges .badge_lines_container {\n  margin: 30px auto;\n  float: left;\n  width: 100%;\n  -webkit-box-sizing: border-box;\n  -moz-box-sizing: border-box;\n  box-sizing: border-box;\n}\n.spm_wrapper .spm_tools_widget.badges .one_level .badge_arrow {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.badges .badge {\n  position: relative;\n  width: 150px;\n  height: 190px;\n  border: 1px solid #cccccc;\n  margin-left: 30px;\n  margin-right: 30px;\n  background-color: #ffffff;\n  text-align: center;\n  display: inline-block;\n  white-space: normal;\n}\n.spm_wrapper .spm_tools_widget.badges .badge .badge_iner {\n  position: relative;\n  float: left;\n  width: 100%;\n  height: 100%;\n  cursor: pointer;\n}\n.spm_wrapper .spm_tools_widget.badges .badge .badge_iner span {\n  white-space: normal;\n  float: left;\n  color: #222222;\n  -webkit-transition: all 300ms ease;\n  -moz-transition: all 300ms ease;\n  -ms-transition: all 300ms ease;\n  -o-transition: all 300ms ease;\n  transition: all 300ms ease;\n}\n.spm_wrapper .spm_tools_widget.badges .badge .badge_iner .badge_name {\n  font-size: 16px;\n  width: 100%;\n  text-align: center;\n  margin-top: 10px;\n}\n.spm_wrapper .spm_tools_widget.badges .badge .badge_iner .bon_tem_info {\n  font-size: 14px;\n  opacity: 0.5;\n  font-weight: 300;\n  position: absolute;\n  left: 0px;\n  bottom: 37px;\n}\n.spm_wrapper .spm_tools_widget.badges .badge .badge_iner .badge_pic {\n  width: 100%;\n  max-height: 150px;\n  overflow: hidden;\n}\n.spm_wrapper .spm_tools_widget.badges .badge .badge_iner .badge_pic img {\n  width: 100%;\n  height: auto;\n}\n.spm_wrapper .spm_tools_widget.badges .badge .badge_iner a {\n  position: absolute;\n  bottom: 37px;\n  left: 50%;\n  width: 160px;\n  line-height: 35px;\n  text-decoration: none;\n  color: #ffffff;\n  font-size: 14px;\n  font-weight: 500;\n  margin-left: -80px;\n  background-color: #888888;\n  border-bottom: 1px solid #000000;\n  text-shadow: 0 0 1px #000000;\n  opacity: 0;\n  -webkit-transition: all 300ms ease;\n  -moz-transition: all 300ms ease;\n  -ms-transition: all 300ms ease;\n  -o-transition: all 300ms ease;\n  transition: all 300ms ease;\n}\n.spm_wrapper .spm_tools_widget.badges .badge .badge_arrow {\n  position: absolute;\n  left: 100%;\n  top: 65px;\n  width: 60px;\n  height: 20px;\n  background-position: center left;\n  background-size: 100% 100%;\n  background-repeat: no-repeat;\n}\n.spm_wrapper .spm_tools_widget.badges .badge.last .badge_arrow {\n  display: none;\n}\n.spm_wrapper .modal_badge_selected .bns_overlay_iner {\n  -webkit-box-sizing: border-box;\n  -moz-box-sizing: border-box;\n  box-sizing: border-box;\n  width: 600px;\n}\n.spm_wrapper .modal_badge_selected .modal_badge_image {\n  display: inline-block;\n  -webkit-box-sizing: border-box;\n  -moz-box-sizing: border-box;\n  box-sizing: border-box;\n  width: 30%;\n  padding: 0;\n  vertical-align: middle;\n  overflow: hidden;\n}\n.spm_wrapper .modal_badge_selected .modal_badge_image img {\n  width: 100%;\n  vertical-align: top;\n}\n.spm_wrapper .modal_badge_selected .modal_badge_tools {\n  display: inline-block;\n  -webkit-box-sizing: border-box;\n  -moz-box-sizing: border-box;\n  box-sizing: border-box;\n  width: 70%;\n  padding: 0 0 0 40px;\n  vertical-align: middle;\n}\n.spm_wrapper .modal_badge_selected .modal_badge_buttons {\n  margin-top: 30px;\n}\n.spm_wrapper .modal_badge_selected .badge_share_button {\n  vertical-align: middle;\n  display: inline-block;\n  width: 40px;\n  height: 40px;\n  background-position: center;\n  background-size: 20px 20px;\n  background-repeat: no-repeat;\n  cursor: pointer;\n  margin-right: 10px;\n  -webkit-transition: all 0.3s linear;\n  -moz-transition: all 0.3s linear;\n  -ms-transition: all 0.3s linear;\n  -o-transition: all 0.3s linear;\n  background-color: #cccccc;\n  border-radius: 20px;\n}\n.spm_wrapper .modal_badge_selected .badge_share_button:hover {\n  background-color: #888888;\n}\n", ""]);
+	exports.push([module.id, ".spm_wrapper .spm_tools_widget.badges {\n  float: left;\n  width: 100%;\n  background-color: #eeeeee;\n  overflow: hidden;\n}\n.spm_wrapper .spm_tools_widget.badges .container {\n  width: 100%;\n  padding: 80px 5% 40px 5%;\n  -webkit-box-sizing: border-box;\n  -moz-box-sizing: border-box;\n  box-sizing: border-box;\n}\n.spm_wrapper .spm_tools_widget.badges .modal_badge_tools {\n  width: 100%;\n}\n.spm_wrapper .spm_tools_widget.badges .modal_badge_buttons {\n  text-align: center;\n}\n.spm_wrapper .spm_tools_widget.badges .bon_header {\n  color: #000000;\n  font-size: 30px;\n  font-family: 'RotondaC', 'Roboto', sans-serif;\n}\n.spm_wrapper .spm_tools_widget.badges .bon_sub_header {\n  font-size: 14px;\n  color: #000000;\n  margin-top: 10px;\n}\n.spm_wrapper .spm_tools_widget.badges .bon_slide_cat_item_wrap {\n  float: left;\n  width: 100%;\n  margin-top: 30px;\n  margin-bottom: 30px;\n  position: relative;\n}\n.spm_wrapper .spm_tools_widget.badges .bon_slide_cat_item_wrap.cycle-slide {\n  display: none !important;\n}\n.spm_wrapper .spm_tools_widget.badges .bon_slide_cat_item_wrap.cycle-slide.cycle-slide-active {\n  display: block !important;\n}\n.spm_wrapper .spm_tools_widget.badges .bon_slide_cat_item_wrap.cycle-slide.cycle-sentinel {\n  display: block !important;\n}\n.spm_wrapper .spm_tools_widget.badges .bon_item_main {\n  float: left;\n  width: 100%;\n}\n.spm_wrapper .spm_tools_widget.badges .bon_item_main .arr_left {\n  position: absolute;\n  left: 0;\n  margin-left: -110px;\n  width: 100px;\n  height: 110px;\n  border-radius: 20px 0px 0px 20px;\n  background-color: #eeeeee;\n  background-position: center center;\n  background-repeat: no-repeat;\n  background-image: url(https://d3sailplay.cdnvideo.ru/media/assets/assetfile/04cbb41a3a145a39e718ff25a37690d5.png);\n  display: block;\n  top: 50%;\n  margin-top: -55px;\n}\n.spm_wrapper .spm_tools_widget.badges .bon_item_main .arr_right {\n  position: absolute;\n  right: 0;\n  margin-right: -110px;\n  width: 100px;\n  height: 110px;\n  border-radius: 0px 20px 20px 0px;\n  background-color: #eeeeee;\n  background-position: center center;\n  background-repeat: no-repeat;\n  background-image: url(https://d3sailplay.cdnvideo.ru/media/assets/assetfile/26bbb44e136d0cf99e7099522eab8fc9.png);\n  display: block;\n  top: 50%;\n  margin-top: -55px;\n}\n.spm_wrapper .spm_tools_widget.badges .bon_item_main .bon_slide_cat_item {\n  float: left;\n  width: 100%;\n  white-space: nowrap;\n  overflow: hidden;\n}\n.spm_wrapper .spm_tools_widget.badges .bon_item_main .bon_slide_cat_item .bon_item_line {\n  position: relative;\n  left: 0;\n  transition: .3s ease;\n}\n.spm_wrapper .spm_tools_widget.badges .badge_lines_container {\n  margin: 30px auto;\n  float: left;\n  width: 100%;\n  -webkit-box-sizing: border-box;\n  -moz-box-sizing: border-box;\n  box-sizing: border-box;\n}\n.spm_wrapper .spm_tools_widget.badges .one_level .badge_arrow {\n  display: none;\n}\n.spm_wrapper .spm_tools_widget.badges .badge {\n  position: relative;\n  width: 150px;\n  height: 190px;\n  border: 1px solid #cccccc;\n  margin-left: 30px;\n  margin-right: 30px;\n  background-color: #ffffff;\n  text-align: center;\n  display: inline-block;\n  white-space: normal;\n}\n.spm_wrapper .spm_tools_widget.badges .badge .badge_iner {\n  position: relative;\n  float: left;\n  width: 100%;\n  height: 100%;\n  cursor: pointer;\n}\n.spm_wrapper .spm_tools_widget.badges .badge .badge_iner span {\n  white-space: normal;\n  float: left;\n  color: #222222;\n  -webkit-transition: all 300ms ease;\n  -moz-transition: all 300ms ease;\n  -ms-transition: all 300ms ease;\n  -o-transition: all 300ms ease;\n  transition: all 300ms ease;\n}\n.spm_wrapper .spm_tools_widget.badges .badge .badge_iner .badge_name {\n  font-size: 16px;\n  width: 100%;\n  text-align: center;\n  margin-top: 10px;\n}\n.spm_wrapper .spm_tools_widget.badges .badge .badge_iner .bon_tem_info {\n  font-size: 14px;\n  opacity: 0.5;\n  font-weight: 300;\n  position: absolute;\n  left: 0px;\n  bottom: 37px;\n}\n.spm_wrapper .spm_tools_widget.badges .badge .badge_iner .badge_pic {\n  width: 100%;\n  max-height: 150px;\n  overflow: hidden;\n}\n.spm_wrapper .spm_tools_widget.badges .badge .badge_iner .badge_pic img {\n  width: 100%;\n  height: auto;\n}\n.spm_wrapper .spm_tools_widget.badges .badge .badge_iner a {\n  position: absolute;\n  bottom: 37px;\n  left: 50%;\n  width: 160px;\n  line-height: 35px;\n  text-decoration: none;\n  color: #ffffff;\n  font-size: 14px;\n  font-weight: 500;\n  margin-left: -80px;\n  background-color: #888888;\n  border-bottom: 1px solid #000000;\n  text-shadow: 0 0 1px #000000;\n  opacity: 0;\n  -webkit-transition: all 300ms ease;\n  -moz-transition: all 300ms ease;\n  -ms-transition: all 300ms ease;\n  -o-transition: all 300ms ease;\n  transition: all 300ms ease;\n}\n.spm_wrapper .spm_tools_widget.badges .badge .badge_arrow {\n  position: absolute;\n  left: 100%;\n  top: 65px;\n  width: 60px;\n  height: 20px;\n  background-position: center left;\n  background-size: 100% 100%;\n  background-repeat: no-repeat;\n}\n.spm_wrapper .spm_tools_widget.badges .badge.last .badge_arrow {\n  display: none;\n}\n.spm_wrapper .modal_badge_selected .bns_overlay_iner {\n  -webkit-box-sizing: border-box;\n  -moz-box-sizing: border-box;\n  box-sizing: border-box;\n  width: 600px;\n}\n.spm_wrapper .modal_badge_selected .modal_badge_image {\n  display: inline-block;\n  -webkit-box-sizing: border-box;\n  -moz-box-sizing: border-box;\n  box-sizing: border-box;\n  width: 30%;\n  padding: 0;\n  vertical-align: middle;\n  overflow: hidden;\n}\n.spm_wrapper .modal_badge_selected .modal_badge_image img {\n  width: 100%;\n  vertical-align: top;\n}\n.spm_wrapper .modal_badge_selected .modal_badge_tools {\n  display: inline-block;\n  -webkit-box-sizing: border-box;\n  -moz-box-sizing: border-box;\n  box-sizing: border-box;\n  width: 70%;\n  padding: 0 0 0 40px;\n  vertical-align: middle;\n}\n.spm_wrapper .modal_badge_selected .modal_badge_buttons {\n  margin-top: 30px;\n}\n.spm_wrapper .modal_badge_selected .badge_share_button {\n  vertical-align: middle;\n  display: inline-block;\n  width: 40px;\n  height: 40px;\n  background-position: center;\n  background-size: 20px 20px;\n  background-repeat: no-repeat;\n  cursor: pointer;\n  margin-right: 10px;\n  -webkit-transition: all 0.3s linear;\n  -moz-transition: all 0.3s linear;\n  -ms-transition: all 0.3s linear;\n  -o-transition: all 0.3s linear;\n  background-color: #cccccc;\n  border-radius: 20px;\n}\n.spm_wrapper .modal_badge_selected .badge_share_button:hover {\n  background-color: #888888;\n}\n", ""]);
 
 	// exports
 
@@ -44441,6 +44712,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	      scope.need_to_silver = scope.statuses[1].points;
 	      scope.need_to_gold = scope.statuses[2].points;
 
+	      scope.need_to_silver_relative = scope.need_to_silver;
+	      scope.need_to_gold_relative = scope.need_to_gold;
+
 	      scope.profile = {
 	        history: false
 	      };
@@ -44454,6 +44728,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	        if (points) scope.purchases_sum = points;
 
+	        scope.need_to_silver_relative = scope.need_to_silver - scope.purchases_sum;
+	        scope.need_to_gold_relative = scope.need_to_gold - scope.purchases_sum;
 	        if (scope.purchases_sum < scope.statuses[1].points) {
 	          // 1500
 	          var far = second_point - first_point;
@@ -44480,7 +44756,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 180 */
 /***/ (function(module, exports) {
 
-	module.exports = "<div class=\"clearfix membership container\">\n    <div class=\"title\">{{ widget.texts.title }}</div>\n    <div class=\"status-name\">{{ status.name }} MEMBER</div>\n    <!--<div class=\"renewal\">Renewal Date: 28/02/2018</div>-->\n\n    <div class=\"member-line\">\n        <div class=\"check-point active\" style=\"left: 0px\" ng-attr-title=\"{{ statuses[0].name }}\"></div>\n        <div class=\"check-point\" ng-class=\"{ 'active': second_active }\" style=\"left: 30%\" title=\"{{ statuses[1].name }}\" ng-attr-description=\"{{ (statuses[1].points | currency:'$':0) + ' purchase' }}\"></div>\n        <div class=\"check-point last\" ng-class=\"{ 'active': third_active }\" title=\"{{ statuses[2].name }}\" ng-attr-description=\"{{ (statuses[2].points | currency:'$':0) + ' purchase' }}\"></div>\n        <div class=\"fill-line\" ng-style=\"{ 'width': get_status_progress() }\">\n            <div class=\"text\" ng-if=\"purchases_sum\">{{ purchases_sum | currency:\"$\":0 }}</div>\n            <div class=\"line\"></div>\n            <svg class=\"arrow\" ng-hide=\"third_active\" x=\"0px\" y=\"0px\" viewBox=\"0 0 1000 1000\">\n                <g fill=\"#3e3e3f\">\n                    <path d=\"M761.5,180.8L447,499.5l314.5,318.6c9.7,9.7,17,20.8,21.9,33.3c4.9,12.5,7.3,25.2,7.3,38c0,12.8-2.4,25.3-7.3,37.5c-4.9,12.2-12.2,23.1-21.9,32.8C742,979.9,718.8,990,691.7,990c-27.1,0-50.3-10.1-69.8-30.2L241.9,576.5c-9.7-9.7-17.3-21.4-22.9-34.9c-5.6-13.6-8.7-27.3-9.4-41.2c-0.7-13.9,1-27.2,5.3-40.1c4.2-12.8,11.1-23.5,20.8-31.8L622,39.1C641.4,19.7,664.7,10,691.7,10c27.1,0,50.3,9.7,69.7,29.1c9.7,9.7,17,20.8,21.9,33.3c4.9,12.5,7.3,25.2,7.3,38c0,12.8-2.4,25.3-7.3,37.5C778.5,160.1,771.2,171.1,761.5,180.8L761.5,180.8z\"\n                    />\n                </g>\n            </svg>\n        </div>\n    </div>\n    <div class=\"motivation-block\">\n        <div class=\"group\">\n            <div class=\"price\">{{ need_to_silver | currency:\"$\":0 }}+</div>\n            <div class=\"text\">Renew as {{ statuses[1].name }}</div>\n        </div>\n        <div class=\"group\">\n            <div class=\"price\">{{ need_to_gold | currency:\"$\":0 }}+</div>\n            <div class=\"text\">Become {{ statuses[2].name }}</div>\n        </div>\n    </div>\n    <div class=\"buttons\">\n        <a href=\"\" class=\"sp_btn button_primary\" ng-click=\"$event.preventDefault(); profile.history = true;\">Purchase history></a>\n        <a ng-attr-href=\"{{ widget.privileges_link }}\" class=\"sp_btn button_primary\">Shopping privileges></a>\n    </div>\n\n    <magic-modal class=\"bns_overlay_hist\" data-show=\"profile.history\">\n\n        <div data-sailplay-history data-sailplay-profile>\n\n        <h3>\n            <span class=\"modal_history_header\">{{ widget.texts.history.header }}</span>\n            <!--<b>У вас {{ user().user_points.confirmed + ' ' + (user().user_points.confirmed | sailplay_pluralize:_tools.points.texts.pluralize) }}</b>-->\n        </h3>\n        <h4 class=\"modal_history_caption\">{{ widget.texts.history.caption }}</h4>\n\n        <table class=\"bns_hist_table\">\n\n            <tbody>\n\n            <tr data-dir-paginate=\"item in history() | itemsPerPage:10\" data-pagination-id=\"history_pages\">\n            <td>\n                <span class=\"modal_history_date\" data-ng-bind=\"item.action_date | date:'d/MM/yyyy'\"></span>\n            </td>\n            <td>\n                <span><b class=\"modal_history_content\" data-ng-bind=\"item | history_item\"></b></span>\n            </td>\n            <td>\n                <span class=\"modal_history_points\" data-ng-if=\"item.points_delta\" data-ng-bind=\"((item.points_delta|number) || 0) + ' ' + (item.points_delta | sailplay_pluralize:('points.texts.pluralize' | tools))\"></span>\n            </td>\n            </tr>\n\n            </tbody>\n        </table>\n\n        <dir-pagination-controls data-max-size=\"7\" data-pagination-id=\"history_pages\"\n                                data-template-url=\"profile.history_pagination\"\n                                data-auto-hide=\"true\"></dir-pagination-controls>\n        </div>\n\n\n\n    </magic-modal>\n</div>";
+	module.exports = "<div class=\"clearfix membership container\">\n    <div class=\"title\">{{ widget.texts.title }}</div>\n    <div class=\"status-name\">{{ status.name }} MEMBER</div>\n    <div class=\"renewal\" data-ng-bind=\"widget.texts.renewal_date\"></div>\n\n    <div class=\"member-line\">\n        <div class=\"check-point active\" style=\"left: 0px\" ng-attr-title=\"{{ statuses[0].name }}\"></div>\n        <div class=\"check-point\" ng-class=\"{ 'active': second_active }\" style=\"left: 30%\" title=\"{{ statuses[1].name }}\" ng-attr-description=\"{{ (statuses[1].points | currency:'$':0) + ' purchase' }}\"></div>\n        <div class=\"check-point last\" ng-class=\"{ 'active': third_active }\" title=\"{{ statuses[2].name }}\" ng-attr-description=\"{{ (statuses[2].points | currency:'$':0) + ' purchase' }}\"></div>\n        <div class=\"fill-line\" ng-style=\"{ 'width': get_status_progress() }\">\n            <div class=\"text\" ng-if=\"purchases_sum\">{{ purchases_sum | currency:\"$\":0 }}</div>\n            <div class=\"line\"></div>\n            <svg class=\"arrow\" ng-hide=\"third_active\" x=\"0px\" y=\"0px\" viewBox=\"0 0 1000 1000\">\n                <g fill=\"#3e3e3f\">\n                    <path d=\"M761.5,180.8L447,499.5l314.5,318.6c9.7,9.7,17,20.8,21.9,33.3c4.9,12.5,7.3,25.2,7.3,38c0,12.8-2.4,25.3-7.3,37.5c-4.9,12.2-12.2,23.1-21.9,32.8C742,979.9,718.8,990,691.7,990c-27.1,0-50.3-10.1-69.8-30.2L241.9,576.5c-9.7-9.7-17.3-21.4-22.9-34.9c-5.6-13.6-8.7-27.3-9.4-41.2c-0.7-13.9,1-27.2,5.3-40.1c4.2-12.8,11.1-23.5,20.8-31.8L622,39.1C641.4,19.7,664.7,10,691.7,10c27.1,0,50.3,9.7,69.7,29.1c9.7,9.7,17,20.8,21.9,33.3c4.9,12.5,7.3,25.2,7.3,38c0,12.8-2.4,25.3-7.3,37.5C778.5,160.1,771.2,171.1,761.5,180.8L761.5,180.8z\"\n                    />\n                </g>\n            </svg>\n        </div>\n    </div>\n    <div class=\"motivation-block\">\n        <div class=\"group\" data-ng-hide=\"need_to_gold_relative<=0\">\n            <div class=\"price\" data-ng-show=\"need_to_silver_relative>0\" >{{ need_to_silver_relative | currency:\"$\":0 }}</div>\n            <div class=\"text\">{{need_to_silver_relative>0 ? 'Become ' + statuses[1].name : 'You will renew as ' + statuses[1].name }}</div>\n        </div>\n        <div class=\"group\">\n            <div class=\"price\" data-ng-show=\"need_to_gold_relative>0\">{{ need_to_gold_relative | currency:\"$\":0 }}</div>\n            <div data-ng-class=\"{nomargin: need_to_gold_relative<=0}\" class=\"text\">{{need_to_gold_relative>0 ? 'Become ' + statuses[2].name : 'You will renew as ' + statuses[2].name }}</div>\n        </div>\n    </div>\n    <div class=\"buttons\">\n        <a href=\"\" class=\"sp_btn button_primary\" ng-click=\"$event.preventDefault(); profile.history = true;\">Purchase history></a>\n        <a ng-attr-href=\"{{ widget.privileges_link }}\" class=\"sp_btn button_primary\">Shopping privileges></a>\n    </div>\n\n    <magic-modal class=\"bns_overlay_hist\" data-show=\"profile.history\">\n\n        <div data-sailplay-history data-sailplay-profile>\n\n        <h3>\n            <span class=\"modal_history_header\">{{ widget.texts.history.header }}</span>\n            <!--<b>У вас {{ user().user_points.confirmed + ' ' + (user().user_points.confirmed | sailplay_pluralize:_tools.points.texts.pluralize) }}</b>-->\n        </h3>\n        <h4 class=\"modal_history_caption\">{{ widget.texts.history.caption }}</h4>\n\n        <table class=\"bns_hist_table\">\n\n            <tbody>\n\n            <tr data-dir-paginate=\"item in history() | itemsPerPage:10\" data-pagination-id=\"history_pages\">\n            <td>\n                <span class=\"modal_history_date\" data-ng-bind=\"item.action_date | date:'d/MM/yyyy'\"></span>\n            </td>\n            <td>\n                <span><b class=\"modal_history_content\" data-ng-bind=\"item | history_item\"></b></span>\n            </td>\n            <td>\n                <span class=\"modal_history_points\" data-ng-if=\"item.points_delta\" data-ng-bind=\"((item.points_delta|number) || 0) + ' ' + (item.points_delta | sailplay_pluralize:('points.texts.pluralize' | tools))\"></span>\n            </td>\n            </tr>\n\n            </tbody>\n        </table>\n\n        <dir-pagination-controls data-max-size=\"7\" data-pagination-id=\"history_pages\"\n                                data-template-url=\"profile.history_pagination\"\n                                data-auto-hide=\"true\"></dir-pagination-controls>\n        </div>\n\n\n\n    </magic-modal>\n</div>";
 
 /***/ }),
 /* 181 */
@@ -44517,7 +44793,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	// module
-	exports.push([module.id, ".spm_wrapper .spm_tools_widget.tba-membership .container {\n  background: #e6e7e9;\n}\n.spm_wrapper .spm_tools_widget.tba-membership .motivation-block {\n  display: flex;\n  margin-top: 200px;\n  justify-content: space-around;\n}\n.spm_wrapper .spm_tools_widget.tba-membership .motivation-block .group {\n  display: inherit;\n}\n.spm_wrapper .spm_tools_widget.tba-membership .motivation-block .group .price {\n  font-size: 30px;\n  font-weight: 600;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  background: white;\n  width: 140px;\n  height: 140px;\n  border-radius: 50%;\n}\n.spm_wrapper .spm_tools_widget.tba-membership .motivation-block .group .text {\n  font-size: 30px;\n  line-height: 140px;\n  font-weight: 600;\n  margin-left: 1em;\n}\n.spm_wrapper .spm_tools_widget.tba-membership .buttons {\n  display: flex;\n  justify-content: space-around;\n  margin-top: 70px;\n  margin-bottom: 70px;\n}\n.spm_wrapper .spm_tools_widget.tba-membership .title {\n  text-align: center;\n  font-size: 42px;\n  font-weight: 600;\n  text-transform: uppercase;\n  padding-top: 65px;\n}\n.spm_wrapper .spm_tools_widget.tba-membership .status-name {\n  text-align: center;\n  font-size: 34px;\n  font-weight: 600;\n  text-transform: uppercase;\n  margin-top: 12px;\n}\n.spm_wrapper .spm_tools_widget.tba-membership .renewal {\n  text-align: center;\n  font-size: 34px;\n  margin-top: 12px;\n  font-weight: 400;\n}\n.spm_wrapper .spm_tools_widget.tba-membership .member-line {\n  width: 75%;\n  height: 16px;\n  border-radius: 10px;\n  background: #bcbdc0;\n  margin: 90px auto 0;\n  position: relative;\n}\n.spm_wrapper .spm_tools_widget.tba-membership .member-line .fill-line {\n  position: absolute;\n  width: 10%;\n  box-sizing: border-box;\n  padding: 0 2px;\n  transition: all 0.25s ease-out;\n  -webkit-transition: all 0.25s ease-out;\n}\n.spm_wrapper .spm_tools_widget.tba-membership .member-line .fill-line .text {\n  font-size: 34px;\n  font-weight: 600;\n  white-space: nowrap;\n  position: absolute;\n  top: -54px;\n  left: 50%;\n  transform: translateX(-50%);\n  -webkit-transform: translateX(-50%);\n}\n.spm_wrapper .spm_tools_widget.tba-membership .member-line .fill-line .line {\n  height: 16px;\n  background: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-membership .member-line .fill-line .arrow {\n  position: absolute;\n  top: -18px;\n  right: -15px;\n  height: 52px;\n  width: 52px;\n  transform: rotateZ(180deg);\n  -webkit-transform: rotateZ(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-membership .member-line .check-point {\n  position: absolute;\n  left: 0;\n  top: -8px;\n  width: 32px;\n  height: 32px;\n  border-radius: 50%;\n  background: #bcbdc0;\n  transition: all 0.25s ease-out;\n  -webkit-transition: all 0.25s ease-out;\n}\n.spm_wrapper .spm_tools_widget.tba-membership .member-line .check-point:after,\n.spm_wrapper .spm_tools_widget.tba-membership .member-line .check-point:before {\n  opacity: .6;\n  transition: opacity 0.25s ease-out;\n  -webkit-transition: opacity 0.25s ease-out;\n}\n.spm_wrapper .spm_tools_widget.tba-membership .member-line .check-point:after {\n  content: attr(title);\n  display: block;\n  text-align: center;\n  font-weight: 600;\n  position: absolute;\n  font-size: 32px;\n  text-transform: uppercase;\n  margin-top: 60px;\n  transform: translateX(-35%);\n  -webkit-transform: translateX(-35%);\n}\n.spm_wrapper .spm_tools_widget.tba-membership .member-line .check-point:before {\n  content: attr(description);\n  display: block;\n  text-align: center;\n  font-weight: 400;\n  position: absolute;\n  font-size: 24px;\n  white-space: nowrap;\n  text-transform: uppercase;\n  margin-top: 145px;\n  transform: translateX(-40%);\n  -webkit-transform: translateX(-40%);\n}\n.spm_wrapper .spm_tools_widget.tba-membership .member-line .check-point.active {\n  background: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-membership .member-line .check-point.active:after,\n.spm_wrapper .spm_tools_widget.tba-membership .member-line .check-point.active:before {\n  opacity: 1;\n}\n.spm_wrapper .spm_tools_widget.tba-membership .member-line .check-point.last {\n  left: calc(100% - 32px);\n}\n", ""]);
+	exports.push([module.id, ".spm_wrapper .spm_tools_widget.tba-membership .container {\n  background: #e6e7e9;\n}\n.spm_wrapper .spm_tools_widget.tba-membership .motivation-block {\n  display: flex;\n  margin-top: 200px;\n  justify-content: space-around;\n}\n.spm_wrapper .spm_tools_widget.tba-membership .motivation-block .group {\n  display: inherit;\n}\n.spm_wrapper .spm_tools_widget.tba-membership .motivation-block .group .price {\n  font-size: 30px;\n  font-weight: 600;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  background: white;\n  width: 140px;\n  height: 140px;\n  border-radius: 50%;\n}\n.spm_wrapper .spm_tools_widget.tba-membership .motivation-block .group .price.ng-hide + .text {\n  margin-left: 0;\n}\n.spm_wrapper .spm_tools_widget.tba-membership .motivation-block .group .text {\n  font-size: 30px;\n  line-height: 140px;\n  font-weight: 600;\n  margin-left: 1em;\n}\n.spm_wrapper .spm_tools_widget.tba-membership .motivation-block .group .text.nomargin {\n  margin-left: 0;\n}\n.spm_wrapper .spm_tools_widget.tba-membership .buttons {\n  display: flex;\n  justify-content: space-around;\n  margin-top: 70px;\n  margin-bottom: 70px;\n}\n.spm_wrapper .spm_tools_widget.tba-membership .buttons .sp_btn {\n  margin-right: 0 !important;\n}\n.spm_wrapper .spm_tools_widget.tba-membership .title {\n  text-align: center;\n  font-size: 42px;\n  font-weight: 600;\n  text-transform: uppercase;\n  padding-top: 65px;\n}\n.spm_wrapper .spm_tools_widget.tba-membership .status-name {\n  text-align: center;\n  font-size: 34px;\n  font-weight: 600;\n  text-transform: uppercase;\n  margin-top: 12px;\n}\n.spm_wrapper .spm_tools_widget.tba-membership .renewal {\n  text-align: center;\n  font-size: 34px;\n  margin-top: 12px;\n  font-weight: 400;\n}\n.spm_wrapper .spm_tools_widget.tba-membership .member-line {\n  width: 75%;\n  height: 16px;\n  border-radius: 10px;\n  background: #bcbdc0;\n  margin: 90px auto 0;\n  position: relative;\n}\n.spm_wrapper .spm_tools_widget.tba-membership .member-line .fill-line {\n  position: absolute;\n  width: 10%;\n  box-sizing: border-box;\n  padding: 0 2px;\n  transition: all 0.25s ease-out;\n  -webkit-transition: all 0.25s ease-out;\n}\n.spm_wrapper .spm_tools_widget.tba-membership .member-line .fill-line .text {\n  font-size: 34px;\n  font-weight: 600;\n  white-space: nowrap;\n  position: absolute;\n  top: -54px;\n  left: 50%;\n  transform: translateX(-50%);\n  -webkit-transform: translateX(-50%);\n}\n.spm_wrapper .spm_tools_widget.tba-membership .member-line .fill-line .line {\n  height: 16px;\n  background: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-membership .member-line .fill-line .arrow {\n  position: absolute;\n  top: -18px;\n  right: -15px;\n  height: 52px;\n  width: 52px;\n  transform: rotateZ(180deg);\n  -webkit-transform: rotateZ(180deg);\n}\n.spm_wrapper .spm_tools_widget.tba-membership .member-line .check-point {\n  position: absolute;\n  left: 0;\n  top: -8px;\n  width: 32px;\n  height: 32px;\n  border-radius: 50%;\n  background: #bcbdc0;\n  transition: all 0.25s ease-out;\n  -webkit-transition: all 0.25s ease-out;\n}\n.spm_wrapper .spm_tools_widget.tba-membership .member-line .check-point:after,\n.spm_wrapper .spm_tools_widget.tba-membership .member-line .check-point:before {\n  opacity: .6;\n  transition: opacity 0.25s ease-out;\n  -webkit-transition: opacity 0.25s ease-out;\n}\n.spm_wrapper .spm_tools_widget.tba-membership .member-line .check-point:after {\n  content: attr(title);\n  display: block;\n  text-align: center;\n  font-weight: 600;\n  position: absolute;\n  font-size: 32px;\n  text-transform: uppercase;\n  margin-top: 60px;\n  transform: translateX(-35%);\n  -webkit-transform: translateX(-35%);\n}\n.spm_wrapper .spm_tools_widget.tba-membership .member-line .check-point:before {\n  content: attr(description);\n  display: block;\n  text-align: center;\n  font-weight: 400;\n  position: absolute;\n  font-size: 24px;\n  white-space: nowrap;\n  text-transform: uppercase;\n  margin-top: 145px;\n  transform: translateX(-40%);\n  -webkit-transform: translateX(-40%);\n}\n.spm_wrapper .spm_tools_widget.tba-membership .member-line .check-point.active {\n  background: #3e3e3f;\n}\n.spm_wrapper .spm_tools_widget.tba-membership .member-line .check-point.active:after,\n.spm_wrapper .spm_tools_widget.tba-membership .member-line .check-point.active:before {\n  opacity: 1;\n}\n.spm_wrapper .spm_tools_widget.tba-membership .member-line .check-point.last {\n  left: calc(100% - 32px);\n}\n", ""]);
 
 	// exports
 

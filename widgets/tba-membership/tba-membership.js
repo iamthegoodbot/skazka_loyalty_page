@@ -25,7 +25,10 @@ WidgetRegister({
       })
 
       scope.need_to_silver = scope.statuses[1].points;
-      scope.need_to_gold = scope.statuses[2].points;      
+      scope.need_to_gold = scope.statuses[2].points;  
+
+      scope.need_to_silver_relative = scope.need_to_silver
+      scope.need_to_gold_relative = scope.need_to_gold
 
       scope.profile = {
         history: false,
@@ -42,6 +45,8 @@ WidgetRegister({
         if (points)
           scope.purchases_sum = points
 
+        scope.need_to_silver_relative = scope.need_to_silver - scope.purchases_sum
+        scope.need_to_gold_relative = scope.need_to_gold - scope.purchases_sum
         if (scope.purchases_sum < scope.statuses[1].points) { // 1500
           let far = second_point - first_point;
           let percent = scope.purchases_sum / scope.statuses[1].points * 100;
