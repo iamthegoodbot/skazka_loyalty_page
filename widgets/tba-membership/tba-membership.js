@@ -18,7 +18,9 @@ WidgetRegister({
     return (scope) => {
       scope.statuses = MAGIC_CONFIG.data.statuses;
 
-      
+      const second_point = 10 + scope.statuses[1].points / scope.statuses[2].points * 90;
+      scope.second_point_style = second_point
+
       SailPlayApi.observe('load.user.info', user => {
         scope.purchases_sum = user.purchases.sum;
         scope.status = user.user_status;        
@@ -39,7 +41,7 @@ WidgetRegister({
           return
 
         const first_point = 10;
-        const second_point = 40;
+        const second_point = 10 + scope.statuses[1].points / scope.statuses[2].points * 90;
         const third_point = 100;
 
         if (points)
@@ -48,20 +50,18 @@ WidgetRegister({
         scope.need_to_silver_relative = scope.need_to_silver - scope.purchases_sum
         scope.need_to_gold_relative = scope.need_to_gold - scope.purchases_sum
         if (scope.purchases_sum < scope.statuses[1].points) { // 1500
-          let far = second_point - first_point;
-          let percent = scope.purchases_sum / scope.statuses[1].points * 100;
+          let percent = 10+scope.purchases_sum / scope.statuses[2].points * 90;
 
-          return `${(far * percent / 100) + 10}%`
+          return `${percent}%`
         } else if (scope.purchases_sum >= scope.statuses[2].points) {
           scope.second_active = true;
           scope.third_active = true;          
           return `100%`
         } else {
             scope.second_active = true;
-            let far = third_point - second_point;
-            let percent = scope.purchases_sum / scope.statuses[2].points * 100;
+            let percent = 10+scope.purchases_sum / scope.statuses[2].points * 90;
 
-          return `${(far * percent / 100) + first_point + 8}%`
+          return `${percent}%`
         }
       }
     };
