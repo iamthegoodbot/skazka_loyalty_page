@@ -1,0 +1,7 @@
+<div class="ti_profile_history_pagination" ng-if="1 < pages.length || !autoHide">
+
+  <a ng-repeat="pageNumber in pages track by tracker(pageNumber, $index)" 
+    class="ti_profile_history_pagination_item" ng-bind="pageNumber" href="#" ng-click="$event.preventDefault();setCurrent(pageNumber)"
+    ng-class="{ type_action : pagination.current == pageNumber, disabled : pageNumber == '...' }"></a>
+
+</div>
