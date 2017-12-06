@@ -27,6 +27,13 @@ export let Tools = angular.module('magic.tools', [
 
 })
 
+// Can't find something like this
+.filter('interpolateString', function($interpolate){
+  return (template, scope) => {
+    return $interpolate(template)(scope);
+}
+})
+
 .config(['uiMask.ConfigProvider', function (uiMaskConfigProvider) {
   uiMaskConfigProvider.maskDefinitions({'_': /[0-9]/});
   uiMaskConfigProvider.addDefaultPlaceholder(true);
@@ -103,6 +110,12 @@ export let Tools = angular.module('magic.tools', [
     ]
   };
 
+})
+
+.filter('ngRepeatByNumber', function(){
+  return function(num) {
+    return new Array(num);   
+  }
 })
 
 .directive('slickCarousel', function ($compile, $timeout) {
@@ -646,8 +659,8 @@ export let Tools = angular.module('magic.tools', [
       country = "";
     }
 
-    number = number.slice(0, 3) + '-' + number.slice(3);
-    return (country + " (" + city + ") " + number).trim();
+    number = number.slice(0, 3) + '-' + number.slice(3,5) + '-' + number.slice(5);
+    return '+' + (country + " (" + city + ") " + number).trim();
   };
 });
 

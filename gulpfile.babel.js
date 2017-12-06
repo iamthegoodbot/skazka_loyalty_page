@@ -27,19 +27,13 @@ gulp.task('dev', (callback) => {
 });
 
 gulp.task('build.magic', (callback) => {
-
   let bundler = webpack(development);
-
   bundler.run(callback);
-
 });
 
 gulp.task('build.migrator', (callback) => {
-
   let bundler = webpack(migrator);
-
   bundler.run(callback);
-
 });
 
 gulp.task('watch', () => {
@@ -55,41 +49,30 @@ gulp.task('watch', () => {
 
 gulp.task('server', () => {
   server.server({
-    port: 3000
+    port: 8000
   });
 });
 
 //deploying section
 gulp.task('deploy.version', () => {
-
   console.log(`Deploying version: ${PACKAGE.version}`);
-
   replace({
     files: paths.dist + '/**/*',
     replace: /\$\{MAGIC_VERSION\}/g,
     with: PACKAGE.version
   });
-
 });
 
 gulp.task('deploy.magic', (callback) => {
-
   let bundler = webpack(production);
-
   bundler.run(callback);
-
 });
 
 gulp.task('deploy.migrator', (callback) => {
-
   let bundler = webpack(migrator);
-
   bundler.run(callback);
-
 });
 
 gulp.task('deploy', (callback) => {
-
   run('deploy.magic', 'deploy.migrator', 'deploy.version', callback);
-
 });

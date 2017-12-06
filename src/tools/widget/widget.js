@@ -15,7 +15,6 @@ export let Widget = angular.module('magic.tools.widget', [])
     link: (scope, elm, attrs) => {
 
       let widget_wrapper = angular.element(elm[0].querySelector('[data-widget-wrapper]'));
-      console.dir(widget_wrapper);
 
       scope.$watch('widget', (widget) => {
 

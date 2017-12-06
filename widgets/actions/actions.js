@@ -2,6 +2,7 @@ import { WidgetRegister } from '@core/widget';
 import ActionsWidgetTemplate from './actions.html';
 import './actions.less';
 
+
 WidgetRegister({
 
   id: 'actions',

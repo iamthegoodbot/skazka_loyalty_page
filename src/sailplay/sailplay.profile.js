@@ -159,6 +159,8 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
           this.name = params.name;
           this.label = params.label;
           this.placeholder = params.placeholder;
+          this.mask = params.mask;
+          this.placeholder_char = params.placeholder_char;
           this.required = params.required
           this.input = params.input || 'text';
 
@@ -255,6 +257,20 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
 
         scope.sailplay = scope.sailplay || {};
 
+        scope.maskOptions = {
+          addDefaultPlaceholder: true,
+          clearOnBlur: true,
+          maskDefinitions:  {
+            '_': /[0-9]/,
+            'd':/[0-3]/,
+            'm':/[01]/,
+            '1':/[0-1]/, 
+            '2':/[0-2]/, 
+            '3':/[0-3]/, 
+            'y':/[12]/
+          }
+        }
+
         scope.sailplay.fill_profile = {
           config: config, form: {}
         };
@@ -301,10 +317,13 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
 
                     var bd = user.user.birth_date && user.user.birth_date.split('-');
                     form_field.value = bd ? [parseInt(bd[2]), parseInt(bd[1]), parseInt(bd[0])] : [null, null, null];
+                    form_field.value = form_field.value.map(value => {
+                      return value && value.toString().length == 1 ? '0' + value : value
+                    })
                     break;
 
                   case 'addPhone':
-                    form_field.value = user.user.phone || '';
+                    form_field.value = !!user.user.phone && user.user.phone.slice(1) || '';
                     break;
 
                   case 'addEmail':
@@ -430,12 +449,40 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
           if (req_user.addOid && data_user && data_user.origin_user_id && data_user.origin_user_id == req_user.addOid) {
             delete req_user.addOid;
           }
+          
+          if (req_user.sex && data_user && data_user.sex && data_user.sex == req_user.sex) {
+            delete req_user.sex;
+          }
+
+          if (req_user.firstName && data_user && data_user.first_name && data_user.first_name == req_user.firstName) {
+            delete req_user.firstName;
+          }
+
+          if (req_user.lastName && data_user && data_user.last_name && data_user.last_name == req_user.lastName) {
+            delete req_user.lastName;
+          }
+
+          let verifyPhone = false
+          if(scope.sailplay.fill_profile.config.verify_changes && ~scope.sailplay.fill_profile.config.verify_changes.indexOf('addPhone') && req_user.addPhone) {
+            verifyPhone = req_user.addPhone
+            delete req_user.addPhone
+          }
+
+          // Make it via chains
+          // if(scope.sailplay.fill_profile.config.verify_changes && ~scope.sailplay.fill_profile.config.verify_changes.indexOf('addEmail') && req_user.addEmail) {
+          //   callback({status: "verify", identifier: 'email', value: req_user.addEmail})
+          //   return;
+          // }
 
           if (req_user.birthDate) {
             var bd = angular.copy(req_user.birthDate);
             bd[0] = parseInt(bd[0]) < 10 ? '0' + parseInt(bd[0]) : bd[0];
             bd[1] = parseInt(bd[1]) < 10 ? '0' + parseInt(bd[1]) : bd[1];
             req_user.birthDate = bd.reverse().join('-');
+          }
+          
+          if (req_user.birthDate && data_user && data_user.birth_date && data_user.birth_date == req_user.birthDate) {
+            delete req_user.birthDate;
           }
 
           SailPlay.send('users.update', req_user, function (user_res) {
@@ -468,28 +515,38 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
                         SailPlayApi.call('logout')
                       }
                     }
-                    if (typeof callback == 'function') callback();
-                    SailPlayApi.call('load.user.info', {all: 1, purchases: 1});
+                    if (typeof callback == 'function') callback(req_user, user_res);
+                    SailPlayApi.call('load.user.info', {all: 1, purchases: 1}, () => {
+                      if(verifyPhone) {
+                        callback({status: "verify", identifier: 'phone' ,value: verifyPhone})
+                      }
+                    });
                   })  
               } else {
-                if (typeof callback == 'function') callback();
-                SailPlayApi.call('load.user.info', {all: 1, purchases: 1});
+                if (typeof callback == 'function') callback(req_user, user_res);
+                SailPlayApi.call('load.user.info', {all: 1, purchases: 1}, () => {
+                  if(verifyPhone) {
+                    callback({status: "verify", identifier: 'phone' ,value: verifyPhone})
+                  }
+                });
               }
 
             } else {
 
-              if(user_res.status == 'error' &&
-                MAGIC_CONFIG.data.force_registration.active &&
-                MAGIC_CONFIG.data.force_registration.errors &&
-                MAGIC_CONFIG.data.force_registration.errors[user_res.status_code]){
-                user_res.message = MAGIC_CONFIG.data.force_registration.errors[user_res.status_code]
-              }
+              callback(null, user_res)
 
-              $rootScope.$broadcast('notifier:notify', {
-                body: user_res.message
-              });
+              // if(user_res.status == 'error' &&
+              //   MAGIC_CONFIG.data.force_registration.active &&
+              //   MAGIC_CONFIG.data.force_registration.errors &&
+              //   MAGIC_CONFIG.data.force_registration.errors[user_res.status_code]){
+              //   user_res.message = MAGIC_CONFIG.data.force_registration.errors[user_res.status_code]
+              // }
 
-              scope.$apply();
+              // $rootScope.$broadcast('notifier:notify', {
+              //   body: user_res.message
+              // });
+
+              // scope.$apply();
 
             }
 
