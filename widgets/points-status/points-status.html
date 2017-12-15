@@ -74,7 +74,8 @@
                             <span data-ng-bind="(item | get_bonus_sub) + ' баллов'""></span>
                         </td>
                         <td>
-                            <span data-ng-bind="item | get_bonus_expiration"></span>
+                            <span data-ng-if="item.expiry_info && item.expiry_info[0] && item.expiry_info[0].expire_date"
+                             data-ng-bind="'до ' + (item.expiry_info[0].expire_date | amDateFormat:'D MMM YYYY')"></span>
                         </td>
         <!--                <td>
                             <span class="modal_history_points" data-ng-if="item.points_delta"
