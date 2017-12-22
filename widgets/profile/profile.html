@@ -1,5 +1,107 @@
 <div class="bon_profile_wrap container" data-ng-show="widget.enabled" data-ng-cloak>
 
+  <section class="container-wrapper" data-sailplay-profile>
+
+    <section class="top-header">
+      <section class="top-logo">
+        <img src="https://static.wixstatic.com/media/63bfd9_7a756f8a244d4a06a6b44190f9ca8b83~mv2.png/v1/fill/w_334,h_69,al_c,usm_0.66_1.00_0.01/63bfd9_7a756f8a244d4a06a6b44190f9ca8b83~mv2.png"
+             class="logo">
+      </section>
+      <section class="top-contacts">
+        <div class="contacts">
+          <p class="phone" data-ng-bind="widget.texts.phone_adress"></p>
+          <p class="email" data-ng-bind="widget.texts.email_adress"></p>
+        </div>
+        <div class="socials">
+          <a class="social-vk" data-ng-href="{{widget.socials.vk.link}}">
+            <img src="https://static.wixstatic.com/media/63bfd9_b6979aaeb66840ca85dcf0f8603a847a~mv2.png/v1/fill/w_41,h_41,al_c,usm_0.66_1.00_0.01/63bfd9_b6979aaeb66840ca85dcf0f8603a847a~mv2.png"
+                 class="bitmap">
+          </a>
+          <a class="social-ig" data-ng-href="{{widget.socials.ig.link}}">
+            <img src="https://static.wixstatic.com/media/63bfd9_d44b225f91124c2f8f1648b38a63885c~mv2.png/v1/fill/w_40,h_40,al_c/63bfd9_d44b225f91124c2f8f1648b38a63885c~mv2.png"
+                 class="bitmap">
+          </a>
+          <a class="social-fb" data-ng-href="{{widget.socials.fb.link}}">
+            <img src="https://static.wixstatic.com/media/63bfd9_5cde6514bb94487887ec3b76ca42dd92~mv2.png/v1/fill/w_40,h_40,al_c/63bfd9_5cde6514bb94487887ec3b76ca42dd92~mv2.png"
+                 class="bitmap">
+          </a>
+        </div>
+      </section>
+    </section>
+
+    <section class="main-content" data-ng-if="!user()">
+      <section>
+        <div class="content-header">
+          <p class="header-overlay" data-ng-bind="widget.texts.header_overlay"></p>
+          <p class="header-text" data-ng-bind="widget.texts.header_text_unlogged"></p>
+        </div>
+      </section>
+
+      <section>
+        <div class="offer-block">
+          <img src="https://sailplays3.cdnvideo.ru/media/content_management/contentitem/1809/92e8a2d63e1a02b10c64aa4fe62e11dc.png"
+               srcset="https://sailplays3.cdnvideo.ru/media/content_management/contentitem/1809/075c5a4d7e70fee805eb7aa736360cb9.png 2x,
+               https://sailplays3.cdnvideo.ru/media/content_management/contentitem/1809/c1b1f5adcf065b9f0741fda978dac7b8.png 3x"
+               class="offer-price">
+          <div class="offer-percent-container">
+            <p class="offer-percent">%</p>
+            <p class="offer-text" data-ng-bind-html="widget.texts.offer_text"></p>
+          </div>
+        </div>
+        <div class="offer-explaination">
+          <p data-ng-bind-html="widget.texts.disclaimer"></p>
+        </div>
+        <div class="login-container">
+          <a class="login-more" data-ng-bind="widget.texts.login_more" data-ng-click="alert('more');"></a>
+          <a class="login-login" data-ng-bind="widget.texts.login" data-ng-click="$event.preventDefault(); login('remote', {widget: 'profile', element: 'profile_login_button'});"></a>
+        </div>
+      </section>
+    </section>
+
+    <section class="main-content" data-ng-if="user()">
+      <section>
+        <div class="content-header">
+          <p class="header-overlay" data-ng-bind="widget.texts.header_overlay"></p>
+          <p class="header-text" style="text-transform: uppercase;" data-ng-bind="user().user.name || widget.texts.name_not_defined"></p>
+        </div>
+      </section>
+
+      <section>
+        <div class="offer-block">
+          <img src="https://sailplays3.cdnvideo.ru/media/content_management/contentitem/1809/92e8a2d63e1a02b10c64aa4fe62e11dc.png"
+               srcset="https://sailplays3.cdnvideo.ru/media/content_management/contentitem/1809/075c5a4d7e70fee805eb7aa736360cb9.png 2x,
+               https://sailplays3.cdnvideo.ru/media/content_management/contentitem/1809/c1b1f5adcf065b9f0741fda978dac7b8.png 3x"
+               class="offer-price">
+          <div class="offer-percent-container">
+            <p class="offer-percent">%</p>
+            <p class="offer-text" data-ng-bind-html="widget.texts.offer_text"></p>
+          </div>
+        </div>
+        <div class="offer-explaination">
+          <p data-ng-bind-html="widget.texts.disclaimer"></p>
+        </div>
+        <div class="login-container">
+          <a class="login-more login-more-logged" data-ng-bind="widget.texts.login_more" data-ng-click="alert('more');"></a>
+        </div>
+      </section>
+    </section>
+
+
+    <section class="navbar" data-ng-if="user()">
+      <section class="main-page">
+        
+      </section>
+    </section>
+
+    <section class="countdown" data-ng-if="user()">
+      <section>
+
+      </section>
+    </section>
+
+  </section>
+
+
   <div class="bon_profile_info" data-sailplay-profile data-sailplay-gifts>
 
     <div class="bon_profile_top clearfix">

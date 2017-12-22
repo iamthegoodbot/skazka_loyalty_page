@@ -12,7 +12,7 @@ import { WidgetRegister } from '@core/widget'
 //import theme styles
 import './theme/theme.less';
 
-export let magic = angular.module('magic', [ SailPlay, core, Cookies, Tools, NgTouch ])
+export let magic = angular.module('magic', [ SailPlay, core, Cookies, Tools, NgTouch, require('angular-sanitize') ])
 
 .config(function(SailPlayProvider, MAGIC_CONFIG, SailPlayHistoryProvider, SailPlayActionsDataProvider){
 

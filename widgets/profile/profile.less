@@ -4,15 +4,188 @@
 
 .spm_wrapper {
 
-  .bon_profile_wrap {
+  & .container-wrapper {
+    width: 1440px;
+    margin: auto;
+  }
+
+  & .bon_profile_wrap {
 
     float: left;
-    width: 100%;
-    padding: 0 5%;
     .box-sizing(border-box);
     background-color: @main;
-    //background-image: url(./img/prof_bg.png);
+    background-image: url(https://sailplays3.cdnvideo.ru/media/content_management/contentitem/1809/a48283d62e05da143e5b4c1331de798f.jpg);
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
     position: relative;
+    height: 1000vh;
+    width: 100%;
+
+    & .top-header {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 60px;
+      margin-left: 90px;
+      margin-right: 60px;
+      & .top-logo {
+
+      }
+
+      & .top-contacts {
+        display: flex;
+        & .contacts {
+          width: 200px;
+          height: 52px;
+          font-family: Roboto;
+          font-size: 18px;
+          font-weight: 300;
+          font-style: normal;
+          font-stretch: normal;
+          line-height: 1.44;
+          letter-spacing: normal;
+          text-align: right;
+          color: #ffffff;
+          & .phone {
+            font-size: 22px;
+            font-weight: bold;
+            line-height: 1.18;
+          }
+        }
+        & .socials {
+          margin-left: 40px;
+          & a+a {
+            margin-left: 20px;
+          }
+          & .bitmap {
+            width: 52px;
+            height: 52px;
+            object-fit: contain;
+            box-shadow: 13px 12px 26px 0 rgba(0, 0, 0, 0.25);
+          }
+        }
+      }
+    }
+
+    & .main-content {
+      margin-left: 56px;
+      margin-top: 125px;
+      & .header-overlay {
+        width: 1000px;
+        height: 64px;
+        opacity: 0.1;
+        font-family: Roboto;
+        font-size: 123px;
+        font-weight: 900;
+        font-style: italic;
+        font-stretch: normal;
+        line-height: 0.52;
+        letter-spacing: 6.9px;
+        text-align: left;
+        color: white;
+      }
+      & .header-text {
+        margin-left: 26px;
+        width: 684px;
+        height: 74px;
+        font-family: Roboto;
+        font-size: 45px;
+        font-weight: bold;
+        font-style: normal;
+        font-stretch: normal;
+        line-height: 1.64;
+        letter-spacing: 4.6px;
+        text-align: left;
+        color: #9dc55c;
+        transform: translateY(-35px);
+      }
+      & .offer-block {
+        display: flex;
+        align-items: center;
+        transform: translate(-50px, -120px);
+        & .offer-percent-container {
+          display: flex;
+          transform: translate(-310px, -20px);
+          align-items: center;
+        }
+        & .offer-price {
+          height: 459px;
+        }
+        & .offer-percent {
+          width: 54px;
+          height: 88px;
+          font-family: Roboto;
+          font-size: 75px;
+          font-weight: 500;
+          font-style: italic;
+          font-stretch: normal;
+          line-height: normal;
+          letter-spacing: normal;
+          text-align: left;
+          color: #ffffff;
+        }
+        & .offer-text {
+          color: white;
+          margin-left: 20px;
+          transform: translateY(18px);
+          width: 142px;
+          height: 94px;
+          font-family: Roboto;
+          font-size: 16px;
+          font-weight: 300;
+          font-style: normal;
+          font-stretch: normal;
+          line-height: 1.63;
+          letter-spacing: normal;
+          text-align: left;
+        }
+      }
+      & .offer-explaination {
+        color: white;
+        transform: translate(36px, -260px);
+        width: 585px;
+        height: 110px;
+        font-family: Roboto;
+        font-size: 20px;
+        font-weight: 300;
+        font-style: normal;
+        font-stretch: normal;
+        line-height: 1.4;
+        letter-spacing: normal;
+        text-align: left;
+      }
+      & .login-container {
+        transform: translate(36px, -260px);
+        display: flex;
+        width: 417px;
+        margin-top: 37px;
+        justify-content: space-between;
+        & .login-more {
+          width: 200px;
+          height: 54px;
+          border: solid 1px #9dc55c;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          color: white;
+          cursor: pointer;
+          &.login-more-logged {
+            width: 230px;
+          }
+        }
+        & .login-login {
+          width: 200px;
+          height: 54px;
+          border: solid 1px #9dc55c;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          background-color: #9dc55c;
+          cursor: pointer;
+        }
+      }
+    }
 
     .bon_profile_info {
       width: 100%;
