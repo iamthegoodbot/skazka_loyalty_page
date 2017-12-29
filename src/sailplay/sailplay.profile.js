@@ -1,6 +1,5 @@
 import angular from 'angular';
 
-
 export let SailPlayProfile = angular.module('sailplay.profile', [])
 
 /**
@@ -50,13 +49,12 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
          * @description
          * Login by type.
          * @param {string}  type   Authorization type.
-         * @param {object}  from   Where it call.
          */
-          scope.login = function (type, from) {
+        scope.login = function (type) {
 
-          SailPlay.authorize(type, from);
+          SailPlay.authorize(type);
 
-         };
+        };
 
         /**
          * @ngdoc method
@@ -159,7 +157,6 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
           this.name = params.name;
           this.label = params.label;
           this.placeholder = params.placeholder;
-          this.required = params.required
           this.input = params.input || 'text';
 
           if (params.data) {
@@ -179,61 +176,6 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
   })
 
   /**
-   * @ngdoc factory
-   * @name sailplay.profile.factory:fillProfileTag
-   *
-   * @param {object} form   Fields from edit user profile form
-   *
-   * @description
-   * Factory for checking user profile after signup
-   *   
-   */
-
-  .factory('fillProfileTag', (SailPlay, SailPlayApi, MAGIC_CONFIG, $q, $rootScope) => {
-    const obj = {
-    }
-    obj.checkSubmitForm = function(form){
-      return $q((res, rej) => {
-        if(MAGIC_CONFIG.data.force_registration && MAGIC_CONFIG.data.force_registration.active){
-          const config = MAGIC_CONFIG.data.force_registration
-          const requiredFields = config.required_fields
-          const isProfileFilled = requiredFields.reduce((acc, x)=>{
-            const field = form.find((field)=>{
-                return field.name == x
-              })
-            if(field === void 0) {
-              return false
-            }
-            if( Object.prototype.toString.call( field.value ) === '[object Array]' ) {
-              return (field.value.length === 3) && Object.keys(field.value).reduce(function(acc, key, index) {
-                 return !!field.value[key] && acc
-              }, true)
-            } else {
-              return acc && !!field.value
-            }
-          }, true)
-          if(isProfileFilled){
-            if(MAGIC_CONFIG.data.force_registration.tag_to_set_after_submit){
-              const tagName = MAGIC_CONFIG.data.force_registration.tag_to_set_after_submit
-              SailPlay.send('tags.add',{tags:[tagName]},()=>{
-                res(true)
-              })
-            } else {
-              console.error("No fill tag_to_set_after_submit in config")
-              res(true)
-            }
-          } else {
-            res(false)
-          }
-        } else {
-          res(true)
-        }
-      })
-    }
-    return obj
-  })
-
-  /**
    * @ngdoc directive
    * @name sailplay.profile.directive:sailplayFillProfile
    * @restrict A
@@ -245,7 +187,7 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
    * This directive extends parent scope with property: sailplay.fill_profile
    *
    */
-  .directive('sailplayFillProfile', function (SailPlay, $rootScope, $q, ipCookie, SailPlayApi, SailPlayFillProfile, $timeout, MAGIC_CONFIG, fillProfileTag) {
+  .directive('sailplayFillProfile', function (SailPlay, $rootScope, $q, ipCookie, SailPlayApi, SailPlayFillProfile, MAGIC_CONFIG) {
 
     return {
 
@@ -269,15 +211,44 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
           if (!user) return;
           var form = scope.sailplay.fill_profile.form;
           var custom_fields = [];
+          var tags_fields = [];
+          console.info('fields', config.fields)
           form.fields = config.fields.map(function (field) {
             var form_field = new SailPlayFillProfile.Field(field);
             if (field.type == 'variable') 
               custom_fields.push(form_field)
+
+            if (field.type == 'tags') {
+              tags_fields.push(form_field)
+              if(form_field.input == 'checkbox-tag') {
+                // TODO дети тут
+                let found = form_field.data.find(v=>v.isChildren)
+                console.log('fnd', found.childrenVarName)
+                SailPlayApi.call("vars.batch", { names: [found.childrenVarName] }, (res) => {
+                  var childrenVariable = res.vars[0]
+
+                  console.log('childarray', res, childrenVariable)
+
+                  if(childrenVariable && childrenVariable.length) {
+                    found.childArray = childrenVariable
+                      .map(x=>{return {age: x, isReal: true}})
+                      .concat({age: 'Число', isReal: false})
+                  } else {
+                    found.childArray = [{age: 'Число', isReal: false}]
+                  }
+
+                })
+              }
+              console.log('enfield',form_field)
+            }
+
             
             //we need to assign received values to form
+            console.info(form_field)
             switch (form_field.type) {
 
               //we need define type
+
               case 'system':
                 //bind different values to form field
                 switch (form_field.name) {
@@ -312,17 +283,15 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
                     form_field.value = user.user.email || '';
                     break;
 
-                  case 'addOid':
-
-                    form_field.value = user.user.origin_user_id || '';
-                    break;
-
                   case 'sex':
 
                     form_field.value = user.user.sex || '';
                     break;
 
                 }
+
+                form_field.oldVal = form_field.value
+                    
 
                 break;
 
@@ -331,46 +300,93 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
             return form_field;
           });
 
+          console.info(tags_fields)
+
           form.auth_hash = SailPlay.config().auth_hash;
           //angular.extend(scope.profile_form.user, user.user);
           //if(ipCookie(FillProfile.cookie_name) && SailPlay.config().auth_hash === ipCookie(FillProfile.cookie_name).user.auth_hash ){
           //  angular.extend(scope.profile_form, ipCookie(FillProfile.cookie_name));
           //}
-          // console.dir(form);
-
+          console.dir(form);
           saved_form = angular.copy(form);                        
 
           if (custom_fields.length) {            
             SailPlayApi.call("vars.batch", { names: custom_fields.map(field => { return field.name }) }, (res) => {
               angular.forEach(res.vars, variable => {                
                 angular.forEach(custom_fields, field => {
-                  if (field.name == variable.name) field.value = variable.value;
+                  if (field.name == variable.name) {
+                    field.value = variable.value;
+                    field.oldVal = field.value
+                  }
                 })
               })
             })
           }
 
-          if (MAGIC_CONFIG.data.force_registration && MAGIC_CONFIG.data.force_registration.active && MAGIC_CONFIG.data.force_registration.tag_name && !$rootScope.submited){
-            
-            const tagName = MAGIC_CONFIG.data.force_registration.tag_name
-
-            SailPlay.send('tags.exist', {tags: [tagName]}, function (res) {
-              if (res && res.tags.length) {
-                if (!res.tags[0].exist) {
-                  $timeout(function(){
-                    scope.$parent.reg_incomplete = true;
-                    scope.$parent.preventClose = true;
-                    $rootScope.$broadcast('openProfile');
-                  }, 10)
-                } else {
-                  scope.$parent.reg_incomplete = false;
-                  scope.$parent.preventClose = false;
-                }
-              }
+          if (tags_fields.length) {
+            let tags = [];
+            angular.forEach(tags_fields, field => {
+              tags = tags.concat(field.data.map(item => item.tag))
             })
+
+            if (tags.length) {
+
+              let chunkedTags = tags.reduce((acc, v, k) => {
+                if (acc[acc.length - 1].length == 10) {
+                  acc.push([v])
+                } else {
+                  acc[acc.length - 1].push(v)
+                }
+                return acc
+              }, [[]])
+              let tagsPromises = chunkedTags.map(tagsArray => {
+                return new Promise((res) => {
+                  SailPlay.send('tags.exist', {tags: tagsArray}, (res_vars) => {
+                    if (!res_vars.status == 'ok')
+                      $rootScope.$broadcast('notifier:notify', {
+                        body: res_vars.message
+                      });
+                    res(res_vars)
+                  })
+                })
+              })
+
+              let existPromises = Promise.all(tagsPromises)
+                .then((arraysRes)=>{
+                  return arraysRes.reduce((acc, v, k)=>{
+                    console.log(acc)
+                    return acc.concat(v.tags)
+                  }, [])
+                })
+                .then((flatRes)=>{
+                  console.info('flatres', flatRes)
+                  flatRes.forEach((tag)=>{
+                    angular.forEach(tags_fields, field => {
+                      angular.forEach(field.data, tag_field => {
+                        if (tag_field.tag == tag.name) {
+                          tag_field.value = tag.exist
+                          if(tag.exist){
+                            field.value = tag_field.tag
+                            field.oldVal = field.value
+                          } else if (!field.oldVal){
+                            field.oldVal = ""
+                          }
+                          console.log(tag_field, tag)
+                        }
+                      })
+                    })
+                  })
+                })
+            }
           }
 
           form.auth_hash = SailPlay.config().auth_hash;
+          //angular.extend(scope.profile_form.user, user.user);
+          //if(ipCookie(FillProfile.cookie_name) && SailPlay.config().auth_hash === ipCookie(FillProfile.cookie_name).user.auth_hash ){
+          //  angular.extend(scope.profile_form, ipCookie(FillProfile.cookie_name));
+          //}
+          console.log(form.fields.map(x=>x.value));
+          saved_form = angular.copy(form);
 
           if (scope.$root.$$phase != '$digest')
             scope.$digest();
@@ -402,22 +418,62 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
 
         };
 
-        scope.sailplay.fill_profile.submit = function (form, callback) {
+
+        scope.sailplay.fill_profile.submit = function (form, callback, options) {
 
           if (!form || !form.$valid) {
             return;
           }
 
+          if(!options) {
+            options = {}
+          }
+
           var data_user = SailPlayApi.data('load.user.info')() && SailPlayApi.data('load.user.info')().user;         
           var req_user = {},
-            custom_user_vars = {};
+            custom_user_vars = {},
+            custom_user_tags_add = [],
+            custom_user_tags_delete = [],
+            hasChangesTagCondition = false,
+            hasUpdatedEmailCondition = false;
 
           angular.forEach(scope.sailplay.fill_profile.form.fields, function (item) {
+            if(!(item.value === item.oldVal) && !(!item.hasOwnProperty('oldVal') && item.value == "")){
+              console.log(item, 'changed field')
+              hasChangesTagCondition = true
+            }
             if (item.type == 'variable') {
               custom_user_vars[item.name] = item.value
-            } else
+            } else if (item.type =="tags" ){
+              console.log('itempre', item)
+              if(item.input=="checkbox-tag") {
+                console.log('chitem', item)
+                item.data.forEach(v => {
+                  if(v.value){
+                    custom_user_tags_add.push(v.tag)
+                    if(v.isChildren){
+                      custom_user_vars[v.childrenVarName] = angular.toJSON(v.childrenarray)
+                    }
+                  } else {
+                    custom_user_tags_delete.push(v.tag)
+                  }
+                })
+              } else if(!(item.value === item.oldVal)) {
+                item.data.forEach(v => {
+                  if(v.tag === item.value){
+                    custom_user_tags_add.push(v.tag)
+                  } else {
+                    custom_user_tags_delete.push(v.tag)
+                  }
+                })
+              }
+            } else if (item.type !="tags") {
               req_user[item.name] = item.value;
+            }
           });
+          console.log(data_user, req_user)
+
+          console.info(scope)
 
           if (req_user.addPhone && data_user && data_user.phone && data_user.phone.replace(/\D/g, '') == req_user.addPhone.replace(/\D/g, '')) {
             delete req_user.addPhone;
@@ -427,9 +483,7 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
             delete req_user.addEmail;
           }
 
-          if (req_user.addOid && data_user && data_user.origin_user_id && data_user.origin_user_id == req_user.addOid) {
-            delete req_user.addOid;
-          }
+          console.log(hasChangesTagCondition, hasUpdatedEmailCondition, MAGIC_CONFIG)
 
           if (req_user.birthDate) {
             var bd = angular.copy(req_user.birthDate);
@@ -451,45 +505,131 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
                 })
               }
 
-              if(MAGIC_CONFIG.data.force_registration && MAGIC_CONFIG.data.force_registration.active) {
-                fillProfileTag.checkSubmitForm(scope.sailplay.fill_profile.form.fields)
-                  .then((isValid)=>{
-                    if(isValid){
-                      const tagNameToSet = MAGIC_CONFIG.data.force_registration.tag_to_set_after_submit
-                      const tagNameMessage = MAGIC_CONFIG.data.force_registration.messageAfterSubmit
-                      const tagNameMessageUpdate = MAGIC_CONFIG.data.force_registration.messageAfterSubmitUpdate
-                      if(tagNameMessage || tagNameMessageUpdate){
+              const deleteP = new Promise((resOuter, rej)=>{
+                  if (custom_user_tags_delete.length) {
+                    let chunkedTags = custom_user_tags_delete.reduce((acc, v, k) => {
+                      if (acc[acc.length-1].length == 10) {
+                        acc.push([v])
+                      } else {
+                        acc[acc.length-1].push(v)
+                      }
+                      return acc
+                    }, [[]])
+                    let tagsPromises = chunkedTags.map(tagsArray=>{
+                      return new Promise((res) => {
+                        SailPlay.send('tags.delete', {tags: tagsArray}, (res_vars) => {
+                          if (!res_vars.status == 'ok')
+                            $rootScope.$broadcast('notifier:notify', {
+                              body: res_vars.message
+                            });
+                          res(res_vars.status)
+                        })
+                      })
+                    })
+                    Promise.all(tagsPromises)
+                      .then((data)=>{
+                        resOuter(data)
+                      })
+                  } else {
+                    resOuter()
+                  }
+                })
+
+              const addP =  deleteP.then(res=>{
+                return new Promise((res, rej) => {
+                  if (custom_user_tags_add.length) {
+                    console.info(custom_user_tags_add, custom_user_tags_delete)
+                    SailPlay.send('tags.add', {tags: custom_user_tags_add}, (res_vars) => {
+                      if (!res_vars.status == 'ok')
                         $rootScope.$broadcast('notifier:notify', {
-                          body: scope.$parent.reg_incomplete ? tagNameMessage : tagNameMessageUpdate
-                        });
+                        body: res_vars.message
+                      });
+                      res(res_vars.status)
+                    })
+                  } else {
+                    res()
+                  }
+                })
+              })
+
+
+              
+
+              
+              
+              const ngApply = addP.then(res=>{
+                return new Promise((res, rej)=>{
+                  scope.$apply(function () {
+
+                    const form = scope.sailplay.fill_profile.form.fields
+
+                    const isProfileFilled = form.reduce((acc, x)=>{
+                      if( Object.prototype.toString.call( x.value ) === '[object Array]' ) {
+                        return (x.value.length === 3) && Object.keys(x.value).reduce(function(acc, key, index) {
+                           return !!x.value[key] && acc
+                        }, true)
+                      } else {
+                        return acc && !!x.value
                       }
-                      $rootScope.submited = true;
-                      if(scope.$parent.reg_incomplete && MAGIC_CONFIG.data.force_registration.logout_after_submit){
-                        SailPlayApi.call('logout')
-                      }
+                    }, true)
+
+                    scope.phone_error = false
+                    scope.email_error = false
+
+                    if(isProfileFilled){
+                      SailPlay.send('tags.add',{tags:['Клиент заполнил профиль']})
+                      $rootScope.$broadcast('isProfileFilled', true);
                     }
+                    if (hasChangesTagCondition || hasUpdatedEmailCondition) {
+                      var conditionalProfileTags = []
+                      if(hasChangesTagCondition && !options.profileUpdatedTagAlreadySet) {
+                        conditionalProfileTags.push(MAGIC_CONFIG.data.profile_update_tags.profile_general)
+                      }
+                      if(hasUpdatedEmailCondition) {
+                        conditionalProfileTags.push(MAGIC_CONFIG.data.profile_update_tags.email)
+                      }
+                      SailPlay.send('tags.add',{tags:conditionalProfileTags})
+                    }
+
                     if (typeof callback == 'function') callback();
-                    SailPlayApi.call('load.user.info', {all: 1, purchases: 1});
-                  })  
-              } else {
-                if (typeof callback == 'function') callback();
-                SailPlayApi.call('load.user.info', {all: 1, purchases: 1});
-              }
+
+                    window.setTimeout(function() {
+                      SailPlayApi.call('load.user.info', {all: 1});
+                    }, 1000);
+
+                    
+
+                  });
+                  res()
+                })
+                
+              })
+
+              
 
             } else {
 
-              if(user_res.status == 'error' &&
-                MAGIC_CONFIG.data.force_registration.active &&
-                MAGIC_CONFIG.data.force_registration.errors &&
-                MAGIC_CONFIG.data.force_registration.errors[user_res.status_code]){
-                user_res.message = MAGIC_CONFIG.data.force_registration.errors[user_res.status_code]
+              if(user_res.status == "error"){
+
+                if (user_res.status_code == -200010) {
+                  scope.email_error = true
+                  scope.phone_error = false
+                  console.log('email error', scope)
+                } else if(user_res.status_code == -200007) {
+                  scope.email_error = false
+                  scope.phone_error = true
+                  console.log('phone error')
+                }
+                scope.$apply();
+
+              } else {
+
+                $rootScope.$broadcast('notifier:notify', {
+                  body: user_res.message
+                });
+
+                scope.$apply();
               }
-
-              $rootScope.$broadcast('notifier:notify', {
-                body: user_res.message
-              });
-
-              scope.$apply();
 
             }
 

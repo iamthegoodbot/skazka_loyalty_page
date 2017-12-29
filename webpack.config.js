@@ -92,7 +92,8 @@ let plugins = [
   new webpack.DefinePlugin({
     MAGIC_VERSION: JSON.stringify(MAGIC_VERSION)
   }),
-  new webpack.NoErrorsPlugin()
+  new webpack.NoErrorsPlugin(),
+  new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /ru|en/)
 ]
 
 //dev config

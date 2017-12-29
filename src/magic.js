@@ -7,12 +7,14 @@ import Cookies from 'angular-cookie';
 import NgTouch from 'angular-touch';
 import Tools from './tools/tools';
 import { WidgetRegister } from '@core/widget'
+require('angular-moment');
+require('./../node_modules/angular-i18n/angular-locale_ru-ru.js');
 // import NgLocale from 'angular-i18n';
 
 //import theme styles
 import './theme/theme.less';
 
-export let magic = angular.module('magic', [ SailPlay, core, Cookies, Tools, NgTouch, require('angular-sanitize') ])
+export let magic = angular.module('magic', [ SailPlay, core, Cookies, Tools, NgTouch, require('angular-sanitize'), 'angularMoment' ])
 
 .config(function(SailPlayProvider, MAGIC_CONFIG, SailPlayHistoryProvider, SailPlayActionsDataProvider){
 
