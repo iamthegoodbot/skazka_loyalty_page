@@ -1,0 +1,179 @@
+@tabletWidth: 1150px;
+@mobWidth: 650px;
+
+.spm_wrapper {
+    .spm_tools_widget.mobile-navbar {
+        z-index: 10;
+        position: absolute;
+      .container_nc {
+          & ul {
+              display: flex
+          }
+          & li {
+              cursor: pointer;
+              display: block;
+              width: 100%;
+              text-align: center;
+          }
+          color: white;
+          font-weight: 900;
+          font-size: 22px;
+          & .navbar {
+              display: none;
+              height: 100%;
+          }
+          @media screen and (max-width: @tabletWidth) {
+              margin-top: 0 !important;
+              & .navbar-s {
+                  display: block;
+                  height: 0;
+                  width: 0;
+                  font-size: 26px;
+                  & .hamburger-menu-container {
+                        height: 54px;
+                        width: 30px;
+                        position: absolute;
+                        right: 60px;
+                        top: 60px;
+                  }
+                  & .hamburger-menu {
+                      height: 30px;
+                      width: 30px;
+                      @media (max-width: @mobWidth){
+                        margin-top: -5px;
+                      }
+                      & div {
+                          background-color: white;
+                          width: 30px;
+                          margin-top: 5px;
+                          height: 5px;
+                      }
+                  }
+                  & ul {
+                      background-color: black;
+                      width: 100vw;
+                      overflow: auto;
+                      height: 100vh;
+                      display: flex;
+                      flex-direction: column;
+                      position: fixed;
+                      justify-content: flex-start;
+                      align-items: flex-start;
+                      transition: transform 0.3s ease-in;
+                      transform: translate(-100vw);
+                      &.open {
+                          transform: translate(0);
+                      }
+                      & li {
+                          box-sizing: border-box;
+                          padding: 0 60px;
+                          &.menu-item {	
+                            height: 115px;
+                            line-height: 115px;   
+                             opacity: 0.98;
+                            background-image: linear-gradient(to bottom, #788793, #434f5a);
+                            &.type_active {
+                                color: #9DC55C;
+                                background-image: linear-gradient(to bottom, #293037, #0c1012);
+                            }
+                            text-transform: uppercase;
+                            font-size: 20px;
+                            letter-spacing: 2.1px;
+                            span {
+                                position: relative;
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                            }
+                            & .ball-svg:before {
+                                content: '';
+                                display: inline-block;
+                                background-image: url(../../src/assets/svg/page-1.svg);
+                                width: 48px;
+                                height: 48px;
+                                object-fit: contain;
+                                margin-right: 23px;
+                            }
+                            & .profile-svg:before {
+                                content: '';
+                                display: inline-block;
+                                background-image: url(../../src/assets/svg/bald-male.svg);
+                                width: 48px;
+                                height: 48px;
+                                object-fit: contain;
+                                margin-right: 27px;
+                            }
+                            & .hist-svg:before {
+                                content: '';
+                                display: inline-block;
+                                background-image: url(../../src/assets/svg/shape-copy-2.svg);
+                                width: 57px;
+                                height: 41px;
+                                object-fit: contain;
+                                margin-right: 25px;
+                            }
+                          }
+                      }
+                  }
+              }
+          }
+      }
+
+      & .top-logo {
+        padding: 50px 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        img {
+          cursor: pointer;
+          width: 226px;
+          @media (max-width: @mobWidth) {
+            height: 27px;
+            width: auto;
+          }
+        }
+      }
+
+      & .top-contacts {
+        display: flex;
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        padding: 50px 0;
+        & .contacts {
+          height: 52px;
+          font-family: Roboto;
+          font-size: 18px;
+          font-weight: 300;
+          font-style: normal;
+          font-stretch: normal;
+          line-height: 1.44;
+          letter-spacing: normal;
+          text-align: right;
+          color: #ffffff;
+          & .phone {
+            font-size: 22px;
+            font-weight: bold;
+            line-height: 1.18;
+          }
+        }
+        & .socials {
+            white-space: nowrap;
+          a {
+            text-decoration: none;
+            outline: none;
+          }
+          & a+a {
+            margin-left: 20px;
+          }
+          & .bitmap {
+            width: 52px;
+            height: 52px;
+            object-fit: contain;
+            // box-shadow: 13px 12px 26px 0 rgba(0, 0, 0, 0.25);
+          }
+        }
+      }
+      }
+  }

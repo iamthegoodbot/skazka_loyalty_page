@@ -3,27 +3,23 @@
   <section class="container-wrapper" data-sailplay-profile>
 
     <section class="top-header">
-      <section class="top-logo">
-        <img src="https://static.wixstatic.com/media/63bfd9_7a756f8a244d4a06a6b44190f9ca8b83~mv2.png/v1/fill/w_334,h_69,al_c,usm_0.66_1.00_0.01/63bfd9_7a756f8a244d4a06a6b44190f9ca8b83~mv2.png"
-             class="logo">
+      <section class="top-logo" ng-click="$parent.currentTab = 1">
+        <img ng-src="{{widget.logo}}" class="logo">
       </section>
       <section class="top-contacts">
         <div class="contacts">
-          <p class="phone" data-ng-bind="widget.texts.phone_adress"></p>
-          <p class="email" data-ng-bind="widget.texts.email_adress"></p>
+          <p class="phone" ng-bind="widget.texts.phone_adress"></p>
+          <p class="email" ng-bind="widget.texts.email_adress"></p>
         </div>
         <div class="socials">
-          <a class="social-vk" data-ng-href="{{widget.socials.vk.link}}">
-            <img src="https://static.wixstatic.com/media/63bfd9_b6979aaeb66840ca85dcf0f8603a847a~mv2.png/v1/fill/w_41,h_41,al_c,usm_0.66_1.00_0.01/63bfd9_b6979aaeb66840ca85dcf0f8603a847a~mv2.png"
-                 class="bitmap">
+          <a class="social-vk" ng-href="{{widget.socials.vk.link}}">
+            <img ng-src="{{widget.socials.vk.icon}}" class="bitmap">
           </a>
-          <a class="social-ig" data-ng-href="{{widget.socials.ig.link}}">
-            <img src="https://static.wixstatic.com/media/63bfd9_d44b225f91124c2f8f1648b38a63885c~mv2.png/v1/fill/w_40,h_40,al_c/63bfd9_d44b225f91124c2f8f1648b38a63885c~mv2.png"
-                 class="bitmap">
+          <a class="social-ig" ng-href="{{widget.socials.ig.link}}">
+            <img ng-src="{{widget.socials.ig.icon}}" class="bitmap">
           </a>
-          <a class="social-fb" data-ng-href="{{widget.socials.fb.link}}">
-            <img src="https://static.wixstatic.com/media/63bfd9_5cde6514bb94487887ec3b76ca42dd92~mv2.png/v1/fill/w_40,h_40,al_c/63bfd9_5cde6514bb94487887ec3b76ca42dd92~mv2.png"
-                 class="bitmap">
+          <a class="social-fb" ng-href="{{widget.socials.fb.link}}">
+            <img ng-src="{{widget.socials.fb.icon}}" class="bitmap">
           </a>
         </div>
       </section>
@@ -52,7 +48,7 @@
           <p data-ng-bind-html="widget.texts.disclaimer"></p>
         </div>
         <div class="login-container">
-          <a class="login-more" data-ng-bind="widget.texts.login_more" data-ng-click="$parent.$parent.currentTab='about'"></a>
+          <a class="login-more" data-ng-bind="widget.texts.login_more" data-ng-click="$parent.$parent.currentTab='about';window.scroll(0, 0);"></a>
           <a class="login-login" data-ng-bind="widget.texts.login" data-ng-click="$event.preventDefault(); login('remote', {widget: 'profile', element: 'profile_login_button'});"></a>
         </div>
       </section>
@@ -81,33 +77,34 @@
           <p data-ng-bind-html="widget.texts.disclaimer"></p>
         </div>
         <div class="login-container">
-          <a class="login-more login-more-logged" data-ng-bind="widget.texts.login_more" data-ng-click="$parent.$parent.currentTab='about'"></a>
+          <a class="login-more login-more-logged" data-ng-bind="widget.texts.login_more" data-ng-click="$parent.$parent.currentTab='about';window.scroll(0, 0);"></a>
         </div>
       </section>
     </section>
 
-    <section data-ng-show="$parent.currentTab == 'about'" class="history-content">
+    <section ng-show="$parent.currentTab == 'about'" class="history-content">
       <div class="content-header history">
-        <div class="back-sign" data-ng-click="$parent.currentTab='1'"></div>
-        <p class="header-text">
-          {{widget.texts.about.header + ' ' + (cartDate | date:'dd MMM')}}
-        </p>
+        <div class="back-sign" ng-click="$parent.currentTab='1'"></div>
+        <p class="header-text type_padding" ng-bind="widget.texts.about.header"></p>
       </div>
-
-      <p class="about-text" data-ng-bind-html="widget.texts.about.text"></p>
+      <p class="about-text" ng-bind-html="widget.texts.about.text"></p>
     </section>
 
-    <section data-ng-show="currentTab == '2'">
+    <section ng-show="$parent.currentTab == 'timer'" class="history-content">
+      <div class="content-header history">
+        <div class="back-sign" ng-click="$parent.currentTab='1'"></div>
+        <p class="header-text type_padding" ng-bind="widget.texts.timer_page.header"></p>
+      </div>
+      <p class="about-text" ng-bind-html="widget.texts.timer_page.text"></p>
+    </section>
+
+    <section ng-show="currentTab == '2'">
       <section class="fill-profile">
-        <div class="fill-profile-container" data-sailplay-fill-profile data-config="widget.fill_profile.config">
+        <div class="fill-profile-container" sailplay-fill-profile data-config="widget.fill_profile.config">
 
-          <div class="profile-header">
-            {{ widget.texts.fill_profile.header }}
-          </div>
+          <div class="profile-header" ng-bind="widget.texts.fill_profile.header"></div>
 
-          <div class="profile-first-time" data-ng-show="isFirstTime">
-            {{ widget.texts.fill_profile.first_time }}
-          </div>
+          <div class="profile-first-time" ng-show="isFirstTime" ng-bind="widget.texts.fill_profile.first_time"></div>
 
           <form name="fill_profile_form" class="mb_popup_main mb_popup_main_mt" data-ng-submit="sailplay.fill_profile.submit(fill_profile_form, profile.fill_profile);">
 
@@ -119,37 +116,39 @@
 
               <div data-ng-switch-when="text" class="input-field clearfix">
                 <label class="form_label" data-ng-class="{active: field.value}">{{ field.label }}</label>
-                <input class="form_input" type="text" placeholder="{{ field.placeholder }}" data-ng-model="field.value">
+                <input name="{{field.name}}" class="form_input" type="text" placeholder="{{ field.placeholder }}" data-ng-model="field.value" required="required">
               </div>
 
               <div data-ng-switch-when="date" class="input-date clearfix">
-                <label class="form_label date_label">{{ field.label }}</label>
+                <label class="form_label date_label" data-ng-class="{active: field.value && field.value[0] && field.value[1] && field.value[2]}">{{ field.label }}</label>
                 <date-picker data-model="field.value"></date-picker>
               </div>
 
               <div data-ng-switch-when="select" class="clearfix">
-                <label class="form_label">{{ field.label }}</label>
+                <label class="form_label" data-ng-class="{active: field.value}">{{ field.label }}</label>
                 <div class="magic_select form_input">
-                  <select data-ng-model="field.value" data-ng-options="item.value as item.text for item in field.data"></select>
+                  <select name="{{field.name}}" data-ng-model="field.value" data-ng-options="item.value as item.text for item in field.data" required="required"></select>
                 </div>
               </div>
 
               <div data-ng-switch-when="phone" class="input-field clearfix">
                 <label class="form_label" data-ng-class="{active: field.value}">{{ field.label }}</label>
-                <input class="form_input" type="text" data-model-view-value="true" data-ui-mask="{{ field.placeholder }}" data-ng-model="field.value">
+                <input class="form_input" name="{{field.name}}" type="text" data-model-view-value="true" data-ui-mask="{{ field.placeholder }}" data-ng-model="field.value" required="required">
               </div>
 
               <div data-ng-switch-when="email" class="input-field clearfix">
-                <label class="form_label">{{ field.label }}</label>
-                <input class="form_input" type="email" placeholder="{{ field.placeholder }}" data-ng-model="field.value">
+                <label class="form_label" data-ng-class="{active: field.value}">{{ field.label }}</label>
+                <input class="form_input" name="{{field.name}}" type="email" placeholder="{{ field.placeholder }}" data-ng-model="field.value" required="required">
               </div>
 
               <div data-ng-switch-when="radio-tag" class="radio-tag">
-                <label>{{ field.label }}</label>
+                <label class="form_label" 
+                  ng-class="{active: field.value}"
+                  ng-bind="field.label"></label>
                 <div class="radio-items-container">
                   <div class="radio-item" data-ng-repeat="item in field.data">
                     <!--      {{item}} -->
-                    <label class="radio-label-container">
+                    <label class="radio-label-container" >
                     <div class="custom-radio">
                       <input value="{{item.tag}}" name="{{field.name}}" required="required" data-ng-model="field.value" id="{{'field_' + field.name + '_' + item.tag}}" type="radio">
                       <div class="checked"><div class="checked-inner"></div></div>
@@ -161,33 +160,46 @@
               </div>
 
               <div data-ng-switch-when="checkbox-tag" class="checkbox-tag">
-                <label>{{ field.label }}</label>
+                <label class="form_label" 
+                  ng-class="{active: (field.data | activeItems)}"
+                  ng-bind="field.label"></label>
                 <div class="checkbox-items-container">
                   <div class="checkbox-item" data-ng-repeat="item in field.data">
                     <!--      {{item}} -->
-                    <label class="checkbox-label-container">
-                      <div class="custom-checkbox">
-                        <input value="{{item.tag}}" name="{{field.name}}" data-ng-model="item.value" id="{{'field_' + field.name + '_' + item.tag}}" type="checkbox">
-                        <div class="checked"><div class="checked-inner"></div></div>
-                        <div class="unchecked"></div>
-                      </div>
-                      {{ item.text }}</label>
-                      <div data-ng-if="item.isChildren" class="form_date children_date">
-                          <div class="children_container" data-ng-repeat="children in item.childArray">
-                              <input data-ng-model="children.age" type="text">
-                              <div class="plus-sign" data-ng-class="{cross: children.isReal}" data-ng-click="children.isReal">
+                      <label class="checkbox-label-container" >
+                        <div class="custom-checkbox">
+                          <input value="{{item.tag}}" name="{{field.name}}" data-ng-model="item.value" id="{{'field_' + field.name + '_' + item.tag}}" type="checkbox" ng-required="!(field.data | activeItems)">
+                          <div class="checked"><div class="checked-inner"></div></div>
+                          <div class="unchecked"></div>
+                        </div>
+                        {{ item.text }}
+                      </label>
+                      <div data-ng-if="item.isChildren && item.value" class="form_date children_date">
+                        
+                          <div class="children_container" data-ng-repeat="(index, children) in item.childArray">
+                              <input name="children_{{index}}" placeholder="{{item.placeholder}}" min="0" min="100" data-ng-model="children.age" type="number" required="required">
+                              <div class="plus-sign" ng-click="item.childArray.splice(index, 1)">
                                   <div class="verical-minus"></div>
                                   <div class="horizontal-minus"></div>
                               </div>
                           </div>
+                          
+                          <div class="children_container">
+                              <input placeholder="{{item.placeholder}}" min="0" min="100" ng-model="item.newChildren" type="number">
+                              <div ng-show="item.newChildren" class="plus-sign cross" ng-click="item.childArray.push({age:item.newChildren});item.newChildren=null;">
+                                <div class="verical-minus"></div>
+                                <div class="horizontal-minus"></div>
+                            </div>
+                          </div>
+
                       </div>
                   </div>
                 </div>
               </div>
             </div>
 
-            <div class="confirmation">
-              <label class="checkbox-label-container">
+            <div class="confirmation" ng-if="isFirstTime">
+              <label class="checkbox-label-container" >
                 <div class="custom-checkbox">
                   <input value="false" name="confirmation-checkbox" required="required" data-ng-model="field.value" id="confirmation" type="checkbox">
                   <div class="checked"><div class="checked-inner"></div></div>
@@ -196,7 +208,10 @@
                 <span class="confirmation-text" data-ng-bind="widget.texts.fill_profile.confirm_text"></span></label>
             </div>
 
-            <button type="submit" class="submit-btn">{{ widget.texts.fill_profile.reg || widget.texts.fill_profile.save }}</button>
+            <div class="buttons">
+                <div ng-if="fill_profile_form.$invalid" class="hover-popup invalid-popup" ng-bind-html="widget.texts.fill_profile.invalid"></div>
+                <button type="submit" class="submit-btn" ng-bind="isFirstTime ? widget.texts.fill_profile.reg : widget.texts.fill_profile.save"></button>
+            </div>
 
           </form>
         </div>
@@ -209,14 +224,12 @@
       </div>
       <div class="content-header history" data-ng-show="historyState == 'purchase'" >
         <div class="back-sign" data-ng-click="resetHistoryState()"></div>
-        <p class="header-text">
-          {{widget.texts.history.header_purchase + ' ' + (cartDate | date:'dd MMM')}}
-        </p>
+        <p class="header-text type_padding" ng-bind="widget.texts.history.header_purchase"></p>
       </div>
       <section class="empty-history" data-ng-if="!history().length">
         <div>
           <div class="hist-svg"></div>
-          <div class="caption"> {{ widget.texts.history.empty }}</div>
+          <div class="caption" ng-bind="widget.texts.history.empty"></div>
         </div>
       </section>
       <section class="history-table" data-ng-if="history().length">
@@ -273,35 +286,40 @@
         <div class="percent-bg"></div>
       </section>
       <section class="main-navbar">
-        <div data-ng-click="$parent.$parent.currentTab = 1" class="control-button" data-ng-class="{active: ($parent.currentTab == '1' || $parent.currentTab == 'about')}"> <div class="ball-svg"></div> {{ widget.texts.bottom_navbar.main }} </div>
-        <div data-ng-click="$parent.$parent.currentTab = 2" class="control-button" data-ng-class="{active: $parent.currentTab == '2'}"> <div class="profile-svg"></div> {{ widget.texts.bottom_navbar.profile }} </div>
-        <div data-ng-click="$parent.$parent.currentTab = 3" class="control-button" data-ng-class="{active: $parent.currentTab == '3'}"> <div class="hist-svg"></div> {{ widget.texts.bottom_navbar.history }} </div>
+        <div data-ng-click="$parent.$parent.currentTab = 1;window.scroll(0, 0);onTabChange(1)" class="control-button" data-ng-class="{active: ($parent.currentTab == '1' || $parent.currentTab == 'about')}"> <div class="ball-svg"></div> {{ widget.texts.bottom_navbar.main }} </div>
+        <div data-ng-click="$parent.$parent.currentTab = 2;window.scroll(0, 0);onTabChange(2)" class="control-button" data-ng-class="{active: $parent.currentTab == '2'}"> <div class="profile-svg"></div> {{ widget.texts.bottom_navbar.profile }} </div>
+        <div data-ng-click="$parent.$parent.currentTab = 3;window.scroll(0, 0);onTabChange(3)" class="control-button" data-ng-class="{active: $parent.currentTab == '3'}"> <div class="hist-svg"></div> {{ widget.texts.bottom_navbar.history }} </div>
         <div class="score">
-          <div class="hover-popup score-popup"> {{ widget.texts.bottom_navbar.score_hover }}</div>
-          3:16 </div>
-        <div class="percent">{{'146% ' + widget.texts.bottom_navbar.percent_thing}}</div>
+          <div class="hover-popup score-popup" ng-bind-html="getScorePopupText() | to_trusted"></div>
+          <div class="score-value" ng-bind="confirmedPurchases+':'+returnedPurchases"></div>
+          <div class="score-text" ng-bind-html="widget.texts.score | to_trusted"></div>
+        </div>
+        <div class="percent">
+          <div class="percent-value" ng-bind="getPercents() + '%'"></div>
+          <div class="percent-text" ng-bind="widget.texts.bottom_navbar.percent_thing"></div>
+        </div>
       </section>
     </section>
 
-    <section class="countdown" data-ng-if="user()">
-      <div class="hover-popup timer-popup"> {{ widget.texts.timer.hover }}</div>
-      <h4>{{ widget.texts.timer.header }}</h4>
-      <section class="timer-numbers">
+    <section class="countdown" ng-if="user()">
+      <div class="hover-popup timer-popup" ng-bind="widget.texts.timer.hover"></div>
+      <h4 ng-bind="widget.texts.timer.header"></h4>
+      <section class="timer-numbers" ng-click="$parent.$parent.currentTab='timer'">
         <div class="day">
-          <div class="number"> {{ timerObject.days }} </div>
-          <div class="caption"> {{ widget.texts.timer.days }} </div>
+          <div class="number" ng-bind="timerObject.days"></div>
+          <div class="caption" ng-bind="widget.texts.timer.days"></div>
         </div>
         <div class="hour">
-          <div class="number"> {{ timerObject.hours }} </div>
-          <div class="caption"> {{ widget.texts.timer.hours }} </div>
+          <div class="number" ng-bind="timerObject.hours"></div>
+          <div class="caption" ng-bind="widget.texts.timer.hours"></div>
         </div>
         <div class="minute">
-          <div class="number"> {{ timerObject.minutes }} </div>
-          <div class="caption"> {{ widget.texts.timer.minutes }} </div>
+          <div class="number" ng-bind="timerObject.minutes"></div>
+          <div class="caption" ng-bind="widget.texts.timer.minutes"></div>
         </div>
         <div class="second">
-          <div class="number"> {{ timerObject.seconds }} </div>
-          <div class="caption"> {{ widget.texts.timer.seconds }} </div>
+          <div class="number" ng-bind="timerObject.seconds"></div>
+          <div class="caption" ng-bind="widget.texts.timer.seconds"></div>
         </div>
       </section>
     </section>

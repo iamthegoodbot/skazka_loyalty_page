@@ -212,7 +212,7 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
           var form = scope.sailplay.fill_profile.form;
           var custom_fields = [];
           var tags_fields = [];
-          console.info('fields', config.fields)
+          // console.info('fields', config.fields)
           form.fields = config.fields.map(function (field) {
             var form_field = new SailPlayFillProfile.Field(field);
             if (field.type == 'variable') 
@@ -223,23 +223,19 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
               if(form_field.input == 'checkbox-tag') {
                 // TODO дети тут
                 let found = form_field.data.find(v=>v.isChildren)
-                console.log('fnd', found.childrenVarName)
+                // console.log('fnd', found.childrenVarName)
                 SailPlayApi.call("vars.batch", { names: [found.childrenVarName] }, (res) => {
-                  var childrenVariable = res.vars[0]
-
-                  console.log('childarray', res, childrenVariable)
+                  var childrenVariable = JSON.parse(res.vars[0] && res.vars[0].value || '{}')
 
                   if(childrenVariable && childrenVariable.length) {
-                    found.childArray = childrenVariable
-                      .map(x=>{return {age: x, isReal: true}})
-                      .concat({age: 'Число', isReal: false})
+                    found.childArray = childrenVariable.map(item=>{return {age: item.age}});
                   } else {
-                    found.childArray = [{age: 'Число', isReal: false}]
+                    found.childArray = []
                   }
 
                 })
               }
-              console.log('enfield',form_field)
+              // console.log('enfield',form_field)
             }
 
             
@@ -300,14 +296,14 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
             return form_field;
           });
 
-          console.info(tags_fields)
+          // console.info(tags_fields)
 
           form.auth_hash = SailPlay.config().auth_hash;
           //angular.extend(scope.profile_form.user, user.user);
           //if(ipCookie(FillProfile.cookie_name) && SailPlay.config().auth_hash === ipCookie(FillProfile.cookie_name).user.auth_hash ){
           //  angular.extend(scope.profile_form, ipCookie(FillProfile.cookie_name));
           //}
-          console.dir(form);
+          // console.dir(form);
           saved_form = angular.copy(form);                        
 
           if (custom_fields.length) {            
@@ -354,12 +350,12 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
               let existPromises = Promise.all(tagsPromises)
                 .then((arraysRes)=>{
                   return arraysRes.reduce((acc, v, k)=>{
-                    console.log(acc)
+                    // console.log(acc)
                     return acc.concat(v.tags)
                   }, [])
                 })
                 .then((flatRes)=>{
-                  console.info('flatres', flatRes)
+                  // console.info('flatres', flatRes)
                   flatRes.forEach((tag)=>{
                     angular.forEach(tags_fields, field => {
                       angular.forEach(field.data, tag_field => {
@@ -371,7 +367,7 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
                           } else if (!field.oldVal){
                             field.oldVal = ""
                           }
-                          console.log(tag_field, tag)
+                          // console.log(tag_field, tag)
                         }
                       })
                     })
@@ -385,7 +381,7 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
           //if(ipCookie(FillProfile.cookie_name) && SailPlay.config().auth_hash === ipCookie(FillProfile.cookie_name).user.auth_hash ){
           //  angular.extend(scope.profile_form, ipCookie(FillProfile.cookie_name));
           //}
-          console.log(form.fields.map(x=>x.value));
+          // console.log(form.fields.map(x=>x.value));
           saved_form = angular.copy(form);
 
           if (scope.$root.$$phase != '$digest')
@@ -439,20 +435,20 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
 
           angular.forEach(scope.sailplay.fill_profile.form.fields, function (item) {
             if(!(item.value === item.oldVal) && !(!item.hasOwnProperty('oldVal') && item.value == "")){
-              console.log(item, 'changed field')
+              // console.log(item, 'changed field')
               hasChangesTagCondition = true
             }
             if (item.type == 'variable') {
               custom_user_vars[item.name] = item.value
             } else if (item.type =="tags" ){
-              console.log('itempre', item)
+              // console.log('itempre', item)
               if(item.input=="checkbox-tag") {
-                console.log('chitem', item)
+                // console.log('chitem', item)
                 item.data.forEach(v => {
                   if(v.value){
                     custom_user_tags_add.push(v.tag)
                     if(v.isChildren){
-                      custom_user_vars[v.childrenVarName] = angular.toJSON(v.childrenarray)
+                      custom_user_vars[v.childrenVarName] = JSON.stringify(v.childArray)
                     }
                   } else {
                     custom_user_tags_delete.push(v.tag)
@@ -471,9 +467,9 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
               req_user[item.name] = item.value;
             }
           });
-          console.log(data_user, req_user)
+          // console.log(data_user, req_user)
 
-          console.info(scope)
+          // console.info(scope)
 
           if (req_user.addPhone && data_user && data_user.phone && data_user.phone.replace(/\D/g, '') == req_user.addPhone.replace(/\D/g, '')) {
             delete req_user.addPhone;
@@ -483,7 +479,7 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
             delete req_user.addEmail;
           }
 
-          console.log(hasChangesTagCondition, hasUpdatedEmailCondition, MAGIC_CONFIG)
+          // console.log(hasChangesTagCondition, hasUpdatedEmailCondition, MAGIC_CONFIG)
 
           if (req_user.birthDate) {
             var bd = angular.copy(req_user.birthDate);
@@ -538,7 +534,7 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
               const addP =  deleteP.then(res=>{
                 return new Promise((res, rej) => {
                   if (custom_user_tags_add.length) {
-                    console.info(custom_user_tags_add, custom_user_tags_delete)
+                    // console.info(custom_user_tags_add, custom_user_tags_delete)
                     SailPlay.send('tags.add', {tags: custom_user_tags_add}, (res_vars) => {
                       if (!res_vars.status == 'ok')
                         $rootScope.$broadcast('notifier:notify', {
@@ -550,12 +546,7 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
                     res()
                   }
                 })
-              })
-
-
-              
-
-              
+              })  
               
               const ngApply = addP.then(res=>{
                 return new Promise((res, rej)=>{
@@ -597,7 +588,7 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
                       SailPlayApi.call('load.user.info', {all: 1});
                     }, 1000);
 
-                    
+                    console.log('pizdec')
 
                   });
                   res()
@@ -605,21 +596,27 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
                 
               })
 
-              
+              return ngApply;
+
 
             } else {
 
               if(user_res.status == "error"){
 
-                if (user_res.status_code == -200010) {
-                  scope.email_error = true
-                  scope.phone_error = false
-                  console.log('email error', scope)
-                } else if(user_res.status_code == -200007) {
-                  scope.email_error = false
-                  scope.phone_error = true
-                  console.log('phone error')
-                }
+                // if (user_res.status_code == -200010) {
+                //   scope.email_error = true
+                //   scope.phone_error = false
+                //   // console.log('email error', scope)
+                // } else if(user_res.status_code == -200007) {
+                //   scope.email_error = false
+                //   scope.phone_error = true
+                //   // console.log('phone error')
+                // }
+
+                $rootScope.$broadcast('notifier:notify', {
+                  body: MAGIC_CONFIG.data.profile_update_errors && MAGIC_CONFIG.data.profile_update_errors[user_res.status_code || user_res.message] || user_res.message
+                });
+
                 scope.$apply();
 
               } else {

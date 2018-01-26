@@ -49,6 +49,7 @@ export let ToolsDatepicker = angular.module('ui.datepicker', [])
         scope.date = $rootScope.MAGIC_CONFIG.tools.date;
         scope.days = dateService.days;
         scope.years = dateService.years;
+        scope.active = null;
 
         scope.range = function (start, end) {
           var result = [];
@@ -57,6 +58,13 @@ export let ToolsDatepicker = angular.module('ui.datepicker', [])
           }
           return result;
         };
+
+        function onClick(e) {
+          scope.active = false;
+          scope.$digest()
+        }
+
+        document.body.addEventListener('click', onClick)
 
       }
     }

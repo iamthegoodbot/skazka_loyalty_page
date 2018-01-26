@@ -8,14 +8,19 @@ const ProfileWidget = {
 
   id: 'profile',
   template: WidgetProfileTemplate,
-  inject: ['$rootScope', 'moment', 'SailPlay', 'SailPlayApi', '$interval'],
-  controller: function ($rootScope, moment, SailPlay, SailPlayApi, $interval) {
+  inject: ['$rootScope', 'moment', 'SailPlay', 'SailPlayApi', '$interval', '$interpolate', 'MAGIC_CONFIG'],
+  controller: function ($rootScope, moment, SailPlay, SailPlayApi, $interval, $interpolate, MAGIC_CONFIG) {
 
     return function (scope, elm, attrs) {
 
       // scope._tools = MAGIC_CONFIG.tools;
 
+      const FILL_PROFILE_TAG = MAGIC_CONFIG.data.profile_update_tags.profile_general;
+
       scope.currentTab = 1
+      scope.window = window;
+      scope.confirmedPurchases = 0;
+      scope.returnedPurchases = 0;
 
       scope.default_avatar = DefaultAvatarImage;
       $rootScope.$on('openProfile', () => {
@@ -24,7 +29,7 @@ const ProfileWidget = {
       scope.profile = {
         history: false,
         show_fill_profile: false,
-        fill_profile: function(state){
+        fill_profile: function (state) {
 
           scope.profile.show_fill_profile = state || false;
 
@@ -45,38 +50,88 @@ const ProfileWidget = {
       }
 
       scope.timerObject = getTimerDiff()
-      $interval(()=>{
+      $interval(() => {
         scope.timerObject = getTimerDiff()
-      } ,1000)
+      }, 1000)
 
       scope.historyState = 'default'; // or purchase
 
       scope.isFirstTime = true;
 
-      scope.purchaseHistory = function(id, date){
-        SailPlayApi.call('purchases.info', {id}, (arg)=>{
+      scope.purchaseHistory = function (id, date) {
+        SailPlayApi.call('purchases.info', { id }, (arg) => {
         });
         scope.cartDate = date
       }
 
-      scope.resetHistoryState = function(){
+      scope.resetHistoryState = function () {
         scope.historyState = 'default'
       }
 
-      SailPlay.on('purchases.info.success', (res)=>{
-        console.info(res)
-        if(res.status=='ok'){
+      SailPlay.on('purchases.info.success', (res) => {
+        if (res.status == 'ok') {
           scope.cart = res.cart.cart
           scope.historyState = 'purchase'
-          console.log(scope.cart)
         }
       })
+
+      scope.getScorePopupText = () => {
+        return $interpolate(scope.widget.texts.bottom_navbar.score_hover)(scope)
+      }
+
+      scope.getPercents = () => {
+        if(!scope.confirmedPurchases && !scope.returnedPurchases) return 100
+        if(!scope.confirmedPurchases && scope.returnedPurchases) return 0
+        return parseInt(scope.confirmedPurchases / (scope.confirmedPurchases + scope.returnedPurchases) * 100)
+      }
+
+      scope.$on('mobile-navbar:click', function(e, data){
+          scope.currentTab = data.tab || 1;
+      });
+
+      scope.onTabChange = tab => {
+        $rootScope.$broadcast('tab:change', {
+            tab
+        })
+      }
+
+      scope.$watch(() => {
+        return angular.toJson([SailPlayApi.data('load.user.info')()]);
+      }, (new_val, old_val) => {
+
+        let user = SailPlayApi.data('load.user.info')();
+        if (!user) return;
+
+        if(user && user.purchases)
+        scope.confirmedPurchases = user.purchases.count;
+
+        SailPlay.send('tags.list',
+          { user: { phone: user.user.phone }, params: { show_calculated_values: 1 } },
+          (tags_res) => {
+            scope.$apply(() => {
+              if (tags_res.status === 'ok' && tags_res.tags.length) {
+                // let confirmedPurchasesTag = tags_res.tags.filter(item => item.tag == scope.widget.options.confirmedPurchasesTag)[0];
+                // if (confirmedPurchasesTag) scope.confirmedPurchases = confirmedPurchasesTag.calculated_value
+                let returnedPurchaseTag = tags_res.tags.filter(item => item.tag == scope.widget.options.returnedPurchaseTag)[0];
+                if (returnedPurchaseTag) scope.returnedPurchases = returnedPurchaseTag.calculated_value
+                if(tags_res.tags.filter(item => item.tag == FILL_PROFILE_TAG)[0]) {
+                  scope.isFirstTime = false;
+                }
+              }
+            });
+          });
+
+      });
 
     }
 
   }
 
 };
+
+Widget.filter('activeItems', () => {
+  return (items) => items.filter(item=>item.value).length
+})
 
 Widget.config(function (MagicWidgetProvider) {
 

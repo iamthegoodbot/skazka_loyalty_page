@@ -1,0 +1,58 @@
+<div class="clearfix">
+    <div class="container_nc" ng-show="widget.enabled" ng-cloak>
+
+        <div class="navbar navbar-s">
+            <div class="hamburger-menu-container">
+                <div class="hamburger-menu" ng-click="isOpen = !isOpen;  $event.preventDefault()">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+            </div>
+            <ul ng-class="{'open': isOpen}">
+                <li>
+                    <section class="top-logo">
+                        <img ng-src="{{widget.logo}}" class="logo" ng-click="onClick(widget.items[0])">
+                        <div class="hamburger-menu" ng-click="isOpen = !isOpen; $event.preventDefault()">
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                        </div>
+                    </section>
+                </li>
+                <li class="menu-item" ng-repeat="item in widget.items" ng-click="window.scroll(0, 0);onClick(item)" ng-class="{type_active: currentTab == item.tab}">
+                    <span class="{{item.class}}" ng-bind="item.name"></span>
+                </li>
+                <li>
+                    <section class="top-contacts">
+                        <div class="contacts">
+                            <p class="phone" ng-bind="widget.texts.phone_adress"></p>
+                            <p class="email" ng-bind="widget.texts.email_adress"></p>
+                        </div>
+                        <div class="socials">
+                            <a class="social-vk" ng-href="{{widget.socials.vk.link}}">
+                              <img ng-src="{{widget.socials.vk.icon}}" class="bitmap">
+                            </a>
+                            <a class="social-ig" ng-href="{{widget.socials.ig.link}}">
+                              <img ng-src="{{widget.socials.ig.icon}}" class="bitmap">
+                            </a>
+                            <a class="social-fb" ng-href="{{widget.socials.fb.link}}">
+                              <img ng-src="{{widget.socials.fb.icon}}" class="bitmap">
+                            </a>
+                        </div>
+                    </section>
+                </li>
+            </ul>
+        </div>
+
+        <div class="navbar navbar-m">
+            <ul>
+                <li ng-repeat="item in widget.items" ng-click="onClick(item)">
+                    <span ng-bind="item.name"></span>
+                </li>
+            </ul>
+        </div>
+
+
+    </div>
+</div>
