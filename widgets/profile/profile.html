@@ -234,7 +234,8 @@
       </section>
       <section class="history-table" data-ng-if="history().length">
         <section data-ng-show="historyState == 'default'">
-          <table class="hist_table">
+
+          <table class="hist_table type_desktop">
             <tbody>
               <tr data-dir-paginate="item in history() | itemsPerPage:5" data-pagination-id="history_pages">
                 <td>
@@ -249,6 +250,30 @@
                   <span data-ng-show="item.action=='purchase'" class="modal_history_points" data-ng-bind="((item.price|number) || 0) + ' Р'"></span>
                 </td>
               </tr>
+            </tbody>
+          </table>
+
+
+          <table class="hist_table type_mobile">
+            <tbody data-dir-paginate="item in history() | itemsPerPage:5" data-pagination-id="history_pages">
+
+              <tr>
+                <td>
+                  <div class="modal_history_date" data-ng-bind="item.action_date | date:'dd MMM'"></div>
+                </td>
+              </tr>
+
+              <tr>
+                <td>
+                    <span data-ng-show="item.action!='purchase'"><b class="modal_history_content" data-ng-bind="item | history_item"></b></span>
+                    <span data-ng-show="item.action=='purchase'" data-ng-click="purchaseHistory(item.id, item.action_date)"><b class="purchase-name" class="modal_history_content" data-ng-bind="item | history_item"></b></span>
+                </td>
+                <td>
+                    <span data-ng-show="item.action!='purchase'" class="modal_history_points" data-ng-if="item.points_delta" data-ng-bind="((item.points_delta|number) || 0) + ' ' + (item.points_delta | sailplay_pluralize:('points.texts.pluralize' | tools))"></span>
+                    <span data-ng-show="item.action=='purchase'" class="modal_history_points" data-ng-bind="((item.price|number) || 0) + ' Р'"></span>
+                  </td>
+              </tr>
+
             </tbody>
           </table>
 
