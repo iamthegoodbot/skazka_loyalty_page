@@ -46,7 +46,9 @@ export let Core = angular.module('magic.core', [
     SailPlayApi.call('load.badges.list', {include_rules: 1});
     SailPlayApi.call('load.actions.list');
     SailPlayApi.call('load.actions.custom.list');
-    SailPlayApi.call('load.user.history');
+    let offset = new Date().getTimezoneOffset(), o = Math.abs(offset)
+    let timezone =  (offset < 0 ? "+" : "-") + ("00" + Math.floor(o / 60)).slice(-2) + ":" + ("00" + (o % 60)).slice(-2)
+    SailPlayApi.call('load.user.history', {tz: timezone});
     SailPlayApi.call('tags.exist', {tags: TAGS});
     SailPlayApi.call('load.gifts.list');
     SailPlayApi.call('leaderboard.load');

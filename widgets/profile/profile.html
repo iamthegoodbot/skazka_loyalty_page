@@ -290,7 +290,7 @@
                 <span class="modal_history_date" data-ng-bind="(item.quantity | number) + ' шт.'"></span>
               </td>
               <td>
-                <span><b class="modal_history_content" data-ng-bind="item.product.name | limitTo:25"></b></span>
+                <span><b class="modal_history_content" data-ng-bind="(item.product.name | limitTo:25) + (item.product.name.length>25?'...':'')"></b></span>
                 </td>
               <td>
                 <span class="modal_history_points" data-ng-bind="((item.price|number) || 0) + ' Р'"></span>

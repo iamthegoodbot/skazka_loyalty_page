@@ -508,16 +508,16 @@
           }
           & .score-popup {
             position: absolute;
-            left: 40px;
-            top: -90px;
-            height: 20px;
+            left: 30px;
+            top: -100px;
+            height: 40px;
             display: none;
 
             @media (max-width: @mobWidth){
               left: 0;
               right: 0;
               margin: auto;
-              top: -50px;
+              top: -75px;
             }
 
             &:before {
@@ -807,7 +807,7 @@
     & .history-content {
       // margin-left: 56px;
       margin-top: 110px;
-      padding-bottom: 75px;
+      padding-bottom: 130px;
       @media (max-width: @tabletWidth) {
         padding-bottom: 250px;
       }
@@ -826,6 +826,9 @@
         letter-spacing: 6px;
         text-align: left;
         color: #9dc55c;
+        @media (max-width: @tabletWidth) {
+          font-size: 20px;
+        }
         &.type_padding {
           @media (max-width: @mobWidth) {
             padding-left: 30px;
@@ -842,7 +845,7 @@
         transform: translateY(-35px);
         background-size: contain;
         @media (max-width: @mobWidth) {
-          transform: translateY(-25px);
+          transform: translateY(-35px);
           position: absolute;
           z-index: 1;
         }
@@ -1023,6 +1026,9 @@
         border: solid 1px #ffffff;
         border-radius: 6px;
         margin-bottom: 120px;
+        @media (max-width: @tabletWidth) {
+          margin-bottom: 0;
+        }
         &>a {
           flex-basis: 49px;
           height: 100%;
@@ -1195,7 +1201,7 @@
         text-align: left;
         @media (max-width: @mobWidth){ 
           width: 100%;
-          font-size: 18px;
+          font-size: 16px;
           transform: translate(6px, -200px);
         }
       }

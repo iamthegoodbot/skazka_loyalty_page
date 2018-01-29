@@ -448,7 +448,8 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
                   if(v.value){
                     custom_user_tags_add.push(v.tag)
                     if(v.isChildren){
-                      custom_user_vars[v.childrenVarName] = JSON.stringify(v.childArray)
+                      let childArray = v.childArray ? v.childArray.map(child=>{return {age: child.age}}) : []
+                      custom_user_vars[v.childrenVarName] = JSON.stringify(childArray)
                     }
                   } else {
                     custom_user_tags_delete.push(v.tag)
