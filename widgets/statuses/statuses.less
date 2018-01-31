@@ -3,7 +3,7 @@
 @import (reference) "../../src/theme/colors";
 @gray: rgb(242,242,242);
 @lgray: rgb(168,168,168);
-@yellow: rgb(245,234,81);
+@yellow: #FDC862;
 
 .spm_wrapper {
 
@@ -15,9 +15,15 @@
     padding: 30px 0 160px;
     z-index: 1;
 
+    .header {
+      font-weight: 700;
+      font-size: 24px;
+      text-transform: uppercase;
+    }
+
     .next_status_info {
-      margin-bottom: 30px;
-      visibility: hidden;
+      margin-bottom: 70px;
+      // visibility: hidden;
       display: block !important;
       &.ng-hide {
         visibility: hidden;
@@ -37,7 +43,7 @@
       height: 10px;
       border-radius: 5px;
       display: block;
-      margin: 0 20px;
+      margin: 0 40px;
       @media screen and (max-width: 650px) {
         transform: rotate(90deg) translate(190px, 120px);
         min-width: 360px;
@@ -69,6 +75,7 @@
         z-index: 3;
         background-position: center;
         background-repeat: no-repeat;
+        background-size: contain;
         @media screen and (max-width: 650px) {
           width: 76px;
           height: 76px;
@@ -88,6 +95,7 @@
         z-index: 2;
         background-position: center;
         background-repeat: no-repeat;
+        background-size: contain;
 
         @media screen and (max-width: 650px) {
           width: 76px;
@@ -104,14 +112,28 @@
         top: 60px;
         transform: translateX(-30%);
         text-align: left;
-        font-family: "raleway";
-        font-style: italic;
-        font-weight: 900;
-        color: #303030;
-        font-size: 22px;
+        font-family: "Roboto";
+        font-weight: 700;
+        color: black;
+        font-size: 20px;
+        text-transform: uppercase;
+        line-height: 21px;
 
         @media screen and (max-width: 650px) {
           transform: translate(80px, -90px);
+        }
+
+      }
+      &-offset {
+        margin-top: 10px;
+        position: absolute;
+        left: -180px;
+        top: -70px;
+
+        @media screen and (max-width: 650px) {
+          position: relative;
+          left: auto;
+          top: auto;
         }
 
       }
@@ -123,8 +145,9 @@
         top: 60px;
         transform: translate(-30%, 26px);
         text-align: left;
-        font-family: 'open sans condensed';
+        font-family: 'Roboto';
         font-size: 16px;
+        line-height: 21px;
         color: rgba(0,0,0,0.3);
 
         @media screen and (max-width: 650px) {
@@ -149,7 +172,7 @@
         z-index: 3;
         position: absolute;
         text-align: center;
-        font-family: 'open sans condensed';
+        font-family: 'Roboto';
         font-weight: 900;
         &.last {
           @media screen and (min-width: 651px) {
@@ -183,6 +206,10 @@
 
         .element-item-point-inner {
           display: block;
+        }
+
+        .element-item-point {
+          display: none;
         }
 
         .status-list__item-number {

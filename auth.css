@@ -1,0 +1,10 @@
+.orange_btn {
+    background-color: #FDC862 !important;
+    border: none !important;
+    text-transform: uppercase !important;
+    color: black !important;
+}
+
+.cancel_btn {
+    text-transform: uppercase !important;
+}

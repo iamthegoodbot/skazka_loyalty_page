@@ -4,29 +4,32 @@
 
     <div class="next_status_info" data-ng-show="get_next_status().status">
 
+      <h3>
+        <span class="header">{{ widget.texts.header + getCurrentStatus().status }}</span>
+      </h3>
+<!-- 
       <div class="next_status_name">
-        {{ widget.texts.next_status }} <span data-ng-style="{ color: get_next_status().status.color  }">{{ get_next_status().status.status }}</span>
-      </div>
+        {{ widget.texts.next_status }} 
+        <span data-ng-style="{ color: get_next_status().status.color  }">{{ get_next_status().status.status }}</span>
+      </div> -->
 
-      <div class="next_status_offset">
-        {{ widget.texts.next_status_offset }} {{ get_next_status().offset }}
-      </div>
+      <!-- <div class="next_status_offset"> -->
+        <!-- {{ widget.texts.next_status_offset }} {{ get_next_status().offset }} {{ get_next_status().offset | sailplay_pluralize: ('currency.texts.pluralize' | tools) }} -->
+      <!-- </div> -->
 
     </div>
 
     <div class="status-list__wrapper" data-sailplay-statuses data-ng-cloak>
 
       <div class="status-list__progress element-progress progress_line"
-          data-ng-style="getProgress(purchase_status ? user().purchases.sum : user().user_points, _statuses)">
+          data-ng-style="getProgress(sum, _statuses)">
       </div>
       <div class="status-list__progress element-progress progress_line progress-line-avatar"
-          data-ng-style="getProgress(purchase_status ? user().purchases.sum : user().user_points, _statuses)"
-          data-ng-if="user()">
-        <span class="avatar_container" data-ng-style="{'background-image': 'url('+((user().user.pic | sailplay_pic) || default_avatar)+')' }"></span>
+          data-ng-style="getProgress(sum, _statuses)">
       </div>
 
       <div class="status-list__item element-item"
-           data-ng-class="{ type_active : item.points <= user().user_points.confirmed + user().user_points.spent + user().user_points.spent_extra }"
+           data-ng-class="{ type_active : item.sum <= sum }"
            data-ng-repeat="item in _statuses"
            data-ng-style="generateOffset($index, _statuses)">
 
@@ -37,9 +40,13 @@
         <div class="status-list__item-name element-item-name" data-ng-bind="item.name"></div>
         <div class="status-list__item-status element-item-status" data-ng-if="item.status" data-ng-bind="item.status"
              style="{{ (item.color) ? ('color: ' +  item.color) : '' }}"></div>
-        <div class="status-list__item-description element-item-description" data-ng-if="item.description" data-ng-bind="item.description"
-             style="{{ (item.color) ? ('color: ' +  item.color) : '' }}"></div>
-        <div class="status-list__item-number element-item-number" data-ng-bind="$index+1" data-ng-class="{'last': $last}"></div>
+        <div class="status-list__item-description element-item-description"
+             style="{{ (item.color) ? ('color: ' +  item.color) : '' }}">
+              {{ item.description }}
+              <div class="status-list__item-offset" ng-if="$index && get_next_status() && get_next_status().status && get_next_status().status.status == item.status">
+                {{ widget.texts.next_status_offset }} {{ get_next_status().offset }} {{ get_next_status().offset | sailplay_pluralize: ('currency.texts.pluralize' | tools) }}
+              </div>
+        </div>
 
       </div>
 

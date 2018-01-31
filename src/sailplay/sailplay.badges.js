@@ -58,7 +58,7 @@ export let SailPlayBadges = angular.module('sailplay.badges', [])
         if (!user_points || !statuses) return;
 
         var status_points = statuses.map(function (item) {
-          return item.points
+          return item.sum
         });
 
         if(status_points[0] !== 0) {

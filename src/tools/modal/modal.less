@@ -10,7 +10,7 @@
     width: 100%;
     height: 100%;
     z-index: 10000;
-    background-color: rgba(34, 159, 211, 0.95);
+    background-color: rgba(0, 0, 0, 0.8);
     display: none;
     overflow: auto;
     &.visible {
@@ -22,7 +22,8 @@
       right: 0;
       margin-top: 5%;
       margin-bottom: 5%;
-      width: 790px;
+      width: 100%;
+      max-width: 500px;
       margin-left: auto;
       margin-right: auto;
       background-color: #fff;
@@ -33,20 +34,21 @@
         margin-top: -275px;
       }
       h3 {
-        font-size: 42px;
         float: left;
         width: 100%;
         margin: 0;
-        font-family: 'raleway';
-        font-style: italic;
+        font-family: 'Roboto';
+        text-transform: uppercase;
         font-weight: 900;
+        font-size: 30px;
+        line-height: 42px;
         color: white;
         margin-bottom: 20px;
         b {
           float: right;
           font-size: 16px;
-          font-family: 'Roboto', sans-serif;
-          color: #893E90;
+          font-family: 'Roboto';
+          color: white;
           line-height: 33px;
         }
       }
@@ -158,11 +160,12 @@
       width: 100%;
       span {
         float: left;
-        color: white;
-        font-family: 'raleway';
-        font-style: italic;
-        font-size: 40px;
+        font-family: 'Roboto';
+        text-transform: uppercase;
         font-weight: 900;
+        font-size: 30px;
+        line-height: 42px;
+        color: white;
       }
     }
     .mb_popup_main_mt {
@@ -187,7 +190,7 @@
         width: 100%;
         box-sizing: border-box;
         padding-left: 45px;
-        color: @main_darker;
+        color: black;
         font-size: 16px;
         margin-bottom: 25px;
       }
@@ -201,7 +204,7 @@
         }
         input:checked + label {
           &:before {
-            background-color: @main_dark;
+            background-color: black;
           }
 
         }
@@ -218,7 +221,7 @@
             display: block;
             width: 24px;
             height: 24px;
-            background-color: @main_light;
+            background-color: black;
             border-radius: 100%;
             position: absolute;
             left: 0px;
@@ -249,10 +252,9 @@
           font-size: 22px;
           display: block;
           width: 100%;
-          background-color: #333;
-          color: white;
-          font-family: "raleway";
-          font-style: italic;
+          background-color: #FDC862 !important;
+          color: black !important;
+          font-family: "Roboto";
           font-weight: 700;
           height: 50px;
           cursor: pointer;
@@ -264,6 +266,7 @@
           border-top: 2px solid @main_light;
           border-radius: 5px;
           padding-left: 25px;
+          font-family: 'Roboto';
           width: 100%;
           font-size: 18px;
           outline: none;
@@ -295,9 +298,9 @@
 }
 
 .fill_profile_modal>.bns_overlay_iner {
-  max-width: 420px;
+  // max-width: 420px;
 }
 
 .bns_overlay_hist>.bns_overlay_iner {
-  max-width: 620px;
+  max-width: 700px !important;
 }

@@ -49,22 +49,25 @@
     //heading section
     .card_quests_header {
       text-align: center;
-      color: #333;
-      font-family: "raleway";
-      font-style: italic;
+      color: black;
+      font-family: "Roboto";
       font-weight: 900;
       font-size: 40px;
+      line-height: 45px; 
+      text-transform: uppercase;
       margin-top: 60px;
     }
 
     .card_quests_caption {
       text-align: center;
-      color: #333;
-      margin-top: 10px;
-      font-family: "open sans condensed";
-      font-weight: 300;
-      font-size: 26px;
-      margin-bottom: 70px;
+      color: black;
+      font-family: "Roboto";
+      font-weight: 400;
+      font-size: 18px;
+      line-height: 21px; 
+      text-transform: uppercase;
+      margin-top: 30px;
+      margin-bottom: 30px;
     }
 
     //quest card list section
@@ -76,7 +79,8 @@
     & .quest_card_container {
       width: 25%;
       margin-top: 15px;
-      height: 300px;
+      // height: 300px;
+      min-height: 240px;
       padding: 0 5%;
       @media screen and (min-width: 650px) and (max-width: 1200px) {
         width: 33.3%;
@@ -134,7 +138,7 @@
           content: '';
           transform: scale(0.1);
           border-radius: 600px;
-          background-color: #f5ea51;
+          background-color: #FDC862;
           transition: transform 0.5s;
           width: 120px;
           height: 120px;
@@ -198,9 +202,11 @@
             display: inline-block;
             width: 100%;
             height: 100px;
-            font-family: "open sans condensed";
-            font-weight: bold;
-            font-size: 20px;
+            color: black;
+            font-family: "Roboto";
+            font-weight: 300;
+            font-size: 18px;
+            line-height: 21px; 
           }
 
           .quest_card_points {
@@ -208,11 +214,12 @@
             display: inline-block;
             width: 100%;
             background: tansparent;
-            color: #219ed1;
+            color: black;
+            text-transform: uppercase;
             padding: 8px;
             font-size: 20px;
-            font-family: "raleway";
-            font-style: italic;
+            line-height: 21px;
+            font-family: "Roboto";
             font-weight: 900;
           }
           .quest_card_button {
@@ -220,15 +227,18 @@
             padding: 6px 0;
             font-size: 20px;
             display: none;
+            text-transform: uppercase;
             background-color: #303030;
             color: white;
-            font-family: "raleway";
-            font-style: italic;
+            font-family: "Roboto";
+            // font-style: italic;
+            font-size: 20px;
+            line-height: 21px;
             font-weight: 900;
             height: 40px;
             cursor: pointer;
             & iframe {
-              width: 110px !important;
+              width: 170px !important;
             }
           }
         }

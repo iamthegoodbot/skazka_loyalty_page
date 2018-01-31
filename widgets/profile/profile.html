@@ -5,7 +5,7 @@
     <div class="bon_profile_top clearfix">
       <div class="bon_profile_top_left">
         <h3>
-          <span class="header">{{ user().user.name ? (user().user.name + ', ' + widget.texts.header) : widget.texts.header}}</span>
+          <span class="header">{{ widget.texts.header }}</span>
         </h3>
         <h4>
           <span class="caption">{{ widget.texts.spoiler }}</span>
@@ -21,22 +21,24 @@
             <img class="user_avatar_image" data-ng-src="{{ (user().user.avatar['250x250'] | sailplay_pic) || default_avatar}}" alt="You">
           </div>
           <div class="user_info">
-            <a href="#" class="logout_btn button_link" data-ng-click="$event.preventDefault(); logout();"></a>
+            <!-- <a href="#" class="logout_btn button_link" data-ng-click="$event.preventDefault(); logout();"></a> -->
           </div>
         </div>
         <div class="user_points_container">
           <div class="user_name" data-ng-bind="user().user.name"></div>
-          <div class="status_name" data-ng-bind="widget.texts.your_status + currentStatus.getCurrentStatus().status"></div>
           <div class="points_confirmed">
             <span class="points_confirmed_value" data-ng-bind="user().user_points.confirmed | number"></span>
             <span class="points_confirmed_name" data-ng-bind="user().user_points.confirmed | sailplay_pluralize: ('points.texts.pluralize' | tools)"></span>
           </div>
           <div class="points_unconfirmed">
-            <span class="points_confirmed_value" data-ng-bind="user().user_points.unconfirmed | number"></span>
-            <span class="points_confirmed_name" data-ng-bind="widget.texts.unconfirmed_points"></span>
-            <span class="points_confirmed_name" data-ng-bind="user().user_points.unconfirmed | sailplay_pluralize: ('points.texts.pluralize' | tools)"></span>
+            <span class="points_confirmed_value">{{ widget.texts.points_text }}</span>
+            <!-- <span class="points_confirmed_value" data-ng-bind="user().user_points.unconfirmed | number"></span> -->
+            <!-- <span class="points_confirmed_name" data-ng-bind="widget.texts.unconfirmed_points"></span> -->
+            <!-- <span class="points_confirmed_name" data-ng-bind="user().user_points.unconfirmed | sailplay_pluralize: ('points.texts.pluralize' | tools)"></span> -->
           </div>
           <a class="button_link history_button" href="#" data-ng-click="$event.preventDefault(); profile.history = true;">{{ widget.texts.history.button_name }}</a>
+          <div class="user_id" ng-if="user().user.origin_user_id" 
+            ng-bind-html="(widget.texts.oid + user().user.origin_user_id) | to_trusted"></div>
         </div>
       </div>
       <div class="bon_profile_right unlogged clearfix" data-ng-if="!user()" data-ng-click="$event.preventDefault(); login('remote', {widget: 'profile', element: 'profile_login_button'});">
