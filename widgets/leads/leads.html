@@ -54,15 +54,15 @@
               </div>
               <div class="field">
                 <div class="caption">From</div>
-                <div style="overflow: hidden; text-overflow: ellipsis" data-ng-attr-title="{{ partner.custom_vars[1].value }}, {{ partner.custom_vars[3].value }}" class="value">{{ partner.custom_vars[1].value }}, {{ partner.custom_vars[3].value }}</div>
+                <div style="overflow: hidden; text-overflow: ellipsis" data-ng-attr-title="{{ partner.custom_vars[2].value + ' ' + partner.custom_vars[0].value }}" class="value">{{ partner.custom_vars[2].value + ' ' + partner.custom_vars[0].value }}</div>
               </div>
               <div class="field">
                 <div class="caption">To</div>
-                <div class="value" data-ng-bind="partner.custom_vars[2].value"></div>
+                <div class="value" data-ng-bind="partner.custom_vars[1].value"></div>
               </div>
               <div class="field">
                 <div class="caption">When</div>
-                <div class="value" data-ng-bind="partner.custom_vars[0].value"></div>
+                <div class="value" data-ng-bind="partner.custom_vars[3].value"></div>
               </div>
             </div>
           </div>
