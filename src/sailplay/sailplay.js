@@ -286,9 +286,9 @@ export let SailPlay = angular.module('sailplay', [
 
         var logged = false;
 
-        console.dir(opts);
+        // console.dir(opts);
         angular.merge(options, opts);
-        console.dir(options);
+        // console.dir(options);
 
         scope.$on('sailplay-init-success', function () {
           SailPlay.send('login.remote', options);

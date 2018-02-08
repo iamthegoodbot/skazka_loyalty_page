@@ -157,6 +157,7 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
           this.name = params.name;
           this.label = params.label;
           this.placeholder = params.placeholder;
+          this.condition = params.condition;
           this.input = params.input || 'text';
 
           if (params.data) {
@@ -207,6 +208,17 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
 
         var saved_form = false;
 
+
+        scope.canShow = field => {
+          let show = true;
+          let fields = scope.sailplay.fill_profile.form.fields;
+          if(field.condition) {
+            let conditionField = fields.find(item=>item.name==field.condition.name)
+            show = conditionField && conditionField.value == field.condition.value
+          }
+          return show;
+        }
+
         SailPlayApi.observe('load.user.info', user => {
           if (!user) return;
           var form = scope.sailplay.fill_profile.form;
@@ -223,24 +235,32 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
               if(form_field.input == 'checkbox-tag') {
                 // TODO дети тут
                 let found = form_field.data.find(v=>v.isChildren)
+                let customChoice = form_field.data.find(v=>v.variable);
                 // console.log('fnd', found.childrenVarName)
-                SailPlayApi.call("vars.batch", { names: [found.childrenVarName] }, (res) => {
-                  var childrenVariable = JSON.parse(res.vars[0] && res.vars[0].value || '{}')
+                if(found || customChoice) {
+                  SailPlayApi.call("vars.batch", { names: [found && found.childrenVarName, customChoice && customChoice.variable] }, (res) => {
+                    if(found) {
+                      let childrenVariable = JSON.parse(res.vars[0] && res.vars[0].value || '[]')
+                      if(childrenVariable && childrenVariable.length) {
+                        found.childArray = childrenVariable.map(item=>{return {birth_date: item.birth_date && item.birth_date.split('-').reverse().map(item => parseInt(item))}});
+                      } else {
+                        found.childArray = [];
+                      } 
+                    }
+                    if(customChoice) {
+                      let variable = res.vars[0] && res.vars[0].value;
+                      customChoice.model = variable ? variable : null;
+                    }
 
-                  if(childrenVariable && childrenVariable.length) {
-                    found.childArray = childrenVariable.map(item=>{return {age: item.age}});
-                  } else {
-                    found.childArray = []
-                  }
-
-                })
+                  })
+                }
               }
               // console.log('enfield',form_field)
             }
 
             
             //we need to assign received values to form
-            console.info(form_field)
+            // console.info(form_field)
             switch (form_field.type) {
 
               //we need define type
@@ -417,7 +437,7 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
 
         scope.sailplay.fill_profile.submit = function (form, callback, options) {
 
-          if (!form || !form.$valid) {
+          if (!form || !form.$valid || form.invalid) {
             return;
           }
 
@@ -443,16 +463,18 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
             } else if (item.type =="tags" ){
               // console.log('itempre', item)
               if(item.input=="checkbox-tag") {
-                // console.log('chitem', item)
                 item.data.forEach(v => {
                   if(v.value){
                     custom_user_tags_add.push(v.tag)
                     if(v.isChildren){
-                      let childArray = v.childArray ? v.childArray.map(child=>{return {age: child.age}}) : []
+                      let childArray = v.childArray ? v.childArray.map(child=>{return {birth_date: child.birth_date && child.birth_date.reverse().join('-')}}) : []
                       custom_user_vars[v.childrenVarName] = JSON.stringify(childArray)
                     }
                   } else {
                     custom_user_tags_delete.push(v.tag)
+                  }
+                  if(v.variable) {
+                    custom_user_vars[v.variable] = v.model || '' 
                   }
                 })
               } else if(!(item.value === item.oldVal)) {
@@ -586,10 +608,10 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
                     if (typeof callback == 'function') callback();
 
                     window.setTimeout(function() {
-                      SailPlayApi.call('load.user.info', {all: 1});
+                      SailPlayApi.call('load.user.info', {all: 1, purchases: 1});
+                      $rootScope.$broadcast('profile:updated');
+                      scope.$digest();
                     }, 1000);
-
-                    console.log('pizdec')
 
                   });
                   res()

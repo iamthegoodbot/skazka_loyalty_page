@@ -20,8 +20,13 @@
                         </div>
                     </section>
                 </li>
-                <li class="menu-item" ng-repeat="item in widget.items" ng-click="window.scroll(0, 0);onClick(item)" ng-class="{type_active: currentTab == item.tab}">
-                    <span class="{{item.class}}" ng-bind="item.name"></span>
+                <li class="menu-item" ng-repeat="item in widget.items" 
+                    ng-click="window.scroll(0, 0);onClick(item)" 
+                    ng-class="{type_active: currentTab == item.tab, type_disabled: item.check && item.isFirstTime!=$root.isFirstTime}">
+                    <span class="{{item.class}}">
+                        {{item.name}}
+                        <!-- <span class="menu-item-mark" ng-if="item.isFirstTime!=$root.isFirstTime" ng-bind="widget.texts.disabled"></span> -->
+                    </span>
                 </li>
                 <li>
                     <section class="top-contacts">

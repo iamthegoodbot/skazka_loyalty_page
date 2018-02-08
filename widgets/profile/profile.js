@@ -17,10 +17,15 @@ const ProfileWidget = {
 
       const FILL_PROFILE_TAG = MAGIC_CONFIG.data.profile_update_tags.profile_general;
 
+      scope.purchase_sum = MAGIC_CONFIG.data.purchase_sum;
+
+      scope.ready = false;
       scope.currentTab = 1
       scope.window = window;
       scope.confirmedPurchases = 0;
       scope.returnedPurchases = 0;
+      scope.user = SailPlayApi.data('load.user.info');
+      scope.isUpdated = false;
 
       scope.default_avatar = DefaultAvatarImage;
       $rootScope.$on('openProfile', () => {
@@ -42,10 +47,10 @@ const ProfileWidget = {
         var diff = moment(timerEnd).diff(moment(), 'milliseconds');
         var duration = moment.duration(diff);
         return {
-          days: ("0" + parseInt(duration.asDays())).slice(-2),
-          hours: ("0" + parseInt(duration.hours())).slice(-2),
-          minutes: ("0" + parseInt(duration.minutes())).slice(-2),
-          seconds: ("0" + parseInt(duration.seconds())).slice(-2)
+          days: ("" + parseInt("0" + duration.asDays())).slice(-3),
+          hours: ("" + parseInt("0" + duration.hours())).slice(-2),
+          minutes: ("" + parseInt("0" + duration.minutes())).slice(-2),
+          seconds: ("" + parseInt("0" + duration.seconds())).slice(-2)
         }
       }
 
@@ -56,12 +61,17 @@ const ProfileWidget = {
 
       scope.historyState = 'default'; // or purchase
 
-      scope.isFirstTime = true;
+      $rootScope.isFirstTime = true;
 
       scope.purchaseHistory = function (id, date) {
         SailPlayApi.call('purchases.info', { id }, (arg) => {
         });
         scope.cartDate = date
+      }
+
+      scope.getHistory = (history) => {
+        if(!history) return [];
+        return history.filter(item=>item.action=='purchase')
       }
 
       scope.resetHistoryState = function () {
@@ -74,26 +84,88 @@ const ProfileWidget = {
           scope.historyState = 'purchase'
         }
       })
+      
+      scope.addChild = (list, el) => {
+        console.log('list, el', list, el)
+        if(el[0] || el[1] || el[2]) {
+          list.push({birth_date:el})
+        }
+      }
+
+      scope.getTimerPopupText = () => {
+        if(scope.user().purchases.sum >= scope.purchase_sum) {
+          return $interpolate(scope.widget.texts.timer.final_hover)(scope)  
+        } else {
+          return $interpolate(scope.widget.texts.timer.hover)(scope)
+        }
+      }
 
       scope.getScorePopupText = () => {
         return $interpolate(scope.widget.texts.bottom_navbar.score_hover)(scope)
       }
 
-      scope.getPercents = () => {
-        if(!scope.confirmedPurchases && !scope.returnedPurchases) return 100
-        if(!scope.confirmedPurchases && scope.returnedPurchases) return 0
-        return parseInt(scope.confirmedPurchases / (scope.confirmedPurchases + scope.returnedPurchases) * 100)
+      scope.getPercentPopupText = () => {
+        if(scope.user().purchases.sum >= scope.purchase_sum) {
+          return $interpolate(scope.widget.texts.bottom_navbar.final_percent_hover)(scope)  
+        } else {
+          return $interpolate(scope.widget.texts.bottom_navbar.percent_hover)(scope)
+        }
+      }
+
+      scope.getFirstTimeMenuPopupText = () => {
+        return $interpolate(scope.widget.texts.bottom_navbar.first_time)(scope)
+      }  
+
+      scope.getPercents = (user) => {
+        if(!user || !user.purchases) return 0;
+        let percents = parseInt(user.purchases.sum / scope.purchase_sum * 100);
+        return percents > 100 ? 100 : (percents < 0 ? 0 : percents)
       }
 
       scope.$on('mobile-navbar:click', function(e, data){
           scope.currentTab = data.tab || 1;
       });
 
+      scope.$on('profile:updated', function() {
+        scope.isUpdated = true;
+        setTimeout(()=>{
+          scope.isUpdated = false;
+          scope.$digest();
+        }, 2000)
+      })
+
       scope.onTabChange = tab => {
         $rootScope.$broadcast('tab:change', {
             tab
         })
       }
+
+      scope.goTab = tab => {
+        if($rootScope.isFirstTime){
+          tab = 2;
+        }
+        if(!scope.user()) {
+          tab = 1;
+        }
+        scope.currentTab = tab
+        window.scroll(0, 0)
+        scope.onTabChange(tab)
+      }
+
+      scope.focusInput = item => {
+        if(item.variable && item.value) {
+          setTimeout(() => {
+            let el = document.getElementById(`id_${item.variable}`);
+            el && el.focus();
+          }, 100)
+        }
+      }
+
+      scope.$on('isProfileFilled', function(e, state){
+        if(state) {
+          $rootScope.isFirstTime = false;
+        }
+      })
 
       scope.$watch(() => {
         return angular.toJson([SailPlayApi.data('load.user.info')()]);
@@ -115,8 +187,15 @@ const ProfileWidget = {
                 let returnedPurchaseTag = tags_res.tags.filter(item => item.tag == scope.widget.options.returnedPurchaseTag)[0];
                 if (returnedPurchaseTag) scope.returnedPurchases = returnedPurchaseTag.calculated_value
                 if(tags_res.tags.filter(item => item.tag == FILL_PROFILE_TAG)[0]) {
-                  scope.isFirstTime = false;
+                  $rootScope.isFirstTime = false;
                 }
+                if($rootScope.isFirstTime) {
+                  scope.currentTab = 2;
+                  $rootScope.$broadcast('tab:change', {tab: 2})
+                }
+                scope.ready = true;
+              } else {
+                scope.ready = true;
               }
             });
           });

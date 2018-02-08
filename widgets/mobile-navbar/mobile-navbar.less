@@ -68,23 +68,34 @@
                           box-sizing: border-box;
                           padding: 0 60px;
                           &.menu-item {	
+                            position: relative;
                             height: 115px;
                             line-height: 115px;   
-                             opacity: 0.98;
+                            opacity: 0.98;
                             background-image: linear-gradient(to bottom, #788793, #434f5a);
                             &.type_active {
                                 color: #9DC55C;
                                 background-image: linear-gradient(to bottom, #293037, #0c1012);
                             }
+                            &.type_disabled {
+                                color: white;
+                                opacity: 0.3;
+                                background-image: linear-gradient(to bottom, #788793, #434f5a);
+                            }
                             text-transform: uppercase;
                             font-size: 20px;
                             letter-spacing: 2.1px;
-                            span {
+                            & > span {
                                 position: relative;
                                 display: flex;
                                 justify-content: center;
                                 align-items: center;
+                                span {
+                                    position: absolute;
+                                    bottom: -10px;
+                                }
                             }
+
                             & .ball-svg:before {
                                 content: '';
                                 display: inline-block;

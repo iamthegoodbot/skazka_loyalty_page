@@ -3,7 +3,7 @@
   <section class="container-wrapper" data-sailplay-profile>
 
     <section class="top-header">
-      <section class="top-logo" ng-click="$parent.currentTab = 1">
+      <section class="top-logo" ng-click="goTab(1)">
         <img ng-src="{{widget.logo}}" class="logo">
       </section>
       <section class="top-contacts">
@@ -84,7 +84,7 @@
 
     <section ng-show="$parent.currentTab == 'about'" class="history-content">
       <div class="content-header history">
-        <div class="back-sign" ng-click="$parent.currentTab='1'"></div>
+        <div class="back-sign" ng-click="goTab(1)"></div>
         <p class="header-text type_padding" ng-bind="widget.texts.about.header"></p>
       </div>
       <p class="about-text" ng-bind-html="widget.texts.about.text"></p>
@@ -92,10 +92,10 @@
 
     <section ng-show="$parent.currentTab == 'timer'" class="history-content">
       <div class="content-header history">
-        <div class="back-sign" ng-click="$parent.currentTab='1'"></div>
+        <div class="back-sign" ng-click="goTab(1)"></div>
         <p class="header-text type_padding" ng-bind="widget.texts.timer_page.header"></p>
       </div>
-      <p class="about-text" ng-bind-html="widget.texts.timer_page.text"></p>
+      <p class="about-text type_part" ng-bind-html="widget.texts.timer_page.text"></p>
     </section>
 
     <section ng-show="currentTab == '2'">
@@ -104,11 +104,11 @@
 
           <div class="profile-header" ng-bind="widget.texts.fill_profile.header"></div>
 
-          <div class="profile-first-time" ng-show="isFirstTime" ng-bind="widget.texts.fill_profile.first_time"></div>
+          <div class="profile-first-time" ng-show="$root.isFirstTime" ng-bind="widget.texts.fill_profile.first_time"></div>
 
           <form name="fill_profile_form" class="mb_popup_main mb_popup_main_mt" data-ng-submit="sailplay.fill_profile.submit(fill_profile_form, profile.fill_profile);">
 
-            <div class="form_field" data-ng-repeat="field in sailplay.fill_profile.form.fields" data-ng-switch="field.input">
+            <div class="form_field" ng-class="{type_full: field.input=='radio-tag'&&field.input=='checkbox-tag'}" data-ng-repeat="field in sailplay.fill_profile.form.fields | filter:canShow" data-ng-switch="field.input">
 
               <div data-ng-switch-when="image" class="avatar_upload clearfix">
                 <img width="160px" data-ng-src="{{ (field.value | sailplay_pic) || 'http://saike.ru/sailplay-magic/dist/img/profile/avatar_default.png'}}" alt="">
@@ -168,25 +168,31 @@
                     <!--      {{item}} -->
                       <label class="checkbox-label-container" >
                         <div class="custom-checkbox">
-                          <input value="{{item.tag}}" name="{{field.name}}" data-ng-model="item.value" id="{{'field_' + field.name + '_' + item.tag}}" type="checkbox" ng-required="!(field.data | activeItems)">
+                          <input value="{{item.tag}}" name="{{field.name}}" data-ng-model="item.value" id="{{'field_' + field.name + '_' + item.tag}}"
+                            ng-change="focusInput(item)"
+                            type="checkbox" ng-required="!(field.data | activeItems)">
                           <div class="checked"><div class="checked-inner"></div></div>
                           <div class="unchecked"></div>
                         </div>
-                        {{ item.text }}
+                        <div ng-if="!item.variable || item.variable && !item.value" ng-bind="item.text"></div>
+                        <div class="custom-input" ng-if="item.variable && item.value">
+                            <input class="form_input" id="id_{{item.variable}}" name="{{item.variable}}" placeholder="{{item.variablePlaceholder}}" required ng-model="item.model" type="text">
+                        </div>
                       </label>
+                      <input ng-if="item.isChildren && item.value" type="hidden" name="{{field.name}}_isChildren" value="{{item.childArray.length}}" required>
                       <div data-ng-if="item.isChildren && item.value" class="form_date children_date">
                         
-                          <div class="children_container" data-ng-repeat="(index, children) in item.childArray">
-                              <input name="children_{{index}}" placeholder="{{item.placeholder}}" min="0" min="100" data-ng-model="children.age" type="number" required="required">
+                          <div class="children_container input-date" data-ng-repeat="(index, children) in item.childArray">
+                              <date-picker data-model="children.birth_date"></date-picker>
                               <div class="plus-sign" ng-click="item.childArray.splice(index, 1)">
                                   <div class="verical-minus"></div>
                                   <div class="horizontal-minus"></div>
                               </div>
                           </div>
                           
-                          <div class="children_container">
-                              <input placeholder="{{item.placeholder}}" min="0" min="100" ng-model="item.newChildren" type="number">
-                              <div ng-show="item.newChildren" class="plus-sign cross" ng-click="item.childArray.push({age:item.newChildren});item.newChildren=null;">
+                          <div class="children_container input-date">
+                              <date-picker data-model="newChildren"></date-picker>
+                              <div ng-class="{type_disabled : !newChildren || !newChildren[0] || !newChildren[1] || !newChildren[2]}" class="plus-sign cross" ng-click="addChild(item.childArray, newChildren);newChildren=[];">
                                 <div class="verical-minus"></div>
                                 <div class="horizontal-minus"></div>
                             </div>
@@ -198,20 +204,22 @@
               </div>
             </div>
 
-            <div class="confirmation" ng-if="isFirstTime">
+            <div class="confirmation" ng-if="$root.isFirstTime">
               <label class="checkbox-label-container" >
                 <div class="custom-checkbox">
                   <input value="false" name="confirmation-checkbox" required="required" data-ng-model="field.value" id="confirmation" type="checkbox">
                   <div class="checked"><div class="checked-inner"></div></div>
                   <div class="unchecked"></div>
                 </div>
-                <span class="confirmation-text" data-ng-bind="widget.texts.fill_profile.confirm_text"></span></label>
+                <span class="confirmation-text" data-ng-bind-html="widget.texts.fill_profile.confirm_text | to_trusted"></span></label>
             </div>
 
             <div class="buttons">
-                <div ng-if="fill_profile_form.$invalid" class="hover-popup invalid-popup" ng-bind-html="widget.texts.fill_profile.invalid"></div>
-                <button type="submit" class="submit-btn" ng-bind="isFirstTime ? widget.texts.fill_profile.reg : widget.texts.fill_profile.save"></button>
+                <div ng-if="fill_profile_form.$invalid && !isUpdated" class="hover-popup invalid-popup" ng-bind-html="widget.texts.fill_profile.invalid"></div>
+                <button type="submit" class="submit-btn" ng-bind="$root.isFirstTime ? widget.texts.fill_profile.reg : widget.texts.fill_profile.save"></button>
             </div>
+
+            <div class="success-message" ng-if="isUpdated" ng-bind="widget.texts.fill_profile.success_text"></div>
 
           </form>
         </div>
@@ -226,18 +234,18 @@
         <div class="back-sign" data-ng-click="resetHistoryState()"></div>
         <p class="header-text type_padding" ng-bind="widget.texts.history.header_purchase"></p>
       </div>
-      <section class="empty-history" data-ng-if="!history().length">
+      <section class="empty-history" data-ng-if="!getHistory(history()).length">
         <div>
           <div class="hist-svg"></div>
           <div class="caption" ng-bind="widget.texts.history.empty"></div>
         </div>
       </section>
-      <section class="history-table" data-ng-if="history().length">
+      <section class="history-table" data-ng-if="getHistory(history()).length">
         <section data-ng-show="historyState == 'default'">
 
           <table class="hist_table type_desktop">
             <tbody>
-              <tr data-dir-paginate="item in history() | itemsPerPage:5" data-pagination-id="history_pages">
+              <tr data-dir-paginate="item in getHistory(history()) | itemsPerPage:5" data-pagination-id="history_pages">
                 <td>
                   <span class="modal_history_date" data-ng-bind="item.action_date | date:'dd MMM'"></span>
                 </td>
@@ -246,8 +254,8 @@
                   <span data-ng-show="item.action=='purchase'" data-ng-click="purchaseHistory(item.id, item.action_date)"><b class="purchase-name" class="modal_history_content" data-ng-bind="item | history_item"></b></span>
                 </td>
                 <td>
-                  <span data-ng-show="item.action!='purchase'" class="modal_history_points" data-ng-if="item.points_delta" data-ng-bind="((item.points_delta|number) || 0) + ' ' + (item.points_delta | sailplay_pluralize:('points.texts.pluralize' | tools))"></span>
-                  <span data-ng-show="item.action=='purchase'" class="modal_history_points" data-ng-bind="((item.price|number) || 0) + ' Р'"></span>
+                  <!-- <span data-ng-show="item.action!='purchase'" class="modal_history_points" data-ng-if="item.points_delta" data-ng-bind="((item.points_delta|number) || 0) + ' ' + (item.points_delta | sailplay_pluralize:('points.texts.pluralize' | tools))"></span> -->
+                  <span data-ng-show="item.action=='purchase'" class="modal_history_points" data-ng-bind="((item.price|number) || 0) + ' &#8381;'"></span>
                 </td>
               </tr>
             </tbody>
@@ -255,7 +263,7 @@
 
 
           <table class="hist_table type_mobile">
-            <tbody data-dir-paginate="item in history() | itemsPerPage:5" data-pagination-id="history_pages">
+            <tbody data-dir-paginate="item in getHistory(history()) | itemsPerPage:5" data-pagination-id="history_pages">
 
               <tr>
                 <td>
@@ -269,8 +277,8 @@
                     <span data-ng-show="item.action=='purchase'" data-ng-click="purchaseHistory(item.id, item.action_date)"><b class="purchase-name" class="modal_history_content" data-ng-bind="item | history_item"></b></span>
                 </td>
                 <td>
-                    <span data-ng-show="item.action!='purchase'" class="modal_history_points" data-ng-if="item.points_delta" data-ng-bind="((item.points_delta|number) || 0) + ' ' + (item.points_delta | sailplay_pluralize:('points.texts.pluralize' | tools))"></span>
-                    <span data-ng-show="item.action=='purchase'" class="modal_history_points" data-ng-bind="((item.price|number) || 0) + ' Р'"></span>
+                    <!-- <span data-ng-show="item.action!='purchase'" class="modal_history_points" data-ng-if="item.points_delta" data-ng-bind="((item.points_delta|number) || 0) + ' ' + (item.points_delta | sailplay_pluralize:('points.texts.pluralize' | tools))"></span> -->
+                    <span data-ng-show="item.action=='purchase'" class="modal_history_points" data-ng-bind="((item.price|number) || 0) + ' &#8381;'"></span>
                   </td>
               </tr>
 
@@ -283,68 +291,102 @@
         </section>
 
         <section data-ng-show="historyState == 'purchase'">
-          <table class="hist_table">
+
+          <table class="hist_table type_desktop">
             <tbody>
             <tr data-ng-repeat="item in cart.positions">
               <td>
                 <span class="modal_history_date" data-ng-bind="(item.quantity | number) + ' шт.'"></span>
               </td>
               <td>
-                <span><b class="modal_history_content" data-ng-bind="(item.product.name | limitTo:25) + (item.product.name.length>25?'...':'')"></b></span>
+                <span><b class="modal_history_content" data-ng-bind="((item.product.name || widget.texts.unnamed_purchase) | limitTo:25) + ((item.product.name || widget.texts.unnamed_purchase).length>25?'...':'')"></b></span>
                 </td>
               <td>
-                <span class="modal_history_points" data-ng-bind="((item.price|number) || 0) + ' Р'"></span>
+                <span class="modal_history_points" data-ng-bind="((item.price|number) || 0) + ' &#8381;'"></span>
               </td>
             </tr>
             </tbody>
           </table>
+
+          <table class="hist_table type_mobile">
+              <tbody data-ng-repeat="item in cart.positions">
+  
+                <tr>
+                  <td>
+                    <div class="modal_history_date" data-ng-bind="(item.quantity | number) + ' шт.'"></div>
+                  </td>
+                </tr>
+  
+                <tr>
+                  <td>
+                      <span><b class="modal_history_content" data-ng-bind="((item.product.name || widget.texts.unnamed_purchase) | limitTo:25) + ((item.product.name || widget.texts.unnamed_purchase).length>25?'...':'')"></b></span>
+                  </td>
+                  <td>
+                      <span class="modal_history_points" data-ng-bind="((item.price|number) || 0) + ' &#8381;'"></span>
+                  </td>
+                </tr>
+  
+              </tbody>
+            </table>
+
         </section>
       </section>
     </section>
 
-    <section class="navbar" data-ng-if="user()">
+    <section class="navbar" data-ng-if="user() && ready">
       <section class="main-navbar-bg">
-        <div class="control-button-bg" data-ng-class="{active: ($parent.currentTab == '1' || $parent.currentTab == 'about')}"></div>
+        <div class="control-button-bg" data-ng-class="{active: ($parent.currentTab == '1' || $parent.currentTab == 'about'), disabled: $root.isFirstTime}"></div>
         <div class="control-button-bg" data-ng-class="{active: $parent.currentTab == '2'}"></div>
-        <div class="control-button-bg" data-ng-class="{active: $parent.currentTab == '3'}"></div>
+        <div class="control-button-bg" data-ng-class="{active: $parent.currentTab == '3', disabled: $root.isFirstTime}"></div>
         <div class="score-bg"></div>
         <div class="percent-bg"></div>
       </section>
       <section class="main-navbar">
-        <div data-ng-click="$parent.$parent.currentTab = 1;window.scroll(0, 0);onTabChange(1)" class="control-button" data-ng-class="{active: ($parent.currentTab == '1' || $parent.currentTab == 'about')}"> <div class="ball-svg"></div> {{ widget.texts.bottom_navbar.main }} </div>
-        <div data-ng-click="$parent.$parent.currentTab = 2;window.scroll(0, 0);onTabChange(2)" class="control-button" data-ng-class="{active: $parent.currentTab == '2'}"> <div class="profile-svg"></div> {{ widget.texts.bottom_navbar.profile }} </div>
-        <div data-ng-click="$parent.$parent.currentTab = 3;window.scroll(0, 0);onTabChange(3)" class="control-button" data-ng-class="{active: $parent.currentTab == '3'}"> <div class="hist-svg"></div> {{ widget.texts.bottom_navbar.history }} </div>
-        <div class="score">
+
+        <div data-ng-click="goTab(1)" class="control-button" data-ng-class="{active: ($parent.currentTab == '1' || $parent.currentTab == 'about'), disabled: $root.isFirstTime}"> 
+          <div class="ball-svg"></div> {{ widget.texts.bottom_navbar.main }} 
+          <div ng-if="$root.isFirstTime" class="hover-popup control-button-popup" ng-bind-html="getFirstTimeMenuPopupText() | to_trusted"></div>
+        </div>
+        <div data-ng-click="goTab(2)" class="control-button" data-ng-class="{active: $parent.currentTab == '2'}"> 
+          <div class="profile-svg"></div> {{ widget.texts.bottom_navbar.profile }} 
+        </div>
+        <div data-ng-click="goTab(3)" class="control-button" data-ng-class="{active: $parent.currentTab == '3', disabled: $root.isFirstTime}">
+          <div class="hist-svg"></div> {{ widget.texts.bottom_navbar.history }}
+          <div ng-if="$root.isFirstTime" class="hover-popup control-button-popup" ng-bind-html="getFirstTimeMenuPopupText() | to_trusted"></div>
+         </div>
+        
+         <div class="score">
           <div class="hover-popup score-popup" ng-bind-html="getScorePopupText() | to_trusted"></div>
           <div class="score-value" ng-bind="confirmedPurchases+':'+returnedPurchases"></div>
           <div class="score-text" ng-bind-html="widget.texts.score | to_trusted"></div>
         </div>
         <div class="percent">
-          <div class="percent-value" ng-bind="getPercents() + '%'"></div>
+          <div class="hover-popup percent-popup" ng-bind-html="getPercentPopupText() | to_trusted"></div>
+          <div class="percent-value" ng-bind="getPercents(user()) + '%'"></div>
           <div class="percent-text" ng-bind="widget.texts.bottom_navbar.percent_thing"></div>
         </div>
       </section>
     </section>
 
-    <section class="countdown" ng-if="user()">
-      <div class="hover-popup timer-popup" ng-bind="widget.texts.timer.hover"></div>
+    <section class="countdown" ng-if="user() && currentTab!='about' && ready">
+      <div class="hover-popup timer-popup" ng-bind-html="getTimerPopupText() | to_trusted"></div>
       <h4 ng-bind="widget.texts.timer.header"></h4>
-      <section class="timer-numbers" ng-click="$parent.$parent.currentTab='timer'">
+      <section class="timer-numbers" ng-click="goTab('timer')">
         <div class="day">
           <div class="number" ng-bind="timerObject.days"></div>
-          <div class="caption" ng-bind="widget.texts.timer.days"></div>
+          <div class="caption" ng-bind="timerObject.days | sailplay_pluralize:widget.texts.timer.days"></div>
         </div>
         <div class="hour">
           <div class="number" ng-bind="timerObject.hours"></div>
-          <div class="caption" ng-bind="widget.texts.timer.hours"></div>
+          <div class="caption" ng-bind="timerObject.hours | sailplay_pluralize:widget.texts.timer.hours"></div>
         </div>
         <div class="minute">
           <div class="number" ng-bind="timerObject.minutes"></div>
-          <div class="caption" ng-bind="widget.texts.timer.minutes"></div>
+          <div class="caption" ng-bind="timerObject.minutes | sailplay_pluralize:widget.texts.timer.minutes"></div>
         </div>
         <div class="second">
           <div class="number" ng-bind="timerObject.seconds"></div>
-          <div class="caption" ng-bind="widget.texts.timer.seconds"></div>
+          <div class="caption" ng-bind="timerObject.seconds | sailplay_pluralize:widget.texts.timer.seconds"></div>
         </div>
       </section>
     </section>

@@ -51,6 +51,10 @@ export let ToolsDatepicker = angular.module('ui.datepicker', [])
         scope.years = dateService.years;
         scope.active = null;
 
+        if(!scope.model) {
+          scope.model = [null, null, null];
+        }
+
         scope.range = function (start, end) {
           var result = [];
           for (var i = start; i <= end; i++) {
@@ -58,11 +62,23 @@ export let ToolsDatepicker = angular.module('ui.datepicker', [])
           }
           return result;
         };
+        
+        scope.open = type => {
+          let prev = scope.active;
+          $rootScope.$broadcast('datePicker:close');
+          scope.active = prev == type ? null : type;
+        }
 
         function onClick(e) {
-          scope.active = false;
-          scope.$digest()
+          $rootScope.$apply(function(){
+            scope.active = false;
+            $rootScope.$broadcast('datePicker:close');
+          })
         }
+
+        $rootScope.$on('datePicker:close', function(){
+          scope.active = false;
+        })
 
         document.body.addEventListener('click', onClick)
 

@@ -14,6 +14,7 @@ WidgetRegister({
             scope.currentTab = 1; 
 
             scope.onClick = item => {
+                if($rootScope.isFirstTime) return;
                 scope.isOpen = false;
                 scope.currentTab = item.tab;
                 $rootScope.$broadcast('mobile-navbar:click', {

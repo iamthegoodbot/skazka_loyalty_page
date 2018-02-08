@@ -14,6 +14,30 @@ require('./../node_modules/angular-i18n/angular-locale_ru-ru.js');
 //import theme styles
 import './theme/theme.less';
 
+// FIX
+if (!Array.prototype.find) {
+  Array.prototype.find = function(predicate) {
+    if (this == null) {
+      throw new TypeError('Array.prototype.find called on null or undefined');
+    }
+    if (typeof predicate !== 'function') {
+      throw new TypeError('predicate must be a function');
+    }
+    var list = Object(this);
+    var length = list.length >>> 0;
+    var thisArg = arguments[1];
+    var value;
+
+    for (var i = 0; i < length; i++) {
+      value = list[i];
+      if (predicate.call(thisArg, value, i, list)) {
+        return value;
+      }
+    }
+    return undefined;
+  };
+}
+
 export let magic = angular.module('magic', [ SailPlay, core, Cookies, Tools, NgTouch, require('angular-sanitize'), 'angularMoment' ])
 
 .config(function(SailPlayProvider, MAGIC_CONFIG, SailPlayHistoryProvider, SailPlayActionsDataProvider){
@@ -37,7 +61,7 @@ export let magic = angular.module('magic', [ SailPlay, core, Cookies, Tools, NgT
 
   }
 
-  //SailPlayProvider.set_auth_type(MAGIC_CONFIG.auth.type);
+  SailPlayProvider.set_auth_type(MAGIC_CONFIG.auth.type);
 
 })
 

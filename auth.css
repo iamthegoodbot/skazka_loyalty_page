@@ -1,0 +1,11 @@
+.orange_btn {
+    color: black;
+    background: #9dc55c;
+    border-color: #9dc55c;
+}
+.orange_btn:hover {
+    color: black;
+    background: #9dc55c;
+    border-color: #9dc55c;
+    opacity: 0.8;
+}
