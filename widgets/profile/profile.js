@@ -26,6 +26,7 @@ const ProfileWidget = {
       scope.returnedPurchases = 0;
       scope.user = SailPlayApi.data('load.user.info');
       scope.isUpdated = false;
+      scope.newChildren = [];
 
       scope.default_avatar = DefaultAvatarImage;
       $rootScope.$on('openProfile', () => {
@@ -86,9 +87,9 @@ const ProfileWidget = {
       })
       
       scope.addChild = (list, el) => {
-        console.log('list, el', list, el)
-        if(el[0] || el[1] || el[2]) {
+        if(el && el[0] && el[1] && el[2]) {
           list.push({birth_date:el})
+          scope.newChildren = [];
         }
       }
 

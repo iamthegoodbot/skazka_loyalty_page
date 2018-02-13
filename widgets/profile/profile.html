@@ -191,11 +191,7 @@
                           </div>
                           
                           <div class="children_container input-date">
-                              <date-picker data-model="newChildren"></date-picker>
-                              <div ng-class="{type_disabled : !newChildren || !newChildren[0] || !newChildren[1] || !newChildren[2]}" class="plus-sign cross" ng-click="addChild(item.childArray, newChildren);newChildren=[];">
-                                <div class="verical-minus"></div>
-                                <div class="horizontal-minus"></div>
-                            </div>
+                              <date-picker data-model="newChildren" callback="addChild(item.childArray, newChildren);"></date-picker>
                           </div>
 
                       </div>

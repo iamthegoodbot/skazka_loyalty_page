@@ -42,7 +42,8 @@ export let ToolsDatepicker = angular.module('ui.datepicker', [])
       scope: {
         model: '=',
         lang: '=?',
-        disabled: '=?'
+        disabled: '=?',
+        callback: '&?'
       },
       link: function (scope) {
 
@@ -78,6 +79,12 @@ export let ToolsDatepicker = angular.module('ui.datepicker', [])
 
         $rootScope.$on('datePicker:close', function(){
           scope.active = false;
+        })
+
+        scope.$watchCollection('model', function(){
+          if(scope.model && scope.model[0] && scope.model[1] && scope.model[2]) {
+            scope.callback && scope.callback(scope.model)
+          }
         })
 
         document.body.addEventListener('click', onClick)
