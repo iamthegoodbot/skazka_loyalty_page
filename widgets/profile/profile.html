@@ -114,10 +114,10 @@
                 <img width="160px" data-ng-src="{{ (field.value | sailplay_pic) || 'http://saike.ru/sailplay-magic/dist/img/profile/avatar_default.png'}}" alt="">
               </div>
 
-              <div data-ng-switch-when="text" class="input-field clearfix">
-                <label class="form_label" data-ng-class="{active: field.value}">{{ field.label }}</label>
+              <label data-ng-switch-when="text" class="input-field clearfix">
+                <span class="form_label" data-ng-class="{active: field.value}">{{ field.label }}</span>
                 <input name="{{field.name}}" class="form_input" type="text" placeholder="{{ field.placeholder }}" data-ng-model="field.value" required="required">
-              </div>
+              </label>
 
               <div data-ng-switch-when="date" class="input-date clearfix">
                 <label class="form_label date_label" data-ng-class="{active: field.value && field.value[0] && field.value[1] && field.value[2]}">{{ field.label }}</label>
@@ -131,15 +131,15 @@
                 </div>
               </div>
 
-              <div data-ng-switch-when="phone" class="input-field clearfix">
-                <label class="form_label" data-ng-class="{active: field.value}">{{ field.label }}</label>
+              <label data-ng-switch-when="phone" class="input-field clearfix">
+                <span class="form_label" data-ng-class="{active: field.value}">{{ field.label }}</span>
                 <input class="form_input" name="{{field.name}}" type="text" data-model-view-value="true" data-ui-mask="{{ field.placeholder }}" data-ng-model="field.value" required="required">
-              </div>
+              </label>
 
-              <div data-ng-switch-when="email" class="input-field clearfix">
-                <label class="form_label" data-ng-class="{active: field.value}">{{ field.label }}</label>
+              <label data-ng-switch-when="email" class="input-field clearfix">
+                <span class="form_label" data-ng-class="{active: field.value}">{{ field.label }}</span>
                 <input class="form_input" name="{{field.name}}" type="email" placeholder="{{ field.placeholder }}" data-ng-model="field.value" required="required">
-              </div>
+              </label>
 
               <div data-ng-switch-when="radio-tag" class="radio-tag">
                 <label class="form_label" 
