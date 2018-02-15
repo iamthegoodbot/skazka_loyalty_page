@@ -93,6 +93,10 @@ const ProfileWidget = {
         }
       }
 
+      scope.getPurchaseOffset = () => {
+        return scope.purchase_sum - (scope.user().purchases && scope.user().purchases.sum || 0)
+      }
+
       scope.getTimerPopupText = () => {
         if(scope.user().purchases.sum >= scope.purchase_sum) {
           return $interpolate(scope.widget.texts.timer.final_hover)(scope)  
