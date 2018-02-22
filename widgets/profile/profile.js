@@ -24,6 +24,8 @@ const ProfileWidget = {
       scope.window = window;
       scope.confirmedPurchases = 0;
       scope.returnedPurchases = 0;
+      scope.returnedPurchasesSum = 0;
+      scope.originPurchaseSum = 0;
       scope.user = SailPlayApi.data('load.user.info');
       scope.isUpdated = false;
       scope.newChildren = [];
@@ -94,7 +96,7 @@ const ProfileWidget = {
       }
 
       scope.getPurchaseOffset = () => {
-        return scope.purchase_sum - (scope.user().purchases && scope.user().purchases.sum || 0)
+        return scope.purchase_sum - scope.originPurchaseSum
       }
 
       scope.getTimerPopupText = () => {
@@ -123,7 +125,7 @@ const ProfileWidget = {
 
       scope.getPercents = (user) => {
         if(!user || !user.purchases) return 0;
-        let percents = parseInt(user.purchases.sum / scope.purchase_sum * 100);
+        let percents = parseInt(scope.originPurchaseSum / scope.purchase_sum * 100);
         return percents > 100 ? 100 : (percents < 0 ? 0 : percents)
       }
 
@@ -183,27 +185,56 @@ const ProfileWidget = {
         scope.confirmedPurchases = user.purchases.count;
 
         SailPlay.send('tags.list',
-          { user: { phone: user.user.phone }, params: { show_calculated_values: 1 } },
-          (tags_res) => {
-            scope.$apply(() => {
-              if (tags_res.status === 'ok' && tags_res.tags.length) {
-                // let confirmedPurchasesTag = tags_res.tags.filter(item => item.tag == scope.widget.options.confirmedPurchasesTag)[0];
-                // if (confirmedPurchasesTag) scope.confirmedPurchases = confirmedPurchasesTag.calculated_value
+        { user: { phone: user.user.phone }, params: { show_calculated_values: 1 } },
+        (tags_res) => {
+          scope.$apply(() => {
+            if (tags_res.status === 'ok' && tags_res.tags.length) {
+              // let confirmedPurchasesTag = tags_res.tags.filter(item => item.tag == scope.widget.options.confirmedPurchasesTag)[0];
+              // if (confirmedPurchasesTag) scope.confirmedPurchases = confirmedPurchasesTag.calculated_value
+
+              if(scope.widget.options.returnedPurchaseVar) {
+                SailPlay.send('vars.batch',
+                {names: [scope.widget.options.returnedPurchaseVar]},
+                (vars_res) => {
+                  scope.$apply(() => {
+                    if (vars_res.status === 'ok' && vars_res.vars && vars_res.vars[0]) {
+                      let returnedPurchaseVar = vars_res.vars.filter(item => item.name == scope.widget.options.returnedPurchaseVar)[0];
+                      if (returnedPurchaseVar) {
+                        let returned = JSON.parse(returnedPurchaseVar.value || '{}')
+                        let return_sum = 0;
+                        let return_count = 0;
+                        angular.forEach(returned, item => {
+                          return_count++;
+                          return_sum += parseInt(item.price || 0)
+                        })
+                        scope.returnedPurchases = return_count;
+                        scope.returnedPurchasesSum = return_sum;
+                        scope.originPurchaseSum = user.purchases.sum - scope.returnedPurchasesSum;
+                        scope.originPurchaseSum = scope.originPurchaseSum < 0 ? 0 : scope.originPurchaseSum;
+                      }
+                    }
+                  });
+                });
+              }  else if(scope.widget.options.returnedPurchaseTag) {
                 let returnedPurchaseTag = tags_res.tags.filter(item => item.tag == scope.widget.options.returnedPurchaseTag)[0];
                 if (returnedPurchaseTag) scope.returnedPurchases = returnedPurchaseTag.calculated_value
-                if(tags_res.tags.filter(item => item.tag == FILL_PROFILE_TAG)[0]) {
-                  $rootScope.isFirstTime = false;
-                }
-                if($rootScope.isFirstTime) {
-                  scope.currentTab = 2;
-                  $rootScope.$broadcast('tab:change', {tab: 2})
-                }
-                scope.ready = true;
-              } else {
-                scope.ready = true;
               }
-            });
+
+              if(tags_res.tags.filter(item => item.tag == FILL_PROFILE_TAG)[0]) {
+                $rootScope.isFirstTime = false;
+              }
+              if($rootScope.isFirstTime) {
+                scope.currentTab = 2;
+                $rootScope.$broadcast('tab:change', {tab: 2})
+              }
+              scope.ready = true;
+            } else {
+              scope.ready = true;
+            }
           });
+        });
+        
+        
 
       });
 

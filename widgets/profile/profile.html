@@ -121,6 +121,7 @@
 
               <div data-ng-switch-when="date" class="input-date clearfix">
                 <label class="form_label date_label" data-ng-class="{active: field.value && field.value[0] && field.value[1] && field.value[2]}">{{ field.label }}</label>
+                <input name="someDate" type="hidden" data-ng-model="field.dateModel" ng-required="!field.value || !field.value[0] || !field.value[1] || !field.value[2]">
                 <date-picker data-model="field.value"></date-picker>
               </div>
 
