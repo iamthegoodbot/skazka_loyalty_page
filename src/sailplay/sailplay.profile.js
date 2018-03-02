@@ -315,11 +315,12 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
 
                   case 'birthDate':
 
-                    var bd = user.user.birth_date && user.user.birth_date.split('-');
-                    form_field.value = bd ? [parseInt(bd[2]), parseInt(bd[1]), parseInt(bd[0])] : [null, null, null];
-                    form_field.value = form_field.value.map(value => {
-                      return value && value.toString().length == 1 ? '0' + value : value
-                    })
+                    // var bd = user.user.birth_date && user.user.birth_date.split('-');
+                    // form_field.value = bd ? [parseInt(bd[2]), parseInt(bd[1]), parseInt(bd[0])] : [null, null, null];
+                    // form_field.value = form_field.value.map(value => {
+                    //   return value && value.toString().length == 1 ? '0' + value : value
+                    // })
+                    form_field.value = user.user.birth_date || '';
                     break;
 
                   case 'addPhone':
@@ -474,12 +475,12 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
           //   return;
           // }
 
-          if (req_user.birthDate) {
-            var bd = angular.copy(req_user.birthDate);
-            bd[0] = parseInt(bd[0]) < 10 ? '0' + parseInt(bd[0]) : bd[0];
-            bd[1] = parseInt(bd[1]) < 10 ? '0' + parseInt(bd[1]) : bd[1];
-            req_user.birthDate = bd.reverse().join('-');
-          }
+          // if (req_user.birthDate) {
+          //   var bd = angular.copy(req_user.birthDate);
+          //   bd[0] = parseInt(bd[0]) < 10 ? '0' + parseInt(bd[0]) : bd[0];
+          //   bd[1] = parseInt(bd[1]) < 10 ? '0' + parseInt(bd[1]) : bd[1];
+          //   req_user.birthDate = bd.reverse().join('-');
+          // }
           
           if (req_user.birthDate && data_user && data_user.birth_date && data_user.birth_date == req_user.birthDate) {
             delete req_user.birthDate;
@@ -534,19 +535,7 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
             } else {
 
               callback(null, user_res)
-
-              // if(user_res.status == 'error' &&
-              //   MAGIC_CONFIG.data.force_registration.active &&
-              //   MAGIC_CONFIG.data.force_registration.errors &&
-              //   MAGIC_CONFIG.data.force_registration.errors[user_res.status_code]){
-              //   user_res.message = MAGIC_CONFIG.data.force_registration.errors[user_res.status_code]
-              // }
-
-              // $rootScope.$broadcast('notifier:notify', {
-              //   body: user_res.message
-              // });
-
-              // scope.$apply();
+              scope.revert_profile_form();
 
             }
 

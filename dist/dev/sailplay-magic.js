@@ -26,7 +26,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.SailPlay = undefined;
 
-var _angular = __webpack_require__(2);
+var _angular = __webpack_require__(3);
 
 var _angular2 = _interopRequireDefault(_angular);
 
@@ -424,7 +424,7 @@ var _sailplayHub2 = _interopRequireDefault(_sailplayHub);
 
 __webpack_require__(15);
 
-var _angular = __webpack_require__(2);
+var _angular = __webpack_require__(3);
 
 var _angular2 = _interopRequireDefault(_angular);
 
@@ -448,7 +448,7 @@ var _tools = __webpack_require__(64);
 
 var _tools2 = _interopRequireDefault(_tools);
 
-var _widget = __webpack_require__(3);
+var _widget = __webpack_require__(2);
 
 __webpack_require__(90);
 
@@ -662,7 +662,7 @@ var _keys = __webpack_require__(17);
 
 var _keys2 = _interopRequireDefault(_keys);
 
-var _angular = __webpack_require__(2);
+var _angular = __webpack_require__(3);
 
 var _angular2 = _interopRequireDefault(_angular);
 
@@ -1431,7 +1431,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.SailPlayGifts = undefined;
 
-var _angular = __webpack_require__(2);
+var _angular = __webpack_require__(3);
 
 var _angular2 = _interopRequireDefault(_angular);
 
@@ -1578,7 +1578,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.SailPlayHistory = undefined;
 
-var _angular = __webpack_require__(2);
+var _angular = __webpack_require__(3);
 
 var _angular2 = _interopRequireDefault(_angular);
 
@@ -1693,7 +1693,7 @@ var _keys = __webpack_require__(17);
 
 var _keys2 = _interopRequireDefault(_keys);
 
-var _angular = __webpack_require__(2);
+var _angular = __webpack_require__(3);
 
 var _angular2 = _interopRequireDefault(_angular);
 
@@ -2026,7 +2026,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.SailPlayBadges = undefined;
 
-var _angular = __webpack_require__(2);
+var _angular = __webpack_require__(3);
 
 var _angular2 = _interopRequireDefault(_angular);
 
@@ -2197,7 +2197,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Core = undefined;
 
-var _angular = __webpack_require__(2);
+var _angular = __webpack_require__(3);
 
 var _angular2 = _interopRequireDefault(_angular);
 
@@ -2205,7 +2205,7 @@ var _sailplay = __webpack_require__(16);
 
 var _sailplay2 = _interopRequireDefault(_sailplay);
 
-var _widget = __webpack_require__(3);
+var _widget = __webpack_require__(2);
 
 var _widget2 = _interopRequireDefault(_widget);
 
@@ -2305,7 +2305,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Tools = undefined;
 
-var _angular = __webpack_require__(2);
+var _angular = __webpack_require__(3);
 
 var _angular2 = _interopRequireDefault(_angular);
 
@@ -2921,7 +2921,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Layout = undefined;
 
-var _angular = __webpack_require__(2);
+var _angular = __webpack_require__(3);
 
 var _angular2 = _interopRequireDefault(_angular);
 
@@ -3011,7 +3011,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Widget = undefined;
 
-var _angular = __webpack_require__(2);
+var _angular = __webpack_require__(3);
 
 var _angular2 = _interopRequireDefault(_angular);
 
@@ -3156,7 +3156,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Notifier = undefined;
 
-var _angular = __webpack_require__(2);
+var _angular = __webpack_require__(3);
 
 var _angular2 = _interopRequireDefault(_angular);
 
@@ -3272,7 +3272,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Modal = undefined;
 
-var _angular = __webpack_require__(2);
+var _angular = __webpack_require__(3);
 
 var _angular2 = _interopRequireDefault(_angular);
 
@@ -3389,7 +3389,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Fonts = undefined;
 
-var _angular = __webpack_require__(2);
+var _angular = __webpack_require__(3);
 
 var _angular2 = _interopRequireDefault(_angular);
 
@@ -3475,7 +3475,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.ToolsDatepicker = undefined;
 
-var _angular = __webpack_require__(2);
+var _angular = __webpack_require__(3);
 
 var _angular2 = _interopRequireDefault(_angular);
 

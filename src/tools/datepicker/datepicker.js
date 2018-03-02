@@ -1,10 +1,10 @@
-import angular from 'angular';
-import DatePickerTemplate from './datepicker.html';
+import angular from "angular";
+import Template from "./datepicker.html";
 
-export let ToolsDatepicker = angular.module('ui.datepicker', [])
+export let ToolsDatepicker = angular
+  .module("ui.datepicker", [])
 
-  .service('dateService', function () {
-
+  .service("dateService", function() {
     var self = this;
 
     self.days = {
@@ -31,26 +31,22 @@ export let ToolsDatepicker = angular.module('ui.datepicker', [])
     self.years = arr.reverse();
 
     return this;
-
   })
 
-  .directive('datePicker', function (dateService, $rootScope) {
+  .directive("datePicker", function(dateService, $rootScope) {
     return {
-      restrict: 'E',
+      restrict: "E",
       replace: true,
-      template: DatePickerTemplate,
-      scope: {
-        model: '=',
-        lang: '=?',
-        disabled: '=?'
-      },
-      link: function (scope) {
-
+      template: Template,
+      scope: true,
+      require: "ngModel",
+      link: function(scope, elm, attrs, ngModel) {
         scope.date = $rootScope.MAGIC_CONFIG.tools.date;
         scope.days = dateService.days;
         scope.years = dateService.years;
+        scope.focused = false;
 
-        scope.range = function (start, end) {
+        scope.range = function(start, end) {
           var result = [];
           for (var i = start; i <= end; i++) {
             result.push(i);
@@ -58,9 +54,55 @@ export let ToolsDatepicker = angular.module('ui.datepicker', [])
           return result;
         };
 
-      }
-    }
+        ngModel.$formatters.push(function(modelValue) {
+          return modelValue
+            ? angular
+                .copy(modelValue)
+                .split("-")
+                .reverse()
+                .map(item => parseInt(item))
+            : ["", "", ""];
+        });
 
+        ngModel.$render = function() {
+          scope.model = angular.copy(ngModel.$viewValue);
+        };
+
+        ngModel.$parsers.push(function(viewValue) {
+          return (
+            viewValue &&
+            angular
+              .copy(viewValue)
+              .reverse()
+              .join("-")
+          );
+        });
+
+        ngModel.$validators.required = function(modelValue, viewValue) {
+          var valid = true;
+          angular.forEach(viewValue, function(val) {
+            if (!val || val === "") valid = false;
+          });
+          return valid;
+        };
+
+        scope.$watchCollection("model", function() {
+          ngModel.$setViewValue(angular.copy(scope.model));
+        });
+
+        let onBodyClick = () => {
+          scope.focused = false;
+          scope.$digest();
+        };
+
+        document.body.addEventListener("click", onBodyClick, true);
+
+        scope.$on("$destroy", () => {
+          document.body.removeEventListener("click", onBodyClick);
+        });
+
+      }
+    };
   });
 
 export default ToolsDatepicker.name;

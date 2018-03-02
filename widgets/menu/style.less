@@ -1,0 +1,173 @@
+@import (reference) "../../src/theme/mixins";
+@import (reference) "../../src/theme/helpers";
+@import (reference) "../../src/theme/colors";
+
+@menuHeight: 94px;
+
+.spm_wrapper {
+
+    .spm_menu {
+        width: 100%;
+        height: @menuHeight;
+        color: @white;
+        position: relative;        
+
+        &-wrapper {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: @menuHeight;
+            background: @theme_1-1;
+            z-index: 10;
+        }
+
+        &-container {
+            width: 100%;
+            height: 100%;
+            max-width: @maxWidth;
+            box-sizing: border-box;
+            padding: 0 30px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        &-list {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            @media (max-width: 800px) {
+                display: none;
+            }
+        }
+
+        &-item {
+            display: flex;
+            align-items: baseline;
+            margin-right: 6vw;
+            font-size: 18px;
+            i {
+                margin-right: 10px;
+                width: 12px;
+                height: 12px;
+                background-repeat: no-repeat;
+                background-position: center center;
+                background-size: contain;
+            }
+            span {
+                cursor: pointer;
+                text-transform: uppercase;
+            }
+            &:last-child {
+                margin-right: 0;
+            }
+        }
+
+        &-profile {
+            display: flex;
+            align-items: center;
+            position: relative;
+            flex-basis: 260px;
+            height: 100%;
+            i {
+                margin-right: 15px;
+                width: 62px;
+                height: 62px;
+                border-radius: 50%;
+                box-sizing: border-box;
+                border: 1px solid @white;
+                background-repeat: no-repeat;
+                background-position: center center;
+                background-size: contain;
+            }
+            &-balance {
+                display: flex;
+                flex-direction: column;
+
+                &_label {
+                    font-size: 16px;
+                    line-height: 18px;
+                }       
+
+                &_value {
+                    color: @theme_1-2;
+                    font-size: 18px;
+                    line-height: 21px;
+                }   
+            }
+            &-dropdown {
+                position: absolute;
+                left: 0;
+                top: 100%;
+                width: 100%;
+                box-sizing: border-box;
+                background: @white;
+                padding: 0 20px;
+                box-shadow: 0px 0px 10px 0px rgba(51,8,32,0.35);
+                transform: translateY(20%);
+                opacity: 0;
+                visibility: hidden;
+                transition: 0.3s linear;
+                &:before {
+                    content: '';
+                    display: block;
+                    position: absolute;
+                    top: -13px;
+                    left: 19px;
+                    width: 0;
+                    height: 0;
+                    border-style: solid;
+                    border-width: 0 12px 14px 12px;
+                    border-color: transparent transparent @white transparent;
+                }
+                a {
+                    display: inline-block;
+                    text-transform: uppercase;
+                    cursor: pointer;
+                    font-size: 14px;
+                    line-height: 16px;
+                    text-decoration: none;
+                    color: rgba(0, 0, 0, 0.5);
+                    padding: 20px 0;
+                    // opacity: 0.5;
+                    position: relative;
+                    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+                    &:last-child {
+                        border-bottom: none;
+                    }
+                    &:hover {
+                        color: @black;
+                    }
+                }
+                &-item {
+                    &.type_mobile {
+                        display: none;
+                        @media (max-width: 800px) {
+                            display: block;
+                        }
+                    }
+                }
+                @media (max-width: 800px) {
+                    &.type_open {
+                        transform: translateY(0);
+                        opacity: 1;
+                        visibility: visible;
+                    }
+                }
+            }
+            &:hover {
+                @media (min-width: 800px) {
+                    .spm_menu-profile-dropdown {
+                        transform: translateY(0);
+                        opacity: 1;
+                        visibility: visible;
+                    }
+                }
+            }
+        }
+
+    }
+
+}

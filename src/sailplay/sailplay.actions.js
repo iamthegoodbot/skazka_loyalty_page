@@ -262,7 +262,7 @@ export let SailPlayActions = angular.module('sailplay.actions', [])
     link: function(scope, elm, attrs){
 
       init_state = elm[0].innerHTML;
-
+      
       elm.on('click', function(e){
         e.preventDefault();
       });
@@ -270,7 +270,6 @@ export let SailPlayActions = angular.module('sailplay.actions', [])
       function parse_action(action){
         $timeout(function(){
           attrs.styles && elm.attr('data-styles', attrs.styles);
-          // console.log(attrs.styles);
           attrs.text && elm.attr('data-text', attrs.text);
           SailPlay.actions && action && SailPlay.actions.parse(elm[0], action);
         }, 0);

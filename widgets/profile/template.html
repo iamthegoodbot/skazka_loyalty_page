@@ -1,0 +1,128 @@
+<div class="spm_profile clearfix" ng-if="widget.enabled" ng-cloak sailplay-profile>
+
+    <div class="spm_profile-container">
+
+        <div class="spm_profile-welcome" ng-bind-html="(user().user.first_name ? widget.texts.welcome + user().user.first_name : '&nbsp;')|to_trusted"></div>
+        <h1 class="spm_profile-header" ng-bind-html="widget.texts.header|to_trusted"></h1>
+
+        <div class="spm_profile-content">
+
+            <div class="spm_profile-points" ng-if="user().user_points">
+                <div class="spm_profile-points-confirmed" ng-bind="user().user_points.confirmed|number"></div>
+                <div class="spm_profile-points-placeholder" ng-bind="user().user_points.confirmed|sailplay_pluralize:('points.texts.pluralize' | tools)"></div>
+                <div class="spm_profile-points-unconfirmed">
+                    <span class="spm_profile-points-unconfirmed-block">+ {{user().user_points.unconfirmed|number}} {{widget.texts.unconfirmed}}</span>
+                    <span class="spm_profile-points-tooltip">?
+                        <div ng-bind-html="widget.texts.unconfirmed_tooltip|to_trusted"></div>
+                    </span>
+                </div>
+                <a href="#" class="spm_btn theme_1" ng-bind="widget.texts.open_history" ng-click="$event.preventDefault();$root.$broadcast('history:state', true)"></a>
+            </div>
+
+            <div class="spm_profile-status" sailplay-badges>
+                <i ng-style="{'background-image': ((((sailplay.badges.list().multilevel_badges[0]|lastReceived).descr|json).pic||widget.images.empty_status)|background_image)}"></i>
+                <div class="spm_profile-status-info">
+                    <span class="spm_profile-status-placeholder" ng-bind="widget.texts.your_status"></span>
+                    <span class="spm_profile-status-name" ng-bind="(sailplay.badges.list().multilevel_badges[0]|lastReceived).name||widget.texts.empty_status"></span>
+                    <span class="spm_profile-status-descr" ng-bind="((sailplay.badges.list().multilevel_badges[0]|lastReceived).descr|json).value"></span>
+                    <a href="#" class="spm_btn theme_1 type_filled" ng-bind="widget.texts.open_status" ng-click="$event.preventDefault();$root.$broadcast('status:state', true)"></a>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="spm_profile-block-wrapper" sailplay-badges ng-show="$parent.show_status">
+        <div class="spm_profile-container">
+
+            <i class="spm_profile-block-wrapper-close" ng-click="$root.$broadcast('status:state', false)" ng-style="{'background-image': (widget.images.close | background_image)}"></i>
+
+            <div class="spm_profile-status-list">
+
+                <div class="spm_profile-status-item" ng-repeat="badge in sailplay.badges.list().multilevel_badges[0]" ng-class="{type_active: badge.is_received, type_filled: (badge[$index+1] && badge[$index+1].is_received)}">
+                    <div ng-if="!badge.is_received && (getLeftForStatus(user().purchases.sum, badge))" class="spm_profile-status-item-tooltip"
+                        ng-bind-html="(widget.texts.left_for_status + (getLeftForStatus(user().purchases.sum, badge)|number) + ' ' + (getLeftForStatus(user().purchases.sum, badge)|sailplay_pluralize:('currency.texts.pluralize' | tools)))|to_trusted"></div>
+                    <div class="spm_profile-status-item-image" ng-style="{'background-image': ((badge.is_received ? (badge.descr|json).pic : (badge.descr|json).pic_gs)|background_image)}"></div>
+                    <div class="spm_profile-status-item-name" ng-bind="badge.name"></div>
+                    <div class="spm_profile-status-item-descr" ng-bind="(badge.descr|json).text"></div>
+                    <div class="spm_profile-status-item-value" ng-bind="(badge.descr|json).value"></div>
+                    <div ng-if="!$last" class="spm_profile-status-item-progress"></div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <magic-modal show="$parent.$parent.show_history">
+        <magic-modal-title ng-bind="widget.texts.modals.history.title"></magic-modal-title>
+        <magic-modal-body>
+            <div sailplay-history>
+
+                <table class="spm_profile-history" ng-show="history().length">
+                    <thead>
+                        <tr>
+                            <td class="type_lighter" ng-bind="widget.texts.modals.history.date"></td>
+                            <td class="type_lighter" ng-bind="widget.texts.modals.history.action"></td>
+                            <td class="type_lighter" ng-bind="widget.texts.modals.history.points"></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr dir-paginate="item in history() | itemsPerPage:5" pagination-id="history_pages">
+                            <td class="type_lighter" ng-bind="item.action_date | date:'d.MM.yyyy'"></td>
+                            <td>
+                                <div ng-bind="item|history_item"></div>
+                            </td>
+                            <td ng-class="{type_positive:item.points_delta>0, type_negative:item.points_delta<0}" ng-bind="item.points_delta?(item.points_delta|number):''"></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <dir-pagination-controls max-size="7" direction-links="false" pagination-id="history_pages" template-url="magic.pagination"
+                    auto-hide="true"></dir-pagination-controls>
+
+                <div ng-hide="history().length" ng-bind="widget.texts.modals.history.empty"></div>
+
+            </div>
+        </magic-modal-body>
+    </magic-modal>
+
+    <magic-modal show="$parent.$parent.show_profile">
+        <magic-modal-title ng-bind-html="widget.texts.modals.profile.title|to_trusted"></magic-modal-title>
+        <magic-modal-body>
+
+            <form name="profile_form" class="spm_profile-form" sailplay-fill-profile config="widget.options.config" ng-submit="sailplay.fill_profile.submit(profile_form, onSaveProfile);">
+
+                <div class="spm_form_field" ng-repeat="field in sailplay.fill_profile.form.fields" ng-switch="field.input">
+
+                    <div ng-switch-when="text">
+                        <label class="spm_form_label" ng-bind="field.label"></label>
+                        <input class="spm_form_input" type="text" placeholder="{{ field.placeholder }}" ng-model="field.value" ng-required="field.required">
+                    </div>
+
+                    <div ng-switch-when="date">
+                        <label class="spm_form_label" ng-bind="field.label"></label>
+                        <date-picker ng-model="field.value" ng-required="field.required"></date-picker>
+                    </div>
+
+                    <div ng-switch-when="phone">
+                        <label class="spm_form_label">{{ field.label }}</label>
+                        <input class="spm_form_input" type="text" model-view-value="true" ui-mask="{{ field.placeholder }}" ng-model="field.value"
+                            ng-required="field.required">
+                    </div>
+
+                    <div ng-switch-when="email">
+                        <label class="spm_form_label">{{ field.label }}</label>
+                        <input class="spm_form_input" type="email" placeholder="{{ field.placeholder }}" ng-model="field.value" ng-required="field.required">
+                    </div>
+
+                </div>
+
+                <input type="submit" class="spm_btn theme_1 type_filled type_big" ng-value="widget.texts.modals.profile.save" />
+
+            </form>
+
+        </magic-modal-body>
+    </magic-modal>
+
+</div>

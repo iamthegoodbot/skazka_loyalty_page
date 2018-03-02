@@ -1,24 +1,23 @@
-<div>
+<div class="spm_form_date_wrapper">
 
-  <div class="form_date form_date__day">
-    <span data-ng-bind="model[0] || date.placeholder.day"></span>
-    <div class="form_date__popup">
-      <a href="#" data-ng-repeat="day in range(1, days[model[1] || 1])" data-ng-bind="day"
-         data-ng-click="$event.preventDefault();model[0] = day;"></a>
+  <div class="spm_form_date type_day" ng-class="{type_active: focused=='day', type_empty: !model[0]}">
+    <span ng-bind="model[0] || date.placeholder.day" ng-click="focused=focused=='day'?false:'day'"></span>
+    <div class="spm_form_date__popup">
+      <a href="#" ng-repeat="day in range(1, days[model[1] || 1])" ng-bind="day" ng-click="$event.preventDefault();model[0] = day;"></a>
     </div>
   </div>
-  <div class="form_date form_date__month">
-    <span data-ng-bind="date.months[model[1]] || date.placeholder.month"></span>
-    <div class="form_date__popup">
-      <a href="#" data-ng-repeat="(key, value) in date.months track by $index" data-ng-bind="value"
-         data-ng-click="$event.preventDefault();model[1] = +key;"></a>
+
+  <div class="spm_form_date type_month" ng-class="{type_active: focused=='month', type_empty: !date.months[model[1]]}">
+    <span ng-bind="date.months[model[1]] || date.placeholder.month" ng-click="focused=focused=='month'?false:'month'"></span>
+    <div class="spm_form_date__popup">
+      <a href="#" ng-repeat="(key, value) in date.months track by $index" ng-bind="value" ng-click="$event.preventDefault();model[1] = +key;"></a>
     </div>
   </div>
-  <div class="form_date form_date__year" >
-    <span data-ng-bind="model[2] || date.placeholder.year"></span>
-    <div class="form_date__popup">
-      <a href="#" data-ng-repeat="year in years" data-ng-bind="year"
-         data-ng-click="$event.preventDefault();model[2] = year;"></a>
+
+  <div class="spm_form_date type_year" ng-class="{type_active: focused=='year', type_empty: !model[2]}">
+    <span ng-bind="model[2] || date.placeholder.year" ng-click="focused=focused=='year'?false:'year'"></span>
+    <div class="spm_form_date__popup">
+      <a href="#" ng-repeat="year in years" ng-bind="year" ng-click="$event.preventDefault();model[2] = year;"></a>
     </div>
   </div>
 

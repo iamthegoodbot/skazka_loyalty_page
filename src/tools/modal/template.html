@@ -1,0 +1,11 @@
+<div class="spm_modal" data-ng-class="{ visible: show }" tabindex="-1" role="dialog">
+
+    <div class="spm_modal-container">
+        <i class="spm_modal-close" ng-click="$event.preventDefault(); !preventClose && close();" ng-style="{'background-image': (_modal_config.images.close | background_image)}"></i>
+        <div class="spm_modal-content">
+            <div class="spm_modal-content-title" ng-transclude="title"></div>
+            <div class="spm_modal-content-body" ng-transclude="body"></div>
+        </div>
+    </div>
+
+</div>

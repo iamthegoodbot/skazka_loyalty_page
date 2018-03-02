@@ -27,6 +27,12 @@ export let SailPlayBadges = angular.module('sailplay.badges', [])
 
 })
 
+.filter('lastReceived', () => {
+  return badges => {
+    return badges ? badges.filter(badge => badge.is_received).pop() : {}
+  }
+})
+
 /**
  * @ngdoc directive
  * @name sailplay.badges.directive:sailplayStatuses

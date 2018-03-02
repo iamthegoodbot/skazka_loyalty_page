@@ -10,7 +10,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.GiftTypeRegister = undefined;
 
-var _widget = __webpack_require__(3);
+var _widget = __webpack_require__(2);
 
 var _gifts = __webpack_require__(125);
 
@@ -18,7 +18,7 @@ var _gifts2 = _interopRequireDefault(_gifts);
 
 __webpack_require__(126);
 
-var _angular = __webpack_require__(2);
+var _angular = __webpack_require__(3);
 
 var _angular2 = _interopRequireDefault(_angular);
 
@@ -312,12 +312,13 @@ __webpack_require__(133);
 __webpack_require__(137);
 __webpack_require__(141);
 __webpack_require__(145);
-__webpack_require__(150);
-__webpack_require__(155);
-__webpack_require__(163);
-__webpack_require__(168);
-__webpack_require__(173);
-module.exports = __webpack_require__(177);
+__webpack_require__(149);
+__webpack_require__(154);
+__webpack_require__(159);
+__webpack_require__(164);
+__webpack_require__(172);
+__webpack_require__(177);
+module.exports = __webpack_require__(181);
 
 
 /***/ }),
@@ -327,7 +328,7 @@ module.exports = __webpack_require__(177);
 "use strict";
 
 
-var _widget = __webpack_require__(3);
+var _widget = __webpack_require__(2);
 
 var _actions = __webpack_require__(100);
 
@@ -441,7 +442,7 @@ exports.push([module.i, ".spm_wrapper .more_bonus {\n  float: left;\n  width: 10
 "use strict";
 
 
-var _widget = __webpack_require__(3);
+var _widget = __webpack_require__(2);
 
 var _badges = __webpack_require__(104);
 
@@ -588,7 +589,7 @@ exports.push([module.i, ".spm_wrapper .spm_tools_widget.badges {\n  float: left;
 "use strict";
 
 
-var _widget = __webpack_require__(3);
+var _widget = __webpack_require__(2);
 
 var _banner = __webpack_require__(110);
 
@@ -664,7 +665,7 @@ exports.push([module.i, ".spm_wrapper .block_images {\n  width: 100%;\n}\n.spm_w
 "use strict";
 
 
-var _widget = __webpack_require__(3);
+var _widget = __webpack_require__(2);
 
 var _cardQuests = __webpack_require__(114);
 
@@ -775,7 +776,7 @@ exports.push([module.i, ".spm_wrapper .card_quests {\n  width: 90%;\n  margin: 4
 "use strict";
 
 
-var _widget = __webpack_require__(3);
+var _widget = __webpack_require__(2);
 
 var _charityPro = __webpack_require__(118);
 
@@ -1075,7 +1076,7 @@ exports.push([module.i, ".spm_wrapper .sp_cp-widget {\n  /* --------------------
 "use strict";
 
 
-var _widget = __webpack_require__(3);
+var _widget = __webpack_require__(2);
 
 var _event_message = __webpack_require__(122);
 
@@ -1244,7 +1245,7 @@ exports.push([module.i, ".spm_wrapper .bon_choice_main {\n  float: left;\n  widt
 
 var _gifts = __webpack_require__(26);
 
-var _angular = __webpack_require__(2);
+var _angular = __webpack_require__(3);
 
 var _angular2 = _interopRequireDefault(_angular);
 
@@ -1304,7 +1305,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 "use strict";
 
 
-var _widget = __webpack_require__(3);
+var _widget = __webpack_require__(2);
 
 var _giftsGrid = __webpack_require__(130);
 
@@ -1568,7 +1569,7 @@ exports.push([module.i, ".spm_wrapper .gifts_grid_widget .gifts_grid__header {\n
 "use strict";
 
 
-var _widget = __webpack_require__(3);
+var _widget = __webpack_require__(2);
 
 var _header = __webpack_require__(134);
 
@@ -1646,7 +1647,7 @@ exports.push([module.i, ".spm_wrapper .spm_tools_widget.header .header_wrapper {
 "use strict";
 
 
-var _widget = __webpack_require__(3);
+var _widget = __webpack_require__(2);
 
 var _imageStatuses = __webpack_require__(138);
 
@@ -1768,7 +1769,7 @@ exports.push([module.i, ".spm_wrapper .image-status-list {\n  float: left;\n  wi
 "use strict";
 
 
-var _widget = __webpack_require__(3);
+var _widget = __webpack_require__(2);
 
 var _leaderboard = __webpack_require__(142);
 
@@ -1848,17 +1849,98 @@ exports.push([module.i, ".spm_wrapper .spm_tools_widget.leaderboard .container {
 "use strict";
 
 
-var _widget = __webpack_require__(3);
+var _widget = __webpack_require__(2);
 
-var _pointsStatus = __webpack_require__(146);
+var _template = __webpack_require__(146);
+
+var _template2 = _interopRequireDefault(_template);
+
+__webpack_require__(147);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var MenuWidget = {
+  id: 'menu',
+  template: _template2.default,
+  inject: ['$rootScope', 'SailPlay', 'SailPlayApi', 'MAGIC_CONFIG'],
+  controller: function controller($rootScope, SailPlay, SailPlayApi, MAGIC_CONFIG) {
+    return function (scope, elm, attrs) {};
+  }
+};
+
+_widget.Widget.config(["MagicWidgetProvider", function (MagicWidgetProvider) {
+  MagicWidgetProvider.register(MenuWidget);
+}]);
+
+/***/ }),
+/* 146 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"spm_menu clearfix\" ng-if=\"widget.enabled\" ng-cloak sailplay-profile>\n\n    <div class=\"spm_menu-list\">\n        <a class=\"spm_menu-item\" href=\"\"></a>\n    </div>\n   \n</div>";
+
+/***/ }),
+/* 147 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(148);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// Prepare cssTransformation
+var transform;
+
+var options = {"hmr":true}
+options.transform = transform
+// add the styles to the DOM
+var update = __webpack_require__(1)(content, options);
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/dist/cjs.js!./style.less", function() {
+			var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/dist/cjs.js!./style.less");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 148 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(0)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, ".spm_wrapper .spm_menu {\n  width: 100%;\n  height: 95px;\n  background: #4D2962;\n  color: #ffffff;\n  display: flex;\n  align-items: center;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 149 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _widget = __webpack_require__(2);
+
+var _pointsStatus = __webpack_require__(150);
 
 var _pointsStatus2 = _interopRequireDefault(_pointsStatus);
 
-var _history_pagination = __webpack_require__(147);
+var _history_pagination = __webpack_require__(151);
 
 var _history_pagination2 = _interopRequireDefault(_history_pagination);
 
-__webpack_require__(148);
+__webpack_require__(152);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1929,25 +2011,25 @@ _widget.Widget.run(["$templateCache", function ($templateCache) {
 }]);
 
 /***/ }),
-/* 146 */
+/* 150 */
 /***/ (function(module, exports) {
 
 module.exports = "<div id=\"points-status\" class=\"bon_choice_main container clearfix\">\n\n    <div class=\"points-status__wrapper clearfix\">\n\n        <div class=\"points-status__left points_block clearfix\" data-ng-if=\"user()\">\n\n            <span class=\"points_confirmed\">\n                <span class=\"points_confirmed_value\" data-ng-bind=\"user().user_points.total | number\"></span>\n                <span class=\"points_confirmed_name\"\n                    data-ng-bind=\"user().user_points.total | sailplay_pluralize: ('points.texts.pluralize' | tools)\"></span>\n            </span>\n\n            <a class=\"button_primary history_button\" href=\"#\"\n               data-ng-click=\"$event.preventDefault(); $parent.history = true;\"\n               data-ng-bind=\"widget.texts.history_button\"></a>\n\n        </div>\n\n        <div class=\"points-status__right progress_block clearfix\">\n\n            <div class=\"progress_line_main\">\n\n                <div class=\"progress_line_bg progress_bar progress_bar_border\"></div>\n\n                <div class=\"progress_line progress_bar_filled\"\n                     data-ng-style=\"{ width: getProgress(user().user_points.total, widget.options.status_list) }\">\n                </div>\n\n                <div class=\"gift_item progress_bar_border\"\n                     data-ng-repeat=\"item in widget.options.status_list track by $index\"\n                     data-ng-class=\"{ act : item.points <= user().user_points.total, progress_bar_gift_filled: item.points <=user().user_points.total, progress_bar_gift: item.points > user().user_points.total}\"\n                     data-ng-style=\"{ left: (100/widget.options.status_list.length * ($index+1)) + '%', 'background-image': 'url(' + item.image +')' }\">\n\n                    <span class=\"gift_item_hint\" data-ng-bind=\"item.points | number\"></span>\n\n                </div>\n\n            </div>\n\n        </div>\n\n    </div>\n\n    <magic-modal class=\"bns_overlay_hist\" data-show=\"history\">\n\n        <div data-sailplay-history data-sailplay-profile>\n\n            <h3>\n                <span class=\"modal_history_header\" data-ng-bind=\"widget.texts.history.header\"></span>\n            </h3>\n            <h4 class=\"modal_history_caption\" data-ng-bind=\"widget.texts.history.caption\"></h4>\n\n            <table class=\"bns_hist_table\">\n\n                <tbody>\n\n                <tr data-dir-paginate=\"item in history() | itemsPerPage:10\" data-pagination-id=\"history_pages\">\n                    <td>\n                        <span class=\"modal_history_date\" data-ng-bind=\"item.action_date | date:'d/MM/yyyy'\"></span>\n                    </td>\n                    <td>\n                        <span><b class=\"modal_history_content\" data-ng-bind=\"item | history_item\"></b></span>\n                    </td>\n                    <td>\n                        <span class=\"modal_history_points\" data-ng-if=\"item.points_delta\"\n                              data-ng-bind=\"((item.points_delta|number) || 0) + ' ' + (item.points_delta | sailplay_pluralize:('points.texts.pluralize' | tools))\"></span>\n                    </td>\n                </tr>\n\n                </tbody>\n            </table>\n\n            <dir-pagination-controls data-max-size=\"7\" data-pagination-id=\"history_pages\"\n                                     data-template-url=\"points_status.history_pagination\"\n                                     data-auto-hide=\"true\"></dir-pagination-controls>\n        </div>\n\n\n    </magic-modal>\n\n</div>";
 
 /***/ }),
-/* 147 */
+/* 151 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"bns_hist_pager\" data-ng-if=\"1 < pages.length || !autoHide\">\n\n  <a data-ng-if=\"directionLinks\" data-ng-class=\"{ disabled : pagination.current == 1 }\" href=\"\" data-ng-click=\"setCurrent(pagination.current - 1)\">\n    &lsaquo;\n  </a>\n  <a data-ng-repeat=\"pageNumber in pages track by tracker(pageNumber, $index)\" data-ng-class=\"{ active : pagination.current == pageNumber, disabled : pageNumber == '...' }\" href=\"\" data-ng-click=\"setCurrent(pageNumber)\">\n    {{ pageNumber }}\n  </a>\n\n  <a data-ng-if=\"directionLinks\" data-ng-class=\"{ disabled : pagination.current == pagination.last }\" href=\"\" data-ng-click=\"setCurrent(pagination.current + 1)\">\n    &rsaquo;\n  </a>\n\n</div>";
 
 /***/ }),
-/* 148 */
+/* 152 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(149);
+var content = __webpack_require__(153);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -1972,7 +2054,7 @@ if(false) {
 }
 
 /***/ }),
-/* 149 */
+/* 153 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(undefined);
@@ -1986,23 +2068,23 @@ exports.push([module.i, ".spm_wrapper #points-status .points-status__wrapper {\n
 
 
 /***/ }),
-/* 150 */
+/* 154 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _widget = __webpack_require__(3);
+var _widget = __webpack_require__(2);
 
-var _points_rate_progress = __webpack_require__(151);
+var _points_rate_progress = __webpack_require__(155);
 
 var _points_rate_progress2 = _interopRequireDefault(_points_rate_progress);
 
-var _history_pagination = __webpack_require__(152);
+var _history_pagination = __webpack_require__(156);
 
 var _history_pagination2 = _interopRequireDefault(_history_pagination);
 
-__webpack_require__(153);
+__webpack_require__(157);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2103,25 +2185,25 @@ _widget.Widget.run(["$templateCache", function ($templateCache) {
 }]);
 
 /***/ }),
-/* 151 */
+/* 155 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"points_rate_progress__wrapper container\" data-sailplay-badges>\n\n    <div class=\"points_rate_progress__points points_rate_progress__blocks\" data-ng-if=\"sailplay.user.info()\">\n        <span class=\"points_rate_progress__points-confirmed\">\n          <span class=\"points_rate_progress__points-confirmed-value\"\n                data-ng-bind=\"sailplay.user.info().user_points.confirmed | number\"></span>\n          <span class=\"points_rate_progress__points-confirmed-name\"\n                data-ng-bind=\"sailplay.user.info().user_points.confirmed | sailplay_pluralize: ('points.texts.pluralize' | tools)\"></span>\n        </span>\n        <a class=\"points_rate_progress__points-history button_link history_button\" href=\"#\"\n           data-ng-click=\"$event.preventDefault();$parent.show_history = true;\">{{ widget.texts.history_button }}</a>\n    </div>\n\n    <div class=\"points_rate_progress__progress points_rate_progress__blocks\"\n         data-ng-if=\"sailplay.user.info() && badges_list\">\n\n        <p class=\"points_rate_progress__progress-offset\">\n            <span class=\"points_rate_progress__progress-offset-text\" data-ng-bind=\"widget.texts.to_text_status\"></span>\n            <span class=\"points_rate_progress__progress-offset-value\">\n                {{ get_offset(sailplay.user.info().purchases.sum, badges_list) | number }}\n                {{ get_offset(sailplay.user.info().purchases.sum, badges_list) | sailplay_pluralize: ('rub.texts.pluralize' | tools) }}\n            </span>\n        </p>\n\n        <div class=\"points_rate_progress__progress-block\">\n            <div class=\"points_rate_progress__progress-block-line\" data-ng-style=\"get_progress(sailplay.user.info().purchases.sum, badges_list)\"></div>\n            <div class=\"points_rate_progress__progress-block-text\" data-ng-bind=\"get_next_status(sailplay.user.info().purchases.sum, badges_list).descr\"></div>\n            <!--<img class=\"points_rate_progress__progress-block-img\" data-ng-src=\"{{ get_next_status(sailplay.user.info().purchases.sum, badges_list).thumbs.url_100x100 | sailplay_pic }}\" alt=\"{{ get_next_status(sailplay.user.info().purchases.sum, badges_list).name }}\">-->\n        </div>\n\n    </div>\n\n    <div class=\"points_rate_progress__rate points_rate_progress__blocks\"\n         data-ng-if=\"sailplay.user.info() && badges_list\">\n\n        <span class=\"points_rate_progress__rate-value\" data-ng-bind=\"(get_current_status(sailplay.user.info().purchases.sum, badges_list).descr || '0%')\"></span>\n        <span class=\"points_rate_progress__rate-text\" data-ng-bind=\"widget.texts.points_rate\"></span>\n\n    </div>\n\n    <magic-modal class=\"bns_overlay_hist\" data-show=\"show_history\">\n\n        <div data-sailplay-history data-sailplay-profile>\n\n            <h3>\n                <span class=\"modal_history_header\">{{ widget.texts.history.header }}</span>\n                <!--<b>У вас {{ user().user_points.confirmed + ' ' + (user().user_points.confirmed | sailplay_pluralize:_tools.points.texts.pluralize) }}</b>-->\n            </h3>\n            <h4 class=\"modal_history_caption\">{{ widget.texts.history.caption }}</h4>\n\n            <table class=\"bns_hist_table\">\n\n                <tbody>\n\n                <tr data-dir-paginate=\"item in history() | itemsPerPage:10\" data-pagination-id=\"history_pages\">\n                    <td>\n                        <span class=\"modal_history_date\" data-ng-bind=\"item.action_date | date:'d/MM/yyyy'\"></span>\n                    </td>\n                    <td>\n                        <span><b class=\"modal_history_content\" data-ng-bind=\"item | history_item\"></b></span>\n                    </td>\n                    <td>\n                        <span class=\"modal_history_points\" data-ng-if=\"item.points_delta\" data-ng-bind=\"((item.points_delta|number) || 0) + ' ' + (item.points_delta | sailplay_pluralize:('points.texts.pluralize' | tools))\"></span>\n                    </td>\n                </tr>\n\n                </tbody>\n            </table>\n\n            <dir-pagination-controls data-max-size=\"7\" data-pagination-id=\"history_pages\"\n                                     data-template-url=\"points_rate_progress.history_pagination\"\n                                     data-auto-hide=\"true\"></dir-pagination-controls>\n        </div>\n\n\n\n    </magic-modal>\n\n</div>";
 
 /***/ }),
-/* 152 */
+/* 156 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"bns_hist_pager\" data-ng-if=\"1 < pages.length || !autoHide\">\n\n  <a data-ng-if=\"directionLinks\" data-ng-class=\"{ disabled : pagination.current == 1 }\" href=\"\" data-ng-click=\"setCurrent(pagination.current - 1)\">\n    &lsaquo;\n  </a>\n  <a data-ng-repeat=\"pageNumber in pages track by tracker(pageNumber, $index)\" data-ng-class=\"{ active : pagination.current == pageNumber, disabled : pageNumber == '...' }\" href=\"\" data-ng-click=\"setCurrent(pageNumber)\">\n    {{ pageNumber }}\n  </a>\n\n  <a data-ng-if=\"directionLinks\" data-ng-class=\"{ disabled : pagination.current == pagination.last }\" href=\"\" data-ng-click=\"setCurrent(pagination.current + 1)\">\n    &rsaquo;\n  </a>\n\n</div>";
 
 /***/ }),
-/* 153 */
+/* 157 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(154);
+var content = __webpack_require__(158);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -2146,7 +2228,7 @@ if(false) {
 }
 
 /***/ }),
-/* 154 */
+/* 158 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(undefined);
@@ -2160,25 +2242,132 @@ exports.push([module.i, ".spm_wrapper .points_rate_progress__wrapper {\n  font-s
 
 
 /***/ }),
-/* 155 */
+/* 159 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _widget = __webpack_require__(3);
+var _widget = __webpack_require__(2);
 
-var _profile = __webpack_require__(156);
+var _profile_nr = __webpack_require__(160);
 
-var _profile2 = _interopRequireDefault(_profile);
+var _profile_nr2 = _interopRequireDefault(_profile_nr);
 
-var _history_pagination = __webpack_require__(157);
+var _history_pagination = __webpack_require__(161);
 
 var _history_pagination2 = _interopRequireDefault(_history_pagination);
 
-__webpack_require__(158);
+__webpack_require__(162);
 
-var _avatar_default = __webpack_require__(162);
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var ProfileNrWidget = {
+
+  id: 'profile_nr',
+  template: _profile_nr2.default,
+  inject: ['$rootScope', 'SailPlayApi'],
+  controller: function controller($rootScope, SailPlayApi) {
+    return function (scope, elm, attrs) {
+
+      scope.profile = {
+        history: false,
+        show_fill_profile: false,
+        fill_profile: function fill_profile(state) {
+
+          scope.profile.show_fill_profile = state || false;
+        }
+      };
+    };
+  }
+
+};
+
+_widget.Widget.config(["MagicWidgetProvider", function (MagicWidgetProvider) {
+  MagicWidgetProvider.register(ProfileNrWidget);
+}]);
+
+_widget.Widget.run(["$templateCache", function ($templateCache) {
+  $templateCache.put('profile_nr.history_pagination', _history_pagination2.default);
+}]);
+
+/***/ }),
+/* 160 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"spm_profile_nr clearfix\" data-ng-if=\"widget.enabled\" data-ng-cloak data-sailplay-profile>\n\n    <div class=\"spm_profile_nr-left\">\n\n        <div class=\"spm_profile_nr-header\"\n             data-ng-bind=\"user() ? (widget.texts.auth.header + user().user.name) : widget.texts.no_auth.header\"></div>\n        <div class=\"spm_profile_nr-description\"\n             data-ng-bind=\"widget.texts[user() ? 'auth' : 'no_auth'].description\"></div>\n\n        <div class=\"spm_profile_nr-buttons\" data-ng-if=\"user && user()\">\n            <a href=\"#\" class=\"button_primary spm_profile_nr-edit\"\n               data-ng-bind=\"widget.texts.edit\"\n               data-ng-click=\"$event.preventDefault();profile.show_fill_profile=true;\"></a>\n            <a href=\"#\" class=\"button_primary spm_profile_nr-logout\"\n               data-ng-click=\"$event.preventDefault();logout();\"></a>\n        </div>\n\n    </div>\n\n    <div class=\"spm_profile_nr-right\">\n\n        <div data-ng-if=\"user()\">\n\n            <div class=\"spm_profile_nr-avatar\" data-ng-style=\"{'background-image': (user().user.avatar['250x250'] | sailplay_pic | background_image)}\"></div>\n\n            <div class=\"spm_profile_nr-balance\">\n                <div class=\"spm_profile_nr-balance-hover\">\n                    <span class=\"spm_profile_nr-balance-value\" data-ng-bind=\"user().user_points.confirmed | number\"></span>\n                    <span class=\"spm_profile_nr-balance-placeholder\" data-ng-bind=\"widget.texts.balance\"></span>\n                    <a href=\"\" class=\"button_primary spm_profile_nr-history\" data-ng-bind=\"widget.texts.history\"\n                       data-ng-click=\"$event.preventDefault();profile.history=true;\"></a>\n                </div>\n            </div>\n\n        </div>\n\n        <a href=\"#\" class=\"spm_profile_nr-login\"\n           data-ng-if=\"!user()\"\n           data-ng-bind=\"widget.texts.login\"\n           data-ng-click=\"$event.preventDefault();login('remote', {widget: 'profile_nr', action: 'login_button'});\"></a>\n\n    </div>\n\n    <magic-modal class=\"bns_overlay_hist\" data-show=\"profile.history\">\n\n        <div data-sailplay-history data-sailplay-profile>\n\n            <h3>\n                <span class=\"modal_history_header\">{{ widget.texts.history.header }}</span>\n                <!--<b>У вас {{ user().user_points.confirmed + ' ' + (user().user_points.confirmed | sailplay_pluralize:_tools.points.texts.pluralize) }}</b>-->\n            </h3>\n            <h4 class=\"modal_history_caption\">{{ widget.texts.history.caption }}</h4>\n\n            <table class=\"bns_hist_table\">\n\n                <tbody>\n\n                <tr data-dir-paginate=\"item in history() | itemsPerPage:10\" data-pagination-id=\"history_pages\">\n                    <td>\n                        <span class=\"modal_history_date\" data-ng-bind=\"item.action_date | date:'d/MM/yyyy'\"></span>\n                    </td>\n                    <td>\n                        <span><b class=\"modal_history_content\" data-ng-bind=\"item | history_item\"></b></span>\n                    </td>\n                    <td>\n                        <span class=\"modal_history_points\" data-ng-if=\"item.points_delta\" data-ng-bind=\"((item.points_delta|number) || 0) + ' ' + (item.points_delta | sailplay_pluralize:('points.texts.pluralize' | tools))\"></span>\n                    </td>\n                </tr>\n\n                </tbody>\n            </table>\n\n            <dir-pagination-controls data-max-size=\"7\" data-pagination-id=\"history_pages\"\n                                     data-template-url=\"profile.history_pagination\"\n                                     data-auto-hide=\"true\"></dir-pagination-controls>\n        </div>\n\n\n\n    </magic-modal>\n\n    <!--profile edit section-->\n    <magic-modal class=\"fill_profile_modal\" data-show=\"profile.show_fill_profile\">\n\n        <div class=\"mb_popup mb_popup_prof\" data-sailplay-fill-profile data-config=\"widget.fill_profile.config\">\n\n            <div class=\"mb_popup_top\">\n                <span class=\"modal_profile_header\">{{ widget.fill_profile.header }}</span>\n            </div>\n\n            <form name=\"fill_profile_form\" class=\"mb_popup_main mb_popup_main_mt\" data-ng-submit=\"sailplay.fill_profile.submit(fill_profile_form, profile.fill_profile);\">\n\n                <div class=\"form_field\" data-ng-repeat=\"field in sailplay.fill_profile.form.fields\" data-ng-switch=\"field.input\">\n\n                    <div data-ng-switch-when=\"image\" class=\"avatar_upload clearfix\">\n                        <img width=\"160px\" data-ng-src=\"{{ (field.value | sailplay_pic) || 'http://saike.ru/sailplay-magic/dist/img/profile/avatar_default.png'}}\" alt=\"\">\n                    </div>\n\n                    <div data-ng-switch-when=\"text\" class=\"clearfix\">\n                        <label class=\"form_label\">{{ field.label }}</label>\n                        <input class=\"form_input\" type=\"text\" placeholder=\"{{ field.placeholder }}\" data-ng-model=\"field.value\">\n                    </div>\n\n                    <div data-ng-switch-when=\"date\" class=\"clearfix\">\n                        <label class=\"form_label\">{{ field.label }}</label>\n                        <date-picker data-model=\"field.value\"></date-picker>\n                    </div>\n\n                    <div data-ng-switch-when=\"select\" class=\"clearfix\">\n                        <label class=\"form_label\">{{ field.label }}</label>\n                        <div class=\"magic_select form_input\">\n                            <select data-ng-model=\"field.value\" data-ng-options=\"item.value as item.text for item in field.data\"></select>\n                        </div>\n                    </div>\n\n                    <div data-ng-switch-when=\"phone\" class=\"clearfix\">\n                        <label class=\"form_label\">{{ field.label }}</label>\n                        <input class=\"form_input\" type=\"text\" data-model-view-value=\"true\" data-ui-mask=\"{{ field.placeholder }}\" data-ng-model=\"field.value\">\n                    </div>\n\n                    <div data-ng-switch-when=\"email\" class=\"clearfix\">\n                        <label class=\"form_label\">{{ field.label }}</label>\n                        <input class=\"form_input\" type=\"email\" placeholder=\"{{ field.placeholder }}\" data-ng-model=\"field.value\">\n                    </div>\n\n                </div>\n\n                <div class=\"answ_text\">\n                    <button type=\"submit\" class=\"sp_btn button_primary\">{{ 'buttons.texts.save' | tools }}</button>\n                </div>\n            </form>\n        </div>\n    </magic-modal>\n\n</div>";
+
+/***/ }),
+/* 161 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"bns_hist_pager\" data-ng-if=\"1 < pages.length || !autoHide\">\n\n  <a data-ng-if=\"directionLinks\" data-ng-class=\"{ disabled : pagination.current == 1 }\" href=\"\" data-ng-click=\"setCurrent(pagination.current - 1)\">\n    &lsaquo;\n  </a>\n  <a data-ng-repeat=\"pageNumber in pages track by tracker(pageNumber, $index)\" data-ng-class=\"{ active : pagination.current == pageNumber, disabled : pageNumber == '...' }\" href=\"\" data-ng-click=\"setCurrent(pageNumber)\">\n    {{ pageNumber }}\n  </a>\n\n  <a data-ng-if=\"directionLinks\" data-ng-class=\"{ disabled : pagination.current == pagination.last }\" href=\"\" data-ng-click=\"setCurrent(pagination.current + 1)\">\n    &rsaquo;\n  </a>\n\n</div>";
+
+/***/ }),
+/* 162 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(163);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// Prepare cssTransformation
+var transform;
+
+var options = {"hmr":true}
+options.transform = transform
+// add the styles to the DOM
+var update = __webpack_require__(1)(content, options);
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/dist/cjs.js!./profile_nr.less", function() {
+			var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/dist/cjs.js!./profile_nr.less");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 163 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(0)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, ".spm_wrapper .spm_profile_nr {\n  width: 100%;\n  max-width: 1000px;\n  margin: 0 auto;\n  box-sizing: border-box;\n  position: relative;\n}\n.spm_wrapper .spm_profile_nr-left {\n  width: 50%;\n  float: left;\n}\n@media screen and (max-width: 850px) {\n  .spm_wrapper .spm_profile_nr-left {\n    width: 100%;\n  }\n}\n.spm_wrapper .spm_profile_nr-right {\n  width: 50%;\n  text-align: right;\n  float: left;\n}\n@media screen and (max-width: 850px) {\n  .spm_wrapper .spm_profile_nr-right {\n    width: 100%;\n    text-align: center;\n    height: 260px;\n    position: relative;\n  }\n}\n@media screen and (max-width: 650px) {\n  .spm_wrapper .spm_profile_nr-right {\n    height: auto;\n  }\n}\n.spm_wrapper .spm_profile_nr-header {\n  font-size: 48px;\n  line-height: 1;\n  font-weight: bold;\n  text-transform: uppercase;\n  position: relative;\n}\n.spm_wrapper .spm_profile_nr-description {\n  font-size: 16px;\n  color: grey;\n  font-weight: 300;\n  max-width: 90%;\n  line-height: 23px;\n  margin-top: 20px;\n}\n.spm_wrapper .spm_profile_nr-buttons {\n  margin-top: 20px;\n}\n.spm_wrapper .spm_profile_nr-buttons a {\n  display: inline-block;\n  vertical-align: middle;\n}\n.spm_wrapper .spm_profile_nr-login {\n  display: inline-block;\n  width: 75%;\n  font-size: 20px;\n  height: 110px;\n  text-align: center;\n  line-height: 110px;\n  color: white;\n  text-transform: uppercase;\n  text-decoration: none;\n  transition: opacity 0.5s ease;\n}\n.spm_wrapper .spm_profile_nr-login:hover {\n  opacity: 0.8;\n}\n@media screen and (max-width: 850px) {\n  .spm_wrapper .spm_profile_nr-login {\n    margin-top: 10px;\n  }\n}\n.spm_wrapper .spm_profile_nr-history.button_primary {\n  display: none;\n}\n.spm_wrapper .spm_profile_nr-avatar {\n  position: absolute;\n  width: 176px;\n  height: 176px;\n  right: 220px;\n  top: 50%;\n  margin-top: -88px;\n  text-align: center;\n  border-radius: 50%;\n  z-index: 3;\n  background-size: contain;\n  background-position: center center;\n  background-repeat: no-repeat;\n  box-shadow: 0px 15px 30px 0px rgba(148, 194, 161, 0.44);\n}\n.spm_wrapper .spm_profile_nr-avatar:before {\n  content: '';\n  position: relative;\n  width: 100%;\n  height: 100%;\n  border: 5px solid rgba(255, 255, 255, 0.3);\n  border-radius: 50%;\n  display: block;\n  left: -5px;\n  top: -5px;\n}\n@media screen and (max-width: 850px) {\n  .spm_wrapper .spm_profile_nr-avatar {\n    right: 52%;\n  }\n}\n@media screen and (max-width: 650px) {\n  .spm_wrapper .spm_profile_nr-avatar {\n    position: relative;\n    right: auto;\n    top: auto;\n    margin: 10px auto 0;\n  }\n}\n.spm_wrapper .spm_profile_nr-balance {\n  position: absolute;\n  width: 250px;\n  right: 0;\n  top: 50%;\n  margin-top: -125px;\n  text-align: center;\n  height: 250px;\n  border-radius: 50%;\n  z-index: 2;\n  background: #43c25c;\n  /* Old browsers */\n  background: -moz-linear-gradient(0deg, #43c25c 0%, #2d964c 100%);\n  /* FF3.6-15 */\n  background: -webkit-linear-gradient(0deg, #43c25c 0%, #2d964c 100%);\n  /* Chrome10-25,Safari5.1-6 */\n  background: linear-gradient(0deg, #43c25c 0%, #2d964c 100%);\n  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */\n  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#43c25c', endColorstr='#2d964c', GradientType=1);\n  /* IE6-9 fallback on horizontal gradient */\n}\n.spm_wrapper .spm_profile_nr-balance-value {\n  font-size: 60px;\n  color: white;\n  margin-top: 80px;\n  font-weight: bold;\n  display: block;\n  line-height: 1;\n  text-align: center;\n}\n.spm_wrapper .spm_profile_nr-balance-placeholder {\n  font-size: 16px;\n  color: white;\n  margin-top: 10px;\n  display: block;\n  font-weight: 300;\n  text-align: center;\n}\n.spm_wrapper .spm_profile_nr-balance:hover span {\n  display: none;\n}\n.spm_wrapper .spm_profile_nr-balance:hover .spm_profile_nr-history {\n  margin-top: 105px;\n  display: inline-block;\n}\n.spm_wrapper .spm_profile_nr-balance-hover {\n  text-align: center;\n  display: inline-block;\n}\n@media screen and (max-width: 850px) {\n  .spm_wrapper .spm_profile_nr-balance {\n    right: 23%;\n  }\n}\n@media screen and (max-width: 650px) {\n  .spm_wrapper .spm_profile_nr-balance {\n    position: relative;\n    right: auto;\n    top: auto;\n    margin: 20px auto;\n  }\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 164 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _widget = __webpack_require__(2);
+
+var _profile = __webpack_require__(165);
+
+var _profile2 = _interopRequireDefault(_profile);
+
+var _history_pagination = __webpack_require__(166);
+
+var _history_pagination2 = _interopRequireDefault(_history_pagination);
+
+__webpack_require__(167);
+
+var _avatar_default = __webpack_require__(171);
 
 var _avatar_default2 = _interopRequireDefault(_avatar_default);
 
@@ -2252,25 +2441,25 @@ _widget.Widget.run(["$templateCache", function ($templateCache) {
 // });
 
 /***/ }),
-/* 156 */
+/* 165 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"bon_profile_wrap container\" data-ng-show=\"widget.enabled\" data-ng-cloak>\n\n  <div class=\"bon_profile_info\" data-sailplay-profile data-sailplay-gifts>\n\n    <div class=\"bon_profile_top clearfix\">\n      <div class=\"bon_profile_top_left\">\n        <h3>\n          <span class=\"header\">{{ widget.texts.header }}</span>\n        </h3>\n        <h4>\n          <span class=\"caption\">{{ widget.texts.spoiler }}</span>\n        </h4>\n      </div>\n      <div class=\"bon_profile_right clearfix\" data-ng-if=\"user()\">\n        <div class=\"user_avatar\">\n          <img class=\"user_avatar_image\" data-ng-src=\"{{ (user().user.pic | sailplay_pic) || default_avatar}}\" alt=\"You\">\n          <a href=\"#\" class=\"logout_btn button_link\" data-ng-click=\"$event.preventDefault(); logout();\">{{ widget.texts.logout }}</a>\n        </div>\n        <div class=\"user_info\">\n          <span class=\"user_name\"  data-ng-bind=\"user().user.name || widget.texts.name_not_defined\"></span>\n          <span class=\"user_phone\" data-ng-if=\"user().user.phone\"  data-ng-bind=\"user().user.phone | tel\"></span>\n          <span class=\"user_email\" data-ng-if=\"user().user.email\"  data-ng-bind=\"user().user.email\"></span>\n        </div>\n        <div class=\"user_info\">\n          <a href=\"#\" class=\"edit_profile_btn button_link\" data-ng-click=\"$event.preventDefault(); profile.fill_profile(true);\">{{ widget.texts.edit_profile_button }}</a>\n        </div>\n      </div>\n      <div class=\"bon_profile_right clearfix\" data-ng-if=\"!user()\">\n        <button type=\"button\" class=\"sp_btn button_primary login_reg_btn\" data-ng-click=\"$event.preventDefault(); login('remote', {widget: 'profile', element: 'profile_login_button'});\">{{ widget.texts.login_reg }}</button>\n      </div>\n    </div>\n\n    <!-- status -->\n    <div class=\"status_block\" data-ng-if=\"user() && user().user_status.name\">\n      <span class=\"status_block_title\" data-ng-bind=\"widget.texts.user_status\"></span>\n      <img class=\"status_block_img\" data-ng-src=\"{{ user().user_status.pic | sailplay_pic }}\" alt=\"{{ user().user_status.name }}\">\n      <span class=\"status_block_name\" data-ng-bind=\"user().user_status.name || widget.texts.empty_status \"></span>\n    </div>\n\n    <div class=\"bon_profile_stat\">\n      <div class=\"bps_left points_block clearfix\" data-ng-if=\"user()\">\n        <span class=\"points_confirmed\">\n          <span class=\"points_confirmed_value\" data-ng-bind=\"user().user_points.confirmed | number\"></span>\n          <span class=\"points_confirmed_name\" data-ng-bind=\"user().user_points.confirmed | sailplay_pluralize: ('points.texts.pluralize' | tools)\"></span>\n        </span>\n        <a class=\"button_link history_button\" href=\"#\" data-ng-click=\"$event.preventDefault(); profile.history = true;\">{{ widget.texts.history_button }}</a>\n      </div>\n      <div class=\"bps_right progress_block clearfix\" data-ng-if=\"progress\">\n        <div class=\"progress_line_main\">\n          <div class=\"progress_line_bg progress_bar progress_bar_border\"></div>\n          <div class=\"progress_line progress_bar_filled\" data-procent=\"0\" data-ng-style=\"{ width: progress.plenum + '%' }\">\n            <div class=\"progress_text progress_bar_flag\" data-ng-show=\"progress.next.item\" data-ng-class=\"{ right_position: progress.plenum < 50 }\">\n              <span class=\"progress_bar_flag_text\" data-ng-bind=\"progress.next.offset + ' ' + (progress.next.offset | sailplay_pluralize:('points.texts.pluralize' | tools)) + ' ' + widget.texts.before_gift\"></span>\n            </div>\n          </div>\n\n          <div class=\"gift_item progress_bar_border\" data-ng-repeat=\"item in progress.items track by $index\"\n               data-ng-class=\"{ act : item.reached, progress_bar_gift_filled: item.reached, progress_bar_gift: !item.reached}\"\n               data-ng-style=\"{ left: item.get_left() }\">\n\n            <span class=\"gift_item_hint\" data-ng-bind=\"item.gifts[0].points\"></span>\n\n          </div>\n\n        </div>\n      </div>\n    </div>\n  </div>\n\n  <magic-modal class=\"bns_overlay_hist\" data-show=\"profile.history\">\n\n    <div data-sailplay-history data-sailplay-profile>\n\n      <h3>\n        <span class=\"modal_history_header\">{{ widget.texts.history.header }}</span>\n        <!--<b>У вас {{ user().user_points.confirmed + ' ' + (user().user_points.confirmed | sailplay_pluralize:_tools.points.texts.pluralize) }}</b>-->\n      </h3>\n      <h4 class=\"modal_history_caption\">{{ widget.texts.history.caption }}</h4>\n\n      <table class=\"bns_hist_table\">\n\n        <tbody>\n\n        <tr data-dir-paginate=\"item in history() | itemsPerPage:10\" data-pagination-id=\"history_pages\">\n          <td>\n            <span class=\"modal_history_date\" data-ng-bind=\"item.action_date | date:'d/MM/yyyy'\"></span>\n          </td>\n          <td>\n            <span><b class=\"modal_history_content\" data-ng-bind=\"item | history_item\"></b></span>\n          </td>\n          <td>\n            <span class=\"modal_history_points\" data-ng-if=\"item.points_delta\" data-ng-bind=\"((item.points_delta|number) || 0) + ' ' + (item.points_delta | sailplay_pluralize:('points.texts.pluralize' | tools))\"></span>\n          </td>\n        </tr>\n\n        </tbody>\n      </table>\n\n      <dir-pagination-controls data-max-size=\"7\" data-pagination-id=\"history_pages\"\n                               data-template-url=\"profile.history_pagination\"\n                               data-auto-hide=\"true\"></dir-pagination-controls>\n    </div>\n\n\n\n  </magic-modal>\n\n  <!--profile edit section-->\n  <magic-modal class=\"fill_profile_modal\" data-show=\"profile.show_fill_profile\">\n\n    <div class=\"mb_popup mb_popup_prof\" data-sailplay-fill-profile data-config=\"widget.fill_profile.config\">\n\n      <div class=\"mb_popup_top\">\n        <span class=\"modal_profile_header\">{{ widget.fill_profile.header }}</span>\n      </div>\n\n      <form name=\"fill_profile_form\" class=\"mb_popup_main mb_popup_main_mt\" data-ng-submit=\"sailplay.fill_profile.submit(fill_profile_form, profile.fill_profile);\">\n\n        <div class=\"form_field\" data-ng-repeat=\"field in sailplay.fill_profile.form.fields\" data-ng-switch=\"field.input\">\n\n          <div data-ng-switch-when=\"image\" class=\"avatar_upload clearfix\">\n            <img width=\"160px\" data-ng-src=\"{{ (field.value | sailplay_pic) || 'http://saike.ru/sailplay-magic/dist/img/profile/avatar_default.png'}}\" alt=\"\">\n          </div>\n\n          <div data-ng-switch-when=\"text\" class=\"clearfix\">\n            <label class=\"form_label\">{{ field.label }}</label>\n            <input class=\"form_input\" type=\"text\" placeholder=\"{{ field.placeholder }}\" data-ng-model=\"field.value\">\n          </div>\n\n          <div data-ng-switch-when=\"date\" class=\"clearfix\">\n            <label class=\"form_label\">{{ field.label }}</label>\n            <date-picker data-model=\"field.value\"></date-picker>\n          </div>\n\n          <div data-ng-switch-when=\"select\" class=\"clearfix\">\n            <label class=\"form_label\">{{ field.label }}</label>\n            <div class=\"magic_select form_input\">\n              <select data-ng-model=\"field.value\" data-ng-options=\"item.value as item.text for item in field.data\"></select>\n            </div>\n          </div>\n\n          <div data-ng-switch-when=\"phone\" class=\"clearfix\">\n            <label class=\"form_label\">{{ field.label }}</label>\n            <input class=\"form_input\" type=\"text\" data-model-view-value=\"true\" data-ui-mask=\"{{ field.placeholder }}\" data-ng-model=\"field.value\">\n          </div>\n\n          <div data-ng-switch-when=\"email\" class=\"clearfix\">\n            <label class=\"form_label\">{{ field.label }}</label>\n            <input class=\"form_input\" type=\"email\" placeholder=\"{{ field.placeholder }}\" data-ng-model=\"field.value\">\n          </div>\n\n        </div>\n\n        <div class=\"answ_text\">\n          <button type=\"submit\" class=\"sp_btn button_primary\">{{ 'buttons.texts.save' | tools }}</button>\n        </div>\n      </form>\n    </div>\n  </magic-modal>\n\n</div>";
 
 /***/ }),
-/* 157 */
+/* 166 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"bns_hist_pager\" data-ng-if=\"1 < pages.length || !autoHide\">\n\n  <a data-ng-if=\"directionLinks\" data-ng-class=\"{ disabled : pagination.current == 1 }\" href=\"\" data-ng-click=\"setCurrent(pagination.current - 1)\">\n    &lsaquo;\n  </a>\n  <a data-ng-repeat=\"pageNumber in pages track by tracker(pageNumber, $index)\" data-ng-class=\"{ active : pagination.current == pageNumber, disabled : pageNumber == '...' }\" href=\"\" data-ng-click=\"setCurrent(pageNumber)\">\n    {{ pageNumber }}\n  </a>\n\n  <a data-ng-if=\"directionLinks\" data-ng-class=\"{ disabled : pagination.current == pagination.last }\" href=\"\" data-ng-click=\"setCurrent(pagination.current + 1)\">\n    &rsaquo;\n  </a>\n\n</div>";
 
 /***/ }),
-/* 158 */
+/* 167 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(159);
+var content = __webpack_require__(168);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -2295,7 +2484,7 @@ if(false) {
 }
 
 /***/ }),
-/* 159 */
+/* 168 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(undefined);
@@ -2303,138 +2492,31 @@ exports = module.exports = __webpack_require__(0)(undefined);
 
 
 // module
-exports.push([module.i, ".spm_wrapper .bon_profile_wrap {\n  float: left;\n  width: 100%;\n  padding: 0 5%;\n  -webkit-box-sizing: border-box;\n  -moz-box-sizing: border-box;\n  box-sizing: border-box;\n  background-color: #888888;\n  position: relative;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info {\n  width: 100%;\n  float: left;\n  position: relative;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_top_left {\n  float: left;\n  width: 580px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_top_left h3 {\n  float: left;\n  width: 100%;\n  font-size: 30px;\n  color: #ffffff;\n  font-family: 'RotondaC';\n  margin-top: 50px;\n  margin-bottom: 10px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_top_left h4 {\n  float: left;\n  width: 100%;\n  color: #ffffff;\n  font-size: 14px;\n  font-weight: 400;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right {\n  float: right;\n  width: 265px;\n  margin-top: 50px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right img {\n  border-radius: 100%;\n  -webkit-box-shadow: 0 2px 7px 1px rgba(0, 0, 0, 0.2);\n  box-shadow: 0 2px 7px 1px rgba(0, 0, 0, 0.2);\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right span {\n  font-size: 16px;\n  font-weight: 700;\n  margin-top: 18px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right .login_reg_btn {\n  float: right;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right .logout_btn {\n  width: auto;\n  font-size: 14px;\n  margin-top: 9px;\n  color: #ffffff;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right .edit_profile_btn {\n  font-size: 14px;\n  margin-top: 9px;\n  color: #ffffff;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right .user_avatar {\n  max-width: 81px;\n  float: right;\n  text-align: center;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right .user_info {\n  text-align: right;\n  float: left;\n  width: 165px;\n  color: #ffffff;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right .user_info span {\n  word-wrap: break-word;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right .user_avatar_image {\n  width: 100%;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat {\n  float: left;\n  width: 100%;\n  margin-top: 50px;\n  margin-bottom: 78px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .points_confirmed span {\n  color: inherit;\n  font-family: inherit;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .points_confirmed_name {\n  margin-left: 2px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_left {\n  float: left;\n  width: auto;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_left > span {\n  color: #ffffff;\n  display: block;\n  font-size: 33px;\n  font-family: 'RotondaC bold';\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_left > a {\n  font-size: 14px;\n  color: #ffffff;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right {\n  float: right;\n  width: 70%;\n  margin-top: 12px;\n  margin-right: 20px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main {\n  position: relative;\n  float: left;\n  width: 100%;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .progress_line_bg {\n  height: 14px;\n  border-top: 3px solid #000000;\n  background-color: #ffffff;\n  background-image: url(" + __webpack_require__(160) + ");\n  border-radius: 20px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .progress_line {\n  position: absolute;\n  left: 0px;\n  top: 3px;\n  width: 0%;\n  background-color: #ffffff;\n  height: 14px;\n  border-radius: 20px 0px 0px 20px;\n  -webkit-transition: all 1000ms ease;\n  -moz-transition: all 1000ms ease;\n  -ms-transition: all 1000ms ease;\n  -o-transition: all 1000ms ease;\n  transition: all 1000ms ease;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .progress_line .progress_text {\n  min-width: 100px;\n  position: absolute;\n  right: 0px;\n  padding-top: 32px;\n  border-right: 1px solid #fff;\n  top: 0px;\n  z-index: 1;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .progress_line .progress_text.right_position {\n  right: auto;\n  left: 100%;\n  border-left: 1px solid #fff;\n  border-right: none;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .progress_line .progress_text.right_position span {\n  border-radius: 0px 5px 5px 0px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .progress_line .progress_text span {\n  float: right;\n  line-height: 30px;\n  background-color: rgba(255, 255, 255, 0.2);\n  color: #ffffff;\n  font-size: 14px;\n  font-family: 'RotondaC';\n  border-radius: 5px 0px 0px 5px;\n  padding-left: 10px;\n  padding-right: 10px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .gift_item {\n  position: absolute;\n  top: 50%;\n  width: 36px;\n  height: 36px;\n  margin-top: -19px;\n  margin-left: -19px;\n  background-color: #cccccc;\n  border-radius: 6px;\n  -webkit-background-size: 20px 22px;\n  background-size: 20px 22px;\n  background-repeat: no-repeat;\n  background-position: center center;\n  border-top: 3px solid #000000;\n  background-image: url(" + __webpack_require__(161) + ");\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .gift_item.act {\n  background-color: #ffffff;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .gift_item_hint {\n  opacity: 0;\n  visibility: hidden;\n  display: inline-block;\n  position: absolute;\n  left: 0;\n  text-align: center;\n  width: 100%;\n  top: 0;\n  font-weight: bold;\n  transition: .3s ease;\n  color: white;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .gift_item:hover .gift_item_hint {\n  visibility: visible;\n  opacity: 1;\n  top: -20px;\n}\n.spm_wrapper .bon_profile_wrap .status_block {\n  width: 30%;\n  display: inline-block;\n}\n@media screen and (max-width: 650px) {\n  .spm_wrapper .bon_profile_wrap .status_block {\n    width: 100%;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_stat .bps_left {\n    text-align: left;\n  }\n}\n@media only screen and (min-width: 1129px) {\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right {\n    width: 100%;\n    margin-top: 30px;\n    margin-right: 0px;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_top_left {\n    width: 60%;\n  }\n}\n@media only screen and (min-width: 950px) and (max-width: 1128px) {\n  .spm_wrapper .bon_profile_wrap .progress_line_main .progress_text {\n    border: none !important;\n  }\n  .spm_wrapper .bon_profile_wrap .progress_line_main .progress_text:before {\n    content: '';\n    width: 1px;\n    background: white;\n    right: 0;\n    top: 0;\n    position: absolute;\n    height: 17px;\n    display: block;\n  }\n  .spm_wrapper .bon_profile_wrap .progress_line_main .progress_text span {\n    position: relative;\n    left: 50%;\n    border-radius: 5px !important;\n  }\n}\n@media only screen and (min-width: 530px) and (max-width: 949px) {\n  .spm_wrapper .bon_profile_wrap .bon_profile_info {\n    width: 100%;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right {\n    width: 265px;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_top_left {\n    width: 80%;\n    float: left;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right {\n    float: left;\n    width: 100%;\n    margin-top: 30px;\n    margin-bottom: 12px;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main {\n    float: left;\n    width: 95%;\n  }\n}\n@media only screen and (max-width: 529px) {\n  .spm_wrapper .bon_profile_wrap .bon_profile_info {\n    width: 100%;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right {\n    width: 265px;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_top_left {\n    width: 80%;\n    float: left;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right {\n    float: left;\n    width: 100%;\n    margin-top: 30px;\n    margin-bottom: 12px;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main {\n    float: left;\n    width: 95%;\n  }\n}\n.spm_wrapper .bns_hist_table {\n  float: left;\n  width: 100%;\n  margin-top: 12px;\n}\n.spm_wrapper .bns_hist_table td {\n  vertical-align: text-top;\n  padding: 5px 11px;\n}\n.spm_wrapper .bns_hist_table td:nth-child(1) {\n  color: #888888;\n  font-size: 13px;\n  line-height: 19px;\n  padding-right: 0px;\n  padding-left: 0px;\n  white-space: nowrap;\n}\n.spm_wrapper .bns_hist_table td:nth-child(2) {\n  color: #000000;\n  font-size: 12px;\n  font-weight: 200;\n  line-height: 19px;\n  position: relative;\n  padding-left: 0px;\n  width: 570px;\n}\n.spm_wrapper .bns_hist_table td:nth-child(2)::after {\n  position: absolute;\n  left: 0px;\n  width: 100%;\n  border-top: 1px dotted #444444;\n  top: 14px;\n  content: '';\n  display: block;\n}\n.spm_wrapper .bns_hist_table td:nth-child(2) span {\n  display: block;\n  position: relative;\n  z-index: 1;\n  font-size: 13px;\n  color: #222222;\n}\n.spm_wrapper .bns_hist_table td:nth-child(2) span b {\n  background-color: #ffffff;\n  padding-right: 15px;\n  padding-left: 11px;\n  font-weight: 200;\n}\n.spm_wrapper .bns_hist_table td:nth-child(2) span:first-child {\n  color: #000000;\n}\n.spm_wrapper .bns_hist_table td:nth-child(3) {\n  color: #444444;\n  font-size: 14px;\n  font-weight: bold;\n  text-align: right;\n  line-height: 19px;\n}\n.spm_wrapper .bns_hist_table td:nth-child(3) span {\n  display: block;\n  white-space: nowrap;\n  font-size: 13px;\n}\n.spm_wrapper .bns_hist_pager {\n  float: right;\n  font-size: 13px;\n}\n.spm_wrapper .bns_hist_pager a {\n  text-decoration: none;\n  color: #000;\n  margin-right: 4px;\n}\n.spm_wrapper .bns_hist_pager a.active {\n  font-weight: bold;\n}\n", ""]);
+exports.push([module.i, ".spm_wrapper .bon_profile_wrap {\n  float: left;\n  width: 100%;\n  padding: 0 5%;\n  -webkit-box-sizing: border-box;\n  -moz-box-sizing: border-box;\n  box-sizing: border-box;\n  background-color: #888888;\n  position: relative;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info {\n  width: 100%;\n  float: left;\n  position: relative;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_top_left {\n  float: left;\n  width: 580px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_top_left h3 {\n  float: left;\n  width: 100%;\n  font-size: 30px;\n  color: #ffffff;\n  font-family: 'RotondaC';\n  margin-top: 50px;\n  margin-bottom: 10px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_top_left h4 {\n  float: left;\n  width: 100%;\n  color: #ffffff;\n  font-size: 14px;\n  font-weight: 400;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right {\n  float: right;\n  width: 265px;\n  margin-top: 50px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right img {\n  border-radius: 100%;\n  -webkit-box-shadow: 0 2px 7px 1px rgba(0, 0, 0, 0.2);\n  box-shadow: 0 2px 7px 1px rgba(0, 0, 0, 0.2);\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right span {\n  font-size: 16px;\n  font-weight: 700;\n  margin-top: 18px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right .login_reg_btn {\n  float: right;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right .logout_btn {\n  width: auto;\n  font-size: 14px;\n  margin-top: 9px;\n  color: #ffffff;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right .edit_profile_btn {\n  font-size: 14px;\n  margin-top: 9px;\n  color: #ffffff;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right .user_avatar {\n  max-width: 81px;\n  float: right;\n  text-align: center;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right .user_info {\n  text-align: right;\n  float: left;\n  width: 165px;\n  color: #ffffff;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right .user_info span {\n  word-wrap: break-word;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right .user_avatar_image {\n  width: 100%;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat {\n  float: left;\n  width: 100%;\n  margin-top: 50px;\n  margin-bottom: 78px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .points_confirmed span {\n  color: inherit;\n  font-family: inherit;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .points_confirmed_name {\n  margin-left: 2px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_left {\n  float: left;\n  width: auto;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_left > span {\n  color: #ffffff;\n  display: block;\n  font-size: 33px;\n  font-family: 'RotondaC bold';\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_left > a {\n  font-size: 14px;\n  color: #ffffff;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right {\n  float: right;\n  width: 70%;\n  margin-top: 12px;\n  margin-right: 20px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main {\n  position: relative;\n  float: left;\n  width: 100%;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .progress_line_bg {\n  height: 14px;\n  border-top: 3px solid #000000;\n  background-color: #ffffff;\n  background-image: url(" + __webpack_require__(169) + ");\n  border-radius: 20px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .progress_line {\n  position: absolute;\n  left: 0px;\n  top: 3px;\n  width: 0%;\n  background-color: #ffffff;\n  height: 14px;\n  border-radius: 20px 0px 0px 20px;\n  -webkit-transition: all 1000ms ease;\n  -moz-transition: all 1000ms ease;\n  -ms-transition: all 1000ms ease;\n  -o-transition: all 1000ms ease;\n  transition: all 1000ms ease;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .progress_line .progress_text {\n  min-width: 100px;\n  position: absolute;\n  right: 0px;\n  padding-top: 32px;\n  border-right: 1px solid #fff;\n  top: 0px;\n  z-index: 1;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .progress_line .progress_text.right_position {\n  right: auto;\n  left: 100%;\n  border-left: 1px solid #fff;\n  border-right: none;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .progress_line .progress_text.right_position span {\n  border-radius: 0px 5px 5px 0px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .progress_line .progress_text span {\n  float: right;\n  line-height: 30px;\n  background-color: rgba(255, 255, 255, 0.2);\n  color: #ffffff;\n  font-size: 14px;\n  font-family: 'RotondaC';\n  border-radius: 5px 0px 0px 5px;\n  padding-left: 10px;\n  padding-right: 10px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .gift_item {\n  position: absolute;\n  top: 50%;\n  width: 36px;\n  height: 36px;\n  margin-top: -19px;\n  margin-left: -19px;\n  background-color: #cccccc;\n  border-radius: 6px;\n  -webkit-background-size: 20px 22px;\n  background-size: 20px 22px;\n  background-repeat: no-repeat;\n  background-position: center center;\n  border-top: 3px solid #000000;\n  background-image: url(" + __webpack_require__(170) + ");\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .gift_item.act {\n  background-color: #ffffff;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .gift_item_hint {\n  opacity: 0;\n  visibility: hidden;\n  display: inline-block;\n  position: absolute;\n  left: 0;\n  text-align: center;\n  width: 100%;\n  top: 0;\n  font-weight: bold;\n  transition: .3s ease;\n  color: white;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .gift_item:hover .gift_item_hint {\n  visibility: visible;\n  opacity: 1;\n  top: -20px;\n}\n.spm_wrapper .bon_profile_wrap .status_block {\n  width: 30%;\n  display: inline-block;\n}\n@media screen and (max-width: 650px) {\n  .spm_wrapper .bon_profile_wrap .status_block {\n    width: 100%;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_stat .bps_left {\n    text-align: left;\n  }\n}\n@media only screen and (min-width: 1129px) {\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right {\n    width: 100%;\n    margin-top: 30px;\n    margin-right: 0px;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_top_left {\n    width: 60%;\n  }\n}\n@media only screen and (min-width: 950px) and (max-width: 1128px) {\n  .spm_wrapper .bon_profile_wrap .progress_line_main .progress_text {\n    border: none !important;\n  }\n  .spm_wrapper .bon_profile_wrap .progress_line_main .progress_text:before {\n    content: '';\n    width: 1px;\n    background: white;\n    right: 0;\n    top: 0;\n    position: absolute;\n    height: 17px;\n    display: block;\n  }\n  .spm_wrapper .bon_profile_wrap .progress_line_main .progress_text span {\n    position: relative;\n    left: 50%;\n    border-radius: 5px !important;\n  }\n}\n@media only screen and (min-width: 530px) and (max-width: 949px) {\n  .spm_wrapper .bon_profile_wrap .bon_profile_info {\n    width: 100%;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right {\n    width: 265px;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_top_left {\n    width: 80%;\n    float: left;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right {\n    float: left;\n    width: 100%;\n    margin-top: 30px;\n    margin-bottom: 12px;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main {\n    float: left;\n    width: 95%;\n  }\n}\n@media only screen and (max-width: 529px) {\n  .spm_wrapper .bon_profile_wrap .bon_profile_info {\n    width: 100%;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right {\n    width: 265px;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_top_left {\n    width: 80%;\n    float: left;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right {\n    float: left;\n    width: 100%;\n    margin-top: 30px;\n    margin-bottom: 12px;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main {\n    float: left;\n    width: 95%;\n  }\n}\n.spm_wrapper .bns_hist_table {\n  float: left;\n  width: 100%;\n  margin-top: 12px;\n}\n.spm_wrapper .bns_hist_table td {\n  vertical-align: text-top;\n  padding: 5px 11px;\n}\n.spm_wrapper .bns_hist_table td:nth-child(1) {\n  color: #888888;\n  font-size: 13px;\n  line-height: 19px;\n  padding-right: 0px;\n  padding-left: 0px;\n  white-space: nowrap;\n}\n.spm_wrapper .bns_hist_table td:nth-child(2) {\n  color: #000000;\n  font-size: 12px;\n  font-weight: 200;\n  line-height: 19px;\n  position: relative;\n  padding-left: 0px;\n  width: 570px;\n}\n.spm_wrapper .bns_hist_table td:nth-child(2)::after {\n  position: absolute;\n  left: 0px;\n  width: 100%;\n  border-top: 1px dotted #444444;\n  top: 14px;\n  content: '';\n  display: block;\n}\n.spm_wrapper .bns_hist_table td:nth-child(2) span {\n  display: block;\n  position: relative;\n  z-index: 1;\n  font-size: 13px;\n  color: #222222;\n}\n.spm_wrapper .bns_hist_table td:nth-child(2) span b {\n  background-color: #ffffff;\n  padding-right: 15px;\n  padding-left: 11px;\n  font-weight: 200;\n}\n.spm_wrapper .bns_hist_table td:nth-child(2) span:first-child {\n  color: #000000;\n}\n.spm_wrapper .bns_hist_table td:nth-child(3) {\n  color: #444444;\n  font-size: 14px;\n  font-weight: bold;\n  text-align: right;\n  line-height: 19px;\n}\n.spm_wrapper .bns_hist_table td:nth-child(3) span {\n  display: block;\n  white-space: nowrap;\n  font-size: 13px;\n}\n.spm_wrapper .bns_hist_pager {\n  float: right;\n  font-size: 13px;\n}\n.spm_wrapper .bns_hist_pager a {\n  text-decoration: none;\n  color: #000;\n  margin-right: 4px;\n}\n.spm_wrapper .bns_hist_pager a.active {\n  font-weight: bold;\n}\n", ""]);
 
 // exports
 
 
 /***/ }),
-/* 160 */
+/* 169 */
 /***/ (function(module, exports) {
 
 module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEUAAAAOCAYAAAB5EtGGAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAO5JREFUeNrslrEKwjAQhptD6tSpTl0UhD6HD6BP6wvkOQqCLk5m6mQnL+WC1xwmZu4FaqQ/+fzvK0LNcX/oKlq3x/0ZvuP9Frdt9V1vzB3Lu2q5XphPlDW4NTzMsEfMR8pq3HYF7LhXETvqNbM3+HGme5aFPW4ndtYXurLcZz3LhwCnUhe8apan2C6wqbQ/2/7JjnuVsm0kc2ZDCPGHh5SQ8DR+CLEpIQm2I/aUEGJTQlivUjbvtWCDCpFsk/vLrE2IP2tUiGQbFSLZoELkzKBC5MygQuTMoELkzKBC5Mwm8+q+OiG+l1EhstdHgAEAt8yVBryjUM8AAAAASUVORK5CYII="
 
 /***/ }),
-/* 161 */
+/* 170 */
 /***/ (function(module, exports) {
 
 module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABkAAAAcCAYAAACUJBTQAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAR9JREFUeNrsVt0NgjAYLIQB6ga4gS4gjsAG6gTKk88++iROIBuAE4BO4AiMwAjeZz6SLw2/EYwPXHJpUq69a/u1QakGnFfhGnRVC6BZEOu+WzWDLmgOoisHg+PzkAiNZs0e1EK3gy5rNKkwkCCTHUiru4FV6QtwCaO87LANAy0MThBSiDkYcZ8PpszS4ATOWJvwqrZyXsdIIZN5ME2NhNrQUFqPtUpsm9dkIrFW7XCZjag6k22XgS2I5JlYZami2XScPOD20kF7J0MHBnSYcY+Uusd2fsLbHRN9g4U9wP63wlY/AJVwWHNz61Bwm/XUjwtL3I9YVM5QJXylR1XeeH+EEn7Qe/aTg59MJpPJ5A9Nxngtc9MkGNjgxf9h6i3AANemSGniswSTAAAAAElFTkSuQmCC"
 
 /***/ }),
-/* 162 */
+/* 171 */
 /***/ (function(module, exports) {
 
 module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFEAAABRCAYAAACqj0o2AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAACiFJREFUeNrsnV1sVMcVx8/cfPERKku1iVQSYqM2CeajmwawG6qyNoaEUMVrUuWjSmNv1IdQGjBN0qrtQ8hLSvISqKK+2hAIqRTCkoZGIk5YXkJtInlFwOYFvFS2hM1DnTohffFOz9yd+zH3Y+/uvTPXu9BjzV7brO/e+e3/nDN3Zs4CUOX2bHO6Dluymq+RVAGkBB5Ya8S2AVsd/znIsvx4GluOtUMjffmbAiJTFh5S2DqxJTk0WZbncI+zI0KdvqEgIrweDi4V43vWz4AizEzNQuSq68W2S7Liwij0NYTZXzMQqwie05h775YNkyhy27eqDJ6XMtMIM1tVEBEey659PFlENBpXVzIcZqQEpEkCyFx3OBpAajYq/FRec/5UprEkN4bXn5ozJfLYx1y3J6rqaGQlWt0h4bq3DxW5O1aIHOCpMgfGZcBzg6M0GCYhRCbMUO5NQgJMcIB1YQF6wTOgUV81Up9LJvpv3UBJGJDs7qetEpAkXoDe6rPg2X8WQVMfnRmPBkAdGxHhqQapzQ1AKgBkXwVawO8LeJzVv5/l3y+9/26Yd+c8KBRm9bb0/ntgFo+z+vNm+fOKz2V/j2cqHs1QQB3JpyzT+8lDljwl8hOORXdhOzz+e73zVP/dmo1rYGv3o3B+aATaujZAw5IGyI/m9SOzhd9ZaJ5xaOAsZI+dhrMDX+hKJKiJ4pEIR9WKJBUAjJRESgEsMHgdD8GCRfNhx5+3V3z2Ux9k4cSBj+HKxSsITWMo9aM/yIqiWAYhdpV6wi3lnGV1w4NHwo8BqSvjGgAL3O22PPcIwnsB1nWsDfUKTcsbYf3Wh+G2O27TFQxCfHRm8YpBPoD9J+eu5bKhIfKBdG/0+w/x0QC4ZuOPYMfe7RDVbr/jdljRsgKmJqZgbHSMq5DDIpHVmESQpxFkvmJ35olkOAo+txtbLly/5Lvw5rG9GOcWSL0xfqnzd+ja/wKNuTZvEtyaxcUmr/gYlJ37ZHXMCZApsfsPv5QOkNnV8atWtuaKNxJXBKvz46EFuHFClgoFkDgMeQwzcNgYGGQzX80AH+yYX/6D/Yos5bXeo5XIxq9KVyFXQ/336iH9x25l81zt29q44rkKjeYBM4T1lavE3mjzgdRjcGt1JNn1U6WThb1v7oSV61ZwzRt3P7Ts+/EAa+Rzpv4Q+bygfBVSMO9M1ipyY7uxTC0qUIoKDXs1SIk9kvB5aJPqANm4TrWxOxvrNpC/iQ6XpuFhCmrUPGLhrqjwHE5sKoJlZZWx0G6tHS3Wa8t3abBzcioxBRLXRsTZmWInFi5aEAvEu+5eDCI+KvslEkam1vzoyrViJ9i9cZzW2fO4LR7r72rUWOi0bgEiTygJWdDMCS9bPGLjQvssjGprWt5kgeP37CZQOZZyKjGlQoFCsF+0MFYlTo5PeixmeR3D38WwRS47xE45bguO4G0NtBtjyMrOuOheBXTOpkeGucEOMamiI9QGEuQH9+BhjgOfgitIajweJtV1hZqHxUsWxwrxzMl/2uKhsjcxYSgxoQSfzyA3LlvW3ATUFf7kX4cB8YdqU8rc2LLmZeDcUaHi6gyIjfLxiattbduSsdzuCYkFw8eq1lUiPgXvriYvqdCSQNsRYpxjxGJ2vgtWt6y0rsXIyFQNROUuXA3urco0fqfyf4uoxFggXhi8MCcdvDwyFgvEWGxq4tqcQJycmILiqh6x1qNJFUMknr8p7kK4MDgSP8BxvgZtYeQA5VK8VS5C6nG0lPj69jfw/vle+MXOp5XC+/o/38Ch/YfhPIYQIizeE1Cx11+ZOxv7BYuNLaATGBoYgiN/eU9XiEr7/OTnkOk7zlVIgC/dm18qIOZUdojYnZpvMDo/eF4pxHODX1qvZ9v9IOxZJCH2QPhBVFW6JbqPfaubBgMffKbUldnEQxGeZnqDfU+Oe4sdqSZ3Jq5drPZOGNvdWKyaUuTSZ06egesz1/XwoRECxMOVieT0bEDMqlMjmB0wYhPrnCo1fnJ0wFK98ZrEUqRbh0QaxLyqgY4Vm4rNUMeH/R9JB3hp5LItHmriRk8ggQOyqBCvyB8vEk81Gh1kLvfpUblqPNaXMc+v2bVIwGPXrDyQSt1ZVKMLJbyLw51vMBHIUeEl+OR9y5XNJELAU4VEdkyUVSjop0ZrWAFmdiT6AHwKBo5+KuX1Du47JKQP+9AKFCUUbjl7dlaqRs/BIz60bmqVcsr1mx92jFjUxUCHZe0Qj8s8c+BSJP7TqpaVfFkzum3++Sa4s+S6ttdOWSmznKftEDOy8AkbmsydB7ZFK/6EZ3Y+JVUSqedTfLuIdR3BO2UjgZxmH41gQuSf5JELrzt7KZlzzwF1fbE1l1Xm1L0c60p3wrLlTcJONOdOWf9Kq1AwM153LPvDwPPaqmFspTMrpqi16f3FvTtg1xsvSg9ObA3n7Y/2Q/u2dr5fu2Dbt13wBBkR5gH2INSxrG54kKnxBWzzKot4XgU/BswiOL1D+P1v9v5aX7RSaT/e1AKTE5MwNpoXMrQ5l0isK/YaN5LyElLeqI8WIJ67lvsvgmT735Lh4VlBnNrq9hjA9J+64ZFnNscyAGhFkJdHx2Di8gT41q0Q9y2qN0xPkLuRV85vAqI/GKBjKZzXpVh1KmJjFaGPPbcFfta9FeK0XgwZzeuaeTVqsSrVrEK1H6EYeipw87z9E01cZWlIdxrVyHbLtgZlM9FtqbC917jAZNcG+P1fX4GfbF0PcRsrVdv4RDusxATG3Ftfb6HuKhZqE5yfmztUaarQV6diWW6Joh5qG0ToF1cM3vVL6nV4LAMv5iW21WBspvvv/Sf0Et/rM99aU2XmxC2Yc5Duan7TxVGF/U1lRc1iRRV9ywnQyrhixmMFPms71ug1ynHvQwxjgwNDOkzWvkWgIsySNdNtCDFb9r3Qs809w1TfMUYdAI0CRwS38SG9uKcWwPkDPQtn9fYFn9DVPIvQ2bjw8MgBV+3zrQEDmTQ+DhsubACcv2g+vPz2bzFoL4cbwVo61uqN2YkD/4D+1w/qADVSwC5rxsLlNIJMe/19yXrnL6/lrq5uSHyFAB+1V4j+as/zuuveiHZf4gc6sQus+FwcW255d/TgxVLzib6G8t2H+DLGrROrUVZdmzfXlsSEOCuW+b52ZPSdbNCkbOn7E0rTeKIcG7SwGHijGxtR3PvAUuOTTjJ/u3h4T+CkbJC9d/HQNILswndmmg1ebwZjMRJHH0w4aaknfuK+JxMz01//m94ENn5pfPjx73fJ/Vwcm2tH/IirmjD983AwG08rgXgTgKwIYNkx0UWeEPZCTaB4H88cWKZSgKEhcpDshdr8Z31qzvZhn7oqBSjN0L17sdVqwmHXnaqKt5HFSWynagzgMWzVF9drRJVjVaO+EiDrsO2pQpjsenprKlJXEUymvJ6qdN0KgfbwGBSn9cXhtmQu1Anq/xcM9t+LZOIarvxPgAEABz4fqCBZ1lYAAAAASUVORK5CYII="
 
 /***/ }),
-/* 163 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _widget = __webpack_require__(3);
-
-var _profile_nr = __webpack_require__(164);
-
-var _profile_nr2 = _interopRequireDefault(_profile_nr);
-
-var _history_pagination = __webpack_require__(165);
-
-var _history_pagination2 = _interopRequireDefault(_history_pagination);
-
-__webpack_require__(166);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var ProfileNrWidget = {
-
-  id: 'profile_nr',
-  template: _profile_nr2.default,
-  inject: ['$rootScope', 'SailPlayApi'],
-  controller: function controller($rootScope, SailPlayApi) {
-    return function (scope, elm, attrs) {
-
-      scope.profile = {
-        history: false,
-        show_fill_profile: false,
-        fill_profile: function fill_profile(state) {
-
-          scope.profile.show_fill_profile = state || false;
-        }
-      };
-    };
-  }
-
-};
-
-_widget.Widget.config(["MagicWidgetProvider", function (MagicWidgetProvider) {
-  MagicWidgetProvider.register(ProfileNrWidget);
-}]);
-
-_widget.Widget.run(["$templateCache", function ($templateCache) {
-  $templateCache.put('profile_nr.history_pagination', _history_pagination2.default);
-}]);
-
-/***/ }),
-/* 164 */
-/***/ (function(module, exports) {
-
-module.exports = "<div class=\"spm_profile_nr clearfix\" data-ng-if=\"widget.enabled\" data-ng-cloak data-sailplay-profile>\n\n    <div class=\"spm_profile_nr-left\">\n\n        <div class=\"spm_profile_nr-header\"\n             data-ng-bind=\"user() ? (widget.texts.auth.header + user().user.name) : widget.texts.no_auth.header\"></div>\n        <div class=\"spm_profile_nr-description\"\n             data-ng-bind=\"widget.texts[user() ? 'auth' : 'no_auth'].description\"></div>\n\n        <div class=\"spm_profile_nr-buttons\" data-ng-if=\"user && user()\">\n            <a href=\"#\" class=\"button_primary spm_profile_nr-edit\"\n               data-ng-bind=\"widget.texts.edit\"\n               data-ng-click=\"$event.preventDefault();profile.show_fill_profile=true;\"></a>\n            <a href=\"#\" class=\"button_primary spm_profile_nr-logout\"\n               data-ng-click=\"$event.preventDefault();logout();\"></a>\n        </div>\n\n    </div>\n\n    <div class=\"spm_profile_nr-right\">\n\n        <div data-ng-if=\"user()\">\n\n            <div class=\"spm_profile_nr-avatar\" data-ng-style=\"{'background-image': (user().user.avatar['250x250'] | sailplay_pic | background_image)}\"></div>\n\n            <div class=\"spm_profile_nr-balance\">\n                <div class=\"spm_profile_nr-balance-hover\">\n                    <span class=\"spm_profile_nr-balance-value\" data-ng-bind=\"user().user_points.confirmed | number\"></span>\n                    <span class=\"spm_profile_nr-balance-placeholder\" data-ng-bind=\"widget.texts.balance\"></span>\n                    <a href=\"\" class=\"button_primary spm_profile_nr-history\" data-ng-bind=\"widget.texts.history\"\n                       data-ng-click=\"$event.preventDefault();profile.history=true;\"></a>\n                </div>\n            </div>\n\n        </div>\n\n        <a href=\"#\" class=\"spm_profile_nr-login\"\n           data-ng-if=\"!user()\"\n           data-ng-bind=\"widget.texts.login\"\n           data-ng-click=\"$event.preventDefault();login('remote', {widget: 'profile_nr', action: 'login_button'});\"></a>\n\n    </div>\n\n    <magic-modal class=\"bns_overlay_hist\" data-show=\"profile.history\">\n\n        <div data-sailplay-history data-sailplay-profile>\n\n            <h3>\n                <span class=\"modal_history_header\">{{ widget.texts.history.header }}</span>\n                <!--<b>У вас {{ user().user_points.confirmed + ' ' + (user().user_points.confirmed | sailplay_pluralize:_tools.points.texts.pluralize) }}</b>-->\n            </h3>\n            <h4 class=\"modal_history_caption\">{{ widget.texts.history.caption }}</h4>\n\n            <table class=\"bns_hist_table\">\n\n                <tbody>\n\n                <tr data-dir-paginate=\"item in history() | itemsPerPage:10\" data-pagination-id=\"history_pages\">\n                    <td>\n                        <span class=\"modal_history_date\" data-ng-bind=\"item.action_date | date:'d/MM/yyyy'\"></span>\n                    </td>\n                    <td>\n                        <span><b class=\"modal_history_content\" data-ng-bind=\"item | history_item\"></b></span>\n                    </td>\n                    <td>\n                        <span class=\"modal_history_points\" data-ng-if=\"item.points_delta\" data-ng-bind=\"((item.points_delta|number) || 0) + ' ' + (item.points_delta | sailplay_pluralize:('points.texts.pluralize' | tools))\"></span>\n                    </td>\n                </tr>\n\n                </tbody>\n            </table>\n\n            <dir-pagination-controls data-max-size=\"7\" data-pagination-id=\"history_pages\"\n                                     data-template-url=\"profile.history_pagination\"\n                                     data-auto-hide=\"true\"></dir-pagination-controls>\n        </div>\n\n\n\n    </magic-modal>\n\n    <!--profile edit section-->\n    <magic-modal class=\"fill_profile_modal\" data-show=\"profile.show_fill_profile\">\n\n        <div class=\"mb_popup mb_popup_prof\" data-sailplay-fill-profile data-config=\"widget.fill_profile.config\">\n\n            <div class=\"mb_popup_top\">\n                <span class=\"modal_profile_header\">{{ widget.fill_profile.header }}</span>\n            </div>\n\n            <form name=\"fill_profile_form\" class=\"mb_popup_main mb_popup_main_mt\" data-ng-submit=\"sailplay.fill_profile.submit(fill_profile_form, profile.fill_profile);\">\n\n                <div class=\"form_field\" data-ng-repeat=\"field in sailplay.fill_profile.form.fields\" data-ng-switch=\"field.input\">\n\n                    <div data-ng-switch-when=\"image\" class=\"avatar_upload clearfix\">\n                        <img width=\"160px\" data-ng-src=\"{{ (field.value | sailplay_pic) || 'http://saike.ru/sailplay-magic/dist/img/profile/avatar_default.png'}}\" alt=\"\">\n                    </div>\n\n                    <div data-ng-switch-when=\"text\" class=\"clearfix\">\n                        <label class=\"form_label\">{{ field.label }}</label>\n                        <input class=\"form_input\" type=\"text\" placeholder=\"{{ field.placeholder }}\" data-ng-model=\"field.value\">\n                    </div>\n\n                    <div data-ng-switch-when=\"date\" class=\"clearfix\">\n                        <label class=\"form_label\">{{ field.label }}</label>\n                        <date-picker data-model=\"field.value\"></date-picker>\n                    </div>\n\n                    <div data-ng-switch-when=\"select\" class=\"clearfix\">\n                        <label class=\"form_label\">{{ field.label }}</label>\n                        <div class=\"magic_select form_input\">\n                            <select data-ng-model=\"field.value\" data-ng-options=\"item.value as item.text for item in field.data\"></select>\n                        </div>\n                    </div>\n\n                    <div data-ng-switch-when=\"phone\" class=\"clearfix\">\n                        <label class=\"form_label\">{{ field.label }}</label>\n                        <input class=\"form_input\" type=\"text\" data-model-view-value=\"true\" data-ui-mask=\"{{ field.placeholder }}\" data-ng-model=\"field.value\">\n                    </div>\n\n                    <div data-ng-switch-when=\"email\" class=\"clearfix\">\n                        <label class=\"form_label\">{{ field.label }}</label>\n                        <input class=\"form_input\" type=\"email\" placeholder=\"{{ field.placeholder }}\" data-ng-model=\"field.value\">\n                    </div>\n\n                </div>\n\n                <div class=\"answ_text\">\n                    <button type=\"submit\" class=\"sp_btn button_primary\">{{ 'buttons.texts.save' | tools }}</button>\n                </div>\n            </form>\n        </div>\n    </magic-modal>\n\n</div>";
-
-/***/ }),
-/* 165 */
-/***/ (function(module, exports) {
-
-module.exports = "<div class=\"bns_hist_pager\" data-ng-if=\"1 < pages.length || !autoHide\">\n\n  <a data-ng-if=\"directionLinks\" data-ng-class=\"{ disabled : pagination.current == 1 }\" href=\"\" data-ng-click=\"setCurrent(pagination.current - 1)\">\n    &lsaquo;\n  </a>\n  <a data-ng-repeat=\"pageNumber in pages track by tracker(pageNumber, $index)\" data-ng-class=\"{ active : pagination.current == pageNumber, disabled : pageNumber == '...' }\" href=\"\" data-ng-click=\"setCurrent(pageNumber)\">\n    {{ pageNumber }}\n  </a>\n\n  <a data-ng-if=\"directionLinks\" data-ng-class=\"{ disabled : pagination.current == pagination.last }\" href=\"\" data-ng-click=\"setCurrent(pagination.current + 1)\">\n    &rsaquo;\n  </a>\n\n</div>";
-
-/***/ }),
-/* 166 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(167);
-if(typeof content === 'string') content = [[module.i, content, '']];
-// Prepare cssTransformation
-var transform;
-
-var options = {"hmr":true}
-options.transform = transform
-// add the styles to the DOM
-var update = __webpack_require__(1)(content, options);
-if(content.locals) module.exports = content.locals;
-// Hot Module Replacement
-if(false) {
-	// When the styles change, update the <style> tags
-	if(!content.locals) {
-		module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/dist/cjs.js!./profile_nr.less", function() {
-			var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/dist/cjs.js!./profile_nr.less");
-			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-			update(newContent);
-		});
-	}
-	// When the module is disposed, remove the <style> tags
-	module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 167 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(0)(undefined);
-// imports
-
-
-// module
-exports.push([module.i, ".spm_wrapper .spm_profile_nr {\n  width: 100%;\n  max-width: 1000px;\n  margin: 0 auto;\n  box-sizing: border-box;\n  position: relative;\n}\n.spm_wrapper .spm_profile_nr-left {\n  width: 50%;\n  float: left;\n}\n@media screen and (max-width: 850px) {\n  .spm_wrapper .spm_profile_nr-left {\n    width: 100%;\n  }\n}\n.spm_wrapper .spm_profile_nr-right {\n  width: 50%;\n  text-align: right;\n  float: left;\n}\n@media screen and (max-width: 850px) {\n  .spm_wrapper .spm_profile_nr-right {\n    width: 100%;\n    text-align: center;\n    height: 260px;\n    position: relative;\n  }\n}\n@media screen and (max-width: 650px) {\n  .spm_wrapper .spm_profile_nr-right {\n    height: auto;\n  }\n}\n.spm_wrapper .spm_profile_nr-header {\n  font-size: 48px;\n  line-height: 1;\n  font-weight: bold;\n  text-transform: uppercase;\n  position: relative;\n}\n.spm_wrapper .spm_profile_nr-description {\n  font-size: 16px;\n  color: grey;\n  font-weight: 300;\n  max-width: 90%;\n  line-height: 23px;\n  margin-top: 20px;\n}\n.spm_wrapper .spm_profile_nr-buttons {\n  margin-top: 20px;\n}\n.spm_wrapper .spm_profile_nr-buttons a {\n  display: inline-block;\n  vertical-align: middle;\n}\n.spm_wrapper .spm_profile_nr-login {\n  display: inline-block;\n  width: 75%;\n  font-size: 20px;\n  height: 110px;\n  text-align: center;\n  line-height: 110px;\n  color: white;\n  text-transform: uppercase;\n  text-decoration: none;\n  transition: opacity 0.5s ease;\n}\n.spm_wrapper .spm_profile_nr-login:hover {\n  opacity: 0.8;\n}\n@media screen and (max-width: 850px) {\n  .spm_wrapper .spm_profile_nr-login {\n    margin-top: 10px;\n  }\n}\n.spm_wrapper .spm_profile_nr-history.button_primary {\n  display: none;\n}\n.spm_wrapper .spm_profile_nr-avatar {\n  position: absolute;\n  width: 176px;\n  height: 176px;\n  right: 220px;\n  top: 50%;\n  margin-top: -88px;\n  text-align: center;\n  border-radius: 50%;\n  z-index: 3;\n  background-size: contain;\n  background-position: center center;\n  background-repeat: no-repeat;\n  box-shadow: 0px 15px 30px 0px rgba(148, 194, 161, 0.44);\n}\n.spm_wrapper .spm_profile_nr-avatar:before {\n  content: '';\n  position: relative;\n  width: 100%;\n  height: 100%;\n  border: 5px solid rgba(255, 255, 255, 0.3);\n  border-radius: 50%;\n  display: block;\n  left: -5px;\n  top: -5px;\n}\n@media screen and (max-width: 850px) {\n  .spm_wrapper .spm_profile_nr-avatar {\n    right: 52%;\n  }\n}\n@media screen and (max-width: 650px) {\n  .spm_wrapper .spm_profile_nr-avatar {\n    position: relative;\n    right: auto;\n    top: auto;\n    margin: 10px auto 0;\n  }\n}\n.spm_wrapper .spm_profile_nr-balance {\n  position: absolute;\n  width: 250px;\n  right: 0;\n  top: 50%;\n  margin-top: -125px;\n  text-align: center;\n  height: 250px;\n  border-radius: 50%;\n  z-index: 2;\n  background: #43c25c;\n  /* Old browsers */\n  background: -moz-linear-gradient(0deg, #43c25c 0%, #2d964c 100%);\n  /* FF3.6-15 */\n  background: -webkit-linear-gradient(0deg, #43c25c 0%, #2d964c 100%);\n  /* Chrome10-25,Safari5.1-6 */\n  background: linear-gradient(0deg, #43c25c 0%, #2d964c 100%);\n  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */\n  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#43c25c', endColorstr='#2d964c', GradientType=1);\n  /* IE6-9 fallback on horizontal gradient */\n}\n.spm_wrapper .spm_profile_nr-balance-value {\n  font-size: 60px;\n  color: white;\n  margin-top: 80px;\n  font-weight: bold;\n  display: block;\n  line-height: 1;\n  text-align: center;\n}\n.spm_wrapper .spm_profile_nr-balance-placeholder {\n  font-size: 16px;\n  color: white;\n  margin-top: 10px;\n  display: block;\n  font-weight: 300;\n  text-align: center;\n}\n.spm_wrapper .spm_profile_nr-balance:hover span {\n  display: none;\n}\n.spm_wrapper .spm_profile_nr-balance:hover .spm_profile_nr-history {\n  margin-top: 105px;\n  display: inline-block;\n}\n.spm_wrapper .spm_profile_nr-balance-hover {\n  text-align: center;\n  display: inline-block;\n}\n@media screen and (max-width: 850px) {\n  .spm_wrapper .spm_profile_nr-balance {\n    right: 23%;\n  }\n}\n@media screen and (max-width: 650px) {\n  .spm_wrapper .spm_profile_nr-balance {\n    position: relative;\n    right: auto;\n    top: auto;\n    margin: 20px auto;\n  }\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 168 */
+/* 172 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2448,17 +2530,17 @@ var _createClass2 = __webpack_require__(11);
 
 var _createClass3 = _interopRequireDefault(_createClass2);
 
-var _widget = __webpack_require__(3);
+var _widget = __webpack_require__(2);
 
-var _profile_ti = __webpack_require__(169);
+var _profile_ti = __webpack_require__(173);
 
 var _profile_ti2 = _interopRequireDefault(_profile_ti);
 
-var _history_pagination = __webpack_require__(170);
+var _history_pagination = __webpack_require__(174);
 
 var _history_pagination2 = _interopRequireDefault(_history_pagination);
 
-__webpack_require__(171);
+__webpack_require__(175);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2757,25 +2839,25 @@ _widget.Widget.run(["$templateCache", "TIApi", function ($templateCache, TIApi) 
 }]);
 
 /***/ }),
-/* 169 */
+/* 173 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"spm_profile_ti ti_wrapper clearfix\" ng-if=\"widget.enabled\" ng-cloak sailplay-profile>\n\n    <div class=\"ti_profile\">\n        <div class=\"ti_container\">\n            <div class=\"ti_profile_text\">\n                <h1 class=\"ti_profile_text_header\" ng-bind=\"widget.texts.header\"></h1>\n                <div class=\"ti_profile_text_desc\" ng-bind-html=\"widget.texts.description | to_trusted\"></div>\n            </div>\n            <div class=\"ti_profile_info\">\n                <img class=\"ti_profile_logout\" ng-src=\"{{widget.images.logout}}\" ng-if=\"user()\" ng-click=\"$event.preventDefault();logout()\">\n                <div class=\"ti_type_no_auth\" ng-if=\"!user()\">\n                    <img class=\"ti_stores_item_logo\" ng-src=\"{{widget.images.no_auth_avatar}}\">\n                    <a href=\"#\" class=\"ti_button\" ng-bind=\"widget.texts.login\" ng-click=\"$event.preventDefault(); login('remote', {widget: 'profile_ti', element: 'login_button'});\"></a>\n                </div>\n                <div class=\"ti_type_auth\" ng-if=\"user()\">\n                    <img ng-src=\"{{user().user.sex == 1 ? widget.images.man_avatar : widget.images.woman_avatar }}\" ng-click=\"openPopup('history')\">\n                    <div class=\"ti_purchase_balance\">\n                        <div ng-bind=\"(user().purchases.sum | number) + widget.texts.currency\"></div>\n                        <span ng-bind=\"widget.texts.balance_placeholder\"></span>\n                    </div>\n                    <div class=\"ti_level_offset\" ng-if=\"getLevelOffset(user().purchases.sum)\">\n                        <div ng-bind=\"(getLevelOffset(user().purchases.sum) | number) + widget.texts.currency\"></div>\n                        <span ng-bind=\"widget.texts.next_level_placeholder\"></span>\n                    </div>\n                    <a class=\"ti_button type_small\" href=\"#\" ng-bind=\"widget.texts.buttons.open_history\" ng-click=\"$event.preventDefault();openPopup('history')\"></a>\n                </div>\n            </div>\n        </div>\n    </div>\n\n    <div class=\"ti_popup ti_profile_history\" ng-show=\"popups.history\">\n        <div class=\"ti_popup_layout\" ng-click=\"$event.preventDefault();closePopup('history');closePurchase()\"></div>\n        <div class=\"ti_popup_content\">\n            <img class=\"ti_popup_close\" ng-src=\"{{widget.images.close}}\" ng-click=\"$event.preventDefault();closePopup('history');closePurchase()\">\n            <div class=\"ti_profile_history_content\">\n\n                <div class=\"ti_profile_history_info\">\n                    <div class=\"ti_profile_history_info_field type_pic\">\n                        <img ng-src=\"{{user().user.sex == 1 ? widget.images.man_avatar : widget.images.woman_avatar }}\">\n                        <span ng-bind=\"user().user.name || widget.texts.undefined\"></span>\n                    </div>\n                    <div class=\"ti_profile_history_info_field\">\n                        <span ng-bind=\"widget.texts.history.email\"></span>\n                        <div ng-bind=\"user().user.email || widget.texts.undefined\"></div>\n                    </div>\n                    <div class=\"ti_profile_history_info_field\">\n                        <span ng-bind=\"widget.texts.history.phone\"></span>\n                        <div ng-bind=\"(user().user.phone | tel) || widget.texts.undefined\"></div>\n                    </div>\n                    <div class=\"ti_profile_history_info_field\">\n                        <span ng-bind=\"widget.texts.history.birth_date\"></span>\n                        <div ng-bind=\"(formatDate(user().user.birth_date, 'date.shortMonths' | tools)) || widget.texts.undefined\"></div>\n                    </div>\n                    <div class=\"ti_profile_history_info_field\">\n                        <span ng-bind=\"widget.texts.history.gender\"></span>\n                        <div ng-bind=\"getGender(user().user.sex)\"></div>\n                    </div>\n                    <a class=\"ti_button type_small\" href=\"#\" ng-bind=\"widget.texts.buttons.open_profile\" ng-click=\"$event.preventDefault();closePopup('history');openPopup('profile');closePurchase();\"></a>\n                </div>\n\n                <div class=\"ti_profile_history_list\" sailplay-history ng-show=\"!purchase_details\">\n                    <div class=\"ti_profile_history_title\" ng-bind=\"widget.texts.history.title\"></div>\n                    <div class=\"ti_profile_history_items_wrapper\">\n\n                        <div class=\"ti_profile_history_item\" dir-paginate=\"item in history() | filter:{action: 'purchase', is_completed: true} | itemsPerPage:5\"\n                            pagination-id=\"history_pages\">\n                            <div class=\"ti_profile_history_item_date\" ng-bind=\"formatDate(item.action_date, 'date.shortMonths' | tools)\"></div>\n                            <div class=\"ti_profile_history_item_info\">\n                                <div class=\"ti_profile_history_item_info_position\">\n                                    <div class=\"ti_profile_history_item_info_position_name\" ng-click=\"openPurchase(item)\">{{item | history_item}}&nbsp;&gt;</div>\n                                    <div class=\"ti_profile_history_item_info_position_count\" ng-bind=\"(item.price | number) + widget.texts.currency\"></div>\n                                </div>\n                            </div>\n                        </div>\n\n                    </div>\n                    <dir-pagination-controls max-size=\"7\" pagination-id=\"history_pages\" template-url=\"profile_ti.history_pagination\" auto-hide=\"true\"></dir-pagination-controls>\n                </div>\n\n                <div class=\"ti_profile_purchase_details\" ng-if=\"purchase_details\">\n                    <div class=\"ti_profile_purchase_title\">\n                        <img ng-src=\"{{widget.images.history_back}}\" ng-click=\"closePurchase()\">\n                        <span ng-bind=\"purchase_details.purchase.order_num\"></span>\n                    </div>\n                    <div class=\"ti_profile_purchase_item\" ng-repeat=\"item in purchase_details.cart.cart.positions\">\n                        <div class=\"ti_profile_purchase_item_name\" ng-bind=\"item.product.name || item.product.sku\"></div>\n                        <div class=\"ti_profile_purchase_item_price\" ng-bind=\"(item.new_price | number) + widget.texts.currency\"></div>\n                    </div>\n                    <div class=\"ti_profile_purchase_item type_total\">\n                        <div class=\"ti_profile_purchase_item_name\" ng-bind=\"widget.texts.history.total\"></div>\n                        <div class=\"ti_profile_purchase_item_price\" ng-bind=\"(purchase_details.cart.cart.total_price | number) + widget.texts.currency\"></div>\n                    </div>\n                </div>\n\n            </div>\n        </div>\n    </div>\n\n    <div class=\"ti_popup ti_profile_form\" ng-show=\"popups.profile\">\n        <div class=\"ti_popup_layout\" ng-click=\"$event.preventDefault();closePopup('profile');openPopup('history')\"></div>\n        <div class=\"ti_popup_content\" ng-class=\"{type_column: !confirmation[0]}\">\n            <img class=\"ti_popup_close\" ng-src=\"{{widget.images.close}}\" ng-click=\"$event.preventDefault();closePopup('profile');openPopup('history')\">\n            <form name=\"profile_form\" class=\"ti_profile_form_content\" ng-class=\"{type_small: confirmation[0]}\" sailplay-fill-profile config=\"widget.options.profile_config\"\n                ng-submit=\"sailplay.fill_profile.submit(profile_form, profileEditHandler);\">\n\n                <div class=\"ti_profile_form_part\" ng-repeat=\"(key, value) in (widget.options.profile_config.cols | ngRepeatByNumber) track by $index\">\n\n                    <div class=\"ti_profile_form_el\" ng-repeat=\"field in getFieldsByColumn(sailplay.fill_profile.form.fields, key)\" ng-switch=\"field.input\"\n                        ng-class=\"{type_gender:field.input=='select', type_date:field.input=='date'}\">\n\n                        <div ng-switch-when=\"text\">\n                            <span ng-bind=\"field.label\"></span>\n                            <input type=\"text\" placeholder=\"{{field.placeholder}}\" name=\"{{field.name}}\" ng-model=\"field.value\" ng-required=\"field.required\">\n                        </div>\n\n                        <div ng-switch-when=\"phone\">\n                            <span ng-bind=\"field.label\"></span>\n                            <input type=\"tel\" model-view-value=\"true\" ui-mask=\"{{ field.placeholder }}\" name=\"{{field.name}}\" ng-model=\"field.value\" ng-required=\"field.required\">\n                        </div>\n\n                        <div ng-switch-when=\"email\">\n                            <span ng-bind=\"field.label\"></span>\n                            <input type=\"email\" placeholder=\"{{field.placeholder}}\" name=\"{{field.name}}\" ng-model=\"field.value\" ng-required=\"field.required\">\n                        </div>\n\n                        <div ng-switch-when=\"select\">\n                            <span ng-bind=\"field.label\"></span>\n                            <label ng-repeat=\"option in field.data\">\n                                <input type=\"radio\" name=\"{{option.name}}\" ng-value=\"option.value\" ng-model=\"field.value\" ng-required=\"field.required\">\n                                <span ng-bind=\"option.text\"></span>\n                            </label>\n                        </div>\n\n                        <div ng-switch-when=\"date\">\n                            <span ng-bind=\"field.label\"></span>\n                            <input type=\"text\" ui-mask=\"{{ field.mask.day }}\" ui-mask-placeholder=\"{{ field.mask_placeholder.day }}\" ui-mask-placeholder-char=\"{{ field.mask_placeholder.day }}\" ui-options=\"maskOptions\" placeholder=\"{{ field.placeholder.day }}\" name=\"b_day\" ng-model=\"field.value[0]\">\n                            <input type=\"text\" ui-mask=\"{{ field.mask.month }}\" ui-mask-placeholder=\"{{ field.mask_placeholder.month }}\" ui-mask-placeholder-char=\"{{ field.mask_placeholder.month }}\" ui-options=\"maskOptions\" placeholder=\"{{ field.placeholder.month }}\" name=\"b_month\" ng-model=\"field.value[1]\">\n                            <input type=\"text\" ui-mask=\"{{ field.mask.year }}\" ui-mask-placeholder=\"{{ field.mask_placeholder.year }}\" ui-mask-placeholder-char=\"{{ field.mask_placeholder.year }}\" ui-options=\"maskOptions\" placeholder=\"{{ field.placeholder.year }}\" name=\"b_year\" ng-model=\"field.value[2]\">\n                        </div>\n\n                    </div>\n\n                </div>\n                <input class=\"ti_button type_small ti_profile_form_submit\" ng-hide=\"confirmation[0] == 'phone'\" type=\"submit\" value=\"{{widget.texts.profile.save}}\" ng-disabled=\"profile_form.$invalid\">\n            </form>\n            <div class=\"ti_profile_form_confirmation\" ng-if=\"confirmation[0]\" ng-switch=\"confirmation[0]\">\n\n                <div ng-switch-when=\"phone\">\n                    <div class=\"ti_profile_form_confirmation_title\" ng-bind-html=\"widget.texts.profile.confirmation.phone.title | to_trusted\"></div>\n                    <input class=\"ti_profile_form_confirmation_input\" type=\"text\" placeholder=\"{{widget.texts.profile.confirmation.phone.input}}\" ui-mask=\"9999\" ng-model=\"confirmation_data.code\" ng-change=\"confirmUpdatePhone($event)\">\n                    <a class=\"ti_profile_form_confirmation_link ti_profile_form_confirmation_send\" href=\"#\" ng-bind=\"widget.texts.profile.confirmation.phone.resend\" ng-click=\"$event.preventDefault();sendSms()\"></a>\n                    <a class=\"ti_profile_form_confirmation_link ti_profile_form_confirmation_back\" href=\"#\" ng-bind=\"widget.texts.profile.confirmation.phone.change_phone\" ng-click=\"$event.preventDefault();changePhone()\"></a>\n                    <div class=\"ti_profile_form_confirmation_text\" ng-bind-html=\"widget.texts.profile.confirmation.phone.text | interpolateString:confirmation_data | to_trusted\"></div>\n                </div>\n\n                <div ng-switch-when=\"email\">\n                    <div class=\"ti_profile_form_confirmation_title\" ng-bind-html=\"widget.texts.profile.confirmation.email.title | to_trusted\"></div>\n                    <div class=\"ti_profile_form_confirmation_text\" ng-bind-html=\"widget.texts.profile.confirmation.email.text | interpolateString:confirmation_data | to_trusted\"></div>\n                </div>\n\n            </div>\n            <div class=\"ti_profile_form_message\" ng-show=\"success && !error || error && !success\" ng-bind=\"success || error\" ng-class=\"{type_success: success && !error, type_error: error && !success}\"></div>\n        </div>\n    </div>\n\n</div>";
 
 /***/ }),
-/* 170 */
+/* 174 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"ti_profile_history_pagination\" ng-if=\"1 < pages.length || !autoHide\">\n\n  <a ng-repeat=\"pageNumber in pages track by tracker(pageNumber, $index)\" \n    class=\"ti_profile_history_pagination_item\" ng-bind=\"pageNumber\" href=\"#\" ng-click=\"$event.preventDefault();setCurrent(pageNumber)\"\n    ng-class=\"{ type_action : pagination.current == pageNumber, disabled : pageNumber == '...' }\"></a>\n\n</div>";
 
 /***/ }),
-/* 171 */
+/* 175 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(172);
+var content = __webpack_require__(176);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -2800,7 +2882,7 @@ if(false) {
 }
 
 /***/ }),
-/* 172 */
+/* 176 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(undefined);
@@ -2814,19 +2896,19 @@ exports.push([module.i, ".ti-lock-scroll {\n  overflow: hidden;\n}\n.ti-lock-scr
 
 
 /***/ }),
-/* 173 */
+/* 177 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _widget = __webpack_require__(3);
+var _widget = __webpack_require__(2);
 
-var _statuses = __webpack_require__(174);
+var _statuses = __webpack_require__(178);
 
 var _statuses2 = _interopRequireDefault(_statuses);
 
-__webpack_require__(175);
+__webpack_require__(179);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2879,19 +2961,19 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 });
 
 /***/ }),
-/* 174 */
+/* 178 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"clearfix container\">\n\n  <div class=\"status-list\">\n\n    <div class=\"next_status_info\" data-ng-show=\"get_next_status().status\">\n\n      <div class=\"next_status_name\">\n        {{ widget.texts.next_status }} <span data-ng-style=\"{ color: get_next_status().status.color  }\">{{ get_next_status().status.status }}</span>\n      </div>\n\n      <div class=\"next_status_offset\">\n        {{ widget.texts.next_status_offset }} {{ get_next_status().offset }}\n      </div>\n\n    </div>\n\n    <div class=\"status-list__wrapper\" data-sailplay-statuses data-ng-cloak>\n\n      <div class=\"status-list__progress element-progress progress_line\"\n           data-ng-style=\"getProgress(purchase_status ? user().purchases.sum : user().user_points, _statuses)\"></div>\n\n      <div class=\"status-list__item element-item\"\n           data-ng-class=\"{ type_active : item.points <= user().user_points.confirmed + user().user_points.spent + user().user_points.spent_extra }\"\n           data-ng-repeat=\"item in _statuses\"\n           data-ng-style=\"generateOffset($index, _statuses)\">\n\n        <div class=\"status-list__item-point element-item-point\"></div>\n\n        <div class=\"element-item-point-inner\" data-ng-style=\"{ backgroundColor: item.color }\"></div>\n\n        <div class=\"status-list__item-name element-item-name\" data-ng-bind=\"item.name\"></div>\n        <div class=\"status-list__item-status element-item-status\" data-ng-if=\"item.status\" data-ng-bind=\"item.status\"\n             style=\"{{ (item.color) ? ('color: ' +  item.color) : '' }}\"></div>\n\n      </div>\n\n    </div>\n\n  </div>\n</div>";
 
 /***/ }),
-/* 175 */
+/* 179 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(176);
+var content = __webpack_require__(180);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -2916,7 +2998,7 @@ if(false) {
 }
 
 /***/ }),
-/* 176 */
+/* 180 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(undefined);
@@ -2930,19 +3012,19 @@ exports.push([module.i, ".spm_wrapper .status-list {\n  float: left;\n  width: 9
 
 
 /***/ }),
-/* 177 */
+/* 181 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _widget = __webpack_require__(3);
+var _widget = __webpack_require__(2);
 
-var _stores_ti = __webpack_require__(178);
+var _stores_ti = __webpack_require__(182);
 
 var _stores_ti2 = _interopRequireDefault(_stores_ti);
 
-__webpack_require__(179);
+__webpack_require__(183);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -3020,19 +3102,19 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 });
 
 /***/ }),
-/* 178 */
+/* 182 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"spm_profile_ti ti_wrapper clearfix\" ng-if=\"widget.enabled\" ng-cloak sailplay-profile>\n\n    <div class=\"ti_stores\">\n\n        <div class=\"ti_container\">\n\n            <div class=\"ti_stores_group type_{{$index+1}}\" ng-repeat=\"group in stores_groups | filter:{hide:false}\" \n                ng-class=\"{type_opened: user().purchases.sum>=group.sum, type_small: groupSizeSmall(group)}\" ng-init=\"group.page=group.page?group.page:1\">\n\n                <div class=\"ti_stores_progress\">\n                    <div class=\"ti_stores_progress_value\" ng-style=\"{width: getPercents(user().purchases.sum, group.sum)+'%'}\"></div>\n                    <div class=\"ti_stores_purchase_balance\">\n                        <div ng-bind=\"(user().purchases.sum | number) + widget.texts.currency\"></div>\n                        <span ng-bind-html=\"widget.texts.balance_placeholder | to_trusted\"></span>\n                    </div>\n                    <div class=\"ti_stores_level_offset\" ng-if=\"user().purchases.sum<group.sum\">\n                        <div ng-bind=\"(group.sum-user().purchases.sum) + widget.texts.currency\"></div>\n                        <span ng-bind-html=\"widget.texts.next_level_placeholder | to_trusted\"></span>\n                    </div>\n                    <div class=\"ti_stores_progress_discout\">\n                        <span ng-bind=\"group.name\"></span>\n                        <i class=\"ti_stores_progress_icon\"></i>\n                    </div>\n                </div>\n\n                <a class=\"ti_stores_item\" ng-href=\"{{store.link}}\" ng-repeat=\"store in group.stores | filter:{hide: false}\" \n                    ng-class=\"{type_fact: store.type=='info', type_opened: user().purchases.sum>=store.sum, type_locked: user().purchases.sum>=group.sum && user().purchases.sum<store.sum}\" \n                    ng-if=\"$index<(group.page || 1)*group.per_page\">\n                    <span class=\"ti_stores_item_discount\" ng-bind=\"store.discount\" ng-if=\"store.discount\"></span>\n                    <img class=\"ti_stores_item_logo\" ng-src=\"{{store.image}}\" ng-if=\"store.image\">\n                    <div class=\"ti_stores_item_name\" ng-bind=\"store.title\"></div>\n                    <div class=\"ti_stores_item_desc\" ng-bind-html=\"store.description | to_trusted\"></div>\n                    <i class=\"ti_stores_item_locked_icon\" ng-if=\"user().purchases.sum>=group.sum && user().purchases.sum<store.sum\"></i>\n                    <div class=\"ti_stores_item_hover\" ng-if=\"user().purchases.sum>=group.sum && user().purchases.sum<store.sum\">\n                        <div class=\"ti_stores_item_remain\" ng-bind=\"(store.sum-user().purchases.sum) + widget.texts.currency\"></div>\n                        <div class=\"ti_stores_item_text\" ng-bind-html=\"widget.texts.left_to_discount | interpolateString:store | to_trusted\"></div>\n                    </div>\n                </a>\n\n                <a class=\"ti_button type_big\" href=\"#\" ng-click=\"$event.preventDefault();loadMore(group)\" ng-bind=\"widget.texts.load_more\" ng-if=\"needToShowLoadButton(group)\"></a>\n\n            </div>\n\n\n        </div>\n    </div>\n\n</div>";
 
 /***/ }),
-/* 179 */
+/* 183 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(180);
+var content = __webpack_require__(184);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -3057,7 +3139,7 @@ if(false) {
 }
 
 /***/ }),
-/* 180 */
+/* 184 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(undefined);
@@ -3065,7 +3147,7 @@ exports = module.exports = __webpack_require__(0)(undefined);
 
 
 // module
-exports.push([module.i, ".spm_profile_ti .ti_wrapper {\n  color: #000;\n  font-family: 'Circe';\n  overflow: hidden;\n}\n.spm_profile_ti .ti_container {\n  width: 100%;\n  max-width: 1170px;\n  margin: auto;\n  position: relative;\n  box-sizing: border-box;\n}\n@media screen and (max-width: 1170px) {\n  .spm_profile_ti .ti_container {\n    padding: 0 80px;\n  }\n}\n@media screen and (max-width: 900px) {\n  .spm_profile_ti .ti_container {\n    padding: 0 50px;\n  }\n}\n@media screen and (max-width: 440px) {\n  .spm_profile_ti .ti_container {\n    padding: 0 10%;\n  }\n}\n.spm_profile_ti .ti_button {\n  border: solid 3px #000;\n  text-align: center;\n  background: #fff;\n  box-sizing: border-box;\n  text-transform: uppercase;\n  font-size: 16px;\n  color: #000;\n  font-weight: 900;\n  padding: 0;\n  text-decoration: none;\n  display: block;\n  width: 100%;\n  -webkit-appearance: none;\n  transition: 0.5s ease;\n}\n.spm_profile_ti .ti_button.type_big {\n  height: 80px;\n  line-height: 76px;\n}\n.spm_profile_ti .ti_button.type_small {\n  height: 48px;\n  line-height: 44px;\n}\n.spm_profile_ti .ti_button:hover {\n  color: #fff;\n  background: #000;\n}\n.spm_profile_ti .ti_stores .ti_stores_group {\n  width: 100%;\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  flex-wrap: wrap;\n  padding-bottom: 90px;\n}\n.spm_profile_ti .ti_stores .ti_stores_group.type_1 .ti_stores_progress_value {\n  background-image: linear-gradient(to bottom, #fcdaff, #ffc2d5);\n}\n.spm_profile_ti .ti_stores .ti_stores_group.type_1 .ti_stores_item.type_fact {\n  background-image: linear-gradient(to top, #fcdaff, #ffc2d5);\n}\n.spm_profile_ti .ti_stores .ti_stores_group.type_2 .ti_stores_progress_value {\n  background-image: linear-gradient(to bottom, #f9f5a3, #fed0bc);\n}\n.spm_profile_ti .ti_stores .ti_stores_group.type_2 .ti_stores_item.type_fact {\n  background-image: linear-gradient(to top, #f9f5a3, #fed0bc);\n}\n.spm_profile_ti .ti_stores .ti_stores_group.type_3 .ti_stores_progress_value {\n  background-image: linear-gradient(to bottom, #c2fcee, #a8f2db);\n}\n.spm_profile_ti .ti_stores .ti_stores_group.type_3 .ti_stores_item.type_fact {\n  background-image: linear-gradient(to top, #c2fcee, #a8f2db);\n}\n.spm_profile_ti .ti_stores .ti_stores_group.type_opened .ti_stores_progress_icon {\n  width: 45px;\n  height: 45px;\n  background: url(\"https://sailplays3.cdnvideo.ru/media/assets/assetfile/2282e0a6edf2bea96c97b408195fe4a6.svg\") no-repeat center center/auto 30px;\n}\n.spm_profile_ti .ti_stores .ti_stores_group:after {\n  content: '';\n  width: 31%;\n}\n@media screen and (max-width: 900px) {\n  .spm_profile_ti .ti_stores .ti_stores_group:after {\n    display: none;\n  }\n}\n@media screen and (max-width: 900px) {\n  .spm_profile_ti .ti_stores .ti_stores_group {\n    justify-content: center;\n  }\n}\n.spm_profile_ti .ti_stores .ti_button {\n  margin-top: 30px;\n}\n.spm_profile_ti .ti_stores .ti_stores_progress {\n  width: 100%;\n  height: 95px;\n  background: #fff;\n  position: relative;\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  box-sizing: border-box;\n  padding: 0 60px;\n  overflow: hidden;\n  border-radius: 8px;\n}\n.spm_profile_ti .ti_stores .ti_stores_progress .ti_stores_progress_value {\n  width: 0;\n  height: 100%;\n  position: absolute;\n  top: 0;\n  left: 0;\n  z-index: 1;\n}\n.spm_profile_ti .ti_stores .ti_stores_progress .ti_stores_purchase_balance {\n  text-align: left;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  position: relative;\n  z-index: 2;\n}\n.spm_profile_ti .ti_stores .ti_stores_progress .ti_stores_purchase_balance div {\n  font-weight: bold;\n  font-size: 40px;\n  line-height: 60px;\n}\n@media screen and (max-width: 440px) {\n  .spm_profile_ti .ti_stores .ti_stores_progress .ti_stores_purchase_balance div {\n    font-size: 20px;\n    line-height: 22px;\n    font-weight: normal;\n  }\n}\n.spm_profile_ti .ti_stores .ti_stores_progress .ti_stores_purchase_balance span {\n  margin-left: 20px;\n  font-size: 18px;\n  line-height: 22px;\n}\n@media screen and (max-width: 440px) {\n  .spm_profile_ti .ti_stores .ti_stores_progress .ti_stores_purchase_balance span {\n    font-size: 14px;\n    line-height: 14px;\n  }\n}\n@media screen and (max-width: 1170px) {\n  .spm_profile_ti .ti_stores .ti_stores_progress .ti_stores_purchase_balance {\n    display: none;\n  }\n}\n.spm_profile_ti .ti_stores .ti_stores_progress .ti_stores_level_offset {\n  text-align: left;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  position: relative;\n  z-index: 2;\n}\n.spm_profile_ti .ti_stores .ti_stores_progress .ti_stores_level_offset div {\n  font-weight: 300;\n  font-size: 40px;\n  line-height: 60px;\n}\n@media screen and (max-width: 650px) {\n  .spm_profile_ti .ti_stores .ti_stores_progress .ti_stores_level_offset div {\n    font-size: 35px;\n    line-height: 40px;\n  }\n}\n.spm_profile_ti .ti_stores .ti_stores_progress .ti_stores_level_offset span {\n  margin-left: 20px;\n  font-size: 18px;\n  line-height: 22px;\n}\n@media screen and (max-width: 650px) {\n  .spm_profile_ti .ti_stores .ti_stores_progress .ti_stores_level_offset span {\n    font-size: 16px;\n    line-height: 18px;\n  }\n}\n@media screen and (max-width: 440px) {\n  .spm_profile_ti .ti_stores .ti_stores_progress .ti_stores_level_offset {\n    width: 100%;\n    display: flex;\n  }\n}\n.spm_profile_ti .ti_stores .ti_stores_progress .ti_stores_progress_discout {\n  font-weight: bold;\n  font-size: 35px;\n  line-height: 50px;\n  display: flex;\n  justify-content: baseline;\n  align-items: normal;\n  text-transform: uppercase;\n  position: relative;\n  z-index: 2;\n}\n@media screen and (max-width: 900px) {\n  .spm_profile_ti .ti_stores .ti_stores_progress .ti_stores_progress_discout {\n    font-size: 26px;\n  }\n}\n.spm_profile_ti .ti_stores .ti_stores_progress .ti_stores_progress_discout span {\n  display: block;\n  margin-right: 15px;\n}\n@media screen and (max-width: 900px) {\n  .spm_profile_ti .ti_stores .ti_stores_progress .ti_stores_progress_discout span {\n    margin-right: 10px;\n  }\n}\n.spm_profile_ti .ti_stores .ti_stores_progress .ti_stores_progress_icon {\n  width: 45px;\n  height: 45px;\n  display: block;\n  background: url(\"https://sailplays3.cdnvideo.ru/media/assets/assetfile/261dbf9ff19af42f0eccaa91043d57da.svg\") no-repeat center center/28px auto;\n}\n@media screen and (max-width: 900px) {\n  .spm_profile_ti .ti_stores .ti_stores_progress {\n    justify-content: space-around;\n    padding: 0 10px;\n    flex-wrap: wrap;\n  }\n}\n@media screen and (max-width: 650px) {\n  .spm_profile_ti .ti_stores .ti_stores_progress {\n    height: auto;\n    flex-direction: column-reverse;\n    height: auto;\n    padding: 10px 10px 20px;\n  }\n}\n.spm_profile_ti .ti_stores .ti_stores_item {\n  width: 31%;\n  height: 500px;\n  background: #fff;\n  margin-top: 30px;\n  box-sizing: border-box;\n  position: relative;\n  padding: 60px;\n  overflow: hidden;\n  cursor: pointer;\n  text-decoration: none;\n  color: #000;\n}\n@media screen and (max-width: 1170px) {\n  .spm_profile_ti .ti_stores .ti_stores_item {\n    width: 48%;\n  }\n}\n@media screen and (max-width: 900px) {\n  .spm_profile_ti .ti_stores .ti_stores_item {\n    max-width: 400px;\n    width: 100%;\n  }\n}\n@media screen and (max-width: 900px) {\n  .spm_profile_ti .ti_stores .ti_stores_item {\n    padding: 80px 10% 10%;\n  }\n}\n.spm_profile_ti .ti_stores .ti_stores_item .ti_stores_item_discount {\n  position: absolute;\n  display: block;\n  width: 100px;\n  height: 50px;\n  right: 0;\n  top: 35px;\n  font-weight: bold;\n  border-top-left-radius: 70px;\n  border-bottom-left-radius: 70px;\n  background-color: rgba(153,194,228,0.3);\n  color: #485a7b;\n  font-size: 20px;\n  line-height: 54px;\n  text-align: center;\n  opacity: 1;\n  visibility: visible;\n  transition: 0.5s ease;\n  z-index: 2;\n}\n.spm_profile_ti .ti_stores .ti_stores_item .ti_stores_item_logo {\n  display: block;\n  width: auto;\n  height: 200px;\n  margin: 0 auto 20px;\n}\n.spm_profile_ti .ti_stores .ti_stores_item .ti_stores_item_name {\n  color: #353149;\n  font-weight: bold;\n  font-size: 24px;\n  text-align: left;\n  opacity: 1;\n  visibility: visible;\n  transition: 0.5s ease;\n}\n.spm_profile_ti .ti_stores .ti_stores_item .ti_stores_item_desc,\n.spm_profile_ti .ti_stores .ti_stores_item .ti_stores_item_text {\n  margin-top: 10px;\n  line-height: 22px;\n  font-size: 16px;\n  text-align: left;\n  opacity: 1;\n  visibility: visible;\n  transition: 0.5s ease;\n}\n.spm_profile_ti .ti_stores .ti_stores_item .ti_stores_item_locked_icon {\n  width: 60px;\n  height: 60px;\n  border-radius: 50%;\n  background: #fff url(\"https://sailplays3.cdnvideo.ru/media/assets/assetfile/261dbf9ff19af42f0eccaa91043d57da.svg\") no-repeat center center/auto 24px;\n  display: block;\n  position: absolute;\n  right: 38px;\n  bottom: 38px;\n  display: none;\n  transition: 0.5s ease;\n}\n.spm_profile_ti .ti_stores .ti_stores_item .ti_stores_item_remain {\n  font-weight: 500;\n  font-size: 35px;\n  opacity: 1;\n  visibility: visible;\n}\n.spm_profile_ti .ti_stores .ti_stores_item .ti_stores_item_hover {\n  opacity: 0;\n  visibility: hidden;\n  transition: 0.5s ease;\n  position: absolute;\n  top: 270px;\n  box-sizing: border-box;\n  padding: 0 60px;\n  width: 100%;\n  left: 0;\n  transform: translateY(50%);\n}\n.spm_profile_ti .ti_stores .ti_stores_item.type_fact {\n  cursor: default;\n}\n.spm_profile_ti .ti_stores .ti_stores_item.type_locked {\n  background: rgba(255,255,255,0.6);\n}\n.spm_profile_ti .ti_stores .ti_stores_item.type_locked .ti_stores_item_locked_icon {\n  display: block;\n}\n.spm_profile_ti .ti_stores .ti_stores_item.type_locked .ti_stores_item_logo,\n.spm_profile_ti .ti_stores .ti_stores_item.type_locked .ti_stores_item_name,\n.spm_profile_ti .ti_stores .ti_stores_item.type_locked .ti_stores_item_desc,\n.spm_profile_ti .ti_stores .ti_stores_item.type_locked .ti_stores_item_discount {\n  opacity: 0.3;\n}\n@media screen and (max-width: 900px) {\n  .spm_profile_ti .ti_stores .ti_stores_item.type_locked {\n    height: 570px;\n  }\n  .spm_profile_ti .ti_stores .ti_stores_item.type_locked .ti_stores_item_name,\n  .spm_profile_ti .ti_stores .ti_stores_item.type_locked .ti_stores_item_name:hover {\n    position: absolute;\n    top: 300px;\n    left: 60px;\n    opacity: 1;\n  }\n  .spm_profile_ti .ti_stores .ti_stores_item.type_locked .ti_stores_item_desc,\n  .spm_profile_ti .ti_stores .ti_stores_item.type_locked .ti_stores_item_discount {\n    opacity: 0;\n    visibility: hidden;\n    transform: translateY(-50%);\n  }\n  .spm_profile_ti .ti_stores .ti_stores_item.type_locked .ti_stores_item_discount {\n    transform: translateX(50%);\n  }\n  .spm_profile_ti .ti_stores .ti_stores_item.type_locked .ti_stores_item_locked_icon {\n    box-shadow: 0 6px 24px 0 rgba(201,86,86,0.3);\n  }\n  .spm_profile_ti .ti_stores .ti_stores_item.type_locked .ti_stores_item_hover {\n    top: 350px;\n    opacity: 1;\n    visibility: hidden;\n    transform: translateY(0);\n  }\n}\n.spm_profile_ti .ti_stores .ti_stores_item.type_locked:hover .ti_stores_item_desc,\n.spm_profile_ti .ti_stores .ti_stores_item.type_locked:hover .ti_stores_item_name,\n.spm_profile_ti .ti_stores .ti_stores_item.type_locked:hover .ti_stores_item_discount {\n  opacity: 0;\n  visibility: hidden;\n  transform: translateY(-50%);\n}\n.spm_profile_ti .ti_stores .ti_stores_item.type_locked:hover .ti_stores_item_discount {\n  transform: translateX(50%);\n}\n.spm_profile_ti .ti_stores .ti_stores_item.type_locked:hover .ti_stores_item_locked_icon {\n  box-shadow: 0 6px 24px 0 rgba(201,86,86,0.3);\n}\n.spm_profile_ti .ti_stores .ti_stores_item.type_locked:hover .ti_stores_item_hover {\n  opacity: 1;\n  visibility: hidden;\n  transform: translateY(0);\n}\n", ""]);
+exports.push([module.i, ".spm_profile_ti .ti_wrapper {\n  color: #000;\n  font-family: 'Circe';\n  overflow: hidden;\n}\n.spm_profile_ti .ti_container {\n  width: 100%;\n  max-width: 1170px;\n  margin: auto;\n  position: relative;\n  box-sizing: border-box;\n}\n@media screen and (max-width: 1170px) {\n  .spm_profile_ti .ti_container {\n    padding: 0 80px;\n  }\n}\n@media screen and (max-width: 900px) {\n  .spm_profile_ti .ti_container {\n    padding: 0 50px;\n  }\n}\n@media screen and (max-width: 440px) {\n  .spm_profile_ti .ti_container {\n    padding: 0 10%;\n  }\n}\n.spm_profile_ti .ti_button {\n  border: solid 3px #000;\n  text-align: center;\n  background: #fff;\n  box-sizing: border-box;\n  text-transform: uppercase;\n  font-size: 16px;\n  color: #000;\n  font-weight: 900;\n  padding: 0;\n  text-decoration: none;\n  display: block;\n  width: 100%;\n  -webkit-appearance: none;\n  transition: 0.5s ease;\n}\n.spm_profile_ti .ti_button.type_big {\n  height: 80px;\n  line-height: 76px;\n}\n.spm_profile_ti .ti_button.type_small {\n  height: 48px;\n  line-height: 44px;\n}\n.spm_profile_ti .ti_button:hover {\n  color: #fff;\n  background: #000;\n}\n.spm_profile_ti .ti_stores .ti_stores_group {\n  width: 100%;\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  flex-wrap: wrap;\n  padding-bottom: 90px;\n}\n.spm_profile_ti .ti_stores .ti_stores_group.type_1 .ti_stores_progress_value {\n  background-image: linear-gradient(to bottom, #fcdaff, #ffc2d5);\n}\n.spm_profile_ti .ti_stores .ti_stores_group.type_1 .ti_stores_item.type_fact {\n  background-image: linear-gradient(to top, #fcdaff, #ffc2d5);\n}\n.spm_profile_ti .ti_stores .ti_stores_group.type_2 .ti_stores_progress_value {\n  background-image: linear-gradient(to bottom, #f9f5a3, #fed0bc);\n}\n.spm_profile_ti .ti_stores .ti_stores_group.type_2 .ti_stores_item.type_fact {\n  background-image: linear-gradient(to top, #f9f5a3, #fed0bc);\n}\n.spm_profile_ti .ti_stores .ti_stores_group.type_3 .ti_stores_progress_value {\n  background-image: linear-gradient(to bottom, #c2fcee, #a8f2db);\n}\n.spm_profile_ti .ti_stores .ti_stores_group.type_3 .ti_stores_item.type_fact {\n  background-image: linear-gradient(to top, #c2fcee, #a8f2db);\n}\n.spm_profile_ti .ti_stores .ti_stores_group.type_opened .ti_stores_progress_icon {\n  width: 45px;\n  height: 45px;\n  background: url(\"https://sailplays3.cdnvideo.ru/media/assets/assetfile/2282e0a6edf2bea96c97b408195fe4a6.svg\") no-repeat center center/auto 30px;\n}\n.spm_profile_ti .ti_stores .ti_stores_group:after {\n  content: '';\n  width: 31%;\n}\n@media screen and (max-width: 900px) {\n  .spm_profile_ti .ti_stores .ti_stores_group:after {\n    display: none;\n  }\n}\n@media screen and (max-width: 900px) {\n  .spm_profile_ti .ti_stores .ti_stores_group {\n    justify-content: center;\n  }\n}\n.spm_profile_ti .ti_stores .ti_button {\n  margin-top: 30px;\n}\n.spm_profile_ti .ti_stores .ti_stores_progress {\n  width: 100%;\n  height: 95px;\n  background: #fff;\n  position: relative;\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  box-sizing: border-box;\n  padding: 0 60px;\n  overflow: hidden;\n  border-radius: 8px;\n}\n.spm_profile_ti .ti_stores .ti_stores_progress .ti_stores_progress_value {\n  width: 0;\n  height: 100%;\n  position: absolute;\n  top: 0;\n  left: 0;\n  z-index: 1;\n}\n.spm_profile_ti .ti_stores .ti_stores_progress .ti_stores_purchase_balance {\n  text-align: left;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  position: relative;\n  z-index: 2;\n}\n.spm_profile_ti .ti_stores .ti_stores_progress .ti_stores_purchase_balance div {\n  font-weight: bold;\n  font-size: 40px;\n  line-height: 60px;\n}\n@media screen and (max-width: 440px) {\n  .spm_profile_ti .ti_stores .ti_stores_progress .ti_stores_purchase_balance div {\n    font-size: 20px;\n    line-height: 22px;\n    font-weight: normal;\n  }\n}\n.spm_profile_ti .ti_stores .ti_stores_progress .ti_stores_purchase_balance span {\n  margin-left: 20px;\n  font-size: 18px;\n  line-height: 22px;\n}\n@media screen and (max-width: 440px) {\n  .spm_profile_ti .ti_stores .ti_stores_progress .ti_stores_purchase_balance span {\n    font-size: 14px;\n    line-height: 14px;\n  }\n}\n@media screen and (max-width: 1170px) {\n  .spm_profile_ti .ti_stores .ti_stores_progress .ti_stores_purchase_balance {\n    display: none;\n  }\n}\n.spm_profile_ti .ti_stores .ti_stores_progress .ti_stores_level_offset {\n  text-align: left;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  position: relative;\n  z-index: 2;\n}\n.spm_profile_ti .ti_stores .ti_stores_progress .ti_stores_level_offset div {\n  font-weight: 300;\n  font-size: 40px;\n  line-height: 60px;\n}\n@media screen and (max-width: 650px) {\n  .spm_profile_ti .ti_stores .ti_stores_progress .ti_stores_level_offset div {\n    font-size: 35px;\n    line-height: 40px;\n  }\n}\n.spm_profile_ti .ti_stores .ti_stores_progress .ti_stores_level_offset span {\n  margin-left: 20px;\n  font-size: 18px;\n  line-height: 22px;\n}\n@media screen and (max-width: 650px) {\n  .spm_profile_ti .ti_stores .ti_stores_progress .ti_stores_level_offset span {\n    font-size: 16px;\n    line-height: 18px;\n  }\n}\n@media screen and (max-width: 440px) {\n  .spm_profile_ti .ti_stores .ti_stores_progress .ti_stores_level_offset {\n    width: 100%;\n    display: flex;\n  }\n}\n.spm_profile_ti .ti_stores .ti_stores_progress .ti_stores_progress_discout {\n  font-weight: bold;\n  font-size: 35px;\n  line-height: 50px;\n  display: flex;\n  justify-content: baseline;\n  align-items: normal;\n  text-transform: uppercase;\n  position: relative;\n  z-index: 2;\n}\n@media screen and (max-width: 900px) {\n  .spm_profile_ti .ti_stores .ti_stores_progress .ti_stores_progress_discout {\n    font-size: 26px;\n  }\n}\n.spm_profile_ti .ti_stores .ti_stores_progress .ti_stores_progress_discout span {\n  display: block;\n  margin-right: 15px;\n}\n@media screen and (max-width: 900px) {\n  .spm_profile_ti .ti_stores .ti_stores_progress .ti_stores_progress_discout span {\n    margin-right: 10px;\n  }\n}\n.spm_profile_ti .ti_stores .ti_stores_progress .ti_stores_progress_icon {\n  width: 45px;\n  height: 45px;\n  display: block;\n  background: url(\"https://sailplays3.cdnvideo.ru/media/assets/assetfile/261dbf9ff19af42f0eccaa91043d57da.svg\") no-repeat center center/28px auto;\n}\n@media screen and (max-width: 900px) {\n  .spm_profile_ti .ti_stores .ti_stores_progress {\n    justify-content: space-around;\n    padding: 0 10px;\n    flex-wrap: wrap;\n  }\n}\n@media screen and (max-width: 650px) {\n  .spm_profile_ti .ti_stores .ti_stores_progress {\n    height: auto;\n    flex-direction: column-reverse;\n    height: auto;\n    padding: 10px 10px 20px;\n  }\n}\n.spm_profile_ti .ti_stores .ti_stores_item {\n  width: 31%;\n  height: 550px;\n  background: #fff;\n  margin-top: 30px;\n  box-sizing: border-box;\n  position: relative;\n  padding: 60px;\n  overflow: hidden;\n  cursor: pointer;\n  text-decoration: none;\n  color: #000;\n}\n@media screen and (max-width: 1170px) {\n  .spm_profile_ti .ti_stores .ti_stores_item {\n    width: 48%;\n  }\n}\n@media screen and (max-width: 900px) {\n  .spm_profile_ti .ti_stores .ti_stores_item {\n    max-width: 400px;\n    width: 100%;\n  }\n}\n@media screen and (max-width: 900px) {\n  .spm_profile_ti .ti_stores .ti_stores_item {\n    padding: 80px 10% 10%;\n  }\n}\n.spm_profile_ti .ti_stores .ti_stores_item .ti_stores_item_discount {\n  position: absolute;\n  display: block;\n  width: 100px;\n  height: 50px;\n  right: 0;\n  top: 35px;\n  font-weight: bold;\n  border-top-left-radius: 70px;\n  border-bottom-left-radius: 70px;\n  background-color: rgba(153,194,228,0.3);\n  color: #485a7b;\n  font-size: 20px;\n  line-height: 54px;\n  text-align: center;\n  opacity: 1;\n  visibility: visible;\n  transition: 0.5s ease;\n  z-index: 2;\n}\n@media screen and (max-width: 440px) {\n  .spm_profile_ti .ti_stores .ti_stores_item {\n    height: auto;\n  }\n}\n.spm_profile_ti .ti_stores .ti_stores_item .ti_stores_item_logo {\n  display: block;\n  width: auto;\n  height: 200px;\n  margin: 0 auto 20px;\n}\n.spm_profile_ti .ti_stores .ti_stores_item .ti_stores_item_name {\n  color: #353149;\n  font-weight: bold;\n  font-size: 24px;\n  text-align: left;\n  opacity: 1;\n  visibility: visible;\n  transition: 0.5s ease;\n}\n.spm_profile_ti .ti_stores .ti_stores_item .ti_stores_item_desc,\n.spm_profile_ti .ti_stores .ti_stores_item .ti_stores_item_text {\n  margin-top: 10px;\n  line-height: 22px;\n  font-size: 16px;\n  text-align: left;\n  opacity: 1;\n  visibility: visible;\n  transition: 0.5s ease;\n}\n.spm_profile_ti .ti_stores .ti_stores_item .ti_stores_item_locked_icon {\n  width: 60px;\n  height: 60px;\n  border-radius: 50%;\n  background: #fff url(\"https://sailplays3.cdnvideo.ru/media/assets/assetfile/261dbf9ff19af42f0eccaa91043d57da.svg\") no-repeat center center/auto 24px;\n  display: block;\n  position: absolute;\n  right: 38px;\n  bottom: 38px;\n  display: none;\n  transition: 0.5s ease;\n}\n.spm_profile_ti .ti_stores .ti_stores_item .ti_stores_item_remain {\n  font-weight: 500;\n  font-size: 35px;\n  opacity: 1;\n  visibility: visible;\n}\n.spm_profile_ti .ti_stores .ti_stores_item .ti_stores_item_hover {\n  opacity: 0;\n  visibility: hidden;\n  transition: 0.5s ease;\n  position: absolute;\n  top: 270px;\n  box-sizing: border-box;\n  padding: 0 60px;\n  width: 100%;\n  left: 0;\n  transform: translateY(50%);\n}\n.spm_profile_ti .ti_stores .ti_stores_item.type_fact {\n  cursor: default;\n}\n.spm_profile_ti .ti_stores .ti_stores_item.type_locked {\n  background: rgba(255,255,255,0.6);\n}\n.spm_profile_ti .ti_stores .ti_stores_item.type_locked .ti_stores_item_locked_icon {\n  display: block;\n}\n.spm_profile_ti .ti_stores .ti_stores_item.type_locked .ti_stores_item_logo,\n.spm_profile_ti .ti_stores .ti_stores_item.type_locked .ti_stores_item_name,\n.spm_profile_ti .ti_stores .ti_stores_item.type_locked .ti_stores_item_desc,\n.spm_profile_ti .ti_stores .ti_stores_item.type_locked .ti_stores_item_discount {\n  opacity: 0.3;\n}\n@media screen and (max-width: 900px) {\n  .spm_profile_ti .ti_stores .ti_stores_item.type_locked {\n    height: 570px;\n  }\n  .spm_profile_ti .ti_stores .ti_stores_item.type_locked .ti_stores_item_name,\n  .spm_profile_ti .ti_stores .ti_stores_item.type_locked .ti_stores_item_name:hover {\n    position: absolute;\n    top: 300px;\n    left: 60px;\n    opacity: 1;\n  }\n  .spm_profile_ti .ti_stores .ti_stores_item.type_locked .ti_stores_item_desc,\n  .spm_profile_ti .ti_stores .ti_stores_item.type_locked .ti_stores_item_discount {\n    opacity: 0;\n    visibility: hidden;\n    transform: translateY(-50%);\n  }\n  .spm_profile_ti .ti_stores .ti_stores_item.type_locked .ti_stores_item_discount {\n    transform: translateX(50%);\n  }\n  .spm_profile_ti .ti_stores .ti_stores_item.type_locked .ti_stores_item_locked_icon {\n    box-shadow: 0 6px 24px 0 rgba(201,86,86,0.3);\n  }\n  .spm_profile_ti .ti_stores .ti_stores_item.type_locked .ti_stores_item_hover {\n    top: 350px;\n    opacity: 1;\n    visibility: hidden;\n    transform: translateY(0);\n  }\n}\n.spm_profile_ti .ti_stores .ti_stores_item.type_locked:hover .ti_stores_item_desc,\n.spm_profile_ti .ti_stores .ti_stores_item.type_locked:hover .ti_stores_item_name,\n.spm_profile_ti .ti_stores .ti_stores_item.type_locked:hover .ti_stores_item_discount {\n  opacity: 0;\n  visibility: hidden;\n  transform: translateY(-50%);\n}\n.spm_profile_ti .ti_stores .ti_stores_item.type_locked:hover .ti_stores_item_discount {\n  transform: translateX(50%);\n}\n.spm_profile_ti .ti_stores .ti_stores_item.type_locked:hover .ti_stores_item_locked_icon {\n  box-shadow: 0 6px 24px 0 rgba(201,86,86,0.3);\n}\n.spm_profile_ti .ti_stores .ti_stores_item.type_locked:hover .ti_stores_item_hover {\n  opacity: 1;\n  visibility: hidden;\n  transform: translateY(0);\n}\n", ""]);
 
 // exports
 

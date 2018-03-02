@@ -15,39 +15,19 @@
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
   <link rel="shortcut icon" href="favicon.png" type="image/png">
 
-  <!--<link rel="stylesheet" href="dist/css/magic.css">-->
-
-  <!--app-->
-  <!-- <script src="dist/dev/sailplay-magic-vendor.js"></script> -->
-  <!-- <script src="dist/dev/sailplay-magic.js"></script> -->
-  <!-- <script src="dist/dev/sailplay-magic-widgets.js"></script> -->
-
-  <!-- prod -->
   <script src="dist/prod/sailplay-magic.js"></script>
 
-  <!-- migrator -->
-  <!-- <script src="dist/migrator/sailplay-magic-migrator.js"></script> -->
-
-
   <style>
-    html {
-      min-height: 100%;
-    }
     body {
-      margin: 0;
-      padding: 0;
-      background: url(https://sailplays3.cdnvideo.ru/media/assets/assetfile/5f4aef279149cccc1d5ee6426d8c81b6.svg) no-repeat center 220px/100% auto, -webkit-linear-gradient(to top, #ff7f4a, #ffb18d 34%, #f2b7cf 67%, #96d0f0 100%) no-repeat center top/100% 100%;
-      background: url(https://sailplays3.cdnvideo.ru/media/assets/assetfile/5f4aef279149cccc1d5ee6426d8c81b6.svg) no-repeat center 220px/100% auto, -moz-linear-gradient(to top, #ff7f4a, #ffb18d 34%, #f2b7cf 67%, #96d0f0 100%) no-repeat center top/100% 100%;
-      background: url(https://sailplays3.cdnvideo.ru/media/assets/assetfile/5f4aef279149cccc1d5ee6426d8c81b6.svg) no-repeat center 220px/100% auto, -o-linear--gradient(to top, #ff7f4a, #ffb18d 34%, #f2b7cf 67%, #96d0f0 100%) no-repeat center top/100% 100%;
-      background: url(https://sailplays3.cdnvideo.ru/media/assets/assetfile/5f4aef279149cccc1d5ee6426d8c81b6.svg) no-repeat center 220px/100% auto, -ms-linear--gradient(to top, #ff7f4a, #ffb18d 34%, #f2b7cf 67%, #96d0f0 100%) no-repeat center top/100% 100%;
-      background: url(https://sailplays3.cdnvideo.ru/media/assets/assetfile/5f4aef279149cccc1d5ee6426d8c81b6.svg) no-repeat center 220px/100% auto, linear-gradient(to top, #ff7f4a, #ffb18d 34%, #f2b7cf 67%, #96d0f0 100%) no-repeat center top/100% 100%;
+        padding: 0;
+        margin: 0;
     }
   </style>
 
 </head>
 
 <body>
-  <div style="height: 180px;"></div>
+  <div></div>
   <sailplay-magic></sailplay-magic>
   <script>
 
@@ -57,7 +37,7 @@
 
       partner_id: params.partner_id || 1,
       dep_id: params.dep_id || '',
-      domain: params.domain || "https://sailplay.net",
+      domain: params.domain || "https://sailplay.ru",
       lang: params.lang || "ru",
       config: params.config || "default",
 

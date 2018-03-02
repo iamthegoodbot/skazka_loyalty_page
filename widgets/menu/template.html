@@ -1,0 +1,29 @@
+<div class="spm_menu clearfix" ng-show="widget.enabled" ng-cloak sailplay-profile>
+    <div class="spm_menu-wrapper">
+
+        <div class="spm_menu-container">
+
+            <div class="spm_menu-list" ng-show="widget.options.items && widget.options.items.length">
+                <a class="spm_menu-item" ng-repeat="item in widget.options.items track by $index" ng-click="$event.preventDefault();onClick(item)">
+                    <i ng-style="{'background-image': ((item.icon || widget.images.menu_icon)|background_image)}"></i>
+                    <span ng-bind="item.label"></span>
+                </a>
+            </div>
+
+            <div class="spm_menu-profile" ng-show="user && user()">
+                <i ng-style="{'background-image': (user().user.avatar['250x250'] | sailplay_pic | background_image)}" ng-click="$parent.active=true"></i>
+                <div class="spm_menu-profile-balance" ng-click="$parent.active=true">
+                    <span class="spm_menu-profile-balance_label" ng-bind="widget.texts.your_balance"></span>
+                    <span class="spm_menu-profile-balance_value" ng-bind="(user().user_points.confirmed|number) + ' ' + (user().user_points.confirmed | sailplay_pluralize:('points.texts.pluralize' | tools))"></span>
+                </div>
+                <div class="spm_menu-profile-dropdown" ng-class="{type_open: $parent.active}">
+                    <a href="#" class="spm_menu-profile-dropdown-item type_mobile" ng-repeat="item in widget.options.items track by $index" ng-bind="item.label" ng-click="$event.preventDefault();onClick(item)"></a>
+                    <a href="#" class="spm_menu-profile-dropdown-item" ng-bind="widget.texts.edit_profile" ng-click="$event.preventDefault();active=false;$root.$broadcast('profile:state', true)"></a>
+                    <a class="spm_menu-profile-dropdown-item" ng-href="{{widget.options.logout}}" ng-bind="widget.texts.logout"></a>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>

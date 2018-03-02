@@ -201,3 +201,165 @@
 }
 
 
+// New part
+
+.spm_form_field {
+  .box-sizing(border-box);
+  margin-bottom: 20px;
+  display: block;
+  width: 100%;
+
+  .spm_form_date {
+    position: relative;
+    z-index: 1;
+
+    &_wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    span {
+      width: 100%;
+      box-sizing: border-box;
+      border: 1px solid rgba(0,0,0,0.2);
+      border-radius: 30px;
+      color: @black;
+      line-height: 25px;
+      display: block;
+      cursor: pointer;
+      box-sizing: border-box;
+      font-size: 14px;
+      font-weight: 500;
+      // padding: 10px 22px;
+      position: relative;
+
+      padding: 10px;
+      text-align: center;
+    }
+
+    &__popup {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0px;
+      right: 0px;
+      z-index: 2;
+      max-height: 100px;
+      overflow-x: hidden;
+      overflow-y: auto;
+      border: 1px solid rgba(0,0,0,0.2);
+      background-color: @white;
+      border-radius: 30px;
+      border-top: none;
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+      flex-direction: column;
+      justify-content: flex-start;
+
+      a {
+        width: 100%;
+        font-size: 14px;
+        box-sizing: border-box;
+        font-weight: 500;
+        padding: 5px 22px;
+        text-decoration: none;
+        color: @black;
+        background: @white;
+      }
+
+    }
+
+    &.type_day {
+      width: 28%;
+      span {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+    }
+
+    &.type_month {
+      width: 44%;
+      span {
+        border-right: none;
+        border-left: none;
+        border-radius: 0;
+      }
+    }
+
+    &.type_year {
+      width: 28%;
+      span {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+      }
+    }
+
+    &.type_active {
+      .spm_form_date__popup {
+        display: flex;
+      }
+      &.type_day {
+        span {
+          border-bottom-left-radius: 0;
+        }
+      }
+      &.type_year {
+        span {
+          border-bottom-right-radius: 0;
+        }
+      }
+    }
+
+    &.type_empty {
+      span {
+        color: rgba(0, 0, 0, 0.4);
+      }
+    }
+
+  }
+
+  .spm_form_label {
+    width: 100%;
+    opacity: 0.4;
+    display: block;
+    color: @black;
+    font-weight: 500;
+    line-height: 25px;
+    font-size: 14px;
+  }
+
+  .spm_form_input {
+    &[type="text"], &[type="email"], &[type="tel"] {
+      color: @black;
+      font-size: 14px;
+      font-weight: 500;
+      padding: 14px 22px;
+      line-height: 1;
+      border: 1px solid rgba(0,0,0,0.2);
+      border-radius: 30px;
+      width: 100%;
+      display: block;
+      outline: none;
+      box-sizing: border-box;
+      -webkit-appearance: none;
+      &.ng-dirty.ng-invalid {
+        border-color: red;
+      }
+      .placeholder({
+        color: rgba(0, 0, 0, 0.4);
+        font-family: inherit;
+      })
+    }
+  }
+
+}
+
+
+form.ng-invalid.ng-submitted {
+  .spm_form_date_wrapper.ng-dirty.ng-invalid .spm_form_date{
+    span{
+      border-color: red;
+    }
+  }
+}

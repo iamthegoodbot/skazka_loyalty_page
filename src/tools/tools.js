@@ -4,9 +4,10 @@ import UIMask from 'angular-ui-mask';
 import Layout from './layout/layout';
 import Widget from './widget/widget';
 import Notifier from './notifier/notifier'
-import MagicModal from './modal/modal';
+import MagicModal from './modal/index';
 import Fonts from './fonts/fonts';
 import DatePicker from './datepicker/datepicker';
+import Pagination from './pagination/index';
 
 export let Tools = angular.module('magic.tools', [
   NgPagination,
@@ -16,7 +17,8 @@ export let Tools = angular.module('magic.tools', [
   Widget,
   Notifier,
   MagicModal,
-  DatePicker
+  DatePicker,
+  Pagination
 ])
 
 .filter('tools', function (MAGIC_CONFIG, $parse) {
@@ -418,6 +420,16 @@ export let Tools = angular.module('magic.tools', [
   };
 }])
 
+.filter('json', function() {
+  return function(text) {
+    let res = {};
+    try {
+      res = JSON.parse(text || '{}');
+    } catch(e) {}
+    return res
+  };
+})
+
 .filter('background_image', function(){
   return function(url) {
     return url && 'url(' + url + ')' || '';
@@ -427,9 +439,11 @@ export let Tools = angular.module('magic.tools', [
 .service('tools', function($document){
 
   let initial_overflow = $document[0].body.style.overflow;
+  let initial_webkit_overflow = $document[0].body.style.WebkitOverflowScrolling || 'auto';
 
   this.body_lock = (state) => {
     $document[0].body.style.overflow = state ? 'hidden' : initial_overflow;
+    $document[0].body.style.WebkitOverflowScrolling = state ? 'touch' : initial_webkit_overflow;
   };
 
   this.stringify_widget_css = (prefix, obj) => {
@@ -472,6 +486,19 @@ export let Tools = angular.module('magic.tools', [
     return css_string;
 
   };
+
+  // https://stackoverflow.com/questions/871399/cross-browser-method-for-detecting-the-scrolltop-of-the-browser-window
+  this.get_scroll_top = () => {
+      if(typeof pageYOffset!= 'undefined'){
+          //most browsers except IE before #9
+          return pageYOffset;
+      } else {
+          var B = document.body; //IE 'quirks'
+          var D = document.documentElement; //IE with doctype
+          D= (D.clientHeight)? D: B;
+          return D.scrollTop;
+      }
+  }
 
 })
 

@@ -147,7 +147,7 @@
 /******/ 	__webpack_require__.oe = function(err) { console.error(err); throw err; };
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 181);
+/******/ 	return __webpack_require__(__webpack_require__.s = 185);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -2243,10 +2243,10 @@ exports.f = __webpack_require__(5) ? Object.defineProperty : function defineProp
 
 /***/ }),
 
-/***/ 181:
+/***/ 185:
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(2);
+__webpack_require__(3);
 __webpack_require__(9);
 __webpack_require__(21);
 __webpack_require__(23);
@@ -2260,65 +2260,6 @@ module.exports = __webpack_require__(15);
 /***/ 2:
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(39);
-module.exports = angular;
-
-
-/***/ }),
-
-/***/ 21:
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__(63);
-module.exports = 'ngTouch';
-
-
-/***/ }),
-
-/***/ 22:
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__(65);
-module.exports = 'angularUtils.directives.dirPagination';
-
-
-/***/ }),
-
-/***/ 23:
-/***/ (function(module, exports, __webpack_require__) {
-
-//https://github.com/angular/angular.js/pull/10732
-
-var angular = __webpack_require__(2);
-var mask = __webpack_require__(66);
-
-module.exports = 'ui.mask';
-
-
-/***/ }),
-
-/***/ 28:
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = { "default": __webpack_require__(29), __esModule: true };
-
-/***/ }),
-
-/***/ 29:
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__(30);
-var $Object = __webpack_require__(4).Object;
-module.exports = function defineProperty(it, key, desc) {
-  return $Object.defineProperty(it, key, desc);
-};
-
-
-/***/ }),
-
-/***/ 3:
-/***/ (function(module, exports, __webpack_require__) {
-
 "use strict";
 
 
@@ -2328,7 +2269,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.Widget = undefined;
 exports.WidgetRegister = WidgetRegister;
 
-var _angular = __webpack_require__(2);
+var _angular = __webpack_require__(3);
 
 var _angular2 = _interopRequireDefault(_angular);
 
@@ -2376,6 +2317,65 @@ function WidgetRegister(config) {
 }
 
 exports.default = Widget.name;
+
+/***/ }),
+
+/***/ 21:
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(63);
+module.exports = 'ngTouch';
+
+
+/***/ }),
+
+/***/ 22:
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(65);
+module.exports = 'angularUtils.directives.dirPagination';
+
+
+/***/ }),
+
+/***/ 23:
+/***/ (function(module, exports, __webpack_require__) {
+
+//https://github.com/angular/angular.js/pull/10732
+
+var angular = __webpack_require__(3);
+var mask = __webpack_require__(66);
+
+module.exports = 'ui.mask';
+
+
+/***/ }),
+
+/***/ 28:
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = { "default": __webpack_require__(29), __esModule: true };
+
+/***/ }),
+
+/***/ 29:
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(30);
+var $Object = __webpack_require__(4).Object;
+module.exports = function defineProperty(it, key, desc) {
+  return $Object.defineProperty(it, key, desc);
+};
+
+
+/***/ }),
+
+/***/ 3:
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(39);
+module.exports = angular;
+
 
 /***/ }),
 

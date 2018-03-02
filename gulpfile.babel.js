@@ -39,10 +39,10 @@ gulp.task('build.migrator', (callback) => {
 gulp.task('watch', () => {
   return Promise.all([
     watch([ paths.src, paths.widgets ], () => {
-      gulp.start('build.magic');
+      gulp.start('deploy.magic');
     }),
     watch([ paths.migrator ], () => {
-      gulp.start('build.migrator');
+      gulp.start('deploy.migrator');
     }),
   ])
 });
