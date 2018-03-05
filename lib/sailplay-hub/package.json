@@ -1,0 +1,19 @@
+{
+    "name": "sailplay-hub",
+    "version": "2.0.30",
+    "description": "Event-based tool for SailPlay Widgets development.Custom copy with some fixes.",
+    "main": "sailplay.hub.js",
+    "contributors": [
+      {
+        "name": "Mikhail Lagutin"
+      },
+      {
+        "name": "Mikhail Gordukov"
+      }
+    ],
+    "devDependencies": {
+      "gulp": "latest",
+      "gulp-uglify": "latest"
+  
+    }
+  }
