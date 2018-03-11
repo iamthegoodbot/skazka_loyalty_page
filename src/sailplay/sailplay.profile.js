@@ -162,6 +162,7 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
           this.required = params.required
           this.input = params.input || 'text';
           this.showLabel = params.showLabel;
+          this.disabled = false;
 
           if (params.data) {
             this.data = params.data;
@@ -234,6 +235,80 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
     return obj
   })
 
+  .factory('mergeByOid' , (SailPlay, SailPlayApi, MAGIC_CONFIG, $q, $rootScope) => {
+    let self = {};
+
+    self.searchCouple = oid => {
+      return $q((resolve, reject) => {
+        SailPlay.send('vars.add', {
+          custom_vars: {},
+          user: {
+            origin_user_id: oid
+          }
+        }, res => {
+          if(res.status=='error') {
+            if(res.status_code==-4000) {
+              reject(res)
+            } else {
+              resolve(res)
+            }
+          }
+        })
+      })
+    }
+
+    self.merge = (oid, email) => {
+      return $q((resolve, reject) => {
+        self.searchCouple(oid).then(res => {
+
+          let vars = {};
+
+          vars[MAGIC_CONFIG.data.users_merge.variable || 'merge_email'] = email
+
+          SailPlay.send('vars.add', {
+            custom_vars: vars,
+            user: {
+              origin_user_id: oid
+            }
+          }, res => {
+            if(res=='error') reject()
+            else {
+
+              SailPlay.send('tags.add', {
+                tags: [MAGIC_CONFIG.data.users_merge.tag],
+                user: {
+                  origin_user_id: oid
+                }
+              }, res => {
+                if(res=='error') reject()
+                else {
+                  setTimeout(() => {
+                    SailPlayApi.call('load.user.info', {all: 1, purchases: 1}, res => {
+
+                      if(res && res.user && res.user.origin_user_id && res.user.origin_user_id == oid) {
+                        resolve();
+                      } else {
+                        reject();
+                      }
+
+                    });
+                  }, MAGIC_CONFIG.data.users_merge.delay || 1000)
+                }
+              });
+
+            }
+          });
+
+          
+
+        }, reject)
+
+      });
+    }
+
+    return self;
+  })
+
   /**
    * @ngdoc directive
    * @name sailplay.profile.directive:sailplayFillProfile
@@ -246,7 +321,7 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
    * This directive extends parent scope with property: sailplay.fill_profile
    *
    */
-  .directive('sailplayFillProfile', function (SailPlay, $rootScope, $q, ipCookie, SailPlayApi, SailPlayFillProfile, $timeout, MAGIC_CONFIG, fillProfileTag) {
+  .directive('sailplayFillProfile', function (SailPlay, $rootScope, $q, ipCookie, SailPlayApi, SailPlayFillProfile, $timeout, MAGIC_CONFIG, fillProfileTag, mergeByOid) {
 
     return {
 
@@ -316,6 +391,7 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
                   case 'addOid':
 
                     form_field.value = user.user.origin_user_id || '';
+                    form_field.disabled = !!form_field.value;
                     break;
 
                   case 'sex':
@@ -439,6 +515,29 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
             req_user.birthDate = bd.reverse().join('-');
           }
 
+          // Check ORIGIN USER ID
+          
+          let ORIGIN_USER_ID = null
+          if(req_user.addOid) {
+            ORIGIN_USER_ID = req_user.addOid;
+            delete req_user.addOid;
+          }
+          function mergeUsers() {
+            if(!!ORIGIN_USER_ID && data_user.email) {
+              mergeByOid.merge(ORIGIN_USER_ID, data_user.email).then(success => {
+                $rootScope.$broadcast('notifier:notify', {
+                  body: MAGIC_CONFIG.data.users_merge.success
+                });
+              }, error => {
+                $rootScope.$broadcast('notifier:notify', {
+                  body: MAGIC_CONFIG.data.users_merge.error
+                });
+              })
+            }
+          }
+          
+
+          // End of check
           SailPlay.send('users.update', req_user, function (user_res) {
 
             if (user_res.status === 'ok') {
@@ -449,6 +548,8 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
                     $rootScope.$broadcast('notifier:notify', {
                     body: res_vars.message
                   });
+                }, res => {
+                  mergeUsers()
                 })
               }
 
@@ -471,10 +572,12 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
                     }
                     if (typeof callback == 'function') callback();
                     SailPlayApi.call('load.user.info', {all: 1, purchases: 1});
+                    mergeUsers()
                   })  
               } else {
                 if (typeof callback == 'function') callback();
                 SailPlayApi.call('load.user.info', {all: 1, purchases: 1});
+                mergeUsers()
               }
 
             } else {
@@ -490,6 +593,7 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
                 body: user_res.message
               });
 
+              mergeUsers();
               scope.$apply();
 
             }

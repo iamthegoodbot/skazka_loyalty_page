@@ -422,10 +422,10 @@ export let Tools = angular.module('magic.tools', [
   this.body_lock = (state) => {
     if(state) {
       initial_overflow = $document[0].body.style.overflow;
-      document.querySelector('.page_header').style['z-index'] = -10
+      // document.querySelector('.page_header').style['z-index'] = -10
       $document[0].body.style.overflow = 'hidden'
     } else {
-      document.querySelector('.page_header').style['z-index'] = ''
+      // document.querySelector('.page_header').style['z-index'] = ''
       $document[0].body.style.overflow = initial_overflow
     }
     
