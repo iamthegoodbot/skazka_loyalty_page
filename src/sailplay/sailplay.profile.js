@@ -248,7 +248,9 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
         }, res => {
           if(res.status=='error') {
             if(res.status_code==-4000) {
-              reject(res)
+              setTimeout(() => {
+                reject(res);
+              }, MAGIC_CONFIG.data.users_merge.delay || 1000)
             } else {
               resolve(res)
             }
