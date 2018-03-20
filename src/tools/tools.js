@@ -38,7 +38,10 @@ export let Tools = angular.module('magic.tools', [
 
 .config(['uiMask.ConfigProvider', function (uiMaskConfigProvider) {
   uiMaskConfigProvider.maskDefinitions({'_': /[0-9]/});
-  uiMaskConfigProvider.addDefaultPlaceholder(true);
+  uiMaskConfigProvider.clearOnBlur(true);
+  uiMaskConfigProvider.addDefaultPlaceholder(false);
+  uiMaskConfigProvider.clearOnBlurPlaceholder(true);
+  // uiMaskConfigProvider.eventsToHandle([null, null, null, 'focus']);
 }])
 
 .directive('overlayClick', function(){
@@ -680,10 +683,6 @@ export let Tools = angular.module('magic.tools', [
 
       default:
         return tel;
-    }
-
-    if (country == 1) {
-      country = "";
     }
 
     number = number.slice(0, 3) + '-' + number.slice(3,5) + '-' + number.slice(5);

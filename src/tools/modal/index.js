@@ -11,7 +11,9 @@ export let Modal = angular.module('magic.tools.modal', [])
     replace: true,
     template: Template,
     scope: {
-      config: '=?'
+      config: '=?',
+      onClose: '=?',
+      preventClose: '=?'
     },
     transclude: {
       'title': '?magicModalTitle',
@@ -25,7 +27,8 @@ export let Modal = angular.module('magic.tools.modal', [])
 
       scope.close = function(){
         $parse(attrs.show).assign(scope.$parent, false);
-        scope.$eval(attrs.onClose);
+        // scope.$eval(attrs.onClose);
+        scope.onClose && scope.onClose();
       };
 
       elm.on('click', function(e){

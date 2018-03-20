@@ -10,6 +10,7 @@ import { WidgetRegister } from '@core/widget'
 // import NgLocale from 'angular-i18n';
 
 import './theme/theme.less';
+import './theme/bootstrap.scss';
 
 export let magic = angular.module('magic', [SailPlay, core, Cookies, Tools, NgTouch])
 

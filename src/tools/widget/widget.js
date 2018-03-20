@@ -4,7 +4,7 @@ import './widget.less';
 
 export let Widget = angular.module('magic.tools.widget', [])
 
-.directive('widget', function ($compile, MagicWidget, $injector) {
+.directive('widget', function ($compile, MagicWidget, $injector, $templateRequest, $http) {
   return {
     restrict: 'E',
     replace: true,
@@ -31,12 +31,50 @@ export let Widget = angular.module('magic.tools.widget', [])
         let widget_scope = scope.$new();
 
         widget_scope.widget = widget;
+ 
+        function ResolveTemplate(){
+          return new Promise((resolve, reject) => {
+            if(scope.widget.customize && scope.widget.customize.templateUrl) {
+              $templateRequest(scope.widget.customize.templateUrl).then(resolve, reject);
+            } else {
+              resolve(WIDGET_CONFIG.template)
+            }
+          })
+        }
 
-        WIDGET_CONFIG.controller.$inject = WIDGET_CONFIG.inject || [];
+        function ResolveController(){
+          return new Promise((resolve, reject) => {
+            if(scope.widget.customize && scope.widget.customize.controllerUrl) {
+              $http.get(scope.widget.customize.controllerUrl).then(res => {
+                let remoteCtrl;
+                try {
+                  remoteCtrl = eval(res.data);
+                } catch(e) {
+                  console.log('Wrong customize controller');
+                }
+                if(!remoteCtrl) return reject();
+                WIDGET_CONFIG.controller.$inject = remoteCtrl.inject || [];
+                resolve(remoteCtrl.controller)
+              }, reject);
+            } else {
+              WIDGET_CONFIG.controller.$inject = WIDGET_CONFIG.inject || [];
+              resolve(WIDGET_CONFIG.controller)
+            }
+          })
+        }
 
-        $injector.invoke(WIDGET_CONFIG.controller)(widget_scope, widget_wrapper, attrs);
+        async function ResolveWidget() {
+          const getTemplate = await ResolveTemplate();
+          const getController = await ResolveController();
+          try {
+            widget_wrapper.append($compile(getTemplate)(widget_scope));
+            $injector.invoke(getController)(widget_scope, widget_wrapper, attrs);
+          } catch(e) {
+            console.log('ResolveWidget issue', e)
+          }
+        }
 
-        widget_wrapper.append($compile(WIDGET_CONFIG.template)(widget_scope));
+        return ResolveWidget()
 
       })
 

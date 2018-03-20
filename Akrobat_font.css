@@ -1,0 +1,55 @@
+@font-face {
+    font-family: 'Akrobat';
+    src: url('https://sailplays3.cdnvideo.ru/media/assets/assetfile/b3957be6e579dc57bae535cc14004e81.eot');
+    src: local('Akrobat Regular'), local('Akrobat-Regular'),
+    url('https://sailplays3.cdnvideo.ru/media/assets/assetfile/b3957be6e579dc57bae535cc14004e81.eot?#iefix') format('embedded-opentype'),
+    url('https://sailplays3.cdnvideo.ru/media/assets/assetfile/9d0e5d11db22c09b58759141b6bc7ae5.woff') format('woff'),
+    url('https://sailplays3.cdnvideo.ru/media/assets/assetfile/287808e528c6888b61850d01638326ff.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+}
+
+
+@font-face {
+    font-family: 'Akrobat';
+    src: url('https://sailplays3.cdnvideo.ru/media/assets/assetfile/242d060551dd91e64e922a23e8cfec70.eot');
+    src: local('Akrobat Light'), local('Akrobat-Light'),
+    url('https://sailplays3.cdnvideo.ru/media/assets/assetfile/242d060551dd91e64e922a23e8cfec70.eot?#iefix') format('embedded-opentype'),
+    url('https://sailplays3.cdnvideo.ru/media/assets/assetfile/84f089633412c378068c2a8c28bb6923.woff') format('woff'),
+    url('https://sailplays3.cdnvideo.ru/media/assets/assetfile/c54824c73cd4948af9e77b0e9f9b5816.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Akrobat';
+    src: url('https://sailplays3.cdnvideo.ru/media/assets/assetfile/24e249657241d826e6e5943fe1298a28.eot');
+    src: local('Akrobat Black'), local('Akrobat-Black'),
+    url('https://sailplays3.cdnvideo.ru/media/assets/assetfile/24e249657241d826e6e5943fe1298a28.eot?#iefix') format('embedded-opentype'),
+    url('https://sailplays3.cdnvideo.ru/media/assets/assetfile/377dc4d3ceaa729bbd90dcb6b0d03f62.woff') format('woff'),
+    url('https://sailplays3.cdnvideo.ru/media/assets/assetfile/0a01be0a8c1bfaad7315adf8aae9fcf1.ttf') format('truetype');
+    font-weight: 900;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Akrobat';
+    src: url('https://sailplays3.cdnvideo.ru/media/assets/assetfile/7d8c5f5f2f5f6cd095ceb9fa2727d830.eot');
+    src: local('Akrobat Bold'), local('Akrobat-Bold'),
+    url('https://sailplays3.cdnvideo.ru/media/assets/assetfile/7d8c5f5f2f5f6cd095ceb9fa2727d830.eot?#iefix') format('embedded-opentype'),
+    url('https://sailplays3.cdnvideo.ru/media/assets/assetfile/77bc1b7c38667e8c8f78817966b89e73.woff') format('woff'),
+    url('https://sailplays3.cdnvideo.ru/media/assets/assetfile/46a96c6a4f009d802e8c0bc34163b0a8.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Akrobat';
+    src: url('https://sailplays3.cdnvideo.ru/media/assets/assetfile/938e6c9826be10a4ed68fede014d928c.eot');
+    src: local('Akrobat Thin'), local('Akrobat-Thin'),
+    url('https://sailplays3.cdnvideo.ru/media/assets/assetfile/938e6c9826be10a4ed68fede014d928c.eot?#iefix') format('embedded-opentype'),
+    url('https://sailplays3.cdnvideo.ru/media/assets/assetfile/ff0c253b6f5d48f9fc480d0835006e93.woff') format('woff'),
+    url('https://sailplays3.cdnvideo.ru/media/assets/assetfile/7462e9bb72be75c65604e468be0d2193.ttf') format('truetype');
+    font-weight: 100;
+    font-style: normal;
+}

@@ -1,0 +1,14 @@
+<div class="clearfix">
+    <div class="bon_item_main clearfix" ng-show="line.length">
+        <div class="bon_slide_cat_item_wrap" magic-gallery>
+            <div class="bon_slide_cat_item">
+                <div class="bon_item_line" ng-style="{left : left}">
+
+                    <sailplay-magic-badge magic-slide badge="badge" on-click="badge_select(badge);"
+                                          ng-repeat="badge in line" ng-class="{ last: $last, type_active: badge.is_received }"></sailplay-magic-badge>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

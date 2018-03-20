@@ -279,7 +279,7 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
           console.error('Provide fill_profile_config');
         }
 
-        var saved_form = false;
+        var saved_form = {};
 
         SailPlayApi.observe('load.user.info', user => {
           if (!user) return;
@@ -324,7 +324,7 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
                     break;
 
                   case 'addPhone':
-                    form_field.value = !!user.user.phone && user.user.phone.slice(1) || '';
+                    form_field.value = user.user.phone || '';
                     break;
 
                   case 'addEmail':
@@ -486,9 +486,26 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
             delete req_user.birthDate;
           }
 
+
+          // Check to the fill profile action (only system field)
+          let fill_profile_flag = false;
+          let required_fields = scope.sailplay.fill_profile.form.fields.filter(item => (item.required && item.type=='system'));
+          if(required_fields.length == Object.keys(req_user).length) {
+            fill_profile_flag = true
+          }
+          console.log('fill_profile_flag',fill_profile_flag)
+          console.log('req_user', req_user)
+          console.log('required_fields',required_fields)
+
+
+
           SailPlay.send('users.update', req_user, function (user_res) {
 
             if (user_res.status === 'ok') {
+
+              if(fill_profile_flag) {
+                SailPlay.send('tags.add', {tags: [MAGIC_CONFIG.data.FILL_PROFILE_TAG]})
+              }
 
               if (Object.keys(custom_user_vars).length) {
                 SailPlay.send('vars.add', {custom_vars: custom_user_vars}, (res_vars) => {

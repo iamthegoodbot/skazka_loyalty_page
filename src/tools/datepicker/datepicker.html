@@ -7,10 +7,10 @@
     </div>
   </div>
 
-  <div class="spm_form_date type_month" ng-class="{type_active: focused=='month', type_empty: !date.months[model[1]]}">
-    <span ng-bind="date.months[model[1]] || date.placeholder.month" ng-click="focused=focused=='month'?false:'month'"></span>
+  <div class="spm_form_date type_month" ng-class="{type_active: focused=='month', type_empty: !months[model[1]]}">
+    <span ng-bind="months[model[1]] || date.placeholder.month" ng-click="focused=focused=='month'?false:'month'"></span>
     <div class="spm_form_date__popup">
-      <a href="#" ng-repeat="(key, value) in date.months track by $index" ng-bind="value" ng-click="$event.preventDefault();model[1] = +key;"></a>
+      <a href="#" ng-repeat="(key, value) in months track by $index" ng-bind="value" ng-click="$event.preventDefault();model[1] = +key;"></a>
     </div>
   </div>
 

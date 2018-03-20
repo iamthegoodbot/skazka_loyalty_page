@@ -85,7 +85,7 @@
       overflow-x: hidden;
       overflow-y: auto;
       background-color: @white;
-      border-radius: 0 0 3px 3px;
+      border-radius: 0 0 5px 5px;
       border: 1px solid @main_light;
       text-align: center;
 
@@ -203,15 +203,32 @@
 
 // New part
 
+.spm_form_buttons {
+  text-align: center;
+  margin-top: 50px;
+  .spm_btn {
+    min-width: 150px;
+    margin-right: 26px;
+    display: inline-block;
+    margin-top: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+}
+
 .spm_form_field {
   .box-sizing(border-box);
   margin-bottom: 20px;
   display: block;
   width: 100%;
+  position: relative;
 
   .spm_form_date {
     position: relative;
-    z-index: 1;
+    z-index: 3;
 
     &_wrapper {
       display: flex;
@@ -223,7 +240,7 @@
       width: 100%;
       box-sizing: border-box;
       border: 1px solid rgba(0,0,0,0.2);
-      border-radius: 30px;
+      border-radius: 0;
       color: @black;
       line-height: 25px;
       display: block;
@@ -234,7 +251,7 @@
       // padding: 10px 22px;
       position: relative;
 
-      padding: 10px;
+      padding: 12px;
       text-align: center;
     }
 
@@ -250,10 +267,8 @@
       overflow-y: auto;
       border: 1px solid rgba(0,0,0,0.2);
       background-color: @white;
-      border-radius: 30px;
+      border-radius: 0;
       border-top: none;
-      border-top-left-radius: 0;
-      border-top-right-radius: 0;
       flex-direction: column;
       justify-content: flex-start;
 
@@ -265,6 +280,7 @@
         padding: 5px 22px;
         text-decoration: none;
         color: @black;
+        text-align: center;
         background: @white;
       }
 
@@ -325,26 +341,86 @@
     display: block;
     color: @black;
     font-weight: 500;
-    line-height: 25px;
-    font-size: 14px;
+    font-size: 16px;
+
+    &.type_absolute {
+      transition: 0.3s ease-out;
+      .transition(0.3s ease-out);
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      margin: auto;
+      left: 0;
+      padding: 17px 22px;
+      height: auto;
+      line-height: 1;
+      z-index: 1;
+    }
+  }
+
+  .spm_form_select {
+    color: @black;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 15px 20px;
+    line-height: 1;
+    border: 1px solid rgba(0,0,0,0.2);
+    width: 100%;
+    display: block;
+    outline: none;
+    box-sizing: border-box;
+    -webkit-appearance: none;
+    background: transparent;
+    position: relative;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+    z-index: 2;
+    transition: 0.3s ease-out;
+    .transition(0.3s ease-out);
+    &.ng-dirty.ng-invalid {
+      border-color: red;
+    }
+    &.ng-not-empty {
+      padding: 25px 20px 8px;
+      & + .spm_form_label {
+        font-size: 14px;
+        padding: 9px 20px;
+      }
+    }
+    .placeholder({
+      color: rgba(0, 0, 0, 0.4);
+      font-family: inherit;
+    })
   }
 
   .spm_form_input {
-    &[type="text"], &[type="email"], &[type="tel"] {
+     &[type="text"], &[type="email"], &[type="tel"] {
       color: @black;
-      font-size: 14px;
+      font-size: 16px;
       font-weight: 500;
-      padding: 14px 22px;
+      padding: 15px 20px;
       line-height: 1;
       border: 1px solid rgba(0,0,0,0.2);
-      border-radius: 30px;
       width: 100%;
       display: block;
       outline: none;
       box-sizing: border-box;
       -webkit-appearance: none;
+      background: transparent;
+      position: relative;
+      z-index: 2;
+      transition: 0.3s ease-out;
+      .transition(0.3s ease-out);
       &.ng-dirty.ng-invalid {
         border-color: red;
+      }
+      &:focus, &.ng-not-empty {
+        padding: 24px 20px 6px;
+        & + .spm_form_label {
+          font-size: 14px;
+          padding: 9px 20px;
+        }
       }
       .placeholder({
         color: rgba(0, 0, 0, 0.4);

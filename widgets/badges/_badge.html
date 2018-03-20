@@ -1,0 +1,9 @@
+<div class="badge">
+    <div class="badge_iner" ng-click="on_click(badge)">
+        <div class="badge_pic">
+        <img ng-src="{{ (badge.is_received ? badge.thumbs.url_250x250 : badge.thumbs.url_gs) | sailplay_pic }}" alt="{{ badge.name }}">
+        </div>
+        <span class="badge_name" ng-bind="badge.name"></span>
+    </div>
+    <div class="badge_arrow"></div>
+</div>

@@ -1,0 +1,19 @@
+$theme-colors: (
+        primary: #ca5b54
+);
+@import '~bootstrap/scss/bootstrap';
+
+.spm_wrapper {
+
+  .font-akrobat {
+    font-family: 'Akrobat';
+  }
+
+  .font-weight-bolder {
+    font-weight: 900;
+  }
+
+  .cursor-pointer {
+    cursor: pointer;
+  }
+}

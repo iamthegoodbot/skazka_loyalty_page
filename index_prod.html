@@ -6,14 +6,14 @@
 <html class="no-js"> <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>SailPlay MAGIC!</title>
+  <title>SailPlay MAGIC TEST!</title>
   <meta name="description" content="SailPlay Magic!">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-  <link rel="shortcut icon" href="favicon.png" type="image/png">
+  <link type="image/x-icon" href="favicon.ico" rel="shortcut icon">
+  <link type="image/png" href="favicon.png" rel="shortcut icon">
 
-  <script src="dist/prod/sailplay-magic.js"></script>
+  <script src="bundle.loader.js"></script>
   <style>
     body {
       margin: 0;
@@ -27,19 +27,17 @@
   <sailplay-magic></sailplay-magic>
   <script>
 
-    console.log(SAILPLAY.MagicMigrator);
-
-    var params = SAILPLAY.url_params();
-
-    var magic = new SAILPLAY.Magic({
-
-      partner_id: params.partner_id || 1,
-      dep_id: params.dep_id || '',
-      domain: params.domain || "https://sailplay.net",
-      lang:  params.lang || "en",
-      config: params.config || "default"
-
-    });
+   document.addEventListener('DOMContentLoaded', function(){
+     
+    var options = {
+      partner_id: 231,
+      domain: '//dev1.sailplay.ru',
+      lang: 'en',
+      config_name: 'cfd'
+    }
+    window.LoyaltyPage = new SPBundleLoader(options);
+     
+   })
 
   </script>
 

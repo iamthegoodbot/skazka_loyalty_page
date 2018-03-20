@@ -33,7 +33,7 @@ export let ToolsDatepicker = angular
     return this;
   })
 
-  .directive("datePicker", function(dateService, $rootScope) {
+  .directive("datePicker", ['$locale', 'dateService', '$rootScope', function($locale, dateService, $rootScope) {
     return {
       restrict: "E",
       replace: true,
@@ -45,6 +45,7 @@ export let ToolsDatepicker = angular
         scope.days = dateService.days;
         scope.years = dateService.years;
         scope.focused = false;
+        scope.months = $locale.DATETIME_FORMATS.MONTH;
 
         scope.range = function(start, end) {
           var result = [];
@@ -103,6 +104,6 @@ export let ToolsDatepicker = angular
 
       }
     };
-  });
+  }]);
 
 export default ToolsDatepicker.name;
