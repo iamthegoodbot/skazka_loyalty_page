@@ -1,28 +1,29 @@
-import { Widget } from '@core/widget';
-import Template from './template.html';
-import BadgeTemplate from './_badge.html';
-import LineTemplate from './_line.html';
-import './style.less';
+import { WidgetRegister, Widget } from '@core/widget';
+import BadgesWidgetTemplate from './badges.html';
+import BadgesBadgeTemplate from './badges.badge.html';
+import BadgesLineTemplate from './badges.line.html';
+import './badges.less';
 
-const widget = {
-  id: 'bootstrap.badges',
-  template: Template,
-  inject: ['$rootScope', 'SailPlay', 'SailPlayApi', 'MAGIC_CONFIG'],
-  controller($rootScope, SailPlay, SailPlayApi, MAGIC_CONFIG) {
+WidgetRegister({
+  id: 'badges',
+  template: BadgesWidgetTemplate,
+  controller: () => {
     return (scope, elm, attrs) => {
 
-    };
+    }
   }
-};
+});
 
-Widget.directive('sailplayMagicBootstrapBadge', function(MAGIC_CONFIG, tools){
+Widget.directive('sailplayMagicBadge', function(MAGIC_CONFIG, tools){
+
   return {
-    restrict: 'E',
+
+    restrict: "E",
     replace: true,
     scope: {
       badge: '='
     },
-    template: BadgeTemplate,
+    template: BadgesBadgeTemplate,
     link: function(scope, elm, attrs){
 
       scope._tools = MAGIC_CONFIG.tools;
@@ -32,18 +33,22 @@ Widget.directive('sailplayMagicBootstrapBadge', function(MAGIC_CONFIG, tools){
       }
 
     }
-  }
+
+  };
+
 });
 
-Widget.directive('sailplayMagicBootstrapBadgeLine', function(MAGIC_CONFIG, SailPlayShare, $window){
+Widget.directive('sailplayMagicBadgeLine', function(MAGIC_CONFIG, SailPlayShare, $window){
+
   return {
-    restrict: 'E',
+
+    restrict: "E",
     replace: true,
     scope: {
       line: '=',
       _config: '=config'
     },
-    template: LineTemplate,
+    template: BadgesLineTemplate,
     link: function(scope, elm, attrs){
 
       scope._tools = MAGIC_CONFIG.tools;
@@ -51,7 +56,6 @@ Widget.directive('sailplayMagicBootstrapBadgeLine', function(MAGIC_CONFIG, SailP
       scope.badge_selected = false;
 
       scope.badge_select = function (badge) {
-        return;
         scope.badge_selected = badge || false;
       };
 
@@ -61,9 +65,6 @@ Widget.directive('sailplayMagicBootstrapBadgeLine', function(MAGIC_CONFIG, SailP
 
     }
 
-  }
-});
+  };
 
-Widget.config(MagicWidgetProvider => {
-  MagicWidgetProvider.register(widget);
 });

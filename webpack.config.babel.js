@@ -29,7 +29,7 @@ const get_file_list = (dir, filelist = []) => {
 };
 
 let widgets = get_file_list('./widgets/').filter((file) => {
-  console.log(file);
+  // console.log(file);
   return file.match(/.*\.js$/);
 }).map((file) => {
   return './' + file;

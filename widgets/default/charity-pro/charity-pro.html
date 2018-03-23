@@ -1,0 +1,120 @@
+<div class="sp_cp-widget container clearfix">
+
+    <div class="sp_cp-widget__wrap clearfix">
+
+        <div class="sp_cp-widget__left" data-ng-show="user && user()">
+
+            <a class="sp_cp-widget__btn sp_cp-widget__search-btn button_primary"
+               data-ng-bind="widget.texts.button_search"
+               data-ng-if="show_search_link && widget.options.search_link"
+               data-ng-href="{{ widget.options.search_link }}" target="_blank"></a>
+
+            <a href="#" class="sp_cp-widget__btn sp_cp-widget__form-btn button_primary"
+               data-ng-bind="widget.texts.button_subscriptions"
+               data-ng-if="widget.options.subscriptions_link"
+               data-ng-href="{{ widget.options.subscriptions_link }}" target="_blank"></a>
+
+
+            <a href="#" class="sp_cp-widget__btn sp_cp-widget__form-btn button_primary"
+               data-ng-bind="widget.texts.button_form"
+               data-ng-if="show_request_charity"
+               data-ng-click="$event.preventDefault();$parent.show_form=true;"></a>
+
+
+            <a href="#" class="sp_cp-widget__btn sp_cp-widget__form-btn button_primary"
+               data-ng-if="widget.options.payments_link"
+               data-ng-bind="widget.texts.button_payments"
+               data-ng-href="{{ widget.options.payments_link }}" target="_blank"></a>
+
+        </div>
+
+        <div class="sp_cp-widget__right" data-ng-show="user && user()">
+
+            <select class="sp_cp-widget__select" data-ng-model="charity"
+                    data-ng-disabled="disabled"
+                    data-ng-change="charity_change()"
+                    data-ng-options="item.tag as item.name for item in widget.options.charities">
+                <option value="" disabled selected ng-hide="charity"
+                        data-ng-bind="widget.texts.select_charity"></option>
+            </select>
+
+        </div>
+
+    </div>
+
+    <magic-modal class="sp_cp-widget__form" data-show="show_form">
+
+        <div class="sp_cp-widget__form-header" data-ng-bind="widget.texts.request_charity_header"></div>
+
+        <div class="sp_cp-widget__invalid-fields" data-ng-if="!form">Invalid form fields</div>
+
+        <form name="request_charity" data-ng-submit="charity_form_submit(request_charity)" data-ng-show="form">
+
+            <div class="form_field" data-ng-repeat="field in form"
+                 data-ng-class="{type_full: field.full_width}"
+                 data-ng-switch="field.input">
+
+                <div data-ng-switch-when="image" class="avatar_upload clearfix">
+                    <img width="160px"
+                         data-ng-src="{{ (field.value | sailplay_pic) || 'http://saike.ru/sailplay-magic/dist/img/profile/avatar_default.png'}}"
+                         alt="">
+                </div>
+
+                <div data-ng-switch-when="textarea" class="clearfix">
+                    <label class="form_label" data-ng-bind-html="field.label | to_trusted"></label>
+                    <textarea class="form_textarea" placeholder="{{ field.placeholder }}"
+                              data-ng-required="field.required" data-ng-model="field.value"></textarea>
+                </div>
+
+                <div data-ng-switch-when="text" class="clearfix">
+                    <label class="form_label" data-ng-bind-html="field.label | to_trusted"></label>
+                    <input class="form_input" type="text" placeholder="{{ field.placeholder }}"
+                           data-ng-required="field.required" data-ng-model="field.value">
+                </div>
+
+                <div data-ng-switch-when="phone" class="clearfix">
+                    <label class="form_label" data-ng-bind-html="field.label | to_trusted"></label>
+                    <input class="form_input" type="text" data-ui-mask="{{ field.placeholder }}"
+                           data-model-view-value="true"
+                           data-ng-required="field.required" data-ng-model="field.value">
+                </div>
+
+                <div data-ng-switch-when="date" class="clearfix">
+                    <label class="form_label" data-ng-bind-html="field.label | to_trusted"></label>
+                    <date-picker data-model="field.value"></date-picker>
+                </div>
+
+                <div data-ng-switch-when="select" class="clearfix">
+                    <label class="form_label" data-ng-bind-html="field.label | to_trusted"></label>
+                    <div class="magic_select form_input">
+                        <select data-ng-model="field.value"
+                                data-ng-required="field.required"
+                                data-ng-options="item.value as item.text for item in field.data"></select>
+                    </div>
+                </div>
+
+                <div data-ng-switch-when="email" class="clearfix">
+                    <label class="form_label" data-ng-bind-html="field.label | to_trusted"></label>
+                    <input class="form_input" type="email" placeholder="{{ field.placeholder }}"
+                           data-ng-required="field.required" data-ng-model="field.value">
+                </div>
+
+            </div>
+
+            <div class="sp_cp-widget__form-submit_wrapper clearfix">
+
+                <button type="submit" class="sp_btn button_primary sp_cp-widget__form-submit_button"
+                        data-ng-bind="widget.texts.request_charity_submit"></button>
+
+                <button type="button" class="sp_btn button_primary sp_cp-widget__form-back_button"
+                        data-ng-bind="widget.texts.request_charity_back"
+                        data-ng-click="charity_form_close(request_charity);"></button>
+
+            </div>
+
+        </form>
+
+    </magic-modal>
+
+
+</div>
