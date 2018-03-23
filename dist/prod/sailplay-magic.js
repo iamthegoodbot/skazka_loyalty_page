@@ -45206,7 +45206,7 @@ __webpack_require__(152);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var widget = {
-  id: 'badges',
+  id: 'bootstrap.badges',
   template: _template2.default,
   inject: ['$rootScope', 'SailPlay', 'SailPlayApi', 'MAGIC_CONFIG'],
   controller: function controller($rootScope, SailPlay, SailPlayApi, MAGIC_CONFIG) {
@@ -45346,7 +45346,7 @@ __webpack_require__(156);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var widget = {
-  id: "gifts",
+  id: "bootstrap.gifts",
   template: _template2.default,
   inject: ["$rootScope", "SailPlay", "SailPlayApi", "MAGIC_CONFIG"],
   controller: function controller($rootScope, SailPlay, SailPlayApi, MAGIC_CONFIG) {
@@ -45462,7 +45462,7 @@ __webpack_require__(160);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var widget = {
-  id: "menu",
+  id: "bootstrap.menu",
   template: _template2.default,
   inject: ["$rootScope", "SailPlay", "SailPlayApi", "tools"],
   controller: function controller($rootScope, SailPlay, SailPlayApi, tools) {
@@ -45572,7 +45572,7 @@ __webpack_require__(164);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var widget = {
-  id: "profile",
+  id: "bootstrap.profile",
   template: _template2.default,
   inject: ["$rootScope", "SailPlay", "SailPlayApi", "MAGIC_CONFIG"],
   controller: function controller($rootScope, SailPlay, SailPlayApi, MAGIC_CONFIG) {
@@ -45683,7 +45683,7 @@ __webpack_require__(168);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var widget = {
-  id: "quests",
+  id: "bootstrap.quests",
   template: _template2.default,
   inject: ["$rootScope", "SailPlay", "SailPlayApi", "tools"],
   controller: function controller($rootScope, SailPlay, SailPlayApi, tools) {
@@ -45776,7 +45776,7 @@ __webpack_require__(172);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var widget = {
-  id: "status-bar",
+  id: "bootstrap.status-bar",
   template: _template2.default,
   inject: ["$rootScope", "SailPlay", "SailPlayApi", "MAGIC_CONFIG", '$interpolate'],
   controller: function controller($rootScope, SailPlay, SailPlayApi, MAGIC_CONFIG, $interpolate) {

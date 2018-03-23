@@ -3,7 +3,7 @@ import Template from "./template.html";
 import "./style.less";
 
 const widget = {
-  id: "status-bar",
+  id: "bootstrap.status-bar",
   template: Template,
   inject: ["$rootScope", "SailPlay", "SailPlayApi", "MAGIC_CONFIG", '$interpolate'],
   controller($rootScope, SailPlay, SailPlayApi, MAGIC_CONFIG, $interpolate) {

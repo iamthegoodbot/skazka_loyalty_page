@@ -5,7 +5,7 @@ import LineTemplate from './_line.html';
 import './style.less';
 
 const widget = {
-  id: 'badges',
+  id: 'bootstrap.badges',
   template: Template,
   inject: ['$rootScope', 'SailPlay', 'SailPlayApi', 'MAGIC_CONFIG'],
   controller($rootScope, SailPlay, SailPlayApi, MAGIC_CONFIG) {

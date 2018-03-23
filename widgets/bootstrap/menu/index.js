@@ -3,7 +3,7 @@ import Template from "./template.html";
 import "./style.less";
 
 const widget = {
-  id: "menu",
+  id: "bootstrap.menu",
   template: Template,
   inject: ["$rootScope", "SailPlay", "SailPlayApi", "tools"],
   controller($rootScope, SailPlay, SailPlayApi, tools) {
