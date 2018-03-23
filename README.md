@@ -44,3 +44,16 @@ Then, place this code to any place in your page:
 
   </script>
 ```
+
+## DEV
+
+install/update dependencies:
+```shell
+    npm run bundle
+```
+
+for development, start webpack server:
+
+```shell
+    npm run dev    
+```
