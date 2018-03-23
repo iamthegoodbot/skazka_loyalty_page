@@ -6,7 +6,8 @@
   "license": "ISC",
   "main": "./dist/prod/sailplay-magic.js",
   "scripts": {
-    "bundle": "rm -rf node_modules/ && npm install"
+    "bundle": "rm -rf node_modules/ && npm install",
+    "dev": "./node_modules/.bin/gulp"
   },
   "dependencies": {
     "angular": "latest",

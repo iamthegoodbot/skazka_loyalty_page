@@ -25,6 +25,7 @@ export let magic = angular.module('magic', [SailPlay, core, Cookies, Tools, NgTo
         background: 'transparent'
       });
 
+
     }
 
     //apply data from config

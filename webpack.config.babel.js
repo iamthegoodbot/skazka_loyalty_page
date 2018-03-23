@@ -29,6 +29,7 @@ const get_file_list = (dir, filelist = []) => {
 };
 
 let widgets = get_file_list('./widgets/').filter((file) => {
+  console.log(file);
   return file.match(/.*\.js$/);
 }).map((file) => {
   return './' + file;
@@ -131,7 +132,8 @@ let loaders = [
 
 let resolve = {
   alias: {
-    "@core": path.join(__dirname, 'src', 'core')
+    "@core": path.join(__dirname, 'src', 'core'),
+    "@theme": path.join(__dirname, 'src', 'theme')
   }
 };
 
