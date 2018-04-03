@@ -2,7 +2,7 @@
 
     <div class="spm_badges-container__left">
         <div class="spm_badges-header" ng-bind="widget.texts.header"></div>
-        <div class="spm_badges-sub-header" ng-bind="widget.texts.sub_header"></div>
+        <div class="spm_badges-sub-header" ng-bind-html="widget.texts.sub_header | to_trusted"></div>
     </div>
 
     <div class="spm_badges-container__right spm_badges-list">

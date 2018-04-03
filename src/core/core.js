@@ -9,7 +9,7 @@ export let Core = angular.module('magic.core', [
 
 .run(function(SailPlay, SailPlayApi, $rootScope, $window, MAGIC_CONFIG, $timeout, QuizService, $locale){
 
-  $locale.NUMBER_FORMATS.GROUP_SEP = " ";
+  $locale.NUMBER_FORMATS.GROUP_SEP = ",";
   $locale.NUMBER_FORMATS.DECIMAL_SEP = ".";
   
   //we need global template reference for config

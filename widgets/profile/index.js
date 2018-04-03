@@ -12,7 +12,13 @@ const widget = {
       scope.show_profile = false;
       scope.show_status = false;
       scope.show_info = false;
+      scope.show_text = false;
       scope.lock_profile = false;
+      scope.menu_active = false;
+
+      $rootScope.$on("text:state", (e, state) => {
+        scope.show_text = state;
+      });
 
       $rootScope.$on("info:state", (e, state) => {
         scope.show_info = state;
@@ -37,6 +43,20 @@ const widget = {
         scope.show_profile = false;
         scope.$apply();
       };
+
+      let closeMenu = () => {
+        console.log('closeMenu', scope.menu_active)
+        scope.$apply(() => {
+          scope.menu_active = false;
+        })
+      }
+
+      document.body.addEventListener('click', closeMenu)
+
+      scope.$on('$destroy', () => {
+        document.body.removeEventListener('click', closeMenu)
+      })
+
     };
   }
 };

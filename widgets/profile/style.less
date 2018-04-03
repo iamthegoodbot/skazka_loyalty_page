@@ -11,6 +11,14 @@
     background-position: center top;
     background-size: cover;
 
+    @media (max-width: 420px) {
+      padding: 80px 0;
+    }
+
+    .b-name {
+      letter-spacing: 2px;
+    }
+    
     .row {
       height: 625px;
     }
@@ -26,7 +34,7 @@
           width: 45px;
           height: 45px;
           &:hover {
-            box-shadow: -6px 6px 14px 0 rgba(145, 70, 13, 0.66);
+            box-shadow: -20px 10px 40px 0 rgba(38,124,160,0.30);
           }
         }
         &__item {
@@ -45,6 +53,7 @@
           visibility: hidden;
           z-index: 2;
           margin-left: -5px;
+          box-shadow: -20px 10px 40px 0 rgba(38,124,160,0.30);
           &:before {
             right: 100%;
             top: 50%;
@@ -68,12 +77,22 @@
         }
       }
     }
+
     .b-info {
-      width: 340px;
+      min-width: 340px;
+      max-width: 100%;
+      width: 100%;
       margin: 0 auto;
+      @media (max-width: 500px) {
+        min-width: 0;
+      }
       img {
         max-height: 24px;
       }
+    }
+
+    .btn {
+      letter-spacing: 1.6px;
     }
 
     &-container {
@@ -336,6 +355,7 @@
       max-width: 100%;
       width: 340px;
       margin: 0 auto;
+      padding-top: 24px;
       display: flex;
       flex-direction: column;
       align-items: center;

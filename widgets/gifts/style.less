@@ -59,7 +59,7 @@
 
     &-sub-header {
       font-weight: normal;
-      font-size: 16px;
+      font-size: 14px;
       line-height: 22px;
       margin: 25px 0;
       color: @black;
@@ -70,6 +70,7 @@
       align-items: flex-start;
       flex-wrap: nowrap;
       justify-content: flex-start;
+      width: 100%;
       @media (max-width: 992px) {
         align-items: center;
         justify-content: center;
@@ -83,7 +84,8 @@
       justify-content: flex-start;
       flex-direction: column;
       position: relative;
-      width: 280px;
+      width: 100%;
+      max-width: 280px;
       min-height: 280px;
       margin: 0 8px;
       color: @white;
@@ -97,9 +99,9 @@
         margin: 1%;
       }
 
-      @media (max-width: 768px) {
+      @media (max-width: 600px) {
         width: 100%;
-        margin: 0 0 5% 0;
+        margin: 1% 1% 5% 1%;
       }
 
       &-name {
@@ -126,13 +128,16 @@
         text-align: center;
         border-radius: 5px;
         border: solid 1px @white;
-        font-size: 16px;
+        font-size: 14px;
         color: inherit;
         line-height: 1.38;
+        letter-spacing: 1.6px;
         padding: 10px 20px;
         width: auto;
-        min-width: 150px;
+        min-width: 180px;
+        text-transform: uppercase;
         text-decoration: none;
+        font-weight: 700;
 
         &.type_points {
           display: block;
