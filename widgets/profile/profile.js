@@ -212,6 +212,8 @@ const ProfileWidget = {
                         scope.originPurchaseSum = user.purchases.sum - scope.returnedPurchasesSum;
                         scope.originPurchaseSum = scope.originPurchaseSum < 0 ? 0 : scope.originPurchaseSum;
                       }
+                    } else {
+                      scope.originPurchaseSum = user.purchases.sum;
                     }
                   });
                 });
