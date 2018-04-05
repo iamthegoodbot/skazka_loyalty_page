@@ -51,11 +51,13 @@ export let magic = angular.module('magic', [SailPlay, core, Cookies, Tools, NgTo
     return {
       restrict: 'E',
       replace: true,
-      scope: true,
+      scope: {
+        config: '=?'
+      },
       template: MagicTemplate,
       link: function (scope) {
 
-        scope.config = MAGIC_CONFIG;
+        scope.config = scope.config || MAGIC_CONFIG;
 
         scope.show_statuses_list = false;
 

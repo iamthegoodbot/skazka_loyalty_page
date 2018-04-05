@@ -1,0 +1,296 @@
+<section class="spm_profile profile clearfix" ng-if="widget.enabled" ng-cloak sailplay-profile sailplay-fill-profile config="widget.options.config">
+
+  <div class="container container-fluid spm_profile-container">
+
+    <!-- authorized section -->
+    <div class="row" data-ng-if="user()">
+
+      <div class="col-lg-2 col-md-12 spm_profile-avatar">
+
+        <div class="position-relative d-inline-block b-avatar mb-3">
+
+          <!-- user pic -->
+          <img ng-src="{{ ( user().user.avatar['250x250'] | sailplay_pic ) || default_avatar}}" class="rounded-circle profile_avatar">
+
+          <!-- profile menu -->
+          <div class="b-avatar-menu position-absolute">
+            <div class="b-avatar-menu__icon rounded-circle bg-primary cursor-pointer"
+                 ng-click="menuActive=!menuActive">
+              <img ng-src="{{widget.images.icon_dots}}">
+            </div>
+          </div>
+
+          <div class="b-avatar-menu__list position-absolute bg-light" data-ng-class="{type_active: menuActive}" data-ng-mouseleave="menuActive=false">
+            <a href="#" class="b-avatar-menu__item d-flex align-items-center text-dark py-3 pl-4 pr-5"
+               ng-click="$event.preventDefault();$root.$broadcast('info:state', true);menuActive=false">
+              <i class="b-avatar-menu__item-icon">
+                <img class="mw-100 h-75" ng-src="{{widget.images.icon_profile}}">
+              </i>
+              <span ng-bind="widget.texts.menu_my_profile"></span>
+            </a>
+            <a href="#" class="b-avatar-menu__item text-dark py-3 pl-4 pr-5"
+               ng-href="{{widget.options.logout_link}}">
+              <i class="b-avatar-menu__item-icon">
+                <img class="mw-100 h-75" ng-src="{{widget.images.icon_logout}}">
+              </i>
+              <span ng-bind="widget.texts.menu_logout"></span>
+            </a>
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="col col-lg-6 col-md-12 spm_profile-info">
+
+        <div class="spm_profile-info-inner">
+
+          <p class="font-weight-light spm_profile-subheader">
+            <span>{{ user().user.name }}, </span>
+            <span ng-bind-html="widget.texts.sub_header | to_trusted"></span>
+          </p>
+
+          <h1 class="display-4 text-uppercase font-weight-bolder spm_profile-header" data-ng-bind-html="widget.texts.header|to_trusted"></h1>
+
+          <p class="spm_profile-description" data-ng-bind-html="widget.texts.description | to_trusted"></p>
+
+          <button type="button" class="btn btn-lg btn-primary spm_profile-login_button" href="#" role="button" data-ng-click="open_learn_more()" data-ng-bind="widget.texts.learn_more_button_text"></button>
+
+        </div>
+
+      </div>
+
+      <!--<div class="col  col-lg-8">-->
+        <!--<div class="position-relative d-flex align-items-center b-avatar mb-3">-->
+
+          <!--<img ng-src="{{ ( user().user.avatar['250x250'] | sailplay_pic ) || default_avatar}}" class="rounded-circle">-->
+
+          <!--<div class="b-avatar-menu position-relative d-flex align-items-center"-->
+               <!--ng-class="{type_active: menuActive}" ng-mouseleave="menuActive=false">-->
+            <!--<div class="b-avatar-menu__icon rounded-circle d-flex bg-primary cursor-pointer align-items-center"-->
+                 <!--ng-click="menuActive=!menuActive">-->
+              <!--<img class="mw-100 h-50" ng-src="{{widget.images.icon_dots}}">-->
+            <!--</div>-->
+            <!--<div class="b-avatar-menu__list position-relative d-flex align-items-left bg-light flex-column">-->
+              <!--<a href="#" class="b-avatar-menu__item d-flex align-items-center text-dark py-3 pl-4 pr-5"-->
+                 <!--ng-click="$event.preventDefault();$root.$broadcast('info:state', true);menuActive=false">-->
+                <!--<i class="b-avatar-menu__item-icon">-->
+                  <!--<img class="mw-100 h-75" ng-src="{{widget.images.icon_profile}}">-->
+                <!--</i>-->
+                <!--<span ng-bind="widget.texts.menu_my_profile"></span>-->
+              <!--</a>-->
+              <!--<a href="#" class="b-avatar-menu__item d-flex align-items-center text-dark py-3 pl-4 pr-5"-->
+                 <!--ng-href="{{widget.options.logout_link}}">-->
+                <!--<i class="b-avatar-menu__item-icon">-->
+                  <!--<img class="mw-100 h-75" ng-src="{{widget.images.icon_logout}}">-->
+                <!--</i>-->
+                <!--<span ng-bind="widget.texts.menu_logout"></span>-->
+              <!--</a>-->
+            <!--</div>-->
+          <!--</div>-->
+        <!--</div>-->
+        <!--<h1 class="display-4 text-uppercase font-weight-bolder"-->
+            <!--ng-bind-html="widget.texts.header|to_trusted"></h1>-->
+        <!--<p class="my-4 font-weight-light" ng-bind-html="widget.texts.sub_header|to_trusted"></p>-->
+        <!--<a class="btn btn-md btn-primary text-uppercase px-3 py-2 font-weight-bolder" href="#" role="button"-->
+           <!--target="_blank"-->
+           <!--ng-href="{{widget.options.button_link}}"-->
+           <!--ng-bind="widget.texts.button_text"></a>-->
+      <!--</div>-->
+
+      <div class="spm_status-bar status-bar col-lg-4 col-md-12 clearfix" ng-cloak ng-class="{type_list: show_list}">
+
+        <div>
+
+          <div class="align-items-top">
+
+            <div class="b-current-status d-flex flex-column align-items-center text-center spm_profile-status">
+              <i ng-style="currentStatus.style"></i>
+              <h2 class="font-akrobat font-weight-bolder text-uppercase mb-0 spm_profile-status-name" ng-bind="currentStatus.name || widget.texts.status.no_status"></h2>
+              <div class="mt-1 font-weight-light" ng-bind-html="(currentStatus.description|to_trusted) || widget.texts.status.no_status_description"></div>
+            </div>
+
+            <div class="b-points d-flex spm_profile-points" data-ng-click="$root.$broadcast('history:state', true)">
+              <div class="display-1 text-center points-balance font-akrobat font-weight-bold text-uppercase spm_profile-points-confirmed">{{ user().user_points.confirmed | number }} {{ widget.texts.points.label }}</div>
+            </div>
+
+          </div>
+
+        </div>
+
+        <div ng-show="show_list" class="container py-0 py-lg-5 position-relative">
+          <div class="b-list-close rounded-circle d-flex bg-primary cursor-pointer align-items-center position-absolute"
+               ng-click="show_list=false"></div>
+          <div class="row align-items-center">
+            <div class="b-statuses col-md-12 my-5 my-lg-0 col-lg-4 d-flex flex-column align-items-center text-center"
+                 ng-repeat="status in list track by $index">
+              <i ng-style="status.style"></i>
+              <h2 class="font-akrobat font-weight-bolder text-uppercase mb-0" ng-bind="status.name"></h2>
+              <h5 class="my-2"
+                  ng-bind="(status.points|number)+' '+(status.points|sailplay_pluralize:('points.texts.pluralize'|tools))"></h5>
+              <div class="font-weight-light" ng-bind-html="status.description|to_trusted"></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- unauthorized section -->
+    <div class="row" data-ng-if="!user()">
+
+      <div class="col-lg-2">
+        <div class="position-relative d-flex b-avatar mb-3">
+          <img data-ng-src="{{ default_avatar }}" class="rounded-circle">
+        </div>
+      </div>
+
+      <div class="col  col-lg-7">
+
+        <p class="font-weight-light spm_profile-subheader" ng-bind-html="widget.texts.sub_header | to_trusted"></p>
+
+        <h1 class="display-4 text-uppercase font-weight-bolder spm_profile-header" data-ng-bind-html="widget.texts.header|to_trusted"></h1>
+
+        <p class="spm_profile-description" data-ng-bind-html="widget.texts.description | to_trusted"></p>
+
+        <button type="button" class="btn btn-lg btn-primary spm_profile-login_button" href="#" role="button" data-ng-click="$event.preventDefault(); login('remote', {widget: 'bootstrap_profile_stacked', element: 'profile_login_button'});" data-ng-bind="widget.texts.login_button_text"></button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <magic-modal show="$parent.$parent.show_info">
+    <magic-modal-title>
+      <div class="b-avatar">
+        <img ng-src="{{user().user.avatar['250x250']|sailplay_pic}}" class="rounded-circle">
+      </div>
+      <span class="d-block my-5 spm_profile-info-modal-name" ng-bind="user().user.name"></span>
+    </magic-modal-title>
+    <magic-modal-body>
+
+      <div class="b-info mb-5 d-flex align-items-center flex-column flex-column-light">
+        <img ng-src="{{widget.images.icon_email}}">
+        <span class="mt-2" ng-bind="user().user.email"></span>
+      </div>
+
+      <div class="b-info mb-5 d-flex align-items-center flex-column flex-column-light">
+        <img ng-src="{{widget.images.icon_phone}}">
+        <span class="mt-2" ng-bind="user().user.phone|tel"></span>
+      </div>
+
+      <div class="b-info mb-5 d-flex align-items-center flex-column flex-column-light">
+        <img ng-src="{{widget.images.icon_bday}}">
+        <span class="mt-2" ng-bind="user().user.birth_date|date:'d MMMM yyyy'"></span>
+      </div>
+
+      <div class="b-info d-flex align-items-center justify-content-center">
+        <a class="btn btn-md btn-primary text-uppercase px-3 py-2 font-weight-bolder" href="#" role="button"
+           ng-click="$event.preventDefault();$root.$broadcast('profile:state', true)"
+           ng-bind="widget.texts.edit_profile"></a>
+      </div>
+
+
+    </magic-modal-body>
+  </magic-modal>
+
+
+  <magic-modal on-close="revert_profile_form" show="$parent.$parent.show_profile" prevent-close="lock_profile">
+    <magic-modal-title ng-bind-html="widget.texts.modals.profile.title|to_trusted"></magic-modal-title>
+    <magic-modal-body>
+
+      <form name="profile_form" class="spm_profile-form"
+            ng-submit="sailplay.fill_profile.submit(profile_form, onSaveProfile);">
+
+        <div class="spm_form_field" ng-repeat="field in sailplay.fill_profile.form.fields"
+             ng-switch="field.input">
+
+          <div ng-switch-when="text">
+            <input class="spm_form_input" type="text" placeholder="{{ field.placeholder }}"
+                   ng-model="field.value" ng-required="field.required">
+            <label class="spm_form_label type_absolute" ng-bind="field.label"></label>
+          </div>
+
+          <div ng-switch-when="date">
+            <label class="spm_form_label " ng-bind="field.label"></label>
+            <date-picker ng-model="field.value" ng-required="field.required"></date-picker>
+          </div>
+
+          <div ng-switch-when="phone">
+            <input class="spm_form_input" type="text"
+                   ui-mask="{{ field.placeholder }}" ng-model="field.value"
+                   ng-required="field.required">
+            <label class="spm_form_label type_absolute" ng-bind="field.label"></label>
+          </div>
+
+          <div ng-switch-when="email">
+            <input class="spm_form_input" type="email" placeholder="{{ field.placeholder }}"
+                   ng-model="field.value" ng-required="field.required">
+            <label class="spm_form_label type_absolute">{{ field.label }}</label>
+          </div>
+
+          <div ng-switch-when="select">
+            <select class="spm_form_select" ng-model="field.value"
+                    ng-options="item.value as item.text for item in field.data"></select>
+            <label class="spm_form_label type_absolute" ng-bind="field.label"></label>
+          </div>
+
+        </div>
+
+        <div class="spm_form_buttons">
+          <button class="spm_btn theme_1 type_big type_cancel font-weight-bolder" ng-click="$parent.close()"
+                  ng-bind="widget.texts.modals.profile.cancel"></button>
+          <input type="submit" class="spm_btn theme_1 type_filled type_big font-weight-bolder"
+                 ng-value="widget.texts.modals.profile.save"/>
+        </div>
+
+      </form>
+
+    </magic-modal-body>
+  </magic-modal>
+
+
+  <magic-modal show="$parent.$parent.show_history">
+    <magic-modal-title>
+      <span class="d-block text-left history_title" ng-bind="widget.texts.modals.history.title"></span>
+    </magic-modal-title>
+    <magic-modal-body>
+      <div sailplay-history>
+
+        <table class="spm_profile-history" ng-show="history().length">
+          <tbody>
+          <tr dir-paginate="item in history() | itemsPerPage:5" pagination-id="history_pages">
+            <td class="type_lighter" ng-bind="item.action_date | date:'d MMM yyyy'"></td>
+            <td>
+              <div ng-bind="item|history_item"></div>
+            </td>
+            <td></td>
+            <!--<td ng-class="{type_positive:item.points_delta>0, type_negative:item.points_delta<0}"-->
+            <!--ng-bind="item.points_delta?(item.points_delta|number):''"></td>-->
+          </tr>
+          </tbody>
+        </table>
+
+        <dir-pagination-controls max-size="7" direction-links="false" pagination-id="history_pages"
+                                 template-url="magic.pagination"
+                                 auto-hide="true"></dir-pagination-controls>
+
+        <div ng-hide="history().length" ng-bind="widget.texts.modals.history.empty"></div>
+
+      </div>
+    </magic-modal-body>
+  </magic-modal>
+
+  <magic-modal class="learn_more_modal" show="$parent.$parent.show_learn_more">
+    <magic-modal-body>
+
+      <div class="mb-5 d-flex align-items-center flex-column flex-column-light" data-ng-bind-html="widget.texts.learn_more_html | to_trusted">
+
+      </div>
+
+    </magic-modal-body>
+  </magic-modal>
+
+</section>

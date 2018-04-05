@@ -14,7 +14,7 @@
 
 ## Current version
 
-### 2.1.16
+### 2.2.0
 
 ## Description
 
@@ -24,12 +24,12 @@ Multi functional, fully-configurable, widget-based loyalty page
 
 At first, you need to setup JSON config for required partner in admin panel: 
 
-[https://sadmin.sailplay.net/admin](https://sadmin.sailplay.net/admin)
+[https://sailplay.net/spanel/#/settings/widgets](ttps://sailplay.net/spanel/#/settings/widgets)
     
 Then, place this code to any place in your page:
     
 ```html
-  <script src="https://cdn.rawgit.com/iamthegoodbot/skazka_loyalty_page/2.1.6/dist/prod/sailplay-magic.js"></script>
+  <script src="https://cdn.rawgit.com/iamthegoodbot/skazka_loyalty_page/2.2.0/dist/prod/sailplay-magic.js"></script>
   <sailplay-magic></sailplay-magic>
   <script>
 
@@ -38,7 +38,7 @@ Then, place this code to any place in your page:
       partner_id: "${Your partner id}",
       domain: "https://sailplay.net",
       lang:  "en",
-      config: "name of config"
+      config: "${ name of config }"
 
     });
 

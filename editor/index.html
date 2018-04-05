@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SailPlay Magic editor</title>
+
+  <meta name="description" content="SailPlay Magic!">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="favicon.png" type="image/png">
+
+  <script src="../dist/prod/sailplay-magic.js"></script>
+  <script src="widgets/widgets.list.js"></script>
+
+  <style>
+    body {
+      padding: 0;
+      margin: 0;
+    }
+  </style>
+
+</head>
+<body>
+
+  <widgets-list></widgets-list>
+  <script>
+
+    var params = SAILPLAY.url_params();
+
+    let root = document.querySelector('widgets-list');
+
+    var magic = new SAILPLAY.Magic({
+
+      partner_id: params.partner_id || 1,
+      dep_id: params.dep_id || '',
+      domain: params.domain || "https://sailplay.ru",
+      lang: params.lang || "ru",
+      config: params.config || "default",
+      root: root
+    });
+
+    if (params.auth_hash) {
+      SAILPLAY.on('init.success', function () {
+        SAILPLAY.send('login', params.auth_hash)
+      })
+    }
+
+  </script>
+
+</body>
+</html>
