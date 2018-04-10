@@ -100,7 +100,7 @@ const ProfileWidget = {
       }
 
       scope.getTimerPopupText = () => {
-        if(scope.user().purchases.sum >= scope.purchase_sum) {
+        if(scope.originPurchaseSum >= scope.purchase_sum) {
           return $interpolate(scope.widget.texts.timer.final_hover)(scope)  
         } else {
           return $interpolate(scope.widget.texts.timer.hover)(scope)
@@ -112,7 +112,7 @@ const ProfileWidget = {
       }
 
       scope.getPercentPopupText = () => {
-        if(scope.user().purchases.sum >= scope.purchase_sum) {
+        if(scope.originPurchaseSum >= scope.purchase_sum) {
           return $interpolate(scope.widget.texts.bottom_navbar.final_percent_hover)(scope)  
         } else {
           return $interpolate(scope.widget.texts.bottom_navbar.percent_hover)(scope)
