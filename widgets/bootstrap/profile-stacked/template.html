@@ -28,7 +28,7 @@
               </i>
               <span ng-bind="widget.texts.menu_my_profile"></span>
             </a>
-            <a href="#" class="b-avatar-menu__item text-dark py-3 pl-4 pr-5"
+            <a href="#" class="b-avatar-menu__item text-dark py-3 pl-4 pr-5" data-ng-click="$event.preventDefault();$root.$broadcast('info:state', true);menuActive=false"
                ng-href="{{widget.options.logout_link}}">
               <i class="b-avatar-menu__item-icon">
                 <img class="mw-100 h-75" ng-src="{{widget.images.icon_logout}}">

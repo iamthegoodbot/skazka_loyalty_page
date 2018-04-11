@@ -23,10 +23,13 @@
             <img class="img-fluid" data-ng-src="{{ gift.thumbs.url_250x250 | sailplay_pic }}" alt="{{ gift.name }}">
           </div>
           <div class="spm_gifts-item-name" ng-bind="gift.name"></div>
-          <a href="#" class="spm_gifts-item-button type_recieve" ng-bind="widget.texts.get"
-             ng-click="$event.preventDefault();$root.$broadcast('gift:state', gift)"></a>
-          <div class="spm_gifts-item-button type_points"
-               ng-bind="(gift.points|number)+' '+(gift.points|sailplay_pluralize:('points.texts.pluralize' | tools))"></div>
+          <div class="text-center display-inline-block">
+            <a href="#" class="spm_gifts-item-button type_recieve" ng-bind="widget.texts.get"
+               ng-click="$event.preventDefault();$root.$broadcast('gift:state', gift)"></a>
+            <div class="spm_gifts-item-button type_points"
+                 ng-bind="(gift.points|number)+' '+(gift.points|sailplay_pluralize:('points.texts.pluralize' | tools))"></div>
+          </div>
+
         </div>
       </div>
 
