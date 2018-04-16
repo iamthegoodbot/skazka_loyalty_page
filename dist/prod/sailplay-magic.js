@@ -38697,9 +38697,10 @@ var SailPlayProfile = exports.SailPlayProfile = _angular2.default.module('sailpl
         var required_fields = scope.sailplay.fill_profile.form.fields.filter(function (item) {
           return item.required && item.type == 'system';
         });
-        if (required_fields.length == (0, _keys2.default)(req_user).length) {
-          fill_profile_flag = true;
-        }
+        fill_profile_flag = required_fields.every(function (field) {
+          return field.value;
+        });
+
         console.log('fill_profile_flag', fill_profile_flag);
         console.log('req_user', req_user);
         console.log('required_fields', required_fields);

@@ -512,13 +512,11 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
           // Check to the fill profile action (only system field)
           let fill_profile_flag = false;
           let required_fields = scope.sailplay.fill_profile.form.fields.filter(item => (item.required && item.type=='system'));
-          if(required_fields.length == Object.keys(req_user).length) {
-            fill_profile_flag = true
-          }
+          fill_profile_flag = required_fields.every(field => field.value);
+
           console.log('fill_profile_flag',fill_profile_flag)
           console.log('req_user', req_user)
           console.log('required_fields',required_fields)
-
 
 
           SailPlay.send('users.update', req_user, function (user_res) {
