@@ -158,10 +158,11 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
           this.type = params.type;
           this.name = params.name;
           this.label = params.label;
+          this.icon = params.icon || '';
           this.placeholder = params.placeholder;
           this.mask = params.mask;
           this.placeholder_char = params.placeholder_char;
-          this.required = params.required
+          this.required = params.required;
           this.input = params.input || 'text';
 
           if (params.data) {
@@ -342,6 +343,13 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
                     form_field.value = user.user.sex || '';
                     break;
 
+                  case 'subscriptions':
+                    form_field.value = {
+                      email: user.user.is_email_notifications || 0,
+                      sms: user.user.is_sms_notifications || 0
+                    };
+                    break;
+
                 }
 
                 break;
@@ -461,6 +469,20 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
 
           if (req_user.lastName && data_user && data_user.last_name && data_user.last_name == req_user.lastName) {
             delete req_user.lastName;
+          }
+
+          if (req_user.subscriptions && data_user.is_sms_notifications == req_user.subscriptions.sms) {
+            delete req_user.subscriptions.sms;
+          }
+
+          if (req_user.subscriptions && data_user && data_user.is_email_notifications == req_user.subscriptions.email) {
+            delete req_user.subscriptions.email;
+          }
+
+          if (!Object.keys(req_user.subscriptions).length) {
+            delete req_user.subscriptions;
+          } else {
+            req_user.subscriptions = JSON.stringify(req_user.subscriptions);
           }
 
           let verifyPhone = false

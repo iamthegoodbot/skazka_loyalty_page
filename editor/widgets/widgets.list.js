@@ -37,13 +37,15 @@ angular.module('magic')
 
       let copied = angular.copy(MAGIC_CONFIG);
 
+      let widget_config = angular.copy(widget.defaults || {
+        id: widget.id,
+        options: {},
+        styles: {},
+        images: {}
+      });
+
       copied.widgets = [
-        {
-          id: widget.id,
-          options: {},
-          styles: {},
-          images: {}
-        }
+        widget_config
       ];
 
       console.log(copied);

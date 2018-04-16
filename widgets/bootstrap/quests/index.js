@@ -1,10 +1,12 @@
 import { Widget } from "@core/widget";
 import Template from "./template.html";
 import "./style.less";
+import defaults from './defaults.json';
 
 const widget = {
   id: "bootstrap_quests",
   template: Template,
+  defaults: defaults,
   inject: ["$rootScope", "SailPlay", "SailPlayApi", "tools"],
   controller($rootScope, SailPlay, SailPlayApi, tools) {
     return (scope, elm, attrs) => {

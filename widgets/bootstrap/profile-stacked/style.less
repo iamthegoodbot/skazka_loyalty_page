@@ -14,11 +14,9 @@
 
 
     .b-info {
-      width: 340px;
+      width: 400px;
       margin: 0 auto;
-      img {
-        max-height: 24px;
-      }
+
     }
 
     &-avatar {
@@ -635,6 +633,39 @@
             transform: translateY(0);
           }
         }
+      }
+
+    }
+
+    &-info-modal, &-edit-modal {
+
+      .spm_modal-container {
+        padding-left: 0;
+        padding-right: 0;
+      }
+
+      &-field {
+
+        position: relative;
+        padding-left: 50px;
+        border-bottom: 1px solid @main_lighter;
+        text-align: left;
+
+      }
+
+      &-field-icon {
+
+        position: absolute;
+        left: 0;
+        width: 24px;
+        height: 24px;
+        top: 50%;
+        .transform(translateY(-50%));
+
+      }
+
+      .spm_profile-form {
+        min-width: 400px;
       }
 
     }
