@@ -9,9 +9,9 @@
 
     <div class="spm_quests-container__right spm_quests-list col-lg-8 col-md-12 col-sm-12 order-lg-0 order-md-1 order-sm-1 order-xs-1" sailplay-actions>
 
-      <div class="row">
+      <div class="row spm_quests-list-inner">
 
-        <div ng-repeat="action in actions().actions" class="col-lg-4 col-md-6 col-sm-12" >
+        <div ng-repeat="action in actions().actions" class="col-xl-4 col-lg-6 col-md-6 col-sm-12" >
           <div class="spm_quests-item" ng-mouseenter="action.loaded=true">
             <i class="spm_quests-item-icon"
                ng-style="{backgroundImage: (action_data(action).pic|sailplay_pic|background_image)}"></i>
@@ -20,7 +20,7 @@
               <div class="spm_quests-item-points" ng-show="action.points"
                    ng-bind="(action.points|number)+' '+(action.points|sailplay_pluralize:('points.texts.pluralize'|tools))"></div>
             </div>
-            <div class="spm_quests-item-hover" ng-if="action.type!='fillProfile' && action.loaded" sailplay-action
+            <div class="spm_quests-item-hover" ng-if="action.type!='fillProfile' && (widget.options.preload_quests || action.loaded)" sailplay-action
                  styles="{{ action_styles(action_data(action)) }}"
                  action="action" text="{{ action_data(action).button_text }}">
               <span ng-bind="action_data(action).button_text"></span>
@@ -31,7 +31,7 @@
           </div>
         </div>
 
-        <div class="col-lg-4 col-md-6 col-sm-12" ng-repeat="action in actions_custom()">
+        <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12" ng-repeat="action in actions_custom()">
           <div class="spm_quests-item" ng-mouseenter="action.loaded=true">
             <i class="spm_quests-item-icon" ng-style="{backgroundImage: (action.icon|sailplay_pic|background_image)}"></i>
             <div class="spm_quests-item-content">
@@ -39,7 +39,7 @@
               <div class="spm_quests-item-points" ng-show="action.points"
                    ng-bind="(action.points|number)+' '+(action.points|sailplay_pluralize:('points.texts.pluralize'|tools))"></div>
             </div>
-            <div class="spm_quests-item-hover" ng-if="action.loaded" sailplay-action-custom action="action"></div>
+            <div class="spm_quests-item-hover" sailplay-action-custom action="action"></div>
           </div>
         </div>
 
