@@ -1,9 +1,7 @@
 {
   "styles": {
-    "spm_profile-info-modal-avatar-image": {
-      "border-radius": "50%",
-      "width": "130px",
-      "display": "inline-block"
+    "b-list-close:hover": {
+      "box-shadow": "-6px 6px 14px 0 rgba(145, 70, 13, 0.66)"
     },
     "spm_profile-points": {
       "background-color": "rgb(252,46,162)"
@@ -15,11 +13,18 @@
       "background-image": "url(https://sailplays3.cdnvideo.ru/media/assets/assetfile/91db09a9ee09ff81fadffb1132423541.png)",
       "font-family": "Roboto, sans-serif"
     },
+    "history_title": {
+      "font-family": "Akrobat, sans-serif"
+    },
     "points-balance": {
       "font-size": "50px",
       "font-weight": 800,
       "line-height": "120%",
       "letter-spacing": "2px"
+    },
+    "spm_profile-info-modal-field-label": {
+      "color": "rgb(181,186,194)",
+      "font-weight": 300
     },
     "spm_profile-subheader": {
       "color": "#fff",
@@ -33,8 +38,18 @@
     "spm_profile-info-modal-avatar": {
       "margin-top": "10px"
     },
-    "history_title": {
-      "font-family": "Akrobat, sans-serif"
+    "spm_profile-info-modal-field": {
+      "padding-left": "95px"
+    },
+    "spm_profile-info-modal-button a": {
+      "letter-spacing": "1px",
+      "margin": "0 40px",
+      "padding": "15px",
+      "width": "100%",
+      "font-weight": 400,
+      "border": "none",
+      "display": "block",
+      "background-color": "rgb(252,46,162)"
     },
     "spm_profile-block-wrapper": {
       "background-image": "url(https://sailplays3.cdnvideo.ru/media/assets/assetfile/29b2150b570a651b4907beea24379aa2.png)"
@@ -74,6 +89,9 @@
       "font-size": "55px",
       "font-family": "Akrobat, sans-serif"
     },
+    "spm_profile-info-modal-field-icon": {
+      "left": "40px"
+    },
     "b-points": {
       "cursor": "pointer"
     },
@@ -86,11 +104,16 @@
       "background-repeat": "repeat",
       "background-color": "rgb(233,156,78)"
     },
+    "spm_profile-info-modal-button": {
+      "margin-top": "40px"
+    },
     "@media (max-width: 750px) | spm_profile": {
       "background-position": "30% bottom"
     },
-    "b-list-close:hover": {
-      "box-shadow": "-6px 6px 14px 0 rgba(145, 70, 13, 0.66)"
+    "spm_profile-info-modal-avatar-image": {
+      "border-radius": "50%",
+      "width": "130px",
+      "display": "inline-block"
     },
     "b-current-status > *": {
       "z-index": 2
@@ -110,6 +133,10 @@
       "right": 0,
       "z-index": 6,
       "height": "54px"
+    },
+    "spm_profile-form .spm_form_field_type_radio": {
+      "border-bottom": "1px solid #eee",
+      "padding-bottom": "20px"
     },
     "b-list-close:after": {
       "right": 0,
@@ -150,50 +177,28 @@
       "cursor": "pointer",
       "position": "static"
     },
-    "spm_profile-info-modal-field-icon": {
-      "left": "40px"
-    },
-    "spm_profile-info-modal-field": {
-      "padding-left": "95px"
-    },
-    "spm_profile-info-modal-field-label": {
-      "color": "rgb(181,186,194)",
-      "font-weight": 300
-    },
-    "spm_profile-info-modal-button": {
-      "margin-top": "40px"
-    },
-    "spm_profile-info-modal-button a": {
-      "background-color": "rgb(252,46,162)",
-      "width": "100%",
-      "display": "block",
-      "padding": "15px",
-      "margin": "0 40px",
-      "font-weight": 400,
-      "letter-spacing": "1px",
-      "border": "none"
+    "spm_profile-form .spm_form_field": {
+      "padding-right": "50px",
+      "padding-left": "50px"
     }
   },
   "enabled": true,
   "id": "bootstrap_profile_stacked",
   "texts": {
-    "empty_status": "Нет статуса",
     "status": {
       "description": "Get <span style=\"color:#ca5b54;font-weight: 500;\">{{ (toNext|number)+' '+(toNext|sailplay_pluralize:'point,points,points') }}</span><br> to get gold status",
       "description_final": "",
       "no_status": "No status"
     },
-    "left_for_status": "Осталось<br>",
     "description": "Here you can spend your points on gifts, look after your statuses and also carry out some extra tasks for extra points.",
     "menu_logout": "Logout",
     "sub_header": "Welcome to",
-    "your_status": "Ваш статус:",
-    "welcome": "Здравствуйте, ",
     "modals": {
       "profile": {
-        "save": "Сохранить",
-        "title": "Заполнить<br>профиль",
-        "edit_button": "EDIT PROFILE"
+        "cancel": "CANCEL",
+        "save": "SAVE",
+        "edit_button": "EDIT PROFILE",
+        "title": "PROFILE"
       },
       "history": {
         "date": "date",
@@ -233,7 +238,7 @@
         {
           "name": "firstName",
           "required": true,
-          "label": "Имя",
+          "label": "First name",
           "input": "text",
           "type": "system",
           "icon": "https://sailplays3.cdnvideo.ru/media/assets/assetfile/4ee7f4b31961c7923f02ffc35f20be26.png"
@@ -241,10 +246,10 @@
         {
           "name": "lastName",
           "required": true,
-          "label": "Фамилия",
+          "label": "Last name",
           "input": "text",
           "type": "system",
-          "icon": ""
+          "icon": "https://sailplays3.cdnvideo.ru/media/assets/assetfile/d04458f535df45771f7395d9011d4c8e.png"
         },
         {
           "name": "addEmail",
@@ -256,9 +261,9 @@
         },
         {
           "name": "addPhone",
-          "placeholder": "+1 (999) 999-99-99",
+          "placeholder": "+9 (999) 999-99-99",
           "required": true,
-          "label": "Телефон",
+          "label": "Cell Phone",
           "input": "phone",
           "type": "system",
           "icon": "https://sailplays3.cdnvideo.ru/media/assets/assetfile/acd9b6342c98789a2331c2c7a671a7b5.png"
@@ -266,10 +271,131 @@
         {
           "name": "birthDate",
           "required": true,
-          "label": "Дата рождения",
+          "label": "Birthday",
           "input": "date",
           "type": "system",
           "icon": "https://sailplays3.cdnvideo.ru/media/assets/assetfile/a46af2f06be991403f1f7f889dcc778d.png"
+        },
+        {
+          "name": "zipcode",
+          "placeholder": "999999",
+          "required": true,
+          "label": "Zip code",
+          "input": "phone",
+          "type": "variable",
+          "icon": "https://sailplays3.cdnvideo.ru/media/assets/assetfile/6f71aa4115d34789bea2678bc3c5b80b.png"
+        },
+        {
+          "name": "anniversary",
+          "required": true,
+          "label": "Date of your anniversary",
+          "input": "date",
+          "type": "variable",
+          "icon": "https://sailplays3.cdnvideo.ru/media/assets/assetfile/5fb1f1ceb6fa4d2ecc7b9153986feba0.png"
+        },
+        {
+          "name": "gender",
+          "data": [
+            {
+              "text": "Male",
+              "value": "male"
+            },
+            {
+              "text": "Female",
+              "value": "female"
+            }
+          ],
+          "required": true,
+          "label": "Gender",
+          "input": "select",
+          "type": "variable",
+          "icon": "https://sailplays3.cdnvideo.ru/media/assets/assetfile/88fbea9f5e881a6db7de0e3d30ecba7b.png"
+        },
+        {
+          "name": "LGBTQIA",
+          "data": [
+            {
+              "text": "Yes",
+              "value": "yes"
+            },
+            {
+              "text": "No",
+              "value": "no"
+            }
+          ],
+          "required": true,
+          "label": "I am part of the queer or LGBTQIA+ community",
+          "input": "radio",
+          "type": "variable",
+          "icon": "https://sailplays3.cdnvideo.ru/media/assets/assetfile/7825d4007951f8713ab53105acf7304f.png"
+        },
+        {
+          "name": "shop_for",
+          "data": [
+            {
+              "text": "Sex Toys and Products",
+              "value": "Sex Toys and Products"
+            },
+            {
+              "text": "Lingerie",
+              "value": "Lingerie"
+            },
+            {
+              "text": "Smoke Items",
+              "value": "Smoke Items"
+            },
+            {
+              "text": "DVDs or Magazines",
+              "value": "DVDs or Magazines"
+            }
+          ],
+          "required": true,
+          "label": "I shop at Excitement for:",
+          "input": "radio",
+          "type": "variable",
+          "icon": "https://sailplays3.cdnvideo.ru/media/assets/assetfile/3b977645504ec7eafff8f2ec4f9047f5.png"
+        },
+        {
+          "name": "locations",
+          "data": [
+            {
+              "text": "Camp Hill, PA",
+              "value": "Camp Hill, PA"
+            },
+            {
+              "text": "Harrisburg, PA",
+              "value": "Harrisburg, PA"
+            },
+            {
+              "text": "Reading, PA",
+              "value": "Reading, PA"
+            },
+            {
+              "text": "York, PA",
+              "value": "York, PA"
+            },
+            {
+              "text": "Online at iloveexcitement.com",
+              "value": "Online at iloveexcitement.com"
+            }
+          ],
+          "required": true,
+          "label": "I shop at these Excitement locations",
+          "input": "radio",
+          "type": "variable",
+          "icon": "https://sailplays3.cdnvideo.ru/media/assets/assetfile/91d4d2e8ac2055ca9704dcf6d3ed9a0d.png"
+        },
+        {
+          "name": "subscriptions",
+          "data": {
+            "email_label": "Opt in for email",
+            "sms_label": "Opt in for sms"
+          },
+          "required": false,
+          "label": "",
+          "input": "subscriptions",
+          "type": "system",
+          "icon": "https://sailplays3.cdnvideo.ru/media/assets/assetfile/5fb1f1ceb6fa4d2ecc7b9153986feba0.png"
         }
       ],
       "errors": {
@@ -277,10 +403,8 @@
         "-200010": "Такой email уже используется",
         "phone is not valid": "Неправильно указан телефон",
         "-200007": "Такой телефон уже используется"
-      },
-      "tag": "Filled profile"
+      }
     },
-    "menu_selector": ".spm_menu",
     "list": [
       {
         "style": {
@@ -306,9 +430,6 @@
         "name": "Gold",
         "description": "Receive a 3% discount<br>for all purchases"
       }
-    ],
-    "events": {
-      "SUM_PURCHASE": 10000017
-    }
+    ]
   }
 }

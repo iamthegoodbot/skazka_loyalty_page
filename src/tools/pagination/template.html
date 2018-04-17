@@ -5,7 +5,7 @@
         &lsaquo;
     </a>
 
-    <a ng-if="pageLinks" ng-repeat="pageNumber in pages track by tracker(pageNumber, $index)" class="spm_pagination-page-link" ng-class="{type_active : pagination.current == pageNumber, type_disabled : pageNumber == '...'}"
+    <a ng-repeat="pageNumber in pages track by tracker(pageNumber, $index)" class="spm_pagination-page-link" ng-class="{type_active : pagination.current == pageNumber, type_disabled : pageNumber == '...'}"
         href="#" ng-click="$event.preventDefault();setCurrent(pageNumber)" ng-bind="pageNumber"></a>
 
     <a ng-if="directionLinks" class="spm_pagination-direction-link" ng-class="{disabled : pagination.current == pagination.last}"

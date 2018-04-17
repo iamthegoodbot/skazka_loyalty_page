@@ -18,7 +18,7 @@
              dir-paginate="gift in gifts() | itemsPerPage:3 track by $index" pagination-id="gifts_pages"
              ng-mouseenter="gift.actived=true"
              ng-mouseleave="gift.actived=false"
-             ng-class="{type_disabled: gift.points>user().user_points.confirmed, type_enabled: gift.points<=user().user_points.confirmed, type_hovered: gift.actived}">
+             ng-class="{type_disabled: !user() || gift.points>user().user_points.confirmed, type_enabled: gift.points<=user().user_points.confirmed, type_hovered: gift.actived}">
           <div class="spm_gifts-image">
             <img class="img-fluid" data-ng-src="{{ gift.thumbs.url_250x250 | sailplay_pic }}" alt="{{ gift.name }}">
           </div>
@@ -55,9 +55,22 @@
     </magic-modal-body>
   </magic-modal>
 
-  <magic-modal show="$parent.$parent.show_success">
+  <magic-modal class="spm_gifts-success-modal" show="$parent.$parent.show_success">
     <magic-modal-title ng-bind="widget.texts.modals.success.title"></magic-modal-title>
-    <magic-modal-body ng-bind-html="widget.texts.modals.success.body|to_trusted"></magic-modal-body>
+    <magic-modal-body data-ng-switch="purchased_gift.gift_type">
+
+      <div class="spm_gifts-success-modal-body" ng-bind-html="purchased_gift.gift_help_text || widget.texts.modals.success.body | to_trusted"></div>
+
+      <div data-ng-switch-when="coupon" class="spm_gifts-success-modal-body-coupon">
+        <div class="spm_gifts-success-modal-body-coupon-message">
+          {{ widget.texts.modals.success.coupon_title }}
+        </div>
+        <div class="spm_gifts-success-modal-body-coupon-input">
+          <input type="text" value="{{ purchased_gift.coupon_number }}" disabled>
+        </div>
+      </div>
+
+    </magic-modal-body>
   </magic-modal>
 
 </div>
