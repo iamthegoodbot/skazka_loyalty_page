@@ -584,6 +584,62 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
 
     };
 
+  })
+
+  .directive('sailplayVariableCheckbox', function () {
+
+    return {
+      restrict: 'A',
+      controllerAs: 'SailplayVariableCheckbox',
+      require: {
+        NgModel: 'ngModel'
+      },
+      bindToController: true,
+      controller: function () {
+
+        this.value = {};
+
+        this.$onInit = () => {
+
+          this.NgModel.$render = () => {
+
+            console.log(this.NgModel.$modelValue);
+
+            if(this.NgModel.$modelValue) {
+
+              let variables = this.NgModel.$modelValue.split('  ');
+
+              variables.forEach((variable) => {
+
+                this.value[variable] = true;
+
+              });
+
+              console.log(this.value);
+
+            }
+
+          };
+
+        };
+
+        this.change = () => {
+
+          let parsed = [];
+
+          for(let v in this.value) {
+
+            if(this.value[v]) parsed.push(v);
+
+          }
+
+          this.NgModel.$setViewValue(parsed.join('  '))
+
+        };
+
+      }
+    };
+
   });
 
 export default SailPlayProfile.name;
