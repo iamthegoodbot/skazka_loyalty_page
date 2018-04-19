@@ -26,7 +26,6 @@ const widget = {
         if(state){
           scope.getGift(angular.copy(state));
         }
-        return;
         // scope.show_gift = state && angular.copy(state);
       });
 

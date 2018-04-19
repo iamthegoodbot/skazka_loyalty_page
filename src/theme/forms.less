@@ -205,23 +205,43 @@
 
 .spm_form_buttons {
   text-align: center;
-  margin-top: 50px;
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  @media (max-width: 365px) {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 180px;
+    align-items: center;
+    justify-content: center;
+  }
   .spm_btn {
     min-width: 150px;
-    margin-right: 26px;
+    margin-right: 0;
     display: inline-block;
     margin-top: 0 !important;
     padding-left: 0 !important;
     padding-right: 0 !important;
+    outline: none;
+    border: none;
+    @media (max-width: 365px) {
+      margin: 0 0 20px;
+    }
     &:last-child {
       margin-right: 0;
+      @media (max-width: 365px) {
+        margin: 0;
+      }
     }
   }
 }
 
 .spm_form_field {
   .box-sizing(border-box);
-  margin-bottom: 20px;
+  margin-bottom: 30px;
   display: block;
   width: 100%;
   position: relative;
@@ -239,18 +259,18 @@
     span {
       width: 100%;
       box-sizing: border-box;
-      border: 1px solid rgba(0,0,0,0.2);
+      border: 1px solid #E0E0E0;
       border-radius: 0;
       color: @black;
-      line-height: 25px;
+      line-height: 40px;
       display: block;
       cursor: pointer;
       box-sizing: border-box;
       font-size: 14px;
-      font-weight: 500;
+      font-weight: 300;
       // padding: 10px 22px;
       position: relative;
-
+      color: @black;
       padding: 12px;
       text-align: center;
     }
@@ -265,7 +285,7 @@
       max-height: 100px;
       overflow-x: hidden;
       overflow-y: auto;
-      border: 1px solid rgba(0,0,0,0.2);
+      border: 1px solid #E0E0E0;
       background-color: @white;
       border-radius: 0;
       border-top: none;
@@ -340,8 +360,9 @@
     opacity: 0.4;
     display: block;
     color: @black;
-    font-weight: 500;
+    font-weight: 300;
     font-size: 16px;
+    color: #58839A;
 
     &.type_absolute {
       transition: 0.3s ease-out;
@@ -351,7 +372,7 @@
       bottom: 0;
       margin: auto;
       left: 0;
-      padding: 17px 22px;
+      padding: 25px 22px;
       height: auto;
       line-height: 1;
       z-index: 1;
@@ -361,16 +382,16 @@
   .spm_form_select {
     color: @black;
     font-size: 16px;
-    font-weight: 500;
-    padding: 15px 20px;
+    font-weight: 300;
+    padding: 23px 20px 22px;
     line-height: 1;
-    border: 1px solid rgba(0,0,0,0.2);
+    border: 1px solid #E0E0E0;
     width: 100%;
     display: block;
     outline: none;
     box-sizing: border-box;
     -webkit-appearance: none;
-    background: transparent;
+    background: url(https://sailplays3.cdnvideo.ru/media/assets/assetfile/36af9f093e66ad05bf54dd8bee9ba4eb.svg) transparent no-repeat 95% center/auto 10px;
     position: relative;
     -webkit-border-radius: 0;
     -moz-border-radius: 0;
@@ -378,19 +399,23 @@
     z-index: 2;
     transition: 0.3s ease-out;
     .transition(0.3s ease-out);
+    @media (max-width: 400px) {
+      background-image: none;
+    }
     &.ng-dirty.ng-invalid {
       border-color: red;
     }
     &.ng-not-empty {
-      padding: 25px 20px 8px;
+      padding: 34px 20px 14px;
       & + .spm_form_label {
         font-size: 14px;
-        padding: 9px 20px;
+        padding: 14px 20px;
       }
     }
     .placeholder({
       color: rgba(0, 0, 0, 0.4);
       font-family: inherit;
+      font-weight: 300;
     })
   }
 
@@ -398,10 +423,10 @@
      &[type="text"], &[type="email"], &[type="tel"] {
       color: @black;
       font-size: 16px;
-      font-weight: 500;
-      padding: 15px 20px;
+      font-weight: 300;
+      padding: 23px 20px 22px;
       line-height: 1;
-      border: 1px solid rgba(0,0,0,0.2);
+      border: 1px solid #E0E0E0;
       width: 100%;
       display: block;
       outline: none;
@@ -416,15 +441,16 @@
         border-color: red;
       }
       &:focus, &.ng-not-empty {
-        padding: 24px 20px 6px;
+        padding: 32px 20px 13px;
         & + .spm_form_label {
           font-size: 14px;
-          padding: 9px 20px;
+          padding: 10px 20px;
         }
       }
       .placeholder({
-        color: rgba(0, 0, 0, 0.4);
+        color: #58839A;
         font-family: inherit;
+        font-weight: 300;
       })
     }
   }

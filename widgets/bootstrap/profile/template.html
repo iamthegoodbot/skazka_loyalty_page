@@ -5,22 +5,22 @@
         <div class="row align-items-center">
             <div class="col">
                 <div class="position-relative d-flex align-items-center b-avatar mb-3">
-                    <img ng-src="{{user().user.avatar['250x250']|sailplay_pic}}" class="rounded-circle">
+                    <img ng-src="{{user().user.avatar['250x250']|sailplay_pic}}" class="rounded-circle cursor-pointer" ng-click="$root.$broadcast('info:state', true)">
                     <div class="b-avatar-menu position-relative d-flex align-items-center"
-                         ng-class="{type_active: menuActive}" ng-mouseleave="menuActive=false">
+                         ng-class="{type_active: $parent.$parent.menu_active}">
                         <div class="b-avatar-menu__icon rounded-circle d-flex bg-primary cursor-pointer align-items-center"
-                             ng-click="menuActive=!menuActive">
+                             ng-click="$event.stopPropagation();$event.preventDefault();$parent.$parent.menu_active=!$parent.$parent.menu_active">
                             <img class="mw-100 h-50" ng-src="{{widget.images.icon_dots}}">
                         </div>
-                        <div class="b-avatar-menu__list position-relative d-flex align-items-left bg-light flex-column">
-                            <a href="#" class="b-avatar-menu__item d-flex align-items-center text-dark py-3 pl-4 pr-5"
-                               ng-click="$event.preventDefault();$root.$broadcast('info:state', true);menuActive=false">
+                        <div class="b-avatar-menu__list position-relative d-flex align-items-left bg-white flex-column">
+                            <a href="#" class="b-avatar-menu__item d-flex align-items-center font-weight-light text-dark py-3 pl-4 pr-5"
+                               ng-click="$event.stopPropagation();$event.preventDefault();$root.$broadcast('info:state', true);$parent.$parent.menu_active=false">
                                 <i class="b-avatar-menu__item-icon">
                                     <img class="mw-100 h-75" ng-src="{{widget.images.icon_profile}}">
                                 </i>
                                 <span ng-bind="widget.texts.menu_my_profile"></span>
                             </a>
-                            <a href="#" class="b-avatar-menu__item d-flex align-items-center text-dark py-3 pl-4 pr-5"
+                            <a href="#" class="b-avatar-menu__item d-flex align-items-center font-weight-light text-dark py-3 pl-4 pr-5"
                                ng-href="{{widget.options.logout_link}}">
                                 <i class="b-avatar-menu__item-icon">
                                     <img class="mw-100 h-75" ng-src="{{widget.images.icon_logout}}">
@@ -33,40 +33,40 @@
                 <h1 class="display-4 text-uppercase font-weight-bolder"
                     ng-bind-html="widget.texts.header|to_trusted"></h1>
                 <p class="my-4 font-weight-light" ng-bind-html="widget.texts.sub_header|to_trusted"></p>
-                <a class="btn btn-md btn-primary text-uppercase px-3 py-2 font-weight-bolder" href="#" role="button"
+                <a class="btn btn-md btn-primary text-uppercase px-3 py-2 font-weight-bold" href="#" role="button"
                    target="_blank"
-                   ng-href="{{widget.options.button_link}}"
+                   ng-click="$event.preventDefault();$root.$broadcast('text:state', true)"
                    ng-bind="widget.texts.button_text"></a>
             </div>
         </div>
     </div>
 
-    <magic-modal show="$parent.$parent.show_info">
+    <magic-modal ng-show="!$parent.show_profile" show="$parent.$parent.show_info">
         <magic-modal-title>
             <div class="b-avatar">
                 <img ng-src="{{user().user.avatar['250x250']|sailplay_pic}}" class="rounded-circle">
             </div>
-            <span class="d-block my-5" ng-bind="user().user.name"></span>
+            <span class="b-name d-block my-5 text-black" ng-bind="user().user.name"></span>
         </magic-modal-title>
         <magic-modal-body>
 
-            <div class="b-info mb-5 d-flex align-items-center flex-column flex-column-light">
+            <div ng-show="user().user.email" class="b-info mb-5 pt-3 d-flex align-items-center flex-column flex-column-light">
                 <img ng-src="{{widget.images.icon_email}}">
                 <span class="mt-2" ng-bind="user().user.email"></span>
             </div>
 
-            <div class="b-info mb-5 d-flex align-items-center flex-column flex-column-light">
+            <div ng-show="user().user.phone" class="b-info mb-5 d-flex align-items-center flex-column flex-column-light">
                 <img ng-src="{{widget.images.icon_phone}}">
                 <span class="mt-2" ng-bind="user().user.phone|tel"></span>
             </div>
 
-            <div class="b-info mb-5 d-flex align-items-center flex-column flex-column-light">
+            <div ng-show="user().user.birth_date" class="b-info mb-5 d-flex align-items-center flex-column flex-column-light">
                 <img ng-src="{{widget.images.icon_bday}}">
                 <span class="mt-2" ng-bind="user().user.birth_date|date:'d MMMM yyyy'"></span>
             </div>
 
             <div class="b-info d-flex align-items-center justify-content-center">
-                <a class="btn btn-md btn-primary text-uppercase px-3 py-2 font-weight-bolder" href="#" role="button"
+                <a class="btn btn-md btn-primary text-uppercase px-3 py-2 font-weight-bold" href="#" role="button"
                    ng-click="$event.preventDefault();$root.$broadcast('profile:state', true)"
                    ng-bind="widget.texts.edit_profile"></a>
             </div>
@@ -74,7 +74,6 @@
 
         </magic-modal-body>
     </magic-modal>
-
 
     <magic-modal on-close="revert_profile_form" show="$parent.$parent.show_profile" prevent-close="lock_profile">
         <magic-modal-title ng-bind-html="widget.texts.modals.profile.title|to_trusted"></magic-modal-title>
@@ -119,9 +118,9 @@
                 </div>
 
                 <div class="spm_form_buttons">
-                    <button class="spm_btn theme_1 type_big type_cancel font-weight-bolder" ng-click="$parent.close()"
+                    <button class="spm_btn theme_1 type_big type_cancel font-weight-bold" ng-click="$parent.close()"
                             ng-bind="widget.texts.modals.profile.cancel"></button>
-                    <input type="submit" class="spm_btn theme_1 type_filled type_big font-weight-bolder"
+                    <input type="submit" class="spm_btn theme_1 type_filled type_big font-weight-bold"
                            ng-value="widget.texts.modals.profile.save"/>
                 </div>
 
@@ -129,7 +128,6 @@
 
         </magic-modal-body>
     </magic-modal>
-
 
     <magic-modal show="$parent.$parent.show_history">
         <magic-modal-title>
@@ -160,6 +158,11 @@
 
             </div>
         </magic-modal-body>
+    </magic-modal>
+
+    <magic-modal show="$parent.$parent.show_text">
+        <magic-modal-title ng-bind-html="widget.texts.modals.text.title|to_trusted"></magic-modal-title>
+        <magic-modal-body ng-bind-html="widget.texts.modals.text.body|to_trusted"></magic-modal-body>
     </magic-modal>
 
 </section>
