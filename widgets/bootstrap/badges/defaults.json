@@ -1,0 +1,40 @@
+{
+  "styles": {
+    "badge.type_active:before": {
+      "border-radius": "50%",
+      "box-shadow": " -15px 20px 30px 0 rgba(74,74,74,0.40)",
+      "right": 0,
+      "top": 0,
+      "height": "48px",
+      "content": "''",
+      "width": "48px",
+      "z-index": 2,
+      "background": "url(https://sailplays3.cdnvideo.ru/media/assets/assetfile/76637ea623717f385b7acece93f3232b.svg) white no-repeat center center/22px auto",
+      "position": "absolute",
+      "border": "solid 1px #e8e8e8"
+    },
+    "spm_badges-sub-header": {
+      "font-weight": 300
+    },
+    "spm_badges-header": {
+      "font-size": "45px",
+      "font-family": "Akrobat, Roboto, sans-serif",
+      "margin-top": "50px"
+    },
+    "spm_badges-container": {
+      "align-items": "flex-start"
+    },
+    "@media (max-width: 992px) | spm_badges-container__left": {
+      "text-align": "left",
+      "padding-left": "40px"
+    }
+  },
+  "enabled": true,
+  "id": "bootstrap_badges",
+  "texts": {
+    "sub_header": "Receive badges from this list for accumulated points",
+    "header": "Badges"
+  },
+  "images": {},
+  "options": {}
+}

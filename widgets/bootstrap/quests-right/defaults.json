@@ -54,11 +54,13 @@
     "header": "Quests",
     "modals": {
       "success": {
-        "body": "Текст, который можно редактировать в конфиге",
+        "body": "You have completed quest",
         "title": "Congratulations"
       }
     }
   },
   "images": {},
-  "options": {}
+  "options": {
+    "preload_quests": true
+  }
 }

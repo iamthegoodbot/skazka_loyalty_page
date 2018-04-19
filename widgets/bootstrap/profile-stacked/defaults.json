@@ -51,9 +51,6 @@
       "display": "block",
       "background-color": "rgb(252,46,162)"
     },
-    "spm_profile-block-wrapper": {
-      "background-image": "url(https://sailplays3.cdnvideo.ru/media/assets/assetfile/29b2150b570a651b4907beea24379aa2.png)"
-    },
     "b-list-close:before": {
       "right": 0,
       "bottom": 0,
@@ -73,9 +70,6 @@
     },
     "b-statuses": {
       "position": "static"
-    },
-    "@media (max-width: 750px) | spm_profile-block-wrapper": {
-      "background-position": "30% bottom"
     },
     "spm_profile-login_button": {
       "font-size": "16px",
@@ -156,7 +150,6 @@
       "font-weight": "300"
     },
     "@media (min-width: 1678px) | spm_profile": {
-      "padding": "2% 0",
       "background-size": "cover",
       "background-position": "center bottom"
     },
@@ -217,12 +210,8 @@
       "label": "Points"
     },
     "learn_more_html": "<strong>How it works</strong><br>• Earn Points by shopping in store and telling others about Excitement with Hookups<br>• Friend referrals (Hookups) get you and your buddies 10% off a purchase when they mention your name at sign up<br>• More ways to earn points coming in the future!<br>• Redeem Points for store credits or our Pleasure Product of the Month (1 smoke, 1 love)<br>• Pssst... Every $200 spent = 2000 points = $20 in store credit or a $30+ gift item!<br>• Don’t wait too long between visits - shop with us often to keep points active!<br>• Level up your FWB Relationship Status to earn even more points and perks<br>• Keep track of your relationship status and refer friends on iloveexcitement.com/FWB-Rewards<br>• Receive special coupons and offers via text and email<br>• While you can opt out anytime if desired, you’ll miss out on the best deals and fun events delivered only via text!<br><br><br><strong>RELATIONSHIP STATUS (aka Tiers)</strong><br><strong>1st Level: Flirt</strong><br>• Intro level, every customer starts here.<br>• $0 to $99.99 spent in 12 mos<br>• 50 points given as bonus for signing up? - Welcome email and text triggered offering coupon for filling out profile online<br>• Birthday coupon (if you give us your bday) $10 off a $20 or more purchase + Double points on your birthday<br>• Receive texts and emails about special sales and events at Excitement<br>• Points expire if no purchases are made within 6 months of when the points were earned. If a purchase is made 1x per 6 mos, points remain.<br>• Points accrue a $1 = 10 points<br><br><strong>2nd Level: Fling</strong><br>• $100+ to $249.99 spent in 12 mos<br>• 100 Bonus Points Earned <br>• Birthday coupon (if you give us your bday) $10 off a $20 or more purchase + Double points on your birthday<br>• Receive texts and emails about special sales and events at Excitement<br>• Points expire if no purchases are made within 6 months of when the points were earned. If a purchase is made 1x per 6 mos, points remain.<br>• Earn 10% more in bonus points for every dollar spent at this level. Points accrue a $1 = 11 points<br><br><strong>3rd Level: Flame</strong><br>• $250+ to $499.99 spent in 12 mos<br>• 200 Bonus Points Earned <br>• Birthday coupon (if you give us your bday) $10 off a $20 or more purchase + Double points on your birthday<br>• Receive texts and emails about special sales and events at Excitement<br>• Points earned at this tier never expire (points earned at previous tiers expire according to tier level)<br>• Earn 20% more in bonus points for every dollar spent at this level. Points accrue a $1 = 12 points<br><br><strong>4th Level: Forever</strong><br>• $500+ spent in 12 mos<br>• 500 Bonus Points Earned<br>• Birthday coupon (if you give us your bday) $10 off a $20 or more purchase + Double points on your birthday<br>• Receive texts and emails about special sales and events at Excitement<br>• Points earned at this tier never expire (points earned at previous tiers expire according to tier level)<br>• Earn 30% more in bonus points for every dollar spent at this level. Points accrue at $1= 13 points<br>",
-    "error": "Ошибка",
-    "your_discount": "Ваша скидка ",
-    "open_history": "History",
-    "unconfirmed": "НЕАКТИВНЫЕ",
-    "open_status": "Все статусы",
-    "unconfirmed_tooltip": "Баллы которые еще не подтвердились"
+    "error": "Error",
+    "open_history": "History"
   },
   "images": {
     "empty_status": "https://sailplays3.cdnvideo.ru/media/assets/assetfile/1834f62f62f6a5011d447636714ad89d.png",
@@ -303,6 +292,18 @@
             {
               "text": "Female",
               "value": "female"
+            },
+            {
+              "text": "Transmale",
+              "value": "transmale"
+            },
+            {
+              "text": "Transfemale",
+              "value": "transfemale"
+            },
+            {
+              "text": "Non-Binary Gender",
+              "value": "nonbinary"
             }
           ],
           "required": true,
@@ -351,7 +352,7 @@
           ],
           "required": true,
           "label": "I shop at Excitement for:",
-          "input": "radio",
+          "input": "checkbox",
           "type": "variable",
           "icon": "https://sailplays3.cdnvideo.ru/media/assets/assetfile/3b977645504ec7eafff8f2ec4f9047f5.png"
         },
@@ -381,7 +382,7 @@
           ],
           "required": true,
           "label": "I shop at these Excitement locations",
-          "input": "radio",
+          "input": "checkbox",
           "type": "variable",
           "icon": "https://sailplays3.cdnvideo.ru/media/assets/assetfile/91d4d2e8ac2055ca9704dcf6d3ed9a0d.png"
         },
@@ -404,32 +405,6 @@
         "phone is not valid": "Неправильно указан телефон",
         "-200007": "Такой телефон уже используется"
       }
-    },
-    "list": [
-      {
-        "style": {
-          "background": "url(https://sailplays3.cdnvideo.ru/media/assets/assetfile/95f3e9177758cec40283a712330c00dc.png) repeat left top/300px auto, linear-gradient(to bottom, #ffb256, #ca7b2a)"
-        },
-        "points": 100,
-        "name": "Bronze",
-        "description": "Receive a 2% discount<br>for all purchases"
-      },
-      {
-        "style": {
-          "background": "url(https://sailplays3.cdnvideo.ru/media/assets/assetfile/95f3e9177758cec40283a712330c00dc.png) repeat left top/300px auto, linear-gradient(to bottom, #e4eceb, #a7bebf)"
-        },
-        "points": 750,
-        "name": "Silver",
-        "description": "Receive a 2% discount<br>for all purchases"
-      },
-      {
-        "style": {
-          "background": "url(https://sailplays3.cdnvideo.ru/media/assets/assetfile/95f3e9177758cec40283a712330c00dc.png) repeat left top/300px auto, linear-gradient(to bottom, #fff951, #f1d313)"
-        },
-        "points": 1500,
-        "name": "Gold",
-        "description": "Receive a 3% discount<br>for all purchases"
-      }
-    ]
+    }
   }
 }

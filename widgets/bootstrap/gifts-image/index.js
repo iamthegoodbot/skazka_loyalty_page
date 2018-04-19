@@ -1,11 +1,12 @@
 import { Widget } from "@core/widget";
 import Template from "./template.html";
 import "./style.less";
-
+import defaults from './defaults.json';
 
 const widget = {
   id: "bootstrap_gifts_image",
   template: Template,
+  defaults: defaults,
   inject: ["$rootScope", "SailPlay", "SailPlayApi", "MAGIC_CONFIG"],
   controller($rootScope, SailPlay, SailPlayApi, MAGIC_CONFIG) {
     return (scope, elm, attrs) => {

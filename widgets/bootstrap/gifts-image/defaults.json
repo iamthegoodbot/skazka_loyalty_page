@@ -1,0 +1,98 @@
+{
+  "styles": {
+    "spm_gifts-item.type_hovered.type_enabled .spm_gifts-item-button.type_recieve": {
+      "color": "#fff",
+      "margin": "50px auto auto auto",
+      "display": "inline-block",
+      "background-color": "rgb(252,46,162)"
+    },
+    "spm_gifts-header": {
+      "font-size": "45px",
+      "font-family": "Akrobat, Roboto, sans-serif"
+    },
+    "spm_gifts-item.type_hovered.type_enabled .spm_gifts-item-name": {
+      "display": "none"
+    },
+    "spm_gifts-container": {
+      "max-width": "100%",
+      "padding": 0
+    },
+    "spm_gifts-item-name": {
+      "color": "rgb(154,152,147)",
+      "font-size": "20px",
+      "font-weight": 300
+    },
+    "spm_gifts-container__right": {},
+    "spm_gifts-item.type_disabled .spm_gifts-item-button.type_points": {
+      "margin-top": "20px"
+    },
+    "spm_gifts-container__left": {
+      "padding-right": "80px",
+      "padding-left": "80px"
+    },
+    "spm_gifts-success-modal-body": {
+      "font-size": "20px",
+      "font-weight": 300,
+      "margin-bottom": "20px"
+    },
+    "spm_gifts-success-modal .spm_modal-content-title": {
+      "margin-top": "20px"
+    },
+    "@media (max-width: 992px) | spm_gifts-list": {},
+    "spm_gifts-success-modal-body-coupon-input input": {
+      "padding": "10px 20px",
+      "width": "100%",
+      "font-size": "30px",
+      "margin-top": "5px"
+    },
+    "spm_gifts-sub-header": {
+      "font-weight": 300
+    },
+    "spm_gifts-item": {
+      "border-radius": 0,
+      "padding": "80px 40px 50px 40px",
+      "font-family": "Open Sans, sans-serif",
+      "margin": 0,
+      "background-color": "#fff"
+    },
+    "spm_gifts-item-button.type_points": {
+      "color": "#333",
+      "font-size": "24px",
+      "font-weight": 600,
+      "text-transform": "uppercase",
+      "margin-top": 0
+    },
+    "spm_gifts-item-button.type_recieve": {
+      "padding": "20px 35px",
+      "text-transform": "uppercase"
+    },
+    "spm_gifts-success-modal-body-coupon-message": {
+      "font-weight": 300
+    }
+  },
+  "enabled": true,
+  "id": "bootstrap_gifts_image",
+  "texts": {
+    "sub_header": "Receive gifts from this list for accumulated points",
+    "header": "Gifts",
+    "name_placeholder": "cashback",
+    "modals": {
+      "gift": {
+        "button": "Recieve reward",
+        "title": "Information"
+      },
+      "success": {
+        "body": "You received the gift!",
+        "coupon_title": "Your coupon number is:",
+        "title": "Congratulations"
+      },
+      "error": {
+        "body": "An error occurred while receiving the gift.",
+        "title": "Error"
+      }
+    },
+    "get": "Recieve reward"
+  },
+  "images": {},
+  "options": {}
+}

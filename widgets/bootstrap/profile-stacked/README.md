@@ -1,115 +1,68 @@
-# Руководоство по настройке
+# Руководоство по настройке и тестированию виджета
 
-Идет речь о 
+## Настройка конфига
+ 
+``options.config.fields`` - конфиг для полей профиля.
 
-# Пример конфига
+Массив объектов типа: 
 
+```json
+    
+  {
+    "name": "shop_for", //name of custom variable
+    "type": "variable", //type of field (system, variable)
+    "input": "checkbox", //type of input (text, phone, email, select, radio, checkbox, subscriptions)
+    "data": [ //array of options for input types: checkbox, select, radio
+      {
+        "text": "Sex Toys and Products", //visible text on input
+        "value": "Sex Toys and Products" //value to be selected
+      },
+      {
+        "text": "Lingerie",
+        "value": "Lingerie"
+      },
+      {
+        "text": "Smoke Items",
+        "value": "Smoke Items"
+      },
+      {
+        "text": "DVDs or Magazines",
+        "value": "DVDs or Magazines"
+      }
+    ],
+    "required": true, //true if field is required
+    "label": "I shop at Excitement for:", //label that shown near input
+    "icon": "https://sailplays3.cdnvideo.ru/media/assets/assetfile/3b977645504ec7eafff8f2ec4f9047f5.png" //icon for field
+  }  
+        
 ```
-{
-    "styles": {
-        "spm_profile-block-wrapper": {
-            "background": "url(https://sailplays3.cdnvideo.ru/media/assets/assetfile/29b2150b570a651b4907beea24379aa2.png) no-repeat 30% -50px/auto 110%"
-        },
-        "spm_profile": {
-            "font-family": "Acrom",
-            "background": "url(https://sailplays3.cdnvideo.ru/media/assets/assetfile/56a5cddb28b2ce665d011358e5e52744.png) no-repeat 30% -50px/auto 110%"
-        },
-        "@media (max-width: 750px) | spm_profile-block-wrapper": {
-            "background-position": "30% bottom"
-        },
-        "@media (min-width: 1678px) | spm_profile": {
-            "padding": "2% 0",
-            "background-size": "cover",
-            "background-position": "center bottom"
-        },
-        "@media (max-width: 750px) | spm_profile": {
-            "background-position": "30% bottom"
-        }
-    },
-    "enabled": true,
-    "id": "profile",
-    "texts": {
-        "empty_status": "Нет статуса",
-        "left_for_status": "Осталось<br>",
-        "your_status": "Ваш статус:",
-        "welcome": "Здравствуйте, ",
-        "modals": {
-            "profile": {
-                "save": "Сохранить",
-                "title": "Заполнить<br>профиль"
-            },
-            "history": {
-                "date": "дата",
-                "action": "действие",
-                "points": "баллы",
-                "empty": "Вы еще не совершали никаких действий",
-                "title": "История"
-            }
-        },
-        "header": "Добро пожаловать в&nbsp;бонусную программу",
-        "error": "Ошибка",
-        "your_discount": "Ваша скидка ",
-        "open_history": "ИСТОРИЯ",
-        "unconfirmed": "НЕАКТИВНЫЕ",
-        "open_status": "Все статусы",
-        "unconfirmed_tooltip": "Баллы которые еще не подтвердились"
-    },
-    "images": {
-        "empty_status": "https://sailplays3.cdnvideo.ru/media/assets/assetfile/1834f62f62f6a5011d447636714ad89d.png",
-        "close": "https://sailplays3.cdnvideo.ru/media/assets/assetfile/459234d99339b7ea5c10d772f9d62ba0.png"
-    },
-    "options": {
-        "menu_selector": ".spm_menu",
-        "config": {
-            "fields": [
-                {
-                    "input": "text",
-                    "required": true,
-                    "type": "system",
-                    "name": "firstName",
-                    "label": "Имя"
-                },
-                {
-                    "input": "text",
-                    "required": true,
-                    "type": "system",
-                    "name": "lastName",
-                    "label": "Фамилия"
-                },
-                {
-                    "input": "email",
-                    "required": true,
-                    "type": "system",
-                    "name": "addEmail",
-                    "label": "Email"
-                },
-                {
-                    "name": "addPhone",
-                    "placeholder": "+7 (999) 999-99-99",
-                    "required": true,
-                    "label": "Телефон",
-                    "input": "phone",
-                    "type": "system"
-                },
-                {
-                    "input": "date",
-                    "required": true,
-                    "type": "system",
-                    "name": "birthDate",
-                    "label": "Дата рождения"
-                }
-            ],
-            "errors": {
-                "email is not valid": "Неправильно указан email",
-                "-200010": "Такой email уже используется",
-                "phone is not valid": "Неправильно указан телефон",
-                "-200007": "Такой телефон уже используется"
-            },
-            "tag": "Отредактировал профиль"
-        },
-        "events": {
-            "SUM_PURCHASE": 10000017
-        }
-    }
-}
-```
+
+## Требования к дизайнеру
+
+1. картинка фона (если требуется)
+2. иконки для всех полей (если требуется)
+3. неавторизованный вид
+
+## Требования к менеджеру
+
+1. Настроить регистрацию
+2. Настроить статусы
+3. Подготовить пользователся с историей, баллами, и статусом
+
+## Тест-кейсы
+
+1. дизайн совпадает с макетом
+2. если авторизация по auth_hash -> профиль в залогиненном виде
+3. если авторизация по кнопке -> профиль в разлогиненом виде, кнопка Логин отображается
+4. аватарка отображает дефолтную картинку или полученную с ФБ
+5. имя пользователя отображается заданное пользователем
+6. правильно отображается количество баллов (подтвержденные)
+7. правильно отображается текущий статус
+8. при клике на блок с баллами, открывается модалка, в ней список действий пользователя, верно отображается дата, название, пагинация
+9. при нажатии на кнопку редактировать профиль открывается модалка с формой профиля
+10. верстка модалки совпадает с макетом
+11. заполняем профиль - сохраняем - виджет обновляется согласно введенным данным.
+12. после перезагрузки страницы данные отображаются верно. Форма заполнена верно
+13. при отмене, несохраненные данные стираются, старые остаются, модалка закрывается
+14. после сохранения профиля пользователю присваивается тег, заданный в конфиге
+
