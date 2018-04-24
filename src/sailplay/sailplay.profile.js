@@ -222,7 +222,7 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
                 res(true)
               })
             } else {
-              console.error("No fill tag_to_set_after_submit in config")
+              console.error("No fill tag_to_set_after_submit in config");
               res(true)
             }
           } else {
@@ -355,7 +355,7 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
                 break;
 
             }
-
+            console.log(form_field);
             return form_field;
           });
 
@@ -471,6 +471,10 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
             delete req_user.lastName;
           }
 
+          if (req_user.middleName && data_user && data_user.middle_name && data_user.middle_name == req_user.middleName) {
+            delete req_user.middleName;
+          }
+
           if (req_user.subscriptions && data_user.is_sms_notifications == req_user.subscriptions.sms) {
             delete req_user.subscriptions.sms;
           }
@@ -479,16 +483,16 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
             delete req_user.subscriptions.email;
           }
 
-          if (!Object.keys(req_user.subscriptions).length) {
+          if (!Object.keys(req_user.subscriptions || {}).length) {
             delete req_user.subscriptions;
           } else {
             req_user.subscriptions = JSON.stringify(req_user.subscriptions);
           }
 
-          let verifyPhone = false
+          let verifyPhone = false;
           if(scope.sailplay.fill_profile.config.verify_changes && ~scope.sailplay.fill_profile.config.verify_changes.indexOf('addPhone') && req_user.addPhone) {
-            verifyPhone = req_user.addPhone
-            delete req_user.addPhone
+            verifyPhone = req_user.addPhone;
+            delete req_user.addPhone;
           }
 
           // Make it via chains
@@ -514,9 +518,10 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
           let required_fields = scope.sailplay.fill_profile.form.fields.filter(item => (item.required && item.type=='system'));
           fill_profile_flag = required_fields.every(field => field.value);
 
-          console.log('fill_profile_flag',fill_profile_flag)
-          console.log('req_user', req_user)
-          console.log('required_fields',required_fields)
+          console.log('fill_profile_flag',fill_profile_flag);
+          console.log('req_user', req_user);
+          console.log('required_fields',required_fields);
+          console.log('required_fields',custom_user_vars);
 
 
           SailPlay.send('users.update', req_user, function (user_res) {
@@ -577,6 +582,12 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
             }
 
           });
+
+        };
+
+        scope.sailplay.fill_profile.get_selected_value = function (field) {
+
+          return field.data.filter(item => item.value === field.value)[0];
 
         };
 

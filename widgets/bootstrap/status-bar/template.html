@@ -3,7 +3,7 @@
     <div ng-show="!show_list" class="container py-5" ng-show="user()">
         <div class="row align-items-top">
 
-            <div class="b-points col-12 col-md-6 col-lg-4 d-flex align-items-center" ng-click="$root.$broadcast('history:state', true)">
+            <div class="b-points col-12 col-md-6 col-lg-4 d-flex align-items-center spm_status-bar-points" ng-click="$root.$broadcast('history:state', true)">
                 <div class="w-75">
                     <h4 class="font-akrobat font-weight-bold text-uppercase mb-0" ng-bind="widget.texts.points.label"></h4>
                     <div class="mt-3 font-weight-light" ng-bind-html="widget.texts.points.description|to_trusted"></div>
@@ -11,12 +11,12 @@
                 <div class="display-1 points-balance mr-auto font-akrobat font-weight-bold text-uppercase" ng-bind="user().user_points.confirmed|number"></div>
             </div>
 
-            <div class="b-next-status my-5 my-md-0 col-12 col-md-6 col-lg-4 d-flex flex-column align-items-left">
+            <div class="b-next-status my-5 my-md-0 col-12 col-md-6 col-lg-4 d-flex flex-column align-items-left spm_status-bar-next-status">
                 <h4 class="font-akrobat font-weight-bold text-uppercase mb-0" ng-bind="widget.texts.status.label"></h4>
                 <div class="mt-3 font-weight-light" ng-bind-html="statusText(toNext ? widget.texts.status.description : widget.texts.status.description_final)|to_trusted"></div>
             </div>
 
-            <div class="b-current-status col-12 mt-5 pt-md-5 col-md-12 mt-lg-0 pt-lg-0 col-lg-4 d-flex flex-column align-items-center text-center" ng-click="show_list=true">
+            <div class="b-current-status col-12 mt-5 pt-md-5 col-md-12 mt-lg-0 pt-lg-0 col-lg-4 d-flex flex-column align-items-center text-center spm_status-bar-current-status" ng-click="show_list=true">
                 <i ng-style="currentStatus.style"></i>
                 <h2 class="font-akrobat font-weight-bolder text-uppercase mb-0" ng-bind="currentStatus.name"></h2>
                 <div class="mt-1 font-weight-light" ng-bind-html="currentStatus.description|to_trusted"></div>

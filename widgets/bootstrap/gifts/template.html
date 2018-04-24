@@ -1,0 +1,50 @@
+<div class="spm_gifts clearfix" ng-if="widget.enabled" ng-cloak sailplay-profile sailplay-gifts>
+
+    <div class="spm_gifts-container">
+
+        <div class="spm_gifts-container__left">
+            <div class="spm_gifts-header" ng-bind="widget.texts.header"></div>
+            <div class="spm_gifts-sub-header" ng-bind="widget.texts.sub_header"></div>
+            <div class="spm_gifts-pagination">
+                <dir-pagination-controls direction-links="true" data-page-links="false" pagination-id="gifts_pages" template-url="magic.pagination" auto-hide="true"></dir-pagination-controls>
+            </div>
+        </div>
+
+        <div class="spm_gifts-container__right spm_gifts-list">
+
+            <div class="spm_gifts-item"
+                dir-paginate="gift in gifts() | itemsPerPage:3 track by $index" pagination-id="gifts_pages"
+                ng-mouseenter="gift.actived=true"
+                ng-mouseleave="gift.actived=false"
+                ng-class="{type_disabled: gift.points>user().user_points.confirmed, type_enabled: gift.points<=user().user_points.confirmed, type_hovered: gift.actived}">
+                <div class="spm_gifts-item-name" ng-bind="gift.name"></div>
+                <div class="spm_gifts-item-placeholder" ng-bind="widget.texts.name_placeholder"></div>
+                <a href="#" class="spm_gifts-item-button type_recieve" ng-bind="widget.texts.get" ng-click="$event.preventDefault();$root.$broadcast('gift:state', gift)"></a>
+                <div class="spm_gifts-item-button type_points" ng-bind="(gift.points|number)+' '+(gift.points|sailplay_pluralize:('points.texts.pluralize' | tools))"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <magic-modal show="$parent.$parent.show_gift">
+        <magic-modal-title ng-bind="widget.texts.modals.gift.title"></magic-modal-title>
+        <magic-modal-body>
+
+            <div class="spm_gifts-open">
+                <i class="spm_gifts-open-image" ng-style="{'background-image': ($parent.show.thumbs.url_250x250 | sailplay_pic | background_image)}"></i>
+                <div class="spm_gifts-open-name" ng-bind="$parent.show.name"></div>
+                <div class="spm_gifts-open-points" ng-bind="($parent.show.points|number) + ' ' + ($parent.show.points|sailplay_pluralize:('points.texts.pluralize' | tools))"></div>
+                <div class="spm_gifts-open-descr" ng-bind="$parent.show.descr"></div>
+                <a href="#" class="spm_gifts-open-button spm_btn theme_1 type_filled type_big" ng-bind="widget.texts.modals.gift.button" ng-click="$event.preventDefault();getGift($parent.show)"></a>
+            </div>
+
+        </magic-modal-body>
+    </magic-modal>
+
+    <magic-modal show="$parent.$parent.show_success">
+        <magic-modal-title ng-bind="widget.texts.modals.success.title"></magic-modal-title>
+        <magic-modal-body ng-bind-html="widget.texts.modals.success.body|to_trusted"></magic-modal-body>
+    </magic-modal>
+
+</div>

@@ -1682,11 +1682,11 @@ exports.GiftTypeRegister = undefined;
 
 var _widget = __webpack_require__(2);
 
-var _gifts = __webpack_require__(216);
+var _gifts = __webpack_require__(220);
 
 var _gifts2 = _interopRequireDefault(_gifts);
 
-__webpack_require__(217);
+__webpack_require__(221);
 
 var _angular = __webpack_require__(3);
 
@@ -1901,29 +1901,30 @@ _widget.Widget.directive('magicGift', ["$timeout", function ($timeout) {
 __webpack_require__(50);
 __webpack_require__(151);
 __webpack_require__(157);
-__webpack_require__(162);
+__webpack_require__(161);
 __webpack_require__(166);
 __webpack_require__(170);
-__webpack_require__(176);
+__webpack_require__(175);
 __webpack_require__(181);
-__webpack_require__(186);
+__webpack_require__(185);
 __webpack_require__(190);
 __webpack_require__(194);
-__webpack_require__(200);
+__webpack_require__(198);
 __webpack_require__(204);
 __webpack_require__(208);
 __webpack_require__(212);
+__webpack_require__(216);
 __webpack_require__(48);
-__webpack_require__(219);
-__webpack_require__(220);
+__webpack_require__(223);
 __webpack_require__(224);
 __webpack_require__(228);
 __webpack_require__(232);
 __webpack_require__(236);
-__webpack_require__(241);
-__webpack_require__(246);
-__webpack_require__(254);
-module.exports = __webpack_require__(259);
+__webpack_require__(240);
+__webpack_require__(245);
+__webpack_require__(250);
+__webpack_require__(258);
+module.exports = __webpack_require__(263);
 
 
 /***/ }),
@@ -38542,7 +38543,7 @@ var SailPlayProfile = exports.SailPlayProfile = _angular2.default.module('sailpl
               break;
 
           }
-
+          console.log(form_field);
           return form_field;
         });
 
@@ -38655,6 +38656,10 @@ var SailPlayProfile = exports.SailPlayProfile = _angular2.default.module('sailpl
           delete req_user.lastName;
         }
 
+        if (req_user.middleName && data_user && data_user.middle_name && data_user.middle_name == req_user.middleName) {
+          delete req_user.middleName;
+        }
+
         if (req_user.subscriptions && data_user.is_sms_notifications == req_user.subscriptions.sms) {
           delete req_user.subscriptions.sms;
         }
@@ -38663,7 +38668,7 @@ var SailPlayProfile = exports.SailPlayProfile = _angular2.default.module('sailpl
           delete req_user.subscriptions.email;
         }
 
-        if (!(0, _keys2.default)(req_user.subscriptions).length) {
+        if (!(0, _keys2.default)(req_user.subscriptions || {}).length) {
           delete req_user.subscriptions;
         } else {
           req_user.subscriptions = (0, _stringify2.default)(req_user.subscriptions);
@@ -38704,6 +38709,7 @@ var SailPlayProfile = exports.SailPlayProfile = _angular2.default.module('sailpl
         console.log('fill_profile_flag', fill_profile_flag);
         console.log('req_user', req_user);
         console.log('required_fields', required_fields);
+        console.log('required_fields', custom_user_vars);
 
         SailPlay.send('users.update', req_user, function (user_res) {
 
@@ -38758,6 +38764,13 @@ var SailPlayProfile = exports.SailPlayProfile = _angular2.default.module('sailpl
             scope.revert_profile_form();
           }
         });
+      };
+
+      scope.sailplay.fill_profile.get_selected_value = function (field) {
+
+        return field.data.filter(function (item) {
+          return item.value === field.value;
+        })[0];
       };
     }
 
@@ -45407,7 +45420,7 @@ exports.default = Pagination.name;
 /* 138 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"spm_pagination\" ng-if=\"1 < pages.length || !autoHide\">\n\n    <a ng-if=\"directionLinks\" class=\"spm_pagination-direction-link\" ng-class=\"{disabled : pagination.current == 1}\" href=\"#\"\n        ng-click=\"$event.preventDefault();setCurrent(pagination.current - 1)\">\n        &lsaquo;\n    </a>\n\n    <a ng-repeat=\"pageNumber in pages track by tracker(pageNumber, $index)\" class=\"spm_pagination-page-link\" ng-class=\"{type_active : pagination.current == pageNumber, type_disabled : pageNumber == '...'}\"\n        href=\"#\" ng-click=\"$event.preventDefault();setCurrent(pageNumber)\" ng-bind=\"pageNumber\"></a>\n\n    <a ng-if=\"directionLinks\" class=\"spm_pagination-direction-link\" ng-class=\"{disabled : pagination.current == pagination.last}\"\n        href=\"#\" ng-click=\"$event.preventDefault();setCurrent(pagination.current + 1)\">\n        &rsaquo;\n    </a>\n\n</div>";
+module.exports = "<div class=\"spm_pagination\" ng-if=\"1 < pages.length || !autoHide\">\n\n    <a ng-if=\"directionLinks\" class=\"spm_pagination-direction-link\" ng-class=\"{disabled : pagination.current == 1}\" href=\"#\"\n        ng-click=\"$event.preventDefault();setCurrent(pagination.current - 1)\">\n        &lsaquo;\n    </a>\n\n    <a ng-if=\"pageLinks\" ng-repeat=\"pageNumber in pages track by tracker(pageNumber, $index)\" class=\"spm_pagination-page-link\" ng-class=\"{type_active : pagination.current == pageNumber, type_disabled : pageNumber == '...'}\"\n        href=\"#\" ng-click=\"$event.preventDefault();setCurrent(pageNumber)\" ng-bind=\"pageNumber\"></a>\n\n    <a ng-if=\"directionLinks\" class=\"spm_pagination-direction-link\" ng-class=\"{disabled : pagination.current == pagination.last}\"\n        href=\"#\" ng-click=\"$event.preventDefault();setCurrent(pagination.current + 1)\">\n        &rsaquo;\n    </a>\n\n</div>";
 
 /***/ }),
 /* 139 */
@@ -45672,7 +45685,7 @@ _widget.Widget.config(["MagicWidgetProvider", function (MagicWidgetProvider) {
 /* 152 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"spm_badges-container\">\n\n    <div class=\"spm_badges-container__left\">\n        <div class=\"spm_badges-header\" ng-bind=\"widget.texts.header\"></div>\n        <div class=\"spm_badges-sub-header\" ng-bind-html=\"widget.texts.sub_header | to_trusted\"></div>\n    </div>\n\n    <div class=\"spm_badges-container__right spm_badges-list\">\n        <div sailplay-badges class=\"badge_lines_container clearfix\">\n            <sailplay-magic-badge-line class=\"one_level\" line=\"sailplay.badges.list().one_level_badges\" type=\"one_level\"\n                                       config=\"widget\"></sailplay-magic-badge-line>\n            <sailplay-magic-badge-line class=\"multi_level\" ng-repeat=\"line in sailplay.badges.list().multilevel_badges\"\n                                       line=\"line\" config=\"widget\"></sailplay-magic-badge-line>\n        </div>\n    </div>\n    \n\n</div>";
+module.exports = "<div class=\"spm_badges-container\">\n\n    <div class=\"spm_badges-container__left\">\n        <div class=\"spm_badges-header\" ng-bind=\"widget.texts.header\"></div>\n        <div class=\"spm_badges-sub-header\" ng-bind-html=\"widget.texts.sub_header | to_trusted\"></div>\n    </div>\n\n    <div class=\"spm_badges-container__right spm_badges-list\">\n        <div sailplay-badges class=\"badge_lines_container clearfix\">\n            <sailplay-magic-badge-line class=\"one_level\" line=\"sailplay.badges.list().one_level_badges\" type=\"one_level\"\n                                       config=\"widget\"></sailplay-magic-badge-line>\n            <sailplay-magic-badge-line class=\"multi_level\" ng-repeat=\"line in sailplay.badges.list().multilevel_badges\"\n                                       line=\"line\" config=\"widget\"></sailplay-magic-badge-line>\n        </div>\n    </div>\n\n\n</div>";
 
 /***/ }),
 /* 153 */
@@ -45746,7 +45759,122 @@ var _template2 = _interopRequireDefault(_template);
 
 __webpack_require__(159);
 
-var _defaults = __webpack_require__(161);
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var widget = {
+  id: "bootstrap_gifts",
+  template: _template2.default,
+  inject: ["$rootScope", "SailPlay", "SailPlayApi", "MAGIC_CONFIG"],
+  controller: function controller($rootScope, SailPlay, SailPlayApi, MAGIC_CONFIG) {
+    return function (scope, elm, attrs) {
+      scope.show_success = false;
+      scope.show_gift = false;
+
+      scope.getGift = function (gift) {
+        SailPlay.send('gifts.purchase', { gift: gift });
+      };
+
+      scope.onChange = function () {};
+
+      $rootScope.$on("gift:state", function (e, state) {
+        if (state) {
+          scope.getGift(angular.copy(state));
+        }
+        // scope.show_gift = state && angular.copy(state);
+      });
+
+      SailPlay.on('gifts.purchase.success', function (res) {
+        $rootScope.$apply(function () {
+          scope.show_gift = false;
+          scope.show_success = true;
+        });
+      });
+
+      SailPlay.on('gift.purchase.error', function (error) {
+        $rootScope.$apply(function () {
+          scope.show_gift = false;
+          scope.show_success = false;
+          $rootScope.$broadcast('notifier:notify', {
+            header: widget.texts.modals.error.title,
+            body: error.message || widget.texts.modals.error.body
+          });
+        });
+      });
+    };
+  }
+};
+
+_widget.Widget.config(["MagicWidgetProvider", function (MagicWidgetProvider) {
+  MagicWidgetProvider.register(widget);
+}]);
+
+/***/ }),
+/* 158 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"spm_gifts clearfix\" ng-if=\"widget.enabled\" ng-cloak sailplay-profile sailplay-gifts>\n\n    <div class=\"spm_gifts-container\">\n\n        <div class=\"spm_gifts-container__left\">\n            <div class=\"spm_gifts-header\" ng-bind=\"widget.texts.header\"></div>\n            <div class=\"spm_gifts-sub-header\" ng-bind=\"widget.texts.sub_header\"></div>\n            <div class=\"spm_gifts-pagination\">\n                <dir-pagination-controls direction-links=\"true\" data-page-links=\"false\" pagination-id=\"gifts_pages\" template-url=\"magic.pagination\" auto-hide=\"true\"></dir-pagination-controls>\n            </div>\n        </div>\n\n        <div class=\"spm_gifts-container__right spm_gifts-list\">\n\n            <div class=\"spm_gifts-item\"\n                dir-paginate=\"gift in gifts() | itemsPerPage:3 track by $index\" pagination-id=\"gifts_pages\"\n                ng-mouseenter=\"gift.actived=true\"\n                ng-mouseleave=\"gift.actived=false\"\n                ng-class=\"{type_disabled: gift.points>user().user_points.confirmed, type_enabled: gift.points<=user().user_points.confirmed, type_hovered: gift.actived}\">\n                <div class=\"spm_gifts-item-name\" ng-bind=\"gift.name\"></div>\n                <div class=\"spm_gifts-item-placeholder\" ng-bind=\"widget.texts.name_placeholder\"></div>\n                <a href=\"#\" class=\"spm_gifts-item-button type_recieve\" ng-bind=\"widget.texts.get\" ng-click=\"$event.preventDefault();$root.$broadcast('gift:state', gift)\"></a>\n                <div class=\"spm_gifts-item-button type_points\" ng-bind=\"(gift.points|number)+' '+(gift.points|sailplay_pluralize:('points.texts.pluralize' | tools))\"></div>\n            </div>\n\n        </div>\n\n    </div>\n\n    <magic-modal show=\"$parent.$parent.show_gift\">\n        <magic-modal-title ng-bind=\"widget.texts.modals.gift.title\"></magic-modal-title>\n        <magic-modal-body>\n\n            <div class=\"spm_gifts-open\">\n                <i class=\"spm_gifts-open-image\" ng-style=\"{'background-image': ($parent.show.thumbs.url_250x250 | sailplay_pic | background_image)}\"></i>\n                <div class=\"spm_gifts-open-name\" ng-bind=\"$parent.show.name\"></div>\n                <div class=\"spm_gifts-open-points\" ng-bind=\"($parent.show.points|number) + ' ' + ($parent.show.points|sailplay_pluralize:('points.texts.pluralize' | tools))\"></div>\n                <div class=\"spm_gifts-open-descr\" ng-bind=\"$parent.show.descr\"></div>\n                <a href=\"#\" class=\"spm_gifts-open-button spm_btn theme_1 type_filled type_big\" ng-bind=\"widget.texts.modals.gift.button\" ng-click=\"$event.preventDefault();getGift($parent.show)\"></a>\n            </div>\n\n        </magic-modal-body>\n    </magic-modal>\n\n    <magic-modal show=\"$parent.$parent.show_success\">\n        <magic-modal-title ng-bind=\"widget.texts.modals.success.title\"></magic-modal-title>\n        <magic-modal-body ng-bind-html=\"widget.texts.modals.success.body|to_trusted\"></magic-modal-body>\n    </magic-modal>\n\n</div>";
+
+/***/ }),
+/* 159 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(160);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// Prepare cssTransformation
+var transform;
+
+var options = {"hmr":true}
+options.transform = transform
+// add the styles to the DOM
+var update = __webpack_require__(1)(content, options);
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/dist/cjs.js!./style.less", function() {
+			var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/dist/cjs.js!./style.less");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 160 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(0)(false);
+// imports
+
+
+// module
+exports.push([module.i, ".spm_wrapper .spm_gifts {\n  position: relative;\n  background: #ecf0f0;\n}\n.spm_wrapper .spm_gifts-container {\n  width: 100%;\n  height: 100%;\n  max-width: 1200px;\n  margin: 0 auto;\n  box-sizing: border-box;\n  padding: 80px 30px;\n  overflow: hidden;\n  display: flex;\n  align-items: center;\n  justify-content: flex-start;\n}\n@media (max-width: 992px) {\n  .spm_wrapper .spm_gifts-container {\n    flex-direction: column;\n  }\n}\n.spm_wrapper .spm_gifts-container__left {\n  box-sizing: border-box;\n  flex-basis: 20%;\n  padding-right: 30px;\n}\n@media (max-width: 992px) {\n  .spm_wrapper .spm_gifts-container__left {\n    flex-basis: 100%;\n    margin-bottom: 60px;\n    padding-right: 0;\n    text-align: center;\n  }\n}\n.spm_wrapper .spm_gifts-container__right {\n  flex-basis: 80%;\n}\n.spm_wrapper .spm_gifts-header {\n  font-weight: 900;\n  text-transform: uppercase;\n  font-size: 35px;\n  line-height: 1;\n  color: #000000;\n  position: relative;\n  letter-spacing: 2.3px;\n}\n.spm_wrapper .spm_gifts-sub-header {\n  font-weight: normal;\n  font-size: 14px;\n  line-height: 22px;\n  margin: 25px 0;\n  color: #000000;\n}\n.spm_wrapper .spm_gifts-list {\n  display: flex;\n  align-items: flex-start;\n  flex-wrap: nowrap;\n  justify-content: flex-start;\n  width: 100%;\n}\n@media (max-width: 992px) {\n  .spm_wrapper .spm_gifts-list {\n    align-items: center;\n    justify-content: center;\n    flex-wrap: wrap;\n  }\n}\n.spm_wrapper .spm_gifts-item {\n  display: flex;\n  align-items: center;\n  justify-content: flex-start;\n  flex-direction: column;\n  position: relative;\n  width: 100%;\n  max-width: 280px;\n  min-height: 280px;\n  margin: 0 8px;\n  color: #ffffff;\n  background-color: #ca5b54;\n  border-radius: 8px;\n  -webkit-transition: box-shadow 0.3s linear;\n  -moz-transition: box-shadow 0.3s linear;\n  -ms-transition: box-shadow 0.3s linear;\n  -o-transition: box-shadow 0.3s linear;\n  transition: box-shadow 0.3s linear;\n}\n@media (max-width: 992px) {\n  .spm_wrapper .spm_gifts-item {\n    width: 48%;\n    margin: 1%;\n  }\n}\n@media (max-width: 600px) {\n  .spm_wrapper .spm_gifts-item {\n    width: 100%;\n    margin: 1% 1% 5% 1%;\n  }\n}\n.spm_wrapper .spm_gifts-item-name {\n  font-size: 80px;\n  font-weight: bold;\n  line-height: 1;\n  margin: 50px 10px 5px;\n  box-sizing: border-box;\n  color: inherit;\n  text-transform: uppercase;\n  text-align: center;\n}\n.spm_wrapper .spm_gifts-item-placeholder {\n  font-size: 22px;\n  font-weight: normal;\n  line-height: 1.45;\n  color: inherit;\n}\n.spm_wrapper .spm_gifts-item-button {\n  margin-top: 35px;\n  position: relative;\n  text-align: center;\n  border-radius: 5px;\n  border: solid 1px #ffffff;\n  font-size: 14px;\n  color: inherit;\n  line-height: 1.38;\n  letter-spacing: 1.6px;\n  padding: 10px 20px;\n  width: auto;\n  min-width: 180px;\n  text-transform: uppercase;\n  text-decoration: none;\n  font-weight: 700;\n}\n.spm_wrapper .spm_gifts-item-button.type_points {\n  display: block;\n}\n.spm_wrapper .spm_gifts-item-button.type_recieve {\n  display: none;\n}\n.spm_wrapper .spm_gifts-item.type_enabled {\n  box-shadow: 0 15px 20px 0 rgba(202, 91, 84, 0.27);\n}\n.spm_wrapper .spm_gifts-item.type_disabled {\n  background-color: #b3bcc3;\n  box-shadow: 0 11px 12px 0 rgba(168, 178, 189, 0.36);\n  color: #8e9cab;\n}\n.spm_wrapper .spm_gifts-item.type_disabled .spm_gifts-item-button {\n  border-color: #8e9cab;\n}\n.spm_wrapper .spm_gifts-item:hover.type_enabled {\n  box-shadow: none;\n}\n.spm_wrapper .spm_gifts-item:hover.type_enabled .spm_gifts-item-button.type_points {\n  display: none;\n}\n.spm_wrapper .spm_gifts-item:hover.type_enabled .spm_gifts-item-button.type_recieve {\n  display: block;\n}\n.spm_wrapper .spm_gifts-pagination .spm_pagination {\n  justify-content: flex-start;\n}\n@media (max-width: 992px) {\n  .spm_wrapper .spm_gifts-pagination .spm_pagination {\n    justify-content: center;\n  }\n}\n.spm_wrapper .spm_gifts-pagination .spm_pagination-direction-link {\n  color: #809797;\n  margin: 0;\n  font-size: 40px;\n  font-weight: 100;\n  line-height: 46px;\n  width: 50px;\n  height: 50px;\n  border-radius: 3px;\n  border: solid 1px #809797;\n}\n.spm_wrapper .spm_gifts-pagination .spm_pagination-direction-link:first-child {\n  border-top-right-radius: 0;\n  border-bottom-right-radius: 0;\n}\n.spm_wrapper .spm_gifts-pagination .spm_pagination-direction-link:last-child {\n  border-left: none;\n  border-top-left-radius: 0;\n  border-bottom-left-radius: 0;\n}\n.spm_wrapper .spm_gifts-open {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  width: 380px;\n}\n@media (max-width: 600px) {\n  .spm_wrapper .spm_gifts-open {\n    width: 100%;\n  }\n}\n.spm_wrapper .spm_gifts-open-image {\n  width: 200px;\n  height: 200px;\n  background-repeat: no-repeat;\n  background-position: center center;\n  background-size: contain;\n  margin: 10px 0;\n}\n.spm_wrapper .spm_gifts-open-name {\n  font-size: 18px;\n  font-weight: 800;\n  line-height: 25px;\n  margin: 10px 0;\n  text-transform: uppercase;\n  color: #ca5b54;\n  text-align: center;\n}\n.spm_wrapper .spm_gifts-open-points {\n  font-size: 30px;\n  font-weight: bold;\n  line-height: 25px;\n  color: #000000;\n}\n.spm_wrapper .spm_gifts-open-descr {\n  font-size: 18px;\n  font-weight: 500;\n  line-height: 25px;\n  margin: 20px 0 30px;\n  color: #000000;\n  opacity: 0.5;\n  text-align: center;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 161 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _widget = __webpack_require__(2);
+
+var _template = __webpack_require__(162);
+
+var _template2 = _interopRequireDefault(_template);
+
+__webpack_require__(163);
+
+var _defaults = __webpack_require__(165);
 
 var _defaults2 = _interopRequireDefault(_defaults);
 
@@ -45805,19 +45933,19 @@ _widget.Widget.config(["MagicWidgetProvider", function (MagicWidgetProvider) {
 }]);
 
 /***/ }),
-/* 158 */
+/* 162 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"spm_gifts clearfix container-fluid\" ng-if=\"widget.enabled\" ng-cloak sailplay-profile sailplay-gifts>\n\n  <div class=\"spm_gifts-container row\">\n\n    <div class=\"spm_gifts-container__left col-lg-4 col-md-12\">\n      <div class=\"spm_gifts-header\" ng-bind=\"widget.texts.header\"></div>\n      <div class=\"spm_gifts-sub-header\" ng-bind=\"widget.texts.sub_header\"></div>\n      <div class=\"spm_gifts-pagination\">\n        <dir-pagination-controls direction-links=\"true\" pagination-id=\"gifts_pages\" template-url=\"magic.pagination\"\n                                 auto-hide=\"true\"></dir-pagination-controls>\n      </div>\n    </div>\n\n    <div class=\"spm_gifts-container__right spm_gifts-list col-lg-8 col-md-12\">\n\n      <div class=\"row\">\n        <div class=\"spm_gifts-item col-lg-4 col-md-4 col-sm-4 col-xs-12\"\n             dir-paginate=\"gift in gifts() | itemsPerPage:3 track by $index\" pagination-id=\"gifts_pages\"\n             ng-mouseenter=\"gift.actived=true\"\n             ng-mouseleave=\"gift.actived=false\"\n             ng-class=\"{type_disabled: !user() || gift.points>user().user_points.confirmed, type_enabled: gift.points<=user().user_points.confirmed, type_hovered: gift.actived}\">\n          <div class=\"spm_gifts-image\">\n            <img class=\"img-fluid\" data-ng-src=\"{{ gift.thumbs.url_250x250 | sailplay_pic }}\" alt=\"{{ gift.name }}\">\n          </div>\n          <div class=\"spm_gifts-item-name\" ng-bind=\"gift.name\"></div>\n          <div class=\"text-center display-inline-block\">\n            <a href=\"#\" class=\"spm_gifts-item-button type_recieve\" ng-bind=\"widget.texts.get\"\n               ng-click=\"$event.preventDefault();$root.$broadcast('gift:state', gift)\"></a>\n            <div class=\"spm_gifts-item-button type_points\"\n                 ng-bind=\"(gift.points|number)+' '+(gift.points|sailplay_pluralize:('points.texts.pluralize' | tools))\"></div>\n          </div>\n\n        </div>\n      </div>\n\n    </div>\n\n  </div>\n\n  <magic-modal show=\"$parent.$parent.show_gift\">\n    <magic-modal-title ng-bind=\"widget.texts.modals.gift.title\"></magic-modal-title>\n    <magic-modal-body>\n\n      <div class=\"spm_gifts-open\">\n        <i class=\"spm_gifts-open-image\"\n           ng-style=\"{'background-image': ($parent.show.thumbs.url_250x250 | sailplay_pic | background_image)}\"></i>\n        <div class=\"spm_gifts-open-name\" ng-bind=\"$parent.show.name\"></div>\n        <div class=\"spm_gifts-open-points\"\n             ng-bind=\"($parent.show.points|number) + ' ' + ($parent.show.points|sailplay_pluralize:('points.texts.pluralize' | tools))\"></div>\n        <div class=\"spm_gifts-open-descr\" ng-bind=\"$parent.show.descr\"></div>\n        <a href=\"#\" class=\"spm_gifts-open-button spm_btn theme_1 type_filled type_big\"\n           ng-bind=\"widget.texts.modals.gift.button\" ng-click=\"$event.preventDefault();getGift($parent.show)\"></a>\n      </div>\n\n    </magic-modal-body>\n  </magic-modal>\n\n  <magic-modal class=\"spm_gifts-success-modal\" show=\"$parent.$parent.show_success\">\n    <magic-modal-title ng-bind=\"widget.texts.modals.success.title\"></magic-modal-title>\n    <magic-modal-body data-ng-switch=\"purchased_gift.gift_type\">\n\n      <div class=\"spm_gifts-success-modal-body\" ng-bind-html=\"purchased_gift.gift_help_text || widget.texts.modals.success.body | to_trusted\"></div>\n\n      <div data-ng-switch-when=\"coupon\" class=\"spm_gifts-success-modal-body-coupon\">\n        <div class=\"spm_gifts-success-modal-body-coupon-message\">\n          {{ widget.texts.modals.success.coupon_title }}\n        </div>\n        <div class=\"spm_gifts-success-modal-body-coupon-input\">\n          <input type=\"text\" value=\"{{ purchased_gift.coupon_number }}\" disabled>\n        </div>\n      </div>\n\n    </magic-modal-body>\n  </magic-modal>\n\n</div>";
 
 /***/ }),
-/* 159 */
+/* 163 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(160);
+var content = __webpack_require__(164);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -45842,7 +45970,7 @@ if(false) {
 }
 
 /***/ }),
-/* 160 */
+/* 164 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -45856,13 +45984,13 @@ exports.push([module.i, ".spm_wrapper .bootstrap_gifts_image .spm_gifts {\n  pos
 
 
 /***/ }),
-/* 161 */
+/* 165 */
 /***/ (function(module, exports) {
 
 module.exports = {"styles":{"spm_gifts-item.type_hovered.type_enabled .spm_gifts-item-button.type_recieve":{"color":"#fff","margin":"50px auto auto auto","display":"inline-block","background-color":"rgb(252,46,162)"},"spm_gifts-header":{"font-size":"45px","font-family":"Akrobat, Roboto, sans-serif"},"spm_gifts-item.type_hovered.type_enabled .spm_gifts-item-name":{"display":"none"},"spm_gifts-container":{"max-width":"100%","padding":0},"spm_gifts-item-name":{"color":"rgb(154,152,147)","font-size":"20px","font-weight":300},"spm_gifts-container__right":{},"spm_gifts-item.type_disabled .spm_gifts-item-button.type_points":{"margin-top":"20px"},"spm_gifts-container__left":{"padding-right":"80px","padding-left":"80px"},"spm_gifts-success-modal-body":{"font-size":"20px","font-weight":300,"margin-bottom":"20px"},"spm_gifts-success-modal .spm_modal-content-title":{"margin-top":"20px"},"@media (max-width: 992px) | spm_gifts-list":{},"spm_gifts-success-modal-body-coupon-input input":{"padding":"10px 20px","width":"100%","font-size":"30px","margin-top":"5px"},"spm_gifts-sub-header":{"font-weight":300},"spm_gifts-item":{"border-radius":0,"padding":"80px 40px 50px 40px","font-family":"Open Sans, sans-serif","margin":0,"background-color":"#fff"},"spm_gifts-item-button.type_points":{"color":"#333","font-size":"24px","font-weight":600,"text-transform":"uppercase","margin-top":0},"spm_gifts-item-button.type_recieve":{"padding":"20px 35px","text-transform":"uppercase"},"spm_gifts-success-modal-body-coupon-message":{"font-weight":300}},"enabled":true,"id":"bootstrap_gifts_image","texts":{"sub_header":"Receive gifts from this list for accumulated points","header":"Gifts","name_placeholder":"cashback","modals":{"gift":{"button":"Recieve reward","title":"Information"},"success":{"body":"You received the gift!","coupon_title":"Your coupon number is:","title":"Congratulations"},"error":{"body":"An error occurred while receiving the gift.","title":"Error"}},"get":"Recieve reward"},"images":{},"options":{}}
 
 /***/ }),
-/* 162 */
+/* 166 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -45870,11 +45998,11 @@ module.exports = {"styles":{"spm_gifts-item.type_hovered.type_enabled .spm_gifts
 
 var _widget = __webpack_require__(2);
 
-var _template = __webpack_require__(163);
+var _template = __webpack_require__(167);
 
 var _template2 = _interopRequireDefault(_template);
 
-__webpack_require__(164);
+__webpack_require__(168);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -45921,19 +46049,19 @@ _widget.Widget.config(["MagicWidgetProvider", function (MagicWidgetProvider) {
 }]);
 
 /***/ }),
-/* 163 */
+/* 167 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"spm_menu clearfix\" ng-show=\"widget.enabled\" ng-cloak sailplay-profile>\n    <div class=\"spm_menu-wrapper\">\n\n        <div class=\"spm_menu-container\">\n\n            <div class=\"spm_menu-list\" ng-show=\"widget.options.items && widget.options.items.length\">\n                <a class=\"spm_menu-item\" ng-repeat=\"item in widget.options.items track by $index\" ng-click=\"$event.preventDefault();onClick(item)\">\n                    <i ng-style=\"{'background-image': ((item.icon || widget.images.menu_icon)|background_image)}\"></i>\n                    <span ng-bind=\"item.label\"></span>\n                </a>\n            </div>\n\n            <div class=\"spm_menu-profile\" ng-show=\"user && user()\">\n                <i ng-style=\"{'background-image': (user().user.avatar['250x250'] | sailplay_pic | background_image)}\" ng-click=\"$parent.active=true\"></i>\n                <div class=\"spm_menu-profile-balance\" ng-click=\"$parent.active=true\">\n                    <span class=\"spm_menu-profile-balance_label\" ng-bind=\"widget.texts.your_balance\"></span>\n                    <span class=\"spm_menu-profile-balance_value\" ng-bind=\"(user().user_points.confirmed|number) + ' ' + (user().user_points.confirmed | sailplay_pluralize:('points.texts.pluralize' | tools))\"></span>\n                </div>\n                <div class=\"spm_menu-profile-dropdown\" ng-class=\"{type_open: $parent.active}\">\n                    <a href=\"#\" class=\"spm_menu-profile-dropdown-item type_mobile\" ng-repeat=\"item in widget.options.items track by $index\" ng-bind=\"item.label\" ng-click=\"$event.preventDefault();onClick(item)\"></a>\n                    <a href=\"#\" class=\"spm_menu-profile-dropdown-item\" ng-bind=\"widget.texts.edit_profile\" ng-click=\"$event.preventDefault();active=false;$root.$broadcast('profile:state', true)\"></a>\n                    <a class=\"spm_menu-profile-dropdown-item\" ng-href=\"{{widget.options.logout}}\" ng-bind=\"widget.texts.logout\"></a>\n                </div>\n            </div>\n\n        </div>\n\n    </div>\n</div>";
 
 /***/ }),
-/* 164 */
+/* 168 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(165);
+var content = __webpack_require__(169);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -45958,7 +46086,7 @@ if(false) {
 }
 
 /***/ }),
-/* 165 */
+/* 169 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -45972,7 +46100,7 @@ exports.push([module.i, ".spm_wrapper .spm_menu {\n  width: 100%;\n  height: 94p
 
 
 /***/ }),
-/* 166 */
+/* 170 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -45980,16 +46108,20 @@ exports.push([module.i, ".spm_wrapper .spm_menu {\n  width: 100%;\n  height: 94p
 
 var _widget = __webpack_require__(2);
 
-var _template = __webpack_require__(167);
+var _template = __webpack_require__(171);
 
 var _template2 = _interopRequireDefault(_template);
 
-__webpack_require__(168);
+__webpack_require__(172);
+
+var _avatar = __webpack_require__(174);
+
+var _avatar2 = _interopRequireDefault(_avatar);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var widget = {
-  id: "profile",
+  id: "bootstrap_profile",
   template: _template2.default,
   inject: ["$rootScope", "SailPlay", "SailPlayApi", "MAGIC_CONFIG"],
   controller: function controller($rootScope, SailPlay, SailPlayApi, MAGIC_CONFIG) {
@@ -46001,6 +46133,7 @@ var widget = {
       scope.show_text = false;
       scope.lock_profile = false;
       scope.menu_active = false;
+      scope.default_avatar = _avatar2.default;
 
       $rootScope.$on("text:state", function (e, state) {
         scope.show_text = state;
@@ -46051,19 +46184,19 @@ _widget.Widget.config(["MagicWidgetProvider", function (MagicWidgetProvider) {
 }]);
 
 /***/ }),
-/* 167 */
+/* 171 */
 /***/ (function(module, exports) {
 
-module.exports = "<section class=\"container-fluid spm_profile profile clearfix\" ng-if=\"widget.enabled\" ng-cloak sailplay-profile\n         sailplay-fill-profile config=\"widget.options.config\">\n\n    <div class=\"container\">\n        <div class=\"row align-items-center\">\n            <div class=\"col\">\n                <div class=\"position-relative d-flex align-items-center b-avatar mb-3\">\n                    <img ng-src=\"{{user().user.avatar['250x250']|sailplay_pic}}\" class=\"rounded-circle cursor-pointer\" ng-click=\"$root.$broadcast('info:state', true)\">\n                    <div class=\"b-avatar-menu position-relative d-flex align-items-center\"\n                         ng-class=\"{type_active: $parent.$parent.menu_active}\">\n                        <div class=\"b-avatar-menu__icon rounded-circle d-flex bg-primary cursor-pointer align-items-center\"\n                             ng-click=\"$event.stopPropagation();$event.preventDefault();$parent.$parent.menu_active=!$parent.$parent.menu_active\">\n                            <img class=\"mw-100 h-50\" ng-src=\"{{widget.images.icon_dots}}\">\n                        </div>\n                        <div class=\"b-avatar-menu__list position-relative d-flex align-items-left bg-white flex-column\">\n                            <a href=\"#\" class=\"b-avatar-menu__item d-flex align-items-center font-weight-light text-dark py-3 pl-4 pr-5\"\n                               ng-click=\"$event.stopPropagation();$event.preventDefault();$root.$broadcast('info:state', true);$parent.$parent.menu_active=false\">\n                                <i class=\"b-avatar-menu__item-icon\">\n                                    <img class=\"mw-100 h-75\" ng-src=\"{{widget.images.icon_profile}}\">\n                                </i>\n                                <span ng-bind=\"widget.texts.menu_my_profile\"></span>\n                            </a>\n                            <a href=\"#\" class=\"b-avatar-menu__item d-flex align-items-center font-weight-light text-dark py-3 pl-4 pr-5\"\n                               ng-href=\"{{widget.options.logout_link}}\">\n                                <i class=\"b-avatar-menu__item-icon\">\n                                    <img class=\"mw-100 h-75\" ng-src=\"{{widget.images.icon_logout}}\">\n                                </i>\n                                <span ng-bind=\"widget.texts.menu_logout\"></span>\n                            </a>\n                        </div>\n                    </div>\n                </div>\n                <h1 class=\"display-4 text-uppercase font-weight-bolder\"\n                    ng-bind-html=\"widget.texts.header|to_trusted\"></h1>\n                <p class=\"my-4 font-weight-light\" ng-bind-html=\"widget.texts.sub_header|to_trusted\"></p>\n                <a class=\"btn btn-md btn-primary text-uppercase px-3 py-2 font-weight-bold\" href=\"#\" role=\"button\"\n                   target=\"_blank\"\n                   ng-click=\"$event.preventDefault();$root.$broadcast('text:state', true)\"\n                   ng-bind=\"widget.texts.button_text\"></a>\n            </div>\n        </div>\n    </div>\n\n    <magic-modal ng-show=\"!$parent.show_profile\" show=\"$parent.$parent.show_info\">\n        <magic-modal-title>\n            <div class=\"b-avatar\">\n                <img ng-src=\"{{user().user.avatar['250x250']|sailplay_pic}}\" class=\"rounded-circle\">\n            </div>\n            <span class=\"b-name d-block my-5 text-black\" ng-bind=\"user().user.name\"></span>\n        </magic-modal-title>\n        <magic-modal-body>\n\n            <div ng-show=\"user().user.email\" class=\"b-info mb-5 pt-3 d-flex align-items-center flex-column flex-column-light\">\n                <img ng-src=\"{{widget.images.icon_email}}\">\n                <span class=\"mt-2\" ng-bind=\"user().user.email\"></span>\n            </div>\n\n            <div ng-show=\"user().user.phone\" class=\"b-info mb-5 d-flex align-items-center flex-column flex-column-light\">\n                <img ng-src=\"{{widget.images.icon_phone}}\">\n                <span class=\"mt-2\" ng-bind=\"user().user.phone|tel\"></span>\n            </div>\n\n            <div ng-show=\"user().user.birth_date\" class=\"b-info mb-5 d-flex align-items-center flex-column flex-column-light\">\n                <img ng-src=\"{{widget.images.icon_bday}}\">\n                <span class=\"mt-2\" ng-bind=\"user().user.birth_date|date:'d MMMM yyyy'\"></span>\n            </div>\n\n            <div class=\"b-info d-flex align-items-center justify-content-center\">\n                <a class=\"btn btn-md btn-primary text-uppercase px-3 py-2 font-weight-bold\" href=\"#\" role=\"button\"\n                   ng-click=\"$event.preventDefault();$root.$broadcast('profile:state', true)\"\n                   ng-bind=\"widget.texts.edit_profile\"></a>\n            </div>\n\n\n        </magic-modal-body>\n    </magic-modal>\n\n    <magic-modal on-close=\"revert_profile_form\" show=\"$parent.$parent.show_profile\" prevent-close=\"lock_profile\">\n        <magic-modal-title ng-bind-html=\"widget.texts.modals.profile.title|to_trusted\"></magic-modal-title>\n        <magic-modal-body>\n\n            <form name=\"profile_form\" class=\"spm_profile-form\"\n                  ng-submit=\"sailplay.fill_profile.submit(profile_form, onSaveProfile);\">\n\n                <div class=\"spm_form_field\" ng-repeat=\"field in sailplay.fill_profile.form.fields\"\n                     ng-switch=\"field.input\">\n\n                    <div ng-switch-when=\"text\">\n                        <input class=\"spm_form_input\" type=\"text\" placeholder=\"{{ field.placeholder }}\"\n                               ng-model=\"field.value\" ng-required=\"field.required\">\n                        <label class=\"spm_form_label type_absolute\" ng-bind=\"field.label\"></label>\n                    </div>\n\n                    <div ng-switch-when=\"date\">\n                        <label class=\"spm_form_label \" ng-bind=\"field.label\"></label>\n                        <date-picker ng-model=\"field.value\" ng-required=\"field.required\"></date-picker>\n                    </div>\n\n                    <div ng-switch-when=\"phone\">\n                        <input class=\"spm_form_input\" type=\"text\"\n                               ui-mask=\"{{ field.placeholder }}\" ng-model=\"field.value\"\n                               ng-required=\"field.required\">\n                        <label class=\"spm_form_label type_absolute\" ng-bind=\"field.label\"></label>\n                    </div>\n\n                    <div ng-switch-when=\"email\">\n                        <input class=\"spm_form_input\" type=\"email\" placeholder=\"{{ field.placeholder }}\"\n                               ng-model=\"field.value\" ng-required=\"field.required\">\n                        <label class=\"spm_form_label type_absolute\">{{ field.label }}</label>\n                    </div>\n\n                    <div ng-switch-when=\"select\">\n                        <select class=\"spm_form_select\" ng-model=\"field.value\"\n                                ng-options=\"item.value as item.text for item in field.data\"></select>\n                        <label class=\"spm_form_label type_absolute\" ng-bind=\"field.label\"></label>\n                    </div>\n\n                </div>\n\n                <div class=\"spm_form_buttons\">\n                    <button class=\"spm_btn theme_1 type_big type_cancel font-weight-bold\" ng-click=\"$parent.close()\"\n                            ng-bind=\"widget.texts.modals.profile.cancel\"></button>\n                    <input type=\"submit\" class=\"spm_btn theme_1 type_filled type_big font-weight-bold\"\n                           ng-value=\"widget.texts.modals.profile.save\"/>\n                </div>\n\n            </form>\n\n        </magic-modal-body>\n    </magic-modal>\n\n    <magic-modal show=\"$parent.$parent.show_history\">\n        <magic-modal-title>\n            <span class=\"d-block text-left\" ng-bind=\"widget.texts.modals.history.title\"></span>\n        </magic-modal-title>\n        <magic-modal-body>\n            <div sailplay-history>\n\n                <table class=\"spm_profile-history\" ng-show=\"history().length\">\n                    <tbody>\n                    <tr dir-paginate=\"item in history() | itemsPerPage:5\" pagination-id=\"history_pages\">\n                        <td class=\"type_lighter\" ng-bind=\"item.action_date | date:'d MMM yyyy'\"></td>\n                        <td>\n                            <div ng-bind=\"item|history_item\"></div>\n                        </td>\n                        <td></td>\n                        <!--<td ng-class=\"{type_positive:item.points_delta>0, type_negative:item.points_delta<0}\"-->\n                            <!--ng-bind=\"item.points_delta?(item.points_delta|number):''\"></td>-->\n                    </tr>\n                    </tbody>\n                </table>\n\n                <dir-pagination-controls max-size=\"7\" direction-links=\"false\" pagination-id=\"history_pages\"\n                                         template-url=\"magic.pagination\"\n                                         auto-hide=\"true\"></dir-pagination-controls>\n\n                <div ng-hide=\"history().length\" ng-bind=\"widget.texts.modals.history.empty\"></div>\n\n            </div>\n        </magic-modal-body>\n    </magic-modal>\n\n    <magic-modal show=\"$parent.$parent.show_text\">\n        <magic-modal-title ng-bind-html=\"widget.texts.modals.text.title|to_trusted\"></magic-modal-title>\n        <magic-modal-body ng-bind-html=\"widget.texts.modals.text.body|to_trusted\"></magic-modal-body>\n    </magic-modal>\n\n</section>";
+module.exports = "<section class=\"container-fluid spm_profile profile clearfix\" ng-if=\"widget.enabled\" ng-cloak sailplay-profile\n         sailplay-fill-profile config=\"widget.options.config\">\n\n  <div class=\"container state_authorized\" data-ng-if=\"user()\">\n    <div class=\"row align-items-center spm_profile_inner\">\n      <div class=\"col\">\n        <div class=\"position-relative d-flex align-items-center b-avatar mb-3\">\n          <img ng-src=\"{{(user().user.avatar['250x250']|sailplay_pic) || default_avatar}}\"\n               class=\"rounded-circle cursor-pointer\" ng-click=\"$root.$broadcast('info:state', true)\">\n          <div class=\"b-avatar-menu position-relative d-flex align-items-center\"\n               ng-class=\"{type_active: $parent.$parent.menu_active}\">\n            <div class=\"b-avatar-menu__icon rounded-circle d-flex bg-primary cursor-pointer align-items-center\"\n                 ng-click=\"$event.stopPropagation();$event.preventDefault();$parent.$parent.menu_active=!$parent.$parent.menu_active\">\n              <img class=\"mw-100 h-50\" ng-src=\"{{widget.images.icon_dots}}\">\n            </div>\n            <div class=\"b-avatar-menu__list position-relative d-flex align-items-left bg-white flex-column\">\n              <a href=\"#\"\n                 class=\"b-avatar-menu__item d-flex align-items-center font-weight-light text-dark py-3 pl-4 pr-5\"\n                 ng-click=\"$event.stopPropagation();$event.preventDefault();$root.$broadcast('info:state', true);$parent.$parent.menu_active=false\">\n                <i class=\"b-avatar-menu__item-icon\">\n                  <img class=\"mw-100 h-75\" ng-src=\"{{widget.images.icon_profile}}\">\n                </i>\n                <span ng-bind=\"widget.texts.menu_my_profile\"></span>\n              </a>\n              <a href=\"#\"\n                 class=\"b-avatar-menu__item d-flex align-items-center font-weight-light text-dark py-3 pl-4 pr-5\"\n                 ng-href=\"{{widget.options.logout_link}}\">\n                <i class=\"b-avatar-menu__item-icon\">\n                  <img class=\"mw-100 h-75\" ng-src=\"{{widget.images.icon_logout}}\">\n                </i>\n                <span ng-bind=\"widget.texts.menu_logout\"></span>\n              </a>\n            </div>\n          </div>\n        </div>\n        <h1 class=\"display-4 text-uppercase font-weight-bolder spm_profile-header\"\n            ng-bind-html=\"widget.texts.header|to_trusted\"></h1>\n        <p class=\"my-4 font-weight-light spm_profile-subheader\" ng-bind-html=\"widget.texts.sub_header|to_trusted\"></p>\n        <a class=\"btn btn-md btn-primary text-uppercase px-3 py-2 font-weight-bold learn_more_button\" href=\"#\" role=\"button\"\n           target=\"_blank\"\n           ng-click=\"$event.preventDefault();$root.$broadcast('text:state', true)\"\n           ng-bind=\"widget.texts.button_text\"></a>\n      </div>\n    </div>\n  </div>\n\n  <div class=\"container state_unauthorized\" data-ng-if=\"!user()\">\n    <div class=\"row align-items-center\">\n      <div class=\"col\">\n        <h1 class=\"display-4 text-uppercase font-weight-bolder\"\n            ng-bind-html=\"widget.texts.header|to_trusted\"></h1>\n        <p class=\"my-4 font-weight-light\" ng-bind-html=\"widget.texts.sub_header|to_trusted\"></p>\n        <a class=\"btn btn-md btn-primary text-uppercase px-3 py-2 font-weight-bold profile_login_button\" href=\"#\" role=\"button\"\n           target=\"_blank\"\n           ng-click=\"$event.preventDefault();login('remote', {widget: 'bootstrap_profile_stacked', element: 'profile_login_button'});\"\n           ng-bind=\"widget.texts.login_button_text\"></a>\n      </div>\n    </div>\n  </div>\n\n  <magic-modal ng-show=\"!$parent.show_profile\" show=\"$parent.$parent.show_info\">\n    <magic-modal-title>\n      <div class=\"b-avatar\">\n        <img ng-src=\"{{user().user.avatar['250x250']|sailplay_pic}}\" class=\"rounded-circle\">\n      </div>\n      <span class=\"b-name d-block my-5 text-black\" ng-bind=\"user().user.name + ' ' + user().user.middle_name\"></span>\n    </magic-modal-title>\n    <magic-modal-body>\n\n      <div data-ng-repeat=\"field in sailplay.fill_profile.form.fields\" data-ng-if=\"field.value && field.name !== 'firstName' && field.name !== 'lastName' && field.name !== 'middleName'\" data-ng-switch=\"field.input\">\n\n        <!-- uncomment for subscriptions field -->\n        <!--<div class=\"b-info pb-3 pt-3 pr-3 d-flex flex-column flex-column-light align-items-center spm_profile-info-modal-field spm_form_field\" data-ng-switch-when=\"subscriptions\">-->\n          <!--<label class=\"spm_form_checkbox\" data-ng-class=\"{ checked: field.value.email === 1 }\">-->\n            <!--<input class=\"spm_form_checkbox_input\" type=\"checkbox\" data-ng-model=\"field.value.email\" data-ng-true-value=\"1\" data-ng-false-value=\"0\" disabled>-->\n            <!--<span class=\"spm_form_checkbox_label\" data-ng-bind=\"field.data.email_label\"></span>-->\n          <!--</label>-->\n          <!--<label class=\"spm_form_checkbox\" data-ng-class=\"{ checked: field.value.sms === 1 }\">-->\n            <!--<input class=\"spm_form_checkbox_input\" type=\"checkbox\" data-ng-model=\"field.value.sms\" data-ng-true-value=\"1\" data-ng-false-value=\"0\" disabled>-->\n            <!--<span class=\"spm_form_checkbox_label\" data-ng-bind=\"field.data.sms_label\"></span>-->\n          <!--</label>-->\n        <!--</div>-->\n\n        <div class=\"b-info pb-3 pt-3 pr-3 d-flex align-items-center flex-column flex-column-light spm_profile-info-modal-field\" data-ng-switch-default>\n          <img class=\"spm_profile-info-modal-field-icon\" data-ng-if=\"field.icon\" ng-src=\"{{ field.icon }}\">\n          <span class=\"mt-2 spm_profile-info-modal-field-value\" ng-bind=\"field.value.split('  ').join(', ')\"></span>\n        </div>\n\n        <div class=\"b-info pb-3 pt-3 pr-3 d-flex align-items-center flex-column flex-column-light spm_profile-info-modal-field\" data-ng-switch-when=\"select\">\n          <img class=\"spm_profile-info-modal-field-icon\" data-ng-if=\"field.icon\" ng-src=\"{{ field.icon }}\">\n          <span class=\"mt-2 spm_profile-info-modal-field-value\" ng-bind=\"sailplay.fill_profile.get_selected_value(field).text\"></span>\n        </div>\n\n      </div>\n\n      <!--<div ng-show=\"user().user.email\" class=\"b-info mb-5 pt-3 d-flex align-items-center flex-column flex-column-light\">-->\n        <!--<img ng-src=\"{{widget.images.icon_email}}\">-->\n        <!--<span class=\"mt-2\" ng-bind=\"user().user.email\"></span>-->\n      <!--</div>-->\n\n      <!--<div ng-show=\"user().user.phone\" class=\"b-info mb-5 d-flex align-items-center flex-column flex-column-light\">-->\n        <!--<img ng-src=\"{{widget.images.icon_phone}}\">-->\n        <!--<span class=\"mt-2\" ng-bind=\"user().user.phone|tel\"></span>-->\n      <!--</div>-->\n\n      <!--<div ng-show=\"user().user.birth_date\" class=\"b-info mb-5 d-flex align-items-center flex-column flex-column-light\">-->\n        <!--<img ng-src=\"{{widget.images.icon_bday}}\">-->\n        <!--<span class=\"mt-2\" ng-bind=\"user().user.birth_date|date:'d MMMM yyyy'\"></span>-->\n      <!--</div>-->\n\n      <div class=\"b-info d-flex align-items-center justify-content-center spm_profile-edit-profile-button\">\n        <a class=\"btn btn-md btn-primary text-uppercase px-3 py-2 font-weight-bold\" href=\"#\" role=\"button\"\n           ng-click=\"$event.preventDefault();$root.$broadcast('profile:state', true)\"\n           ng-bind=\"widget.texts.edit_profile\"></a>\n      </div>\n\n\n    </magic-modal-body>\n  </magic-modal>\n\n  <magic-modal on-close=\"revert_profile_form\" show=\"$parent.$parent.show_profile\" prevent-close=\"lock_profile\">\n    <magic-modal-title ng-bind-html=\"widget.texts.modals.profile.title|to_trusted\"></magic-modal-title>\n    <magic-modal-body>\n\n      <form name=\"profile_form\" class=\"spm_profile-form\"\n            ng-submit=\"sailplay.fill_profile.submit(profile_form, onSaveProfile);\">\n\n        <div class=\"spm_form_field\" ng-repeat=\"field in sailplay.fill_profile.form.fields\"\n             ng-switch=\"field.input\">\n\n          <div ng-switch-when=\"text\">\n            <input class=\"spm_form_input\" type=\"text\" placeholder=\"{{ field.placeholder }}\"\n                   ng-model=\"field.value\" ng-required=\"field.required\">\n            <label class=\"spm_form_label type_absolute\" ng-bind=\"field.label\"></label>\n          </div>\n\n          <div ng-switch-when=\"date\">\n            <label class=\"spm_form_label \" ng-bind=\"field.label\"></label>\n            <date-picker ng-model=\"field.value\" ng-required=\"field.required\"></date-picker>\n          </div>\n\n          <div ng-switch-when=\"phone\">\n            <input class=\"spm_form_input\" type=\"text\"\n                   ui-mask=\"{{ field.placeholder }}\" ng-model=\"field.value\"\n                   ng-required=\"field.required\">\n            <label class=\"spm_form_label type_absolute\" ng-bind=\"field.label\"></label>\n          </div>\n\n          <div ng-switch-when=\"email\">\n            <input class=\"spm_form_input\" type=\"email\" placeholder=\"{{ field.placeholder }}\"\n                   ng-model=\"field.value\" ng-required=\"field.required\">\n            <label class=\"spm_form_label type_absolute\">{{ field.label }}</label>\n          </div>\n\n          <div ng-switch-when=\"select\">\n            <select class=\"spm_form_select\" ng-model=\"field.value\"\n                    ng-options=\"item.value as item.text for item in field.data\"></select>\n            <label class=\"spm_form_label type_absolute\" ng-bind=\"field.label\"></label>\n          </div>\n\n        </div>\n\n        <div class=\"spm_form_buttons\">\n          <button class=\"spm_btn theme_1 type_big type_cancel font-weight-bold\" ng-click=\"$parent.close()\"\n                  ng-bind=\"widget.texts.modals.profile.cancel\"></button>\n          <input type=\"submit\" class=\"spm_btn theme_1 type_filled type_big font-weight-bold\"\n                 ng-value=\"widget.texts.modals.profile.save\"/>\n        </div>\n\n      </form>\n\n    </magic-modal-body>\n  </magic-modal>\n\n  <magic-modal show=\"$parent.$parent.show_history\">\n    <magic-modal-title>\n      <span class=\"d-block text-left\" ng-bind=\"widget.texts.modals.history.title\"></span>\n    </magic-modal-title>\n    <magic-modal-body>\n      <div sailplay-history>\n\n        <table class=\"spm_profile-history\" ng-show=\"history().length\">\n          <tbody>\n          <tr dir-paginate=\"item in history() | itemsPerPage:5\" pagination-id=\"history_pages\">\n            <td class=\"type_lighter\" ng-bind=\"item.action_date | date:'d MMM yyyy'\"></td>\n            <td>\n              <div ng-bind=\"item|history_item\"></div>\n            </td>\n            <td></td>\n            <!--<td ng-class=\"{type_positive:item.points_delta>0, type_negative:item.points_delta<0}\"-->\n            <!--ng-bind=\"item.points_delta?(item.points_delta|number):''\"></td>-->\n          </tr>\n          </tbody>\n        </table>\n\n        <dir-pagination-controls max-size=\"7\" direction-links=\"false\" pagination-id=\"history_pages\"\n                                 template-url=\"magic.pagination\"\n                                 auto-hide=\"true\"></dir-pagination-controls>\n\n        <div ng-hide=\"history().length\" ng-bind=\"widget.texts.modals.history.empty\"></div>\n\n      </div>\n    </magic-modal-body>\n  </magic-modal>\n\n  <magic-modal show=\"$parent.$parent.show_text\">\n    <magic-modal-title ng-bind-html=\"widget.texts.modals.text.title|to_trusted\"></magic-modal-title>\n    <magic-modal-body ng-bind-html=\"widget.texts.modals.text.body|to_trusted\"></magic-modal-body>\n  </magic-modal>\n\n</section>";
 
 /***/ }),
-/* 168 */
+/* 172 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(169);
+var content = __webpack_require__(173);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -46088,7 +46221,7 @@ if(false) {
 }
 
 /***/ }),
-/* 169 */
+/* 173 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -46096,13 +46229,19 @@ exports = module.exports = __webpack_require__(0)(false);
 
 
 // module
-exports.push([module.i, ".bootstrap_profile .spm_profile {\n  position: relative;\n  background-repeat: no-repeat;\n  background-position: center top;\n  background-size: cover;\n}\n@media (max-width: 420px) {\n  .bootstrap_profile .spm_profile {\n    padding: 80px 0;\n  }\n}\n.bootstrap_profile .spm_profile .b-name {\n  letter-spacing: 2px;\n}\n.bootstrap_profile .spm_profile .row {\n  height: 625px;\n}\n.bootstrap_profile .spm_profile .b-avatar img {\n  width: 115px;\n  height: 115px;\n}\n.bootstrap_profile .spm_profile .b-avatar .b-avatar-menu {\n  margin-left: -15px;\n  z-index: 2;\n}\n.bootstrap_profile .spm_profile .b-avatar .b-avatar-menu__icon {\n  width: 45px;\n  height: 45px;\n}\n.bootstrap_profile .spm_profile .b-avatar .b-avatar-menu__icon:hover {\n  box-shadow: -20px 10px 40px 0 rgba(38, 124, 160, 0.3);\n}\n.bootstrap_profile .spm_profile .b-avatar .b-avatar-menu__item {\n  text-decoration: none;\n}\n.bootstrap_profile .spm_profile .b-avatar .b-avatar-menu__item-icon {\n  width: 24px;\n  height: 24px;\n  margin-right: 10px;\n}\n.bootstrap_profile .spm_profile .b-avatar .b-avatar-menu__item:hover {\n  background-color: rgba(88, 131, 154, 0.1);\n}\n.bootstrap_profile .spm_profile .b-avatar .b-avatar-menu__list {\n  opacity: 0;\n  visibility: hidden;\n  z-index: 2;\n  margin-left: -5px;\n  box-shadow: -20px 10px 40px 0 rgba(38, 124, 160, 0.3);\n}\n.bootstrap_profile .spm_profile .b-avatar .b-avatar-menu__list:before {\n  right: 100%;\n  top: 50%;\n  border: solid transparent;\n  content: \" \";\n  height: 0;\n  width: 0;\n  position: absolute;\n  pointer-events: none;\n  border-color: rgba(255, 255, 255, 0);\n  border-right-color: #ffffff;\n  border-width: 10px;\n  margin-top: -10px;\n}\n.bootstrap_profile .spm_profile .b-avatar .b-avatar-menu.type_active .b-avatar-menu__list {\n  opacity: 1;\n  visibility: visible;\n}\n.bootstrap_profile .spm_profile .b-info {\n  min-width: 340px;\n  max-width: 100%;\n  width: 100%;\n  margin: 0 auto;\n}\n@media (max-width: 500px) {\n  .bootstrap_profile .spm_profile .b-info {\n    min-width: 0;\n  }\n}\n.bootstrap_profile .spm_profile .b-info img {\n  max-height: 24px;\n}\n.bootstrap_profile .spm_profile .btn {\n  letter-spacing: 1.6px;\n}\n.bootstrap_profile .spm_profile-container {\n  width: 100%;\n  height: 100%;\n  max-width: 1200px;\n  margin: 0 auto;\n  box-sizing: border-box;\n  padding: 80px 30px 160px;\n}\n.bootstrap_profile .spm_profile-welcome {\n  font-weight: bold;\n  text-transform: uppercase;\n  font-size: 20px;\n  line-height: 25px;\n  color: #000000;\n  margin-bottom: 10px;\n}\n@media (max-width: 500px) {\n  .bootstrap_profile .spm_profile-welcome {\n    font-size: 16px;\n    line-height: 20px;\n    text-align: center;\n  }\n}\n.bootstrap_profile .spm_profile-header {\n  font-weight: 800;\n  text-transform: uppercase;\n  font-size: 45px;\n  line-height: 55px;\n  color: #000000;\n  max-width: 660px;\n  margin-bottom: 40px;\n}\n@media (max-width: 500px) {\n  .bootstrap_profile .spm_profile-header {\n    font-size: 20px;\n    line-height: 26px;\n    text-align: center;\n  }\n}\n.bootstrap_profile .spm_profile-content {\n  display: flex;\n  align-items: center;\n  justify-content: flex-start;\n}\n@media (max-width: 750px) {\n  .bootstrap_profile .spm_profile-content {\n    flex-direction: column;\n  }\n}\n.bootstrap_profile .spm_profile-points {\n  width: 280px;\n  height: 280px;\n  background: #ca5b54;\n  color: #ffffff;\n  border-radius: 50%;\n  box-sizing: border-box;\n  padding: 50px 20px;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  flex-direction: column;\n}\n.bootstrap_profile .spm_profile-points-confirmed {\n  font-size: 48px;\n  line-height: 38px;\n  margin-bottom: 10px;\n  font-weight: 800;\n}\n.bootstrap_profile .spm_profile-points-placeholder {\n  font-size: 23px;\n  line-height: 27px;\n  font-weight: 800;\n}\n.bootstrap_profile .spm_profile-points-unconfirmed {\n  font-size: 18px;\n  line-height: 21px;\n  font-weight: 800;\n  margin: 10px 0 20px;\n  display: flex;\n  align-items: center;\n  justify-content: flex-start;\n}\n.bootstrap_profile .spm_profile-points-unconfirmed-block {\n  opacity: 0.5;\n}\n.bootstrap_profile .spm_profile-points-tooltip {\n  position: relative;\n  display: inline-block;\n  cursor: pointer;\n  width: 14px;\n  height: 14px;\n  font-size: 12px;\n  line-height: 14px;\n  border: 1px solid #ffffff;\n  color: #ffffff;\n  border-radius: 50%;\n  text-align: center;\n  margin-left: 10px;\n}\n.bootstrap_profile .spm_profile-points-tooltip div {\n  position: absolute;\n  left: 50%;\n  bottom: 100%;\n  margin-bottom: 16px;\n  width: 212px;\n  margin-left: -106px;\n  background: #ffffff;\n  padding: 0 20px;\n  box-shadow: 0px 0px 10px 0px rgba(51, 8, 32, 0.35);\n  transform: translateY(-20%);\n  opacity: 0;\n  visibility: hidden;\n  transition: 0.3s linear;\n  font-size: 14px;\n  box-sizing: border-box;\n  font-weight: 500;\n  line-height: 16px;\n  color: rgba(0, 0, 0, 0.5);\n  padding: 20px 0;\n}\n.bootstrap_profile .spm_profile-points-tooltip div:after {\n  content: \"\";\n  display: block;\n  position: absolute;\n  bottom: -14px;\n  left: 0;\n  right: 0;\n  margin: auto;\n  width: 0;\n  height: 0;\n  border-style: solid;\n  border-width: 14px 12px 0 12px;\n  border-color: #ffffff transparent transparent transparent;\n}\n@media (max-width: 500px) {\n  .bootstrap_profile .spm_profile-points-tooltip div:after {\n    bottom: -12px;\n    left: auto;\n    right: 30px;\n  }\n}\n@media (max-width: 500px) {\n  .bootstrap_profile .spm_profile-points-tooltip div {\n    margin-left: -170px;\n  }\n}\n.bootstrap_profile .spm_profile-points-tooltip:hover div {\n  transform: translateY(0);\n  opacity: 1;\n  visibility: visible;\n}\n.bootstrap_profile .spm_profile-status {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  font-weight: 800;\n}\n.bootstrap_profile .spm_profile-status i {\n  width: 150px;\n  height: 150px;\n  margin-right: 20px;\n  border-radius: 50%;\n  background-repeat: no-repeat;\n  background-position: center center;\n  background-size: contain;\n  background-color: #ffffff;\n  border: 8px solid #ffffff;\n  margin-left: -15px;\n}\n@media (max-width: 500px) {\n  .bootstrap_profile .spm_profile-status i {\n    margin-left: 0;\n    margin-bottom: 10px;\n    margin-right: 0;\n  }\n}\n.bootstrap_profile .spm_profile-status-info {\n  display: flex;\n  align-items: flex-start;\n  justify-content: center;\n  flex-direction: column;\n}\n.bootstrap_profile .spm_profile-status-placeholder {\n  font-size: 18px;\n  line-height: 25px;\n  color: #ca5b54;\n}\n.bootstrap_profile .spm_profile-status-name {\n  font-size: 25px;\n  line-height: 25px;\n  color: #ca5b54;\n}\n.bootstrap_profile .spm_profile-status-descr {\n  font-size: 18px;\n  line-height: 25px;\n  color: #000000;\n}\n.bootstrap_profile .spm_profile-status .spm_btn {\n  margin-top: 15px;\n}\n@media (max-width: 500px) {\n  .bootstrap_profile .spm_profile-status {\n    flex-direction: column;\n    margin-top: 30px;\n  }\n}\n.bootstrap_profile .spm_profile-history {\n  max-width: 100%;\n  margin: 0 auto;\n  width: 420px;\n  margin-bottom: 35px;\n}\n.bootstrap_profile .spm_profile-history td {\n  color: #000000;\n  font-weight: 500;\n  font-size: 14px;\n  vertical-align: middle;\n}\n.bootstrap_profile .spm_profile-history td.type_lighter {\n  opacity: 0.2;\n}\n.bootstrap_profile .spm_profile-history td.type_positive {\n  color: #ca5b54;\n}\n.bootstrap_profile .spm_profile-history td div {\n  line-height: 24px;\n  padding-right: 10px;\n}\n.bootstrap_profile .spm_profile-history td:nth-child(1) {\n  width: 100px;\n}\n.bootstrap_profile .spm_profile-history td:nth-child(3) {\n  min-width: 80px;\n}\n.bootstrap_profile .spm_profile-history thead {\n  border-bottom: 1px solid rgba(0, 0, 0, 0.1);\n}\n.bootstrap_profile .spm_profile-history thead td {\n  line-height: 30px;\n}\n.bootstrap_profile .spm_profile-history tbody tr {\n  border-bottom: 1px solid rgba(0, 0, 0, 0.1);\n}\n.bootstrap_profile .spm_profile-history tbody tr:first-child {\n  border-top: 1px solid rgba(0, 0, 0, 0.1);\n}\n.bootstrap_profile .spm_profile-history tbody td {\n  line-height: 80px;\n}\n@media (max-width: 600px) {\n  .bootstrap_profile .spm_profile-history {\n    width: 100%;\n  }\n}\n.bootstrap_profile .spm_profile-form {\n  max-width: 100%;\n  width: 340px;\n  margin: 0 auto;\n  padding-top: 24px;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  justify-content: flex-start;\n}\n.bootstrap_profile .spm_profile-form input[type=\"submit\"] {\n  margin-top: 20px;\n}\n@media (max-width: 600px) {\n  .bootstrap_profile .spm_profile-form {\n    width: 100%;\n  }\n}\n.bootstrap_profile .spm_profile-block-wrapper {\n  position: absolute;\n  top: 0;\n  left: 0;\n  box-sizing: border-box;\n  width: 100%;\n  height: 100%;\n  z-index: 5;\n  background: #ffffff;\n}\n.bootstrap_profile .spm_profile-block-wrapper .spm_profile-container {\n  padding: 0;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  padding: 0 30px;\n}\n.bootstrap_profile .spm_profile-block-wrapper-close {\n  width: 21px;\n  height: 21px;\n  right: 50px;\n  top: 25px;\n  position: absolute;\n  cursor: pointer;\n  display: block;\n  background-repeat: no-repeat;\n  background-position: center center;\n  background-size: contain;\n}\n.bootstrap_profile .spm_profile-block-wrapper-close:hover {\n  opacity: 0.7;\n}\n@media (max-width: 650px) {\n  .bootstrap_profile .spm_profile-block-wrapper-close {\n    top: 100px;\n  }\n}\n.bootstrap_profile .spm_profile-status-list {\n  color: #ffffff;\n  display: flex;\n  align-items: flex-start;\n  justify-content: space-between;\n  width: 100%;\n}\n@media (max-width: 650px) {\n  .bootstrap_profile .spm_profile-status-list {\n    flex-direction: row;\n    align-items: center;\n    justify-content: flex-start;\n    flex-wrap: wrap;\n  }\n}\n.bootstrap_profile .spm_profile-status-item {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  flex-direction: column;\n  position: relative;\n}\n@media (max-width: 650px) {\n  .bootstrap_profile .spm_profile-status-item {\n    margin-top: 20px;\n    flex-basis: 50%;\n  }\n}\n@media (max-width: 300px) {\n  .bootstrap_profile .spm_profile-status-item {\n    flex-basis: 100%;\n  }\n}\n.bootstrap_profile .spm_profile-status-item-tooltip {\n  position: absolute;\n  z-index: 2;\n  left: 0;\n  top: -25%;\n  width: 100%;\n  font-size: 17px;\n  line-height: 22px;\n  color: #000000;\n  opacity: 0;\n  visibility: hidden;\n  transform: translateY(-20%);\n  -webkit-transition: 0.3s linear;\n  -moz-transition: 0.3s linear;\n  -ms-transition: 0.3s linear;\n  -o-transition: 0.3s linear;\n}\n@media (max-width: 850px) {\n  .bootstrap_profile .spm_profile-status-item-tooltip {\n    font-size: 12px;\n    line-height: 16px;\n  }\n}\n.bootstrap_profile .spm_profile-status-item-image {\n  width: 138px;\n  height: 138px;\n  border-radius: 50%;\n  box-sizing: border-box;\n  background: #ffffff;\n  position: relative;\n  background-repeat: no-repeat;\n  background-position: center center;\n  background-size: contain;\n  border: 8px solid white;\n  display: block;\n  z-index: 1;\n}\n@media (max-width: 850px) {\n  .bootstrap_profile .spm_profile-status-item-image {\n    width: 80px;\n    height: 80px;\n  }\n}\n@media (max-width: 650px) {\n}\n.bootstrap_profile .spm_profile-status-item-name {\n  font-size: 18px;\n  font-weight: 800;\n  line-height: 25px;\n  text-transform: uppercase;\n  color: #ca5b54;\n  margin-top: 25px;\n}\n@media (max-width: 850px) {\n  .bootstrap_profile .spm_profile-status-item-name {\n    font-size: 14px;\n    line-height: 16px;\n  }\n}\n@media (max-width: 650px) {\n  .bootstrap_profile .spm_profile-status-item-name {\n    margin-top: 10px;\n  }\n}\n.bootstrap_profile .spm_profile-status-item-descr {\n  text-align: center;\n  font-size: 17px;\n  font-weight: 500;\n  line-height: 24px;\n  color: #000000;\n  opacity: 0.3;\n  margin: 10px 0;\n  max-width: 138px;\n  margin-bottom: 20px;\n}\n@media (max-width: 850px) {\n  .bootstrap_profile .spm_profile-status-item-descr {\n    font-size: 13px;\n    line-height: 16px;\n  }\n}\n@media (max-width: 650px) {\n  .bootstrap_profile .spm_profile-status-item-descr {\n    margin-bottom: 10px;\n  }\n}\n.bootstrap_profile .spm_profile-status-item-value {\n  text-align: center;\n  font-size: 30px;\n  font-weight: bold;\n  line-height: 25px;\n  color: #000000;\n}\n@media (max-width: 850px) {\n  .bootstrap_profile .spm_profile-status-item-value {\n    font-size: 18px;\n    line-height: 20px;\n  }\n}\n.bootstrap_profile .spm_profile-status-item-progress {\n  position: absolute;\n  height: 8px;\n  background: white;\n  width: 100%;\n  top: 70px;\n  right: -85%;\n}\n@media (max-width: 850px) {\n  .bootstrap_profile .spm_profile-status-item-progress {\n    left: 8vw;\n    width: 120px;\n    height: 6px;\n    top: 35px;\n    right: auto;\n  }\n}\n@media (max-width: 650px) {\n  .bootstrap_profile .spm_profile-status-item-progress {\n    display: none;\n  }\n}\n.bootstrap_profile .spm_profile-status-item.type_active .spm_profile-status-item-image {\n  background-color: #ca5b54;\n  border-color: #ca5b54;\n}\n.bootstrap_profile .spm_profile-status-item.type_active .spm_profile-status-item-progress:after {\n  content: '';\n  background: #ca5b54;\n  width: 50%;\n  height: 100%;\n  position: absolute;\n  display: block;\n}\n.bootstrap_profile .spm_profile-status-item.type_active.type_filled .spm_profile-status-item-progress:after {\n  width: 100%;\n}\n@media (min-width: 650px) {\n  .bootstrap_profile .spm_profile-status-item:hover .spm_profile-status-item-tooltip {\n    opacity: 0.5;\n    visibility: visible;\n    transform: translateY(0);\n  }\n}\n", ""]);
+exports.push([module.i, ".spm_wrapper .bootstrap_profile .spm_profile {\n  position: relative;\n  background-repeat: no-repeat;\n  background-position: center top;\n  background-size: cover;\n}\n@media (max-width: 420px) {\n  .spm_wrapper .bootstrap_profile .spm_profile {\n    padding: 80px 0;\n  }\n}\n.spm_wrapper .bootstrap_profile .spm_profile .b-name {\n  letter-spacing: 2px;\n}\n.spm_wrapper .bootstrap_profile .spm_profile .spm_profile_inner {\n  height: 625px;\n}\n.spm_wrapper .bootstrap_profile .spm_profile .b-avatar img {\n  width: 115px;\n  height: 115px;\n}\n.spm_wrapper .bootstrap_profile .spm_profile .b-avatar .b-avatar-menu {\n  margin-left: -15px;\n  z-index: 2;\n}\n.spm_wrapper .bootstrap_profile .spm_profile .b-avatar .b-avatar-menu__icon {\n  width: 45px;\n  height: 45px;\n}\n.spm_wrapper .bootstrap_profile .spm_profile .b-avatar .b-avatar-menu__icon:hover {\n  box-shadow: -20px 10px 40px 0 rgba(38, 124, 160, 0.3);\n}\n.spm_wrapper .bootstrap_profile .spm_profile .b-avatar .b-avatar-menu__item {\n  text-decoration: none;\n}\n.spm_wrapper .bootstrap_profile .spm_profile .b-avatar .b-avatar-menu__item-icon {\n  width: 24px;\n  height: 24px;\n  margin-right: 10px;\n}\n.spm_wrapper .bootstrap_profile .spm_profile .b-avatar .b-avatar-menu__item:hover {\n  background-color: rgba(88, 131, 154, 0.1);\n}\n.spm_wrapper .bootstrap_profile .spm_profile .b-avatar .b-avatar-menu__list {\n  opacity: 0;\n  visibility: hidden;\n  z-index: 2;\n  margin-left: -5px;\n  box-shadow: -20px 10px 40px 0 rgba(38, 124, 160, 0.3);\n}\n.spm_wrapper .bootstrap_profile .spm_profile .b-avatar .b-avatar-menu__list:before {\n  right: 100%;\n  top: 50%;\n  border: solid transparent;\n  content: \" \";\n  height: 0;\n  width: 0;\n  position: absolute;\n  pointer-events: none;\n  border-color: rgba(255, 255, 255, 0);\n  border-right-color: #ffffff;\n  border-width: 10px;\n  margin-top: -10px;\n}\n.spm_wrapper .bootstrap_profile .spm_profile .b-avatar .b-avatar-menu.type_active .b-avatar-menu__list {\n  opacity: 1;\n  visibility: visible;\n}\n.spm_wrapper .bootstrap_profile .spm_profile .b-info {\n  min-width: 340px;\n  max-width: 100%;\n  width: 100%;\n  margin: 0 auto;\n}\n@media (max-width: 500px) {\n  .spm_wrapper .bootstrap_profile .spm_profile .b-info {\n    min-width: 0;\n  }\n}\n.spm_wrapper .bootstrap_profile .spm_profile .b-info img {\n  max-height: 24px;\n}\n.spm_wrapper .bootstrap_profile .spm_profile .btn {\n  letter-spacing: 1.6px;\n}\n.spm_wrapper .bootstrap_profile .spm_profile-container {\n  width: 100%;\n  height: 100%;\n  max-width: 1200px;\n  margin: 0 auto;\n  box-sizing: border-box;\n  padding: 80px 30px 160px;\n}\n.spm_wrapper .bootstrap_profile .spm_profile-welcome {\n  font-weight: bold;\n  text-transform: uppercase;\n  font-size: 20px;\n  line-height: 25px;\n  color: #000000;\n  margin-bottom: 10px;\n}\n@media (max-width: 500px) {\n  .spm_wrapper .bootstrap_profile .spm_profile-welcome {\n    font-size: 16px;\n    line-height: 20px;\n    text-align: center;\n  }\n}\n.spm_wrapper .bootstrap_profile .spm_profile-header {\n  font-weight: 800;\n  text-transform: uppercase;\n  font-size: 45px;\n  line-height: 55px;\n  color: #000000;\n  max-width: 660px;\n  margin-bottom: 40px;\n}\n@media (max-width: 500px) {\n  .spm_wrapper .bootstrap_profile .spm_profile-header {\n    font-size: 20px;\n    line-height: 26px;\n    text-align: center;\n  }\n}\n.spm_wrapper .bootstrap_profile .spm_profile-content {\n  display: flex;\n  align-items: center;\n  justify-content: flex-start;\n}\n@media (max-width: 750px) {\n  .spm_wrapper .bootstrap_profile .spm_profile-content {\n    flex-direction: column;\n  }\n}\n.spm_wrapper .bootstrap_profile .spm_profile-points {\n  width: 280px;\n  height: 280px;\n  background: #ca5b54;\n  color: #ffffff;\n  border-radius: 50%;\n  box-sizing: border-box;\n  padding: 50px 20px;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  flex-direction: column;\n}\n.spm_wrapper .bootstrap_profile .spm_profile-points-confirmed {\n  font-size: 48px;\n  line-height: 38px;\n  margin-bottom: 10px;\n  font-weight: 800;\n}\n.spm_wrapper .bootstrap_profile .spm_profile-points-placeholder {\n  font-size: 23px;\n  line-height: 27px;\n  font-weight: 800;\n}\n.spm_wrapper .bootstrap_profile .spm_profile-points-unconfirmed {\n  font-size: 18px;\n  line-height: 21px;\n  font-weight: 800;\n  margin: 10px 0 20px;\n  display: flex;\n  align-items: center;\n  justify-content: flex-start;\n}\n.spm_wrapper .bootstrap_profile .spm_profile-points-unconfirmed-block {\n  opacity: 0.5;\n}\n.spm_wrapper .bootstrap_profile .spm_profile-points-tooltip {\n  position: relative;\n  display: inline-block;\n  cursor: pointer;\n  width: 14px;\n  height: 14px;\n  font-size: 12px;\n  line-height: 14px;\n  border: 1px solid #ffffff;\n  color: #ffffff;\n  border-radius: 50%;\n  text-align: center;\n  margin-left: 10px;\n}\n.spm_wrapper .bootstrap_profile .spm_profile-points-tooltip div {\n  position: absolute;\n  left: 50%;\n  bottom: 100%;\n  margin-bottom: 16px;\n  width: 212px;\n  margin-left: -106px;\n  background: #ffffff;\n  padding: 0 20px;\n  box-shadow: 0px 0px 10px 0px rgba(51, 8, 32, 0.35);\n  transform: translateY(-20%);\n  opacity: 0;\n  visibility: hidden;\n  transition: 0.3s linear;\n  font-size: 14px;\n  box-sizing: border-box;\n  font-weight: 500;\n  line-height: 16px;\n  color: rgba(0, 0, 0, 0.5);\n  padding: 20px 0;\n}\n.spm_wrapper .bootstrap_profile .spm_profile-points-tooltip div:after {\n  content: \"\";\n  display: block;\n  position: absolute;\n  bottom: -14px;\n  left: 0;\n  right: 0;\n  margin: auto;\n  width: 0;\n  height: 0;\n  border-style: solid;\n  border-width: 14px 12px 0 12px;\n  border-color: #ffffff transparent transparent transparent;\n}\n@media (max-width: 500px) {\n  .spm_wrapper .bootstrap_profile .spm_profile-points-tooltip div:after {\n    bottom: -12px;\n    left: auto;\n    right: 30px;\n  }\n}\n@media (max-width: 500px) {\n  .spm_wrapper .bootstrap_profile .spm_profile-points-tooltip div {\n    margin-left: -170px;\n  }\n}\n.spm_wrapper .bootstrap_profile .spm_profile-points-tooltip:hover div {\n  transform: translateY(0);\n  opacity: 1;\n  visibility: visible;\n}\n.spm_wrapper .bootstrap_profile .spm_profile-status {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  font-weight: 800;\n}\n.spm_wrapper .bootstrap_profile .spm_profile-status i {\n  width: 150px;\n  height: 150px;\n  margin-right: 20px;\n  border-radius: 50%;\n  background-repeat: no-repeat;\n  background-position: center center;\n  background-size: contain;\n  background-color: #ffffff;\n  border: 8px solid #ffffff;\n  margin-left: -15px;\n}\n@media (max-width: 500px) {\n  .spm_wrapper .bootstrap_profile .spm_profile-status i {\n    margin-left: 0;\n    margin-bottom: 10px;\n    margin-right: 0;\n  }\n}\n.spm_wrapper .bootstrap_profile .spm_profile-status-info {\n  display: flex;\n  align-items: flex-start;\n  justify-content: center;\n  flex-direction: column;\n}\n.spm_wrapper .bootstrap_profile .spm_profile-status-placeholder {\n  font-size: 18px;\n  line-height: 25px;\n  color: #ca5b54;\n}\n.spm_wrapper .bootstrap_profile .spm_profile-status-name {\n  font-size: 25px;\n  line-height: 25px;\n  color: #ca5b54;\n}\n.spm_wrapper .bootstrap_profile .spm_profile-status-descr {\n  font-size: 18px;\n  line-height: 25px;\n  color: #000000;\n}\n.spm_wrapper .bootstrap_profile .spm_profile-status .spm_btn {\n  margin-top: 15px;\n}\n@media (max-width: 500px) {\n  .spm_wrapper .bootstrap_profile .spm_profile-status {\n    flex-direction: column;\n    margin-top: 30px;\n  }\n}\n.spm_wrapper .bootstrap_profile .spm_profile-history {\n  max-width: 100%;\n  margin: 0 auto;\n  width: 420px;\n  margin-bottom: 35px;\n}\n.spm_wrapper .bootstrap_profile .spm_profile-history td {\n  color: #000000;\n  font-weight: 500;\n  font-size: 14px;\n  vertical-align: middle;\n}\n.spm_wrapper .bootstrap_profile .spm_profile-history td.type_lighter {\n  opacity: 0.2;\n}\n.spm_wrapper .bootstrap_profile .spm_profile-history td.type_positive {\n  color: #ca5b54;\n}\n.spm_wrapper .bootstrap_profile .spm_profile-history td div {\n  line-height: 24px;\n  padding-right: 10px;\n}\n.spm_wrapper .bootstrap_profile .spm_profile-history td:nth-child(1) {\n  width: 100px;\n}\n.spm_wrapper .bootstrap_profile .spm_profile-history td:nth-child(3) {\n  min-width: 80px;\n}\n.spm_wrapper .bootstrap_profile .spm_profile-history thead {\n  border-bottom: 1px solid rgba(0, 0, 0, 0.1);\n}\n.spm_wrapper .bootstrap_profile .spm_profile-history thead td {\n  line-height: 30px;\n}\n.spm_wrapper .bootstrap_profile .spm_profile-history tbody tr {\n  border-bottom: 1px solid rgba(0, 0, 0, 0.1);\n}\n.spm_wrapper .bootstrap_profile .spm_profile-history tbody tr:first-child {\n  border-top: 1px solid rgba(0, 0, 0, 0.1);\n}\n.spm_wrapper .bootstrap_profile .spm_profile-history tbody td {\n  line-height: 80px;\n}\n@media (max-width: 600px) {\n  .spm_wrapper .bootstrap_profile .spm_profile-history {\n    width: 100%;\n  }\n}\n.spm_wrapper .bootstrap_profile .spm_profile-form {\n  max-width: 100%;\n  width: 340px;\n  margin: 0 auto;\n  padding-top: 24px;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  justify-content: flex-start;\n}\n.spm_wrapper .bootstrap_profile .spm_profile-form input[type=\"submit\"] {\n  margin-top: 20px;\n}\n@media (max-width: 600px) {\n  .spm_wrapper .bootstrap_profile .spm_profile-form {\n    width: 100%;\n  }\n}\n.spm_wrapper .bootstrap_profile .spm_profile-block-wrapper {\n  position: absolute;\n  top: 0;\n  left: 0;\n  box-sizing: border-box;\n  width: 100%;\n  height: 100%;\n  z-index: 5;\n  background: #ffffff;\n}\n.spm_wrapper .bootstrap_profile .spm_profile-block-wrapper .spm_profile-container {\n  padding: 0;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  padding: 0 30px;\n}\n.spm_wrapper .bootstrap_profile .spm_profile-block-wrapper-close {\n  width: 21px;\n  height: 21px;\n  right: 50px;\n  top: 25px;\n  position: absolute;\n  cursor: pointer;\n  display: block;\n  background-repeat: no-repeat;\n  background-position: center center;\n  background-size: contain;\n}\n.spm_wrapper .bootstrap_profile .spm_profile-block-wrapper-close:hover {\n  opacity: 0.7;\n}\n@media (max-width: 650px) {\n  .spm_wrapper .bootstrap_profile .spm_profile-block-wrapper-close {\n    top: 100px;\n  }\n}\n.spm_wrapper .bootstrap_profile .spm_profile-status-list {\n  color: #ffffff;\n  display: flex;\n  align-items: flex-start;\n  justify-content: space-between;\n  width: 100%;\n}\n@media (max-width: 650px) {\n  .spm_wrapper .bootstrap_profile .spm_profile-status-list {\n    flex-direction: row;\n    align-items: center;\n    justify-content: flex-start;\n    flex-wrap: wrap;\n  }\n}\n.spm_wrapper .bootstrap_profile .spm_profile-status-item {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  flex-direction: column;\n  position: relative;\n}\n@media (max-width: 650px) {\n  .spm_wrapper .bootstrap_profile .spm_profile-status-item {\n    margin-top: 20px;\n    flex-basis: 50%;\n  }\n}\n@media (max-width: 300px) {\n  .spm_wrapper .bootstrap_profile .spm_profile-status-item {\n    flex-basis: 100%;\n  }\n}\n.spm_wrapper .bootstrap_profile .spm_profile-status-item-tooltip {\n  position: absolute;\n  z-index: 2;\n  left: 0;\n  top: -25%;\n  width: 100%;\n  font-size: 17px;\n  line-height: 22px;\n  color: #000000;\n  opacity: 0;\n  visibility: hidden;\n  transform: translateY(-20%);\n  -webkit-transition: 0.3s linear;\n  -moz-transition: 0.3s linear;\n  -ms-transition: 0.3s linear;\n  -o-transition: 0.3s linear;\n}\n@media (max-width: 850px) {\n  .spm_wrapper .bootstrap_profile .spm_profile-status-item-tooltip {\n    font-size: 12px;\n    line-height: 16px;\n  }\n}\n.spm_wrapper .bootstrap_profile .spm_profile-status-item-image {\n  width: 138px;\n  height: 138px;\n  border-radius: 50%;\n  box-sizing: border-box;\n  background: #ffffff;\n  position: relative;\n  background-repeat: no-repeat;\n  background-position: center center;\n  background-size: contain;\n  border: 8px solid white;\n  display: block;\n  z-index: 1;\n}\n@media (max-width: 850px) {\n  .spm_wrapper .bootstrap_profile .spm_profile-status-item-image {\n    width: 80px;\n    height: 80px;\n  }\n}\n@media (max-width: 650px) {\n}\n.spm_wrapper .bootstrap_profile .spm_profile-status-item-name {\n  font-size: 18px;\n  font-weight: 800;\n  line-height: 25px;\n  text-transform: uppercase;\n  color: #ca5b54;\n  margin-top: 25px;\n}\n@media (max-width: 850px) {\n  .spm_wrapper .bootstrap_profile .spm_profile-status-item-name {\n    font-size: 14px;\n    line-height: 16px;\n  }\n}\n@media (max-width: 650px) {\n  .spm_wrapper .bootstrap_profile .spm_profile-status-item-name {\n    margin-top: 10px;\n  }\n}\n.spm_wrapper .bootstrap_profile .spm_profile-status-item-descr {\n  text-align: center;\n  font-size: 17px;\n  font-weight: 500;\n  line-height: 24px;\n  color: #000000;\n  opacity: 0.3;\n  margin: 10px 0;\n  max-width: 138px;\n  margin-bottom: 20px;\n}\n@media (max-width: 850px) {\n  .spm_wrapper .bootstrap_profile .spm_profile-status-item-descr {\n    font-size: 13px;\n    line-height: 16px;\n  }\n}\n@media (max-width: 650px) {\n  .spm_wrapper .bootstrap_profile .spm_profile-status-item-descr {\n    margin-bottom: 10px;\n  }\n}\n.spm_wrapper .bootstrap_profile .spm_profile-status-item-value {\n  text-align: center;\n  font-size: 30px;\n  font-weight: bold;\n  line-height: 25px;\n  color: #000000;\n}\n@media (max-width: 850px) {\n  .spm_wrapper .bootstrap_profile .spm_profile-status-item-value {\n    font-size: 18px;\n    line-height: 20px;\n  }\n}\n.spm_wrapper .bootstrap_profile .spm_profile-status-item-progress {\n  position: absolute;\n  height: 8px;\n  background: white;\n  width: 100%;\n  top: 70px;\n  right: -85%;\n}\n@media (max-width: 850px) {\n  .spm_wrapper .bootstrap_profile .spm_profile-status-item-progress {\n    left: 8vw;\n    width: 120px;\n    height: 6px;\n    top: 35px;\n    right: auto;\n  }\n}\n@media (max-width: 650px) {\n  .spm_wrapper .bootstrap_profile .spm_profile-status-item-progress {\n    display: none;\n  }\n}\n.spm_wrapper .bootstrap_profile .spm_profile-status-item.type_active .spm_profile-status-item-image {\n  background-color: #ca5b54;\n  border-color: #ca5b54;\n}\n.spm_wrapper .bootstrap_profile .spm_profile-status-item.type_active .spm_profile-status-item-progress:after {\n  content: '';\n  background: #ca5b54;\n  width: 50%;\n  height: 100%;\n  position: absolute;\n  display: block;\n}\n.spm_wrapper .bootstrap_profile .spm_profile-status-item.type_active.type_filled .spm_profile-status-item-progress:after {\n  width: 100%;\n}\n@media (min-width: 650px) {\n  .spm_wrapper .bootstrap_profile .spm_profile-status-item:hover .spm_profile-status-item-tooltip {\n    opacity: 0.5;\n    visibility: visible;\n    transform: translateY(0);\n  }\n}\n", ""]);
 
 // exports
 
 
 /***/ }),
-/* 170 */
+/* 174 */
+/***/ (function(module, exports) {
+
+module.exports = "data:image/gif;base64,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"
+
+/***/ }),
+/* 175 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46110,17 +46249,17 @@ exports.push([module.i, ".bootstrap_profile .spm_profile {\n  position: relative
 
 var _widget = __webpack_require__(2);
 
-var _template = __webpack_require__(171);
+var _template = __webpack_require__(176);
 
 var _template2 = _interopRequireDefault(_template);
 
-__webpack_require__(172);
+__webpack_require__(177);
 
-var _defaults = __webpack_require__(174);
+var _defaults = __webpack_require__(179);
 
 var _defaults2 = _interopRequireDefault(_defaults);
 
-var _avatar = __webpack_require__(175);
+var _avatar = __webpack_require__(180);
 
 var _avatar2 = _interopRequireDefault(_avatar);
 
@@ -46180,19 +46319,19 @@ _widget.Widget.config(["MagicWidgetProvider", function (MagicWidgetProvider) {
 }]);
 
 /***/ }),
-/* 171 */
+/* 176 */
 /***/ (function(module, exports) {
 
-module.exports = "<section class=\"spm_profile profile clearfix\" ng-if=\"widget.enabled\" ng-cloak sailplay-profile sailplay-fill-profile config=\"widget.options.config\">\n\n  <div class=\"container container-fluid spm_profile-container\">\n\n    <!-- authorized section -->\n    <div class=\"row\" data-ng-if=\"user()\">\n\n      <div class=\"col-lg-2 col-md-12 spm_profile-avatar\">\n\n        <div class=\"position-relative d-inline-block b-avatar mb-3\">\n\n          <!-- user pic -->\n          <img ng-src=\"{{ ( user().user.avatar['250x250'] | sailplay_pic ) || default_avatar}}\" class=\"rounded-circle profile_avatar\">\n\n          <!-- profile menu -->\n          <div class=\"b-avatar-menu position-absolute\">\n            <div class=\"b-avatar-menu__icon rounded-circle bg-primary cursor-pointer\"\n                 ng-click=\"menuActive=!menuActive\">\n              <img ng-src=\"{{widget.images.icon_dots}}\">\n            </div>\n          </div>\n\n          <div class=\"b-avatar-menu__list position-absolute bg-light\" data-ng-class=\"{type_active: menuActive}\" data-ng-mouseleave=\"menuActive=false\">\n            <a href=\"#\" class=\"b-avatar-menu__item d-flex align-items-center text-dark py-3 pl-4 pr-5\"\n               ng-click=\"$event.preventDefault();$root.$broadcast('info:state', true);menuActive=false\">\n              <i class=\"b-avatar-menu__item-icon\">\n                <img class=\"mw-100 h-75\" ng-src=\"{{widget.images.icon_profile}}\">\n              </i>\n              <span ng-bind=\"widget.texts.menu_my_profile\"></span>\n            </a>\n            <a href=\"#\" class=\"b-avatar-menu__item text-dark py-3 pl-4 pr-5\" data-ng-click=\"$event.preventDefault();logout();menuActive=false\">\n              <i class=\"b-avatar-menu__item-icon\">\n                <img class=\"mw-100 h-75\" ng-src=\"{{widget.images.icon_logout}}\">\n              </i>\n              <span ng-bind=\"widget.texts.menu_logout\"></span>\n            </a>\n          </div>\n\n        </div>\n\n      </div>\n\n      <div class=\"col col-lg-6 col-md-12 spm_profile-info\">\n\n        <div class=\"spm_profile-info-inner\">\n\n          <p class=\"font-weight-light spm_profile-subheader\">\n            <span>{{ user().user.name }}, </span>\n            <span ng-bind-html=\"widget.texts.sub_header | to_trusted\"></span>\n          </p>\n\n          <h1 class=\"display-4 text-uppercase font-weight-bolder spm_profile-header\" data-ng-bind-html=\"widget.texts.header|to_trusted\"></h1>\n\n          <p class=\"spm_profile-description\" data-ng-bind-html=\"widget.texts.description | to_trusted\"></p>\n\n          <button type=\"button\" class=\"btn btn-lg btn-primary spm_profile-login_button\" href=\"#\" role=\"button\" data-ng-click=\"open_learn_more()\" data-ng-bind=\"widget.texts.learn_more_button_text\"></button>\n\n        </div>\n\n      </div>\n\n      <!--<div class=\"col  col-lg-8\">-->\n        <!--<div class=\"position-relative d-flex align-items-center b-avatar mb-3\">-->\n\n          <!--<img ng-src=\"{{ ( user().user.avatar['250x250'] | sailplay_pic ) || default_avatar}}\" class=\"rounded-circle\">-->\n\n          <!--<div class=\"b-avatar-menu position-relative d-flex align-items-center\"-->\n               <!--ng-class=\"{type_active: menuActive}\" ng-mouseleave=\"menuActive=false\">-->\n            <!--<div class=\"b-avatar-menu__icon rounded-circle d-flex bg-primary cursor-pointer align-items-center\"-->\n                 <!--ng-click=\"menuActive=!menuActive\">-->\n              <!--<img class=\"mw-100 h-50\" ng-src=\"{{widget.images.icon_dots}}\">-->\n            <!--</div>-->\n            <!--<div class=\"b-avatar-menu__list position-relative d-flex align-items-left bg-light flex-column\">-->\n              <!--<a href=\"#\" class=\"b-avatar-menu__item d-flex align-items-center text-dark py-3 pl-4 pr-5\"-->\n                 <!--ng-click=\"$event.preventDefault();$root.$broadcast('info:state', true);menuActive=false\">-->\n                <!--<i class=\"b-avatar-menu__item-icon\">-->\n                  <!--<img class=\"mw-100 h-75\" ng-src=\"{{widget.images.icon_profile}}\">-->\n                <!--</i>-->\n                <!--<span ng-bind=\"widget.texts.menu_my_profile\"></span>-->\n              <!--</a>-->\n              <!--<a href=\"#\" class=\"b-avatar-menu__item d-flex align-items-center text-dark py-3 pl-4 pr-5\"-->\n                 <!--ng-href=\"{{widget.options.logout_link}}\">-->\n                <!--<i class=\"b-avatar-menu__item-icon\">-->\n                  <!--<img class=\"mw-100 h-75\" ng-src=\"{{widget.images.icon_logout}}\">-->\n                <!--</i>-->\n                <!--<span ng-bind=\"widget.texts.menu_logout\"></span>-->\n              <!--</a>-->\n            <!--</div>-->\n          <!--</div>-->\n        <!--</div>-->\n        <!--<h1 class=\"display-4 text-uppercase font-weight-bolder\"-->\n            <!--ng-bind-html=\"widget.texts.header|to_trusted\"></h1>-->\n        <!--<p class=\"my-4 font-weight-light\" ng-bind-html=\"widget.texts.sub_header|to_trusted\"></p>-->\n        <!--<a class=\"btn btn-md btn-primary text-uppercase px-3 py-2 font-weight-bolder\" href=\"#\" role=\"button\"-->\n           <!--target=\"_blank\"-->\n           <!--ng-href=\"{{widget.options.button_link}}\"-->\n           <!--ng-bind=\"widget.texts.button_text\"></a>-->\n      <!--</div>-->\n\n      <div class=\"spm_status-bar status-bar col-lg-4 col-md-12 clearfix\" ng-cloak ng-class=\"{type_list: show_list}\">\n\n        <div>\n\n          <div class=\"align-items-top\">\n\n            <div class=\"b-current-status d-flex flex-column align-items-center text-center spm_profile-status\">\n              <i ng-style=\"currentStatus.style\"></i>\n              <h2 class=\"font-akrobat font-weight-bolder text-uppercase mb-0 spm_profile-status-name\" ng-bind=\"currentStatus.name || widget.texts.status.no_status\"></h2>\n              <div class=\"mt-1 font-weight-light\" ng-bind-html=\"(currentStatus.description|to_trusted) || widget.texts.status.no_status_description\"></div>\n            </div>\n\n            <div class=\"b-points d-flex spm_profile-points\" data-ng-click=\"$root.$broadcast('history:state', true)\">\n              <div class=\"display-1 text-center points-balance font-akrobat font-weight-bold text-uppercase spm_profile-points-confirmed\">{{ user().user_points.confirmed | number }} {{ widget.texts.points.label }}</div>\n            </div>\n\n          </div>\n\n        </div>\n\n        <div ng-show=\"show_list\" class=\"container py-0 py-lg-5 position-relative\">\n          <div class=\"b-list-close rounded-circle d-flex bg-primary cursor-pointer align-items-center position-absolute\"\n               ng-click=\"show_list=false\"></div>\n          <div class=\"row align-items-center\">\n            <div class=\"b-statuses col-md-12 my-5 my-lg-0 col-lg-4 d-flex flex-column align-items-center text-center\"\n                 ng-repeat=\"status in list track by $index\">\n              <i ng-style=\"status.style\"></i>\n              <h2 class=\"font-akrobat font-weight-bolder text-uppercase mb-0\" ng-bind=\"status.name\"></h2>\n              <h5 class=\"my-2\"\n                  ng-bind=\"(status.points|number)+' '+(status.points|sailplay_pluralize:('points.texts.pluralize'|tools))\"></h5>\n              <div class=\"font-weight-light\" ng-bind-html=\"status.description|to_trusted\"></div>\n            </div>\n          </div>\n        </div>\n\n      </div>\n\n    </div>\n\n    <!-- unauthorized section -->\n    <div class=\"row\" data-ng-if=\"!user()\">\n\n      <div class=\"col-lg-2 col-md-12 spm_profile-avatar\">\n\n        <div class=\"position-relative d-inline-block b-avatar mb-3\">\n\n          <!-- user pic -->\n          <img ng-src=\"{{ default_avatar }}\" class=\"rounded-circle profile_avatar\">\n\n        </div>\n\n      </div>\n\n      <div class=\"col col-lg-10 col-md-12 spm_profile-info\">\n\n        <div class=\"spm_profile-info-inner\">\n\n          <p class=\"font-weight-light spm_profile-subheader\">\n            <span ng-bind-html=\"widget.texts.sub_header | to_trusted\"></span>\n          </p>\n\n          <h1 class=\"display-4 text-uppercase font-weight-bolder spm_profile-header\" data-ng-bind-html=\"widget.texts.header|to_trusted\"></h1>\n\n          <p class=\"spm_profile-description\" data-ng-bind-html=\"widget.texts.description | to_trusted\"></p>\n\n          <button type=\"button\" class=\"btn btn-lg btn-primary spm_profile-login_button\" href=\"#\" role=\"button\" data-ng-click=\"$event.preventDefault(); login('remote', {widget: 'bootstrap_profile_stacked', element: 'profile_login_button'});\" data-ng-bind=\"widget.texts.login_button_text\"></button>\n\n        </div>\n\n      </div>\n\n    </div>\n\n  </div>\n\n  <magic-modal show=\"$parent.$parent.show_info\" class=\"spm_profile-info-modal\">\n    <magic-modal-title>\n      <div class=\"b-avatar spm_profile-info-modal-avatar\">\n        <img class=\"spm_profile-info-modal-avatar-image\" ng-src=\"{{user().user.avatar['250x250']|sailplay_pic}}\" class=\"rounded-circle\">\n      </div>\n      <span class=\"d-block my-5 spm_profile-info-modal-name\" ng-bind=\"user().user.name\"></span>\n    </magic-modal-title>\n    <magic-modal-body>\n\n      <div data-ng-repeat=\"field in sailplay.fill_profile.form.fields\" data-ng-if=\"field.value\" data-ng-switch=\"field.input\">\n\n        <div class=\"b-info pb-3 pt-3 pr-3 d-flex flex-column flex-column-light spm_profile-info-modal-field spm_form_field\" data-ng-switch-when=\"subscriptions\">\n          <label class=\"spm_form_checkbox\" data-ng-class=\"{ checked: field.value.email === 1 }\">\n            <input class=\"spm_form_checkbox_input\" type=\"checkbox\" data-ng-model=\"field.value.email\" data-ng-true-value=\"1\" data-ng-false-value=\"0\" disabled>\n            <span class=\"spm_form_checkbox_label\" data-ng-bind=\"field.data.email_label\"></span>\n          </label>\n          <label class=\"spm_form_checkbox\" data-ng-class=\"{ checked: field.value.sms === 1 }\">\n            <input class=\"spm_form_checkbox_input\" type=\"checkbox\" data-ng-model=\"field.value.sms\" data-ng-true-value=\"1\" data-ng-false-value=\"0\" disabled>\n            <span class=\"spm_form_checkbox_label\" data-ng-bind=\"field.data.sms_label\"></span>\n          </label>\n        </div>\n\n        <div class=\"b-info pb-3 pt-3 pr-3 d-flex flex-column flex-column-light spm_profile-info-modal-field\" data-ng-switch-default>\n          <img class=\"spm_profile-info-modal-field-icon\" data-ng-if=\"field.icon\" ng-src=\"{{ field.icon }}\">\n          <span class=\"spm_profile-info-modal-field-label\">{{ field.label }}</span>\n          <span class=\"mt-2 spm_profile-info-modal-field-value\" ng-bind=\"field.value.split('  ').join(', ')\"></span>\n        </div>\n\n      </div>\n\n\n      <!--<div class=\"b-info mb-5 d-flex align-items-center flex-column flex-column-light\">-->\n        <!--<img ng-src=\"{{widget.images.icon_phone}}\">-->\n        <!--<span class=\"mt-2\" ng-bind=\"user().user.phone|tel\"></span>-->\n      <!--</div>-->\n\n      <!--<div class=\"b-info mb-5 d-flex align-items-center flex-column flex-column-light\">-->\n        <!--<img ng-src=\"{{widget.images.icon_bday}}\">-->\n        <!--<span class=\"mt-2\" ng-bind=\"user().user.birth_date|date:'d MMMM yyyy'\"></span>-->\n      <!--</div>-->\n\n      <div class=\"b-info d-flex align-items-center justify-content-center spm_profile-info-modal-button\">\n        <a class=\"btn btn-md btn-primary text-uppercase px-3 py-2 font-weight-bolder\" href=\"#\" role=\"button\"\n           ng-click=\"$event.preventDefault();$root.$broadcast('info:state', false); $root.$broadcast('profile:state', true)\"\n           ng-bind=\"widget.texts.modals.profile.edit_button\"></a>\n      </div>\n\n\n    </magic-modal-body>\n  </magic-modal>\n\n\n  <magic-modal class=\"spm_profile-edit-modal\" on-close=\"revert_profile_form\" show=\"$parent.$parent.show_profile\" prevent-close=\"lock_profile\">\n    <magic-modal-title ng-bind-html=\"widget.texts.modals.profile.title|to_trusted\"></magic-modal-title>\n    <magic-modal-body>\n\n      <form name=\"profile_form\" class=\"spm_profile-form\"\n            ng-submit=\"sailplay.fill_profile.submit(profile_form, onSaveProfile);\">\n\n        <div class=\"spm_form_field spm_form_field_type_{{ field.input }}\" ng-repeat=\"field in sailplay.fill_profile.form.fields\"\n             ng-switch=\"field.input\">\n\n          <div ng-switch-when=\"text\" class=\"position-relative\">\n            <input class=\"spm_form_input\" type=\"text\" placeholder=\"{{ field.placeholder }}\"\n                   ng-model=\"field.value\" ng-required=\"field.required\">\n            <label class=\"spm_form_label type_absolute\" ng-bind=\"field.label\"></label>\n          </div>\n\n          <div ng-switch-when=\"date\" class=\"position-relative\">\n            <label class=\"spm_form_label \" ng-bind=\"field.label\"></label>\n            <date-picker ng-model=\"field.value\" ng-required=\"field.required\"></date-picker>\n          </div>\n\n          <div ng-switch-when=\"phone\" class=\"position-relative\">\n            <input class=\"spm_form_input\" type=\"text\"\n                   ui-mask=\"{{ field.placeholder }}\" ng-model=\"field.value\"\n                   ng-required=\"field.required\">\n            <label class=\"spm_form_label type_absolute\" ng-bind=\"field.label\"></label>\n          </div>\n\n          <div ng-switch-when=\"email\" class=\"position-relative\">\n            <input class=\"spm_form_input\" type=\"email\" placeholder=\"{{ field.placeholder }}\"\n                   ng-model=\"field.value\" ng-required=\"field.required\">\n            <label class=\"spm_form_label type_absolute\">{{ field.label }}</label>\n          </div>\n\n          <div ng-switch-when=\"select\" class=\"position-relative\">\n            <select class=\"spm_form_select\" ng-model=\"field.value\"\n                    ng-options=\"item.value as item.text for item in field.data\"></select>\n            <label class=\"spm_form_label type_absolute\" ng-bind=\"field.label\"></label>\n          </div>\n\n          <div class=\"container-left-profile_field-value position-relative\" data-ng-switch-when=\"radio\">\n            <label class=\"spm_form_label\" ng-bind=\"field.label\"></label>\n            <label class=\"spm_form_checkbox\" data-ng-class=\"{ checked: field.value === item.value }\" data-ng-repeat=\"item in field.data\">\n              <input class=\"spm_form_checkbox_input\" type=\"radio\" data-ng-model=\"field.value\" data-ng-value=\"item.value\">\n              <span class=\"spm_form_checkbox_label\" data-ng-bind=\"item.text\"></span>\n            </label>\n          </div>\n\n          <div class=\"container-left-profile_field-value position-relative\" data-ng-switch-when=\"checkbox\" data-sailplay-variable-checkbox data-ng-model=\"field.value\">\n            <label class=\"spm_form_label\" ng-bind=\"field.label\"></label>\n            <label class=\"spm_form_checkbox\" data-ng-repeat=\"item in field.data\" data-ng-class=\"{ checked: SailplayVariableCheckbox.value[item.value] }\">\n              <input class=\"spm_form_checkbox_input\" type=\"checkbox\" data-ng-model=\"SailplayVariableCheckbox.value[item.value]\" data-ng-change=\"SailplayVariableCheckbox.change()\">\n              <span class=\"spm_form_checkbox_label\" data-ng-bind=\"item.text\"></span>\n            </label>\n          </div>\n\n          <div class=\"container-left-profile_field-value position-relative\" data-ng-switch-when=\"subscriptions\"\n               data-ng-show=\"field.value\">\n            <label class=\"spm_form_checkbox\" data-ng-class=\"{ checked: field.value.email === 1 }\">\n              <input class=\"spm_form_checkbox_input\" type=\"checkbox\" data-ng-model=\"field.value.email\" data-ng-true-value=\"1\" data-ng-false-value=\"0\">\n              <span class=\"spm_form_checkbox_label\" data-ng-bind=\"field.data.email_label\"></span>\n            </label>\n            <label class=\"spm_form_checkbox\" data-ng-class=\"{ checked: field.value.sms === 1 }\">\n              <input class=\"spm_form_checkbox_input\" type=\"checkbox\" data-ng-model=\"field.value.sms\" data-ng-true-value=\"1\" data-ng-false-value=\"0\">\n              <span class=\"spm_form_checkbox_label\" data-ng-bind=\"field.data.sms_label\"></span>\n            </label>\n          </div>\n\n        </div>\n\n        <div class=\"spm_form_buttons\">\n          <button class=\"spm_btn theme_1 type_big type_cancel font-weight-bolder\" ng-click=\"$parent.close()\"\n                  ng-bind=\"widget.texts.modals.profile.cancel\"></button>\n          <input type=\"submit\" class=\"spm_btn theme_1 type_filled type_big font-weight-bolder\"\n                 ng-value=\"widget.texts.modals.profile.save\"/>\n        </div>\n\n      </form>\n\n    </magic-modal-body>\n  </magic-modal>\n\n\n  <magic-modal show=\"$parent.$parent.show_history\">\n    <magic-modal-title>\n      <span class=\"d-block text-left history_title\" ng-bind=\"widget.texts.modals.history.title\"></span>\n    </magic-modal-title>\n    <magic-modal-body>\n      <div sailplay-history>\n\n        <table class=\"spm_profile-history\" ng-show=\"history().length\">\n          <tbody>\n          <tr dir-paginate=\"item in history() | itemsPerPage:5\" pagination-id=\"history_pages\">\n            <td class=\"type_lighter\" ng-bind=\"item.action_date | date:'d MMM yyyy'\"></td>\n            <td>\n              <div ng-bind=\"item|history_item\"></div>\n            </td>\n            <td></td>\n            <!--<td ng-class=\"{type_positive:item.points_delta>0, type_negative:item.points_delta<0}\"-->\n            <!--ng-bind=\"item.points_delta?(item.points_delta|number):''\"></td>-->\n          </tr>\n          </tbody>\n        </table>\n\n        <dir-pagination-controls max-size=\"7\" direction-links=\"false\" data-page-links=\"true\" pagination-id=\"history_pages\"\n                                 template-url=\"magic.pagination\"\n                                 auto-hide=\"true\"></dir-pagination-controls>\n\n        <div ng-hide=\"history().length\" ng-bind=\"widget.texts.modals.history.empty\"></div>\n\n      </div>\n    </magic-modal-body>\n  </magic-modal>\n\n  <magic-modal class=\"learn_more_modal\" show=\"$parent.$parent.show_learn_more\">\n    <magic-modal-body>\n\n      <div class=\"mb-5 d-flex align-items-center flex-column flex-column-light\" data-ng-bind-html=\"widget.texts.learn_more_html | to_trusted\">\n\n      </div>\n\n    </magic-modal-body>\n  </magic-modal>\n\n</section>";
+module.exports = "<section class=\"spm_profile profile clearfix\" ng-if=\"widget.enabled\" ng-cloak sailplay-profile sailplay-fill-profile config=\"widget.options.config\">\n\n  <div class=\"container container-fluid spm_profile-container\">\n\n    <!-- authorized section -->\n    <div class=\"row\" data-ng-if=\"user()\">\n\n      <div class=\"col-lg-2 col-md-12 spm_profile-avatar\">\n\n        <div class=\"position-relative d-inline-block b-avatar mb-3\">\n\n          <!-- user pic -->\n          <img ng-src=\"{{ ( user().user.avatar['250x250'] | sailplay_pic ) || default_avatar}}\" class=\"rounded-circle profile_avatar\">\n\n          <!-- profile menu -->\n          <div class=\"b-avatar-menu position-absolute\">\n            <div class=\"b-avatar-menu__icon rounded-circle bg-primary cursor-pointer\"\n                 ng-click=\"menuActive=!menuActive\">\n              <img ng-src=\"{{widget.images.icon_dots}}\">\n            </div>\n          </div>\n\n          <div class=\"b-avatar-menu__list position-absolute bg-light\" data-ng-class=\"{type_active: menuActive}\" data-ng-mouseleave=\"menuActive=false\">\n            <a href=\"#\" class=\"b-avatar-menu__item d-flex align-items-center text-dark py-3 pl-4 pr-5\"\n               ng-click=\"$event.preventDefault();$root.$broadcast('info:state', true);menuActive=false\">\n              <i class=\"b-avatar-menu__item-icon\">\n                <img class=\"mw-100 h-75\" ng-src=\"{{widget.images.icon_profile}}\">\n              </i>\n              <span ng-bind=\"widget.texts.menu_my_profile\"></span>\n            </a>\n            <a href=\"#\" class=\"b-avatar-menu__item text-dark py-3 pl-4 pr-5\" data-ng-click=\"$event.preventDefault();logout();menuActive=false\">\n              <i class=\"b-avatar-menu__item-icon\">\n                <img class=\"mw-100 h-75\" ng-src=\"{{widget.images.icon_logout}}\">\n              </i>\n              <span ng-bind=\"widget.texts.menu_logout\"></span>\n            </a>\n          </div>\n\n        </div>\n\n      </div>\n\n      <div class=\"col col-lg-6 col-md-12 spm_profile-info\">\n\n        <div class=\"spm_profile-info-inner\">\n\n          <p class=\"font-weight-light spm_profile-subheader\">\n            <span>{{ user().user.name }}, </span>\n            <span ng-bind-html=\"widget.texts.sub_header | to_trusted\"></span>\n          </p>\n\n          <h1 class=\"display-4 text-uppercase font-weight-bolder spm_profile-header\" data-ng-bind-html=\"widget.texts.header|to_trusted\"></h1>\n\n          <p class=\"spm_profile-description\" data-ng-bind-html=\"widget.texts.description | to_trusted\"></p>\n\n          <button type=\"button\" class=\"btn btn-lg btn-primary spm_profile-login_button\" href=\"#\" role=\"button\" data-ng-click=\"open_learn_more()\" data-ng-bind=\"widget.texts.learn_more_button_text\"></button>\n\n        </div>\n\n      </div>\n\n      <div class=\"spm_status-bar status-bar col-lg-4 col-md-12 clearfix\" ng-cloak ng-class=\"{type_list: show_list}\">\n\n        <div>\n\n          <div class=\"align-items-top\">\n\n            <div class=\"b-current-status d-flex flex-column align-items-center text-center spm_profile-status\">\n              <i ng-style=\"currentStatus.style\"></i>\n              <h2 class=\"font-akrobat font-weight-bolder text-uppercase mb-0 spm_profile-status-name\" ng-bind=\"currentStatus.name || widget.texts.status.no_status\"></h2>\n              <div class=\"mt-1 font-weight-light\" ng-bind-html=\"(currentStatus.description|to_trusted) || widget.texts.status.no_status_description\"></div>\n            </div>\n\n            <div class=\"b-points d-flex spm_profile-points\" data-ng-click=\"$root.$broadcast('history:state', true)\">\n              <div class=\"display-1 text-center points-balance font-akrobat font-weight-bold text-uppercase spm_profile-points-confirmed\">{{ user().user_points.confirmed | number }} {{ widget.texts.points.label }}</div>\n            </div>\n\n          </div>\n\n        </div>\n\n        <div ng-show=\"show_list\" class=\"container py-0 py-lg-5 position-relative\">\n          <div class=\"b-list-close rounded-circle d-flex bg-primary cursor-pointer align-items-center position-absolute\"\n               ng-click=\"show_list=false\"></div>\n          <div class=\"row align-items-center\">\n            <div class=\"b-statuses col-md-12 my-5 my-lg-0 col-lg-4 d-flex flex-column align-items-center text-center\"\n                 ng-repeat=\"status in list track by $index\">\n              <i ng-style=\"status.style\"></i>\n              <h2 class=\"font-akrobat font-weight-bolder text-uppercase mb-0\" ng-bind=\"status.name\"></h2>\n              <h5 class=\"my-2\"\n                  ng-bind=\"(status.points|number)+' '+(status.points|sailplay_pluralize:('points.texts.pluralize'|tools))\"></h5>\n              <div class=\"font-weight-light\" ng-bind-html=\"status.description|to_trusted\"></div>\n            </div>\n          </div>\n        </div>\n\n      </div>\n\n    </div>\n\n    <!-- unauthorized section -->\n    <div class=\"row\" data-ng-if=\"!user()\">\n\n      <div class=\"col-lg-2 col-md-12 spm_profile-avatar\">\n\n        <div class=\"position-relative d-inline-block b-avatar mb-3\">\n\n          <!-- user pic -->\n          <img ng-src=\"{{ default_avatar }}\" class=\"rounded-circle profile_avatar\">\n\n        </div>\n\n      </div>\n\n      <div class=\"col col-lg-10 col-md-12 spm_profile-info\">\n\n\n        <div class=\"spm_profile-info-inner\">\n\n          <p class=\"font-weight-light spm_profile-subheader\">\n            <span ng-bind-html=\"widget.texts.sub_header | to_trusted\"></span>\n          </p>\n\n          <h1 class=\"display-4 text-uppercase font-weight-bolder spm_profile-header\" data-ng-bind-html=\"widget.texts.header|to_trusted\"></h1>\n\n          <p class=\"spm_profile-description\" data-ng-bind-html=\"widget.texts.description | to_trusted\"></p>\n\n          <button type=\"button\" class=\"btn btn-lg btn-primary spm_profile-login_button\" href=\"#\" role=\"button\" data-ng-click=\"$event.preventDefault(); login('remote', {widget: 'bootstrap_profile_stacked', element: 'profile_login_button'});\" data-ng-bind=\"widget.texts.login_button_text\"></button>\n\n        </div>\n\n      </div>\n\n    </div>\n\n  </div>\n\n  <magic-modal show=\"$parent.$parent.show_info\" class=\"spm_profile-info-modal\">\n    <magic-modal-title>\n      <div class=\"b-avatar spm_profile-info-modal-avatar\">\n        <img class=\"spm_profile-info-modal-avatar-image\" ng-src=\"{{user().user.avatar['250x250']|sailplay_pic}}\" class=\"rounded-circle\">\n      </div>\n      <span class=\"d-block my-5 spm_profile-info-modal-name\" ng-bind=\"user().user.name\"></span>\n    </magic-modal-title>\n    <magic-modal-body>\n\n      <div data-ng-repeat=\"field in sailplay.fill_profile.form.fields\" data-ng-if=\"field.value\" data-ng-switch=\"field.input\">\n\n        <div class=\"b-info pb-3 pt-3 pr-3 d-flex flex-column flex-column-light spm_profile-info-modal-field spm_form_field\" data-ng-switch-when=\"subscriptions\">\n          <label class=\"spm_form_checkbox\" data-ng-class=\"{ checked: field.value.email === 1 }\">\n            <input class=\"spm_form_checkbox_input\" type=\"checkbox\" data-ng-model=\"field.value.email\" data-ng-true-value=\"1\" data-ng-false-value=\"0\" disabled>\n            <span class=\"spm_form_checkbox_label\" data-ng-bind=\"field.data.email_label\"></span>\n          </label>\n          <label class=\"spm_form_checkbox\" data-ng-class=\"{ checked: field.value.sms === 1 }\">\n            <input class=\"spm_form_checkbox_input\" type=\"checkbox\" data-ng-model=\"field.value.sms\" data-ng-true-value=\"1\" data-ng-false-value=\"0\" disabled>\n            <span class=\"spm_form_checkbox_label\" data-ng-bind=\"field.data.sms_label\"></span>\n          </label>\n        </div>\n\n        <div class=\"b-info pb-3 pt-3 pr-3 d-flex flex-column flex-column-light spm_profile-info-modal-field\" data-ng-switch-default>\n          <img class=\"spm_profile-info-modal-field-icon\" data-ng-if=\"field.icon\" ng-src=\"{{ field.icon }}\">\n          <span class=\"spm_profile-info-modal-field-label\">{{ field.label }}</span>\n          <span class=\"mt-2 spm_profile-info-modal-field-value\" ng-bind=\"field.value.split('  ').join(', ')\"></span>\n        </div>\n\n      </div>\n\n\n      <!--<div class=\"b-info mb-5 d-flex align-items-center flex-column flex-column-light\">-->\n        <!--<img ng-src=\"{{widget.images.icon_phone}}\">-->\n        <!--<span class=\"mt-2\" ng-bind=\"user().user.phone|tel\"></span>-->\n      <!--</div>-->\n\n      <!--<div class=\"b-info mb-5 d-flex align-items-center flex-column flex-column-light\">-->\n        <!--<img ng-src=\"{{widget.images.icon_bday}}\">-->\n        <!--<span class=\"mt-2\" ng-bind=\"user().user.birth_date|date:'d MMMM yyyy'\"></span>-->\n      <!--</div>-->\n\n      <div class=\"b-info d-flex align-items-center justify-content-center spm_profile-info-modal-button\">\n        <a class=\"btn btn-md btn-primary text-uppercase px-3 py-2 font-weight-bolder\" href=\"#\" role=\"button\"\n           ng-click=\"$event.preventDefault();$root.$broadcast('info:state', false); $root.$broadcast('profile:state', true)\"\n           ng-bind=\"widget.texts.modals.profile.edit_button\"></a>\n      </div>\n\n\n    </magic-modal-body>\n  </magic-modal>\n\n\n  <magic-modal class=\"spm_profile-edit-modal\" on-close=\"revert_profile_form\" show=\"$parent.$parent.show_profile\" prevent-close=\"lock_profile\">\n    <magic-modal-title ng-bind-html=\"widget.texts.modals.profile.title|to_trusted\"></magic-modal-title>\n    <magic-modal-body>\n\n      <form name=\"profile_form\" class=\"spm_profile-form\"\n            ng-submit=\"sailplay.fill_profile.submit(profile_form, onSaveProfile);\">\n\n        <div class=\"spm_form_field spm_form_field_type_{{ field.input }}\" ng-repeat=\"field in sailplay.fill_profile.form.fields\"\n             ng-switch=\"field.input\">\n\n          <div ng-switch-when=\"text\" class=\"position-relative\">\n            <input class=\"spm_form_input\" type=\"text\" placeholder=\"{{ field.placeholder }}\"\n                   ng-model=\"field.value\" ng-required=\"field.required\">\n            <label class=\"spm_form_label type_absolute\" ng-bind=\"field.label\"></label>\n          </div>\n\n          <div ng-switch-when=\"date\" class=\"position-relative\">\n            <label class=\"spm_form_label \" ng-bind=\"field.label\"></label>\n            <date-picker ng-model=\"field.value\" ng-required=\"field.required\"></date-picker>\n          </div>\n\n          <div ng-switch-when=\"phone\" class=\"position-relative\">\n            <input class=\"spm_form_input\" type=\"text\"\n                   ui-mask=\"{{ field.placeholder }}\" ng-model=\"field.value\"\n                   ng-required=\"field.required\">\n            <label class=\"spm_form_label type_absolute\" ng-bind=\"field.label\"></label>\n          </div>\n\n          <div ng-switch-when=\"email\" class=\"position-relative\">\n            <input class=\"spm_form_input\" type=\"email\" placeholder=\"{{ field.placeholder }}\"\n                   ng-model=\"field.value\" ng-required=\"field.required\">\n            <label class=\"spm_form_label type_absolute\">{{ field.label }}</label>\n          </div>\n\n          <div ng-switch-when=\"select\" class=\"position-relative\">\n            <select class=\"spm_form_select\" ng-model=\"field.value\"\n                    ng-options=\"item.value as item.text for item in field.data\"></select>\n            <label class=\"spm_form_label type_absolute\" ng-bind=\"field.label\"></label>\n          </div>\n\n          <div class=\"container-left-profile_field-value position-relative\" data-ng-switch-when=\"radio\">\n            <label class=\"spm_form_label\" ng-bind=\"field.label\"></label>\n            <label class=\"spm_form_checkbox\" data-ng-class=\"{ checked: field.value === item.value }\" data-ng-repeat=\"item in field.data\">\n              <input class=\"spm_form_checkbox_input\" type=\"radio\" data-ng-model=\"field.value\" data-ng-value=\"item.value\">\n              <span class=\"spm_form_checkbox_label\" data-ng-bind=\"item.text\"></span>\n            </label>\n          </div>\n\n          <div class=\"container-left-profile_field-value position-relative\" data-ng-switch-when=\"checkbox\" data-sailplay-variable-checkbox data-ng-model=\"field.value\">\n            <label class=\"spm_form_label\" ng-bind=\"field.label\"></label>\n            <label class=\"spm_form_checkbox\" data-ng-repeat=\"item in field.data\" data-ng-class=\"{ checked: SailplayVariableCheckbox.value[item.value] }\">\n              <input class=\"spm_form_checkbox_input\" type=\"checkbox\" data-ng-model=\"SailplayVariableCheckbox.value[item.value]\" data-ng-change=\"SailplayVariableCheckbox.change()\">\n              <span class=\"spm_form_checkbox_label\" data-ng-bind=\"item.text\"></span>\n            </label>\n          </div>\n\n          <div class=\"container-left-profile_field-value position-relative\" data-ng-switch-when=\"subscriptions\"\n               data-ng-show=\"field.value\">\n            <label class=\"spm_form_checkbox\" data-ng-class=\"{ checked: field.value.email === 1 }\">\n              <input class=\"spm_form_checkbox_input\" type=\"checkbox\" data-ng-model=\"field.value.email\" data-ng-true-value=\"1\" data-ng-false-value=\"0\">\n              <span class=\"spm_form_checkbox_label\" data-ng-bind=\"field.data.email_label\"></span>\n            </label>\n            <label class=\"spm_form_checkbox\" data-ng-class=\"{ checked: field.value.sms === 1 }\">\n              <input class=\"spm_form_checkbox_input\" type=\"checkbox\" data-ng-model=\"field.value.sms\" data-ng-true-value=\"1\" data-ng-false-value=\"0\">\n              <span class=\"spm_form_checkbox_label\" data-ng-bind=\"field.data.sms_label\"></span>\n            </label>\n          </div>\n\n        </div>\n\n        <div class=\"spm_form_buttons\">\n          <button class=\"spm_btn theme_1 type_big type_cancel font-weight-bolder\" ng-click=\"$parent.close()\"\n                  ng-bind=\"widget.texts.modals.profile.cancel\"></button>\n          <input type=\"submit\" class=\"spm_btn theme_1 type_filled type_big font-weight-bolder\"\n                 ng-value=\"widget.texts.modals.profile.save\"/>\n        </div>\n\n      </form>\n\n    </magic-modal-body>\n  </magic-modal>\n\n\n  <magic-modal show=\"$parent.$parent.show_history\">\n    <magic-modal-title>\n      <span class=\"d-block text-left history_title\" ng-bind=\"widget.texts.modals.history.title\"></span>\n    </magic-modal-title>\n    <magic-modal-body>\n      <div sailplay-history>\n\n        <table class=\"spm_profile-history\" ng-show=\"history().length\">\n          <tbody>\n          <tr dir-paginate=\"item in history() | itemsPerPage:5\" pagination-id=\"history_pages\">\n            <td class=\"type_lighter\" ng-bind=\"item.action_date | date:'d MMM yyyy'\"></td>\n            <td>\n              <div ng-bind=\"item|history_item\"></div>\n            </td>\n            <td></td>\n            <!--<td ng-class=\"{type_positive:item.points_delta>0, type_negative:item.points_delta<0}\"-->\n            <!--ng-bind=\"item.points_delta?(item.points_delta|number):''\"></td>-->\n          </tr>\n          </tbody>\n        </table>\n\n        <dir-pagination-controls max-size=\"7\" direction-links=\"false\" data-page-links=\"true\" pagination-id=\"history_pages\"\n                                 template-url=\"magic.pagination\"\n                                 auto-hide=\"true\"></dir-pagination-controls>\n\n        <div ng-hide=\"history().length\" ng-bind=\"widget.texts.modals.history.empty\"></div>\n\n      </div>\n    </magic-modal-body>\n  </magic-modal>\n\n  <magic-modal class=\"learn_more_modal\" show=\"$parent.$parent.show_learn_more\">\n    <magic-modal-body>\n\n      <div class=\"mb-5 d-flex align-items-center flex-column flex-column-light\" data-ng-bind-html=\"widget.texts.learn_more_html | to_trusted\">\n\n      </div>\n\n    </magic-modal-body>\n  </magic-modal>\n\n</section>";
 
 /***/ }),
-/* 172 */
+/* 177 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(173);
+var content = __webpack_require__(178);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -46217,7 +46356,7 @@ if(false) {
 }
 
 /***/ }),
-/* 173 */
+/* 178 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -46231,120 +46370,16 @@ exports.push([module.i, ".bootstrap_profile_stacked .spm_profile {\n  position: 
 
 
 /***/ }),
-/* 174 */
+/* 179 */
 /***/ (function(module, exports) {
 
 module.exports = {"styles":{"b-list-close:hover":{"box-shadow":"-6px 6px 14px 0 rgba(145, 70, 13, 0.66)"},"spm_profile-points":{"background-color":"rgb(252,46,162)"},"b-next-status":{"position":"relative"},"spm_profile":{"background-image":"url(https://sailplays3.cdnvideo.ru/media/assets/assetfile/91db09a9ee09ff81fadffb1132423541.png)","font-family":"Roboto, sans-serif"},"history_title":{"font-family":"Akrobat, sans-serif"},"points-balance":{"font-size":"50px","font-weight":800,"line-height":"120%","letter-spacing":"2px"},"spm_profile-info-modal-field-label":{"color":"rgb(181,186,194)","font-weight":300},"spm_profile-subheader":{"color":"#fff","margin-top":"10px","font-family":"Akrobat, sans-serif","font-size":"35px"},"b-statuses h5":{"color":"#7e8c8a"},"spm_profile-info-modal-avatar":{"margin-top":"10px"},"spm_profile-info-modal-field":{"padding-left":"95px"},"spm_profile-info-modal-button a":{"letter-spacing":"1px","margin":"0 40px","padding":"15px","width":"100%","font-weight":400,"border":"none","display":"block","background-color":"rgb(252,46,162)"},"b-list-close:before":{"right":0,"bottom":0,"top":0,"transform":"rotate(135deg)","height":"2px","content":"''","width":"18px","background":"white","position":"absolute","margin":"auto","display":"block","left":0},"spm_profile-status-name":{"font-size":"35px"},"b-statuses":{"position":"static"},"spm_profile-login_button":{"font-size":"16px","color":"rgb(252,46,162)","box-shadow":"0 0 6px 0 rgba(0,0,0,0.3)","padding":"15px 70px","font-weight":"bold","background-color":"#fff"},"spm_profile-header":{"font-size":"55px","font-family":"Akrobat, sans-serif"},"spm_profile-info-modal-field-icon":{"left":"40px"},"b-points":{"cursor":"pointer"},"spm_profile-container":{"background-image":"url(https://sailplays3.cdnvideo.ru/media/assets/assetfile/a871188f76c392582c013d2cc875be3d.png)","background-position":"-1199px -544px"},"spm_profile-status":{"background-image":"url(https://sailplays3.cdnvideo.ru/media/assets/assetfile/01dfa00c60cd3a7f81bd5eb8c08af7da.png)","background-repeat":"repeat","background-color":"rgb(233,156,78)"},"spm_profile-info-modal-button":{"margin-top":"40px"},"@media (max-width: 750px) | spm_profile":{"background-position":"30% bottom"},"spm_profile-info-modal-avatar-image":{"border-radius":"50%","width":"130px","display":"inline-block"},"b-current-status > *":{"z-index":2},"spm_profile-info-modal-name":{"display":"none"},"b-avatar-menu__icon":{"background-color":"rgb(252,46,162)"},"b-statuses > *":{"z-index":5},"b-list-close":{"width":"54px","top":"-27px","right":0,"z-index":6,"height":"54px"},"spm_profile-form .spm_form_field_type_radio":{"border-bottom":"1px solid #eee","padding-bottom":"20px"},"b-list-close:after":{"right":0,"bottom":0,"top":0,"transform":"rotate(-135deg)","height":"2px","content":"''","width":"18px","background":"white","position":"absolute","margin":"auto","display":"block","left":0},"spm_profile-description":{"font-weight":"300"},"@media (min-width: 1678px) | spm_profile":{"background-size":"cover","background-position":"center bottom"},"b-next-status:before":{"opacity":0.2,"top":0,"height":"100%","content":"''","width":"2px","background":"#58839a","position":"absolute","left":"13%"},"spm_profile-header, .spm_profile-description, .spm_profile-status-name":{"color":"#fff"},"b-current-status":{"cursor":"pointer","position":"static"},"spm_profile-form .spm_form_field":{"padding-right":"50px","padding-left":"50px"}},"enabled":true,"id":"bootstrap_profile_stacked","texts":{"status":{"description":"Get <span style=\"color:#ca5b54;font-weight: 500;\">{{ (toNext|number)+' '+(toNext|sailplay_pluralize:'point,points,points') }}</span><br> to get gold status","description_final":"","no_status":"No status"},"description":"Here you can spend your points on gifts, look after your statuses and also carry out some extra tasks for extra points.","menu_logout":"Logout","sub_header":"Welcome to","modals":{"profile":{"cancel":"CANCEL","save":"SAVE","edit_button":"EDIT PROFILE","title":"PROFILE"},"history":{"date":"date","action":"action","points":"points","empty":"No actions","title":"HISTORY"}},"learn_more_button_text":"LEARN MORE","login_button_text":"SIGN IN","header":"FRIENDS WITH BENEFITS","menu_my_profile":"My profile","points":{"description":"Complete quests to recieve<br>extra points and statuses","label":"Points"},"learn_more_html":"<strong>How it works</strong><br>• Earn Points by shopping in store and telling others about Excitement with Hookups<br>• Friend referrals (Hookups) get you and your buddies 10% off a purchase when they mention your name at sign up<br>• More ways to earn points coming in the future!<br>• Redeem Points for store credits or our Pleasure Product of the Month (1 smoke, 1 love)<br>• Pssst... Every $200 spent = 2000 points = $20 in store credit or a $30+ gift item!<br>• Don’t wait too long between visits - shop with us often to keep points active!<br>• Level up your FWB Relationship Status to earn even more points and perks<br>• Keep track of your relationship status and refer friends on iloveexcitement.com/FWB-Rewards<br>• Receive special coupons and offers via text and email<br>• While you can opt out anytime if desired, you’ll miss out on the best deals and fun events delivered only via text!<br><br><br><strong>RELATIONSHIP STATUS (aka Tiers)</strong><br><strong>1st Level: Flirt</strong><br>• Intro level, every customer starts here.<br>• $0 to $99.99 spent in 12 mos<br>• 50 points given as bonus for signing up? - Welcome email and text triggered offering coupon for filling out profile online<br>• Birthday coupon (if you give us your bday) $10 off a $20 or more purchase + Double points on your birthday<br>• Receive texts and emails about special sales and events at Excitement<br>• Points expire if no purchases are made within 6 months of when the points were earned. If a purchase is made 1x per 6 mos, points remain.<br>• Points accrue a $1 = 10 points<br><br><strong>2nd Level: Fling</strong><br>• $100+ to $249.99 spent in 12 mos<br>• 100 Bonus Points Earned <br>• Birthday coupon (if you give us your bday) $10 off a $20 or more purchase + Double points on your birthday<br>• Receive texts and emails about special sales and events at Excitement<br>• Points expire if no purchases are made within 6 months of when the points were earned. If a purchase is made 1x per 6 mos, points remain.<br>• Earn 10% more in bonus points for every dollar spent at this level. Points accrue a $1 = 11 points<br><br><strong>3rd Level: Flame</strong><br>• $250+ to $499.99 spent in 12 mos<br>• 200 Bonus Points Earned <br>• Birthday coupon (if you give us your bday) $10 off a $20 or more purchase + Double points on your birthday<br>• Receive texts and emails about special sales and events at Excitement<br>• Points earned at this tier never expire (points earned at previous tiers expire according to tier level)<br>• Earn 20% more in bonus points for every dollar spent at this level. Points accrue a $1 = 12 points<br><br><strong>4th Level: Forever</strong><br>• $500+ spent in 12 mos<br>• 500 Bonus Points Earned<br>• Birthday coupon (if you give us your bday) $10 off a $20 or more purchase + Double points on your birthday<br>• Receive texts and emails about special sales and events at Excitement<br>• Points earned at this tier never expire (points earned at previous tiers expire according to tier level)<br>• Earn 30% more in bonus points for every dollar spent at this level. Points accrue at $1= 13 points<br>","error":"Error","open_history":"History"},"images":{"empty_status":"https://sailplays3.cdnvideo.ru/media/assets/assetfile/1834f62f62f6a5011d447636714ad89d.png","icon_logout":"https://sailplays3.cdnvideo.ru/media/assets/assetfile/4db300a4a8c7fcd8297b10f4d3111db8.svg","icon_close":"https://sailplays3.cdnvideo.ru/media/assets/assetfile/459234d99339b7ea5c10d772f9d62ba0.png","icon_dots":"https://sailplays3.cdnvideo.ru/media/assets/assetfile/721c1d38bb943115c0b16dc5214e76ee.png","icon_profile":"https://sailplays3.cdnvideo.ru/media/assets/assetfile/17a40631c608e73a886d21ce975b0510.svg","close":"https://sailplays3.cdnvideo.ru/media/assets/assetfile/459234d99339b7ea5c10d772f9d62ba0.png"},"options":{"config":{"fields":[{"name":"firstName","required":true,"label":"First name","input":"text","type":"system","icon":"https://sailplays3.cdnvideo.ru/media/assets/assetfile/4ee7f4b31961c7923f02ffc35f20be26.png"},{"name":"lastName","required":true,"label":"Last name","input":"text","type":"system","icon":"https://sailplays3.cdnvideo.ru/media/assets/assetfile/d04458f535df45771f7395d9011d4c8e.png"},{"name":"addEmail","required":true,"label":"Email","input":"email","type":"system","icon":"https://sailplays3.cdnvideo.ru/media/assets/assetfile/2cede30616fe34a5ab8b1bbc974c2982.png"},{"name":"addPhone","placeholder":"+9 (999) 999-99-99","required":true,"label":"Cell Phone","input":"phone","type":"system","icon":"https://sailplays3.cdnvideo.ru/media/assets/assetfile/acd9b6342c98789a2331c2c7a671a7b5.png"},{"name":"birthDate","required":true,"label":"Birthday","input":"date","type":"system","icon":"https://sailplays3.cdnvideo.ru/media/assets/assetfile/a46af2f06be991403f1f7f889dcc778d.png"},{"name":"zipcode","placeholder":"999999","required":true,"label":"Zip code","input":"phone","type":"variable","icon":"https://sailplays3.cdnvideo.ru/media/assets/assetfile/6f71aa4115d34789bea2678bc3c5b80b.png"},{"name":"anniversary","required":true,"label":"Date of your anniversary","input":"date","type":"variable","icon":"https://sailplays3.cdnvideo.ru/media/assets/assetfile/5fb1f1ceb6fa4d2ecc7b9153986feba0.png"},{"name":"gender","data":[{"text":"Male","value":"male"},{"text":"Female","value":"female"},{"text":"Transmale","value":"transmale"},{"text":"Transfemale","value":"transfemale"},{"text":"Non-Binary Gender","value":"nonbinary"}],"required":true,"label":"Gender","input":"select","type":"variable","icon":"https://sailplays3.cdnvideo.ru/media/assets/assetfile/88fbea9f5e881a6db7de0e3d30ecba7b.png"},{"name":"LGBTQIA","data":[{"text":"Yes","value":"yes"},{"text":"No","value":"no"}],"required":true,"label":"I am part of the queer or LGBTQIA+ community","input":"radio","type":"variable","icon":"https://sailplays3.cdnvideo.ru/media/assets/assetfile/7825d4007951f8713ab53105acf7304f.png"},{"name":"shop_for","data":[{"text":"Sex Toys and Products","value":"Sex Toys and Products"},{"text":"Lingerie","value":"Lingerie"},{"text":"Smoke Items","value":"Smoke Items"},{"text":"DVDs or Magazines","value":"DVDs or Magazines"}],"required":true,"label":"I shop at Excitement for:","input":"checkbox","type":"variable","icon":"https://sailplays3.cdnvideo.ru/media/assets/assetfile/3b977645504ec7eafff8f2ec4f9047f5.png"},{"name":"locations","data":[{"text":"Camp Hill, PA","value":"Camp Hill, PA"},{"text":"Harrisburg, PA","value":"Harrisburg, PA"},{"text":"Reading, PA","value":"Reading, PA"},{"text":"York, PA","value":"York, PA"},{"text":"Online at iloveexcitement.com","value":"Online at iloveexcitement.com"}],"required":true,"label":"I shop at these Excitement locations","input":"checkbox","type":"variable","icon":"https://sailplays3.cdnvideo.ru/media/assets/assetfile/91d4d2e8ac2055ca9704dcf6d3ed9a0d.png"},{"name":"subscriptions","data":{"email_label":"Opt in for email","sms_label":"Opt in for sms"},"required":false,"label":"","input":"subscriptions","type":"system","icon":"https://sailplays3.cdnvideo.ru/media/assets/assetfile/5fb1f1ceb6fa4d2ecc7b9153986feba0.png"}],"errors":{"email is not valid":"Неправильно указан email","-200010":"Такой email уже используется","phone is not valid":"Неправильно указан телефон","-200007":"Такой телефон уже используется"}}}}
 
 /***/ }),
-/* 175 */
-/***/ (function(module, exports) {
-
-module.exports = "data:image/gif;base64,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"
-
-/***/ }),
-/* 176 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _widget = __webpack_require__(2);
-
-var _template = __webpack_require__(177);
-
-var _template2 = _interopRequireDefault(_template);
-
-__webpack_require__(178);
-
-var _defaults = __webpack_require__(180);
-
-var _defaults2 = _interopRequireDefault(_defaults);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var widget = {
-  id: "bootstrap_quests",
-  template: _template2.default,
-  defaults: _defaults2.default,
-  inject: ["$rootScope", "SailPlay", "SailPlayApi", "tools"],
-  controller: function controller($rootScope, SailPlay, SailPlayApi, tools) {
-    return function (scope, elm, attrs) {
-      scope.show_success = false;
-
-      scope.action_styles = function (action_data) {
-        return action_data && action_data.styles && tools.stringify_widget_css("", action_data.styles);
-      };
-
-      SailPlay.on('actions.perform.success', function (res) {
-        scope.$apply(function () {
-          scope.show_success = true;
-        });
-      });
-    };
-  }
-};
-
-_widget.Widget.config(["MagicWidgetProvider", function (MagicWidgetProvider) {
-  MagicWidgetProvider.register(widget);
-}]);
-
-/***/ }),
-/* 177 */
-/***/ (function(module, exports) {
-
-module.exports = "<div class=\"spm_quests clearfix\" ng-if=\"widget.enabled\" ng-cloak sailplay-profile>\n\n    <div class=\"spm_quests-container\">\n\n\n        <div class=\"spm_quests-container__left\">\n            <div class=\"spm_quests-header\" ng-bind=\"widget.texts.header\"></div>\n            <div class=\"spm_quests-sub-header\" ng-bind=\"widget.texts.sub_header\"></div>\n        </div>\n\n        <div class=\"spm_quests-container__right spm_quests-list\" sailplay-actions>\n\n            <div class=\"spm_quests-item\" ng-repeat=\"action in actions().actions\" ng-mouseenter=\"action.loaded=true\">\n                <i class=\"spm_quests-item-icon\" ng-style=\"{backgroundImage: (action_data(action).pic|sailplay_pic|background_image)}\"></i>\n                <div class=\"spm_quests-item-content\">\n                    <div class=\"spm_quests-item-name\" ng-bind=\"action_data(action).name\"></div>\n                    <div class=\"spm_quests-item-points\" ng-show=\"action.points\" ng-bind=\"(action.points|number)+' '+(action.points|sailplay_pluralize:('points.texts.pluralize'|tools))\"></div>\n                </div>\n                <div class=\"spm_quests-item-hover\" ng-if=\"action.type!='fillProfile' && action.loaded\" sailplay-action styles=\"{{ action_styles(action_data(action)) }}\"\n                    action=\"action\" text=\"{{ action_data(action).button_text }}\">\n                    <span ng-bind=\"action_data(action).button_text\"></span>\n                </div>\n                <div ng-if=\"action.type=='fillProfile'\" class=\"spm_quests-item-hover\">\n                    <span ng-click=\"$root.$broadcast('profile:state', true)\" ng-bind=\"action_data(action).button_text\"></span>\n                </div>\n            </div>\n\n            <div class=\"spm_quests-item\" ng-repeat=\"action in actions_custom()\" ng-mouseenter=\"action.loaded=true\">\n                <i class=\"spm_quests-item-icon\" ng-style=\"{backgroundImage: (action.icon|sailplay_pic|background_image)}\"></i>\n                <div class=\"spm_quests-item-content\">\n                    <div class=\"spm_quests-item-name\" ng-bind=\"action.name\"></div>\n                    <div class=\"spm_quests-item-points\" ng-show=\"action.points\" ng-bind=\"(action.points|number)+' '+(action.points|sailplay_pluralize:('points.texts.pluralize'|tools))\"></div>\n                </div>\n                <div class=\"spm_quests-item-hover\" ng-if=\"action.loaded\" sailplay-action-custom action=\"action\"></div>\n            </div>\n\n        </div>\n\n    </div>\n\n    <magic-modal show=\"$parent.$parent.show_success\">\n        <magic-modal-title ng-bind=\"widget.texts.modals.success.title\"></magic-modal-title>\n        <magic-modal-body ng-bind-html=\"widget.texts.modals.success.body|to_trusted\"></magic-modal-body>\n    </magic-modal>\n\n</div>";
-
-/***/ }),
-/* 178 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(179);
-if(typeof content === 'string') content = [[module.i, content, '']];
-// Prepare cssTransformation
-var transform;
-
-var options = {"hmr":true}
-options.transform = transform
-// add the styles to the DOM
-var update = __webpack_require__(1)(content, options);
-if(content.locals) module.exports = content.locals;
-// Hot Module Replacement
-if(false) {
-	// When the styles change, update the <style> tags
-	if(!content.locals) {
-		module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/dist/cjs.js!./style.less", function() {
-			var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/dist/cjs.js!./style.less");
-			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-			update(newContent);
-		});
-	}
-	// When the module is disposed, remove the <style> tags
-	module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 179 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(0)(false);
-// imports
-
-
-// module
-exports.push([module.i, ".spm_wrapper .bootstrap_quests .spm_quests {\n  position: relative;\n}\n.spm_wrapper .bootstrap_quests .spm_quests-container {\n  width: 100%;\n  height: 100%;\n  max-width: 1200px;\n  margin: 0 auto;\n  box-sizing: border-box;\n  padding: 50px 30px;\n  display: flex;\n  align-items: center;\n  justify-content: flex-start;\n}\n@media (max-width: 992px) {\n  .spm_wrapper .bootstrap_quests .spm_quests-container {\n    flex-direction: column;\n  }\n}\n.spm_wrapper .bootstrap_quests .spm_quests-container__left {\n  box-sizing: border-box;\n  flex-basis: 20%;\n  padding-right: 30px;\n}\n@media (max-width: 992px) {\n  .spm_wrapper .bootstrap_quests .spm_quests-container__left {\n    flex-basis: 100%;\n    margin-bottom: 60px;\n    padding-right: 0;\n    text-align: center;\n  }\n}\n.spm_wrapper .bootstrap_quests .spm_quests-container__right {\n  flex-basis: 80%;\n}\n.spm_wrapper .bootstrap_quests .spm_quests-header {\n  font-weight: 900;\n  text-transform: uppercase;\n  font-size: 35px;\n  line-height: 1;\n  color: #000000;\n  position: relative;\n  letter-spacing: 2.3px;\n}\n.spm_wrapper .bootstrap_quests .spm_quests-sub-header {\n  font-weight: normal;\n  font-size: 16px;\n  line-height: 22px;\n  margin: 25px 0;\n  color: #000000;\n}\n.spm_wrapper .bootstrap_quests .spm_quests-list {\n  display: flex;\n  align-items: flex-start;\n  flex-wrap: wrap;\n  justify-content: flex-start;\n}\n@media (max-width: 992px) {\n  .spm_wrapper .bootstrap_quests .spm_quests-list {\n    align-items: center;\n    justify-content: center;\n    flex-wrap: wrap;\n  }\n}\n.spm_wrapper .bootstrap_quests .spm_quests-item {\n  display: flex;\n  align-items: center;\n  justify-content: space-around;\n  position: relative;\n  width: 280px;\n  height: 130px;\n  box-sizing: border-box;\n  padding: 0 8px;\n  margin: 10px;\n  overflow: hidden;\n  border-radius: 8px;\n  border: 1px solid #b4bac2;\n}\n@media (max-width: 768px) {\n  .spm_wrapper .bootstrap_quests .spm_quests-item {\n    margin: 25px 5%;\n    width: 90%;\n    flex-wrap: wrap;\n    padding: 20px;\n    height: auto;\n  }\n}\n.spm_wrapper .bootstrap_quests .spm_quests-item-hover {\n  display: none;\n  opacity: 0;\n  background: #ca5b54;\n  position: absolute;\n  left: 0;\n  top: 0;\n  width: 100%;\n  height: 100%;\n  z-index: 2;\n  align-items: center;\n  justify-content: center;\n  text-transform: uppercase;\n  font-weight: bold;\n  color: #ffffff;\n  font-family: Arial;\n}\n.spm_wrapper .bootstrap_quests .spm_quests-item-hover iframe {\n  width: 100% !important;\n  height: 100% !important;\n}\n.spm_wrapper .bootstrap_quests .spm_quests-item-hover > * {\n  cursor: pointer;\n}\n.spm_wrapper .bootstrap_quests .spm_quests-item-icon {\n  width: 75px;\n  height: 75px;\n  background-repeat: no-repeat;\n  background-position: center center;\n  background-size: contain;\n}\n.spm_wrapper .bootstrap_quests .spm_quests-item-content {\n  margin-left: 15px;\n  flex-basis: 65%;\n}\n@media (max-width: 500px) {\n  .spm_wrapper .bootstrap_quests .spm_quests-item-content {\n    flex-basis: 100%;\n    margin-left: 0;\n    margin-top: 15px;\n  }\n}\n.spm_wrapper .bootstrap_quests .spm_quests-item-name {\n  font-size: 16px;\n  line-height: 24px;\n  color: #222c3b;\n}\n.spm_wrapper .bootstrap_quests .spm_quests-item-points {\n  margin-top: 10px;\n  font-size: 16px;\n  line-height: 24px;\n  color: #222c3b;\n}\n@media (max-width: 800px) {\n  .spm_wrapper .bootstrap_quests .spm_quests-item {\n    margin: 25px 5px;\n  }\n}\n.spm_wrapper .bootstrap_quests .spm_quests-item:hover {\n  border-color: #ca5b54;\n}\n.spm_wrapper .bootstrap_quests .spm_quests-item:hover .spm_quests-item-hover {\n  opacity: 1;\n  visibility: visible;\n}\n.spm_wrapper .bootstrap_quests .spm_quests:hover .spm_quests-item-hover {\n  display: flex;\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
 /* 180 */
 /***/ (function(module, exports) {
 
-module.exports = {"styles":{"spm_quests-sub-header":{"color":"#fff","font-weight":300,"font-family":"Roboto, sans-serif"},"@media (max-width: 786px) | spm_quests-container__left":{"text-align":"center","padding-right":"10px","padding-left":"10px"},"spm_quests-item-name":{"color":"rgb(156,156,157)","font-weight":100},"spm_quests-header":{"color":"#fff","font-size":"45px","font-family":"Akrobat, Roboto, sans-serif"},"spm_quests-container__left":{"padding-right":"50px","padding-left":"50px"},"spm_quests":{"background-image":"url(https://sailplays3.cdnvideo.ru/media/assets/assetfile/77cd041c4a8e07e7c9400aa79a209046.png)","background-size":"cover","background-position":"top center","background-color":"rgb(35,38,45)"},"spm_quests-item":{"border-radius":0,"margin":"0 0 30px 0","border":"none","background-color":"rgb(56,56,58)"},"spm_quests-item-points":{"color":"#fff","font-size":"16px","text-transform":"uppercase"},"spm_quests-item-icon":{"background-size":"auto 50px"},"spm_quests-item-hover":{"background-color":"rgb(252,46,162)"}},"enabled":true,"id":"bootstrap_quests_right","texts":{"sub_header":"Complete quests to recieve extra points and statuses","header":"Quests","modals":{"success":{"body":"Текст, который можно редактировать в конфиге","title":"Congratulations"}}},"images":{},"options":{}}
+module.exports = "data:image/gif;base64,R0lGODlhfwF/AeYAAOfn58HBwcDAwL+/v7m5uby8vObm5ujo6L6+vri4uL29vbu7u7q6ure3t8LCwsDCwcLAweTk5OXl5ba2tt/f39XV1c7OzuHh4ePj4+Li4tra2sXFxc/Pz9LS0tzc3MfHx8vLy9bW1sjIyMPDw8rKysTExNfX18zMzNnZ2dHR0d7e3t3d3c3NzdDQ0ODg4NTU1MbGxtjY2NPT08HBv9vb28HBw8nJycLBv8HAvsG/wMDBw8LAw8DCv7/BwMLCwMHDwsLCxMHDwLq4ueDe38PBxMHAxcTAv7/BvsDBxcDAwsLBvdvb3eLj5d3e2d/h4MHCxNnd3sDAvry8utnd3Lu9vOjo6r24vMPBwtvb2efn5bm3uLy6u+Ph4ri6t7/DwsXAxL7Dv9za27m5u8G/xOfn6cPCwOnn6Onp6bu7vbq8uQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH/C1hNUCBEYXRhWE1QPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4gPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgNS4zLWMwMTEgNjYuMTQ1NjYxLCAyMDEyLzAyLzA2LTE0OjU2OjI3ICAgICAgICAiPiA8cmRmOlJERiB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiPiA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtbG5zOnhtcE1NPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvbW0vIiB4bWxuczpzdFJlZj0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL3NUeXBlL1Jlc291cmNlUmVmIyIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M2IChNYWNpbnRvc2gpIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOkYzNDAwNjc5QTQ0RTExRTJBNjYxQjE2NTdFQUQ3MzlDIiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOkYzNDAwNjdBQTQ0RTExRTJBNjYxQjE2NTdFQUQ3MzlDIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6RjM0MDA2NzdBNDRFMTFFMkE2NjFCMTY1N0VBRDczOUMiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6RjM0MDA2NzhBNDRFMTFFMkE2NjFCMTY1N0VBRDczOUMiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz4B//79/Pv6+fj39vX08/Lx8O/u7ezr6uno5+bl5OPi4eDf3t3c29rZ2NfW1dTT0tHQz87NzMvKycjHxsXEw8LBwL++vby7urm4t7a1tLOysbCvrq2sq6qpqKempaSjoqGgn56dnJuamZiXlpWUk5KRkI+OjYyLiomIh4aFhIOCgYB/fn18e3p5eHd2dXRzcnFwb25tbGtqaWhnZmVkY2JhYF9eXVxbWllYV1ZVVFNSUVBPTk1MS0pJSEdGRURDQkFAPz49PDs6OTg3NjU0MzIxMC8uLSwrKikoJyYlJCMiISAfHh0cGxoZGBcWFRQTEhEQDw4NDAsKCQgHBgUEAwIBAAAh+QQAAAAAACwAAAAAfwF/AQAH/4AAgoOEhYaHiImKi4yNjo+QkZKTlJWWl5iZmpucnZ6foKGio6SlpqeoqaqrrK2ur7CxsrO0tba3uLm6u7y9vr/AwcLDxMXGx8jJysvMzc7P0NHS09TV1tfY2drb3N3e3+Dh4uPk5ebn6Onq6+zt7u/w8fLz9PX29/j5+vv8/f7/AAMKHEiwoMGDCBMqXMiwocOHECNKnEixosWLGDNq3Mixo8ePIEOKHEmypMmTKFOqXMmypcuXHw0IkgmzpiOZNAHQNHDggMwDNoM+kmCChgYPKlQAACq06SGmOjkkmNAgQQIGEpbmdMq1pwEUU61eTaABqE+uaGWaSFA1AYG3BP8soJ179kRbAlcXLGAwIMLZuTWZGnAh4G6CBQUSK1hgYitgk3+hzuxA4C4BxAoUCBiAYITknJIfa/xLiKaHAVStEmCAGcGA169R8HwqumNoQRdENGhQ+S3rAghcCxi++UNtlH8x2BXruzVsAQECDEfg4XhJnwckcGBQtepbvQUUCCceXToC49ZDMsVggXtvuImBvx5eHrr0zUp1lk6P0cCFEwywxVaAv4U3XnkIRvcaCbPxtxENMLSlmm+KuTYAfQlKF91wA1DgmIP23KYIUyICEEEFhUno22/iwZbhi9INIMJSNOoH4jw5fWjITzvN5AEJDKTmVnMVPmcfjAhy6EH/gzfqU+J+QMl0QQsD7GYVb0RmZuGFRyKZYHE0PtmkPCL+pJULHQjAlmVEGgjbhV4iySEKY+4jWCE70XBClbxN2Bxibs7XZZwvDgeDjnW2E+WOUR6QwQsfLDCBgG4xAFeB4m05KKEwbjYAnYnWQ6IgjsYAggKTUnqVb5cpUKSgm9bHaYIDGIdoqOksekAEKJyQolh+rlaggZraF+usGW6GwApi4vpMszrhVAhQEWjAQgBrAjvkn+EBFxysyIZb3wByOfuNmfsNckEFIKjZVp/bMiAvoMRuyaW4+DrwmgPmcgPVbdVysIGkVzIHl7CAuprpm8Qdiy+nAiBwQb/UfLYj/wUv2DAAW3hdCZdq89Kbqb0NP2xyfQLEQDE2QEmwwgskBMCdhAJ2LCxrmIWn5ZtcOnwyssRVsPI0ErgQAwcfDFCZdyAfjDC9OrfIMHlJ/vyzADIMrQxUFMhAggBBwlszq4eF3K2W3xpJtc9WA+2AdB1onQwGJnxQQAOpujWhpSviHJ/Oab82HoYwOvB22+IK8PbbQsuty1agRRDCBlOx6XTIOddrb8+EI+55stE17jgtkM80SAYszKz3qpdCrdjCPHPe+ee0b6g4dCHcOvoq2DHpkwoiVKb3wXthltnxwQUO6+y1Nw+jCbuTPkhOKlCe96UFMBDfyLHL7vz3XjqgeP8AFegePSpm6XeBDVb6ianUU5cM/vxxih9AuefDMpsBBlgg/N7gMZCnZMc2+hkwOofbQI3y14qzeEAB7bMUpgJHtQNacFZvE4AGGAiLCJCgfW3KjJEGgKDDXfCEcSpBVjhYCovRAFVNY1GxUEhDZIlvABwg1UygxUJJMAkALSBAquATqHvV8IiE4pAGCZGdHoLiABgYgZXgsgBXWaiCSMxiguwXgLchIAAYkJaNnJiJKK2gAGML4OC0yMYMmTAAFxrAoXhIRkjQxARLG15irsi8NvqxixxCQA51WEdMAEUGqeFbFVuEgM4V8I809JQCQDXGQlbCAirS3gJc00gNVQ3/kllcnCeV1SFLZgIEu8HLahDDR1C6cov3CQ4Y6WhKPAEAk3uTjxFfycskCe5QeCJNLUkFmhdMUYa77KUybzgABchFMLR0Ik8MoIKOVSo8glKmNjdknmaWL5p19IkBCjMk7SkgmdvsJXQulDwPgbOHUeKAd1aDTXSmU5nT0UwEtPLO/MkkA+/BTDbvqU0TNpIzNhjmiAzwQbyY80AE1SZ0xKcv1xQgdwpFRAYmJNBHRlSLR7LfZjaDgX4y0AIgq6dHPwrKiCGABRk1hAT4dpgW9ZGlEh1pBio5TANoYEisbORKcQpJdnYAXQo9QPC+c04SEpWowymBSaN3N3nJZ6hP/4Ukh3YaUwC4YFXaE05WWWqfT03VcRSAi6vsOVZ8ZlAAossoBazCSra2dZsDaEFXATDXy1z1rkQdZEz7WkWxApalgpUrU+dzWMTuNa0EqGdjWYo/xUb2nFidLBsrq1DIYjOzms0iZ4fpWcyGlqCjraVnDXvabcK0q6WFU2t5eaTEdvYtn50tbcujV9ji1rS6VWZvB/tb2QaXlyl4bHFBe1wLZs23lzVuc0H5AuVGl7nTpV9cb3vd7LoyBNatonS9i8TbBQAFZ5XbBX7bSfL+kQbmcyJAu+veUNpnBXudb27rm0X7qCC9WovAcvnbxgwAeGgSeIsIsUvgzyG1pwugb/+Dj6jABSoUAfIC7oRreIJpdpUDq9GMUzdMwxfEl4wRGEBhx0viA25wr4LwwIoZ3OKHTQzG/mENRGt8wBXu1QAZYIAIWcxj55UAxqQCqJBHWmQDiuDAjhPwIoncZNqRAMk6iUBeOEPjKscJBEiOEj017OXmgRnLBhhwmZ13ZixbSrxdXvOL2gzloRWgVXaV88lOgGVBKADPVNazyV6LZQQAOs6Cjk5qY6o08QY60eJadEYb3VREJ1rSCg3AoSFtNcVhepiadrSl5QwdPvfZAX5lLKet1uYTO7EEfmXtqhMXnTYjeQOpfvSs5RQdG7i6jh+Ita537aUP/JqMwdOLrIn/Ha4j9znZf2U2vgRwbCeSQNijJrUAaGC6vYIA29IOl/gEcGUsf7uu2db2jWHMAnouO9xeGp8AwItk/4V12PBG4IZMDWMQ3zvdpK4wjFPgbnznGzoIxzLBI/vufL/IhAKAsU8qAG6HE2pxAhBmRl9g1YZb3I1d3Ct2KP7vj0NM4HsNQcVNHif0dJV/eCSATVlOKH5nVCYoQDW6ad6p6CS32tGLgBTVSmaeZ+jTZMQWUBegaqO/qAT7zCgqsWTOPLP8dgJAOgc1IKHf7Njp0rFfbHTFQcghgKMqBbiXjTUAB2CAp/mTAFMQCdS0g11WttuMDIDurP0dwNC8eajVTS5S/9ttgO99l8kKvFP1m97dhBcCTdl1EgKgLljtgs5gABDAVXgKgjJj9vjdZbUZCljyBW7Z+eghVh2c1Jk/Km+V6FefJEqSUQPLxfysBQC9Qqa18bSfFb3rKGDgB59QwyejAbK33+N7Ka6vtw5QHGB85yOpupb8QPWtn6y4kZEp/hM192EktOiDSAabHn+Gtjt5AOAeMU1Xf3mST8b1ql7+CFSZJQ2wl2jjPzrV8X2DQH3N938uUEsgsH3y5wA+xkGL8nnXpXuc5hmlw0IGQAOANmLyNyOmBEXC9n/RYXOWpAAl53wh5XP7xxQiIGRi9UbcR38CmAJV939vE4DKBxUYKP9+wXc4b/R2dbQVErAXlSZ/AuBy0tRtAFACBcB0Bkd4R+J9SFhHLaBjr2F9b4RfGaUCjeeCq2c4AeBsGXUADqCD3GdiXaUBdeVJXdhFATACnRdTIuB/o/dGHGB+5nIBzeQpx/c2bihyMfYtElhkt9N7WLYCeriGAtBbdmguMuECSVOFExWI/CUAI9A4iJc/vRMCJUAfXORw9uEAIFABF9AoffaAcARHXmhxbxMDl1h2+1MjJ/B1zGYsAcAghNSK0fMhJnBFbXdw4lMWkrGI5kKKghABWuJ4u1cCHrYUZ6FxPfVDACACNiWJusVFRzUIo4Jj0MQUMRBU1Bhcb3OAhiD/jI4jAXvUXvBmhH3WCDZQRUwGb+y3jrRxADRwf8zmAFxFjgxkAAGQGE1YZuVmYfKICAeQAmRIbPo3kI0AZDMmbQ4QdQrZCAcQKZj1jaFFaBGpCDiBAva4ai+WkYuAEwgwc1zYZJ3YhtMCkorQAjqYil7GRQ5gWyo5LTlxAR1ZZScZAFg4k4iwFTDwWQgHaQqkjw5oCN1YAPFnkoPSAUS5fwNwVRbZVgKwbunCkzXCExzgJlH5UeYVHTOCi/KYASoFad9klY6gVAKkZ4cDkWbZCB6whLNXYwHZlowAFAEwc2tXHh9JlyEJAC8wZFsZUXzYgHy5CMa4Sf9YX3rVlBnF/wJyWGUXAJYZaQAUAJeJOV2Gk1CMGVMb8JgkZh97WZh16X6OppSHJ5oSSSoS8JRxSV6Lk1ybGVMH0AEN2WDjZj8jIHcPhpo0ORMYsEeXOVkYMj7lw0S82ZNmAgJAWV9dCUjGNkaSOZkqcJPZ9YldtG7OeJy9aQBK2JqntRmdCCquF50qGQJwFph+dCQYGYXauQisKVslqVsINwJs2Z6RkAJjSV6fqHX2iQg26S3o2Ua405+UIGXeqVkmBIME2ggYgGfI2Fr2EY8LapgFF6Bs5AASOqGJkGAlWF/PpaGOUHwFSF5QCKKMIGAOaqFalFwm2ggoep78NVwtqggvWpH8xf+fJlqjgzdbIjijh6CjDzpbc+mjP7pYQdpaHEikiACkKppF6qikhMCk/AUDULqk3xEcR3paDkCehdmgKaqfChKbA1lNNfWOrikANlilgzACeYGUTVpDXDSkahphh4GlrlkfYKimOlEp7vimWUSleioICXYVuhSfsyVSKFelBqBlsZaljfVGMCCmfXYBqeeZ0wUdidqiPUEIX7Vyl2p4kipxfLVYwQlYb5OnxkmgH+IBRuqnRwQdmwp3/Rmrg4B7X+pdXUJtgQoAKKBm3vVGA/CGPooTLhBECvir0JGm07OgHGADGyAAd5NSB4qg9bEBFeABF5ABFxBGobo7SCVFNFP/dxayYZvhKnS6ATu1m1b5FyygIq2Tnw02HUsYIARwZHdCl0xBpvEyLFekhsz5GuZKrzuJmgZAd9yCTf1KrsqiMNlzjYUJFSDGp8TCM64KUqSUPAVga20pGSdwFYKnNhWbngOEAIBKsAAAApUKiI7qXg2zGZ4hmlChfQmgSyGbU8OxrBs7CJRzrIImAJ3HpYUEFCNgVUWXaALALDhrljwhABW6a/MmRvhqAApAqNPKYwKgsXx5AG9mqYkWAUBrSirQplVbY+JjAt3qODsLfxdiqHL2pGZJA2OhtuMzaxdClW2JLU3LbAjwoQNZIl+RSgxXqp8pACp0tomyqT9RJSkr/7jkunmh2Wc9khMmME8junsyorQGsDGph5g1+1HjNgADK49/IRMVkEqC17lkJQCamZFnYQBnFyBy65C2MwAa8LXeChQdwHhQmW83xIAqGYR8ipfhdjivAVOIYrg1YSb8o0MG0AK6a6PwdiTBYbam0yDLa7ui4bcAMFPiyrhkC0jrtCw8kT6Qg7w2YSa4NGbea7VeWK4jEJmSh72ioTtfMTy1ybuywhkBYHopqRWYSEiqWQGaG3i7S3OSpAB790Py+xiSIQEyAEHzJFDr22I8OEoAWwAatBPmCxMYYJAgRKjAgUUOB3ELmz0OkDvZ2SSOcRukgQHtRinYg5RJeXWBZP+uVdQCPkhMwZiqdJEIGuxV39Yd5cQiQzh6NTyvV0EC+REmOmEW0NjDSfsXFBA8EyA8fINMYxtugYQAibEXbgEDhAglPZIWJLKbHhAhILRKxqMpJugpXNzFfDMAHeAXUMuMC5wRocEUGgCuHPMdCUMyqNtcHMIZrgLHl3ECdlvGaPEvNmICAZAavgHCU2Yk/zdAhJwYrPEWMMBtO0RMc8EkApzGfjOxPQOCeQcbI4kYevEWAfACWfHEaCEBHQDB7vPHlGzKXzLIl6wX8hJZHCCsKUFHGNACBXA9ITRDuBwnqDyScHwVNhC6SdsRDQIV00wjGQAg7rpKr6JqgdxkDcP/Gcw8r3gxAr0nedhoFhtsDg+YLjxxASgLw8d8y8kMNLrMzHqxFwSAAHMczdioHo0oAtrSOgqzJf46z0mUJCObGYbMACwwMWUiEh6wAam0NwWSNiJs0DY0Lp4SMYWMzwwgAqF7x/+wx+0DMgkDshidL1w4bgkdHvJiKSMQA4SJxzoUAymiSg4FKBS0sikdJ8ZSzwq9F5YiAB3wyhoxTRWAAGmszSsGLqDT04ijRODc0QrGAjl8ELTKwoPgwHdDM9pcTwMF1Qb0zZeMxAygxISUPgiRIxJgAQTTx18NPzwt1p2my+BsyATwAbUrTiWSzsUwvjyCjTLhwsLTGxIEHnLd/834Z8nhfGeW4gCNMT1+vTWK4AIkoCoHsz3ITNcgBUeCE86rPAAvwJZkZw9PTJkAnc1+IzUXzdn9BdRLqBcJ4Ew+qK70YCa/EyFVPE9vFlRO7dpaRRycccGYvBogQAHEeA9QoQES/S4rUiQRszYTBdx+9FZu3Ex4/QHQfA85N9GrEdcWPdfU/aotTYLykgAOkJDnsM4lEgK/giXgrTbjzZWDHByLgRhDXZayug230rpJPRWqRCAnPdytPd/pZNfhnMlyLHfseS4W5sC0vC1+VUQFbuAEJdyCE7ALMLMc8HbBmMLV8C8RkAKowib3XEQ7auH3hOGEbMMzi8jMqB+T3f9Ckm0ibr0bfcIt4a3YKm4y9fzG2bMaNmB6sMwyGeA/XSex3sI5PT5b9Q3kHv0BS+INlh0kNSOxTV3hTT5WwOrZGR6w9fq41ZAb2TIW8R1HPL7lV/NGwt1IoG0pAaDew2Ax/UwIwIM3ljEv5/jbal6dsC3OT2tLOjTjPFzjptHcbkF1Ol0s4t3nd0XW9j2vljIAxdk7zEvodUkDDlDS8RzWjj5hsM3LBCDadey/u6ArKBAASz1B8vzpG5ZBy6wwvazPr1zksiAiJiAAQvIWbRooje7qgvwmCu0qCjbH93oLZZzUVhJ49OQcng7sVYbhoB1hBZACfiGQtJAds2zM9LT/zZsB7UZb312MzwXAAfVJCxJA4ssew/WS4uButfXd0dTOoqwwxkuR7gvgrnru67/+7qDe5h1tKQVQ1KaziKMLTTIRASyJNzitxhSe5v6OTyxuz5aCAJU+PbbuQ9k4CAqvOjZjVfwO8RF/4IxdyEOtfznB4JrwIRHAAQTzHpexxnw+8gdn12A+Asxi25UA2EvBHkEC81+NpaVM8zxn14YMAm/3tTxB2O7appkS3f1O9D0b7+ERYQvwAtRcRoQNLAK905zItlIfvVQ/rzCQ9JkQAUhuMNosHhsd9WG/amKX4VW/LAvpt+lu5RRdWIPj9m9PbN9szwugoIVwBlUJADEw/7VDlCWALPJ9H1rC7VJVtACwOU08lAFozNtex0d83/gHF0epXAAM0rrjWBoV4B7w3X+Jzficf6nDjRhQlyMYzxQSYBeGUdGttPrJ/FbD7Sr46MPbWwLdcdivsvm4b3JBGb6uIgD/tSPb6wBD5PT9qvrFD6ZxhN0D4AIfwp05PuGaP/0Y7YKez8UCEEZMJE+5xNreT93ifngN4gJ3gUxanv7zjHCN5Co5RBMfJLHCK//ADQgCDgIIAgoIFwAHAAMNBAQMBYcDAgIBl5iZmpucnZ6foKGio6SlpqeoqaqrrK2ur6KUAwgWBooMCZALCpSwvr/AwcLDxMXGx6EOmAIDA/8OBosMDAQLBQi9yNna29zd3t/HzRe2j5G8leDp6uvs7e6sgpgDHra5DJOW7/r7/P3+w/kCVKJxQEICIWisYfOnI8CMHDgC1ODxT9QDIkeI9KihrGKmfEYe1IjS0KNJXzmWAIighUAaXgv74QgS4MmlHRBOeqpx40ePAD50lNQJYQYQHD8i6ly6agwWMky6CNnVLJ6/BxAc5AiABEdOppogPJgRYIelG0tn1Ogx44FVsHBJCZiShYsYIVtgBuyXk+ygInE3TbzxpcwDnQ8OX6rhM7BjUAKaVHFCIAEVmJTQ8ROA5MYVAV5yUHRcwwiPB0GSBEB7smgNHw9w8NjxuDZmpxoeAAwhYKVa5opBzAZwMGPG18A1ZiiBoAMIBMAnkwAxLtHBEdvYM0ExMySXlHMec/jIQfbGUNK0fViCwL69+/fw48ufT58+GOqJZ9xIzL+///8ABijggAQWaOCBCCaoYABhABAIADs="
 
 /***/ }),
 /* 181 */
@@ -46361,16 +46396,11 @@ var _template2 = _interopRequireDefault(_template);
 
 __webpack_require__(183);
 
-var _defaults = __webpack_require__(185);
-
-var _defaults2 = _interopRequireDefault(_defaults);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var widget = {
-  id: "bootstrap_quests_right",
+  id: "bootstrap_quests",
   template: _template2.default,
-  defaults: _defaults2.default,
   inject: ["$rootScope", "SailPlay", "SailPlayApi", "tools"],
   controller: function controller($rootScope, SailPlay, SailPlayApi, tools) {
     return function (scope, elm, attrs) {
@@ -46397,7 +46427,7 @@ _widget.Widget.config(["MagicWidgetProvider", function (MagicWidgetProvider) {
 /* 182 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"spm_quests clearfix container-fluid\" ng-if=\"widget.enabled\" ng-cloak sailplay-profile>\n\n  <div class=\"spm_quests-container row\">\n\n    <div class=\"spm_quests-container__left col-lg-4 col-md-12 col-sm-12 col-xs-12 order-lg-1 order-md-0 order-sm-0 order-xs-0\">\n      <div class=\"spm_quests-header\" ng-bind=\"widget.texts.header\"></div>\n      <div class=\"spm_quests-sub-header\" ng-bind=\"widget.texts.sub_header\"></div>\n    </div>\n\n    <div class=\"spm_quests-container__right spm_quests-list col-lg-8 col-md-12 col-sm-12 order-lg-0 order-md-1 order-sm-1 order-xs-1\" sailplay-actions>\n\n      <div class=\"row spm_quests-list-inner\">\n\n        <div ng-repeat=\"action in actions().actions\" class=\"col-xl-4 col-lg-6 col-md-6 col-sm-12\" >\n          <div class=\"spm_quests-item\" ng-mouseenter=\"action.loaded=true\">\n            <i class=\"spm_quests-item-icon\"\n               ng-style=\"{backgroundImage: (action_data(action).pic|sailplay_pic|background_image)}\"></i>\n            <div class=\"spm_quests-item-content\">\n              <div class=\"spm_quests-item-name\" ng-bind=\"action_data(action).name\"></div>\n              <div class=\"spm_quests-item-points\" ng-show=\"action.points\"\n                   ng-bind=\"(action.points|number)+' '+(action.points|sailplay_pluralize:('points.texts.pluralize'|tools))\"></div>\n            </div>\n            <div class=\"spm_quests-item-hover\" ng-if=\"action.type!='fillProfile' && (widget.options.preload_quests || action.loaded)\" sailplay-action\n                 styles=\"{{ action_styles(action_data(action)) }}\"\n                 action=\"action\" text=\"{{ action_data(action).button_text }}\">\n              <span ng-bind=\"action_data(action).button_text\"></span>\n            </div>\n            <div ng-if=\"action.type=='fillProfile'\" class=\"spm_quests-item-hover\">\n              <span ng-click=\"$root.$broadcast('profile:state', true)\" ng-bind=\"action_data(action).button_text\"></span>\n            </div>\n          </div>\n        </div>\n\n        <div class=\"col-xl-4 col-lg-6 col-md-6 col-sm-12\" ng-repeat=\"action in actions_custom()\">\n          <div class=\"spm_quests-item\" ng-mouseenter=\"action.loaded=true\">\n            <i class=\"spm_quests-item-icon\" ng-style=\"{backgroundImage: (action.icon|sailplay_pic|background_image)}\"></i>\n            <div class=\"spm_quests-item-content\">\n              <div class=\"spm_quests-item-name\" ng-bind=\"action.name\"></div>\n              <div class=\"spm_quests-item-points\" ng-show=\"action.points\"\n                   ng-bind=\"(action.points|number)+' '+(action.points|sailplay_pluralize:('points.texts.pluralize'|tools))\"></div>\n            </div>\n            <div class=\"spm_quests-item-hover\" sailplay-action-custom action=\"action\"></div>\n          </div>\n        </div>\n\n      </div>\n\n    </div>\n\n  </div>\n\n  <magic-modal show=\"$parent.$parent.show_success\">\n    <magic-modal-title ng-bind=\"widget.texts.modals.success.title\"></magic-modal-title>\n    <magic-modal-body ng-bind-html=\"widget.texts.modals.success.body|to_trusted\"></magic-modal-body>\n  </magic-modal>\n\n</div>";
+module.exports = "<div class=\"spm_quests clearfix\" ng-if=\"widget.enabled\" ng-cloak sailplay-profile>\n\n    <div class=\"spm_quests-container\">\n\n\n        <div class=\"spm_quests-container__left\">\n            <div class=\"spm_quests-header\" ng-bind=\"widget.texts.header\"></div>\n            <div class=\"spm_quests-sub-header\" ng-bind=\"widget.texts.sub_header\"></div>\n        </div>\n\n        <div class=\"spm_quests-container__right spm_quests-list\" sailplay-actions>\n\n            <div class=\"spm_quests-item\" ng-repeat=\"action in actions().actions\" ng-mouseenter=\"action.loaded=true\">\n                <i class=\"spm_quests-item-icon\" ng-style=\"{backgroundImage: (action_data(action).pic|sailplay_pic|background_image)}\"></i>\n                <div class=\"spm_quests-item-content\">\n                    <div class=\"spm_quests-item-name\" ng-bind=\"action_data(action).name\"></div>\n                    <div class=\"spm_quests-item-points\" ng-show=\"action.points\" ng-bind=\"(action.points|number)+' '+(action.points|sailplay_pluralize:('points.texts.pluralize'|tools))\"></div>\n                </div>\n                <div class=\"spm_quests-item-hover\" ng-if=\"action.type!='fillProfile' && action.loaded\" sailplay-action styles=\"{{ action_styles(action_data(action)) }}\"\n                    action=\"action\" text=\"{{ action_data(action).button_text }}\">\n                    <span ng-bind=\"action_data(action).button_text\"></span>\n                </div>\n                <div ng-if=\"action.type=='fillProfile'\" class=\"spm_quests-item-hover\">\n                    <span ng-click=\"$root.$broadcast('profile:state', true)\" ng-bind=\"action_data(action).button_text\"></span>\n                </div>\n            </div>\n\n            <div class=\"spm_quests-item\" ng-repeat=\"action in actions_custom()\" ng-mouseenter=\"action.loaded=true\">\n                <i class=\"spm_quests-item-icon\" ng-style=\"{backgroundImage: (action.icon|sailplay_pic|background_image)}\"></i>\n                <div class=\"spm_quests-item-content\">\n                    <div class=\"spm_quests-item-name\" ng-bind=\"action.name\"></div>\n                    <div class=\"spm_quests-item-points\" ng-show=\"action.points\" ng-bind=\"(action.points|number)+' '+(action.points|sailplay_pluralize:('points.texts.pluralize'|tools))\"></div>\n                </div>\n                <div class=\"spm_quests-item-hover\" ng-if=\"action.loaded\" sailplay-action-custom action=\"action\"></div>\n            </div>\n\n        </div>\n\n    </div>\n\n    <magic-modal show=\"$parent.$parent.show_success\">\n        <magic-modal-title ng-bind=\"widget.texts.modals.success.title\"></magic-modal-title>\n        <magic-modal-body ng-bind-html=\"widget.texts.modals.success.body|to_trusted\"></magic-modal-body>\n    </magic-modal>\n\n</div>";
 
 /***/ }),
 /* 183 */
@@ -46439,19 +46469,13 @@ exports = module.exports = __webpack_require__(0)(false);
 
 
 // module
-exports.push([module.i, ".spm_wrapper .bootstrap_quests_right {\n  position: relative;\n}\n.spm_wrapper .bootstrap_quests_right .spm_quests-container {\n  width: 100%;\n  height: 100%;\n  box-sizing: border-box;\n  margin: 0 auto;\n  padding: 50px 30px;\n}\n.spm_wrapper .bootstrap_quests_right .spm_quests-header {\n  font-weight: 900;\n  text-transform: uppercase;\n  font-size: 35px;\n  line-height: 1;\n  color: #000000;\n  position: relative;\n  letter-spacing: 2.3px;\n}\n.spm_wrapper .bootstrap_quests_right .spm_quests-sub-header {\n  font-weight: normal;\n  font-size: 16px;\n  line-height: 22px;\n  margin: 25px 0;\n  color: #000000;\n}\n.spm_wrapper .bootstrap_quests_right .spm_quests-list {\n  display: flex;\n  align-items: flex-start;\n  flex-wrap: wrap;\n  justify-content: flex-start;\n}\n@media (max-width: 992px) {\n  .spm_wrapper .bootstrap_quests_right .spm_quests-list {\n    align-items: center;\n    justify-content: center;\n    flex-wrap: wrap;\n  }\n}\n.spm_wrapper .bootstrap_quests_right .spm_quests-list-inner {\n  width: 100%;\n}\n.spm_wrapper .bootstrap_quests_right .spm_quests-item {\n  display: flex;\n  align-items: center;\n  justify-content: space-around;\n  position: relative;\n  height: 130px;\n  box-sizing: border-box;\n  padding: 0 8px;\n  margin: 10px;\n  overflow: hidden;\n  border-radius: 8px;\n  border: 1px solid #b4bac2;\n}\n.spm_wrapper .bootstrap_quests_right .spm_quests-item-hover {\n  display: none;\n  opacity: 0;\n  background: #ca5b54;\n  position: absolute;\n  left: 0;\n  top: 0;\n  width: 100%;\n  height: 100%;\n  z-index: 2;\n  align-items: center;\n  justify-content: center;\n  text-transform: uppercase;\n  font-weight: bold;\n  color: #ffffff;\n  font-family: Arial;\n}\n.spm_wrapper .bootstrap_quests_right .spm_quests-item-hover iframe {\n  width: 100% !important;\n  height: 100% !important;\n}\n.spm_wrapper .bootstrap_quests_right .spm_quests-item-hover > * {\n  cursor: pointer;\n}\n.spm_wrapper .bootstrap_quests_right .spm_quests-item-icon {\n  width: 75px;\n  height: 75px;\n  background-repeat: no-repeat;\n  background-position: center center;\n  background-size: contain;\n}\n.spm_wrapper .bootstrap_quests_right .spm_quests-item-content {\n  margin-left: 15px;\n  flex-basis: 65%;\n}\n@media (max-width: 500px) {\n  .spm_wrapper .bootstrap_quests_right .spm_quests-item-content {\n    flex-basis: 100%;\n    margin-left: 0;\n    margin-top: 15px;\n  }\n}\n.spm_wrapper .bootstrap_quests_right .spm_quests-item-name {\n  font-size: 16px;\n  line-height: 24px;\n  color: #222c3b;\n}\n.spm_wrapper .bootstrap_quests_right .spm_quests-item-points {\n  margin-top: 10px;\n  font-size: 16px;\n  line-height: 24px;\n  color: #222c3b;\n}\n@media (max-width: 800px) {\n  .spm_wrapper .bootstrap_quests_right .spm_quests-item {\n    margin: 25px 5px;\n  }\n}\n.spm_wrapper .bootstrap_quests_right .spm_quests-item:hover {\n  border-color: #ca5b54;\n}\n.spm_wrapper .bootstrap_quests_right .spm_quests-item:hover .spm_quests-item-hover {\n  opacity: 1;\n  visibility: visible;\n}\n.spm_wrapper .bootstrap_quests_right .spm_quests:hover .spm_quests-item-hover {\n  display: flex;\n}\n", ""]);
+exports.push([module.i, ".spm_wrapper .bootstrap_quests .spm_quests {\n  position: relative;\n}\n.spm_wrapper .bootstrap_quests .spm_quests-container {\n  width: 100%;\n  height: 100%;\n  max-width: 1200px;\n  margin: 0 auto;\n  box-sizing: border-box;\n  padding: 80px 30px;\n  display: flex;\n  align-items: center;\n  justify-content: flex-start;\n}\n@media (max-width: 992px) {\n  .spm_wrapper .bootstrap_quests .spm_quests-container {\n    flex-direction: column;\n  }\n}\n.spm_wrapper .bootstrap_quests .spm_quests-container__left {\n  box-sizing: border-box;\n  flex-basis: 20%;\n  padding-right: 30px;\n}\n@media (max-width: 992px) {\n  .spm_wrapper .bootstrap_quests .spm_quests-container__left {\n    flex-basis: 100%;\n    margin-bottom: 20px;\n    padding-right: 0;\n    text-align: center;\n  }\n}\n.spm_wrapper .bootstrap_quests .spm_quests-container__right {\n  flex-basis: 80%;\n}\n.spm_wrapper .bootstrap_quests .spm_quests-header {\n  font-weight: 900;\n  text-transform: uppercase;\n  font-size: 35px;\n  line-height: 1;\n  color: #000000;\n  position: relative;\n  letter-spacing: 2.3px;\n}\n.spm_wrapper .bootstrap_quests .spm_quests-sub-header {\n  font-weight: normal;\n  font-size: 14px;\n  line-height: 22px;\n  margin: 25px 0;\n  color: #000000;\n}\n.spm_wrapper .bootstrap_quests .spm_quests-list {\n  display: flex;\n  align-items: flex-start;\n  flex-wrap: wrap;\n  justify-content: flex-start;\n  width: 100%;\n}\n@media (max-width: 992px) {\n  .spm_wrapper .bootstrap_quests .spm_quests-list {\n    align-items: flex-start;\n    justify-content: center;\n    flex-wrap: wrap;\n  }\n}\n.spm_wrapper .bootstrap_quests .spm_quests-item {\n  display: flex;\n  align-items: center;\n  justify-content: space-around;\n  position: relative;\n  width: 100%;\n  max-width: 280px;\n  height: 130px;\n  box-sizing: border-box;\n  padding: 0 8px;\n  margin: 1%;\n  overflow: hidden;\n  border-radius: 8px;\n  border: 1px solid #b4bac2;\n}\n@media (max-width: 1150px) {\n  .spm_wrapper .bootstrap_quests .spm_quests-item {\n    width: 31.2%;\n  }\n}\n@media (max-width: 768px) {\n  .spm_wrapper .bootstrap_quests .spm_quests-item {\n    margin: 25px 5%;\n    width: 90%;\n    flex-wrap: wrap;\n    padding: 20px;\n    height: auto;\n  }\n}\n.spm_wrapper .bootstrap_quests .spm_quests-item-hover {\n  display: none;\n  opacity: 0;\n  background: #ca5b54;\n  position: absolute;\n  left: 0;\n  top: 0;\n  width: 100%;\n  height: 100%;\n  z-index: 2;\n  align-items: center;\n  justify-content: center;\n  text-transform: uppercase;\n  font-weight: bold;\n  color: #ffffff;\n  font-family: Arial;\n  letter-spacing: 1.6px;\n}\n.spm_wrapper .bootstrap_quests .spm_quests-item-hover iframe {\n  width: 100% !important;\n  height: 100% !important;\n}\n.spm_wrapper .bootstrap_quests .spm_quests-item-hover > * {\n  cursor: pointer;\n}\n.spm_wrapper .bootstrap_quests .spm_quests-item-icon {\n  width: 75px;\n  height: 75px;\n  background-repeat: no-repeat;\n  background-position: center center;\n  background-size: contain;\n}\n.spm_wrapper .bootstrap_quests .spm_quests-item-content {\n  margin-left: 15px;\n  flex-basis: 65%;\n}\n@media (max-width: 500px) {\n  .spm_wrapper .bootstrap_quests .spm_quests-item-content {\n    flex-basis: 100%;\n    margin-left: 0;\n    margin-top: 15px;\n    text-align: center;\n  }\n}\n.spm_wrapper .bootstrap_quests .spm_quests-item-name {\n  font-size: 14px;\n  line-height: 24px;\n  color: #222c3b;\n  letter-spacing: 1.6px;\n  font-weight: bold;\n  text-transform: uppercase;\n}\n.spm_wrapper .bootstrap_quests .spm_quests-item-points {\n  margin-top: 10px;\n  font-size: 14px;\n  line-height: 24px;\n  color: #222c3b;\n}\n@media (max-width: 800px) {\n  .spm_wrapper .bootstrap_quests .spm_quests-item {\n    margin: 25px 5px;\n  }\n}\n.spm_wrapper .bootstrap_quests .spm_quests-item:hover {\n  border-color: #ca5b54;\n}\n.spm_wrapper .bootstrap_quests .spm_quests-item:hover .spm_quests-item-hover {\n  opacity: 1;\n  visibility: visible;\n}\n.spm_wrapper .bootstrap_quests .spm_quests:hover .spm_quests-item-hover {\n  display: flex;\n}\n", ""]);
 
 // exports
 
 
 /***/ }),
 /* 185 */
-/***/ (function(module, exports) {
-
-module.exports = {"styles":{"spm_quests-sub-header":{"color":"#fff","font-weight":300,"font-family":"Roboto, sans-serif"},"@media (max-width: 786px) | spm_quests-container__left":{"text-align":"center","padding-right":"10px","padding-left":"10px"},"spm_quests-item-name":{"color":"rgb(156,156,157)","font-weight":100},"spm_quests-header":{"color":"#fff","font-size":"45px","font-family":"Akrobat, Roboto, sans-serif"},"spm_quests-container__left":{"padding-right":"50px","padding-left":"50px"},"spm_quests":{"background-image":"url(https://sailplays3.cdnvideo.ru/media/assets/assetfile/77cd041c4a8e07e7c9400aa79a209046.png)","background-size":"cover","background-position":"top center","background-color":"rgb(35,38,45)"},"spm_quests-item":{"border-radius":0,"margin":"0 0 30px 0","border":"none","background-color":"rgb(56,56,58)"},"spm_quests-item-points":{"color":"#fff","font-size":"16px","text-transform":"uppercase"},"spm_quests-item-icon":{"background-size":"auto 50px"},"spm_quests-item-hover":{"background-color":"rgb(252,46,162)"}},"enabled":true,"id":"bootstrap_quests_right","texts":{"sub_header":"Complete quests to recieve extra points and statuses","header":"Quests","modals":{"success":{"body":"You have completed quest","title":"Congratulations"}}},"images":{},"options":{"preload_quests":true}}
-
-/***/ }),
-/* 186 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46459,16 +46483,120 @@ module.exports = {"styles":{"spm_quests-sub-header":{"color":"#fff","font-weight
 
 var _widget = __webpack_require__(2);
 
-var _template = __webpack_require__(187);
+var _template = __webpack_require__(186);
 
 var _template2 = _interopRequireDefault(_template);
 
-__webpack_require__(188);
+__webpack_require__(187);
+
+var _defaults = __webpack_require__(189);
+
+var _defaults2 = _interopRequireDefault(_defaults);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var widget = {
-  id: "bootstrap_status-bar",
+  id: "bootstrap_quests_right",
+  template: _template2.default,
+  defaults: _defaults2.default,
+  inject: ["$rootScope", "SailPlay", "SailPlayApi", "tools"],
+  controller: function controller($rootScope, SailPlay, SailPlayApi, tools) {
+    return function (scope, elm, attrs) {
+      scope.show_success = false;
+
+      scope.action_styles = function (action_data) {
+        return action_data && action_data.styles && tools.stringify_widget_css("", action_data.styles);
+      };
+
+      SailPlay.on('actions.perform.success', function (res) {
+        scope.$apply(function () {
+          scope.show_success = true;
+        });
+      });
+    };
+  }
+};
+
+_widget.Widget.config(["MagicWidgetProvider", function (MagicWidgetProvider) {
+  MagicWidgetProvider.register(widget);
+}]);
+
+/***/ }),
+/* 186 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"spm_quests clearfix container-fluid\" ng-if=\"widget.enabled\" ng-cloak sailplay-profile>\n\n  <div class=\"spm_quests-container row\">\n\n    <div class=\"spm_quests-container__left col-lg-4 col-md-12 col-sm-12 col-xs-12 order-lg-1 order-md-0 order-sm-0 order-xs-0\">\n      <div class=\"spm_quests-header\" ng-bind=\"widget.texts.header\"></div>\n      <div class=\"spm_quests-sub-header\" ng-bind=\"widget.texts.sub_header\"></div>\n    </div>\n\n    <div class=\"spm_quests-container__right spm_quests-list col-lg-8 col-md-12 col-sm-12 order-lg-0 order-md-1 order-sm-1 order-xs-1\" sailplay-actions>\n\n      <div class=\"row spm_quests-list-inner\">\n\n        <div ng-repeat=\"action in actions().actions\" class=\"col-xl-4 col-lg-6 col-md-6 col-sm-12\" >\n          <div class=\"spm_quests-item\" ng-mouseenter=\"action.loaded=true\">\n            <i class=\"spm_quests-item-icon\"\n               ng-style=\"{backgroundImage: (action_data(action).pic|sailplay_pic|background_image)}\"></i>\n            <div class=\"spm_quests-item-content\">\n              <div class=\"spm_quests-item-name\" ng-bind=\"action_data(action).name\"></div>\n              <div class=\"spm_quests-item-points\" ng-show=\"action.points\"\n                   ng-bind=\"(action.points|number)+' '+(action.points|sailplay_pluralize:('points.texts.pluralize'|tools))\"></div>\n            </div>\n            <div class=\"spm_quests-item-hover\" ng-if=\"action.type!='fillProfile' && (widget.options.preload_quests || action.loaded)\" sailplay-action\n                 styles=\"{{ action_styles(action_data(action)) }}\"\n                 action=\"action\" text=\"{{ action_data(action).button_text }}\">\n              <span ng-bind=\"action_data(action).button_text\"></span>\n            </div>\n            <div ng-if=\"action.type=='fillProfile'\" class=\"spm_quests-item-hover\">\n              <span ng-click=\"$root.$broadcast('profile:state', true)\" ng-bind=\"action_data(action).button_text\"></span>\n            </div>\n          </div>\n        </div>\n\n        <div class=\"col-xl-4 col-lg-6 col-md-6 col-sm-12\" ng-repeat=\"action in actions_custom()\">\n          <div class=\"spm_quests-item\" ng-mouseenter=\"action.loaded=true\">\n            <i class=\"spm_quests-item-icon\" ng-style=\"{backgroundImage: (action.icon|sailplay_pic|background_image)}\"></i>\n            <div class=\"spm_quests-item-content\">\n              <div class=\"spm_quests-item-name\" ng-bind=\"action.name\"></div>\n              <div class=\"spm_quests-item-points\" ng-show=\"action.points\"\n                   ng-bind=\"(action.points|number)+' '+(action.points|sailplay_pluralize:('points.texts.pluralize'|tools))\"></div>\n            </div>\n            <div class=\"spm_quests-item-hover\" sailplay-action-custom action=\"action\"></div>\n          </div>\n        </div>\n\n      </div>\n\n    </div>\n\n  </div>\n\n  <magic-modal show=\"$parent.$parent.show_success\">\n    <magic-modal-title ng-bind=\"widget.texts.modals.success.title\"></magic-modal-title>\n    <magic-modal-body ng-bind-html=\"widget.texts.modals.success.body|to_trusted\"></magic-modal-body>\n  </magic-modal>\n\n</div>";
+
+/***/ }),
+/* 187 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(188);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// Prepare cssTransformation
+var transform;
+
+var options = {"hmr":true}
+options.transform = transform
+// add the styles to the DOM
+var update = __webpack_require__(1)(content, options);
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/dist/cjs.js!./style.less", function() {
+			var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/dist/cjs.js!./style.less");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 188 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(0)(false);
+// imports
+
+
+// module
+exports.push([module.i, ".spm_wrapper .bootstrap_quests_right {\n  position: relative;\n}\n.spm_wrapper .bootstrap_quests_right .spm_quests-container {\n  width: 100%;\n  height: 100%;\n  box-sizing: border-box;\n  margin: 0 auto;\n  padding: 50px 30px;\n}\n.spm_wrapper .bootstrap_quests_right .spm_quests-header {\n  font-weight: 900;\n  text-transform: uppercase;\n  font-size: 35px;\n  line-height: 1;\n  color: #000000;\n  position: relative;\n  letter-spacing: 2.3px;\n}\n.spm_wrapper .bootstrap_quests_right .spm_quests-sub-header {\n  font-weight: normal;\n  font-size: 16px;\n  line-height: 22px;\n  margin: 25px 0;\n  color: #000000;\n}\n.spm_wrapper .bootstrap_quests_right .spm_quests-list {\n  display: flex;\n  align-items: flex-start;\n  flex-wrap: wrap;\n  justify-content: flex-start;\n}\n@media (max-width: 992px) {\n  .spm_wrapper .bootstrap_quests_right .spm_quests-list {\n    align-items: center;\n    justify-content: center;\n    flex-wrap: wrap;\n  }\n}\n.spm_wrapper .bootstrap_quests_right .spm_quests-list-inner {\n  width: 100%;\n}\n.spm_wrapper .bootstrap_quests_right .spm_quests-item {\n  display: flex;\n  align-items: center;\n  justify-content: space-around;\n  position: relative;\n  height: 130px;\n  box-sizing: border-box;\n  padding: 0 8px;\n  margin: 10px;\n  overflow: hidden;\n  border-radius: 8px;\n  border: 1px solid #b4bac2;\n}\n.spm_wrapper .bootstrap_quests_right .spm_quests-item-hover {\n  display: none;\n  opacity: 0;\n  background: #ca5b54;\n  position: absolute;\n  left: 0;\n  top: 0;\n  width: 100%;\n  height: 100%;\n  z-index: 2;\n  align-items: center;\n  justify-content: center;\n  text-transform: uppercase;\n  font-weight: bold;\n  color: #ffffff;\n  font-family: Arial;\n}\n.spm_wrapper .bootstrap_quests_right .spm_quests-item-hover iframe {\n  width: 100% !important;\n  height: 100% !important;\n}\n.spm_wrapper .bootstrap_quests_right .spm_quests-item-hover > * {\n  cursor: pointer;\n}\n.spm_wrapper .bootstrap_quests_right .spm_quests-item-icon {\n  width: 75px;\n  height: 75px;\n  background-repeat: no-repeat;\n  background-position: center center;\n  background-size: contain;\n}\n.spm_wrapper .bootstrap_quests_right .spm_quests-item-content {\n  margin-left: 15px;\n  flex-basis: 65%;\n}\n@media (max-width: 500px) {\n  .spm_wrapper .bootstrap_quests_right .spm_quests-item-content {\n    flex-basis: 100%;\n    margin-left: 0;\n    margin-top: 15px;\n  }\n}\n.spm_wrapper .bootstrap_quests_right .spm_quests-item-name {\n  font-size: 16px;\n  line-height: 24px;\n  color: #222c3b;\n}\n.spm_wrapper .bootstrap_quests_right .spm_quests-item-points {\n  margin-top: 10px;\n  font-size: 16px;\n  line-height: 24px;\n  color: #222c3b;\n}\n@media (max-width: 800px) {\n  .spm_wrapper .bootstrap_quests_right .spm_quests-item {\n    margin: 25px 5px;\n  }\n}\n.spm_wrapper .bootstrap_quests_right .spm_quests-item:hover {\n  border-color: #ca5b54;\n}\n.spm_wrapper .bootstrap_quests_right .spm_quests-item:hover .spm_quests-item-hover {\n  opacity: 1;\n  visibility: visible;\n}\n.spm_wrapper .bootstrap_quests_right .spm_quests:hover .spm_quests-item-hover {\n  display: flex;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 189 */
+/***/ (function(module, exports) {
+
+module.exports = {"styles":{"spm_quests-sub-header":{"color":"#fff","font-weight":300,"font-family":"Roboto, sans-serif"},"@media (max-width: 786px) | spm_quests-container__left":{"text-align":"center","padding-right":"10px","padding-left":"10px"},"spm_quests-item-name":{"color":"rgb(156,156,157)","font-weight":100},"spm_quests-header":{"color":"#fff","font-size":"45px","font-family":"Akrobat, Roboto, sans-serif"},"spm_quests-container__left":{"padding-right":"50px","padding-left":"50px"},"spm_quests":{"background-image":"url(https://sailplays3.cdnvideo.ru/media/assets/assetfile/77cd041c4a8e07e7c9400aa79a209046.png)","background-size":"cover","background-position":"top center","background-color":"rgb(35,38,45)"},"spm_quests-item":{"border-radius":0,"margin":"0 0 30px 0","border":"none","background-color":"rgb(56,56,58)"},"spm_quests-item-points":{"color":"#fff","font-size":"16px","text-transform":"uppercase"},"spm_quests-item-icon":{"background-size":"auto 50px"},"spm_quests-item-hover":{"background-color":"rgb(252,46,162)"}},"enabled":true,"id":"bootstrap_quests_right","texts":{"sub_header":"Complete quests to recieve extra points and statuses","header":"Quests","modals":{"success":{"body":"You have completed quest","title":"Congratulations"}}},"images":{},"options":{"preload_quests":true}}
+
+/***/ }),
+/* 190 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _widget = __webpack_require__(2);
+
+var _template = __webpack_require__(191);
+
+var _template2 = _interopRequireDefault(_template);
+
+__webpack_require__(192);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var widget = {
+  id: "bootstrap_status_bar",
   template: _template2.default,
   inject: ["$rootScope", "SailPlay", "SailPlayApi", "MAGIC_CONFIG", '$interpolate'],
   controller: function controller($rootScope, SailPlay, SailPlayApi, MAGIC_CONFIG, $interpolate) {
@@ -46504,19 +46632,19 @@ _widget.Widget.config(["MagicWidgetProvider", function (MagicWidgetProvider) {
 }]);
 
 /***/ }),
-/* 187 */
+/* 191 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"spm_status-bar container-fluid status-bar clearfix\" ng-if=\"widget.enabled\" ng-cloak sailplay-profile ng-class=\"{type_list: show_list}\">\n\n    <div ng-show=\"!show_list\" class=\"container py-5\" ng-show=\"user()\">\n        <div class=\"row align-items-top\">\n\n            <div class=\"b-points col-12 col-md-6 col-lg-4 d-flex align-items-center\" ng-click=\"$root.$broadcast('history:state', true)\">\n                <div class=\"w-75\">\n                    <h4 class=\"font-akrobat font-weight-bold text-uppercase mb-0\" ng-bind=\"widget.texts.points.label\"></h4>\n                    <div class=\"mt-3 font-weight-light\" ng-bind-html=\"widget.texts.points.description|to_trusted\"></div>\n                </div>\n                <div class=\"display-1 points-balance mr-auto font-akrobat font-weight-bold text-uppercase\" ng-bind=\"user().user_points.confirmed|number\"></div>\n            </div>\n\n            <div class=\"b-next-status my-5 my-md-0 col-12 col-md-6 col-lg-4 d-flex flex-column align-items-left\">\n                <h4 class=\"font-akrobat font-weight-bold text-uppercase mb-0\" ng-bind=\"widget.texts.status.label\"></h4>\n                <div class=\"mt-3 font-weight-light\" ng-bind-html=\"statusText(toNext ? widget.texts.status.description : widget.texts.status.description_final)|to_trusted\"></div>\n            </div>\n\n            <div class=\"b-current-status col-12 mt-5 pt-md-5 col-md-12 mt-lg-0 pt-lg-0 col-lg-4 d-flex flex-column align-items-center text-center\" ng-click=\"show_list=true\">\n                <i ng-style=\"currentStatus.style\"></i>\n                <h2 class=\"font-akrobat font-weight-bolder text-uppercase mb-0\" ng-bind=\"currentStatus.name\"></h2>\n                <div class=\"mt-1 font-weight-light\" ng-bind-html=\"currentStatus.description|to_trusted\"></div>\n            </div>\n\n        </div>\n    </div>\n\n    <div ng-show=\"show_list\" class=\"container py-0 py-lg-5 position-relative\">\n        <div class=\"b-list-close rounded-circle d-flex bg-primary cursor-pointer align-items-center position-absolute\"\n             ng-click=\"show_list=false\"></div>\n        <div class=\"row align-items-center justify-content-center\">\n            <div class=\"b-statuses col-md-12 my-5 my-lg-0 col-lg-4 d-flex flex-column align-items-center text-center\" ng-repeat=\"status in list track by $index\">\n                <i ng-style=\"status.style\"></i>\n                <h2 class=\"font-akrobat font-weight-bolder text-uppercase mb-0\" ng-bind=\"status.name\"></h2>\n                <h5 class=\"my-2\" ng-bind=\"(status.points|number)+' '+(status.points|sailplay_pluralize:('points.texts.pluralize'|tools))\"></h5>\n                <div class=\"font-weight-light\" ng-bind-html=\"status.description|to_trusted\"></div>\n            </div>\n        </div>\n    </div>\n\n</div>";
+module.exports = "<div class=\"spm_status-bar container-fluid status-bar clearfix\" ng-if=\"widget.enabled\" ng-cloak sailplay-profile ng-class=\"{type_list: show_list}\">\n\n    <div ng-show=\"!show_list\" class=\"container py-5\" ng-show=\"user()\">\n        <div class=\"row align-items-top\">\n\n            <div class=\"b-points col-12 col-md-6 col-lg-4 d-flex align-items-center spm_status-bar-points\" ng-click=\"$root.$broadcast('history:state', true)\">\n                <div class=\"w-75\">\n                    <h4 class=\"font-akrobat font-weight-bold text-uppercase mb-0\" ng-bind=\"widget.texts.points.label\"></h4>\n                    <div class=\"mt-3 font-weight-light\" ng-bind-html=\"widget.texts.points.description|to_trusted\"></div>\n                </div>\n                <div class=\"display-1 points-balance mr-auto font-akrobat font-weight-bold text-uppercase\" ng-bind=\"user().user_points.confirmed|number\"></div>\n            </div>\n\n            <div class=\"b-next-status my-5 my-md-0 col-12 col-md-6 col-lg-4 d-flex flex-column align-items-left spm_status-bar-next-status\">\n                <h4 class=\"font-akrobat font-weight-bold text-uppercase mb-0\" ng-bind=\"widget.texts.status.label\"></h4>\n                <div class=\"mt-3 font-weight-light\" ng-bind-html=\"statusText(toNext ? widget.texts.status.description : widget.texts.status.description_final)|to_trusted\"></div>\n            </div>\n\n            <div class=\"b-current-status col-12 mt-5 pt-md-5 col-md-12 mt-lg-0 pt-lg-0 col-lg-4 d-flex flex-column align-items-center text-center spm_status-bar-current-status\" ng-click=\"show_list=true\">\n                <i ng-style=\"currentStatus.style\"></i>\n                <h2 class=\"font-akrobat font-weight-bolder text-uppercase mb-0\" ng-bind=\"currentStatus.name\"></h2>\n                <div class=\"mt-1 font-weight-light\" ng-bind-html=\"currentStatus.description|to_trusted\"></div>\n            </div>\n\n        </div>\n    </div>\n\n    <div ng-show=\"show_list\" class=\"container py-0 py-lg-5 position-relative\">\n        <div class=\"b-list-close rounded-circle d-flex bg-primary cursor-pointer align-items-center position-absolute\"\n             ng-click=\"show_list=false\"></div>\n        <div class=\"row align-items-center justify-content-center\">\n            <div class=\"b-statuses col-md-12 my-5 my-lg-0 col-lg-4 d-flex flex-column align-items-center text-center\" ng-repeat=\"status in list track by $index\">\n                <i ng-style=\"status.style\"></i>\n                <h2 class=\"font-akrobat font-weight-bolder text-uppercase mb-0\" ng-bind=\"status.name\"></h2>\n                <h5 class=\"my-2\" ng-bind=\"(status.points|number)+' '+(status.points|sailplay_pluralize:('points.texts.pluralize'|tools))\"></h5>\n                <div class=\"font-weight-light\" ng-bind-html=\"status.description|to_trusted\"></div>\n            </div>\n        </div>\n    </div>\n\n</div>";
 
 /***/ }),
-/* 188 */
+/* 192 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(189);
+var content = __webpack_require__(193);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -46541,7 +46669,7 @@ if(false) {
 }
 
 /***/ }),
-/* 189 */
+/* 193 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -46555,7 +46683,7 @@ exports.push([module.i, ".spm_wrapper .spm_status-bar {\n  position: relative;\n
 
 
 /***/ }),
-/* 190 */
+/* 194 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46563,11 +46691,11 @@ exports.push([module.i, ".spm_wrapper .spm_status-bar {\n  position: relative;\n
 
 var _widget = __webpack_require__(2);
 
-var _actions = __webpack_require__(191);
+var _actions = __webpack_require__(195);
 
 var _actions2 = _interopRequireDefault(_actions);
 
-__webpack_require__(192);
+__webpack_require__(196);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -46618,19 +46746,19 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 });
 
 /***/ }),
-/* 191 */
+/* 195 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"{{ widget.id }} clearfix\">\n\n  <div id=\"magic_actions\" class=\"more_bonus container\" data-ng-show=\"widget.enabled\" data-ng-cloak>\n\n    <h3 class=\"bon_header\">\n      <span class=\"header\">{{ widget.texts.header }}</span>\n    </h3>\n    <h4 class=\"bon_sub_header\">\n      <span class=\"caption\">{{ widget.texts.caption }}</span>\n    </h4>\n\n    <div data-sailplay-actions class=\"clearfix\">\n\n      <div class=\"more_bonus_main\">\n\n        <div class=\"spm_row clearfix\">\n\n          <div class=\"spm_col\" data-ng-repeat=\"action in actions().actions\">\n            <div class=\"mb_item action\" data-ng-style=\"widget.styles.action\">\n              <div class=\"mb_item_left\">\n                <span class=\"action_name\" data-ng-bind=\"action_data(action).name\"></span>\n                <span class=\"action_points\" data-ng-show=\"action.points\" data-ng-bind=\"((action.points || 0) | number) + ' ' + (action.points | sailplay_pluralize:( 'points.texts.pluralize' | tools ))\"></span>\n                <a class=\"sp_btn button_primary\" data-ng-if=\"action_data(action).just_open_profile\" data-ng-click=\"open_profile()\">{{ action_data(action).button_text }}</a>                \n                <a class=\"sp_btn button_primary\" data-ng-if=\"!action_data(action).just_open_profile\" data-ng-click=\"action_select(action)\">{{ action_data(action).button_text }}</a>\n              </div>\n              <div class=\"mb_item_right\">\n                <img data-ng-src=\"{{ action_data(action).pic | sailplay_pic }}\" alt=\"\">\n              </div>\n            </div>\n          </div>\n\n          <div class=\"spm_col\" data-ng-repeat=\"action in actions_custom()\">\n            <div class=\"mb_item action\" data-ng-style=\"widget.styles.action\">\n              <div class=\"mb_item_left\">\n                <span class=\"action_name\" data-ng-bind=\"action.name\"></span>\n                <span class=\"action_points\" data-ng-show=\"action.points\" data-ng-bind=\"((action.points || 0) | number) + ' ' + (action.points | sailplay_pluralize:( 'points.texts.pluralize' | tools ))\"></span>\n                <a class=\"sp_btn button_primary\" data-ng-click=\"action_custom_select(action)\">{{ action.button_text }}</a>\n              </div>\n              <div class=\"mb_item_right\">\n                <img data-ng-src=\"{{ action.icon | sailplay_pic }}\" alt=\"\">\n              </div>\n            </div>\n          </div>\n\n          <div class=\"spm_col\" data-ng-repeat=\"quiz in $parent.quiz_list\" data-ng-if=\"quiz_list && quiz_list.length && ((!exist || !exist()) || !checkTag(quiz.tag, exist()))\" >\n            <div class=\"mb_item action\"data-ng-style=\"widget.styles.action\">\n              <div class=\"mb_item_left\">\n                <span class=\"action_name\" data-ng-bind=\"quiz.name\"></span>\n                <span class=\"action_points\" data-ng-show=\"quiz.points\" data-ng-bind=\"((quiz.points || 0) | number) + ' ' + (quiz.points | sailplay_pluralize:( 'points.texts.pluralize' | tools ))\"></span>\n                <a class=\"sp_btn button_primary\" data-ng-click=\"$event.preventDefault();open_quiz(quiz)\">{{ quiz.button_text }}</a>\n              </div>\n              <div class=\"mb_item_right\">\n                <img data-ng-src=\"{{ quiz.icon | sailplay_pic }}\" alt=\"\">\n              </div>\n            </div>\n          </div>\n\n        </div>\n\n      </div>\n\n      <magic-modal class=\"actions_selected_modal\" data-ng-cloak data-show=\"$parent.action_selected\">\n\n        <div>\n\n          <div class=\"action_image\">\n            <img class=\"gift_more_img\" data-ng-src=\"{{ action_data(action_selected).pic | sailplay_pic }}\"\n                 alt=\"{{ action_data(action_selected).name }}\">\n          </div>\n\n          <div class=\"action_tools\">\n\n            <p>\n              <span class=\"modal_action_name\" data-ng-bind=\"action_data(action_selected).name\"></span>\n            </p>\n\n            <p style=\"margin-top: 10px;\">\n              <span class=\"modal_action_points\" data-ng-bind=\"(action_selected.points | number) + ' ' + (selected_gift.points | sailplay_pluralize:( 'points.texts.pluralize' | tools ))\"></span>\n            </p>\n\n            <p style=\"margin-top: 10px;\">\n              <span class=\"modal_action_description\" data-ng-bind=\"action_data(action_selected).description\"></span>\n            </p>\n\n\n            <p class=\"action_buttons\">\n            <span data-sailplay-action\n                  data-styles=\"{{ action_styles(action_data(action_selected)) }}\"\n                  data-action=\"action_selected\"\n                  data-text=\"{{ action_data(action_selected).button_text }}\">\n              <span class=\"sp_btn button_primary\">{{ action_data(action_selected).button_text }}</span>\n            </span>\n            </p>\n\n          </div>\n\n        </div>\n\n      </magic-modal>\n\n      <magic-modal class=\"actions_custom_selected_modal\" data-ng-cloak data-show=\"$parent.action_custom_selected\">\n\n        <div data-sailplay-action-custom data-action=\"action_custom_selected\"></div>\n\n      </magic-modal>\n\n\n      <magic-modal class=\"actions_custom_selected_modal\" data-ng-cloak data-show=\"$parent.quiz.show\">\n\n        <div class=\"quiz_main\">\n\n          <div class=\"quiz_block\" data-ng-if=\"$parent.quiz.data\">\n\n            <div class=\"quiz_block__title\" data-ng-bind=\"$parent.quiz.data.name\"></div>\n\n            <div class=\"quiz_block__counter\" data-ng-bind=\"$parent.quiz.step + ' / ' + $parent.quiz.data.data.length\"></div>\n\n            <div class=\"quiz_block__name\" data-ng-bind=\"getCurrentTest().name\"></div>\n\n            <label data-ng-repeat=\"question in getCurrentTest().answers\"\n                   data-ng-switch=\"getCurrentTest().type\"\n                   data-ng-click=\"$event.preventDefault();change(question, getCurrentTest());\">\n\n              <input data-ng-switch-when=\"many\" type=\"checkbox\"\n                     name=\"quiz_[[ $index ]]\"\n                     data-ng-checked=\"check(question)\">\n\n              <input data-ng-switch-when=\"one\" type=\"radio\"\n                     name=\"quiz\"\n                     data-ng-checked=\"check(question)\">\n\n              <span data-ng-bind=\"question.text\"></span>\n\n            </label>\n\n            <textarea name=\"variable\" data-ng-show=\"needToShowVariable()\"\n                      data-ng-model=\"models.variable\"></textarea>\n\n            <div class=\"button_wrapper clearfix\">\n\n                <span data-ng-click=\"prev();\" class=\"quiz_block__btn prev\"\n                      data-ng-class=\"{type_disabled: $parent.quiz.step == 1}\">Prev</span>\n\n              <span data-ng-click=\"next();\" class=\"quiz_block__btn next\"\n                    data-ng-class=\"{type_disabled: !canPressNext() }\"\n                    data-ng-bind=\"step == $parent.quiz.data.data.length ? 'Finish' : 'Next' \">next</span>\n\n            </div>\n\n          </div>\n\n        </div>\n\n      </magic-modal>\n\n    </div>\n\n  </div>\n</div>";
 
 /***/ }),
-/* 192 */
+/* 196 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(193);
+var content = __webpack_require__(197);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -46655,7 +46783,7 @@ if(false) {
 }
 
 /***/ }),
-/* 193 */
+/* 197 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -46669,7 +46797,7 @@ exports.push([module.i, ".spm_wrapper .more_bonus {\n  float: left;\n  width: 10
 
 
 /***/ }),
-/* 194 */
+/* 198 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46677,19 +46805,19 @@ exports.push([module.i, ".spm_wrapper .more_bonus {\n  float: left;\n  width: 10
 
 var _widget = __webpack_require__(2);
 
-var _badges = __webpack_require__(195);
+var _badges = __webpack_require__(199);
 
 var _badges2 = _interopRequireDefault(_badges);
 
-var _badgesBadge = __webpack_require__(196);
+var _badgesBadge = __webpack_require__(200);
 
 var _badgesBadge2 = _interopRequireDefault(_badgesBadge);
 
-var _badgesLine = __webpack_require__(197);
+var _badgesLine = __webpack_require__(201);
 
 var _badgesLine2 = _interopRequireDefault(_badgesLine);
 
-__webpack_require__(198);
+__webpack_require__(202);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -46753,31 +46881,31 @@ _widget.Widget.directive('sailplayMagicBadgeLine', ["MAGIC_CONFIG", "SailPlaySha
 }]);
 
 /***/ }),
-/* 195 */
+/* 199 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"container clearfix\">\n\n  <div class=\"\">\n    <h3 class=\"bon_header\">\n      <span class=\"header\">{{ widget.texts.header }}</span>\n    </h3>\n    <h4 class=\"bon_sub_header\">\n      <span class=\"caption\">{{ widget.texts.caption }}</span>\n    </h4>\n  </div>\n\n\n  <div data-sailplay-badges class=\"badge_lines_container clearfix\">\n\n    <sailplay-magic-badge-line class=\"multi_level\" data-ng-repeat=\"line in sailplay.badges.list().multilevel_badges\" data-line=\"line\" data-config=\"widget\"></sailplay-magic-badge-line>\n\n    <sailplay-magic-badge-line class=\"one_level\" data-line=\"sailplay.badges.list().one_level_badges\" data-type=\"one_level\" data-config=\"widget\"></sailplay-magic-badge-line>\n\n  </div>\n\n\n</div>";
 
 /***/ }),
-/* 196 */
+/* 200 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"badge\">\n  <div class=\"badge_iner\" data-ng-click=\"on_click(badge)\">\n    <div class=\"badge_pic\">\n      <img data-ng-src=\"{{ (badge.is_received ? badge.thumbs.url_250x250 : badge.thumbs.url_gs) | sailplay_pic }}\" alt=\"{{ badge.name }}\">\n    </div>\n    <span class=\"badge_name\" data-ng-bind=\"badge.name\"></span>\n    <!--<span class=\"bon_tem_info badge_points\" data-ng-bind=\"(badge.points | number) + ' ' + (gift.points | sailplay_pluralize:_tools.points.texts.pluralize)\"></span>-->\n  </div>\n  <div class=\"badge_arrow\">\n\n  </div>\n</div>";
 
 /***/ }),
-/* 197 */
+/* 201 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"clearfix\">\n  <div class=\"bon_item_main clearfix\" data-ng-show=\"line.length\">\n\n    <div class=\"bon_slide_cat_item_wrap\" data-magic-gallery>\n      <div class=\"bon_slide_cat_item\">\n\n        <div class=\"bon_item_line\" data-ng-style=\"{left : left}\">\n\n          <sailplay-magic-badge data-magic-slide data-badge=\"badge\" data-on-click=\"badge_select(badge);\" data-ng-repeat=\"badge in line\" data-ng-class=\"{ last: $last }\"></sailplay-magic-badge>\n\n        </div>\n\n      </div>\n\n      <!--<a href=\"#\" class=\"arr_left arr_left slider_arrow_left\" data-ng-click=\"$event.preventDefault(); set_position('left');\" data-ng-show=\"show_left\"></a>-->\n      <!--<a href=\"#\" class=\"arr_right arr_right slider_arrow_right\" data-ng-click=\"$event.preventDefault(); set_position('right');\" data-ng-show=\"show_right\"></a>-->\n\n    </div>\n\n  </div>\n\n  <magic-modal class=\"modal_badge_selected\" data-ng-cloak data-show=\"badge_selected\">\n\n    <div>\n\n      <div class=\"modal_badge_image\">\n        <img class=\"gift_more_img\" data-ng-src=\"{{ badge_selected.thumbs.url_250x250 | sailplay_pic }}\"\n             alt=\"{{ badge_selected.name }}\">\n      </div>\n\n      <div class=\"modal_badge_tools\">\n\n        <p>\n          <span class=\"modal_badge_name\" data-ng-bind=\"badge_selected.name\"></span>\n        </p>\n\n        <!--<p style=\"margin-top: 10px;\">-->\n          <!--<span class=\"modal_badge_points\" data-ng-bind=\"(action_selected.points | number) + ' ' + (selected_gift.points | sailplay_pluralize:_tools.points.texts.pluralize)\"></span>-->\n        <!--</p>-->\n\n        <p style=\"margin-top: 10px;\">\n          <span class=\"modal_badge_description\" data-ng-bind=\"badge_selected.descr\"></span>\n        </p>\n\n        <p class=\"modal_badge_buttons\">\n          <span class=\"badge_share_button fb_icon\" data-ng-click=\"badge_share('fb', badge_selected)\">\n            {{ _config.texts.share_fb }}\n          </span>\n          <span class=\"badge_share_button tw_icon\" style=\"margin-right: 20px;\" data-ng-click=\"badge_share('tw', badge_selected)\">\n            {{ _config.texts.share_tw }}\n          </span>\n          <span class=\"sp_btn button_primary\" data-ng-click=\"badge_select(false);\">{{ _tools.buttons.texts.close }}</span>\n        </p>\n\n      </div>\n\n    </div>\n\n  </magic-modal>\n\n</div>";
 
 /***/ }),
-/* 198 */
+/* 202 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(199);
+var content = __webpack_require__(203);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -46802,7 +46930,7 @@ if(false) {
 }
 
 /***/ }),
-/* 199 */
+/* 203 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -46816,7 +46944,7 @@ exports.push([module.i, ".spm_wrapper .spm_tools_widget.badges {\n  float: left;
 
 
 /***/ }),
-/* 200 */
+/* 204 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46824,11 +46952,11 @@ exports.push([module.i, ".spm_wrapper .spm_tools_widget.badges {\n  float: left;
 
 var _widget = __webpack_require__(2);
 
-var _banner = __webpack_require__(201);
+var _banner = __webpack_require__(205);
 
 var _banner2 = _interopRequireDefault(_banner);
 
-__webpack_require__(202);
+__webpack_require__(206);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -46841,19 +46969,19 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 });
 
 /***/ }),
-/* 201 */
+/* 205 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"clearfix\">\n  <div class=\"bon_choice_main container block_images\" data-ng-cloak>\n    <img class=\"block_images__item\" data-ng-repeat=\"(key, value) in widget.images\" data-ng-src=\"{{ value }}\" alt=\"{{ key }}\">\n  </div>\n</div>\n";
 
 /***/ }),
-/* 202 */
+/* 206 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(203);
+var content = __webpack_require__(207);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -46878,7 +47006,7 @@ if(false) {
 }
 
 /***/ }),
-/* 203 */
+/* 207 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -46892,7 +47020,7 @@ exports.push([module.i, ".spm_wrapper .block_images {\n  width: 100%;\n}\n.spm_w
 
 
 /***/ }),
-/* 204 */
+/* 208 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46900,11 +47028,11 @@ exports.push([module.i, ".spm_wrapper .block_images {\n  width: 100%;\n}\n.spm_w
 
 var _widget = __webpack_require__(2);
 
-var _cardQuests = __webpack_require__(205);
+var _cardQuests = __webpack_require__(209);
 
 var _cardQuests2 = _interopRequireDefault(_cardQuests);
 
-__webpack_require__(206);
+__webpack_require__(210);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -46952,19 +47080,19 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 });
 
 /***/ }),
-/* 205 */
+/* 209 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"container clearfix\" id=\"magic_actions\">\n\n  <div class=\"card_quests\">\n\n    <h3 class=\"card_quests_header\">\n      <span class=\"header\">{{ widget.texts.header }}</span>\n    </h3>\n\n    <h4 class=\"card_quests_caption\">\n      <span class=\"caption\">{{ widget.texts.caption }}</span>\n    </h4>\n\n    <div data-sailplay-actions class=\"card_quests_list clearfix\">\n\n      <div class=\"spm_row clearfix\">\n\n          <div class=\"spm_col quest_card_container\" data-ng-repeat=\"action in actions().actions | filter:filter\">\n\n            <div class=\"quest_card\" title=\"{{ action_data(action).name }}\">\n\n              <div class=\"quest_card_image\">\n                <img data-ng-src=\"{{ action_data(action).pic | sailplay_pic }}\" alt=\"\">\n              </div>\n\n              <div class=\"quest_card_tools\">\n\n                <div class=\"quest_card_info\">\n                  <span class=\"quest_card_name ellipsis\" data-ng-bind=\"action_data(action).name\"></span>\n                  <span class=\"quest_card_points ellipsis\" data-ng-show=\"action.points\" data-ng-bind=\"((action.points || 0) | number) + ' ' + (action.points | sailplay_pluralize:( 'points.texts.pluralize' | tools ))\"></span>\n                </div>\n\n                <div class=\"quest_card_buttons\">\n                  <a class=\"button_primary\" data-ng-click=\"action_select(action)\">{{ action_data(action).button_text }}</a>\n                </div>\n\n              </div>\n\n            </div>\n\n          </div>\n\n          <div class=\"spm_col quest_card_container\" data-ng-repeat=\"action in actions_custom() | filter:filter\">\n\n            <div class=\"quest_card\" title=\"{{ action.name }}\">\n\n              <div class=\"quest_card_image\">\n                <img data-ng-src=\"{{ action.icon | sailplay_pic }}\" alt=\"\">\n              </div>\n\n              <div class=\"quest_card_tools\">\n\n                <div class=\"quest_card_info\">\n                  <span class=\"quest_card_name ellipsis\" data-ng-bind=\"action.name\"></span>\n                  <span class=\"quest_card_points ellipsis\" data-ng-show=\"action.points\" data-ng-bind=\"((action.points || 0) | number) + ' ' + (action.points | sailplay_pluralize:( 'points.texts.pluralize' | tools ))\"></span>\n                </div>\n\n                <div class=\"quest_card_buttons\">\n                  <a class=\"button_primary\" data-ng-click=\"action_custom_select(action)\">{{ action.button_text }}</a>\n                </div>\n\n              </div>\n\n            </div>\n\n          </div>\n\n        </div>\n\n\n      <magic-modal class=\"actions_selected_modal\" data-ng-cloak data-show=\"$parent.action_selected\">\n\n        <div>\n\n          <div class=\"action_image\">\n            <img class=\"gift_more_img\" data-ng-src=\"{{ action_data(action_selected).pic | sailplay_pic }}\"\n                 alt=\"{{ action_data(action_selected).name }}\">\n          </div>\n\n          <div class=\"action_tools\">\n\n            <p>\n              <span class=\"modal_action_name\" data-ng-bind=\"action_data(action_selected).name\"></span>\n            </p>\n\n            <p style=\"margin-top: 10px;\">\n              <span class=\"modal_action_points\" data-ng-bind=\"(action_selected.points | number) + ' ' + (selected_gift.points | sailplay_pluralize:( 'points.texts.pluralize' | tools ))\"></span>\n            </p>\n\n            <p style=\"margin-top: 10px;\">\n              <span class=\"modal_action_description\" data-ng-bind=\"action_data(action_selected).description\"></span>\n            </p>\n\n\n            <p class=\"action_buttons\">\n            <span data-sailplay-action\n                  data-styles=\"{{ action_styles(action_data(action_selected)) }}\"\n                  data-action=\"action_selected\"\n                  data-text=\"{{ action_data(action_selected).button_text }}\">\n              <span class=\"sp_btn button_primary\">{{ action_data(action_selected).button_text }}</span>\n            </span>\n            </p>\n\n          </div>\n\n        </div>\n\n      </magic-modal>\n\n      <magic-modal class=\"actions_custom_selected_modal\" data-ng-cloak data-show=\"$parent.action_custom_selected\">\n\n        <div data-sailplay-action-custom data-action=\"action_custom_selected\"></div>\n\n      </magic-modal>\n\n    </div>\n\n  </div>\n</div>";
 
 /***/ }),
-/* 206 */
+/* 210 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(207);
+var content = __webpack_require__(211);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -46989,7 +47117,7 @@ if(false) {
 }
 
 /***/ }),
-/* 207 */
+/* 211 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -47003,7 +47131,7 @@ exports.push([module.i, ".spm_wrapper .card_quests {\n  width: 90%;\n  margin: 4
 
 
 /***/ }),
-/* 208 */
+/* 212 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47011,11 +47139,11 @@ exports.push([module.i, ".spm_wrapper .card_quests {\n  width: 90%;\n  margin: 4
 
 var _widget = __webpack_require__(2);
 
-var _charityPro = __webpack_require__(209);
+var _charityPro = __webpack_require__(213);
 
 var _charityPro2 = _interopRequireDefault(_charityPro);
 
-__webpack_require__(210);
+__webpack_require__(214);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -47252,19 +47380,19 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 });
 
 /***/ }),
-/* 209 */
+/* 213 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"sp_cp-widget container clearfix\">\n\n    <div class=\"sp_cp-widget__wrap clearfix\">\n\n        <div class=\"sp_cp-widget__left\" data-ng-show=\"user && user()\">\n\n            <a class=\"sp_cp-widget__btn sp_cp-widget__search-btn button_primary\"\n               data-ng-bind=\"widget.texts.button_search\"\n               data-ng-if=\"show_search_link && widget.options.search_link\"\n               data-ng-href=\"{{ widget.options.search_link }}\" target=\"_blank\"></a>\n\n            <a href=\"#\" class=\"sp_cp-widget__btn sp_cp-widget__form-btn button_primary\"\n               data-ng-bind=\"widget.texts.button_subscriptions\"\n               data-ng-if=\"widget.options.subscriptions_link\"\n               data-ng-href=\"{{ widget.options.subscriptions_link }}\" target=\"_blank\"></a>\n\n\n            <a href=\"#\" class=\"sp_cp-widget__btn sp_cp-widget__form-btn button_primary\"\n               data-ng-bind=\"widget.texts.button_form\"\n               data-ng-if=\"show_request_charity\"\n               data-ng-click=\"$event.preventDefault();$parent.show_form=true;\"></a>\n\n\n            <a href=\"#\" class=\"sp_cp-widget__btn sp_cp-widget__form-btn button_primary\"\n               data-ng-if=\"widget.options.payments_link\"\n               data-ng-bind=\"widget.texts.button_payments\"\n               data-ng-href=\"{{ widget.options.payments_link }}\" target=\"_blank\"></a>\n\n        </div>\n\n        <div class=\"sp_cp-widget__right\" data-ng-show=\"user && user()\">\n\n            <select class=\"sp_cp-widget__select\" data-ng-model=\"charity\"\n                    data-ng-disabled=\"disabled\"\n                    data-ng-change=\"charity_change()\"\n                    data-ng-options=\"item.tag as item.name for item in widget.options.charities\">\n                <option value=\"\" disabled selected ng-hide=\"charity\"\n                        data-ng-bind=\"widget.texts.select_charity\"></option>\n            </select>\n\n        </div>\n\n    </div>\n\n    <magic-modal class=\"sp_cp-widget__form\" data-show=\"show_form\">\n\n        <div class=\"sp_cp-widget__form-header\" data-ng-bind=\"widget.texts.request_charity_header\"></div>\n\n        <div class=\"sp_cp-widget__invalid-fields\" data-ng-if=\"!form\">Invalid form fields</div>\n\n        <form name=\"request_charity\" data-ng-submit=\"charity_form_submit(request_charity)\" data-ng-show=\"form\">\n\n            <div class=\"form_field\" data-ng-repeat=\"field in form\"\n                 data-ng-class=\"{type_full: field.full_width}\"\n                 data-ng-switch=\"field.input\">\n\n                <div data-ng-switch-when=\"image\" class=\"avatar_upload clearfix\">\n                    <img width=\"160px\"\n                         data-ng-src=\"{{ (field.value | sailplay_pic) || 'http://saike.ru/sailplay-magic/dist/img/profile/avatar_default.png'}}\"\n                         alt=\"\">\n                </div>\n\n                <div data-ng-switch-when=\"textarea\" class=\"clearfix\">\n                    <label class=\"form_label\" data-ng-bind-html=\"field.label | to_trusted\"></label>\n                    <textarea class=\"form_textarea\" placeholder=\"{{ field.placeholder }}\"\n                              data-ng-required=\"field.required\" data-ng-model=\"field.value\"></textarea>\n                </div>\n\n                <div data-ng-switch-when=\"text\" class=\"clearfix\">\n                    <label class=\"form_label\" data-ng-bind-html=\"field.label | to_trusted\"></label>\n                    <input class=\"form_input\" type=\"text\" placeholder=\"{{ field.placeholder }}\"\n                           data-ng-required=\"field.required\" data-ng-model=\"field.value\">\n                </div>\n\n                <div data-ng-switch-when=\"phone\" class=\"clearfix\">\n                    <label class=\"form_label\" data-ng-bind-html=\"field.label | to_trusted\"></label>\n                    <input class=\"form_input\" type=\"text\" data-ui-mask=\"{{ field.placeholder }}\"\n                           data-model-view-value=\"true\"\n                           data-ng-required=\"field.required\" data-ng-model=\"field.value\">\n                </div>\n\n                <div data-ng-switch-when=\"date\" class=\"clearfix\">\n                    <label class=\"form_label\" data-ng-bind-html=\"field.label | to_trusted\"></label>\n                    <date-picker data-model=\"field.value\"></date-picker>\n                </div>\n\n                <div data-ng-switch-when=\"select\" class=\"clearfix\">\n                    <label class=\"form_label\" data-ng-bind-html=\"field.label | to_trusted\"></label>\n                    <div class=\"magic_select form_input\">\n                        <select data-ng-model=\"field.value\"\n                                data-ng-required=\"field.required\"\n                                data-ng-options=\"item.value as item.text for item in field.data\"></select>\n                    </div>\n                </div>\n\n                <div data-ng-switch-when=\"email\" class=\"clearfix\">\n                    <label class=\"form_label\" data-ng-bind-html=\"field.label | to_trusted\"></label>\n                    <input class=\"form_input\" type=\"email\" placeholder=\"{{ field.placeholder }}\"\n                           data-ng-required=\"field.required\" data-ng-model=\"field.value\">\n                </div>\n\n            </div>\n\n            <div class=\"sp_cp-widget__form-submit_wrapper clearfix\">\n\n                <button type=\"submit\" class=\"sp_btn button_primary sp_cp-widget__form-submit_button\"\n                        data-ng-bind=\"widget.texts.request_charity_submit\"></button>\n\n                <button type=\"button\" class=\"sp_btn button_primary sp_cp-widget__form-back_button\"\n                        data-ng-bind=\"widget.texts.request_charity_back\"\n                        data-ng-click=\"charity_form_close(request_charity);\"></button>\n\n            </div>\n\n        </form>\n\n    </magic-modal>\n\n\n</div>";
 
 /***/ }),
-/* 210 */
+/* 214 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(211);
+var content = __webpack_require__(215);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -47289,7 +47417,7 @@ if(false) {
 }
 
 /***/ }),
-/* 211 */
+/* 215 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -47303,7 +47431,7 @@ exports.push([module.i, ".spm_wrapper .sp_cp-widget {\n  /* --------------------
 
 
 /***/ }),
-/* 212 */
+/* 216 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47311,11 +47439,11 @@ exports.push([module.i, ".spm_wrapper .sp_cp-widget {\n  /* --------------------
 
 var _widget = __webpack_require__(2);
 
-var _event_message = __webpack_require__(213);
+var _event_message = __webpack_require__(217);
 
 var _event_message2 = _interopRequireDefault(_event_message);
 
-__webpack_require__(214);
+__webpack_require__(218);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -47368,19 +47496,19 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 });
 
 /***/ }),
-/* 213 */
+/* 217 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"event_message__wrapper container\">\n\n    <div class=\"event_message\" data-ng-repeat=\"item in messages\">\n\n        <img class=\"event_message__icon\" data-ng-src=\"{{ item.icon }}\" alt=\"{{ item.text }}\">\n        <span class=\"event_message__text\" data-ng-bind=\"item.text\"></span>\n\n    </div>\n\n</div>";
 
 /***/ }),
-/* 214 */
+/* 218 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(215);
+var content = __webpack_require__(219);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -47405,7 +47533,7 @@ if(false) {
 }
 
 /***/ }),
-/* 215 */
+/* 219 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -47419,19 +47547,19 @@ exports.push([module.i, ".spm_wrapper .event_message__wrapper {\n  text-align: c
 
 
 /***/ }),
-/* 216 */
+/* 220 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"bon_choice_main container\" data-ng-show=\"widget.enabled\" data-ng-cloak>\n  <h3 class=\"bon_header\">\n    <span class=\"header\">{{ widget.texts.header }}</span>\n  </h3>\n  <h4 class=\"bon_sub_header\">\n    <span class=\"caption\">{{ widget.texts.caption }}</span>\n  </h4>\n\n  <div data-sailplay-gifts class=\"clearfix\">\n    <div class=\"bon_item_main\" data-ng-show=\"gifts && gifts().length\" data-magic-slider>\n\n      <div class=\"bon_slide_cat_item_wrap\" data-magic-gallery>\n        <div class=\"bon_slide_cat_item\">\n\n          <div class=\"bon_item_line\" data-ng-style=\"{left : left}\">\n\n            <div class=\"bon_item gift\" data-magic-slide data-magic-gift data-ng-repeat=\"gift in gifts()\">\n              <div class=\"bon_item_iner\">\n                <img data-ng-src=\"{{ gift.thumbs.url_250x250 | sailplay_pic }}\" alt=\"{{ gift.name }}\">\n                <span class=\"bon_item_name gift_name\" data-ng-bind=\"gift.name\"></span>\n                <span class=\"bon_tem_info gift_points\" data-ng-bind=\"(gift.points | number) + ' ' + (gift.points | sailplay_pluralize:('points.texts.pluralize' | tools))\"></span>\n                <a href=\"#\" class=\"button_primary\" data-ng-click=\"gift_select(gift); $event.preventDefault();\">{{ widget.texts.get }}</a>\n              </div>\n            </div>\n\n          </div>\n\n        </div>\n\n        <a href=\"#\" class=\"arr_left arr_left slider_arrow_left\" data-ng-click=\"$event.preventDefault(); set_position('left');\" data-ng-show=\"show_left\"></a>\n        <a href=\"#\" class=\"arr_right arr_right slider_arrow_right\" data-ng-click=\"$event.preventDefault(); set_position('right');\" data-ng-show=\"show_right\"></a>\n\n      </div>\n\n    </div>\n\n    <magic-modal class=\"bns_overlay_gift\" data-ng-cloak data-show=\"modals.selected_gift\">\n\n      <div class=\"modal_gift_container\">\n\n        <img class=\"gift_more_img\" data-ng-src=\"{{ modals.selected_gift.thumbs.url_250x250 | sailplay_pic }}\"\n             alt=\"{{ modals.selected_gift.name }}\">\n\n        <div class=\"gift_more_block\">\n\n          <span class=\"gift_more_name modal_gift_name\" data-ng-bind=\"modals.selected_gift.name\"></span>\n\n          <span class=\"gift_more_points modal_gift_points\"\n                data-ng-bind=\"(modals.selected_gift.points | number) + ' ' + (modals.selected_gift.points | sailplay_pluralize:('points.texts.pluralize' | tools))\"></span>\n\n          <p class=\"gift_more_descr modal_gift_description\" data-ng-bind=\"modals.selected_gift.descr\"></p>\n\n          <div class=\"modal_gift_type_block clearfix\" data-gift-type data-types=\"widget.options.gift_types\" data-gift=\"modals.selected_gift\"></div>\n\n          <div class=\"modal_gift_buttons\">\n            <span class=\"alink button_primary\" data-ng-click=\"gift_select(false);\">{{ 'buttons.texts.close' | tools }}</span>\n\n            <span class=\"alink button_primary\"\n                  style=\"margin-left: 5px;\"\n                  data-ng-click=\"gift_confirm();\"\n                  data-ng-bind=\"gift_affordable(modals.selected_gift) ? widget.texts.get : widget.texts.no_points_button_text\">{{ widget.texts.get }}</span>\n          </div>\n\n        </div>\n      </div>\n\n    </magic-modal>\n\n    <magic-modal class=\"bns_overlay_gift_not_points\" data-ng-cloak data-show=\"modals.no_points_error\">\n      <div>\n        <p class=\"modal_gift_description\">\n          {{ widget.texts.no_points_message }}\n        </p>\n        <a class=\"alink button_primary earn_points_button\" href=\"#magic_actions\" data-ng-click=\"gift_unconfirm()\">{{ widget.texts.earn_points }}</a>\n        <a class=\"alink button_primary service_button\" target=\"_blank\" href=\"{{ widget.texts.partner_service_url }}\" data-ng-click=\"gift_unconfirm()\">{{ widget.texts.service }}</a>\n      </div>\n    </magic-modal>\n\n    <magic-modal class=\"bns_overlay_gift_complete\" data-ng-cloak data-show=\"modals.confirmed_gift\">\n      <div>\n        <p class=\"modal_gift_description\">\n          {{ widget.texts.confirm_message_start }}\n          {{ (modals.confirmed_gift.points | number) + ' ' + (modals.confirmed_gift.points | sailplay_pluralize:('points.texts.pluralize' | tools)) }}.\n          {{ widget.texts.confirm_message_end }}\n        </p>\n        <span class=\"alink button_primary\" data-ng-click=\"gift_unconfirm();\">{{ 'buttons.texts.close' | tools }}</span>\n        <span class=\"alink button_primary\" data-ng-click=\"gift_purchase(modals.confirmed_gift);\">{{ 'buttons.texts.get' | tools }}</span>\n      </div>\n    </magic-modal>\n  </div>\n\n\n</div>";
 
 /***/ }),
-/* 217 */
+/* 221 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(218);
+var content = __webpack_require__(222);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -47456,7 +47584,7 @@ if(false) {
 }
 
 /***/ }),
-/* 218 */
+/* 222 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -47470,7 +47598,7 @@ exports.push([module.i, ".spm_wrapper .bon_choice_main {\n  float: left;\n  widt
 
 
 /***/ }),
-/* 219 */
+/* 223 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47532,7 +47660,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 });
 
 /***/ }),
-/* 220 */
+/* 224 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47540,11 +47668,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var _widget = __webpack_require__(2);
 
-var _giftsGrid = __webpack_require__(221);
+var _giftsGrid = __webpack_require__(225);
 
 var _giftsGrid2 = _interopRequireDefault(_giftsGrid);
 
-__webpack_require__(222);
+__webpack_require__(226);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -47745,19 +47873,19 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 });
 
 /***/ }),
-/* 221 */
+/* 225 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"bon_choice_main container clearfix gifts_grid_widget\">\n\n    <h3 class=\"gifts_grid___header\">\n        <span class=\"header\" data-ng-bind=\"widget.texts.header\"></span>\n    </h3>\n\n    <h4 class=\"gifts_grid___caption\">\n        <span class=\"caption\" data-ng-bind=\"widget.texts.caption\"></span>\n    </h4>\n\n    <div class=\"gifts_grid__wrapper clearfix\">\n\n        <div class=\"gifts_grid__blocks clearfix\">\n\n            <div class=\"gifts_grid__block clearfix\">\n\n                <div class=\"gifts_grid__item clearfix\"\n                     data-ng-class=\"{\n                     'gift-available': isAvailableGift(gift),\n                     'gift-unavailable': !isAvailableGift(gift),\n                     'gift-points-not-enough': user().user_points.confirmed < gift.points\n                     }\"\n                     data-ng-repeat=\"gift in blocks[state] | filter:filter | orderBy:orderBy track by $index\">\n\n                    <span class=\"gifts_grid__item-name gift_name\" data-ng-bind=\"gift.name\"></span>\n\n                    <span class=\"gifts_grid__item-points gift_points\"\n                          data-ng-bind=\"(gift.points | number) + ' ' + (gift.points | sailplay_pluralize:('points.texts.pluralize' | tools))\"></span>\n\n                    <img class=\"gifts_grid__item-img gift_img\"\n                         data-ng-src=\"{{ gift.thumbs.url_250x250 | sailplay_pic }}\"\n                         alt=\"{{ gift.name }}\">\n\n\n                    <a class=\"gifts_grid__item-button button_primary\" href=\"#\"\n                       data-ng-bind=\"widget.texts.get\"\n                       data-ng-click=\"$event.preventDefault();open(gift)\"></a>\n\n\n                </div>\n\n            </div>\n\n        </div>\n\n        <a href=\"#\" class=\"gifts_grid__arrow gifts_grid__arrow_l slider_arrow_left\"\n           data-ng-if=\"state\"\n           data-ng-click=\"$event.preventDefault(); move(-1);\"></a>\n\n        <a href=\"#\" class=\"gifts_grid__arrow gifts_grid__arrow_r slider_arrow_right\"\n           data-ng-if=\"blocks.length && state != (blocks.length-1)\"\n           data-ng-click=\"$event.preventDefault(); move(1);\"></a>\n\n    </div>\n\n    <magic-modal class=\"bns_overlay_gift\" data-show=\"selected_gift\">\n\n        <div class=\"modal_gift_container\">\n\n            <img class=\"gift_more_img\" data-ng-src=\"{{ selected_gift.thumbs.url_250x250 | sailplay_pic }}\"\n                 alt=\"{{ selected_gift.name }}\">\n\n            <div class=\"gift_more_block\">\n\n                <span data-ng-bind=\"selected_gift\"></span>\n\n                <span class=\"gift_more_name modal_gift_name\" data-ng-bind=\"selected_gift.name\"></span>\n\n                <span class=\"gift_more_points modal_gift_points\"\n                      data-ng-bind=\"(selected_gift.points | number) + ' ' + (selected_gift.points | sailplay_pluralize:('points.texts.pluralize' | tools))\"></span>\n\n                <p class=\"gift_more_descr modal_gift_description\" data-ng-bind=\"selected_gift.descr\"></p>\n\n                <div class=\"modal_gift_buttons\">\n\n                    <span class=\"alink button_primary\" data-ng-click=\"$parent.$parent.selected_gift=null\">{{ 'buttons.texts.close' | tools }}</span>\n\n                    <span class=\"alink button_primary\"\n                          style=\"margin-left: 5px;\"\n                          data-ng-click=\"gift_confirm(selected_gift);\"\n                          data-ng-bind=\"widget.texts.get\"></span>\n                </div>\n\n            </div>\n        </div>\n\n\n</div>";
 
 /***/ }),
-/* 222 */
+/* 226 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(223);
+var content = __webpack_require__(227);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -47782,7 +47910,7 @@ if(false) {
 }
 
 /***/ }),
-/* 223 */
+/* 227 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -47796,7 +47924,7 @@ exports.push([module.i, ".spm_wrapper .gifts_grid_widget .gifts_grid__header {\n
 
 
 /***/ }),
-/* 224 */
+/* 228 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47804,11 +47932,11 @@ exports.push([module.i, ".spm_wrapper .gifts_grid_widget .gifts_grid__header {\n
 
 var _widget = __webpack_require__(2);
 
-var _header = __webpack_require__(225);
+var _header = __webpack_require__(229);
 
 var _header2 = _interopRequireDefault(_header);
 
-__webpack_require__(226);
+__webpack_require__(230);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -47823,19 +47951,19 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 });
 
 /***/ }),
-/* 225 */
+/* 229 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"header_wrapper container\">\n\n  <h3 class=\"header_title\">\n    {{ widget.texts.title }}\n  </h3>\n\n  <h2 class=\"header_sub_title\">\n    {{ widget.texts.sub_title }}\n  </h2>\n\n</div>";
 
 /***/ }),
-/* 226 */
+/* 230 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(227);
+var content = __webpack_require__(231);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -47860,7 +47988,7 @@ if(false) {
 }
 
 /***/ }),
-/* 227 */
+/* 231 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -47874,7 +48002,7 @@ exports.push([module.i, ".spm_wrapper .spm_tools_widget.header .header_wrapper {
 
 
 /***/ }),
-/* 228 */
+/* 232 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47882,11 +48010,11 @@ exports.push([module.i, ".spm_wrapper .spm_tools_widget.header .header_wrapper {
 
 var _widget = __webpack_require__(2);
 
-var _imageStatuses = __webpack_require__(229);
+var _imageStatuses = __webpack_require__(233);
 
 var _imageStatuses2 = _interopRequireDefault(_imageStatuses);
 
-__webpack_require__(230);
+__webpack_require__(234);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -47945,19 +48073,19 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 });
 
 /***/ }),
-/* 229 */
+/* 233 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"clearfix container\">\n\n  <div class=\"image-status-list\">\n\n    <div class=\"next_status_info\" data-ng-show=\"get_next_status().status\">\n\n      <div class=\"next_status_name\">\n        {{ widget.texts.next_status }} <span data-ng-style=\"{ color: get_next_status().status.color  }\">{{ get_next_status().status.status }}</span>\n      </div>\n\n      <div class=\"next_status_offset\">\n        {{ widget.texts.next_status_offset }} {{ get_next_status().offset }}\n      </div>\n\n    </div>\n\n    <div class=\"image-status-list__wrapper\" data-sailplay-statuses data-ng-cloak>\n\n      <div class=\"image-status-list__progress element-progress progress_line\"\n           data-ng-style=\"getProgress(user().user_points, _statuses)\"></div>\n\n      <div class=\"image-status-list__item element-item\"\n           data-ng-class=\"{ type_active : is_active_status(item) }\"\n           data-ng-repeat=\"item in _statuses\"\n           data-ng-style=\"generateOffset($index, _statuses)\">\n\n        <!--<div class=\"image-status-list__item-point element-item-point\"></div>-->\n\n        <div class=\"element-item-point-inner\">\n          <img class=\"status_image\" data-ng-src=\"{{ get_status_image(item) }}\" alt=\"\">\n        </div>\n\n      </div>\n\n    </div>\n\n  </div>\n</div>";
 
 /***/ }),
-/* 230 */
+/* 234 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(231);
+var content = __webpack_require__(235);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -47982,7 +48110,7 @@ if(false) {
 }
 
 /***/ }),
-/* 231 */
+/* 235 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -47996,7 +48124,7 @@ exports.push([module.i, ".spm_wrapper .image-status-list {\n  float: left;\n  wi
 
 
 /***/ }),
-/* 232 */
+/* 236 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -48004,11 +48132,11 @@ exports.push([module.i, ".spm_wrapper .image-status-list {\n  float: left;\n  wi
 
 var _widget = __webpack_require__(2);
 
-var _leaderboard = __webpack_require__(233);
+var _leaderboard = __webpack_require__(237);
 
 var _leaderboard2 = _interopRequireDefault(_leaderboard);
 
-__webpack_require__(234);
+__webpack_require__(238);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -48025,19 +48153,19 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 });
 
 /***/ }),
-/* 233 */
+/* 237 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"clearfix\">\n    <div class=\"container\" data-ng-show=\"widget.enabled\" data-ng-cloak>\n\n        <h3 class=\"bon_header\">\n            <span class=\"header\">{{ widget.texts.header }}</span>\n        </h3>\n        <h4 class=\"bon_sub_header\">\n            <span class=\"caption\">{{ widget.texts.caption }}</span>\n        </h4>\n\n        <ul class=\"leaderboard__list\" data-ng-if=\"data && data()\">\n\n            <li class=\"leaderboard__list-item type_headers\">\n\n                <span class=\"leaderboard__list-item__rank rows headers\">{{ widget.texts.rank }}</span>\n\n                <span class=\"leaderboard__list-item__name rows headers\">{{ widget.texts.full_name }}</span>\n\n                <span class=\"leaderboard__list-item__score rows headers\">{{ widget.texts.score }}</span>\n\n            </li>\n\n            <li class=\"leaderboard__list-item\" data-ng-repeat=\"member in $parent.data().members.members\"\n                data-ng-class=\"{ type_current : member.is_current_user }\">\n\n                <span class=\"leaderboard__list-item__rank rank rows\" data-ng-bind=\"member.rank\"></span>\n\n                <span class=\"leaderboard__list-item__name full_name rows\">\n\n                    <img class=\"leaderboard__list-item__photo photo\" data-ng-if=\"member.pic\"\n                         data-ng-src=\"{{ $parent.member.pic | sailplay_pic }}\"\n                         alt=\"{{ $parent.member.full_name || 'n/a' }}\">\n\n                    {{ member.full_name || 'n/a' }}\n\n                </span>\n\n                <span class=\"leaderboard__list-item__score score rows\" data-ng-bind=\"member.score\"></span>\n\n            </li>\n\n        </ul>\n\n\n    </div>\n</div>\n\n";
 
 /***/ }),
-/* 234 */
+/* 238 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(235);
+var content = __webpack_require__(239);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -48062,7 +48190,7 @@ if(false) {
 }
 
 /***/ }),
-/* 235 */
+/* 239 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -48076,7 +48204,7 @@ exports.push([module.i, ".spm_wrapper .spm_tools_widget.leaderboard .container {
 
 
 /***/ }),
-/* 236 */
+/* 240 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -48084,15 +48212,15 @@ exports.push([module.i, ".spm_wrapper .spm_tools_widget.leaderboard .container {
 
 var _widget = __webpack_require__(2);
 
-var _pointsStatus = __webpack_require__(237);
+var _pointsStatus = __webpack_require__(241);
 
 var _pointsStatus2 = _interopRequireDefault(_pointsStatus);
 
-var _history_pagination = __webpack_require__(238);
+var _history_pagination = __webpack_require__(242);
 
 var _history_pagination2 = _interopRequireDefault(_history_pagination);
 
-__webpack_require__(239);
+__webpack_require__(243);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -48163,25 +48291,25 @@ _widget.Widget.run(["$templateCache", function ($templateCache) {
 }]);
 
 /***/ }),
-/* 237 */
+/* 241 */
 /***/ (function(module, exports) {
 
 module.exports = "<div id=\"points-status\" class=\"bon_choice_main container clearfix\">\n\n    <div class=\"points-status__wrapper clearfix\">\n\n        <div class=\"points-status__left points_block clearfix\" data-ng-if=\"user()\">\n\n            <span class=\"points_confirmed\">\n                <span class=\"points_confirmed_value\" data-ng-bind=\"user().user_points.total | number\"></span>\n                <span class=\"points_confirmed_name\"\n                    data-ng-bind=\"user().user_points.total | sailplay_pluralize: ('points.texts.pluralize' | tools)\"></span>\n            </span>\n\n            <a class=\"button_primary history_button\" href=\"#\"\n               data-ng-click=\"$event.preventDefault(); $parent.history = true;\"\n               data-ng-bind=\"widget.texts.history_button\"></a>\n\n        </div>\n\n        <div class=\"points-status__right progress_block clearfix\">\n\n            <div class=\"progress_line_main\">\n\n                <div class=\"progress_line_bg progress_bar progress_bar_border\"></div>\n\n                <div class=\"progress_line progress_bar_filled\"\n                     data-ng-style=\"{ width: getProgress(user().user_points.total, widget.options.status_list) }\">\n                </div>\n\n                <div class=\"gift_item progress_bar_border\"\n                     data-ng-repeat=\"item in widget.options.status_list track by $index\"\n                     data-ng-class=\"{ act : item.points <= user().user_points.total, progress_bar_gift_filled: item.points <=user().user_points.total, progress_bar_gift: item.points > user().user_points.total}\"\n                     data-ng-style=\"{ left: (100/widget.options.status_list.length * ($index+1)) + '%', 'background-image': 'url(' + item.image +')' }\">\n\n                    <span class=\"gift_item_hint\" data-ng-bind=\"item.points | number\"></span>\n\n                </div>\n\n            </div>\n\n        </div>\n\n    </div>\n\n    <magic-modal class=\"bns_overlay_hist\" data-show=\"history\">\n\n        <div data-sailplay-history data-sailplay-profile>\n\n            <h3>\n                <span class=\"modal_history_header\" data-ng-bind=\"widget.texts.history.header\"></span>\n            </h3>\n            <h4 class=\"modal_history_caption\" data-ng-bind=\"widget.texts.history.caption\"></h4>\n\n            <table class=\"bns_hist_table\">\n\n                <tbody>\n\n                <tr data-dir-paginate=\"item in history() | itemsPerPage:10\" data-pagination-id=\"history_pages\">\n                    <td>\n                        <span class=\"modal_history_date\" data-ng-bind=\"item.action_date | date:'d/MM/yyyy'\"></span>\n                    </td>\n                    <td>\n                        <span><b class=\"modal_history_content\" data-ng-bind=\"item | history_item\"></b></span>\n                    </td>\n                    <td>\n                        <span class=\"modal_history_points\" data-ng-if=\"item.points_delta\"\n                              data-ng-bind=\"((item.points_delta|number) || 0) + ' ' + (item.points_delta | sailplay_pluralize:('points.texts.pluralize' | tools))\"></span>\n                    </td>\n                </tr>\n\n                </tbody>\n            </table>\n\n            <dir-pagination-controls data-max-size=\"7\" data-pagination-id=\"history_pages\"\n                                     data-template-url=\"points_status.history_pagination\"\n                                     data-auto-hide=\"true\"></dir-pagination-controls>\n        </div>\n\n\n    </magic-modal>\n\n</div>";
 
 /***/ }),
-/* 238 */
+/* 242 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"bns_hist_pager\" data-ng-if=\"1 < pages.length || !autoHide\">\n\n  <a data-ng-if=\"directionLinks\" data-ng-class=\"{ disabled : pagination.current == 1 }\" href=\"\" data-ng-click=\"setCurrent(pagination.current - 1)\">\n    &lsaquo;\n  </a>\n  <a data-ng-repeat=\"pageNumber in pages track by tracker(pageNumber, $index)\" data-ng-class=\"{ active : pagination.current == pageNumber, disabled : pageNumber == '...' }\" href=\"\" data-ng-click=\"setCurrent(pageNumber)\">\n    {{ pageNumber }}\n  </a>\n\n  <a data-ng-if=\"directionLinks\" data-ng-class=\"{ disabled : pagination.current == pagination.last }\" href=\"\" data-ng-click=\"setCurrent(pagination.current + 1)\">\n    &rsaquo;\n  </a>\n\n</div>";
 
 /***/ }),
-/* 239 */
+/* 243 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(240);
+var content = __webpack_require__(244);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -48206,7 +48334,7 @@ if(false) {
 }
 
 /***/ }),
-/* 240 */
+/* 244 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -48220,7 +48348,7 @@ exports.push([module.i, ".spm_wrapper #points-status .points-status__wrapper {\n
 
 
 /***/ }),
-/* 241 */
+/* 245 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -48228,15 +48356,15 @@ exports.push([module.i, ".spm_wrapper #points-status .points-status__wrapper {\n
 
 var _widget = __webpack_require__(2);
 
-var _points_rate_progress = __webpack_require__(242);
+var _points_rate_progress = __webpack_require__(246);
 
 var _points_rate_progress2 = _interopRequireDefault(_points_rate_progress);
 
-var _history_pagination = __webpack_require__(243);
+var _history_pagination = __webpack_require__(247);
 
 var _history_pagination2 = _interopRequireDefault(_history_pagination);
 
-__webpack_require__(244);
+__webpack_require__(248);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -48337,25 +48465,25 @@ _widget.Widget.run(["$templateCache", function ($templateCache) {
 }]);
 
 /***/ }),
-/* 242 */
+/* 246 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"points_rate_progress__wrapper container\" data-sailplay-badges>\n\n    <div class=\"points_rate_progress__points points_rate_progress__blocks\" data-ng-if=\"sailplay.user.info()\">\n        <span class=\"points_rate_progress__points-confirmed\">\n          <span class=\"points_rate_progress__points-confirmed-value\"\n                data-ng-bind=\"sailplay.user.info().user_points.confirmed | number\"></span>\n          <span class=\"points_rate_progress__points-confirmed-name\"\n                data-ng-bind=\"sailplay.user.info().user_points.confirmed | sailplay_pluralize: ('points.texts.pluralize' | tools)\"></span>\n        </span>\n        <a class=\"points_rate_progress__points-history button_link history_button\" href=\"#\"\n           data-ng-click=\"$event.preventDefault();$parent.show_history = true;\">{{ widget.texts.history_button }}</a>\n    </div>\n\n    <div class=\"points_rate_progress__progress points_rate_progress__blocks\"\n         data-ng-if=\"sailplay.user.info() && badges_list\">\n\n        <p class=\"points_rate_progress__progress-offset\">\n            <span class=\"points_rate_progress__progress-offset-text\" data-ng-bind=\"widget.texts.to_text_status\"></span>\n            <span class=\"points_rate_progress__progress-offset-value\">\n                {{ get_offset(sailplay.user.info().purchases.sum, badges_list) | number }}\n                {{ get_offset(sailplay.user.info().purchases.sum, badges_list) | sailplay_pluralize: ('rub.texts.pluralize' | tools) }}\n            </span>\n        </p>\n\n        <div class=\"points_rate_progress__progress-block\">\n            <div class=\"points_rate_progress__progress-block-line\" data-ng-style=\"get_progress(sailplay.user.info().purchases.sum, badges_list)\"></div>\n            <div class=\"points_rate_progress__progress-block-text\" data-ng-bind=\"get_next_status(sailplay.user.info().purchases.sum, badges_list).descr\"></div>\n            <!--<img class=\"points_rate_progress__progress-block-img\" data-ng-src=\"{{ get_next_status(sailplay.user.info().purchases.sum, badges_list).thumbs.url_100x100 | sailplay_pic }}\" alt=\"{{ get_next_status(sailplay.user.info().purchases.sum, badges_list).name }}\">-->\n        </div>\n\n    </div>\n\n    <div class=\"points_rate_progress__rate points_rate_progress__blocks\"\n         data-ng-if=\"sailplay.user.info() && badges_list\">\n\n        <span class=\"points_rate_progress__rate-value\" data-ng-bind=\"(get_current_status(sailplay.user.info().purchases.sum, badges_list).descr || '0%')\"></span>\n        <span class=\"points_rate_progress__rate-text\" data-ng-bind=\"widget.texts.points_rate\"></span>\n\n    </div>\n\n    <magic-modal class=\"bns_overlay_hist\" data-show=\"show_history\">\n\n        <div data-sailplay-history data-sailplay-profile>\n\n            <h3>\n                <span class=\"modal_history_header\">{{ widget.texts.history.header }}</span>\n                <!--<b>У вас {{ user().user_points.confirmed + ' ' + (user().user_points.confirmed | sailplay_pluralize:_tools.points.texts.pluralize) }}</b>-->\n            </h3>\n            <h4 class=\"modal_history_caption\">{{ widget.texts.history.caption }}</h4>\n\n            <table class=\"bns_hist_table\">\n\n                <tbody>\n\n                <tr data-dir-paginate=\"item in history() | itemsPerPage:10\" data-pagination-id=\"history_pages\">\n                    <td>\n                        <span class=\"modal_history_date\" data-ng-bind=\"item.action_date | date:'d/MM/yyyy'\"></span>\n                    </td>\n                    <td>\n                        <span><b class=\"modal_history_content\" data-ng-bind=\"item | history_item\"></b></span>\n                    </td>\n                    <td>\n                        <span class=\"modal_history_points\" data-ng-if=\"item.points_delta\" data-ng-bind=\"((item.points_delta|number) || 0) + ' ' + (item.points_delta | sailplay_pluralize:('points.texts.pluralize' | tools))\"></span>\n                    </td>\n                </tr>\n\n                </tbody>\n            </table>\n\n            <dir-pagination-controls data-max-size=\"7\" data-pagination-id=\"history_pages\"\n                                     data-template-url=\"points_rate_progress.history_pagination\"\n                                     data-auto-hide=\"true\"></dir-pagination-controls>\n        </div>\n\n\n\n    </magic-modal>\n\n</div>";
 
 /***/ }),
-/* 243 */
+/* 247 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"bns_hist_pager\" data-ng-if=\"1 < pages.length || !autoHide\">\n\n  <a data-ng-if=\"directionLinks\" data-ng-class=\"{ disabled : pagination.current == 1 }\" href=\"\" data-ng-click=\"setCurrent(pagination.current - 1)\">\n    &lsaquo;\n  </a>\n  <a data-ng-repeat=\"pageNumber in pages track by tracker(pageNumber, $index)\" data-ng-class=\"{ active : pagination.current == pageNumber, disabled : pageNumber == '...' }\" href=\"\" data-ng-click=\"setCurrent(pageNumber)\">\n    {{ pageNumber }}\n  </a>\n\n  <a data-ng-if=\"directionLinks\" data-ng-class=\"{ disabled : pagination.current == pagination.last }\" href=\"\" data-ng-click=\"setCurrent(pagination.current + 1)\">\n    &rsaquo;\n  </a>\n\n</div>";
 
 /***/ }),
-/* 244 */
+/* 248 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(245);
+var content = __webpack_require__(249);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -48380,7 +48508,7 @@ if(false) {
 }
 
 /***/ }),
-/* 245 */
+/* 249 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -48394,7 +48522,7 @@ exports.push([module.i, ".spm_wrapper .points_rate_progress__wrapper {\n  font-s
 
 
 /***/ }),
-/* 246 */
+/* 250 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -48402,17 +48530,17 @@ exports.push([module.i, ".spm_wrapper .points_rate_progress__wrapper {\n  font-s
 
 var _widget = __webpack_require__(2);
 
-var _profile = __webpack_require__(247);
+var _profile = __webpack_require__(251);
 
 var _profile2 = _interopRequireDefault(_profile);
 
-var _history_pagination = __webpack_require__(248);
+var _history_pagination = __webpack_require__(252);
 
 var _history_pagination2 = _interopRequireDefault(_history_pagination);
 
-__webpack_require__(249);
+__webpack_require__(253);
 
-var _avatar_default = __webpack_require__(253);
+var _avatar_default = __webpack_require__(257);
 
 var _avatar_default2 = _interopRequireDefault(_avatar_default);
 
@@ -48486,25 +48614,25 @@ _widget.Widget.run(["$templateCache", function ($templateCache) {
 // });
 
 /***/ }),
-/* 247 */
+/* 251 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"bon_profile_wrap container\" data-ng-show=\"widget.enabled\" data-ng-cloak>\n\n  <div class=\"bon_profile_info\" data-sailplay-profile data-sailplay-gifts>\n\n    <div class=\"bon_profile_top clearfix\">\n      <div class=\"bon_profile_top_left\">\n        <h3>\n          <span class=\"header\">{{ widget.texts.header }}</span>\n        </h3>\n        <h4>\n          <span class=\"caption\">{{ widget.texts.spoiler }}</span>\n        </h4>\n      </div>\n      <div class=\"bon_profile_right clearfix\" data-ng-if=\"user()\">\n        <div class=\"user_avatar\">\n          <img class=\"user_avatar_image\" data-ng-src=\"{{ (user().user.pic | sailplay_pic) || default_avatar}}\" alt=\"You\">\n          <a href=\"#\" class=\"logout_btn button_link\" data-ng-click=\"$event.preventDefault(); logout();\">{{ widget.texts.logout }}</a>\n        </div>\n        <div class=\"user_info\">\n          <span class=\"user_name\"  data-ng-bind=\"user().user.name || widget.texts.name_not_defined\"></span>\n          <span class=\"user_phone\" data-ng-if=\"user().user.phone\"  data-ng-bind=\"user().user.phone | tel\"></span>\n          <span class=\"user_email\" data-ng-if=\"user().user.email\"  data-ng-bind=\"user().user.email\"></span>\n        </div>\n        <div class=\"user_info\">\n          <a href=\"#\" class=\"edit_profile_btn button_link\" data-ng-click=\"$event.preventDefault(); profile.fill_profile(true);\">{{ widget.texts.edit_profile_button }}</a>\n        </div>\n      </div>\n      <div class=\"bon_profile_right clearfix\" data-ng-if=\"!user()\">\n        <button type=\"button\" class=\"sp_btn button_primary login_reg_btn\" data-ng-click=\"$event.preventDefault(); login('remote', {widget: 'profile', element: 'profile_login_button'});\">{{ widget.texts.login_reg }}</button>\n      </div>\n    </div>\n\n    <!-- status -->\n    <div class=\"status_block\" data-ng-if=\"user() && user().user_status.name\">\n      <span class=\"status_block_title\" data-ng-bind=\"widget.texts.user_status\"></span>\n      <img class=\"status_block_img\" data-ng-src=\"{{ user().user_status.pic | sailplay_pic }}\" alt=\"{{ user().user_status.name }}\">\n      <span class=\"status_block_name\" data-ng-bind=\"user().user_status.name || widget.texts.empty_status \"></span>\n    </div>\n\n    <div class=\"bon_profile_stat\">\n      <div class=\"bps_left points_block clearfix\" data-ng-if=\"user()\">\n        <span class=\"points_confirmed\">\n          <span class=\"points_confirmed_value\" data-ng-bind=\"user().user_points.confirmed | number\"></span>\n          <span class=\"points_confirmed_name\" data-ng-bind=\"user().user_points.confirmed | sailplay_pluralize: ('points.texts.pluralize' | tools)\"></span>\n        </span>\n        <a class=\"button_link history_button\" href=\"#\" data-ng-click=\"$event.preventDefault(); profile.history = true;\">{{ widget.texts.history_button }}</a>\n      </div>\n      <div class=\"bps_right progress_block clearfix\" data-ng-if=\"progress\">\n        <div class=\"progress_line_main\">\n          <div class=\"progress_line_bg progress_bar progress_bar_border\"></div>\n          <div class=\"progress_line progress_bar_filled\" data-procent=\"0\" data-ng-style=\"{ width: progress.plenum + '%' }\">\n            <div class=\"progress_text progress_bar_flag\" data-ng-show=\"progress.next.item\" data-ng-class=\"{ right_position: progress.plenum < 50 }\">\n              <span class=\"progress_bar_flag_text\" data-ng-bind=\"progress.next.offset + ' ' + (progress.next.offset | sailplay_pluralize:('points.texts.pluralize' | tools)) + ' ' + widget.texts.before_gift\"></span>\n            </div>\n          </div>\n\n          <div class=\"gift_item progress_bar_border\" data-ng-repeat=\"item in progress.items track by $index\"\n               data-ng-class=\"{ act : item.reached, progress_bar_gift_filled: item.reached, progress_bar_gift: !item.reached}\"\n               data-ng-style=\"{ left: item.get_left() }\">\n\n            <span class=\"gift_item_hint\" data-ng-bind=\"item.gifts[0].points\"></span>\n\n          </div>\n\n        </div>\n      </div>\n    </div>\n  </div>\n\n  <magic-modal class=\"bns_overlay_hist\" data-show=\"profile.history\">\n\n    <div data-sailplay-history data-sailplay-profile>\n\n      <h3>\n        <span class=\"modal_history_header\">{{ widget.texts.history.header }}</span>\n        <!--<b>У вас {{ user().user_points.confirmed + ' ' + (user().user_points.confirmed | sailplay_pluralize:_tools.points.texts.pluralize) }}</b>-->\n      </h3>\n      <h4 class=\"modal_history_caption\">{{ widget.texts.history.caption }}</h4>\n\n      <table class=\"bns_hist_table\">\n\n        <tbody>\n\n        <tr data-dir-paginate=\"item in history() | itemsPerPage:10\" data-pagination-id=\"history_pages\">\n          <td>\n            <span class=\"modal_history_date\" data-ng-bind=\"item.action_date | date:'d/MM/yyyy'\"></span>\n          </td>\n          <td>\n            <span><b class=\"modal_history_content\" data-ng-bind=\"item | history_item\"></b></span>\n          </td>\n          <td>\n            <span class=\"modal_history_points\" data-ng-if=\"item.points_delta\" data-ng-bind=\"((item.points_delta|number) || 0) + ' ' + (item.points_delta | sailplay_pluralize:('points.texts.pluralize' | tools))\"></span>\n          </td>\n        </tr>\n\n        </tbody>\n      </table>\n\n      <dir-pagination-controls data-max-size=\"7\" data-pagination-id=\"history_pages\"\n                               data-template-url=\"profile.history_pagination\"\n                               data-auto-hide=\"true\"></dir-pagination-controls>\n    </div>\n\n\n\n  </magic-modal>\n\n  <!--profile edit section-->\n  <magic-modal class=\"fill_profile_modal\" data-show=\"profile.show_fill_profile\">\n\n    <div class=\"mb_popup mb_popup_prof\" data-sailplay-fill-profile data-config=\"widget.fill_profile.config\">\n\n      <div class=\"mb_popup_top\">\n        <span class=\"modal_profile_header\">{{ widget.fill_profile.header }}</span>\n      </div>\n\n      <form name=\"fill_profile_form\" class=\"mb_popup_main mb_popup_main_mt\" data-ng-submit=\"sailplay.fill_profile.submit(fill_profile_form, profile.fill_profile);\">\n\n        <div class=\"form_field\" data-ng-repeat=\"field in sailplay.fill_profile.form.fields\" data-ng-switch=\"field.input\">\n\n          <div data-ng-switch-when=\"image\" class=\"avatar_upload clearfix\">\n            <img width=\"160px\" data-ng-src=\"{{ (field.value | sailplay_pic) || 'http://saike.ru/sailplay-magic/dist/img/profile/avatar_default.png'}}\" alt=\"\">\n          </div>\n\n          <div data-ng-switch-when=\"text\" class=\"clearfix\">\n            <label class=\"form_label\">{{ field.label }}</label>\n            <input class=\"form_input\" type=\"text\" placeholder=\"{{ field.placeholder }}\" data-ng-model=\"field.value\">\n          </div>\n\n          <div data-ng-switch-when=\"date\" class=\"clearfix\">\n            <label class=\"form_label\">{{ field.label }}</label>\n            <date-picker data-model=\"field.value\"></date-picker>\n          </div>\n\n          <div data-ng-switch-when=\"select\" class=\"clearfix\">\n            <label class=\"form_label\">{{ field.label }}</label>\n            <div class=\"magic_select form_input\">\n              <select data-ng-model=\"field.value\" data-ng-options=\"item.value as item.text for item in field.data\"></select>\n            </div>\n          </div>\n\n          <div data-ng-switch-when=\"phone\" class=\"clearfix\">\n            <label class=\"form_label\">{{ field.label }}</label>\n            <input class=\"form_input\" type=\"text\" data-model-view-value=\"true\" data-ui-mask=\"{{ field.placeholder }}\" data-ng-model=\"field.value\">\n          </div>\n\n          <div data-ng-switch-when=\"email\" class=\"clearfix\">\n            <label class=\"form_label\">{{ field.label }}</label>\n            <input class=\"form_input\" type=\"email\" placeholder=\"{{ field.placeholder }}\" data-ng-model=\"field.value\">\n          </div>\n\n        </div>\n\n        <div class=\"answ_text\">\n          <button type=\"submit\" class=\"sp_btn button_primary\">{{ 'buttons.texts.save' | tools }}</button>\n        </div>\n      </form>\n    </div>\n  </magic-modal>\n\n</div>";
 
 /***/ }),
-/* 248 */
+/* 252 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"bns_hist_pager\" data-ng-if=\"1 < pages.length || !autoHide\">\n\n  <a data-ng-if=\"directionLinks\" data-ng-class=\"{ disabled : pagination.current == 1 }\" href=\"\" data-ng-click=\"setCurrent(pagination.current - 1)\">\n    &lsaquo;\n  </a>\n  <a data-ng-repeat=\"pageNumber in pages track by tracker(pageNumber, $index)\" data-ng-class=\"{ active : pagination.current == pageNumber, disabled : pageNumber == '...' }\" href=\"\" data-ng-click=\"setCurrent(pageNumber)\">\n    {{ pageNumber }}\n  </a>\n\n  <a data-ng-if=\"directionLinks\" data-ng-class=\"{ disabled : pagination.current == pagination.last }\" href=\"\" data-ng-click=\"setCurrent(pagination.current + 1)\">\n    &rsaquo;\n  </a>\n\n</div>";
 
 /***/ }),
-/* 249 */
+/* 253 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(250);
+var content = __webpack_require__(254);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -48529,7 +48657,7 @@ if(false) {
 }
 
 /***/ }),
-/* 250 */
+/* 254 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var escape = __webpack_require__(45);
@@ -48538,31 +48666,31 @@ exports = module.exports = __webpack_require__(0)(false);
 
 
 // module
-exports.push([module.i, ".spm_wrapper .bon_profile_wrap {\n  float: left;\n  width: 100%;\n  padding: 0 5%;\n  -webkit-box-sizing: border-box;\n  -moz-box-sizing: border-box;\n  box-sizing: border-box;\n  background-color: #888888;\n  position: relative;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info {\n  width: 100%;\n  float: left;\n  position: relative;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_top_left {\n  float: left;\n  width: 580px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_top_left h3 {\n  float: left;\n  width: 100%;\n  font-size: 30px;\n  color: #ffffff;\n  font-family: 'RotondaC';\n  margin-top: 50px;\n  margin-bottom: 10px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_top_left h4 {\n  float: left;\n  width: 100%;\n  color: #ffffff;\n  font-size: 14px;\n  font-weight: 400;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right {\n  float: right;\n  width: 265px;\n  margin-top: 50px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right img {\n  border-radius: 100%;\n  -webkit-box-shadow: 0 2px 7px 1px rgba(0, 0, 0, 0.2);\n  box-shadow: 0 2px 7px 1px rgba(0, 0, 0, 0.2);\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right span {\n  font-size: 16px;\n  font-weight: 700;\n  margin-top: 18px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right .login_reg_btn {\n  float: right;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right .logout_btn {\n  width: auto;\n  font-size: 14px;\n  margin-top: 9px;\n  color: #ffffff;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right .edit_profile_btn {\n  font-size: 14px;\n  margin-top: 9px;\n  color: #ffffff;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right .user_avatar {\n  max-width: 81px;\n  float: right;\n  text-align: center;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right .user_info {\n  text-align: right;\n  float: left;\n  width: 165px;\n  color: #ffffff;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right .user_info span {\n  word-wrap: break-word;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right .user_avatar_image {\n  width: 100%;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat {\n  float: left;\n  width: 100%;\n  margin-top: 50px;\n  margin-bottom: 78px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .points_confirmed span {\n  color: inherit;\n  font-family: inherit;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .points_confirmed_name {\n  margin-left: 2px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_left {\n  float: left;\n  width: auto;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_left > span {\n  color: #ffffff;\n  display: block;\n  font-size: 33px;\n  font-family: 'RotondaC bold';\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_left > a {\n  font-size: 14px;\n  color: #ffffff;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right {\n  float: right;\n  width: 70%;\n  margin-top: 12px;\n  margin-right: 20px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main {\n  position: relative;\n  float: left;\n  width: 100%;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .progress_line_bg {\n  height: 14px;\n  border-top: 3px solid #000000;\n  background-color: #ffffff;\n  background-image: url(" + escape(__webpack_require__(251)) + ");\n  border-radius: 20px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .progress_line {\n  position: absolute;\n  left: 0px;\n  top: 3px;\n  width: 0%;\n  background-color: #ffffff;\n  height: 14px;\n  border-radius: 20px 0px 0px 20px;\n  -webkit-transition: all 1000ms ease;\n  -moz-transition: all 1000ms ease;\n  -ms-transition: all 1000ms ease;\n  -o-transition: all 1000ms ease;\n  transition: all 1000ms ease;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .progress_line .progress_text {\n  min-width: 100px;\n  position: absolute;\n  right: 0px;\n  padding-top: 32px;\n  border-right: 1px solid #fff;\n  top: 0px;\n  z-index: 1;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .progress_line .progress_text.right_position {\n  right: auto;\n  left: 100%;\n  border-left: 1px solid #fff;\n  border-right: none;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .progress_line .progress_text.right_position span {\n  border-radius: 0px 5px 5px 0px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .progress_line .progress_text span {\n  float: right;\n  line-height: 30px;\n  background-color: rgba(255, 255, 255, 0.2);\n  color: #ffffff;\n  font-size: 14px;\n  font-family: 'RotondaC';\n  border-radius: 5px 0px 0px 5px;\n  padding-left: 10px;\n  padding-right: 10px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .gift_item {\n  position: absolute;\n  top: 50%;\n  width: 36px;\n  height: 36px;\n  margin-top: -19px;\n  margin-left: -19px;\n  background-color: #cccccc;\n  border-radius: 6px;\n  -webkit-background-size: 20px 22px;\n  background-size: 20px 22px;\n  background-repeat: no-repeat;\n  background-position: center center;\n  border-top: 3px solid #000000;\n  background-image: url(" + escape(__webpack_require__(252)) + ");\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .gift_item.act {\n  background-color: #ffffff;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .gift_item_hint {\n  opacity: 0;\n  visibility: hidden;\n  display: inline-block;\n  position: absolute;\n  left: 0;\n  text-align: center;\n  width: 100%;\n  top: 0;\n  font-weight: bold;\n  transition: .3s ease;\n  color: white;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .gift_item:hover .gift_item_hint {\n  visibility: visible;\n  opacity: 1;\n  top: -20px;\n}\n.spm_wrapper .bon_profile_wrap .status_block {\n  width: 30%;\n  display: inline-block;\n}\n@media screen and (max-width: 650px) {\n  .spm_wrapper .bon_profile_wrap .status_block {\n    width: 100%;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_stat .bps_left {\n    text-align: left;\n  }\n}\n@media only screen and (min-width: 1129px) {\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right {\n    width: 100%;\n    margin-top: 30px;\n    margin-right: 0px;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_top_left {\n    width: 60%;\n  }\n}\n@media only screen and (min-width: 950px) and (max-width: 1128px) {\n  .spm_wrapper .bon_profile_wrap .progress_line_main .progress_text {\n    border: none !important;\n  }\n  .spm_wrapper .bon_profile_wrap .progress_line_main .progress_text:before {\n    content: '';\n    width: 1px;\n    background: white;\n    right: 0;\n    top: 0;\n    position: absolute;\n    height: 17px;\n    display: block;\n  }\n  .spm_wrapper .bon_profile_wrap .progress_line_main .progress_text span {\n    position: relative;\n    left: 50%;\n    border-radius: 5px !important;\n  }\n}\n@media only screen and (min-width: 530px) and (max-width: 949px) {\n  .spm_wrapper .bon_profile_wrap .bon_profile_info {\n    width: 100%;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right {\n    width: 265px;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_top_left {\n    width: 80%;\n    float: left;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right {\n    float: left;\n    width: 100%;\n    margin-top: 30px;\n    margin-bottom: 12px;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main {\n    float: left;\n    width: 95%;\n  }\n}\n@media only screen and (max-width: 529px) {\n  .spm_wrapper .bon_profile_wrap .bon_profile_info {\n    width: 100%;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right {\n    width: 265px;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_top_left {\n    width: 80%;\n    float: left;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right {\n    float: left;\n    width: 100%;\n    margin-top: 30px;\n    margin-bottom: 12px;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main {\n    float: left;\n    width: 95%;\n  }\n}\n.spm_wrapper .bns_hist_table {\n  float: left;\n  width: 100%;\n  margin-top: 12px;\n}\n.spm_wrapper .bns_hist_table td {\n  vertical-align: text-top;\n  padding: 5px 11px;\n}\n.spm_wrapper .bns_hist_table td:nth-child(1) {\n  color: #888888;\n  font-size: 13px;\n  line-height: 19px;\n  padding-right: 0px;\n  padding-left: 0px;\n  white-space: nowrap;\n}\n.spm_wrapper .bns_hist_table td:nth-child(2) {\n  color: #000000;\n  font-size: 12px;\n  font-weight: 200;\n  line-height: 19px;\n  position: relative;\n  padding-left: 0px;\n  width: 570px;\n}\n.spm_wrapper .bns_hist_table td:nth-child(2)::after {\n  position: absolute;\n  left: 0px;\n  width: 100%;\n  border-top: 1px dotted #444444;\n  top: 14px;\n  content: '';\n  display: block;\n}\n.spm_wrapper .bns_hist_table td:nth-child(2) span {\n  display: block;\n  position: relative;\n  z-index: 1;\n  font-size: 13px;\n  color: #222222;\n}\n.spm_wrapper .bns_hist_table td:nth-child(2) span b {\n  background-color: #ffffff;\n  padding-right: 15px;\n  padding-left: 11px;\n  font-weight: 200;\n}\n.spm_wrapper .bns_hist_table td:nth-child(2) span:first-child {\n  color: #000000;\n}\n.spm_wrapper .bns_hist_table td:nth-child(3) {\n  color: #444444;\n  font-size: 14px;\n  font-weight: bold;\n  text-align: right;\n  line-height: 19px;\n}\n.spm_wrapper .bns_hist_table td:nth-child(3) span {\n  display: block;\n  white-space: nowrap;\n  font-size: 13px;\n}\n.spm_wrapper .bns_hist_pager {\n  float: right;\n  font-size: 13px;\n}\n.spm_wrapper .bns_hist_pager a {\n  text-decoration: none;\n  color: #000;\n  margin-right: 4px;\n}\n.spm_wrapper .bns_hist_pager a.active {\n  font-weight: bold;\n}\n", ""]);
+exports.push([module.i, ".spm_wrapper .bon_profile_wrap {\n  float: left;\n  width: 100%;\n  padding: 0 5%;\n  -webkit-box-sizing: border-box;\n  -moz-box-sizing: border-box;\n  box-sizing: border-box;\n  background-color: #888888;\n  position: relative;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info {\n  width: 100%;\n  float: left;\n  position: relative;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_top_left {\n  float: left;\n  width: 580px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_top_left h3 {\n  float: left;\n  width: 100%;\n  font-size: 30px;\n  color: #ffffff;\n  font-family: 'RotondaC';\n  margin-top: 50px;\n  margin-bottom: 10px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_top_left h4 {\n  float: left;\n  width: 100%;\n  color: #ffffff;\n  font-size: 14px;\n  font-weight: 400;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right {\n  float: right;\n  width: 265px;\n  margin-top: 50px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right img {\n  border-radius: 100%;\n  -webkit-box-shadow: 0 2px 7px 1px rgba(0, 0, 0, 0.2);\n  box-shadow: 0 2px 7px 1px rgba(0, 0, 0, 0.2);\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right span {\n  font-size: 16px;\n  font-weight: 700;\n  margin-top: 18px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right .login_reg_btn {\n  float: right;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right .logout_btn {\n  width: auto;\n  font-size: 14px;\n  margin-top: 9px;\n  color: #ffffff;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right .edit_profile_btn {\n  font-size: 14px;\n  margin-top: 9px;\n  color: #ffffff;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right .user_avatar {\n  max-width: 81px;\n  float: right;\n  text-align: center;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right .user_info {\n  text-align: right;\n  float: left;\n  width: 165px;\n  color: #ffffff;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right .user_info span {\n  word-wrap: break-word;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right .user_avatar_image {\n  width: 100%;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat {\n  float: left;\n  width: 100%;\n  margin-top: 50px;\n  margin-bottom: 78px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .points_confirmed span {\n  color: inherit;\n  font-family: inherit;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .points_confirmed_name {\n  margin-left: 2px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_left {\n  float: left;\n  width: auto;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_left > span {\n  color: #ffffff;\n  display: block;\n  font-size: 33px;\n  font-family: 'RotondaC bold';\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_left > a {\n  font-size: 14px;\n  color: #ffffff;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right {\n  float: right;\n  width: 70%;\n  margin-top: 12px;\n  margin-right: 20px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main {\n  position: relative;\n  float: left;\n  width: 100%;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .progress_line_bg {\n  height: 14px;\n  border-top: 3px solid #000000;\n  background-color: #ffffff;\n  background-image: url(" + escape(__webpack_require__(255)) + ");\n  border-radius: 20px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .progress_line {\n  position: absolute;\n  left: 0px;\n  top: 3px;\n  width: 0%;\n  background-color: #ffffff;\n  height: 14px;\n  border-radius: 20px 0px 0px 20px;\n  -webkit-transition: all 1000ms ease;\n  -moz-transition: all 1000ms ease;\n  -ms-transition: all 1000ms ease;\n  -o-transition: all 1000ms ease;\n  transition: all 1000ms ease;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .progress_line .progress_text {\n  min-width: 100px;\n  position: absolute;\n  right: 0px;\n  padding-top: 32px;\n  border-right: 1px solid #fff;\n  top: 0px;\n  z-index: 1;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .progress_line .progress_text.right_position {\n  right: auto;\n  left: 100%;\n  border-left: 1px solid #fff;\n  border-right: none;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .progress_line .progress_text.right_position span {\n  border-radius: 0px 5px 5px 0px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .progress_line .progress_text span {\n  float: right;\n  line-height: 30px;\n  background-color: rgba(255, 255, 255, 0.2);\n  color: #ffffff;\n  font-size: 14px;\n  font-family: 'RotondaC';\n  border-radius: 5px 0px 0px 5px;\n  padding-left: 10px;\n  padding-right: 10px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .gift_item {\n  position: absolute;\n  top: 50%;\n  width: 36px;\n  height: 36px;\n  margin-top: -19px;\n  margin-left: -19px;\n  background-color: #cccccc;\n  border-radius: 6px;\n  -webkit-background-size: 20px 22px;\n  background-size: 20px 22px;\n  background-repeat: no-repeat;\n  background-position: center center;\n  border-top: 3px solid #000000;\n  background-image: url(" + escape(__webpack_require__(256)) + ");\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .gift_item.act {\n  background-color: #ffffff;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .gift_item_hint {\n  opacity: 0;\n  visibility: hidden;\n  display: inline-block;\n  position: absolute;\n  left: 0;\n  text-align: center;\n  width: 100%;\n  top: 0;\n  font-weight: bold;\n  transition: .3s ease;\n  color: white;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .gift_item:hover .gift_item_hint {\n  visibility: visible;\n  opacity: 1;\n  top: -20px;\n}\n.spm_wrapper .bon_profile_wrap .status_block {\n  width: 30%;\n  display: inline-block;\n}\n@media screen and (max-width: 650px) {\n  .spm_wrapper .bon_profile_wrap .status_block {\n    width: 100%;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_stat .bps_left {\n    text-align: left;\n  }\n}\n@media only screen and (min-width: 1129px) {\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right {\n    width: 100%;\n    margin-top: 30px;\n    margin-right: 0px;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_top_left {\n    width: 60%;\n  }\n}\n@media only screen and (min-width: 950px) and (max-width: 1128px) {\n  .spm_wrapper .bon_profile_wrap .progress_line_main .progress_text {\n    border: none !important;\n  }\n  .spm_wrapper .bon_profile_wrap .progress_line_main .progress_text:before {\n    content: '';\n    width: 1px;\n    background: white;\n    right: 0;\n    top: 0;\n    position: absolute;\n    height: 17px;\n    display: block;\n  }\n  .spm_wrapper .bon_profile_wrap .progress_line_main .progress_text span {\n    position: relative;\n    left: 50%;\n    border-radius: 5px !important;\n  }\n}\n@media only screen and (min-width: 530px) and (max-width: 949px) {\n  .spm_wrapper .bon_profile_wrap .bon_profile_info {\n    width: 100%;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right {\n    width: 265px;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_top_left {\n    width: 80%;\n    float: left;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right {\n    float: left;\n    width: 100%;\n    margin-top: 30px;\n    margin-bottom: 12px;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main {\n    float: left;\n    width: 95%;\n  }\n}\n@media only screen and (max-width: 529px) {\n  .spm_wrapper .bon_profile_wrap .bon_profile_info {\n    width: 100%;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right {\n    width: 265px;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_top_left {\n    width: 80%;\n    float: left;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right {\n    float: left;\n    width: 100%;\n    margin-top: 30px;\n    margin-bottom: 12px;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main {\n    float: left;\n    width: 95%;\n  }\n}\n.spm_wrapper .bns_hist_table {\n  float: left;\n  width: 100%;\n  margin-top: 12px;\n}\n.spm_wrapper .bns_hist_table td {\n  vertical-align: text-top;\n  padding: 5px 11px;\n}\n.spm_wrapper .bns_hist_table td:nth-child(1) {\n  color: #888888;\n  font-size: 13px;\n  line-height: 19px;\n  padding-right: 0px;\n  padding-left: 0px;\n  white-space: nowrap;\n}\n.spm_wrapper .bns_hist_table td:nth-child(2) {\n  color: #000000;\n  font-size: 12px;\n  font-weight: 200;\n  line-height: 19px;\n  position: relative;\n  padding-left: 0px;\n  width: 570px;\n}\n.spm_wrapper .bns_hist_table td:nth-child(2)::after {\n  position: absolute;\n  left: 0px;\n  width: 100%;\n  border-top: 1px dotted #444444;\n  top: 14px;\n  content: '';\n  display: block;\n}\n.spm_wrapper .bns_hist_table td:nth-child(2) span {\n  display: block;\n  position: relative;\n  z-index: 1;\n  font-size: 13px;\n  color: #222222;\n}\n.spm_wrapper .bns_hist_table td:nth-child(2) span b {\n  background-color: #ffffff;\n  padding-right: 15px;\n  padding-left: 11px;\n  font-weight: 200;\n}\n.spm_wrapper .bns_hist_table td:nth-child(2) span:first-child {\n  color: #000000;\n}\n.spm_wrapper .bns_hist_table td:nth-child(3) {\n  color: #444444;\n  font-size: 14px;\n  font-weight: bold;\n  text-align: right;\n  line-height: 19px;\n}\n.spm_wrapper .bns_hist_table td:nth-child(3) span {\n  display: block;\n  white-space: nowrap;\n  font-size: 13px;\n}\n.spm_wrapper .bns_hist_pager {\n  float: right;\n  font-size: 13px;\n}\n.spm_wrapper .bns_hist_pager a {\n  text-decoration: none;\n  color: #000;\n  margin-right: 4px;\n}\n.spm_wrapper .bns_hist_pager a.active {\n  font-weight: bold;\n}\n", ""]);
 
 // exports
 
 
 /***/ }),
-/* 251 */
+/* 255 */
 /***/ (function(module, exports) {
 
 module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEUAAAAOCAYAAAB5EtGGAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAO5JREFUeNrslrEKwjAQhptD6tSpTl0UhD6HD6BP6wvkOQqCLk5m6mQnL+WC1xwmZu4FaqQ/+fzvK0LNcX/oKlq3x/0ZvuP9Frdt9V1vzB3Lu2q5XphPlDW4NTzMsEfMR8pq3HYF7LhXETvqNbM3+HGme5aFPW4ndtYXurLcZz3LhwCnUhe8apan2C6wqbQ/2/7JjnuVsm0kc2ZDCPGHh5SQ8DR+CLEpIQm2I/aUEGJTQlivUjbvtWCDCpFsk/vLrE2IP2tUiGQbFSLZoELkzKBC5MygQuTMoELkzKBC5Mwm8+q+OiG+l1EhstdHgAEAt8yVBryjUM8AAAAASUVORK5CYII="
 
 /***/ }),
-/* 252 */
+/* 256 */
 /***/ (function(module, exports) {
 
 module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABkAAAAcCAYAAACUJBTQAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAR9JREFUeNrsVt0NgjAYLIQB6ga4gS4gjsAG6gTKk88++iROIBuAE4BO4AiMwAjeZz6SLw2/EYwPXHJpUq69a/u1QakGnFfhGnRVC6BZEOu+WzWDLmgOoisHg+PzkAiNZs0e1EK3gy5rNKkwkCCTHUiru4FV6QtwCaO87LANAy0MThBSiDkYcZ8PpszS4ATOWJvwqrZyXsdIIZN5ME2NhNrQUFqPtUpsm9dkIrFW7XCZjag6k22XgS2I5JlYZami2XScPOD20kF7J0MHBnSYcY+Uusd2fsLbHRN9g4U9wP63wlY/AJVwWHNz61Bwm/XUjwtL3I9YVM5QJXylR1XeeH+EEn7Qe/aTg59MJpPJ5A9Nxngtc9MkGNjgxf9h6i3AANemSGniswSTAAAAAElFTkSuQmCC"
 
 /***/ }),
-/* 253 */
+/* 257 */
 /***/ (function(module, exports) {
 
 module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFEAAABRCAYAAACqj0o2AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAACiFJREFUeNrsnV1sVMcVx8/cfPERKku1iVQSYqM2CeajmwawG6qyNoaEUMVrUuWjSmNv1IdQGjBN0qrtQ8hLSvISqKK+2hAIqRTCkoZGIk5YXkJtInlFwOYFvFS2hM1DnTohffFOz9yd+zH3Y+/uvTPXu9BjzV7brO/e+e3/nDN3Zs4CUOX2bHO6Dluymq+RVAGkBB5Ya8S2AVsd/znIsvx4GluOtUMjffmbAiJTFh5S2DqxJTk0WZbncI+zI0KdvqEgIrweDi4V43vWz4AizEzNQuSq68W2S7Liwij0NYTZXzMQqwie05h775YNkyhy27eqDJ6XMtMIM1tVEBEey659PFlENBpXVzIcZqQEpEkCyFx3OBpAajYq/FRec/5UprEkN4bXn5ozJfLYx1y3J6rqaGQlWt0h4bq3DxW5O1aIHOCpMgfGZcBzg6M0GCYhRCbMUO5NQgJMcIB1YQF6wTOgUV81Up9LJvpv3UBJGJDs7qetEpAkXoDe6rPg2X8WQVMfnRmPBkAdGxHhqQapzQ1AKgBkXwVawO8LeJzVv5/l3y+9/26Yd+c8KBRm9bb0/ntgFo+z+vNm+fOKz2V/j2cqHs1QQB3JpyzT+8lDljwl8hOORXdhOzz+e73zVP/dmo1rYGv3o3B+aATaujZAw5IGyI/m9SOzhd9ZaJ5xaOAsZI+dhrMDX+hKJKiJ4pEIR9WKJBUAjJRESgEsMHgdD8GCRfNhx5+3V3z2Ux9k4cSBj+HKxSsITWMo9aM/yIqiWAYhdpV6wi3lnGV1w4NHwo8BqSvjGgAL3O22PPcIwnsB1nWsDfUKTcsbYf3Wh+G2O27TFQxCfHRm8YpBPoD9J+eu5bKhIfKBdG/0+w/x0QC4ZuOPYMfe7RDVbr/jdljRsgKmJqZgbHSMq5DDIpHVmESQpxFkvmJ35olkOAo+txtbLly/5Lvw5rG9GOcWSL0xfqnzd+ja/wKNuTZvEtyaxcUmr/gYlJ37ZHXMCZApsfsPv5QOkNnV8atWtuaKNxJXBKvz46EFuHFClgoFkDgMeQwzcNgYGGQzX80AH+yYX/6D/Yos5bXeo5XIxq9KVyFXQ/336iH9x25l81zt29q44rkKjeYBM4T1lavE3mjzgdRjcGt1JNn1U6WThb1v7oSV61ZwzRt3P7Ts+/EAa+Rzpv4Q+bygfBVSMO9M1ipyY7uxTC0qUIoKDXs1SIk9kvB5aJPqANm4TrWxOxvrNpC/iQ6XpuFhCmrUPGLhrqjwHE5sKoJlZZWx0G6tHS3Wa8t3abBzcioxBRLXRsTZmWInFi5aEAvEu+5eDCI+KvslEkam1vzoyrViJ9i9cZzW2fO4LR7r72rUWOi0bgEiTygJWdDMCS9bPGLjQvssjGprWt5kgeP37CZQOZZyKjGlQoFCsF+0MFYlTo5PeixmeR3D38WwRS47xE45bguO4G0NtBtjyMrOuOheBXTOpkeGucEOMamiI9QGEuQH9+BhjgOfgitIajweJtV1hZqHxUsWxwrxzMl/2uKhsjcxYSgxoQSfzyA3LlvW3ATUFf7kX4cB8YdqU8rc2LLmZeDcUaHi6gyIjfLxiattbduSsdzuCYkFw8eq1lUiPgXvriYvqdCSQNsRYpxjxGJ2vgtWt6y0rsXIyFQNROUuXA3urco0fqfyf4uoxFggXhi8MCcdvDwyFgvEWGxq4tqcQJycmILiqh6x1qNJFUMknr8p7kK4MDgSP8BxvgZtYeQA5VK8VS5C6nG0lPj69jfw/vle+MXOp5XC+/o/38Ch/YfhPIYQIizeE1Cx11+ZOxv7BYuNLaATGBoYgiN/eU9XiEr7/OTnkOk7zlVIgC/dm18qIOZUdojYnZpvMDo/eF4pxHODX1qvZ9v9IOxZJCH2QPhBVFW6JbqPfaubBgMffKbUldnEQxGeZnqDfU+Oe4sdqSZ3Jq5drPZOGNvdWKyaUuTSZ06egesz1/XwoRECxMOVieT0bEDMqlMjmB0wYhPrnCo1fnJ0wFK98ZrEUqRbh0QaxLyqgY4Vm4rNUMeH/R9JB3hp5LItHmriRk8ggQOyqBCvyB8vEk81Gh1kLvfpUblqPNaXMc+v2bVIwGPXrDyQSt1ZVKMLJbyLw51vMBHIUeEl+OR9y5XNJELAU4VEdkyUVSjop0ZrWAFmdiT6AHwKBo5+KuX1Du47JKQP+9AKFCUUbjl7dlaqRs/BIz60bmqVcsr1mx92jFjUxUCHZe0Qj8s8c+BSJP7TqpaVfFkzum3++Sa4s+S6ttdOWSmznKftEDOy8AkbmsydB7ZFK/6EZ3Y+JVUSqedTfLuIdR3BO2UjgZxmH41gQuSf5JELrzt7KZlzzwF1fbE1l1Xm1L0c60p3wrLlTcJONOdOWf9Kq1AwM153LPvDwPPaqmFspTMrpqi16f3FvTtg1xsvSg9ObA3n7Y/2Q/u2dr5fu2Dbt13wBBkR5gH2INSxrG54kKnxBWzzKot4XgU/BswiOL1D+P1v9v5aX7RSaT/e1AKTE5MwNpoXMrQ5l0isK/YaN5LyElLeqI8WIJ67lvsvgmT735Lh4VlBnNrq9hjA9J+64ZFnNscyAGhFkJdHx2Di8gT41q0Q9y2qN0xPkLuRV85vAqI/GKBjKZzXpVh1KmJjFaGPPbcFfta9FeK0XgwZzeuaeTVqsSrVrEK1H6EYeipw87z9E01cZWlIdxrVyHbLtgZlM9FtqbC917jAZNcG+P1fX4GfbF0PcRsrVdv4RDusxATG3Ftfb6HuKhZqE5yfmztUaarQV6diWW6Joh5qG0ToF1cM3vVL6nV4LAMv5iW21WBspvvv/Sf0Et/rM99aU2XmxC2Yc5Duan7TxVGF/U1lRc1iRRV9ywnQyrhixmMFPms71ug1ynHvQwxjgwNDOkzWvkWgIsySNdNtCDFb9r3Qs809w1TfMUYdAI0CRwS38SG9uKcWwPkDPQtn9fYFn9DVPIvQ2bjw8MgBV+3zrQEDmTQ+DhsubACcv2g+vPz2bzFoL4cbwVo61uqN2YkD/4D+1w/qADVSwC5rxsLlNIJMe/19yXrnL6/lrq5uSHyFAB+1V4j+as/zuuveiHZf4gc6sQus+FwcW255d/TgxVLzib6G8t2H+DLGrROrUVZdmzfXlsSEOCuW+b52ZPSdbNCkbOn7E0rTeKIcG7SwGHijGxtR3PvAUuOTTjJ/u3h4T+CkbJC9d/HQNILswndmmg1ebwZjMRJHH0w4aaknfuK+JxMz01//m94ENn5pfPjx73fJ/Vwcm2tH/IirmjD983AwG08rgXgTgKwIYNkx0UWeEPZCTaB4H88cWKZSgKEhcpDshdr8Z31qzvZhn7oqBSjN0L17sdVqwmHXnaqKt5HFSWynagzgMWzVF9drRJVjVaO+EiDrsO2pQpjsenprKlJXEUymvJ6qdN0KgfbwGBSn9cXhtmQu1Anq/xcM9t+LZOIarvxPgAEABz4fqCBZ1lYAAAAASUVORK5CYII="
 
 /***/ }),
-/* 254 */
+/* 258 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -48570,15 +48698,15 @@ module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFEAAABRCAYAAACq
 
 var _widget = __webpack_require__(2);
 
-var _profile_nr = __webpack_require__(255);
+var _profile_nr = __webpack_require__(259);
 
 var _profile_nr2 = _interopRequireDefault(_profile_nr);
 
-var _history_pagination = __webpack_require__(256);
+var _history_pagination = __webpack_require__(260);
 
 var _history_pagination2 = _interopRequireDefault(_history_pagination);
 
-__webpack_require__(257);
+__webpack_require__(261);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -48612,25 +48740,25 @@ _widget.Widget.run(["$templateCache", function ($templateCache) {
 }]);
 
 /***/ }),
-/* 255 */
+/* 259 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"spm_profile_nr clearfix\" data-ng-if=\"widget.enabled\" data-ng-cloak data-sailplay-profile>\n\n    <div class=\"spm_profile_nr-left\">\n\n        <div class=\"spm_profile_nr-header\"\n             data-ng-bind=\"user() ? (widget.texts.auth.header + user().user.name) : widget.texts.no_auth.header\"></div>\n        <div class=\"spm_profile_nr-description\"\n             data-ng-bind=\"widget.texts[user() ? 'auth' : 'no_auth'].description\"></div>\n\n        <div class=\"spm_profile_nr-buttons\" data-ng-if=\"user && user()\">\n            <a href=\"#\" class=\"button_primary spm_profile_nr-edit\"\n               data-ng-bind=\"widget.texts.edit\"\n               data-ng-click=\"$event.preventDefault();profile.show_fill_profile=true;\"></a>\n            <a href=\"#\" class=\"button_primary spm_profile_nr-logout\"\n               data-ng-click=\"$event.preventDefault();logout();\"></a>\n        </div>\n\n    </div>\n\n    <div class=\"spm_profile_nr-right\">\n\n        <div data-ng-if=\"user()\">\n\n            <div class=\"spm_profile_nr-avatar\" data-ng-style=\"{'background-image': (user().user.avatar['250x250'] | sailplay_pic | background_image)}\"></div>\n\n            <div class=\"spm_profile_nr-balance\">\n                <div class=\"spm_profile_nr-balance-hover\">\n                    <span class=\"spm_profile_nr-balance-value\" data-ng-bind=\"user().user_points.confirmed | number\"></span>\n                    <span class=\"spm_profile_nr-balance-placeholder\" data-ng-bind=\"widget.texts.balance\"></span>\n                    <a href=\"\" class=\"button_primary spm_profile_nr-history\" data-ng-bind=\"widget.texts.history\"\n                       data-ng-click=\"$event.preventDefault();profile.history=true;\"></a>\n                </div>\n            </div>\n\n        </div>\n\n        <a href=\"#\" class=\"spm_profile_nr-login\"\n           data-ng-if=\"!user()\"\n           data-ng-bind=\"widget.texts.login\"\n           data-ng-click=\"$event.preventDefault();login('remote', {widget: 'profile_nr', action: 'login_button'});\"></a>\n\n    </div>\n\n    <magic-modal class=\"bns_overlay_hist\" data-show=\"profile.history\">\n\n        <div data-sailplay-history data-sailplay-profile>\n\n            <h3>\n                <span class=\"modal_history_header\">{{ widget.texts.history.header }}</span>\n                <!--<b>У вас {{ user().user_points.confirmed + ' ' + (user().user_points.confirmed | sailplay_pluralize:_tools.points.texts.pluralize) }}</b>-->\n            </h3>\n            <h4 class=\"modal_history_caption\">{{ widget.texts.history.caption }}</h4>\n\n            <table class=\"bns_hist_table\">\n\n                <tbody>\n\n                <tr data-dir-paginate=\"item in history() | itemsPerPage:10\" data-pagination-id=\"history_pages\">\n                    <td>\n                        <span class=\"modal_history_date\" data-ng-bind=\"item.action_date | date:'d/MM/yyyy'\"></span>\n                    </td>\n                    <td>\n                        <span><b class=\"modal_history_content\" data-ng-bind=\"item | history_item\"></b></span>\n                    </td>\n                    <td>\n                        <span class=\"modal_history_points\" data-ng-if=\"item.points_delta\" data-ng-bind=\"((item.points_delta|number) || 0) + ' ' + (item.points_delta | sailplay_pluralize:('points.texts.pluralize' | tools))\"></span>\n                    </td>\n                </tr>\n\n                </tbody>\n            </table>\n\n            <dir-pagination-controls data-max-size=\"7\" data-pagination-id=\"history_pages\"\n                                     data-template-url=\"profile.history_pagination\"\n                                     data-auto-hide=\"true\"></dir-pagination-controls>\n        </div>\n\n\n\n    </magic-modal>\n\n    <!--profile edit section-->\n    <magic-modal class=\"fill_profile_modal\" data-show=\"profile.show_fill_profile\">\n\n        <div class=\"mb_popup mb_popup_prof\" data-sailplay-fill-profile data-config=\"widget.fill_profile.config\">\n\n            <div class=\"mb_popup_top\">\n                <span class=\"modal_profile_header\">{{ widget.fill_profile.header }}</span>\n            </div>\n\n            <form name=\"fill_profile_form\" class=\"mb_popup_main mb_popup_main_mt\" data-ng-submit=\"sailplay.fill_profile.submit(fill_profile_form, profile.fill_profile);\">\n\n                <div class=\"form_field\" data-ng-repeat=\"field in sailplay.fill_profile.form.fields\" data-ng-switch=\"field.input\">\n\n                    <div data-ng-switch-when=\"image\" class=\"avatar_upload clearfix\">\n                        <img width=\"160px\" data-ng-src=\"{{ (field.value | sailplay_pic) || 'http://saike.ru/sailplay-magic/dist/img/profile/avatar_default.png'}}\" alt=\"\">\n                    </div>\n\n                    <div data-ng-switch-when=\"text\" class=\"clearfix\">\n                        <label class=\"form_label\">{{ field.label }}</label>\n                        <input class=\"form_input\" type=\"text\" placeholder=\"{{ field.placeholder }}\" data-ng-model=\"field.value\">\n                    </div>\n\n                    <div data-ng-switch-when=\"date\" class=\"clearfix\">\n                        <label class=\"form_label\">{{ field.label }}</label>\n                        <date-picker data-model=\"field.value\"></date-picker>\n                    </div>\n\n                    <div data-ng-switch-when=\"select\" class=\"clearfix\">\n                        <label class=\"form_label\">{{ field.label }}</label>\n                        <div class=\"magic_select form_input\">\n                            <select data-ng-model=\"field.value\" data-ng-options=\"item.value as item.text for item in field.data\"></select>\n                        </div>\n                    </div>\n\n                    <div data-ng-switch-when=\"phone\" class=\"clearfix\">\n                        <label class=\"form_label\">{{ field.label }}</label>\n                        <input class=\"form_input\" type=\"text\" data-model-view-value=\"true\" data-ui-mask=\"{{ field.placeholder }}\" data-ng-model=\"field.value\">\n                    </div>\n\n                    <div data-ng-switch-when=\"email\" class=\"clearfix\">\n                        <label class=\"form_label\">{{ field.label }}</label>\n                        <input class=\"form_input\" type=\"email\" placeholder=\"{{ field.placeholder }}\" data-ng-model=\"field.value\">\n                    </div>\n\n                </div>\n\n                <div class=\"answ_text\">\n                    <button type=\"submit\" class=\"sp_btn button_primary\">{{ 'buttons.texts.save' | tools }}</button>\n                </div>\n            </form>\n        </div>\n    </magic-modal>\n\n</div>";
 
 /***/ }),
-/* 256 */
+/* 260 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"bns_hist_pager\" data-ng-if=\"1 < pages.length || !autoHide\">\n\n  <a data-ng-if=\"directionLinks\" data-ng-class=\"{ disabled : pagination.current == 1 }\" href=\"\" data-ng-click=\"setCurrent(pagination.current - 1)\">\n    &lsaquo;\n  </a>\n  <a data-ng-repeat=\"pageNumber in pages track by tracker(pageNumber, $index)\" data-ng-class=\"{ active : pagination.current == pageNumber, disabled : pageNumber == '...' }\" href=\"\" data-ng-click=\"setCurrent(pageNumber)\">\n    {{ pageNumber }}\n  </a>\n\n  <a data-ng-if=\"directionLinks\" data-ng-class=\"{ disabled : pagination.current == pagination.last }\" href=\"\" data-ng-click=\"setCurrent(pagination.current + 1)\">\n    &rsaquo;\n  </a>\n\n</div>";
 
 /***/ }),
-/* 257 */
+/* 261 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(258);
+var content = __webpack_require__(262);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -48655,7 +48783,7 @@ if(false) {
 }
 
 /***/ }),
-/* 258 */
+/* 262 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -48669,7 +48797,7 @@ exports.push([module.i, ".spm_wrapper .spm_profile_nr {\n  width: 100%;\n  max-w
 
 
 /***/ }),
-/* 259 */
+/* 263 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -48677,11 +48805,11 @@ exports.push([module.i, ".spm_wrapper .spm_profile_nr {\n  width: 100%;\n  max-w
 
 var _widget = __webpack_require__(2);
 
-var _statuses = __webpack_require__(260);
+var _statuses = __webpack_require__(264);
 
 var _statuses2 = _interopRequireDefault(_statuses);
 
-__webpack_require__(261);
+__webpack_require__(265);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -48734,19 +48862,19 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 });
 
 /***/ }),
-/* 260 */
+/* 264 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"clearfix container\">\n\n  <div class=\"status-list\">\n\n    <div class=\"next_status_info\" data-ng-show=\"get_next_status().status\">\n\n      <div class=\"next_status_name\">\n        {{ widget.texts.next_status }} <span data-ng-style=\"{ color: get_next_status().status.color  }\">{{ get_next_status().status.status }}</span>\n      </div>\n\n      <div class=\"next_status_offset\">\n        {{ widget.texts.next_status_offset }} {{ get_next_status().offset }}\n      </div>\n\n    </div>\n\n    <div class=\"status-list__wrapper\" data-sailplay-statuses data-ng-cloak>\n\n      <div class=\"status-list__progress element-progress progress_line\"\n           data-ng-style=\"getProgress(purchase_status ? user().purchases.sum : user().user_points, _statuses)\"></div>\n\n      <div class=\"status-list__item element-item\"\n           data-ng-class=\"{ type_active : item.points <= user().user_points.confirmed + user().user_points.spent + user().user_points.spent_extra }\"\n           data-ng-repeat=\"item in _statuses\"\n           data-ng-style=\"generateOffset($index, _statuses)\">\n\n        <div class=\"status-list__item-point element-item-point\"></div>\n\n        <div class=\"element-item-point-inner\" data-ng-style=\"{ backgroundColor: item.color }\"></div>\n\n        <div class=\"status-list__item-name element-item-name\" data-ng-bind=\"item.name\"></div>\n        <div class=\"status-list__item-status element-item-status\" data-ng-if=\"item.status\" data-ng-bind=\"item.status\"\n             style=\"{{ (item.color) ? ('color: ' +  item.color) : '' }}\"></div>\n\n      </div>\n\n    </div>\n\n  </div>\n</div>";
 
 /***/ }),
-/* 261 */
+/* 265 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(262);
+var content = __webpack_require__(266);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -48771,7 +48899,7 @@ if(false) {
 }
 
 /***/ }),
-/* 262 */
+/* 266 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -48787,3 +48915,4 @@ exports.push([module.i, ".spm_wrapper .status-list {\n  float: left;\n  width: 9
 /***/ })
 /******/ ]);
 });
+//# sourceMappingURL=sailplay-magic.js.map

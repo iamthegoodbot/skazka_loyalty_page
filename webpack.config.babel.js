@@ -139,6 +139,7 @@ let resolve = {
 
 export let development = {
   context: path.join(__dirname),
+  devtool: 'source-map',
   entry: {
     'sailplay-magic': path.join(__dirname, 'src', app_name),
     'sailplay-magic-widgets': widgets,
@@ -165,6 +166,7 @@ export let production = {
   entry: {
     'sailplay-magic': [path.join(__dirname, 'src', app_name)].concat(widgets)
   },
+  devtool: 'source-map',
   resolve: resolve,
   output: {
     path: path.join(__dirname, 'dist', 'prod'),

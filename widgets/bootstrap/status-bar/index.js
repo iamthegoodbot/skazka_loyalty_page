@@ -2,8 +2,9 @@ import { Widget } from "@core/widget";
 import Template from "./template.html";
 import "./style.less";
 
+
 const widget = {
-  id: "bootstrap_status-bar",
+  id: "bootstrap_status_bar",
   template: Template,
   inject: ["$rootScope", "SailPlay", "SailPlayApi", "MAGIC_CONFIG", '$interpolate'],
   controller($rootScope, SailPlay, SailPlayApi, MAGIC_CONFIG, $interpolate) {

@@ -1,6 +1,7 @@
 import { Widget } from "@core/widget";
 import Template from "./template.html";
 import "./style.less";
+import default_avatar from './avatar.gif'
 
 const widget = {
   id: "bootstrap_profile",
@@ -15,6 +16,7 @@ const widget = {
       scope.show_text = false;
       scope.lock_profile = false;
       scope.menu_active = false;
+      scope.default_avatar = default_avatar;
 
       $rootScope.$on("text:state", (e, state) => {
         scope.show_text = state;
