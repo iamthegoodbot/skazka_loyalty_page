@@ -1,4 +1,4 @@
-<div class="spm_status-bar container-fluid status-bar clearfix" ng-if="widget.enabled" ng-cloak sailplay-profile ng-class="{type_list: show_list}">
+<div class="spm_status-bar container-fluid status-bar clearfix" ng-if="widget.enabled && user()" ng-cloak sailplay-profile ng-class="{type_list: show_list}">
 
     <div ng-show="!show_list" class="container py-5" ng-show="user()">
         <div class="row align-items-top">

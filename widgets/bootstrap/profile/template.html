@@ -5,8 +5,14 @@
     <div class="row align-items-center spm_profile_inner">
       <div class="col">
         <div class="position-relative d-flex align-items-center b-avatar mb-3">
-          <img ng-src="{{(user().user.avatar['250x250']|sailplay_pic) || default_avatar}}"
-               class="rounded-circle cursor-pointer" ng-click="$root.$broadcast('info:state', true)">
+          <div class="position-relative">
+            <img ng-src="{{(user().user.avatar['250x250']|sailplay_pic) || default_avatar}}"
+                 class="rounded-circle cursor-pointer" ng-click="$root.$broadcast('info:state', true)">
+            <div class="spm_profile-welcome-name position-absolute" data-ng-if="widget.options.show_name" >
+              {{ widget.texts.hi }} {{ user().user.name }}
+            </div>
+          </div>
+
           <div class="b-avatar-menu position-relative d-flex align-items-center"
                ng-class="{type_active: $parent.$parent.menu_active}">
             <div class="b-avatar-menu__icon rounded-circle d-flex bg-primary cursor-pointer align-items-center"
@@ -22,8 +28,13 @@
                 </i>
                 <span ng-bind="widget.texts.menu_my_profile"></span>
               </a>
-              <a href="#"
-                 class="b-avatar-menu__item d-flex align-items-center font-weight-light text-dark py-3 pl-4 pr-5"
+              <a href="#" data-ng-if="widget.options.auth_type === 'remote'" class="b-avatar-menu__item d-flex align-items-center font-weight-light text-dark py-3 pl-4 pr-5" data-ng-click="$event.preventDefault(); logout(); $parent.$parent.menu_active=false">
+                <i class="b-avatar-menu__item-icon">
+                  <img class="mw-100 h-75" ng-src="{{widget.images.icon_logout}}">
+                </i>
+                <span ng-bind="widget.texts.menu_logout"></span>
+              </a>
+              <a href="#" data-ng-if="widget.options.auth_type === 'auth_hash'" class="b-avatar-menu__item d-flex align-items-center font-weight-light text-dark py-3 pl-4 pr-5"
                  ng-href="{{widget.options.logout_link}}">
                 <i class="b-avatar-menu__item-icon">
                   <img class="mw-100 h-75" ng-src="{{widget.images.icon_logout}}">
@@ -45,7 +56,7 @@
   </div>
 
   <div class="container state_unauthorized" data-ng-if="!user()">
-    <div class="row align-items-center">
+    <div class="row align-items-center spm_profile_inner">
       <div class="col">
         <h1 class="display-4 text-uppercase font-weight-bolder"
             ng-bind-html="widget.texts.header|to_trusted"></h1>
