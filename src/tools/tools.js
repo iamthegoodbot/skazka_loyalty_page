@@ -753,6 +753,31 @@ export let Tools = angular.module('magic.tools', [
     number = number.slice(0, 3) + '-' + number.slice(3,5) + '-' + number.slice(5);
     return '+' + (country + " (" + city + ") " + number).trim();
   };
+})
+
+.directive('spmClickOutside', function ($document) {
+
+  return {
+    restrict: "A",
+    link: function (scope, elm, attrs) {
+
+      const outside_click = event => {
+        if (!elm[0].contains(event.target)) { // or use: event.target.closest(selector) === null
+          scope.$apply(() => {
+            scope.$eval(attrs.spmClickOutside);
+          });
+        }
+      };
+
+      $document[0].addEventListener('click', outside_click);
+
+      scope.$on('$destroy', () => {
+        $document[0].removeEventListener('click', outside_click)
+      });
+
+    }
+  };
+
 });
 
 export default Tools.name;

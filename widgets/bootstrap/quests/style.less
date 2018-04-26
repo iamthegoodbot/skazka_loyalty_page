@@ -17,7 +17,8 @@
         box-sizing: border-box;
         margin: 0 auto;
         box-sizing: border-box;
-        padding: 80px 30px;
+        padding-top: 80px;
+        padding-bottom: 80px;
 
         display: flex;
         align-items: center;
@@ -25,6 +26,7 @@
 
         @media (max-width: 992px) {
           flex-direction: column;
+          display: block;
         }
 
         &__left {
@@ -34,7 +36,7 @@
 
           @media (max-width: 992px) {
             flex-basis: 100%;
-            margin-bottom: 20px;
+            margin-bottom: 40px;
             padding-right: 0;
             text-align: center;
           }
@@ -98,7 +100,7 @@
         }
 
         @media (max-width: 768px) {
-          margin: 25px 5%;
+          margin: 10px 5%;
           width: 90%;
           flex-wrap: wrap;
           padding: 20px;
@@ -171,7 +173,7 @@
         }
 
         @media (max-width: 800px) {
-          margin: 25px 5px;
+          margin: 10px 5px;
         }
 
         &:hover {

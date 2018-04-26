@@ -15,10 +15,6 @@
       background-position: center top;
       background-size: cover;
 
-      @media (max-width: 420px) {
-        padding: 80px 0;
-      }
-
       .b-name {
         letter-spacing: 2px;
       }
@@ -100,10 +96,32 @@
       }
 
       &-welcome-name {
+        position: absolute;
         top: 50%;
         .transform(translateY(-50%));
         left: 150%;
         min-width: 200px;
+      }
+
+      @media (max-width: 420px) {
+        padding: 40px 35px;
+
+        &-welcome-name {
+          left: 0;
+          width: auto;
+          top: 120%;
+          min-width: 280px;
+          .transform(translateY(0));
+        }
+
+        &-header {
+          margin-top: 65px;
+        }
+
+        .spm_modal-content-body {
+          min-width: 0 !important;
+        }
+
       }
 
       &-container {

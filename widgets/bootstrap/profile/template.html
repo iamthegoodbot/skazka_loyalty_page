@@ -6,15 +6,15 @@
       <div class="col">
         <div class="position-relative d-flex align-items-center b-avatar mb-3">
           <div class="position-relative">
-            <img ng-src="{{(user().user.avatar['250x250']|sailplay_pic) || default_avatar}}"
+            <img ng-src="{{(user().user.avatar['250x250']|sailplay_pic) || widget.images.default_avatar || default_avatar}}"
                  class="rounded-circle cursor-pointer" ng-click="$root.$broadcast('info:state', true)">
-            <div class="spm_profile-welcome-name position-absolute" data-ng-if="widget.options.show_name" >
-              {{ widget.texts.hi }} {{ user().user.name }}
+            <div class="spm_profile-welcome-name" data-ng-if="widget.options.show_name" >
+              {{ widget.texts.hi }} {{ user().user.name || widget.texts.no_name }}
             </div>
           </div>
 
           <div class="b-avatar-menu position-relative d-flex align-items-center"
-               ng-class="{type_active: $parent.$parent.menu_active}">
+               ng-class="{type_active: $parent.$parent.menu_active}" data-spm-click-outside="$parent.$parent.menu_active = false;">
             <div class="b-avatar-menu__icon rounded-circle d-flex bg-primary cursor-pointer align-items-center"
                  ng-click="$event.stopPropagation();$event.preventDefault();$parent.$parent.menu_active=!$parent.$parent.menu_active">
               <img class="mw-100 h-50" ng-src="{{widget.images.icon_dots}}">
@@ -74,7 +74,7 @@
       <div class="b-avatar">
         <img ng-src="{{user().user.avatar['250x250']|sailplay_pic}}" class="rounded-circle">
       </div>
-      <span class="b-name d-block my-5 text-black" ng-bind="user().user.name + ' ' + user().user.middle_name"></span>
+      <span class="spm_profile-info-modal-name b-name d-block my-5 text-black" ng-bind="user().user.name && user().user.name + ' ' + user().user.middle_name || widget.texts.no_name_profile_title"></span>
     </magic-modal-title>
     <magic-modal-body>
 
@@ -92,12 +92,12 @@
           <!--</label>-->
         <!--</div>-->
 
-        <div class="b-info pb-3 pt-3 pr-3 d-flex align-items-center flex-column flex-column-light spm_profile-info-modal-field" data-ng-switch-default>
+        <div class="b-info pb-3 pt-3 pl-3 pr-3 d-flex align-items-center flex-column flex-column-light spm_profile-info-modal-field" data-ng-switch-default>
           <img class="spm_profile-info-modal-field-icon" data-ng-if="field.icon" ng-src="{{ field.icon }}">
           <span class="mt-2 spm_profile-info-modal-field-value" ng-bind="field.value.split('  ').join(', ')"></span>
         </div>
 
-        <div class="b-info pb-3 pt-3 pr-3 d-flex align-items-center flex-column flex-column-light spm_profile-info-modal-field" data-ng-switch-when="select">
+        <div class="b-info pb-3 pt-3 pl-3 pr-3 d-flex align-items-center flex-column flex-column-light spm_profile-info-modal-field" data-ng-switch-when="select">
           <img class="spm_profile-info-modal-field-icon" data-ng-if="field.icon" ng-src="{{ field.icon }}">
           <span class="mt-2 spm_profile-info-modal-field-value" ng-bind="sailplay.fill_profile.get_selected_value(field).text"></span>
         </div>

@@ -1,46 +1,60 @@
-<div class="spm_quests clearfix" ng-if="widget.enabled" ng-cloak sailplay-profile>
+<div class="spm_quests container-fluid clearfix" ng-if="widget.enabled" ng-cloak sailplay-profile>
 
-    <div class="spm_quests-container">
+  <div class="container">
+    <div class="row">
 
+      <div class="col">
 
-        <div class="spm_quests-container__left">
+        <div class="spm_quests-container">
+
+          <div class="spm_quests-container__left">
             <div class="spm_quests-header" ng-bind="widget.texts.header"></div>
             <div class="spm_quests-sub-header" ng-bind="widget.texts.sub_header"></div>
-        </div>
+          </div>
 
-        <div class="spm_quests-container__right spm_quests-list" sailplay-actions>
+          <div class="spm_quests-container__right spm_quests-list" sailplay-actions>
 
             <div class="spm_quests-item" ng-repeat="action in actions().actions" ng-mouseenter="action.loaded=true">
-                <i class="spm_quests-item-icon" ng-style="{backgroundImage: (action_data(action).pic|sailplay_pic|background_image)}"></i>
-                <div class="spm_quests-item-content">
-                    <div class="spm_quests-item-name" ng-bind="action_data(action).name"></div>
-                    <div class="spm_quests-item-points" ng-show="action.points" ng-bind="(action.points|number)+' '+(action.points|sailplay_pluralize:('points.texts.pluralize'|tools))"></div>
-                </div>
-                <div class="spm_quests-item-hover" ng-if="action.type!='fillProfile' && action.loaded" sailplay-action styles="{{ action_styles(action_data(action)) }}"
-                    action="action" text="{{ action_data(action).button_text }}">
-                    <span ng-bind="action_data(action).button_text"></span>
-                </div>
-                <div ng-if="action.type=='fillProfile'" class="spm_quests-item-hover">
-                    <span ng-click="$root.$broadcast('profile:state', true)" ng-bind="action_data(action).button_text"></span>
-                </div>
+              <i class="spm_quests-item-icon"
+                 ng-style="{backgroundImage: (action_data(action).pic|sailplay_pic|background_image)}"></i>
+              <div class="spm_quests-item-content">
+                <div class="spm_quests-item-name" ng-bind="action_data(action).name"></div>
+                <div class="spm_quests-item-points" ng-show="action.points"
+                     ng-bind="(action.points|number)+' '+(action.points|sailplay_pluralize:('points.texts.pluralize'|tools))"></div>
+              </div>
+              <div class="spm_quests-item-hover" ng-if="action.type!='fillProfile' && action.loaded" sailplay-action
+                   styles="{{ action_styles(action_data(action)) }}"
+                   action="action" text="{{ action_data(action).button_text }}">
+                <span ng-bind="action_data(action).button_text"></span>
+              </div>
+              <div ng-if="action.type=='fillProfile'" class="spm_quests-item-hover">
+                <span ng-click="$root.$broadcast('profile:state', true)" ng-bind="action_data(action).button_text"></span>
+              </div>
             </div>
 
             <div class="spm_quests-item" ng-repeat="action in actions_custom()" ng-mouseenter="action.loaded=true">
-                <i class="spm_quests-item-icon" ng-style="{backgroundImage: (action.icon|sailplay_pic|background_image)}"></i>
-                <div class="spm_quests-item-content">
-                    <div class="spm_quests-item-name" ng-bind="action.name"></div>
-                    <div class="spm_quests-item-points" ng-show="action.points" ng-bind="(action.points|number)+' '+(action.points|sailplay_pluralize:('points.texts.pluralize'|tools))"></div>
-                </div>
-                <div class="spm_quests-item-hover" ng-if="action.loaded" sailplay-action-custom action="action"></div>
+              <i class="spm_quests-item-icon" ng-style="{backgroundImage: (action.icon|sailplay_pic|background_image)}"></i>
+              <div class="spm_quests-item-content">
+                <div class="spm_quests-item-name" ng-bind="action.name"></div>
+                <div class="spm_quests-item-points" ng-show="action.points"
+                     ng-bind="(action.points|number)+' '+(action.points|sailplay_pluralize:('points.texts.pluralize'|tools))"></div>
+              </div>
+              <div class="spm_quests-item-hover" ng-if="action.loaded" sailplay-action-custom action="action"></div>
             </div>
+
+          </div>
 
         </div>
 
-    </div>
+      </div>
 
-    <magic-modal show="$parent.$parent.show_success">
-        <magic-modal-title ng-bind="widget.texts.modals.success.title"></magic-modal-title>
-        <magic-modal-body ng-bind-html="widget.texts.modals.success.body|to_trusted"></magic-modal-body>
-    </magic-modal>
+    </div>
+  </div>
+
+
+  <magic-modal show="$parent.$parent.show_success">
+    <magic-modal-title ng-bind="widget.texts.modals.success.title"></magic-modal-title>
+    <magic-modal-body ng-bind-html="widget.texts.modals.success.body|to_trusted"></magic-modal-body>
+  </magic-modal>
 
 </div>
