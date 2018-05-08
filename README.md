@@ -14,7 +14,7 @@
 
 ## Current version
 
-### 2.2.1
+### 2.2.2
 
 ## Description
 
@@ -29,7 +29,7 @@ At first, you need to setup JSON config for required partner in admin panel:
 Then, place this code to any place in your page:
     
 ```html
-  <script src="https://cdn.rawgit.com/iamthegoodbot/skazka_loyalty_page/2.2.1/dist/prod/sailplay-magic.js"></script>
+  <script src="https://cdn.rawgit.com/iamthegoodbot/skazka_loyalty_page/2.2.2/dist/prod/sailplay-magic.js"></script>
   <sailplay-magic></sailplay-magic>
   <script>
 
