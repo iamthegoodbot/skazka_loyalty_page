@@ -380,7 +380,7 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
 
           if (MAGIC_CONFIG.data.force_registration && MAGIC_CONFIG.data.force_registration.active && MAGIC_CONFIG.data.force_registration.tag_name && !$rootScope.submited){
             
-            const tagName = MAGIC_CONFIG.data.force_registration.tag_name
+            const tagName = MAGIC_CONFIG.data.force_registration.tag_name;
 
             SailPlay.send('tags.exist', {tags: [tagName]}, function (res) {
               if (res && res.tags.length) {
@@ -428,6 +428,11 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
 
           }
 
+        };
+
+        scope.sailplay.fill_profile.form.valid = function () {
+          let required_fields = scope.sailplay.fill_profile.form.fields.filter(item => (item.required && item.type=='system'));
+          return required_fields.every(field => field.value);
         };
 
         scope.sailplay.fill_profile.submit = function (form, callback) {
@@ -576,7 +581,7 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
 
             } else {
 
-              callback(null, user_res)
+              callback(null, user_res);
               scope.revert_profile_form();
 
             }
@@ -594,6 +599,366 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
       }
 
     };
+
+  })
+
+  //new class for profile form
+  .service('SailPlayProfileForm', function (SailPlay, $rootScope, $q, ipCookie, SailPlayApi, SailPlayFillProfile, $timeout, MAGIC_CONFIG, fillProfileTag) {
+
+    class SailPlayProfileForm {
+
+      constructor(config){
+
+        this.maskOptions = {
+          addDefaultPlaceholder: true,
+          clearOnBlur: true,
+          maskDefinitions:  {
+            '_': /[0-9]/,
+            'd':/[0-3]/,
+            'm':/[01]/,
+            '1':/[0-1]/,
+            '2':/[0-2]/,
+            '3':/[0-3]/,
+            'y':/[12]/
+          }
+        };
+
+        this.config = config;
+
+        this.form = {};
+
+        this._form_cache = {};
+
+        this.reg_incomplete = false;
+
+        this.preventClose = false;
+
+        if (!config) {
+          console.error('Provide fill_profile_config');
+        }
+
+        SailPlayApi.observe('load.user.info', user => {
+          if (!user) return;
+          var form = this.form;
+          var custom_fields = [];
+          form.fields = this.config.fields.map(function (field) {
+            var form_field = new SailPlayFillProfile.Field(field);
+            if (field.type == 'variable')
+              custom_fields.push(form_field)
+
+            //we need to assign received values to form
+            switch (form_field.type) {
+
+              //we need define type
+              case 'system':
+                //bind different values to form field
+                switch (form_field.name) {
+
+                  case 'firstName':
+
+                    form_field.value = user.user.first_name || '';
+                    break;
+
+                  case 'lastName':
+
+                    form_field.value = user.user.last_name || '';
+                    break;
+
+                  case 'middleName':
+
+                    form_field.value = user.user.middle_name || '';
+                    break;
+
+                  case 'birthDate':
+
+                    // var bd = user.user.birth_date && user.user.birth_date.split('-');
+                    // form_field.value = bd ? [parseInt(bd[2]), parseInt(bd[1]), parseInt(bd[0])] : [null, null, null];
+                    // form_field.value = form_field.value.map(value => {
+                    //   return value && value.toString().length == 1 ? '0' + value : value
+                    // })
+                    form_field.value = user.user.birth_date || '';
+                    break;
+
+                  case 'addPhone':
+                    form_field.value = user.user.phone || '';
+                    break;
+
+                  case 'addEmail':
+
+                    form_field.value = user.user.email || '';
+                    break;
+
+                  case 'addOid':
+
+                    form_field.value = user.user.origin_user_id || '';
+                    break;
+
+                  case 'sex':
+
+                    form_field.value = user.user.sex || '';
+                    break;
+
+                  case 'subscriptions':
+                    form_field.value = {
+                      email: user.user.is_email_notifications || 0,
+                      sms: user.user.is_sms_notifications || 0
+                    };
+                    break;
+
+                }
+
+                break;
+
+            }
+            console.log(form_field);
+            return form_field;
+          });
+
+          form.auth_hash = SailPlay.config().auth_hash;
+          //angular.extend(scope.profile_form.user, user.user);
+          //if(ipCookie(FillProfile.cookie_name) && SailPlay.config().auth_hash === ipCookie(FillProfile.cookie_name).user.auth_hash ){
+          //  angular.extend(scope.profile_form, ipCookie(FillProfile.cookie_name));
+          //}
+          // console.dir(form);
+
+          this._form_cache = angular.copy(form);
+
+          if (custom_fields.length) {
+            SailPlayApi.call("vars.batch", { names: custom_fields.map(field => { return field.name }) }, (res) => {
+              angular.forEach(res.vars, variable => {
+                angular.forEach(custom_fields, field => {
+                  if (field.name == variable.name) field.value = variable.value;
+                })
+              })
+            })
+          }
+
+          form.auth_hash = SailPlay.config().auth_hash;
+
+        });
+
+      }
+      revert_profile_form(form) {
+        if (form) {
+          form.$setPristine();
+          form.$setUntouched();
+        }
+        this.form = angular.copy(this._form_cache);
+      }
+      toggle_tag(arr, tag) {
+
+        if (!tag) return;
+
+        var index = arr.indexOf(tag);
+
+        if (index > -1) {
+
+          arr.splice(index, 1);
+
+        } else {
+
+          arr.push(tag);
+
+        }
+
+      }
+      valid () {
+        let required_fields = this.form.fields.filter(item => item.required);
+        return required_fields.every(field => field.value);
+      }
+      submit(form, callback) {
+
+        if (!form || !form.$valid) {
+          return;
+        }
+
+        var data_user = SailPlayApi.data('load.user.info')() && SailPlayApi.data('load.user.info')().user;
+        var req_user = {},
+          custom_user_vars = {};
+
+        angular.forEach(this.form.fields, function (item) {
+          if (item.type == 'variable') {
+            custom_user_vars[item.name] = item.value
+          } else
+            req_user[item.name] = item.value;
+        });
+
+        if (req_user.addPhone && data_user && data_user.phone && data_user.phone.replace(/\D/g, '') == req_user.addPhone.replace(/\D/g, '')) {
+          delete req_user.addPhone;
+        }
+
+        if (req_user.addEmail && data_user && data_user.email && data_user.email == req_user.addEmail) {
+          delete req_user.addEmail;
+        }
+
+        if (req_user.addOid && data_user && data_user.origin_user_id && data_user.origin_user_id == req_user.addOid) {
+          delete req_user.addOid;
+        }
+
+        if (req_user.sex && data_user && data_user.sex && data_user.sex == req_user.sex) {
+          delete req_user.sex;
+        }
+
+        if (req_user.firstName && data_user && data_user.first_name && data_user.first_name == req_user.firstName) {
+          delete req_user.firstName;
+        }
+
+        if (req_user.lastName && data_user && data_user.last_name && data_user.last_name == req_user.lastName) {
+          delete req_user.lastName;
+        }
+
+        if (req_user.middleName && data_user && data_user.middle_name && data_user.middle_name == req_user.middleName) {
+          delete req_user.middleName;
+        }
+
+        if (req_user.subscriptions && data_user.is_sms_notifications == req_user.subscriptions.sms) {
+          delete req_user.subscriptions.sms;
+        }
+
+        if (req_user.subscriptions && data_user && data_user.is_email_notifications == req_user.subscriptions.email) {
+          delete req_user.subscriptions.email;
+        }
+
+        if (!Object.keys(req_user.subscriptions || {}).length) {
+          delete req_user.subscriptions;
+        } else {
+          req_user.subscriptions = JSON.stringify(req_user.subscriptions);
+        }
+
+        let verifyPhone = false;
+        if(this.config.verify_changes && ~this.config.verify_changes.indexOf('addPhone') && req_user.addPhone) {
+          verifyPhone = req_user.addPhone;
+          delete req_user.addPhone;
+        }
+
+        // Make it via chains
+        // if(scope.sailplay.fill_profile.config.verify_changes && ~scope.sailplay.fill_profile.config.verify_changes.indexOf('addEmail') && req_user.addEmail) {
+        //   callback({status: "verify", identifier: 'email', value: req_user.addEmail})
+        //   return;
+        // }
+
+        // if (req_user.birthDate) {
+        //   var bd = angular.copy(req_user.birthDate);
+        //   bd[0] = parseInt(bd[0]) < 10 ? '0' + parseInt(bd[0]) : bd[0];
+        //   bd[1] = parseInt(bd[1]) < 10 ? '0' + parseInt(bd[1]) : bd[1];
+        //   req_user.birthDate = bd.reverse().join('-');
+        // }
+
+        if (req_user.birthDate && data_user && data_user.birth_date && data_user.birth_date == req_user.birthDate) {
+          delete req_user.birthDate;
+        }
+
+
+        // Check to the fill profile action (only system field)
+        let fill_profile_flag = false;
+        let required_fields = this.form.fields.filter(item => (item.required));
+        fill_profile_flag = required_fields.every(field => field.value);
+
+        console.log('fill_profile_flag',fill_profile_flag);
+        console.log('req_user', req_user);
+        console.log('required_fields',required_fields);
+        console.log('required_fields',custom_user_vars);
+
+
+        SailPlay.send('users.update', req_user, (user_res) => {
+
+          if (user_res.status === 'ok') {
+
+            if(fill_profile_flag) {
+              SailPlay.send('tags.add', {tags: [MAGIC_CONFIG.data.FILL_PROFILE_TAG]})
+            }
+
+            if (Object.keys(custom_user_vars).length) {
+              SailPlay.send('vars.add', {custom_vars: custom_user_vars}, (res_vars) => {
+                if (!res_vars.status == 'ok')
+                  $rootScope.$broadcast('notifier:notify', {
+                    body: res_vars.message
+                  });
+              })
+            }
+
+            if(MAGIC_CONFIG.data.force_registration && MAGIC_CONFIG.data.force_registration.active) {
+              fillProfileTag.checkSubmitForm(this.form.fields)
+                .then((isValid)=>{
+                  if(isValid){
+                    const tagNameToSet = MAGIC_CONFIG.data.force_registration.tag_to_set_after_submit;
+                    const tagNameMessage = MAGIC_CONFIG.data.force_registration.messageAfterSubmit;
+                    const tagNameMessageUpdate = MAGIC_CONFIG.data.force_registration.messageAfterSubmitUpdate;
+                    if(tagNameMessage || tagNameMessageUpdate){
+                      $rootScope.$broadcast('notifier:notify', {
+                        body: this.reg_incomplete ? tagNameMessage : tagNameMessageUpdate
+                      });
+                    }
+                    $rootScope.submited = true;
+                    if(this.reg_incomplete && MAGIC_CONFIG.data.force_registration.logout_after_submit){
+                      SailPlayApi.call('logout')
+                    }
+                  }
+                  if (typeof callback == 'function') callback(req_user, user_res);
+                  SailPlayApi.call('load.user.info', {all: 1, purchases: 1}, () => {
+                    if(verifyPhone) {
+                      callback({status: "verify", identifier: 'phone' ,value: verifyPhone})
+                    }
+                  });
+                })
+            } else {
+              if (typeof callback == 'function') callback(req_user, user_res);
+              SailPlayApi.call('load.user.info', {all: 1, purchases: 1}, () => {
+                if(verifyPhone) {
+                  callback({status: "verify", identifier: 'phone' ,value: verifyPhone})
+                }
+              });
+            }
+
+          } else {
+
+            callback(null, user_res)
+            this.revert_profile_form();
+
+          }
+
+        });
+
+      }
+      get_selected_value(field) {
+
+        return field.data.filter(item => item.value === field.value)[0];
+
+      }
+      completed(){
+
+        return $q((resolve, reject) => {
+
+          if (MAGIC_CONFIG.data.FILL_PROFILE_TAG){
+
+            console.log(MAGIC_CONFIG.data.FILL_PROFILE_TAG);
+
+            SailPlay.send('tags.exist', {tags: [MAGIC_CONFIG.data.FILL_PROFILE_TAG]}, (res) => {
+
+              console.log(res);
+              if (res && res.tags.length) {
+                if (res.tags[0].exist) {
+                  resolve(true);
+                } else {
+                  resolve(false);
+                }
+              }
+            }, (err) => {
+              reject(err);
+            });
+
+          }
+          else {
+            resolve(true);
+          }
+
+        })
+
+      }
+
+    }
+
+    return SailPlayProfileForm;
 
   })
 

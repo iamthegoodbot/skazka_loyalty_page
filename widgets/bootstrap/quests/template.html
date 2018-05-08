@@ -39,7 +39,9 @@
                 <div class="spm_quests-item-points" ng-show="action.points"
                      ng-bind="(action.points|number)+' '+(action.points|sailplay_pluralize:('points.texts.pluralize'|tools))"></div>
               </div>
-              <div class="spm_quests-item-hover" ng-if="action.loaded" sailplay-action-custom action="action"></div>
+              <div class="spm_quests-item-hover" data-ng-click="custom.select(action)">
+                {{ action.name }}
+              </div>
             </div>
 
           </div>
@@ -55,6 +57,20 @@
   <magic-modal show="$parent.$parent.show_success">
     <magic-modal-title ng-bind="widget.texts.modals.success.title"></magic-modal-title>
     <magic-modal-body ng-bind-html="widget.texts.modals.success.body|to_trusted"></magic-modal-body>
+  </magic-modal>
+
+  <magic-modal class="actions_custom_selected_modal" data-ng-cloak data-show="custom.selected">
+
+    <magic-modal-title>
+      {{ custom.selected.name }}
+    </magic-modal-title>
+    <magic-modal-body>
+
+      <div data-sailplay-action-custom data-action="custom.selected"></div>
+
+    </magic-modal-body>
+
+
   </magic-modal>
 
 </div>

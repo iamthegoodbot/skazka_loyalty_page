@@ -1,6 +1,6 @@
-<div class="spm_status-bar container-fluid status-bar clearfix" ng-if="widget.enabled && user()" ng-cloak sailplay-profile ng-class="{type_list: show_list}">
+<div class="spm_status-bar container-fluid status-bar clearfix" ng-if="widget.enabled" ng-cloak sailplay-profile ng-class="{type_list: show_list}">
 
-    <div ng-show="!show_list" class="container py-5" ng-show="user()">
+    <div ng-show="!show_list && user()" class="container py-5">
         <div class="row align-items-top">
 
             <div class="b-points col-12 col-md-6 col-lg-4 d-flex align-items-center spm_status-bar-points" ng-click="$root.$broadcast('history:state', true)">

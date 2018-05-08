@@ -1,14 +1,53 @@
 <div class="clearfix">
     <div class="bon_item_main clearfix" ng-show="line.length">
-        <div class="bon_slide_cat_item_wrap" magic-gallery>
+        <div class="bon_slide_cat_item_wrap">
             <div class="bon_slide_cat_item">
                 <div class="bon_item_line" ng-style="{left : left}">
 
-                    <sailplay-magic-bootstrap-badge magic-slide badge="badge" on-click="badge_select(badge);"
+                    <sailplay-magic-bootstrap-badge badge="badge" on-click="badge_select(badge);"
                                           ng-repeat="badge in line" ng-class="{ last: $last, type_active: badge.is_received }"></sailplay-magic-bootstrap-badge>
                 </div>
 
             </div>
         </div>
     </div>
+
+    <magic-modal class="modal_badge_selected" data-ng-cloak data-show="badge_selected">
+
+        <div>
+
+            <div class="modal_badge_image">
+                <img class="gift_more_img" data-ng-src="{{ badge_selected.thumbs.url_250x250 | sailplay_pic }}"
+                     alt="{{ badge_selected.name }}">
+            </div>
+
+            <div class="modal_badge_tools">
+
+                <p>
+                    <span class="modal_badge_name" data-ng-bind="badge_selected.name"></span>
+                </p>
+
+                <!--<p style="margin-top: 10px;">-->
+                <!--<span class="modal_badge_points" data-ng-bind="(action_selected.points | number) + ' ' + (selected_gift.points | sailplay_pluralize:_tools.points.texts.pluralize)"></span>-->
+                <!--</p>-->
+
+                <p style="margin-top: 10px;">
+                    <span class="modal_badge_description" data-ng-bind="badge_selected.descr"></span>
+                </p>
+
+                <p class="modal_badge_buttons">
+                      <span class="badge_share_button fb_icon" data-ng-click="badge_share('fb', badge_selected)">
+                        {{ _config.texts.share_fb }}
+                      </span>
+                                <span class="badge_share_button tw_icon" style="margin-right: 20px;" data-ng-click="badge_share('tw', badge_selected)">
+                        {{ _config.texts.share_tw }}
+                      </span>
+                    <span class="sp_btn button_primary" data-ng-click="badge_select(false);">{{ _tools.buttons.texts.close }}</span>
+                </p>
+
+            </div>
+
+        </div>
+
+    </magic-modal>
 </div>

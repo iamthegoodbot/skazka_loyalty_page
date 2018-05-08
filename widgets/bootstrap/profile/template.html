@@ -1,5 +1,4 @@
-<section class="container-fluid spm_profile profile clearfix" ng-if="widget.enabled" ng-cloak sailplay-profile
-         sailplay-fill-profile config="widget.options.config">
+<section class="container-fluid spm_profile profile clearfix" ng-if="widget.enabled" ng-cloak sailplay-profile>
 
   <div class="container state_authorized" data-ng-if="user()">
     <div class="row align-items-center spm_profile_inner">
@@ -74,11 +73,11 @@
       <div class="b-avatar">
         <img ng-src="{{user().user.avatar['250x250']|sailplay_pic}}" class="rounded-circle">
       </div>
-      <span class="spm_profile-info-modal-name b-name d-block my-5 text-black" ng-bind="user().user.name && user().user.name + ' ' + user().user.middle_name || widget.texts.no_name_profile_title"></span>
+      <span class="spm_profile-info-modal-name b-name d-block my-5 text-black" ng-bind="user().user.name && user().user.name + ' ' + (user().user.middle_name | nullVariable) || widget.texts.no_name_profile_title"></span>
     </magic-modal-title>
     <magic-modal-body>
 
-      <div data-ng-repeat="field in sailplay.fill_profile.form.fields" data-ng-if="field.value && field.name !== 'firstName' && field.name !== 'lastName' && field.name !== 'middleName'" data-ng-switch="field.input">
+      <div data-ng-repeat="field in profile_form.form.fields" data-ng-if="field.value && field.name !== 'firstName' && field.name !== 'lastName' && field.name !== 'middleName'" data-ng-switch="field.input">
 
         <!-- uncomment for subscriptions field -->
         <!--<div class="b-info pb-3 pt-3 pr-3 d-flex flex-column flex-column-light align-items-center spm_profile-info-modal-field spm_form_field" data-ng-switch-when="subscriptions">-->
@@ -99,7 +98,7 @@
 
         <div class="b-info pb-3 pt-3 pl-3 pr-3 d-flex align-items-center flex-column flex-column-light spm_profile-info-modal-field" data-ng-switch-when="select">
           <img class="spm_profile-info-modal-field-icon" data-ng-if="field.icon" ng-src="{{ field.icon }}">
-          <span class="mt-2 spm_profile-info-modal-field-value" ng-bind="sailplay.fill_profile.get_selected_value(field).text"></span>
+          <span class="mt-2 spm_profile-info-modal-field-value" ng-bind="profile_form.get_selected_value(field).text"></span>
         </div>
 
       </div>
@@ -133,10 +132,10 @@
     <magic-modal-title ng-bind-html="widget.texts.modals.profile.title|to_trusted"></magic-modal-title>
     <magic-modal-body>
 
-      <form name="profile_form" class="spm_profile-form"
-            ng-submit="sailplay.fill_profile.submit(profile_form, onSaveProfile);">
+      <form name="ng_profile_form" class="spm_profile-form"
+            ng-submit="profile_form.submit(ng_profile_form, onSaveProfile);">
 
-        <div class="spm_form_field" ng-repeat="field in sailplay.fill_profile.form.fields"
+        <div class="spm_form_field" ng-repeat="field in profile_form.form.fields"
              ng-switch="field.input">
 
           <div ng-switch-when="text">
@@ -165,7 +164,7 @@
 
           <div ng-switch-when="select">
             <select class="spm_form_select" ng-model="field.value"
-                    ng-options="item.value as item.text for item in field.data"></select>
+                    ng-options="item.value as item.text for item in field.data" ng-required="field.required"></select>
             <label class="spm_form_label type_absolute" ng-bind="field.label"></label>
           </div>
 

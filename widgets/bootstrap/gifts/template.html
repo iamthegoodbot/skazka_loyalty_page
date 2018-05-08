@@ -54,9 +54,22 @@
     </magic-modal-body>
   </magic-modal>
 
-  <magic-modal show="$parent.$parent.show_success">
+  <magic-modal class="spm_gifts-success-modal" show="$parent.$parent.show_success">
     <magic-modal-title ng-bind="widget.texts.modals.success.title"></magic-modal-title>
-    <magic-modal-body ng-bind-html="widget.texts.modals.success.body|to_trusted"></magic-modal-body>
+    <magic-modal-body data-ng-switch="purchased_gift.gift_type">
+
+      <div class="spm_gifts-success-modal-body" ng-bind-html="purchased_gift.gift_help_text || widget.texts.modals.success.body | to_trusted"></div>
+
+      <div data-ng-switch-when="coupon" class="spm_gifts-success-modal-body-coupon">
+        <div class="spm_gifts-success-modal-body-coupon-message">
+          {{ widget.texts.modals.success.coupon_title }}
+        </div>
+        <div class="spm_gifts-success-modal-body-coupon-input">
+          <input type="text" value="{{ purchased_gift.coupon_number }}" disabled>
+        </div>
+      </div>
+
+    </magic-modal-body>
   </magic-modal>
 
 </div>

@@ -755,6 +755,21 @@ export let Tools = angular.module('magic.tools', [
   };
 })
 
+.filter('nullVariable', function () {
+
+  return function (value, replacer) {
+
+    if(value === 'null' || !value) {
+      return replacer;
+    }
+    else {
+      return value;
+    }
+
+  };
+
+})
+
 .directive('spmClickOutside', function ($document) {
 
   return {
