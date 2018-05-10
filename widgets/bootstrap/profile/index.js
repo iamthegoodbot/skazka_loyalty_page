@@ -83,6 +83,7 @@ const widget = {
 
       document.body.addEventListener('click', scope.closeMenu);
 
+
       scope.$on('$destroy', () => {
         document.body.removeEventListener('click', scope.closeMenu)
       })

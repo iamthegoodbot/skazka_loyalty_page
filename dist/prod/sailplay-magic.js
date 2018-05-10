@@ -2427,13 +2427,12 @@ module.exports = function (it, S) {
         frame.style.border = 'none';
         frame.style.position = 'fixed';
         frame.style.top = '100px';
-        frame.style.left = '0';
-        frame.style.right = '0';
+        frame.style.left = '50%';
         frame.style.width = '410px';
         frame.style.height = '510px';
         frame.created = true;
         frame.style.background = 'transparent';
-        frame.style.margin = 'auto';
+        frame.style.margin = '0 auto auto -205px';
         frame.style.zIndex = '100000';
         document.body.appendChild(frame);
       }
@@ -3140,7 +3139,7 @@ module.exports = function (it, S) {
       }
 
     });
-    
+
     // USER TAGS LIST
     sp.on("tags.list", function (data, callback) {
       if (_config == {}) {
@@ -3410,7 +3409,7 @@ module.exports = function (it, S) {
       function isNode(o) {
         return (
           typeof Node === "object" ? o instanceof Node :
-          o && typeof o === "object" && typeof o.nodeType === "number" && typeof o.nodeName === "string"
+            o && typeof o === "object" && typeof o.nodeType === "number" && typeof o.nodeName === "string"
         );
       }
 
@@ -3418,7 +3417,7 @@ module.exports = function (it, S) {
       function isElement(o) {
         return (
           typeof HTMLElement === "object" ? o instanceof HTMLElement : //DOM2
-          o && typeof o === "object" && o !== null && o.nodeType === 1 && typeof o.nodeName === "string"
+            o && typeof o === "object" && o !== null && o.nodeType === 1 && typeof o.nodeName === "string"
         );
       }
 
