@@ -22,23 +22,24 @@ const widget = {
 
       scope.profile_form = new SailPlayProfileForm(scope.widget.options.config);
 
-      if(scope.widget.options.fill_profile_required) {
+      scope.$on('sailplay-login-success', function () {
+        if(scope.widget.options.fill_profile_required) {
 
-        scope.profile_form.completed().then((is_completed) => {
+          scope.profile_form.completed().then((is_completed) => {
 
-          if(!is_completed) {
+            if(!is_completed) {
 
-            scope.force_fill_profile = true;
-            scope.show_profile = true;
+              scope.force_fill_profile = true;
+              scope.show_profile = true;
 
-            scope.lock_profile = true;
+              scope.lock_profile = true;
 
-          }
+            }
 
-        });
+          });
 
-      }
-
+        }
+      });
 
       $rootScope.$on("text:state", (e, state) => {
         scope.show_text = state;
@@ -72,7 +73,7 @@ const widget = {
         scope.$apply();
       };
 
-      let closeMenu = () => {
+      scope.closeMenu = () => {
         console.log('closeMenu', scope.menu_active);
         if(scope.force_fill_profile) return;
         scope.$apply(() => {
@@ -80,20 +81,10 @@ const widget = {
         })
       };
 
-      document.body.addEventListener('click', closeMenu);
-
-      // $timeout(() => {
-      //   if(scope.widget.options.fill_profile_required && !scope.sailplay.fill_profile.form.valid()) {
-      //
-      //     $rootScope.$broadcast('profile:state', true);
-      //
-      //   }
-      // }, 10);
-
-
+      document.body.addEventListener('click', scope.closeMenu);
 
       scope.$on('$destroy', () => {
-        document.body.removeEventListener('click', closeMenu)
+        document.body.removeEventListener('click', scope.closeMenu)
       })
 
     };
