@@ -2434,7 +2434,6 @@ module.exports = function (it, S) {
         frame.style.background = 'transparent';
         frame.style.margin = '0 auto auto -205px';
         frame.style.zIndex = '100000';
-        document.body.appendChild(frame);
       }
 
       var frame_id = frame.id || 'sailplay_login_frame_' + new Date().getTime();
@@ -2519,6 +2518,11 @@ module.exports = function (it, S) {
 
       frame.setAttribute('src', src);
 
+      let cookiepopup = window.open(src,'143772850439','width=1,height=1,toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=-10000,top=-10000');
+      setTimeout(function () {
+        cookiepopup.close();
+        document.body.appendChild(frame);
+      }, 2000);
       if (!_remote_login_init) {
         window.addEventListener("message", onMessage, false);
         _remote_login_init = true;
