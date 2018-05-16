@@ -4,6 +4,7 @@ import SailPlayGifts from './sailplay.gifts';
 import SailPlayHistory from './sailplay.history';
 import SailPlayActions from './sailplay.actions';
 import SailPlayBadges from './sailplay.badges';
+import SailPlayStatuses from './sailplay.statuses';
 import Cookies from 'angular-cookie';
 
 export let SailPlay = angular.module('sailplay', [
@@ -12,6 +13,7 @@ export let SailPlay = angular.module('sailplay', [
   SailPlayHistory,
   SailPlayActions,
   SailPlayBadges,
+  SailPlayStatuses,
   Cookies
 ])
 

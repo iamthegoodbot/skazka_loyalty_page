@@ -1,0 +1,105 @@
+<div class="spm_pivko_profile_wrapper">
+
+  <div class="spm_pivko_profile_wrapper_inner">
+
+    <div class="spm_pivko_profile_info">
+
+      <div class="spm_pivko_profile_info_inner">
+
+        <div class="spm_pivko_profile_info_avatar">
+          <img data-ng-src="{{(profile.user().user.avatar['250x250']|sailplay_pic) || widget.options.images.default_avatar || default_avatar}}" alt="">
+        </div>
+
+        <div class="spm_pivko_profile_info_name">
+          <span>{{ profile.user().user.name || widget.options.texts.no_name }}</span>
+        </div>
+
+        <div class="spm_pivko_profile_info_oid">
+
+          <div class="spm_pivko_profile_info_oid_label">
+            <span>{{ widget.options.texts.oid_label }}</span>
+          </div>
+
+          <div class="spm_pivko_profile_info_oid_value">
+            <span>{{ profile.user().user.origin_user_id || widget.options.texts.no_oid }}</span>
+          </div>
+
+        </div>
+
+        <div class="spm_pivko_profile_info_divider"></div>
+
+        <div class="spm_pivko_profile_info_email">
+          <span>{{ profile.user().user.email || widget.options.texts.no_email }}</span>
+        </div>
+
+        <div class="spm_pivko_profile_info_phone">
+          <span>{{(profile.user().user.phone | tel) || widget.options.texts.no_phone }}</span>
+        </div>
+
+        <div class="spm_pivko_profile_info_edit_button">
+          <button type="button">{{ widget.options.texts.profile_button_text }}</button>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="spm_pivko_profile_status">
+      <div class="spm_pivko_profile_status_inner">
+
+        <div class="spm_pivko_profile_status_points">
+
+          <div class="spm_pivko_profile_status_points_inner">
+
+            <div class="spm_pivko_profile_status_points_title">
+              <span>{{ widget.options.texts.points_title }}</span>
+            </div>
+
+            <div class="spm_pivko_profile_status_points_confirmed">
+              <span>{{ profile.user().user_points.confirmed }} {{ profile.user().user_points.confirmed | sailplay_pluralize: ('points.texts.pluralize' | tools) }}</span>
+            </div>
+
+            <div class="spm_pivko_profile_status_points_status">
+              <div class="spm_pivko_profile_status_points_status_label">
+                <span>{{ widget.options.texts.status_label }}</span>
+              </div>
+              <div class="spm_pivko_profile_status_points_status_value">
+                <span>Серебрянный</span>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="spm_pivko_profile_status_progress">
+
+          <div class="spm_pivko_profile_status_progress_inner">
+
+            <div class="spm_pivko_profile_status_progress_title">
+              <span>Копи в следущем месяце больше</span>
+            </div>
+
+            <div class="spm_pivko_profile_status_progress_more_button">
+              <button type="button">Подробнее ></button>
+            </div>
+
+            <div class="spm_pivko_profile_status_progress_line">
+
+              <div class="spm_pivko_profile_status_progress_line_container">
+
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+</div>
