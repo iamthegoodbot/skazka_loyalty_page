@@ -1,0 +1,69 @@
+<div class="spm_pivko_history_wrapper">
+
+  <div class="spm_pivko_history_wrapper_inner">
+
+    <div class="spm_pivko_history_list">
+
+      <div class="spm_pivko_history_list_inner">
+
+        <div class="spm_pivko_history_list_title">
+          <span>{{ widget.options.texts.history_title }}</span>
+        </div>
+
+        <div class="spm_pivko_history_list_empty" data-ng-if="history.empty()">
+
+          <div class="spm_pivko_history_list_empty_title">
+            <span>{{ widget.options.texts.empty_list_title }}</span>
+          </div>
+
+          <div class="spm_pivko_history_list_empty_button">
+            <a href="{{ widget.options.empty_list_button_link }}" target="_blank">{{ widget.options.texts.empty_list_button }}</a>
+          </div>
+
+        </div>
+
+        <div class="spm_pivko_history_list_items" data-ng-if="!history.empty()">
+
+          <div class="spm_pivko_history_list_item" data-dir-paginate="item in history.list() | itemsPerPage:5" data-pagination-id="history_pages">
+
+            <div class="spm_pivko_history_list_item_header">
+
+              <div class="spm_pivko_history_list_item_header_title">
+
+                <span>
+                  {{ item|history_item }} {{ item.action_date | date:'d MMM yyyy' }}
+                </span>
+
+              </div>
+
+            </div>
+
+          </div>
+
+          <div class="spm_pivko_history_list_pagination">
+
+            <dir-pagination-controls max-size="7" pagination-id="history_pages" direction-links="true" page-links="true" template-url="magic.pagination" auto-hide="true"></dir-pagination-controls>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="spm_pivko_history_help">
+
+      <div class="spm_pivko_history_help_inner">
+
+        <div class="spm_pivko_history_help_title">
+          <span>{{ widget.options.texts.help_title }}</span>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

@@ -1,0 +1,154 @@
+@import "~@theme/colors";
+
+.spm_wrapper {
+
+  .pivko_quests {
+
+    .spm_pivko_quests {
+      .spm_pivko_quests();
+    }
+
+  }
+
+}
+
+.spm_pivko_quests() {
+
+  &_wrapper {
+
+    margin-bottom: 30px;
+
+  }
+
+  &_title {
+
+    font-size: 35px;
+    font-weight: bold;
+    margin-top: 20px;
+
+  }
+
+  &_caption {
+
+    font-size: 20px;
+    color: @main;
+    font-weight: 300;
+
+  }
+
+  &_list_empty {
+
+    font-size: 36px;
+    font-weight: 300;
+    color: @main;
+    margin: 20px auto;
+
+  }
+
+  &_list {
+
+    margin-top: 30px;
+
+    &_inner {
+
+      margin-left: -10px;
+      margin-right: -10px;
+      text-align: left;
+
+    }
+
+    &_item {
+
+      display: inline-block;
+      float: left;
+      padding: 10px;
+      box-sizing: border-box;
+
+      &_icon {
+
+        display: inline-block;
+        float: left;
+
+        img {
+          width: 80px;
+          height: 80px;
+        }
+
+      }
+
+      &_button {
+
+        display: inline-block;
+        float: right;
+        width: auto;
+        margin-top: 25px;
+        button {
+          border: none;
+          outline: none;
+        }
+
+      }
+
+      &_points {
+
+        span {
+          font-size: 20px;
+          font-weight: bold;
+        }
+
+      }
+
+      &_name {
+
+        height: 48px;
+
+        span {
+
+          font-weight: 300;
+          font-size: 14px;
+          color: @main;
+
+        }
+
+      }
+
+
+      @media @desktop {
+
+        width: 33.333%;
+
+      }
+
+      @media @desktop-xl {
+
+        width: 33.333%;
+
+      }
+
+      @media @tablet {
+
+        width: 50%;
+
+      }
+
+    }
+
+    &_item_header {
+
+      background-color: @main_light;
+      padding: 10px 25px;
+
+
+    }
+
+    &_item_body {
+
+      background-color: @white;
+      padding: 20px 30px;
+
+    }
+
+
+  }
+
+}

@@ -1,0 +1,147 @@
+@import "~@theme/colors";
+
+.spm_wrapper {
+
+  .pivko_history {
+
+    .spm_pivko_history {
+
+      //widget styles
+      .spm_pivko_history();
+
+    }
+
+  }
+
+}
+
+.spm_pivko_history() {
+
+  &_wrapper {
+
+    @media @tablet_up {
+
+      width: 100%;
+      display: table;
+      border-collapse: separate;
+
+    }
+
+  }
+
+  &_wrapper_inner {
+
+    @media @tablet_up {
+
+      display: table-row;
+
+    }
+
+  }
+
+  &_list {
+
+    background-color: @white;
+
+    @media @tablet_up {
+
+      width: 68%;
+      display: table-cell;
+      vertical-align: top;
+      border-right: 20px solid transparent;
+      background-clip: padding-box;
+
+    }
+
+    &_title {
+
+      font-size: 20px;
+      font-weight: bold;
+      margin-top: 30px;
+
+    }
+
+
+    &_empty {
+
+      margin-top: 10px;
+
+      &_title {
+
+        span {
+          font-size: 20px;
+          font-weight: 300;
+          color: @main;
+        }
+
+      }
+
+      &_button {
+
+        margin-top: 20px;
+        margin-bottom: 30px;
+
+        a {
+
+          display: inline-block;
+          font-size: 14px;
+          padding: 15px 50px;
+          border-radius: 25px;
+          border: none;
+          background-color: @main_light;
+          outline: none;
+          text-decoration: none;
+          color: @main_darker;
+          &:visited {
+            color: @main_darker;
+          }
+
+        }
+
+      }
+
+    }
+
+    &_items {
+
+      padding: 20px 50px;
+
+    }
+
+    &_item {
+
+      &_header_title {
+
+        text-align: left;
+
+      }
+
+    }
+
+
+  }
+
+  &_help {
+
+    background-color: @white;
+
+    @media @tablet_up {
+
+      width: 32%;
+      display: table-cell;
+      vertical-align: top;
+      background-clip: padding-box;
+
+    }
+
+    &_title {
+
+      margin-top: 30px;
+      font-size: 20px;
+      font-weight: bold;
+
+    }
+
+  }
+
+}

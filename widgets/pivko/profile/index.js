@@ -8,14 +8,17 @@ const widget = {
   id: "pivko_profile",
   template: Template,
   defaults: defaults,
-  inject: ["SailPlayProfile", "MAGIC_CONFIG", "SailPlayProfileForm"],
-  controller(SailPlayProfile, MAGIC_CONFIG, SailPlayProfileForm) {
+  inject: ["SailPlayProfile", "MAGIC_CONFIG", "SailPlayProfileForm", "SailPlayStatuses"],
+  controller(SailPlayProfile, MAGIC_CONFIG, SailPlayProfileForm, SailPlayStatuses) {
     return (scope, elm, attrs) => {
 
       scope.profile = new SailPlayProfile();
 
       scope.profile_form = new SailPlayProfileForm(scope.widget.options.profile_form);
 
+      scope.statuses = new SailPlayStatuses.TYPES[scope.widget.options.statuses.type](scope.widget.options.statuses);
+
+      console.log(scope.statuses);
       // scope.default_avatar = DefaultAvatarImage;
 
     };

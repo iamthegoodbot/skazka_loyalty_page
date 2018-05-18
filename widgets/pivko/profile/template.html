@@ -64,7 +64,7 @@
                 <span>{{ widget.options.texts.status_label }}</span>
               </div>
               <div class="spm_pivko_profile_status_points_status_value">
-                <span>Серебрянный</span>
+                <span>{{ statuses.current().status || widget.options.texts.no_status }}</span>
               </div>
             </div>
 
@@ -84,10 +84,26 @@
               <button type="button">Подробнее ></button>
             </div>
 
-            <div class="spm_pivko_profile_status_progress_line">
+            <div class="spm_pivko_profile_status_progress_line_container">
 
-              <div class="spm_pivko_profile_status_progress_line_container">
+              <div class="spm_pivko_profile_status_progress_line">
 
+                <div class="spm_pivko_profile_status_progress_line_filled" data-ng-style="{ width: statuses.progress() + '%' }"></div>
+
+                <div class="spm_pivko_profile_status_progress_line_list">
+                  <div class="spm_pivko_profile_status_progress_line_item" data-ng-repeat="status in statuses.list" data-ng-class="{ current: statuses.current() === status }" data-ng-style="{ left: statuses.offset($index) + '%' }">
+                    <div class="spm_pivko_profile_status_progress_line_item_icon">
+                      <img class="spm_pivko_profile_status_progress_line_item_icon_inactive" data-ng-src="{{ status.img_inactive }}" alt="">
+                      <img class="spm_pivko_profile_status_progress_line_item_icon_active" data-ng-src="{{ status.img_active }}" alt="">
+                      <img class="spm_pivko_profile_status_progress_line_item_icon_current" data-ng-src="{{ status.img_current }}" alt="">
+                    </div>
+                    <div class="spm_pivko_profile_status_progress_line_item_name">
+                    <span>
+                      {{ status.status }}
+                    </span>
+                    </div>
+                  </div>
+                </div>
 
               </div>
 

@@ -35,6 +35,34 @@ export let SailPlayHistory = angular.module('sailplay.history', [])
 
 })
 
+.service('SailPlayProfileHistory', function (SailPlayApi) {
+
+  return class SailPlayProfileHistory {
+
+    constructor(){
+
+      this.list = SailPlayApi.data('load.user.history');
+
+      this.current_page = 0;
+
+    }
+    set_page(page){
+
+      this.current_page = page;
+
+    }
+    empty(){
+
+      console.log(this.list());
+
+      return !this.list() || this.list().length < 1;
+
+    }
+
+  }
+
+})
+
 .provider('SailPlayHistory', function(){
 
   var dict = {

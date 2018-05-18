@@ -644,7 +644,7 @@ if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
 /* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isObject = __webpack_require__(12);
+var isObject = __webpack_require__(14);
 module.exports = function (it) {
   if (!isObject(it)) throw TypeError(it + ' is not an object!');
   return it;
@@ -657,7 +657,7 @@ module.exports = function (it) {
 
 var global = __webpack_require__(4);
 var core = __webpack_require__(6);
-var ctx = __webpack_require__(14);
+var ctx = __webpack_require__(16);
 var hide = __webpack_require__(9);
 var PROTOTYPE = 'prototype';
 
@@ -722,7 +722,7 @@ module.exports = $export;
 /* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var dP = __webpack_require__(11);
+var dP = __webpack_require__(13);
 var createDesc = __webpack_require__(28);
 module.exports = __webpack_require__(10) ? function (object, key, value) {
   return dP.f(object, key, createDesc(1, value));
@@ -746,101 +746,6 @@ module.exports = !__webpack_require__(20)(function () {
 /* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var anObject = __webpack_require__(7);
-var IE8_DOM_DEFINE = __webpack_require__(56);
-var toPrimitive = __webpack_require__(57);
-var dP = Object.defineProperty;
-
-exports.f = __webpack_require__(10) ? Object.defineProperty : function defineProperty(O, P, Attributes) {
-  anObject(O);
-  P = toPrimitive(P, true);
-  anObject(Attributes);
-  if (IE8_DOM_DEFINE) try {
-    return dP(O, P, Attributes);
-  } catch (e) { /* empty */ }
-  if ('get' in Attributes || 'set' in Attributes) throw TypeError('Accessors not supported!');
-  if ('value' in Attributes) O[P] = Attributes.value;
-  return O;
-};
-
-
-/***/ }),
-/* 12 */
-/***/ (function(module, exports) {
-
-module.exports = function (it) {
-  return typeof it === 'object' ? it !== null : typeof it === 'function';
-};
-
-
-/***/ }),
-/* 13 */
-/***/ (function(module, exports) {
-
-module.exports = {};
-
-
-/***/ }),
-/* 14 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// optional / simple context binding
-var aFunction = __webpack_require__(15);
-module.exports = function (fn, that, length) {
-  aFunction(fn);
-  if (that === undefined) return fn;
-  switch (length) {
-    case 1: return function (a) {
-      return fn.call(that, a);
-    };
-    case 2: return function (a, b) {
-      return fn.call(that, a, b);
-    };
-    case 3: return function (a, b, c) {
-      return fn.call(that, a, b, c);
-    };
-  }
-  return function (/* ...args */) {
-    return fn.apply(that, arguments);
-  };
-};
-
-
-/***/ }),
-/* 15 */
-/***/ (function(module, exports) {
-
-module.exports = function (it) {
-  if (typeof it != 'function') throw TypeError(it + ' is not a function!');
-  return it;
-};
-
-
-/***/ }),
-/* 16 */
-/***/ (function(module, exports) {
-
-var hasOwnProperty = {}.hasOwnProperty;
-module.exports = function (it, key) {
-  return hasOwnProperty.call(it, key);
-};
-
-
-/***/ }),
-/* 17 */
-/***/ (function(module, exports) {
-
-var toString = {}.toString;
-
-module.exports = function (it) {
-  return toString.call(it).slice(8, -1);
-};
-
-
-/***/ }),
-/* 18 */
-/***/ (function(module, exports, __webpack_require__) {
-
 "use strict";
 
 
@@ -853,7 +758,7 @@ exports.default = function (instance, Constructor) {
 };
 
 /***/ }),
-/* 19 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -886,6 +791,101 @@ exports.default = function () {
 }();
 
 /***/ }),
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var anObject = __webpack_require__(7);
+var IE8_DOM_DEFINE = __webpack_require__(56);
+var toPrimitive = __webpack_require__(57);
+var dP = Object.defineProperty;
+
+exports.f = __webpack_require__(10) ? Object.defineProperty : function defineProperty(O, P, Attributes) {
+  anObject(O);
+  P = toPrimitive(P, true);
+  anObject(Attributes);
+  if (IE8_DOM_DEFINE) try {
+    return dP(O, P, Attributes);
+  } catch (e) { /* empty */ }
+  if ('get' in Attributes || 'set' in Attributes) throw TypeError('Accessors not supported!');
+  if ('value' in Attributes) O[P] = Attributes.value;
+  return O;
+};
+
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports) {
+
+module.exports = function (it) {
+  return typeof it === 'object' ? it !== null : typeof it === 'function';
+};
+
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports) {
+
+module.exports = {};
+
+
+/***/ }),
+/* 16 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// optional / simple context binding
+var aFunction = __webpack_require__(17);
+module.exports = function (fn, that, length) {
+  aFunction(fn);
+  if (that === undefined) return fn;
+  switch (length) {
+    case 1: return function (a) {
+      return fn.call(that, a);
+    };
+    case 2: return function (a, b) {
+      return fn.call(that, a, b);
+    };
+    case 3: return function (a, b, c) {
+      return fn.call(that, a, b, c);
+    };
+  }
+  return function (/* ...args */) {
+    return fn.apply(that, arguments);
+  };
+};
+
+
+/***/ }),
+/* 17 */
+/***/ (function(module, exports) {
+
+module.exports = function (it) {
+  if (typeof it != 'function') throw TypeError(it + ' is not a function!');
+  return it;
+};
+
+
+/***/ }),
+/* 18 */
+/***/ (function(module, exports) {
+
+var hasOwnProperty = {}.hasOwnProperty;
+module.exports = function (it, key) {
+  return hasOwnProperty.call(it, key);
+};
+
+
+/***/ }),
+/* 19 */
+/***/ (function(module, exports) {
+
+var toString = {}.toString;
+
+module.exports = function (it) {
+  return toString.call(it).slice(8, -1);
+};
+
+
+/***/ }),
 /* 20 */
 /***/ (function(module, exports) {
 
@@ -902,7 +902,7 @@ module.exports = function (exec) {
 /* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isObject = __webpack_require__(12);
+var isObject = __webpack_require__(14);
 var document = __webpack_require__(4).document;
 // typeof document.createElement is 'object' in old IE
 var is = isObject(document) && isObject(document.createElement);
@@ -961,8 +961,8 @@ module.exports = function (key) {
 /* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var def = __webpack_require__(11).f;
-var has = __webpack_require__(16);
+var def = __webpack_require__(13).f;
+var has = __webpack_require__(18);
 var TAG = __webpack_require__(5)('toStringTag');
 
 module.exports = function (it, tag, stat) {
@@ -977,7 +977,7 @@ module.exports = function (it, tag, stat) {
 "use strict";
 
 // 25.4.1.5 NewPromiseCapability(C)
-var aFunction = __webpack_require__(15);
+var aFunction = __webpack_require__(17);
 
 function PromiseCapability(C) {
   var resolve, reject;
@@ -1439,8 +1439,8 @@ var LIBRARY = __webpack_require__(40);
 var $export = __webpack_require__(8);
 var redefine = __webpack_require__(99);
 var hide = __webpack_require__(9);
-var has = __webpack_require__(16);
-var Iterators = __webpack_require__(13);
+var has = __webpack_require__(18);
+var Iterators = __webpack_require__(15);
 var $iterCreate = __webpack_require__(100);
 var setToStringTag = __webpack_require__(26);
 var getPrototypeOf = __webpack_require__(103);
@@ -1526,7 +1526,7 @@ module.exports = document && document.documentElement;
 /***/ (function(module, exports, __webpack_require__) {
 
 // getting tag from 19.1.3.6 Object.prototype.toString()
-var cof = __webpack_require__(17);
+var cof = __webpack_require__(19);
 var TAG = __webpack_require__(5)('toStringTag');
 // ES3 wrong here
 var ARG = cof(function () { return arguments; }()) == 'Arguments';
@@ -1556,7 +1556,7 @@ module.exports = function (it) {
 
 // 7.3.20 SpeciesConstructor(O, defaultConstructor)
 var anObject = __webpack_require__(7);
-var aFunction = __webpack_require__(15);
+var aFunction = __webpack_require__(17);
 var SPECIES = __webpack_require__(5)('species');
 module.exports = function (O, D) {
   var C = anObject(O).constructor;
@@ -1569,7 +1569,7 @@ module.exports = function (O, D) {
 /* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var ctx = __webpack_require__(14);
+var ctx = __webpack_require__(16);
 var invoke = __webpack_require__(114);
 var html = __webpack_require__(41);
 var cel = __webpack_require__(21);
@@ -1612,7 +1612,7 @@ if (!setTask || !clearTask) {
     delete queue[id];
   };
   // Node.js 0.8-
-  if (__webpack_require__(17)(process) == 'process') {
+  if (__webpack_require__(19)(process) == 'process') {
     defer = function (id) {
       process.nextTick(ctx(run, id, 1));
     };
@@ -1673,7 +1673,7 @@ module.exports = function (exec) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var anObject = __webpack_require__(7);
-var isObject = __webpack_require__(12);
+var isObject = __webpack_require__(14);
 var newPromiseCapability = __webpack_require__(27);
 
 module.exports = function (C, x) {
@@ -1977,7 +1977,10 @@ __webpack_require__(246);
 __webpack_require__(251);
 __webpack_require__(259);
 __webpack_require__(264);
-module.exports = __webpack_require__(268);
+__webpack_require__(268);
+__webpack_require__(273);
+__webpack_require__(278);
+module.exports = __webpack_require__(283);
 
 
 /***/ }),
@@ -1992,11 +1995,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.magic = undefined;
 
-var _classCallCheck2 = __webpack_require__(18);
+var _classCallCheck2 = __webpack_require__(11);
 
 var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
 
-var _createClass2 = __webpack_require__(19);
+var _createClass2 = __webpack_require__(12);
 
 var _createClass3 = _interopRequireDefault(_createClass2);
 
@@ -2243,7 +2246,7 @@ module.exports = function defineProperty(it, key, desc) {
 
 var $export = __webpack_require__(8);
 // 19.1.2.4 / 15.2.3.6 Object.defineProperty(O, P, Attributes)
-$export($export.S + $export.F * !__webpack_require__(10), 'Object', { defineProperty: __webpack_require__(11).f });
+$export($export.S + $export.F * !__webpack_require__(10), 'Object', { defineProperty: __webpack_require__(13).f });
 
 
 /***/ }),
@@ -2260,7 +2263,7 @@ module.exports = !__webpack_require__(10) && !__webpack_require__(20)(function (
 /***/ (function(module, exports, __webpack_require__) {
 
 // 7.1.1 ToPrimitive(input [, PreferredType])
-var isObject = __webpack_require__(12);
+var isObject = __webpack_require__(14);
 // instead of the ES6 spec version, we didn't implement @@toPrimitive case
 // and the second argument - flag - preferred type is a string
 module.exports = function (it, S) {
@@ -38204,11 +38207,11 @@ var _keys = __webpack_require__(30);
 
 var _keys2 = _interopRequireDefault(_keys);
 
-var _classCallCheck2 = __webpack_require__(18);
+var _classCallCheck2 = __webpack_require__(11);
 
 var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
 
-var _createClass2 = __webpack_require__(19);
+var _createClass2 = __webpack_require__(12);
 
 var _createClass3 = _interopRequireDefault(_createClass2);
 
@@ -39330,7 +39333,7 @@ __webpack_require__(70)('keys', function () {
 /* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var has = __webpack_require__(16);
+var has = __webpack_require__(18);
 var toIObject = __webpack_require__(23);
 var arrayIndexOf = __webpack_require__(68)(false);
 var IE_PROTO = __webpack_require__(25)('IE_PROTO');
@@ -39354,7 +39357,7 @@ module.exports = function (object, names) {
 /***/ (function(module, exports, __webpack_require__) {
 
 // fallback for non-array-like ES3 and non-enumerable old V8 strings
-var cof = __webpack_require__(17);
+var cof = __webpack_require__(19);
 // eslint-disable-next-line no-prototype-builtins
 module.exports = Object('z').propertyIsEnumerable(0) ? Object : function (it) {
   return cof(it) == 'String' ? it.split('') : Object(it);
@@ -39578,6 +39581,14 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.SailPlayHistory = undefined;
 
+var _classCallCheck2 = __webpack_require__(11);
+
+var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+var _createClass2 = __webpack_require__(12);
+
+var _createClass3 = _interopRequireDefault(_createClass2);
+
 var _angular = __webpack_require__(3);
 
 var _angular2 = _interopRequireDefault(_angular);
@@ -39615,6 +39626,35 @@ var SailPlayHistory = exports.SailPlayHistory = _angular2.default.module('sailpl
     }
 
   };
+}).service('SailPlayProfileHistory', function (SailPlayApi) {
+
+  return function () {
+    function SailPlayProfileHistory() {
+      (0, _classCallCheck3.default)(this, SailPlayProfileHistory);
+
+
+      this.list = SailPlayApi.data('load.user.history');
+
+      this.current_page = 0;
+    }
+
+    (0, _createClass3.default)(SailPlayProfileHistory, [{
+      key: 'set_page',
+      value: function set_page(page) {
+
+        this.current_page = page;
+      }
+    }, {
+      key: 'empty',
+      value: function empty() {
+
+        console.log(this.list());
+
+        return !this.list() || this.list().length < 1;
+      }
+    }]);
+    return SailPlayProfileHistory;
+  }();
 }).provider('SailPlayHistory', function () {
 
   var dict = {
@@ -39690,6 +39730,14 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.SailPlayActions = undefined;
+
+var _classCallCheck2 = __webpack_require__(11);
+
+var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+var _createClass2 = __webpack_require__(12);
+
+var _createClass3 = _interopRequireDefault(_createClass2);
 
 var _keys = __webpack_require__(30);
 
@@ -39906,6 +39954,57 @@ var SailPlayActions = exports.SailPlayActions = _angular2.default.module('sailpl
     }
 
   };
+}).service('SailPlayQuests', function (SailPlayApi, SailPlay, SailPlayActionsData) {
+
+  return function () {
+    function SailPlayQuests() {
+      (0, _classCallCheck3.default)(this, SailPlayQuests);
+
+
+      this.list = {
+        system: SailPlayApi.data('load.actions.list'),
+        custom: SailPlayApi.data('load.actions.custom.list')
+      };
+    }
+
+    (0, _createClass3.default)(SailPlayQuests, [{
+      key: 'perform',
+      value: function perform(action) {
+
+        SailPlay.send('actions.perform', action);
+      }
+    }, {
+      key: 'data',
+      value: function data(action) {
+
+        var data = {};
+
+        if (!action) return data;
+
+        data = action;
+
+        if (action.socialType) data = SailPlayActionsData.social[action.socialType] && SailPlayActionsData.social[action.socialType][action.action];
+
+        if (SailPlayActionsData.system[action.type]) data = SailPlayActionsData.system[action.type];
+
+        // console.log(data);
+
+        return data;
+      }
+    }, {
+      key: 'empty',
+      value: function empty() {
+
+        var system_action_length = this.list.system() && this.list.system().actions && this.list.system().actions.length || 0;
+        var custom_action_length = this.list.custom() && this.list.custom().length;
+        // console.log(this.list.system());
+        // console.log(this.list.custom());
+
+        return system_action_length < 1 && custom_action_length < 1;
+      }
+    }]);
+    return SailPlayQuests;
+  }();
 })
 
 /**
@@ -40203,21 +40302,17 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.SailPlayStatuses = undefined;
 
-var _classCallCheck2 = __webpack_require__(18);
+var _classCallCheck2 = __webpack_require__(11);
 
 var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
 
-var _createClass2 = __webpack_require__(19);
+var _createClass2 = __webpack_require__(12);
 
 var _createClass3 = _interopRequireDefault(_createClass2);
 
 var _angular = __webpack_require__(3);
 
 var _angular2 = _interopRequireDefault(_angular);
-
-var _moment = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"moment\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
-
-var _moment2 = _interopRequireDefault(_moment);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -40234,27 +40329,40 @@ SailPlayStatuses.service('SailPlayStatusesLastMonth', ["SailPlayApi", function (
 
       this.history = SailPlayApi.data('load.user.history');
 
-      this.statuses = config.statuses || [];
+      this.list = config.list || [];
     }
 
     (0, _createClass3.default)(SailPlayStatusesLastMonth, [{
-      key: 'next_status',
-      value: function next_status() {
+      key: 'current',
+      value: function current() {
+        if (!this.list) return;
+        var sum = this.sum();
+        var current_statuses = this.list.filter(function (x) {
+          return x.sum <= sum;
+        });
 
-        if (!this.statuses) return;
+        // console.log(current_statuses);
+        // this.current = current_statuses.pop();
+        return current_statuses[current_statuses.length - 1];
+      }
+    }, {
+      key: 'next',
+      value: function next() {
+
+        if (!this.list) return;
 
         var user = this.user();
 
         if (!user) {
           return {
-            status: this.statuses[0],
-            offset: this.statuses[0].sum
+            status: this.list[0],
+            offset: this.list[0].sum
           };
         }
 
-        var sum = obj.getSum();
+        var sum = this.sum();
 
-        var future_statuses = obj._statuses.sort(function (a, b) {
+        var future_statuses = this.list.sort(function (a, b) {
           return a.sum > b.sum;
         }).filter(function (status) {
           return status.sum > sum;
@@ -40270,21 +40378,92 @@ SailPlayStatuses.service('SailPlayStatusesLastMonth', ["SailPlayApi", function (
       value: function sum() {
         var history = this.history();
         if (!history || !history.length) return 0;
-        var now = (0, _moment2.default)();
+        var now = new Date();
+
         var purchases = history.filter(function (item) {
-          return item.action == 'purchase' && (0, _moment2.default)(item.action_date).isSameOrAfter(now, 'month');
+          var purchase_date = new Date(item.action_date);
+          // console.log(purchase_date.getFullYear(), now.getFullYear(), purchase_date.getMonth(), now.getMonth());
+          return item.action === 'purchase' && purchase_date.getFullYear() === now.getFullYear() && purchase_date.getMonth() === now.getMonth();
         });
+
+        // console.log(purchases);
+
         var sum = purchases.reduce(function (prev, next) {
           return prev + next.price;
         }, 0);
+
+        // console.log(sum);
+
         return sum;
+      }
+    }, {
+      key: 'offset',
+      value: function offset(index) {
+        return 100 / (this.list.length - 1) * index;
+      }
+    }, {
+      key: 'progress',
+      value: function progress() {
+
+        if (!this.user() || this.list.length < 1) return;
+
+        var user_points = this.user().user_points;
+
+        var status_points = this.list.map(function (item) {
+          return item.sum;
+        });
+
+        if (status_points[0] !== 0) {
+          return 0;
+        }
+
+        function isNumeric(n) {
+          return !isNaN(parseFloat(n)) && isFinite(n);
+        }
+
+        var points = void 0;
+
+        if (isNumeric(user_points)) points = user_points;else points = user_points ? user_points.confirmed + user_points.spent + user_points.spent_extra : 0;
+
+        if (status_points[status_points.length - 1] && points > status_points[status_points.length - 1]) {
+          return 100;
+        }
+
+        var multiplier = 100 / (status_points.length - 1);
+
+        var state = 0;
+
+        for (var i = 1, len = status_points.length; i < len; i++) {
+          if (points >= status_points[i]) {
+            state++;
+          }
+        }
+
+        var current = 0;
+
+        var total = status_points[0];
+
+        if (state === 0) {
+          current = points;
+          total = status_points[state + 1];
+        } else {
+          current = points - status_points[state];
+          total = status_points[state + 1] ? status_points[state + 1] - status_points[state] : status_points[state];
+        }
+
+        return parseInt(current * 100 / total / (status_points.length - 1) + state * multiplier);
       }
     }]);
     return SailPlayStatusesLastMonth;
   }();
 }]);
 
-SailPlayStatuses.service('SailPlayStatuses', function () {});
+SailPlayStatuses.service('SailPlayStatuses', ["SailPlayStatusesLastMonth", function (SailPlayStatusesLastMonth) {
+
+  this.TYPES = {
+    last_month: SailPlayStatusesLastMonth
+  };
+}]);
 
 exports.default = SailPlayStatuses.name;
 
@@ -44790,7 +44969,7 @@ module.exports = Object.create || function create(O, Properties) {
 /* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var dP = __webpack_require__(11);
+var dP = __webpack_require__(13);
 var anObject = __webpack_require__(7);
 var getKeys = __webpack_require__(32);
 
@@ -44810,7 +44989,7 @@ module.exports = __webpack_require__(10) ? Object.defineProperties : function de
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.2.9 / 15.2.3.2 Object.getPrototypeOf(O)
-var has = __webpack_require__(16);
+var has = __webpack_require__(18);
 var toObject = __webpack_require__(31);
 var IE_PROTO = __webpack_require__(25)('IE_PROTO');
 var ObjectProto = Object.prototype;
@@ -44831,7 +45010,7 @@ module.exports = Object.getPrototypeOf || function (O) {
 __webpack_require__(105);
 var global = __webpack_require__(4);
 var hide = __webpack_require__(9);
-var Iterators = __webpack_require__(13);
+var Iterators = __webpack_require__(15);
 var TO_STRING_TAG = __webpack_require__(5)('toStringTag');
 
 var DOMIterables = ('CSSRuleList,CSSStyleDeclaration,CSSValueList,ClientRectList,DOMRectList,DOMStringList,' +
@@ -44857,7 +45036,7 @@ for (var i = 0; i < DOMIterables.length; i++) {
 
 var addToUnscopables = __webpack_require__(106);
 var step = __webpack_require__(107);
-var Iterators = __webpack_require__(13);
+var Iterators = __webpack_require__(15);
 var toIObject = __webpack_require__(23);
 
 // 22.1.3.4 Array.prototype.entries()
@@ -44914,11 +45093,11 @@ module.exports = function (done, value) {
 
 var LIBRARY = __webpack_require__(40);
 var global = __webpack_require__(4);
-var ctx = __webpack_require__(14);
+var ctx = __webpack_require__(16);
 var classof = __webpack_require__(42);
 var $export = __webpack_require__(8);
-var isObject = __webpack_require__(12);
-var aFunction = __webpack_require__(15);
+var isObject = __webpack_require__(14);
+var aFunction = __webpack_require__(17);
 var anInstance = __webpack_require__(109);
 var forOf = __webpack_require__(110);
 var speciesConstructor = __webpack_require__(43);
@@ -45201,7 +45380,7 @@ module.exports = function (it, Constructor, name, forbiddenField) {
 /* 110 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var ctx = __webpack_require__(14);
+var ctx = __webpack_require__(16);
 var call = __webpack_require__(111);
 var isArrayIter = __webpack_require__(112);
 var anObject = __webpack_require__(7);
@@ -45251,7 +45430,7 @@ module.exports = function (iterator, fn, value, entries) {
 /***/ (function(module, exports, __webpack_require__) {
 
 // check on default Array iterator
-var Iterators = __webpack_require__(13);
+var Iterators = __webpack_require__(15);
 var ITERATOR = __webpack_require__(5)('iterator');
 var ArrayProto = Array.prototype;
 
@@ -45266,7 +45445,7 @@ module.exports = function (it) {
 
 var classof = __webpack_require__(42);
 var ITERATOR = __webpack_require__(5)('iterator');
-var Iterators = __webpack_require__(13);
+var Iterators = __webpack_require__(15);
 module.exports = __webpack_require__(6).getIteratorMethod = function (it) {
   if (it != undefined) return it[ITERATOR]
     || it['@@iterator']
@@ -45305,7 +45484,7 @@ var macrotask = __webpack_require__(44).set;
 var Observer = global.MutationObserver || global.WebKitMutationObserver;
 var process = global.process;
 var Promise = global.Promise;
-var isNode = __webpack_require__(17)(process) == 'process';
+var isNode = __webpack_require__(19)(process) == 'process';
 
 module.exports = function () {
   var head, last, notify;
@@ -45391,7 +45570,7 @@ module.exports = function (target, src, safe) {
 
 var global = __webpack_require__(4);
 var core = __webpack_require__(6);
-var dP = __webpack_require__(11);
+var dP = __webpack_require__(13);
 var DESCRIPTORS = __webpack_require__(10);
 var SPECIES = __webpack_require__(5)('species');
 
@@ -49566,22 +49745,13 @@ var _defaults2 = _interopRequireDefault(_defaults);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// import DefaultAvatarImage from './avatar.gif';
-
 var widget = {
-  id: "pivko_profile",
+  id: "example",
   template: _template2.default,
   defaults: _defaults2.default,
-  inject: ["SailPlayProfile", "MAGIC_CONFIG", "SailPlayProfileForm"],
-  controller: function controller(SailPlayProfile, MAGIC_CONFIG, SailPlayProfileForm) {
-    return function (scope, elm, attrs) {
-
-      scope.profile = new SailPlayProfile();
-
-      scope.profile_form = new SailPlayProfileForm(scope.widget.options.profile_form);
-
-      // scope.default_avatar = DefaultAvatarImage;
-    };
+  inject: ["MAGIC_CONFIG", "SailPlay"],
+  controller: function controller(MAGIC_CONFIG, SailPlay) {
+    return function (scope, elm, attrs) {};
   }
 };
 
@@ -49593,7 +49763,7 @@ _widget.Widget.config(["MagicWidgetProvider", function (MagicWidgetProvider) {
 /* 269 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"spm_pivko_profile_wrapper\">\n\n  <div class=\"spm_pivko_profile_wrapper_inner\">\n\n    <div class=\"spm_pivko_profile_info\">\n\n      <div class=\"spm_pivko_profile_info_inner\">\n\n        <div class=\"spm_pivko_profile_info_avatar\">\n          <img data-ng-src=\"{{(profile.user().user.avatar['250x250']|sailplay_pic) || widget.options.images.default_avatar || default_avatar}}\" alt=\"\">\n        </div>\n\n        <div class=\"spm_pivko_profile_info_name\">\n          <span>{{ profile.user().user.name || widget.options.texts.no_name }}</span>\n        </div>\n\n        <div class=\"spm_pivko_profile_info_oid\">\n\n          <div class=\"spm_pivko_profile_info_oid_label\">\n            <span>{{ widget.options.texts.oid_label }}</span>\n          </div>\n\n          <div class=\"spm_pivko_profile_info_oid_value\">\n            <span>{{ profile.user().user.origin_user_id || widget.options.texts.no_oid }}</span>\n          </div>\n\n        </div>\n\n        <div class=\"spm_pivko_profile_info_divider\"></div>\n\n        <div class=\"spm_pivko_profile_info_email\">\n          <span>{{ profile.user().user.email || widget.options.texts.no_email }}</span>\n        </div>\n\n        <div class=\"spm_pivko_profile_info_phone\">\n          <span>{{(profile.user().user.phone | tel) || widget.options.texts.no_phone }}</span>\n        </div>\n\n        <div class=\"spm_pivko_profile_info_edit_button\">\n          <button type=\"button\">{{ widget.options.texts.profile_button_text }}</button>\n        </div>\n\n      </div>\n\n    </div>\n\n    <div class=\"spm_pivko_profile_status\">\n      <div class=\"spm_pivko_profile_status_inner\">\n\n        <div class=\"spm_pivko_profile_status_points\">\n\n          <div class=\"spm_pivko_profile_status_points_inner\">\n\n            <div class=\"spm_pivko_profile_status_points_title\">\n              <span>{{ widget.options.texts.points_title }}</span>\n            </div>\n\n            <div class=\"spm_pivko_profile_status_points_confirmed\">\n              <span>{{ profile.user().user_points.confirmed }} {{ profile.user().user_points.confirmed | sailplay_pluralize: ('points.texts.pluralize' | tools) }}</span>\n            </div>\n\n            <div class=\"spm_pivko_profile_status_points_status\">\n              <div class=\"spm_pivko_profile_status_points_status_label\">\n                <span>{{ widget.options.texts.status_label }}</span>\n              </div>\n              <div class=\"spm_pivko_profile_status_points_status_value\">\n                <span>Серебрянный</span>\n              </div>\n            </div>\n\n          </div>\n\n        </div>\n\n        <div class=\"spm_pivko_profile_status_progress\">\n\n          <div class=\"spm_pivko_profile_status_progress_inner\">\n\n            <div class=\"spm_pivko_profile_status_progress_title\">\n              <span>Копи в следущем месяце больше</span>\n            </div>\n\n            <div class=\"spm_pivko_profile_status_progress_more_button\">\n              <button type=\"button\">Подробнее ></button>\n            </div>\n\n            <div class=\"spm_pivko_profile_status_progress_line\">\n\n              <div class=\"spm_pivko_profile_status_progress_line_container\">\n\n\n              </div>\n\n            </div>\n\n          </div>\n\n        </div>\n\n      </div>\n    </div>\n\n  </div>\n\n</div>";
+module.exports = "<div class=\"spm_example\">\n\n  <h1>DEMO WIDGET</h1>\n\n</div>";
 
 /***/ }),
 /* 270 */
@@ -49603,6 +49773,101 @@ module.exports = "<div class=\"spm_pivko_profile_wrapper\">\n\n  <div class=\"sp
 
 // load the styles
 var content = __webpack_require__(271);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// Prepare cssTransformation
+var transform;
+
+var options = {"hmr":true}
+options.transform = transform
+// add the styles to the DOM
+var update = __webpack_require__(1)(content, options);
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/dist/cjs.js!./style.less", function() {
+			var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/dist/cjs.js!./style.less");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 271 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(0)(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/***/ }),
+/* 272 */
+/***/ (function(module, exports) {
+
+module.exports = {"id":"example","enabled":true,"styles":{},"options":{}}
+
+/***/ }),
+/* 273 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _widget = __webpack_require__(2);
+
+var _template = __webpack_require__(274);
+
+var _template2 = _interopRequireDefault(_template);
+
+__webpack_require__(275);
+
+var _defaults = __webpack_require__(277);
+
+var _defaults2 = _interopRequireDefault(_defaults);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var widget = {
+  id: "pivko_history",
+  template: _template2.default,
+  defaults: _defaults2.default,
+  inject: ["MAGIC_CONFIG", "SailPlay", "SailPlayProfileHistory"],
+  controller: function controller(MAGIC_CONFIG, SailPlay, SailPlayProfileHistory) {
+    return function (scope, elm, attrs) {
+
+      scope.history = new SailPlayProfileHistory();
+    };
+  }
+};
+
+_widget.Widget.config(["MagicWidgetProvider", function (MagicWidgetProvider) {
+  MagicWidgetProvider.register(widget);
+}]);
+
+/***/ }),
+/* 274 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"spm_pivko_history_wrapper\">\n\n  <div class=\"spm_pivko_history_wrapper_inner\">\n\n    <div class=\"spm_pivko_history_list\">\n\n      <div class=\"spm_pivko_history_list_inner\">\n\n        <div class=\"spm_pivko_history_list_title\">\n          <span>{{ widget.options.texts.history_title }}</span>\n        </div>\n\n        <div class=\"spm_pivko_history_list_empty\" data-ng-if=\"history.empty()\">\n\n          <div class=\"spm_pivko_history_list_empty_title\">\n            <span>{{ widget.options.texts.empty_list_title }}</span>\n          </div>\n\n          <div class=\"spm_pivko_history_list_empty_button\">\n            <a href=\"{{ widget.options.empty_list_button_link }}\" target=\"_blank\">{{ widget.options.texts.empty_list_button }}</a>\n          </div>\n\n        </div>\n\n        <div class=\"spm_pivko_history_list_items\" data-ng-if=\"!history.empty()\">\n\n          <div class=\"spm_pivko_history_list_item\" data-dir-paginate=\"item in history.list() | itemsPerPage:5\" data-pagination-id=\"history_pages\">\n\n            <div class=\"spm_pivko_history_list_item_header\">\n\n              <div class=\"spm_pivko_history_list_item_header_title\">\n\n                <span>\n                  {{ item|history_item }} {{ item.action_date | date:'d MMM yyyy' }}\n                </span>\n\n              </div>\n\n            </div>\n\n          </div>\n\n          <div class=\"spm_pivko_history_list_pagination\">\n\n            <dir-pagination-controls max-size=\"7\" pagination-id=\"history_pages\" direction-links=\"true\" page-links=\"true\" template-url=\"magic.pagination\" auto-hide=\"true\"></dir-pagination-controls>\n\n          </div>\n\n        </div>\n\n      </div>\n\n    </div>\n\n    <div class=\"spm_pivko_history_help\">\n\n      <div class=\"spm_pivko_history_help_inner\">\n\n        <div class=\"spm_pivko_history_help_title\">\n          <span>{{ widget.options.texts.help_title }}</span>\n        </div>\n\n      </div>\n\n    </div>\n\n  </div>\n\n</div>";
+
+/***/ }),
+/* 275 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(276);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -49627,7 +49892,7 @@ if(false) {
 }
 
 /***/ }),
-/* 271 */
+/* 276 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -49635,16 +49900,215 @@ exports = module.exports = __webpack_require__(0)(false);
 
 
 // module
-exports.push([module.i, ".spm_pivko_profile_wrapper {\n  font-size: 0;\n  text-align: left;\n}\n@media (min-width: 768px) {\n  .spm_pivko_profile_wrapper {\n    width: 100%;\n    display: table;\n    border-collapse: separate;\n    border-spacing: 15px;\n  }\n}\n@media (min-width: 768px) {\n  .spm_pivko_profile_wrapper_inner {\n    display: table-row;\n  }\n}\n.spm_pivko_profile_info {\n  display: inline-block;\n  font-size: 16px;\n  box-sizing: border-box;\n  background-color: #ffffff;\n}\n@media (min-width: 768px) {\n  .spm_pivko_profile_info {\n    width: 20%;\n    display: table-cell;\n    vertical-align: top;\n  }\n}\n.spm_pivko_profile_info_avatar {\n  text-align: center;\n  padding: 25px 50px 10px 50px;\n}\n.spm_pivko_profile_info_avatar img {\n  width: 120px;\n  height: 120px;\n  border-radius: 60px;\n  display: inline-block;\n}\n.spm_pivko_profile_info_name {\n  text-align: center;\n  padding: 5px 30px;\n}\n.spm_pivko_profile_info_name span {\n  font-size: 20px;\n  line-height: 23px;\n  font-weight: bold;\n}\n.spm_pivko_profile_info_oid {\n  text-align: center;\n  padding: 5px 20px;\n}\n.spm_pivko_profile_info_oid_label {\n  font-size: 14px;\n  font-weight: 300;\n  color: #888888;\n}\n.spm_pivko_profile_info_oid_value {\n  font-size: 14px;\n  font-weight: 400;\n}\n.spm_pivko_profile_info_divider {\n  margin: 0 20px 10px 20px;\n  border-top: 1px solid #cccccc;\n}\n.spm_pivko_profile_info_email {\n  text-align: center;\n  padding: 0 20px;\n}\n.spm_pivko_profile_info_email span {\n  font-size: 16px;\n  font-weight: 300;\n}\n.spm_pivko_profile_info_phone {\n  text-align: center;\n  padding: 0 20px;\n}\n.spm_pivko_profile_info_phone span {\n  font-size: 16px;\n  font-weight: bold;\n}\n.spm_pivko_profile_info_edit_button {\n  text-align: center;\n  padding: 20px 30px 30px 30px;\n}\n.spm_pivko_profile_info_edit_button button {\n  border: none;\n  outline: none;\n  font-size: 16px;\n  font-weight: 300;\n  background-color: transparent;\n  cursor: pointer;\n  color: #888888;\n}\n.spm_pivko_profile_status {\n  display: inline-block;\n  font-size: 16px;\n  box-sizing: border-box;\n  background-color: #ffffff;\n}\n@media (min-width: 768px) {\n  .spm_pivko_profile_status {\n    width: 80%;\n    display: table-cell;\n    vertical-align: top;\n  }\n}\n.spm_pivko_profile_status_points {\n  background-color: #eeeeee;\n}\n.spm_pivko_profile_status_points_inner {\n  padding: 50px;\n}\n.spm_pivko_profile_status_points_title {\n  font-size: 18px;\n  text-align: right;\n}\n.spm_pivko_profile_status_points_confirmed {\n  text-align: right;\n  font-size: 48px;\n  font-weight: bold;\n  line-height: 100%;\n}\n.spm_pivko_profile_status_points_status {\n  margin-top: 10px;\n}\n.spm_pivko_profile_status_points_status_label {\n  text-align: right;\n  font-size: 14px;\n  font-weight: bold;\n}\n.spm_pivko_profile_status_points_status_value {\n  text-align: right;\n  font-size: 16px;\n  font-weight: bold;\n}\n.spm_pivko_profile_status_progress_title {\n  text-align: center;\n  margin: 15px auto 0 auto;\n}\n.spm_pivko_profile_status_progress_title span {\n  font-size: 18px;\n  font-weight: bold;\n}\n.spm_pivko_profile_status_progress_more_button {\n  text-align: center;\n}\n.spm_pivko_profile_status_progress_more_button button {\n  border: none;\n  outline: none;\n  font-size: 12px;\n  font-weight: 300;\n  background-color: transparent;\n  cursor: pointer;\n  color: #888888;\n}\n.spm_pivko_profile_status_progress_line {\n  margin: 40px 50px 70px 50px;\n  background-color: #eeeeee;\n  height: 6px;\n  border-radius: 3px;\n}\n", ""]);
+exports.push([module.i, "@media (min-width: 768px) {\n  .spm_wrapper .pivko_history .spm_pivko_history_wrapper {\n    width: 100%;\n    display: table;\n    border-collapse: separate;\n  }\n}\n@media (min-width: 768px) {\n  .spm_wrapper .pivko_history .spm_pivko_history_wrapper_inner {\n    display: table-row;\n  }\n}\n.spm_wrapper .pivko_history .spm_pivko_history_list {\n  background-color: #ffffff;\n}\n@media (min-width: 768px) {\n  .spm_wrapper .pivko_history .spm_pivko_history_list {\n    width: 68%;\n    display: table-cell;\n    vertical-align: top;\n    border-right: 20px solid transparent;\n    background-clip: padding-box;\n  }\n}\n.spm_wrapper .pivko_history .spm_pivko_history_list_title {\n  font-size: 20px;\n  font-weight: bold;\n  margin-top: 30px;\n}\n.spm_wrapper .pivko_history .spm_pivko_history_list_empty {\n  margin-top: 10px;\n}\n.spm_wrapper .pivko_history .spm_pivko_history_list_empty_title span {\n  font-size: 20px;\n  font-weight: 300;\n  color: #888888;\n}\n.spm_wrapper .pivko_history .spm_pivko_history_list_empty_button {\n  margin-top: 20px;\n  margin-bottom: 30px;\n}\n.spm_wrapper .pivko_history .spm_pivko_history_list_empty_button a {\n  display: inline-block;\n  font-size: 14px;\n  padding: 15px 50px;\n  border-radius: 25px;\n  border: none;\n  background-color: #cccccc;\n  outline: none;\n  text-decoration: none;\n  color: #222222;\n}\n.spm_wrapper .pivko_history .spm_pivko_history_list_empty_button a:visited {\n  color: #222222;\n}\n.spm_wrapper .pivko_history .spm_pivko_history_list_items {\n  padding: 20px 50px;\n}\n.spm_wrapper .pivko_history .spm_pivko_history_list_item_header_title {\n  text-align: left;\n}\n.spm_wrapper .pivko_history .spm_pivko_history_help {\n  background-color: #ffffff;\n}\n@media (min-width: 768px) {\n  .spm_wrapper .pivko_history .spm_pivko_history_help {\n    width: 32%;\n    display: table-cell;\n    vertical-align: top;\n    background-clip: padding-box;\n  }\n}\n.spm_wrapper .pivko_history .spm_pivko_history_help_title {\n  margin-top: 30px;\n  font-size: 20px;\n  font-weight: bold;\n}\n", ""]);
 
 // exports
 
 
 /***/ }),
-/* 272 */
+/* 277 */
+/***/ (function(module, exports) {
+
+module.exports = {"id":"example","enabled":true,"styles":{},"options":{}}
+
+/***/ }),
+/* 278 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _widget = __webpack_require__(2);
+
+var _template = __webpack_require__(279);
+
+var _template2 = _interopRequireDefault(_template);
+
+__webpack_require__(280);
+
+var _defaults = __webpack_require__(282);
+
+var _defaults2 = _interopRequireDefault(_defaults);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+// import DefaultAvatarImage from './avatar.gif';
+
+var widget = {
+  id: "pivko_profile",
+  template: _template2.default,
+  defaults: _defaults2.default,
+  inject: ["SailPlayProfile", "MAGIC_CONFIG", "SailPlayProfileForm", "SailPlayStatuses"],
+  controller: function controller(SailPlayProfile, MAGIC_CONFIG, SailPlayProfileForm, SailPlayStatuses) {
+    return function (scope, elm, attrs) {
+
+      scope.profile = new SailPlayProfile();
+
+      scope.profile_form = new SailPlayProfileForm(scope.widget.options.profile_form);
+
+      scope.statuses = new SailPlayStatuses.TYPES[scope.widget.options.statuses.type](scope.widget.options.statuses);
+
+      console.log(scope.statuses);
+      // scope.default_avatar = DefaultAvatarImage;
+    };
+  }
+};
+
+_widget.Widget.config(["MagicWidgetProvider", function (MagicWidgetProvider) {
+  MagicWidgetProvider.register(widget);
+}]);
+
+/***/ }),
+/* 279 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"spm_pivko_profile_wrapper\">\n\n  <div class=\"spm_pivko_profile_wrapper_inner\">\n\n    <div class=\"spm_pivko_profile_info\">\n\n      <div class=\"spm_pivko_profile_info_inner\">\n\n        <div class=\"spm_pivko_profile_info_avatar\">\n          <img data-ng-src=\"{{(profile.user().user.avatar['250x250']|sailplay_pic) || widget.options.images.default_avatar || default_avatar}}\" alt=\"\">\n        </div>\n\n        <div class=\"spm_pivko_profile_info_name\">\n          <span>{{ profile.user().user.name || widget.options.texts.no_name }}</span>\n        </div>\n\n        <div class=\"spm_pivko_profile_info_oid\">\n\n          <div class=\"spm_pivko_profile_info_oid_label\">\n            <span>{{ widget.options.texts.oid_label }}</span>\n          </div>\n\n          <div class=\"spm_pivko_profile_info_oid_value\">\n            <span>{{ profile.user().user.origin_user_id || widget.options.texts.no_oid }}</span>\n          </div>\n\n        </div>\n\n        <div class=\"spm_pivko_profile_info_divider\"></div>\n\n        <div class=\"spm_pivko_profile_info_email\">\n          <span>{{ profile.user().user.email || widget.options.texts.no_email }}</span>\n        </div>\n\n        <div class=\"spm_pivko_profile_info_phone\">\n          <span>{{(profile.user().user.phone | tel) || widget.options.texts.no_phone }}</span>\n        </div>\n\n        <div class=\"spm_pivko_profile_info_edit_button\">\n          <button type=\"button\">{{ widget.options.texts.profile_button_text }}</button>\n        </div>\n\n      </div>\n\n    </div>\n\n    <div class=\"spm_pivko_profile_status\">\n      <div class=\"spm_pivko_profile_status_inner\">\n\n        <div class=\"spm_pivko_profile_status_points\">\n\n          <div class=\"spm_pivko_profile_status_points_inner\">\n\n            <div class=\"spm_pivko_profile_status_points_title\">\n              <span>{{ widget.options.texts.points_title }}</span>\n            </div>\n\n            <div class=\"spm_pivko_profile_status_points_confirmed\">\n              <span>{{ profile.user().user_points.confirmed }} {{ profile.user().user_points.confirmed | sailplay_pluralize: ('points.texts.pluralize' | tools) }}</span>\n            </div>\n\n            <div class=\"spm_pivko_profile_status_points_status\">\n              <div class=\"spm_pivko_profile_status_points_status_label\">\n                <span>{{ widget.options.texts.status_label }}</span>\n              </div>\n              <div class=\"spm_pivko_profile_status_points_status_value\">\n                <span>{{ statuses.current().status || widget.options.texts.no_status }}</span>\n              </div>\n            </div>\n\n          </div>\n\n        </div>\n\n        <div class=\"spm_pivko_profile_status_progress\">\n\n          <div class=\"spm_pivko_profile_status_progress_inner\">\n\n            <div class=\"spm_pivko_profile_status_progress_title\">\n              <span>Копи в следущем месяце больше</span>\n            </div>\n\n            <div class=\"spm_pivko_profile_status_progress_more_button\">\n              <button type=\"button\">Подробнее ></button>\n            </div>\n\n            <div class=\"spm_pivko_profile_status_progress_line_container\">\n\n              <div class=\"spm_pivko_profile_status_progress_line\">\n\n                <div class=\"spm_pivko_profile_status_progress_line_filled\" data-ng-style=\"{ width: statuses.progress() + '%' }\"></div>\n\n                <div class=\"spm_pivko_profile_status_progress_line_list\">\n                  <div class=\"spm_pivko_profile_status_progress_line_item\" data-ng-repeat=\"status in statuses.list\" data-ng-class=\"{ current: statuses.current() === status }\" data-ng-style=\"{ left: statuses.offset($index) + '%' }\">\n                    <div class=\"spm_pivko_profile_status_progress_line_item_icon\">\n                      <img class=\"spm_pivko_profile_status_progress_line_item_icon_inactive\" data-ng-src=\"{{ status.img_inactive }}\" alt=\"\">\n                      <img class=\"spm_pivko_profile_status_progress_line_item_icon_active\" data-ng-src=\"{{ status.img_active }}\" alt=\"\">\n                      <img class=\"spm_pivko_profile_status_progress_line_item_icon_current\" data-ng-src=\"{{ status.img_current }}\" alt=\"\">\n                    </div>\n                    <div class=\"spm_pivko_profile_status_progress_line_item_name\">\n                    <span>\n                      {{ status.status }}\n                    </span>\n                    </div>\n                  </div>\n                </div>\n\n              </div>\n\n            </div>\n\n          </div>\n\n        </div>\n\n      </div>\n    </div>\n\n  </div>\n\n</div>";
+
+/***/ }),
+/* 280 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(281);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// Prepare cssTransformation
+var transform;
+
+var options = {"hmr":true}
+options.transform = transform
+// add the styles to the DOM
+var update = __webpack_require__(1)(content, options);
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/dist/cjs.js!./style.less", function() {
+			var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/dist/cjs.js!./style.less");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 281 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(0)(false);
+// imports
+
+
+// module
+exports.push([module.i, ".spm_wrapper .pivko_profile .spm_pivko_profile_wrapper {\n  text-align: left;\n}\n@media (min-width: 768px) {\n  .spm_wrapper .pivko_profile .spm_pivko_profile_wrapper {\n    width: 100%;\n    display: table;\n    border-collapse: separate;\n  }\n}\n@media (min-width: 768px) {\n  .spm_wrapper .pivko_profile .spm_pivko_profile_wrapper_inner {\n    display: table-row;\n  }\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_info {\n  display: inline-block;\n  font-size: 16px;\n  box-sizing: border-box;\n  background-color: #ffffff;\n}\n@media (min-width: 768px) {\n  .spm_wrapper .pivko_profile .spm_pivko_profile_info {\n    width: 20%;\n    display: table-cell;\n    vertical-align: top;\n    border-right: 20px solid transparent;\n    background-clip: padding-box;\n  }\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_info_avatar {\n  text-align: center;\n  padding: 25px 50px 10px 50px;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_info_avatar img {\n  width: 120px;\n  height: 120px;\n  border-radius: 60px;\n  display: inline-block;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_info_name {\n  text-align: center;\n  padding: 5px 30px;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_info_name span {\n  font-size: 20px;\n  line-height: 23px;\n  font-weight: bold;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_info_oid {\n  text-align: center;\n  padding: 5px 20px;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_info_oid_label {\n  font-size: 14px;\n  font-weight: 300;\n  color: #888888;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_info_oid_value {\n  font-size: 14px;\n  font-weight: 400;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_info_divider {\n  margin: 0 20px 10px 20px;\n  border-top: 1px solid #cccccc;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_info_email {\n  text-align: center;\n  padding: 0 20px;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_info_email span {\n  font-size: 16px;\n  font-weight: 300;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_info_phone {\n  text-align: center;\n  padding: 0 20px;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_info_phone span {\n  font-size: 16px;\n  font-weight: bold;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_info_edit_button {\n  text-align: center;\n  padding: 20px 30px 30px 30px;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_info_edit_button button {\n  border: none;\n  outline: none;\n  font-size: 16px;\n  font-weight: 300;\n  background-color: transparent;\n  cursor: pointer;\n  color: #888888;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status {\n  display: inline-block;\n  font-size: 16px;\n  box-sizing: border-box;\n  background-color: #ffffff;\n}\n@media (min-width: 768px) {\n  .spm_wrapper .pivko_profile .spm_pivko_profile_status {\n    width: 80%;\n    display: table-cell;\n    vertical-align: top;\n  }\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_points {\n  background-color: #eeeeee;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_points_inner {\n  padding: 50px;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_points_title {\n  font-size: 18px;\n  text-align: right;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_points_confirmed {\n  text-align: right;\n  font-size: 48px;\n  font-weight: bold;\n  line-height: 100%;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_points_status {\n  margin-top: 10px;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_points_status_label {\n  text-align: right;\n  font-size: 14px;\n  font-weight: bold;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_points_status_value {\n  text-align: right;\n  font-size: 16px;\n  font-weight: bold;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_title {\n  text-align: center;\n  margin: 15px auto 0 auto;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_title span {\n  font-size: 18px;\n  font-weight: bold;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_more_button {\n  text-align: center;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_more_button button {\n  border: none;\n  outline: none;\n  font-size: 12px;\n  font-weight: 300;\n  background-color: transparent;\n  cursor: pointer;\n  color: #888888;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_line {\n  margin: 40px 50px 70px 50px;\n  background-color: #eeeeee;\n  height: 6px;\n  border-radius: 3px;\n  position: relative;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_line_filled {\n  position: absolute;\n  top: 0;\n  left: 0;\n  height: 100%;\n  background-color: #888888;\n  border-radius: 3px;\n  transition: all 0.4s ease;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_line_list {\n  position: absolute;\n  width: 80%;\n  left: 10%;\n  height: 100%;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_line_item {\n  position: absolute;\n  width: 50px;\n  height: 80px;\n  top: -23px;\n  margin-left: -25px;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_line_item_icon img {\n  width: 100%;\n  display: block;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_line_item_icon_active,\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_line_item_icon_current {\n  display: none !important;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_line_item_name {\n  text-align: center;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_line_item_name span {\n  font-size: 12px;\n  color: #888888;\n  font-weight: 300;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_line_item.current .spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_line_item_name span {\n  font-weight: 400;\n  color: #444444;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_line_item.current .spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_line_item_icon_current {\n  display: block !important;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_line_item.current .spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_line_item_icon_active,\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_line_item.current .spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_line_item_icon_inactive {\n  display: none !important;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 282 */
 /***/ (function(module, exports) {
 
 module.exports = {"id":"pivko_profile","enabled":true,"styles":{},"options":{}}
+
+/***/ }),
+/* 283 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _widget = __webpack_require__(2);
+
+var _template = __webpack_require__(284);
+
+var _template2 = _interopRequireDefault(_template);
+
+__webpack_require__(285);
+
+var _defaults = __webpack_require__(287);
+
+var _defaults2 = _interopRequireDefault(_defaults);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var widget = {
+  id: "pivko_quests",
+  template: _template2.default,
+  defaults: _defaults2.default,
+  inject: ["MAGIC_CONFIG", "SailPlay", "SailPlayQuests"],
+  controller: function controller(MAGIC_CONFIG, SailPlay, SailPlayQuests) {
+    return function (scope, elm, attrs) {
+
+      scope.quests = new SailPlayQuests();
+    };
+  }
+};
+
+_widget.Widget.config(["MagicWidgetProvider", function (MagicWidgetProvider) {
+  MagicWidgetProvider.register(widget);
+}]);
+
+/***/ }),
+/* 284 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"spm_pivko_quests_wrapper\">\n\n  <div class=\"spm_pivko_quests_wrapper_inner\">\n\n    <div class=\"spm_pivko_quests_title\">\n      <span>{{ widget.options.texts.title }}</span>\n    </div>\n\n    <div class=\"spm_pivko_quests_caption\">\n      <span>{{ widget.options.texts.caption }}</span>\n    </div>\n\n    <div class=\"spm_pivko_quests_list_empty\" data-ng-if=\"quests.empty()\">\n      <span>{{ widget.options.texts.empty_list_hint }}</span>\n    </div>\n\n    <div class=\"spm_pivko_quests_list\" data-ng-if=\"!quests.empty()\">\n\n      <div class=\"spm_pivko_quests_list_inner clearfix\">\n\n        <!-- SYSTEM QUESTS -->\n        <div class=\"spm_pivko_quests_list_item\" data-ng-repeat=\"quest in quests.list.system().actions\">\n\n          <div class=\"spm_pivko_quests_list_item_inner\">\n\n            <div class=\"spm_pivko_quests_list_item_header\">\n\n              <div class=\"spm_pivko_quests_list_item_header_inner clearfix\">\n\n                <div class=\"spm_pivko_quests_list_item_icon\">\n                  <img data-ng-src=\"{{ quests.data(quest).pic|sailplay_pic }}\" alt=\"\">\n                </div>\n\n                <div class=\"spm_pivko_quests_list_item_button\">\n                  <button type=\"button\">Выполнить</button>\n                </div>\n\n              </div>\n\n            </div>\n\n            <div class=\"spm_pivko_quests_list_item_body\">\n\n              <div class=\"spm_pivko_quests_list_item_body_inner\">\n\n                <div class=\"spm_pivko_quests_list_item_points\">\n                  <span>+ {{ (quest.points|number)+' '+(quest.points|sailplay_pluralize:('points.texts.pluralize'|tools)) }}</span>\n                </div>\n\n                <div class=\"spm_pivko_quests_list_item_name\">\n                  <span>{{ quests.data(quest).name }}</span>\n                </div>\n\n              </div>\n\n            </div>\n\n          </div>\n\n        </div>\n\n      </div>\n\n    </div>\n\n  </div>\n\n</div>";
+
+/***/ }),
+/* 285 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(286);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// Prepare cssTransformation
+var transform;
+
+var options = {"hmr":true}
+options.transform = transform
+// add the styles to the DOM
+var update = __webpack_require__(1)(content, options);
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/dist/cjs.js!./style.less", function() {
+			var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/dist/cjs.js!./style.less");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 286 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(0)(false);
+// imports
+
+
+// module
+exports.push([module.i, ".spm_wrapper .pivko_quests .spm_pivko_quests_wrapper {\n  margin-bottom: 30px;\n}\n.spm_wrapper .pivko_quests .spm_pivko_quests_title {\n  font-size: 35px;\n  font-weight: bold;\n  margin-top: 20px;\n}\n.spm_wrapper .pivko_quests .spm_pivko_quests_caption {\n  font-size: 20px;\n  color: #888888;\n  font-weight: 300;\n}\n.spm_wrapper .pivko_quests .spm_pivko_quests_list_empty {\n  font-size: 36px;\n  font-weight: 300;\n  color: #888888;\n  margin: 20px auto;\n}\n.spm_wrapper .pivko_quests .spm_pivko_quests_list {\n  margin-top: 30px;\n}\n.spm_wrapper .pivko_quests .spm_pivko_quests_list_inner {\n  margin-left: -10px;\n  margin-right: -10px;\n  text-align: left;\n}\n.spm_wrapper .pivko_quests .spm_pivko_quests_list_item {\n  display: inline-block;\n  float: left;\n  padding: 10px;\n  box-sizing: border-box;\n}\n.spm_wrapper .pivko_quests .spm_pivko_quests_list_item_icon {\n  display: inline-block;\n  float: left;\n}\n.spm_wrapper .pivko_quests .spm_pivko_quests_list_item_icon img {\n  width: 80px;\n  height: 80px;\n}\n.spm_wrapper .pivko_quests .spm_pivko_quests_list_item_button {\n  display: inline-block;\n  float: right;\n  width: auto;\n  margin-top: 25px;\n}\n.spm_wrapper .pivko_quests .spm_pivko_quests_list_item_button button {\n  border: none;\n  outline: none;\n}\n.spm_wrapper .pivko_quests .spm_pivko_quests_list_item_points span {\n  font-size: 20px;\n  font-weight: bold;\n}\n.spm_wrapper .pivko_quests .spm_pivko_quests_list_item_name {\n  height: 48px;\n}\n.spm_wrapper .pivko_quests .spm_pivko_quests_list_item_name span {\n  font-weight: 300;\n  font-size: 14px;\n  color: #888888;\n}\n@media only screen and (min-width: 950px) and (max-width: 1128px) {\n  .spm_wrapper .pivko_quests .spm_pivko_quests_list_item {\n    width: 33.333%;\n  }\n}\n@media only screen and (min-width: 1129px) {\n  .spm_wrapper .pivko_quests .spm_pivko_quests_list_item {\n    width: 33.333%;\n  }\n}\n@media only screen and (min-width: 530px) and (max-width: 949px) {\n  .spm_wrapper .pivko_quests .spm_pivko_quests_list_item {\n    width: 50%;\n  }\n}\n.spm_wrapper .pivko_quests .spm_pivko_quests_list_item_header {\n  background-color: #cccccc;\n  padding: 10px 25px;\n}\n.spm_wrapper .pivko_quests .spm_pivko_quests_list_item_body {\n  background-color: #ffffff;\n  padding: 20px 30px;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 287 */
+/***/ (function(module, exports) {
+
+module.exports = {"id":"pivko_quests","enabled":true,"styles":{},"options":{}}
 
 /***/ })
 /******/ ]);
