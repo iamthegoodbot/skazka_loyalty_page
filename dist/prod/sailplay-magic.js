@@ -1180,7 +1180,7 @@ var SailPlay = exports.SailPlay = _angular2.default.module('sailplay', [_sailpla
 
   var observers = {};
 
-  var points = ['load.user.info', 'leaderboard.load', 'load.user.history', 'load.actions.list', 'load.actions.custom.list', 'load.badges.list', 'tags.exist', 'tags.add', 'load.gifts.list'];
+  var points = ['load.user.info', 'leaderboard.load', 'load.user.history', 'load.actions.list', 'load.actions.custom.list', 'load.badges.list', 'tags.exist', 'tags.add', 'load.gifts.list', 'purchases.info'];
 
   self.points = [];
   self.observe = function (name, fn) {
@@ -1979,8 +1979,8 @@ __webpack_require__(259);
 __webpack_require__(264);
 __webpack_require__(268);
 __webpack_require__(273);
-__webpack_require__(278);
-module.exports = __webpack_require__(283);
+__webpack_require__(279);
+module.exports = __webpack_require__(284);
 
 
 /***/ }),
@@ -2332,7 +2332,7 @@ module.exports = function (it, S) {
     //simple jsonp service
     var JSONP = {
       currentScript: null,
-      get: function (url, data, success, error) {
+      get: function (url, data, success, error, timeout) {
         var src = url + (url.indexOf("?") + 1 ? "&" : "?");
         var head = document.getElementsByTagName("head")[0];
         var newScript = document.createElement("script");
@@ -2356,7 +2356,7 @@ module.exports = function (it, S) {
           catch (err) {
           }
           delete window.JSONP_CALLBACK[callback_name];
-        }, 10000);
+        }, timeout || 10000);
 
         window.JSONP_CALLBACK[callback_name] = function (data) {
           clearTimeout(jsonpTimeout);
@@ -2434,15 +2434,13 @@ module.exports = function (it, S) {
         frame = document.createElement('IFRAME');
         frame.style.border = 'none';
         frame.style.position = 'fixed';
-        frame.style.top = '0';
-        frame.style.left = '0';
-        frame.style.bottom = '0';
-        frame.style.right = '0';
+        frame.style.top = '100px';
+        frame.style.left = '50%';
         frame.style.width = '410px';
         frame.style.height = '510px';
         frame.created = true;
         frame.style.background = 'transparent';
-        frame.style.margin = 'auto';
+        frame.style.margin = '0 auto auto -205px';
         frame.style.zIndex = '100000';
         document.body.appendChild(frame);
       }
@@ -2451,6 +2449,7 @@ module.exports = function (it, S) {
 
       frame.name = frame_id;
       frame.id = frame_id;
+      frame.className = 'sailplay_login_frame';
 
       function onMessage(messageEvent) {
 
@@ -2624,7 +2623,25 @@ module.exports = function (it, S) {
     });
 
     sp.on('login.remote', function (options) {
-      remoteLogin(options);
+
+      //safari third-party cookies fix
+      var is_safari = navigator.userAgent.indexOf("Safari") > -1;
+      var is_chrome = navigator.userAgent.indexOf('Chrome') > -1;
+      if ((is_chrome) && (is_safari)) {is_safari = false;}
+      if (is_safari) {
+        let cookiepopup = window.open(_config.DOMAIN + '/users/reg/social/','143772850439','width=1,height=1,toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=-10000,top=-10000');
+        let checker = setInterval(function () {
+          if(cookiepopup.closed) {
+            clearInterval(checker);
+            remoteLogin(options);
+          }
+        }, 200);
+      }
+      else {
+        remoteLogin(options);
+      }
+
+
     });
 
     //////////////////
@@ -3148,7 +3165,7 @@ module.exports = function (it, S) {
       }
 
     });
-    
+
     // USER TAGS LIST
     sp.on("tags.list", function (data, callback) {
       if (_config == {}) {
@@ -3338,7 +3355,7 @@ module.exports = function (it, S) {
       });
     });
 
-    sp.on('purchases.info', function (data) {
+    sp.on('purchases.info', function (data, callback) {
       if (_config == {}) {
         initError();
         return;
@@ -3353,6 +3370,7 @@ module.exports = function (it, S) {
         } else {
           sp.send('purchases.info.error', res);
         }
+        callback && callback(res);
       });
     });
 
@@ -3418,7 +3436,7 @@ module.exports = function (it, S) {
       function isNode(o) {
         return (
           typeof Node === "object" ? o instanceof Node :
-          o && typeof o === "object" && typeof o.nodeType === "number" && typeof o.nodeName === "string"
+            o && typeof o === "object" && typeof o.nodeType === "number" && typeof o.nodeName === "string"
         );
       }
 
@@ -3426,7 +3444,7 @@ module.exports = function (it, S) {
       function isElement(o) {
         return (
           typeof HTMLElement === "object" ? o instanceof HTMLElement : //DOM2
-          o && typeof o === "object" && o !== null && o.nodeType === 1 && typeof o.nodeName === "string"
+            o && typeof o === "object" && o !== null && o.nodeType === 1 && typeof o.nodeName === "string"
         );
       }
 
@@ -39626,7 +39644,7 @@ var SailPlayHistory = exports.SailPlayHistory = _angular2.default.module('sailpl
     }
 
   };
-}).service('SailPlayProfileHistory', function (SailPlayApi) {
+}).service('SailPlayProfileHistory', function (SailPlayApi, $rootScope) {
 
   return function () {
     function SailPlayProfileHistory() {
@@ -39636,6 +39654,10 @@ var SailPlayHistory = exports.SailPlayHistory = _angular2.default.module('sailpl
       this.list = SailPlayApi.data('load.user.history');
 
       this.current_page = 0;
+
+      this.info = {
+        purchases: {}
+      };
     }
 
     (0, _createClass3.default)(SailPlayProfileHistory, [{
@@ -39648,9 +39670,39 @@ var SailPlayHistory = exports.SailPlayHistory = _angular2.default.module('sailpl
       key: 'empty',
       value: function empty() {
 
-        console.log(this.list());
+        // console.log(this.list());
 
         return !this.list() || this.list().length < 1;
+      }
+    }, {
+      key: 'purchase_info',
+      value: function purchase_info(purchase) {
+        var _this = this;
+
+        console.log(purchase);
+
+        if (purchase.action !== 'purchase') return;
+
+        if (this.info.purchases[purchase.id]) {
+
+          delete this.info.purchases[purchase.id];
+          return;
+        }
+
+        SailPlayApi.call('purchases.info', { id: purchase.id }, function (res) {
+
+          if (res.status === 'ok') {
+
+            _this.info.purchases[purchase.id] = res;
+          } else {
+
+            $rootScope.$emit('notifier:notify', res.message);
+          }
+
+          $rootScope.$apply();
+
+          console.log(res);
+        });
       }
     }]);
     return SailPlayProfileHistory;
@@ -49835,6 +49887,10 @@ var _defaults = __webpack_require__(277);
 
 var _defaults2 = _interopRequireDefault(_defaults);
 
+var _pagination = __webpack_require__(278);
+
+var _pagination2 = _interopRequireDefault(_pagination);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var widget = {
@@ -49850,6 +49906,10 @@ var widget = {
   }
 };
 
+_widget.Widget.run(["$templateCache", function ($templateCache) {
+  $templateCache.put("pivko.history.pagination", _pagination2.default);
+}]);
+
 _widget.Widget.config(["MagicWidgetProvider", function (MagicWidgetProvider) {
   MagicWidgetProvider.register(widget);
 }]);
@@ -49858,7 +49918,7 @@ _widget.Widget.config(["MagicWidgetProvider", function (MagicWidgetProvider) {
 /* 274 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"spm_pivko_history_wrapper\">\n\n  <div class=\"spm_pivko_history_wrapper_inner\">\n\n    <div class=\"spm_pivko_history_list\">\n\n      <div class=\"spm_pivko_history_list_inner\">\n\n        <div class=\"spm_pivko_history_list_title\">\n          <span>{{ widget.options.texts.history_title }}</span>\n        </div>\n\n        <div class=\"spm_pivko_history_list_empty\" data-ng-if=\"history.empty()\">\n\n          <div class=\"spm_pivko_history_list_empty_title\">\n            <span>{{ widget.options.texts.empty_list_title }}</span>\n          </div>\n\n          <div class=\"spm_pivko_history_list_empty_button\">\n            <a href=\"{{ widget.options.empty_list_button_link }}\" target=\"_blank\">{{ widget.options.texts.empty_list_button }}</a>\n          </div>\n\n        </div>\n\n        <div class=\"spm_pivko_history_list_items\" data-ng-if=\"!history.empty()\">\n\n          <div class=\"spm_pivko_history_list_item\" data-dir-paginate=\"item in history.list() | itemsPerPage:5\" data-pagination-id=\"history_pages\">\n\n            <div class=\"spm_pivko_history_list_item_header\">\n\n              <div class=\"spm_pivko_history_list_item_header_title\">\n\n                <span>\n                  {{ item|history_item }} {{ item.action_date | date:'d MMM yyyy' }}\n                </span>\n\n              </div>\n\n            </div>\n\n          </div>\n\n          <div class=\"spm_pivko_history_list_pagination\">\n\n            <dir-pagination-controls max-size=\"7\" pagination-id=\"history_pages\" direction-links=\"true\" page-links=\"true\" template-url=\"magic.pagination\" auto-hide=\"true\"></dir-pagination-controls>\n\n          </div>\n\n        </div>\n\n      </div>\n\n    </div>\n\n    <div class=\"spm_pivko_history_help\">\n\n      <div class=\"spm_pivko_history_help_inner\">\n\n        <div class=\"spm_pivko_history_help_title\">\n          <span>{{ widget.options.texts.help_title }}</span>\n        </div>\n\n      </div>\n\n    </div>\n\n  </div>\n\n</div>";
+module.exports = "<div class=\"spm_pivko_history_wrapper\">\n\n  <div class=\"spm_pivko_history_wrapper_inner\">\n\n    <div class=\"spm_pivko_history_list\">\n\n      <div class=\"spm_pivko_history_list_inner\">\n\n        <div class=\"spm_pivko_history_list_title\">\n          <span>{{ widget.options.texts.history_title }}</span>\n        </div>\n\n        <div class=\"spm_pivko_history_list_empty\" data-ng-if=\"history.empty()\">\n\n          <div class=\"spm_pivko_history_list_empty_title\">\n            <span>{{ widget.options.texts.empty_list_title }}</span>\n          </div>\n\n          <div class=\"spm_pivko_history_list_empty_button\">\n            <a href=\"{{ widget.options.empty_list_button_link }}\" target=\"_blank\">{{ widget.options.texts.empty_list_button }}</a>\n          </div>\n\n        </div>\n\n        <div class=\"spm_pivko_history_list_items\" data-ng-if=\"!history.empty()\">\n\n          <div class=\"spm_pivko_history_list_item\" data-dir-paginate=\"item in history.list() | itemsPerPage:5\" data-pagination-id=\"history_pages\">\n\n            <div class=\"spm_pivko_history_list_item_header clearfix\" data-ng-click=\"history.purchase_info(item);\" data-ng-class=\"{ opened: history.info.purchases[item.id] }\">\n\n              <div class=\"spm_pivko_history_list_item_header_title\">\n\n                <span>\n                  {{ item|history_item }} {{ item.action_date | date:'d MMM yyyy' }}\n                </span>\n\n                <span class=\"spm_pivko_history_list_item_header_open_button\" data-ng-if=\"item.action === 'purchase'\" data-ng-class=\"{ opened: history.info.purchases[item.id] }\">&rsaquo;</span>\n\n              </div>\n\n              <div data-ng-if=\"item.price\" class=\"spm_pivko_history_list_item_header_points\">\n\n                <span>\n                  {{ item.price|number }} {{ widget.options.texts.currency_symbol }}\n                </span>\n\n              </div>\n\n            </div>\n\n            <div class=\"spm_pivko_history_list_item_info\" data-ng-if=\"history.info.purchases[item.id]\">\n\n              <ul class=\"spm_pivko_history_list_item_info_cart\">\n                <li class=\"spm_pivko_history_list_item_info_cart_position\" data-ng-repeat=\"cart_item in history.info.purchases[item.id].cart.cart.positions\">\n                  <div class=\"spm_pivko_history_list_item_info_cart_position_inner clearfix\">\n                    <div class=\"spm_pivko_history_list_item_info_cart_position_name\">\n                      <span>{{ cart_item.product.name || cart_item.product.sku }}</span>\n                    </div>\n                    <div class=\"spm_pivko_history_list_item_info_cart_position_price\">\n                      <span>{{ cart_item.new_price }} {{ widget.options.texts.currency_symbol }}</span>\n                    </div>\n                  </div>\n                </li>\n              </ul>\n\n            </div>\n\n            <div class=\"spm_pivko_history_list_item_body\">\n\n              <div class=\"spm_pivko_history_list_item_body_points\">\n\n                <div class=\"spm_pivko_history_list_item_body_points_debited\">\n                  <span>\n                    {{ widget.options.texts.points_debited }} {{ (item.debited_points_delta || 0 | number)+' '+(item.debited_points_delta|sailplay_pluralize:('points.texts.pluralize'|tools)) }}\n                  </span>\n                </div>\n\n                <div class=\"spm_pivko_history_list_item_body_points_credited\">\n                  <span>\n                    {{ widget.options.texts.points_credited }} {{ (item.points_delta || 0 |number)+' '+(item.points_delta|sailplay_pluralize:('points.texts.pluralize'|tools)) }}\n                  </span>\n                </div>\n\n              </div>\n\n            </div>\n\n          </div>\n\n          <div class=\"spm_pivko_history_list_pagination\">\n\n            <dir-pagination-controls max-size=\"7\" pagination-id=\"history_pages\" direction-links=\"true\" template-url=\"pivko.history.pagination\" auto-hide=\"true\"></dir-pagination-controls>\n\n          </div>\n\n        </div>\n\n      </div>\n\n    </div>\n\n    <div class=\"spm_pivko_history_help\">\n\n      <div class=\"spm_pivko_history_help_inner\">\n\n        <div class=\"spm_pivko_history_help_title\">\n          <span>{{ widget.options.texts.help_title }}</span>\n        </div>\n\n        <div class=\"spm_pivko_history_help_links\">\n\n          <div class=\"spm_pivko_history_help_links_inner\">\n\n            <div class=\"spm_pivko_history_help_links_item\" data-ng-repeat=\"link in widget.options.links\">\n\n              <div class=\"spm_pivko_history_help_links_item_inner\">\n                <a href=\"{{ link.url }}\">\n\n                  <span class=\"spm_pivko_history_help_links_item_icon\">\n                    <img data-ng-src=\"{{ link.icon }}\" alt=\"?\">\n                  </span>\n\n                  <span class=\"spm_pivko_history_help_links_item_text\">\n                    <span>{{ link.text }}</span>\n                  </span>\n\n                </a>\n              </div>\n\n            </div>\n\n          </div>\n\n        </div>\n\n      </div>\n\n    </div>\n\n  </div>\n\n</div>";
 
 /***/ }),
 /* 275 */
@@ -49900,7 +49960,7 @@ exports = module.exports = __webpack_require__(0)(false);
 
 
 // module
-exports.push([module.i, "@media (min-width: 768px) {\n  .spm_wrapper .pivko_history .spm_pivko_history_wrapper {\n    width: 100%;\n    display: table;\n    border-collapse: separate;\n  }\n}\n@media (min-width: 768px) {\n  .spm_wrapper .pivko_history .spm_pivko_history_wrapper_inner {\n    display: table-row;\n  }\n}\n.spm_wrapper .pivko_history .spm_pivko_history_list {\n  background-color: #ffffff;\n}\n@media (min-width: 768px) {\n  .spm_wrapper .pivko_history .spm_pivko_history_list {\n    width: 68%;\n    display: table-cell;\n    vertical-align: top;\n    border-right: 20px solid transparent;\n    background-clip: padding-box;\n  }\n}\n.spm_wrapper .pivko_history .spm_pivko_history_list_title {\n  font-size: 20px;\n  font-weight: bold;\n  margin-top: 30px;\n}\n.spm_wrapper .pivko_history .spm_pivko_history_list_empty {\n  margin-top: 10px;\n}\n.spm_wrapper .pivko_history .spm_pivko_history_list_empty_title span {\n  font-size: 20px;\n  font-weight: 300;\n  color: #888888;\n}\n.spm_wrapper .pivko_history .spm_pivko_history_list_empty_button {\n  margin-top: 20px;\n  margin-bottom: 30px;\n}\n.spm_wrapper .pivko_history .spm_pivko_history_list_empty_button a {\n  display: inline-block;\n  font-size: 14px;\n  padding: 15px 50px;\n  border-radius: 25px;\n  border: none;\n  background-color: #cccccc;\n  outline: none;\n  text-decoration: none;\n  color: #222222;\n}\n.spm_wrapper .pivko_history .spm_pivko_history_list_empty_button a:visited {\n  color: #222222;\n}\n.spm_wrapper .pivko_history .spm_pivko_history_list_items {\n  padding: 20px 50px;\n}\n.spm_wrapper .pivko_history .spm_pivko_history_list_item_header_title {\n  text-align: left;\n}\n.spm_wrapper .pivko_history .spm_pivko_history_help {\n  background-color: #ffffff;\n}\n@media (min-width: 768px) {\n  .spm_wrapper .pivko_history .spm_pivko_history_help {\n    width: 32%;\n    display: table-cell;\n    vertical-align: top;\n    background-clip: padding-box;\n  }\n}\n.spm_wrapper .pivko_history .spm_pivko_history_help_title {\n  margin-top: 30px;\n  font-size: 20px;\n  font-weight: bold;\n}\n", ""]);
+exports.push([module.i, "@media (min-width: 768px) {\n  .spm_wrapper .pivko_history .spm_pivko_history_wrapper {\n    width: 100%;\n    display: table;\n    border-collapse: separate;\n  }\n}\n@media (min-width: 768px) {\n  .spm_wrapper .pivko_history .spm_pivko_history_wrapper_inner {\n    display: table-row;\n  }\n}\n.spm_wrapper .pivko_history .spm_pivko_history_list {\n  background-color: #ffffff;\n}\n@media (min-width: 768px) {\n  .spm_wrapper .pivko_history .spm_pivko_history_list {\n    width: 68%;\n    display: table-cell;\n    vertical-align: top;\n    border-right: 20px solid transparent;\n    background-clip: padding-box;\n  }\n}\n.spm_wrapper .pivko_history .spm_pivko_history_list_title {\n  font-size: 20px;\n  font-weight: bold;\n  margin-top: 30px;\n}\n.spm_wrapper .pivko_history .spm_pivko_history_list_empty {\n  margin-top: 10px;\n}\n.spm_wrapper .pivko_history .spm_pivko_history_list_empty_title span {\n  font-size: 20px;\n  font-weight: 300;\n  color: #888888;\n}\n.spm_wrapper .pivko_history .spm_pivko_history_list_empty_button {\n  margin-top: 20px;\n  margin-bottom: 30px;\n}\n.spm_wrapper .pivko_history .spm_pivko_history_list_empty_button a {\n  display: inline-block;\n  font-size: 14px;\n  padding: 15px 50px;\n  border-radius: 25px;\n  border: none;\n  background-color: #cccccc;\n  outline: none;\n  text-decoration: none;\n  color: #222222;\n}\n.spm_wrapper .pivko_history .spm_pivko_history_list_empty_button a:visited {\n  color: #222222;\n}\n.spm_wrapper .pivko_history .spm_pivko_history_list_items {\n  padding: 20px 50px;\n}\n.spm_wrapper .pivko_history .spm_pivko_history_list_item_header {\n  padding: 10px 0;\n  border-bottom: 1px solid #888888;\n  cursor: pointer;\n}\n.spm_wrapper .pivko_history .spm_pivko_history_list_item_header.opened {\n  border-bottom: none;\n}\n.spm_wrapper .pivko_history .spm_pivko_history_list_item_header_title {\n  float: left;\n}\n.spm_wrapper .pivko_history .spm_pivko_history_list_item_header_title span {\n  font-size: 18px;\n  line-height: 21px;\n  color: #444444;\n  font-weight: normal;\n}\n.spm_wrapper .pivko_history .spm_pivko_history_list_item_header_open_button {\n  display: inline-block;\n  transform: rotate(90deg);\n  margin-left: 10px;\n}\n.spm_wrapper .pivko_history .spm_pivko_history_list_item_header_open_button.opened {\n  transform: rotate(-90deg) translateY(-15%);\n}\n.spm_wrapper .pivko_history .spm_pivko_history_list_item_info_cart {\n  display: block;\n  list-style: none;\n  padding: 20px;\n  border-radius: 5px;\n  background-color: #eeeeee;\n}\n.spm_wrapper .pivko_history .spm_pivko_history_list_item_info_cart_position {\n  text-align: left;\n  margin-bottom: 5px;\n}\n.spm_wrapper .pivko_history .spm_pivko_history_list_item_info_cart_position:last-child {\n  margin-bottom: 0;\n}\n.spm_wrapper .pivko_history .spm_pivko_history_list_item_info_cart_position_name {\n  float: left;\n}\n.spm_wrapper .pivko_history .spm_pivko_history_list_item_info_cart_position_name span {\n  font-size: 14px;\n  line-height: 16px;\n  color: #444444;\n  font-weight: 300;\n}\n.spm_wrapper .pivko_history .spm_pivko_history_list_item_info_cart_position_price {\n  float: right;\n}\n.spm_wrapper .pivko_history .spm_pivko_history_list_item_info_cart_position_price span {\n  font-size: 14px;\n  line-height: 16px;\n  color: #444444;\n  font-weight: 300;\n}\n.spm_wrapper .pivko_history .spm_pivko_history_list_item_header_points {\n  float: right;\n}\n.spm_wrapper .pivko_history .spm_pivko_history_list_item_header_points span {\n  font-size: 18px;\n  line-height: 21px;\n  color: #444444;\n  font-weight: normal;\n}\n.spm_wrapper .pivko_history .spm_pivko_history_list_item_body {\n  text-align: left;\n}\n.spm_wrapper .pivko_history .spm_pivko_history_list_item_body_points {\n  margin: 10px 0;\n}\n.spm_wrapper .pivko_history .spm_pivko_history_list_item_body_points span {\n  font-size: 14px;\n  line-height: 16px;\n  color: #888888;\n  font-weight: 300;\n}\n.spm_wrapper .pivko_history .spm_pivko_history_pagination {\n  margin-top: 30px;\n  text-align: left;\n  margin-bottom: 10px;\n}\n.spm_wrapper .pivko_history .spm_pivko_history_pagination a {\n  display: inline-block;\n  font-size: 14px;\n  line-height: 16px;\n  font-weight: 300;\n  color: #444444;\n  padding: 10px;\n  text-decoration: none;\n  border-radius: 5px;\n  margin-right: 2px;\n}\n.spm_wrapper .pivko_history .spm_pivko_history_pagination a:visited {\n  color: #444444;\n}\n.spm_wrapper .pivko_history .spm_pivko_history_pagination a:first-child {\n  margin-left: -10px;\n}\n.spm_wrapper .pivko_history .spm_pivko_history_pagination_page_link.type_active,\n.spm_wrapper .pivko_history .spm_pivko_history_pagination_page_link:hover {\n  background-color: #eeeeee;\n}\n.spm_wrapper .pivko_history .spm_pivko_history_help_inner {\n  background-color: #ffffff;\n  padding: 30px 0;\n}\n@media (min-width: 768px) {\n  .spm_wrapper .pivko_history .spm_pivko_history_help {\n    width: 32%;\n    display: table-cell;\n    vertical-align: top;\n    background-clip: padding-box;\n  }\n}\n.spm_wrapper .pivko_history .spm_pivko_history_help_title {\n  font-size: 20px;\n  font-weight: bold;\n}\n.spm_wrapper .pivko_history .spm_pivko_history_help_links {\n  margin-top: 10px;\n  padding: 10px 40px;\n}\n.spm_wrapper .pivko_history .spm_pivko_history_help_links a {\n  color: #444444;\n  display: block;\n  position: relative;\n  text-align: left;\n  padding: 15px 0 15px 40px;\n}\n.spm_wrapper .pivko_history .spm_pivko_history_help_links a:visited {\n  color: #444444;\n}\n.spm_wrapper .pivko_history .spm_pivko_history_help_links_item_icon {\n  position: absolute;\n  left: 0;\n  top: 50%;\n  margin-top: -13px;\n}\n.spm_wrapper .pivko_history .spm_pivko_history_help_links_item_icon img {\n  width: 24px;\n  height: 24px;\n  display: block;\n}\n", ""]);
 
 // exports
 
@@ -49913,6 +49973,12 @@ module.exports = {"id":"example","enabled":true,"styles":{},"options":{}}
 
 /***/ }),
 /* 278 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"spm_pivko_history_pagination\" ng-if=\"1 < pages.length || !autoHide\">\n\n  <a ng-if=\"directionLinks\" class=\"spm_pivko_history_pagination_direction_link\" ng-class=\"{disabled : pagination.current == 1}\" href=\"#\"\n     ng-click=\"$event.preventDefault();setCurrent(pagination.current - 1)\">\n    &lsaquo;&lsaquo;\n  </a>\n\n  <a ng-repeat=\"pageNumber in pages track by tracker(pageNumber, $index)\" class=\"spm_pivko_history_pagination_page_link\" ng-class=\"{type_active : pagination.current == pageNumber, type_disabled : pageNumber == '...'}\"\n     href=\"#\" ng-click=\"$event.preventDefault();setCurrent(pageNumber)\" ng-bind=\"pageNumber\"></a>\n\n  <a ng-if=\"directionLinks\" class=\"spm_pivko_history_pagination_direction_link\" ng-class=\"{disabled : pagination.current == pagination.last}\"\n     href=\"#\" ng-click=\"$event.preventDefault();setCurrent(pagination.current + 1)\">\n    &rsaquo;&rsaquo;\n  </a>\n\n</div>";
+
+/***/ }),
+/* 279 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -49920,13 +49986,13 @@ module.exports = {"id":"example","enabled":true,"styles":{},"options":{}}
 
 var _widget = __webpack_require__(2);
 
-var _template = __webpack_require__(279);
+var _template = __webpack_require__(280);
 
 var _template2 = _interopRequireDefault(_template);
 
-__webpack_require__(280);
+__webpack_require__(281);
 
-var _defaults = __webpack_require__(282);
+var _defaults = __webpack_require__(283);
 
 var _defaults2 = _interopRequireDefault(_defaults);
 
@@ -49959,19 +50025,19 @@ _widget.Widget.config(["MagicWidgetProvider", function (MagicWidgetProvider) {
 }]);
 
 /***/ }),
-/* 279 */
+/* 280 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"spm_pivko_profile_wrapper\">\n\n  <div class=\"spm_pivko_profile_wrapper_inner\">\n\n    <div class=\"spm_pivko_profile_info\">\n\n      <div class=\"spm_pivko_profile_info_inner\">\n\n        <div class=\"spm_pivko_profile_info_avatar\">\n          <img data-ng-src=\"{{(profile.user().user.avatar['250x250']|sailplay_pic) || widget.options.images.default_avatar || default_avatar}}\" alt=\"\">\n        </div>\n\n        <div class=\"spm_pivko_profile_info_name\">\n          <span>{{ profile.user().user.name || widget.options.texts.no_name }}</span>\n        </div>\n\n        <div class=\"spm_pivko_profile_info_oid\">\n\n          <div class=\"spm_pivko_profile_info_oid_label\">\n            <span>{{ widget.options.texts.oid_label }}</span>\n          </div>\n\n          <div class=\"spm_pivko_profile_info_oid_value\">\n            <span>{{ profile.user().user.origin_user_id || widget.options.texts.no_oid }}</span>\n          </div>\n\n        </div>\n\n        <div class=\"spm_pivko_profile_info_divider\"></div>\n\n        <div class=\"spm_pivko_profile_info_email\">\n          <span>{{ profile.user().user.email || widget.options.texts.no_email }}</span>\n        </div>\n\n        <div class=\"spm_pivko_profile_info_phone\">\n          <span>{{(profile.user().user.phone | tel) || widget.options.texts.no_phone }}</span>\n        </div>\n\n        <div class=\"spm_pivko_profile_info_edit_button\">\n          <button type=\"button\">{{ widget.options.texts.profile_button_text }}</button>\n        </div>\n\n      </div>\n\n    </div>\n\n    <div class=\"spm_pivko_profile_status\">\n      <div class=\"spm_pivko_profile_status_inner\">\n\n        <div class=\"spm_pivko_profile_status_points\">\n\n          <div class=\"spm_pivko_profile_status_points_inner\">\n\n            <div class=\"spm_pivko_profile_status_points_title\">\n              <span>{{ widget.options.texts.points_title }}</span>\n            </div>\n\n            <div class=\"spm_pivko_profile_status_points_confirmed\">\n              <span>{{ profile.user().user_points.confirmed }} {{ profile.user().user_points.confirmed | sailplay_pluralize: ('points.texts.pluralize' | tools) }}</span>\n            </div>\n\n            <div class=\"spm_pivko_profile_status_points_status\">\n              <div class=\"spm_pivko_profile_status_points_status_label\">\n                <span>{{ widget.options.texts.status_label }}</span>\n              </div>\n              <div class=\"spm_pivko_profile_status_points_status_value\">\n                <span>{{ statuses.current().status || widget.options.texts.no_status }}</span>\n              </div>\n            </div>\n\n          </div>\n\n        </div>\n\n        <div class=\"spm_pivko_profile_status_progress\">\n\n          <div class=\"spm_pivko_profile_status_progress_inner\">\n\n            <div class=\"spm_pivko_profile_status_progress_title\">\n              <span>Копи в следущем месяце больше</span>\n            </div>\n\n            <div class=\"spm_pivko_profile_status_progress_more_button\">\n              <button type=\"button\">Подробнее ></button>\n            </div>\n\n            <div class=\"spm_pivko_profile_status_progress_line_container\">\n\n              <div class=\"spm_pivko_profile_status_progress_line\">\n\n                <div class=\"spm_pivko_profile_status_progress_line_filled\" data-ng-style=\"{ width: statuses.progress() + '%' }\"></div>\n\n                <div class=\"spm_pivko_profile_status_progress_line_list\">\n                  <div class=\"spm_pivko_profile_status_progress_line_item\" data-ng-repeat=\"status in statuses.list\" data-ng-class=\"{ current: statuses.current() === status }\" data-ng-style=\"{ left: statuses.offset($index) + '%' }\">\n                    <div class=\"spm_pivko_profile_status_progress_line_item_icon\">\n                      <img class=\"spm_pivko_profile_status_progress_line_item_icon_inactive\" data-ng-src=\"{{ status.img_inactive }}\" alt=\"\">\n                      <img class=\"spm_pivko_profile_status_progress_line_item_icon_active\" data-ng-src=\"{{ status.img_active }}\" alt=\"\">\n                      <img class=\"spm_pivko_profile_status_progress_line_item_icon_current\" data-ng-src=\"{{ status.img_current }}\" alt=\"\">\n                    </div>\n                    <div class=\"spm_pivko_profile_status_progress_line_item_name\">\n                    <span>\n                      {{ status.status }}\n                    </span>\n                    </div>\n                  </div>\n                </div>\n\n              </div>\n\n            </div>\n\n          </div>\n\n        </div>\n\n      </div>\n    </div>\n\n  </div>\n\n</div>";
 
 /***/ }),
-/* 280 */
+/* 281 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(281);
+var content = __webpack_require__(282);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -49996,7 +50062,7 @@ if(false) {
 }
 
 /***/ }),
-/* 281 */
+/* 282 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -50004,19 +50070,19 @@ exports = module.exports = __webpack_require__(0)(false);
 
 
 // module
-exports.push([module.i, ".spm_wrapper .pivko_profile .spm_pivko_profile_wrapper {\n  text-align: left;\n}\n@media (min-width: 768px) {\n  .spm_wrapper .pivko_profile .spm_pivko_profile_wrapper {\n    width: 100%;\n    display: table;\n    border-collapse: separate;\n  }\n}\n@media (min-width: 768px) {\n  .spm_wrapper .pivko_profile .spm_pivko_profile_wrapper_inner {\n    display: table-row;\n  }\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_info {\n  display: inline-block;\n  font-size: 16px;\n  box-sizing: border-box;\n  background-color: #ffffff;\n}\n@media (min-width: 768px) {\n  .spm_wrapper .pivko_profile .spm_pivko_profile_info {\n    width: 20%;\n    display: table-cell;\n    vertical-align: top;\n    border-right: 20px solid transparent;\n    background-clip: padding-box;\n  }\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_info_avatar {\n  text-align: center;\n  padding: 25px 50px 10px 50px;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_info_avatar img {\n  width: 120px;\n  height: 120px;\n  border-radius: 60px;\n  display: inline-block;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_info_name {\n  text-align: center;\n  padding: 5px 30px;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_info_name span {\n  font-size: 20px;\n  line-height: 23px;\n  font-weight: bold;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_info_oid {\n  text-align: center;\n  padding: 5px 20px;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_info_oid_label {\n  font-size: 14px;\n  font-weight: 300;\n  color: #888888;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_info_oid_value {\n  font-size: 14px;\n  font-weight: 400;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_info_divider {\n  margin: 0 20px 10px 20px;\n  border-top: 1px solid #cccccc;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_info_email {\n  text-align: center;\n  padding: 0 20px;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_info_email span {\n  font-size: 16px;\n  font-weight: 300;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_info_phone {\n  text-align: center;\n  padding: 0 20px;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_info_phone span {\n  font-size: 16px;\n  font-weight: bold;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_info_edit_button {\n  text-align: center;\n  padding: 20px 30px 30px 30px;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_info_edit_button button {\n  border: none;\n  outline: none;\n  font-size: 16px;\n  font-weight: 300;\n  background-color: transparent;\n  cursor: pointer;\n  color: #888888;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status {\n  display: inline-block;\n  font-size: 16px;\n  box-sizing: border-box;\n  background-color: #ffffff;\n}\n@media (min-width: 768px) {\n  .spm_wrapper .pivko_profile .spm_pivko_profile_status {\n    width: 80%;\n    display: table-cell;\n    vertical-align: top;\n  }\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_points {\n  background-color: #eeeeee;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_points_inner {\n  padding: 50px;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_points_title {\n  font-size: 18px;\n  text-align: right;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_points_confirmed {\n  text-align: right;\n  font-size: 48px;\n  font-weight: bold;\n  line-height: 100%;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_points_status {\n  margin-top: 10px;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_points_status_label {\n  text-align: right;\n  font-size: 14px;\n  font-weight: bold;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_points_status_value {\n  text-align: right;\n  font-size: 16px;\n  font-weight: bold;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_title {\n  text-align: center;\n  margin: 15px auto 0 auto;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_title span {\n  font-size: 18px;\n  font-weight: bold;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_more_button {\n  text-align: center;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_more_button button {\n  border: none;\n  outline: none;\n  font-size: 12px;\n  font-weight: 300;\n  background-color: transparent;\n  cursor: pointer;\n  color: #888888;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_line {\n  margin: 40px 50px 70px 50px;\n  background-color: #eeeeee;\n  height: 6px;\n  border-radius: 3px;\n  position: relative;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_line_filled {\n  position: absolute;\n  top: 0;\n  left: 0;\n  height: 100%;\n  background-color: #888888;\n  border-radius: 3px;\n  transition: all 0.4s ease;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_line_list {\n  position: absolute;\n  width: 80%;\n  left: 10%;\n  height: 100%;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_line_item {\n  position: absolute;\n  width: 50px;\n  height: 80px;\n  top: -23px;\n  margin-left: -25px;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_line_item_icon img {\n  width: 100%;\n  display: block;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_line_item_icon_active,\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_line_item_icon_current {\n  display: none !important;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_line_item_name {\n  text-align: center;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_line_item_name span {\n  font-size: 12px;\n  color: #888888;\n  font-weight: 300;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_line_item.current .spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_line_item_name span {\n  font-weight: 400;\n  color: #444444;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_line_item.current .spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_line_item_icon_current {\n  display: block !important;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_line_item.current .spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_line_item_icon_active,\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_line_item.current .spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_line_item_icon_inactive {\n  display: none !important;\n}\n", ""]);
+exports.push([module.i, ".spm_wrapper .pivko_profile .spm_pivko_profile_wrapper {\n  text-align: left;\n}\n@media (min-width: 768px) {\n  .spm_wrapper .pivko_profile .spm_pivko_profile_wrapper {\n    width: 100%;\n    display: table;\n    border-collapse: separate;\n  }\n}\n@media (min-width: 768px) {\n  .spm_wrapper .pivko_profile .spm_pivko_profile_wrapper_inner {\n    display: table-row;\n  }\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_info {\n  display: inline-block;\n  font-size: 16px;\n  box-sizing: border-box;\n  background-color: #ffffff;\n}\n@media (min-width: 768px) {\n  .spm_wrapper .pivko_profile .spm_pivko_profile_info {\n    width: 20%;\n    display: table-cell;\n    vertical-align: top;\n    border-right: 20px solid transparent;\n    background-clip: padding-box;\n  }\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_info_avatar {\n  text-align: center;\n  padding: 25px 50px 10px 50px;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_info_avatar img {\n  width: 120px;\n  height: 120px;\n  border-radius: 60px;\n  display: inline-block;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_info_name {\n  text-align: center;\n  padding: 5px 30px;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_info_name span {\n  font-size: 20px;\n  line-height: 23px;\n  font-weight: bold;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_info_oid {\n  text-align: center;\n  padding: 5px 20px;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_info_oid_label {\n  font-size: 14px;\n  font-weight: 300;\n  color: #888888;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_info_oid_value {\n  font-size: 14px;\n  font-weight: 400;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_info_divider {\n  margin: 0 20px 10px 20px;\n  border-top: 1px solid #cccccc;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_info_email {\n  text-align: center;\n  padding: 0 20px;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_info_email span {\n  font-size: 16px;\n  font-weight: 300;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_info_phone {\n  text-align: center;\n  padding: 0 20px;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_info_phone span {\n  font-size: 16px;\n  font-weight: bold;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_info_edit_button {\n  text-align: center;\n  padding: 20px 30px 30px 30px;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_info_edit_button button {\n  border: none;\n  outline: none;\n  font-size: 16px;\n  font-weight: 300;\n  background-color: transparent;\n  cursor: pointer;\n  color: #888888;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status {\n  display: inline-block;\n  font-size: 16px;\n  box-sizing: border-box;\n  background-color: #ffffff;\n}\n@media (min-width: 768px) {\n  .spm_wrapper .pivko_profile .spm_pivko_profile_status {\n    width: 80%;\n    display: table-cell;\n    vertical-align: top;\n  }\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_points {\n  background-color: #eeeeee;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_points_inner {\n  padding: 50px;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_points_title {\n  font-size: 18px;\n  text-align: right;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_points_confirmed {\n  text-align: right;\n  font-size: 48px;\n  font-weight: bold;\n  line-height: 100%;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_points_status {\n  margin-top: 10px;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_points_status_label {\n  text-align: right;\n  font-size: 14px;\n  font-weight: bold;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_points_status_value {\n  text-align: right;\n  font-size: 16px;\n  font-weight: bold;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_title {\n  text-align: center;\n  margin: 15px auto 0 auto;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_title span {\n  font-size: 18px;\n  font-weight: bold;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_more_button {\n  text-align: center;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_more_button button {\n  border: none;\n  outline: none;\n  font-size: 12px;\n  font-weight: 300;\n  background-color: transparent;\n  cursor: pointer;\n  color: #888888;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_line {\n  margin: 40px 50px 70px 50px;\n  background-color: #eeeeee;\n  height: 6px;\n  border-radius: 3px;\n  position: relative;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_line_filled {\n  position: absolute;\n  top: 0;\n  left: 0;\n  height: 100%;\n  background-color: #888888;\n  border-radius: 3px;\n  transition: all 0.4s ease;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_line_list {\n  position: absolute;\n  width: 80%;\n  left: 10%;\n  height: 100%;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_line_item {\n  position: absolute;\n  width: 50px;\n  height: 80px;\n  top: -23px;\n  margin-left: -25px;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_line_item_icon img {\n  width: 100%;\n  display: block;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_line_item_icon_active,\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_line_item_icon_current {\n  display: none !important;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_line_item_name {\n  text-align: center;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_line_item_name span {\n  font-size: 12px;\n  color: #888888;\n  font-weight: 300;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_line_item.current .spm_pivko_profile_status_progress_line_item_name span {\n  font-weight: 600;\n  color: #444444;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_line_item.current .spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_line_item_icon_current {\n  display: block !important;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_line_item.current .spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_line_item_icon_active,\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_line_item.current .spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_line_item_icon_inactive {\n  display: none !important;\n}\n", ""]);
 
 // exports
 
 
 /***/ }),
-/* 282 */
+/* 283 */
 /***/ (function(module, exports) {
 
 module.exports = {"id":"pivko_profile","enabled":true,"styles":{},"options":{}}
 
 /***/ }),
-/* 283 */
+/* 284 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -50024,13 +50090,13 @@ module.exports = {"id":"pivko_profile","enabled":true,"styles":{},"options":{}}
 
 var _widget = __webpack_require__(2);
 
-var _template = __webpack_require__(284);
+var _template = __webpack_require__(285);
 
 var _template2 = _interopRequireDefault(_template);
 
-__webpack_require__(285);
+__webpack_require__(286);
 
-var _defaults = __webpack_require__(287);
+var _defaults = __webpack_require__(288);
 
 var _defaults2 = _interopRequireDefault(_defaults);
 
@@ -50054,19 +50120,19 @@ _widget.Widget.config(["MagicWidgetProvider", function (MagicWidgetProvider) {
 }]);
 
 /***/ }),
-/* 284 */
+/* 285 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"spm_pivko_quests_wrapper\">\n\n  <div class=\"spm_pivko_quests_wrapper_inner\">\n\n    <div class=\"spm_pivko_quests_title\">\n      <span>{{ widget.options.texts.title }}</span>\n    </div>\n\n    <div class=\"spm_pivko_quests_caption\">\n      <span>{{ widget.options.texts.caption }}</span>\n    </div>\n\n    <div class=\"spm_pivko_quests_list_empty\" data-ng-if=\"quests.empty()\">\n      <span>{{ widget.options.texts.empty_list_hint }}</span>\n    </div>\n\n    <div class=\"spm_pivko_quests_list\" data-ng-if=\"!quests.empty()\">\n\n      <div class=\"spm_pivko_quests_list_inner clearfix\">\n\n        <!-- SYSTEM QUESTS -->\n        <div class=\"spm_pivko_quests_list_item\" data-ng-repeat=\"quest in quests.list.system().actions\">\n\n          <div class=\"spm_pivko_quests_list_item_inner\">\n\n            <div class=\"spm_pivko_quests_list_item_header\">\n\n              <div class=\"spm_pivko_quests_list_item_header_inner clearfix\">\n\n                <div class=\"spm_pivko_quests_list_item_icon\">\n                  <img data-ng-src=\"{{ quests.data(quest).pic|sailplay_pic }}\" alt=\"\">\n                </div>\n\n                <div class=\"spm_pivko_quests_list_item_button\">\n                  <button type=\"button\">Выполнить</button>\n                </div>\n\n              </div>\n\n            </div>\n\n            <div class=\"spm_pivko_quests_list_item_body\">\n\n              <div class=\"spm_pivko_quests_list_item_body_inner\">\n\n                <div class=\"spm_pivko_quests_list_item_points\">\n                  <span>+ {{ (quest.points|number)+' '+(quest.points|sailplay_pluralize:('points.texts.pluralize'|tools)) }}</span>\n                </div>\n\n                <div class=\"spm_pivko_quests_list_item_name\">\n                  <span>{{ quests.data(quest).name }}</span>\n                </div>\n\n              </div>\n\n            </div>\n\n          </div>\n\n        </div>\n\n      </div>\n\n    </div>\n\n  </div>\n\n</div>";
 
 /***/ }),
-/* 285 */
+/* 286 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(286);
+var content = __webpack_require__(287);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -50091,7 +50157,7 @@ if(false) {
 }
 
 /***/ }),
-/* 286 */
+/* 287 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -50105,7 +50171,7 @@ exports.push([module.i, ".spm_wrapper .pivko_quests .spm_pivko_quests_wrapper {\
 
 
 /***/ }),
-/* 287 */
+/* 288 */
 /***/ (function(module, exports) {
 
 module.exports = {"id":"pivko_quests","enabled":true,"styles":{},"options":{}}

@@ -173,7 +173,8 @@ export let SailPlay = angular.module('sailplay', [
       'load.badges.list',
       'tags.exist',
       'tags.add',
-      'load.gifts.list'
+      'load.gifts.list',
+      'purchases.info'
 
     ];
 

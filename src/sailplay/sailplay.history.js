@@ -35,7 +35,7 @@ export let SailPlayHistory = angular.module('sailplay.history', [])
 
 })
 
-.service('SailPlayProfileHistory', function (SailPlayApi) {
+.service('SailPlayProfileHistory', function (SailPlayApi, $rootScope) {
 
   return class SailPlayProfileHistory {
 
@@ -45,6 +45,10 @@ export let SailPlayHistory = angular.module('sailplay.history', [])
 
       this.current_page = 0;
 
+      this.info = {
+        purchases: {}
+      };
+
     }
     set_page(page){
 
@@ -53,9 +57,42 @@ export let SailPlayHistory = angular.module('sailplay.history', [])
     }
     empty(){
 
-      console.log(this.list());
+      // console.log(this.list());
 
       return !this.list() || this.list().length < 1;
+
+    }
+    purchase_info(purchase){
+
+      console.log(purchase);
+
+      if(purchase.action !== 'purchase') return;
+
+      if(this.info.purchases[purchase.id]) {
+
+        delete this.info.purchases[purchase.id];
+        return;
+
+      }
+
+      SailPlayApi.call('purchases.info', { id: purchase.id }, (res) => {
+
+        if(res.status === 'ok') {
+
+          this.info.purchases[purchase.id] = res;
+
+        }
+        else {
+
+          $rootScope.$emit('notifier:notify', res.message);
+
+        }
+
+        $rootScope.$apply();
+
+        console.log(res);
+
+      });
 
     }
 

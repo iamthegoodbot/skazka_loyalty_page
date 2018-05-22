@@ -110,20 +110,181 @@
 
     &_item {
 
+      &_header {
+        padding: 10px 0;
+        border-bottom: 1px solid @main;
+        cursor: pointer;
+
+        &.opened {
+
+          border-bottom: none;
+
+        }
+
+      }
+
       &_header_title {
+
+        float: left;
+
+        span {
+          font-size: 18px;
+          line-height: 21px;
+          color: @main_dark;
+          font-weight: normal;
+        }
+
+      }
+
+      &_header_open_button {
+
+        display: inline-block;
+        transform: rotate(90deg);
+        margin-left: 10px;
+
+        &.opened {
+
+          transform: rotate(-90deg) translateY(-15%);
+
+        }
+
+      }
+
+      &_info {
+
+        &_cart {
+
+          display: block;
+          list-style: none;
+          padding: 20px;
+          border-radius: 5px;
+          background-color: @main_lighter;
+
+        }
+
+        &_cart_position {
+
+          text-align: left;
+          margin-bottom: 5px;
+
+          &:last-child {
+            margin-bottom: 0;
+          }
+
+          &_name {
+
+            float: left;
+
+            span {
+              font-size: 14px;
+              line-height: 16px;
+              color: @main_dark;
+              font-weight: 300;
+            }
+
+          }
+
+          &_price {
+
+            float: right;
+
+            span {
+              font-size: 14px;
+              line-height: 16px;
+              color: @main_dark;
+              font-weight: 300;
+            }
+
+          }
+
+        }
+
+
+      }
+
+      &_header_points {
+
+        float: right;
+
+        span {
+          font-size: 18px;
+          line-height: 21px;
+          color: @main_dark;
+          font-weight: normal;
+        }
+
+      }
+
+      &_body {
 
         text-align: left;
 
       }
 
+
+      &_body_points {
+
+        margin: 10px 0;
+
+        span {
+
+          font-size: 14px;
+          line-height: 16px;
+          color: @main;
+          font-weight: 300;
+
+        }
+
+      }
+
     }
 
+  }
+
+  &_pagination {
+
+    margin-top: 30px;
+    text-align: left;
+    margin-bottom: 10px;
+
+    a {
+      display: inline-block;
+      font-size: 14px;
+      line-height: 16px;
+      font-weight: 300;
+      color: @main_dark;
+      padding: 10px;
+      text-decoration: none;
+      border-radius: 5px;
+      margin-right: 2px;
+      &:visited {
+        color: @main_dark;
+      }
+      &:first-child {
+
+        margin-left: -10px;
+
+      }
+    }
+
+    &_direction_link {
+
+    }
+
+    &_page_link.type_active, &_page_link:hover {
+
+      background-color: @main_lighter;
+
+    }
 
   }
 
   &_help {
 
-    background-color: @white;
+    &_inner {
+      background-color: @white;
+      padding: 30px 0;
+    }
 
     @media @tablet_up {
 
@@ -136,9 +297,44 @@
 
     &_title {
 
-      margin-top: 30px;
+      //margin-top: 30px;
       font-size: 20px;
       font-weight: bold;
+
+    }
+
+    &_links {
+      margin-top: 10px;
+      padding: 10px 40px;
+
+      a {
+
+        color: @main_dark;
+        display: block;
+        position: relative;
+        text-align: left;
+        padding: 15px 0 15px 40px;
+
+        &:visited {
+          color: @main_dark;
+        }
+
+      }
+
+      &_item_icon {
+
+        position: absolute;
+        left: 0;
+        top: 50%;
+        margin-top: -13px;
+
+        img {
+          width: 24px;
+          height: 24px;
+          display: block;
+        }
+
+      }
 
     }
 

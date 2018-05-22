@@ -3,6 +3,8 @@ import Template from "./template.html";
 import "./style.less";
 import defaults from './defaults.json';
 
+import PaginationTemplate from './pagination.html';
+
 const widget = {
   id: "pivko_history",
   template: Template,
@@ -16,6 +18,10 @@ const widget = {
     };
   }
 };
+
+Widget.run(function($templateCache) {
+  $templateCache.put("pivko.history.pagination", PaginationTemplate);
+});
 
 Widget.config(MagicWidgetProvider => {
   MagicWidgetProvider.register(widget);
