@@ -1,0 +1,308 @@
+@import (reference) "~@theme/mixins";
+@import (reference) "~@theme/helpers";
+@import (reference) "~@theme/colors";
+
+@maxWidth: 1200px;
+
+.spm_wrapper {
+
+  .house_happy_gifts {
+
+    .spm_gifts {
+      position: relative;
+      background: #ecf0f0;
+
+      &-container {
+        width: 100%;
+        height: 100%;
+        max-width: @maxWidth;
+        box-sizing: border-box;
+        margin: 0 auto;
+        box-sizing: border-box;
+        padding-top: 80px;
+        padding-bottom: 80px;
+        overflow: hidden;
+
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+
+        @media (max-width: 992px) {
+          flex-direction: column;
+        }
+
+        &__left {
+          box-sizing: border-box;
+          flex-basis: 20%;
+          padding-right: 30px;
+
+          @media (max-width: 992px) {
+            flex-basis: 100%;
+            margin-bottom: 60px;
+            padding-right: 0;
+            text-align: center;
+          }
+
+        }
+
+        &__right {
+          flex-basis: 80%;
+        }
+
+      }
+
+      &-header {
+        font-weight: 900;
+        text-transform: uppercase;
+        font-size: 35px;
+        line-height: 1;
+        color: @black;
+        position: relative;
+        letter-spacing: 2.3px;
+      }
+
+      &-sub-header {
+        font-weight: normal;
+        font-size: 14px;
+        line-height: 22px;
+        margin: 25px 0;
+        color: @black;
+      }
+
+      &-list {
+        display: flex;
+        align-items: flex-start;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        width: 100%;
+        @media (max-width: 992px) {
+          align-items: center;
+          justify-content: center;
+          flex-wrap: wrap;
+        }
+      }
+
+      &-item {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        position: relative;
+        width: 100%;
+        max-width: 280px;
+        min-height: 280px;
+        margin: 0 8px;
+        color: @white;
+        background-color: #ca5b54;
+        border-radius: 8px;
+        .transition(box-shadow 0.3s linear);
+        transition: box-shadow 0.3s linear;
+
+        @media (max-width: 992px) {
+          width: 48%;
+          margin: 1%;
+        }
+
+        @media (max-width: 600px) {
+          width: 100%;
+          margin: 1% 1% 5% 1%;
+        }
+
+        &-name {
+          font-size: 26px;
+          font-weight: bold;
+          line-height: 1;
+          margin: 0 10px 5px;
+          box-sizing: border-box;
+          color: inherit;
+          text-transform: uppercase;
+          text-align: center;
+        }
+
+        &-placeholder {
+          font-size: 22px;
+          font-weight: normal;
+          line-height: 1.45;
+          color: inherit;
+        }
+
+        &-button {
+          margin-top: 35px;
+          position: relative;
+          text-align: center;
+          border-radius: 5px;
+          border: solid 1px @white;
+          font-size: 14px;
+          color: inherit;
+          line-height: 1.38;
+          letter-spacing: 1.6px;
+          padding: 10px 20px;
+          width: auto;
+          min-width: 180px;
+          text-transform: uppercase;
+          text-decoration: none;
+          font-weight: 700;
+
+          &.type_points {
+            display: block;
+          }
+
+          &.type_recieve {
+            display: none;
+          }
+        }
+
+        &.type_enabled {
+          box-shadow: 0 15px 20px 0 rgba(202,91,84,0.27);
+        }
+
+        &.type_disabled {
+          background-color: #b3bcc3;
+          box-shadow: 0 11px 12px 0 rgba(168,178,189,0.36);
+          color: #8e9cab;
+          .spm_gifts-item-button {
+            border-color: #8e9cab;
+          }
+        }
+
+        &:hover {
+          &.type_enabled {
+            box-shadow: none;
+            .spm_gifts-item-button {
+              &.type_points {
+                display: none;
+              }
+              &.type_recieve {
+                display: block;
+              }
+            }
+          }
+        }
+
+      }
+
+      &-pagination {
+        .spm_pagination {
+          justify-content: flex-start;
+          @media (max-width: 992px) {
+            justify-content: center;
+          }
+        }
+        .spm_pagination-direction-link {
+          color: #809797;
+          margin: 0;
+          font-size: 40px;
+          font-weight: 100;
+          line-height: 46px;
+          width: 50px;
+          height: 50px;
+          border-radius: 3px;
+          border: solid 1px #809797;
+          &:first-child {
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+          }
+          &:last-child {
+            border-left: none;
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+          }
+        }
+      }
+
+      &-footer {
+        width: 380px;
+        @media (max-width: 600px) {
+          width: 100%;
+        }
+      }
+
+      &-open {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 380px;
+        @media (max-width: 600px) {
+          width: 100%;
+        }
+
+        &-image {
+          width: 200px;
+          height: 200px;
+          background-repeat: no-repeat;
+          background-position: center center;
+          background-size: contain;
+          margin: 10px 0;
+        }
+
+        &-name {
+          font-size: 18px;
+          font-weight: 800;
+          line-height: 25px;
+          margin: 10px 0;
+          text-transform: uppercase;
+          color: @theme_1-2;
+          text-align: center;
+        }
+
+        &-points {
+          font-size: 30px;
+          font-weight: bold;
+          line-height: 25px;
+          color: @black;
+        }
+
+        &-descr {
+          font-size: 18px;
+          font-weight: 500;
+          line-height: 25px;
+          margin: 20px 0 30px;
+          color: @black;
+          opacity: 0.5;
+          text-align: center;
+        }
+
+        &-button {
+          &.type_disabled {
+            background-color: #b3bcc3;
+            color: #8e9cab;
+            border-color: #b3bcc3;
+            cursor: default;
+            &:hover {
+              opacity: 1;
+            }
+          }
+        }
+
+        &-textarea {
+          display: block;
+          width: 100%;
+          margin-bottom: 25px;
+          span {
+            display: block;
+            margin-bottom: 10px;
+          }
+          textarea {
+            resize: none;
+            width: 100%;
+            height: 100px;
+            padding: 8px;
+            font-size: 14px;
+          }
+        }
+
+      }
+
+    }
+
+    .spm_gifts-success-modal {
+
+      .spm_modal-container {
+        max-width: 500px;
+      }
+
+    }
+
+  }
+
+}
