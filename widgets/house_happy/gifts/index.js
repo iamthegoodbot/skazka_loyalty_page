@@ -12,6 +12,24 @@ const widget = {
       scope.requested_gift = false;
       scope.request_message = '';
 
+      SailPlay.on('gifts.purchase.success', (res) => {
+        $rootScope.$apply(() => {
+          scope.requested_gift = angular.copy(scope.show_gift);
+          scope.show_gift = false;
+        });
+      });
+
+      SailPlay.on('gift.purchase.error', (error) => {
+        $rootScope.$apply(() => {
+          scope.show_gift = false;
+          scope.requested_gift = false;
+          $rootScope.$broadcast('notifier:notify', {
+            header: widget.texts.modals.error.title,
+            body: error.message || widget.texts.modals.error.body
+          });
+        });
+      });
+
       scope.getGift = gift => {
         if (!gift || !scope.request_message || !scope.request_message.length) return;
         let data = {};
@@ -25,14 +43,13 @@ const widget = {
           $rootScope.$apply(() => {
             scope.requested_gift = false;
             if (vars_res && vars_res.status == 'ok') {
-              scope.requested_gift = angular.copy(scope.show_gift);
+              SailPlay.send('gifts.purchase', {gift: gift});
             } else {
               $rootScope.$broadcast('notifier:notify', {
                 header: widget.texts.modals.error.title,
                 body: vars_res.message || widget.texts.modals.error.body
               });
             }
-            scope.show_gift = false;
           })
         });
       };

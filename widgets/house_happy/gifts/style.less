@@ -85,7 +85,7 @@
       &-item {
         display: flex;
         align-items: center;
-        justify-content: center;
+        justify-content: flex-end;
         flex-direction: column;
         position: relative;
         width: 100%;
@@ -93,7 +93,7 @@
         min-height: 280px;
         margin: 0 8px;
         color: @white;
-        background-color: #ca5b54;
+        //background-color: #ca5b54;
         border-radius: 8px;
         .transition(box-shadow 0.3s linear);
         transition: box-shadow 0.3s linear;
@@ -109,14 +109,13 @@
         }
 
         &-name {
-          font-size: 26px;
-          font-weight: bold;
-          line-height: 1;
-          margin: 0 10px 5px;
+          margin: 0 10px;
           box-sizing: border-box;
-          color: inherit;
-          text-transform: uppercase;
           text-align: center;
+          font-size: 18px;
+          color: white;
+          line-height: 24px;
+          text-shadow: 0 2px 4px #353535;
         }
 
         &-placeholder {
@@ -127,21 +126,21 @@
         }
 
         &-button {
-          margin-top: 35px;
+          margin: 15px 0 30px;
           position: relative;
           text-align: center;
-          border-radius: 5px;
-          border: solid 1px @white;
+          border: solid 1px #58aaf7;
           font-size: 14px;
-          color: inherit;
           line-height: 1.38;
           letter-spacing: 1.6px;
+          color: white;
           padding: 10px 20px;
           width: auto;
           min-width: 180px;
           text-transform: uppercase;
           text-decoration: none;
-          font-weight: 700;
+          border-radius: 19.5px;
+          background-color: #58aaf7;
 
           &.type_points {
             display: block;
@@ -153,15 +152,13 @@
         }
 
         &.type_enabled {
-          box-shadow: 0 15px 20px 0 rgba(202,91,84,0.27);
         }
 
         &.type_disabled {
-          background-color: #b3bcc3;
-          box-shadow: 0 11px 12px 0 rgba(168,178,189,0.36);
-          color: #8e9cab;
           .spm_gifts-item-button {
-            border-color: #8e9cab;
+            color: black;
+            background: white;
+            border-color: white;
           }
         }
 

@@ -6,8 +6,8 @@ import default_avatar from './avatar.gif'
 const widget = {
   id: "house_happy_profile",
   template: Template,
-  inject: ["$rootScope", "SailPlayProfileForm"],
-  controller($rootScope, SailPlayProfileForm) {
+  inject: ["$rootScope", "SailPlay", "SailPlayProfileForm"],
+  controller($rootScope, SailPlay, SailPlayProfileForm) {
     return (scope, elm, attrs) => {
       scope.show_history = false;
       scope.show_profile = false;
@@ -90,7 +90,11 @@ const widget = {
       //   }
       // }, 10);
 
-
+      // check params
+      let params = SailPlay.url_params();
+      if(params.openProfile) {
+        scope.show_profile = true;
+      }
 
       scope.$on('$destroy', () => {
         document.body.removeEventListener('click', closeMenu)
