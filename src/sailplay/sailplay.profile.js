@@ -811,7 +811,7 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
         });
 
       }
-      revert_profile_form(form) {
+      revert(form) {
         if (form) {
           form.$setPristine();
           form.$setUntouched();
@@ -985,7 +985,7 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
 
           } else {
 
-            callback(null, user_res)
+            callback && callback(null, user_res)
             this.revert_profile_form();
 
           }

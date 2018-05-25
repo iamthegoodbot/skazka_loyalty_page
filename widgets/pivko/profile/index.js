@@ -16,6 +16,29 @@ const widget = {
 
       scope.profile_form = new SailPlayProfileForm(scope.widget.options.profile_form);
 
+      scope.profile_form_utils = {
+
+        show: false,
+        open: () => {
+          scope.profile_form_utils.show = true;
+        },
+        close: (form) => {
+          scope.profile_form.revert(form);
+          scope.profile_form_utils.show = false;
+        },
+        complete(e, data) {
+          if (data && data.status == "error") {
+            scope.$emit('notifier:notify', {
+              header: scope.widget.texts.error,
+              body: scope.widget.options.config.errors[data.status_code || data.message] || data.message
+            });
+          }
+          scope.profile_form_utils.show = false;
+          scope.$apply();
+        }
+
+      };
+
       scope.statuses = new SailPlayStatuses.TYPES[scope.widget.options.statuses.type](scope.widget.options.statuses);
 
       console.log(scope.statuses);

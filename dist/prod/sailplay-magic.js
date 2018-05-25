@@ -619,8 +619,8 @@ if (typeof __g == 'number') __g = global; // eslint-disable-line no-undef
 /* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var store = __webpack_require__(34)('wks');
-var uid = __webpack_require__(35);
+var store = __webpack_require__(35)('wks');
+var uid = __webpack_require__(36);
 var Symbol = __webpack_require__(4).Symbol;
 var USE_SYMBOL = typeof Symbol == 'function';
 
@@ -723,7 +723,7 @@ module.exports = $export;
 /***/ (function(module, exports, __webpack_require__) {
 
 var dP = __webpack_require__(13);
-var createDesc = __webpack_require__(28);
+var createDesc = __webpack_require__(29);
 module.exports = __webpack_require__(10) ? function (object, key, value) {
   return dP.f(object, key, createDesc(1, value));
 } : function (object, key, value) {
@@ -737,7 +737,7 @@ module.exports = __webpack_require__(10) ? function (object, key, value) {
 /***/ (function(module, exports, __webpack_require__) {
 
 // Thank's IE8 for his funny defineProperty
-module.exports = !__webpack_require__(20)(function () {
+module.exports = !__webpack_require__(21)(function () {
   return Object.defineProperty({}, 'a', { get: function () { return 7; } }).a != 7;
 });
 
@@ -889,6 +889,28 @@ module.exports = function (it) {
 /* 20 */
 /***/ (function(module, exports) {
 
+module.exports = function escape(url) {
+    if (typeof url !== 'string') {
+        return url
+    }
+    // If url is already wrapped in quotes, remove them
+    if (/^['"].*['"]$/.test(url)) {
+        url = url.slice(1, -1);
+    }
+    // Should url be wrapped?
+    // See https://drafts.csswg.org/css-values-3/#urls
+    if (/["'() \t\n]/.test(url)) {
+        return '"' + url.replace(/"/g, '\\"').replace(/\n/g, '\\n') + '"'
+    }
+
+    return url
+}
+
+
+/***/ }),
+/* 21 */
+/***/ (function(module, exports) {
+
 module.exports = function (exec) {
   try {
     return !!exec();
@@ -899,7 +921,7 @@ module.exports = function (exec) {
 
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var isObject = __webpack_require__(14);
@@ -912,7 +934,7 @@ module.exports = function (it) {
 
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports) {
 
 // 7.2.1 RequireObjectCoercible(argument)
@@ -923,19 +945,19 @@ module.exports = function (it) {
 
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // to indexed object, toObject with fallback for non-array-like ES3 strings
 var IObject = __webpack_require__(67);
-var defined = __webpack_require__(22);
+var defined = __webpack_require__(23);
 module.exports = function (it) {
   return IObject(defined(it));
 };
 
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, exports) {
 
 // 7.1.4 ToInteger
@@ -947,18 +969,18 @@ module.exports = function (it) {
 
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var shared = __webpack_require__(34)('keys');
-var uid = __webpack_require__(35);
+var shared = __webpack_require__(35)('keys');
+var uid = __webpack_require__(36);
 module.exports = function (key) {
   return shared[key] || (shared[key] = uid(key));
 };
 
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var def = __webpack_require__(13).f;
@@ -971,7 +993,7 @@ module.exports = function (it, tag, stat) {
 
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -996,7 +1018,7 @@ module.exports.f = function (C) {
 
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, exports) {
 
 module.exports = function (bitmap, value) {
@@ -1010,7 +1032,7 @@ module.exports = function (bitmap, value) {
 
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1049,7 +1071,7 @@ var _sailplay11 = __webpack_require__(75);
 
 var _sailplay12 = _interopRequireDefault(_sailplay11);
 
-var _angularCookie = __webpack_require__(37);
+var _angularCookie = __webpack_require__(38);
 
 var _angularCookie2 = _interopRequireDefault(_angularCookie);
 
@@ -1341,32 +1363,19 @@ var SailPlay = exports.SailPlay = _angular2.default.module('sailplay', [_sailpla
 exports.default = SailPlay.name;
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = { "default": __webpack_require__(64), __esModule: true };
 
 /***/ }),
-/* 31 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// 7.1.13 ToObject(argument)
-var defined = __webpack_require__(22);
-module.exports = function (it) {
-  return Object(defined(it));
-};
-
-
-/***/ }),
 /* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
-// 19.1.2.14 / 15.2.3.14 Object.keys(O)
-var $keys = __webpack_require__(66);
-var enumBugKeys = __webpack_require__(36);
-
-module.exports = Object.keys || function keys(O) {
-  return $keys(O, enumBugKeys);
+// 7.1.13 ToObject(argument)
+var defined = __webpack_require__(23);
+module.exports = function (it) {
+  return Object(defined(it));
 };
 
 
@@ -1374,8 +1383,21 @@ module.exports = Object.keys || function keys(O) {
 /* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
+// 19.1.2.14 / 15.2.3.14 Object.keys(O)
+var $keys = __webpack_require__(66);
+var enumBugKeys = __webpack_require__(37);
+
+module.exports = Object.keys || function keys(O) {
+  return $keys(O, enumBugKeys);
+};
+
+
+/***/ }),
+/* 34 */
+/***/ (function(module, exports, __webpack_require__) {
+
 // 7.1.15 ToLength
-var toInteger = __webpack_require__(24);
+var toInteger = __webpack_require__(25);
 var min = Math.min;
 module.exports = function (it) {
   return it > 0 ? min(toInteger(it), 0x1fffffffffffff) : 0; // pow(2, 53) - 1 == 9007199254740991
@@ -1383,7 +1405,7 @@ module.exports = function (it) {
 
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var global = __webpack_require__(4);
@@ -1395,7 +1417,7 @@ module.exports = function (key) {
 
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, exports) {
 
 var id = 0;
@@ -1406,7 +1428,7 @@ module.exports = function (key) {
 
 
 /***/ }),
-/* 36 */
+/* 37 */
 /***/ (function(module, exports) {
 
 // IE 8- don't enum bug keys
@@ -1416,7 +1438,7 @@ module.exports = (
 
 
 /***/ }),
-/* 37 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(76);
@@ -1424,25 +1446,25 @@ module.exports = 'ipCookie';
 
 
 /***/ }),
-/* 38 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = { "default": __webpack_require__(95), __esModule: true };
 
 /***/ }),
-/* 39 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var LIBRARY = __webpack_require__(40);
+var LIBRARY = __webpack_require__(41);
 var $export = __webpack_require__(8);
 var redefine = __webpack_require__(99);
 var hide = __webpack_require__(9);
 var has = __webpack_require__(18);
 var Iterators = __webpack_require__(15);
 var $iterCreate = __webpack_require__(100);
-var setToStringTag = __webpack_require__(26);
+var setToStringTag = __webpack_require__(27);
 var getPrototypeOf = __webpack_require__(103);
 var ITERATOR = __webpack_require__(5)('iterator');
 var BUGGY = !([].keys && 'next' in [].keys()); // Safari has buggy iterators w/o `next`
@@ -1507,14 +1529,14 @@ module.exports = function (Base, NAME, Constructor, next, DEFAULT, IS_SET, FORCE
 
 
 /***/ }),
-/* 40 */
+/* 41 */
 /***/ (function(module, exports) {
 
 module.exports = true;
 
 
 /***/ }),
-/* 41 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var document = __webpack_require__(4).document;
@@ -1522,7 +1544,7 @@ module.exports = document && document.documentElement;
 
 
 /***/ }),
-/* 42 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // getting tag from 19.1.3.6 Object.prototype.toString()
@@ -1551,7 +1573,7 @@ module.exports = function (it) {
 
 
 /***/ }),
-/* 43 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 7.3.20 SpeciesConstructor(O, defaultConstructor)
@@ -1566,13 +1588,13 @@ module.exports = function (O, D) {
 
 
 /***/ }),
-/* 44 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var ctx = __webpack_require__(16);
 var invoke = __webpack_require__(114);
-var html = __webpack_require__(41);
-var cel = __webpack_require__(21);
+var html = __webpack_require__(42);
+var cel = __webpack_require__(22);
 var global = __webpack_require__(4);
 var process = global.process;
 var setTask = global.setImmediate;
@@ -1656,7 +1678,7 @@ module.exports = {
 
 
 /***/ }),
-/* 45 */
+/* 46 */
 /***/ (function(module, exports) {
 
 module.exports = function (exec) {
@@ -1669,12 +1691,12 @@ module.exports = function (exec) {
 
 
 /***/ }),
-/* 46 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var anObject = __webpack_require__(7);
 var isObject = __webpack_require__(14);
-var newPromiseCapability = __webpack_require__(27);
+var newPromiseCapability = __webpack_require__(28);
 
 module.exports = function (C, x) {
   anObject(C);
@@ -1684,28 +1706,6 @@ module.exports = function (C, x) {
   resolve(x);
   return promiseCapability.promise;
 };
-
-
-/***/ }),
-/* 47 */
-/***/ (function(module, exports) {
-
-module.exports = function escape(url) {
-    if (typeof url !== 'string') {
-        return url
-    }
-    // If url is already wrapped in quotes, remove them
-    if (/^['"].*['"]$/.test(url)) {
-        url = url.slice(1, -1);
-    }
-    // Should url be wrapped?
-    // See https://drafts.csswg.org/css-values-3/#urls
-    if (/["'() \t\n]/.test(url)) {
-        return '"' + url.replace(/"/g, '\\"').replace(/\n/g, '\\n') + '"'
-    }
-
-    return url
-}
 
 
 /***/ }),
@@ -1734,11 +1734,11 @@ exports.GiftTypeRegister = undefined;
 
 var _widget = __webpack_require__(2);
 
-var _gifts = __webpack_require__(221);
+var _gifts = __webpack_require__(226);
 
 var _gifts2 = _interopRequireDefault(_gifts);
 
-__webpack_require__(222);
+__webpack_require__(227);
 
 var _angular = __webpack_require__(3);
 
@@ -1951,36 +1951,36 @@ _widget.Widget.directive('magicGift', ["$timeout", function ($timeout) {
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(52);
-__webpack_require__(152);
-__webpack_require__(158);
-__webpack_require__(162);
+__webpack_require__(157);
+__webpack_require__(163);
 __webpack_require__(167);
-__webpack_require__(171);
+__webpack_require__(172);
 __webpack_require__(176);
-__webpack_require__(182);
-__webpack_require__(186);
+__webpack_require__(181);
+__webpack_require__(187);
 __webpack_require__(191);
-__webpack_require__(195);
-__webpack_require__(199);
-__webpack_require__(205);
-__webpack_require__(209);
-__webpack_require__(213);
-__webpack_require__(217);
+__webpack_require__(196);
+__webpack_require__(200);
+__webpack_require__(204);
+__webpack_require__(210);
+__webpack_require__(214);
+__webpack_require__(218);
+__webpack_require__(222);
 __webpack_require__(50);
-__webpack_require__(224);
-__webpack_require__(225);
 __webpack_require__(229);
-__webpack_require__(233);
-__webpack_require__(237);
-__webpack_require__(241);
+__webpack_require__(230);
+__webpack_require__(234);
+__webpack_require__(238);
+__webpack_require__(242);
 __webpack_require__(246);
 __webpack_require__(251);
-__webpack_require__(259);
+__webpack_require__(256);
 __webpack_require__(264);
-__webpack_require__(268);
+__webpack_require__(269);
 __webpack_require__(273);
-__webpack_require__(279);
-module.exports = __webpack_require__(284);
+__webpack_require__(278);
+__webpack_require__(284);
+module.exports = __webpack_require__(294);
 
 
 /***/ }),
@@ -2013,7 +2013,7 @@ var _angular = __webpack_require__(3);
 
 var _angular2 = _interopRequireDefault(_angular);
 
-var _sailplay = __webpack_require__(29);
+var _sailplay = __webpack_require__(30);
 
 var _sailplay2 = _interopRequireDefault(_sailplay);
 
@@ -2021,7 +2021,7 @@ var _core = __webpack_require__(77);
 
 var _core2 = _interopRequireDefault(_core);
 
-var _angularCookie = __webpack_require__(37);
+var _angularCookie = __webpack_require__(38);
 
 var _angularCookie2 = _interopRequireDefault(_angularCookie);
 
@@ -2035,9 +2035,9 @@ var _tools2 = _interopRequireDefault(_tools);
 
 var _widget = __webpack_require__(2);
 
-__webpack_require__(142);
+__webpack_require__(147);
 
-__webpack_require__(150);
+__webpack_require__(155);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2253,8 +2253,8 @@ $export($export.S + $export.F * !__webpack_require__(10), 'Object', { defineProp
 /* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = !__webpack_require__(10) && !__webpack_require__(20)(function () {
-  return Object.defineProperty(__webpack_require__(21)('div'), 'a', { get: function () { return 7; } }).a != 7;
+module.exports = !__webpack_require__(10) && !__webpack_require__(21)(function () {
+  return Object.defineProperty(__webpack_require__(22)('div'), 'a', { get: function () { return 7; } }).a != 7;
 });
 
 
@@ -38221,7 +38221,7 @@ var _stringify = __webpack_require__(62);
 
 var _stringify2 = _interopRequireDefault(_stringify);
 
-var _keys = __webpack_require__(30);
+var _keys = __webpack_require__(31);
 
 var _keys2 = _interopRequireDefault(_keys);
 
@@ -39029,8 +39029,8 @@ var SailPlayProfile = exports.SailPlayProfile = _angular2.default.module('sailpl
     }
 
     (0, _createClass3.default)(SailPlayProfileForm, [{
-      key: 'revert_profile_form',
-      value: function revert_profile_form(form) {
+      key: 'revert',
+      value: function revert(form) {
         if (form) {
           form.$setPristine();
           form.$setUntouched();
@@ -39210,7 +39210,7 @@ var SailPlayProfile = exports.SailPlayProfile = _angular2.default.module('sailpl
             }
           } else {
 
-            callback(null, user_res);
+            callback && callback(null, user_res);
             _this2.revert_profile_form();
           }
         });
@@ -39337,8 +39337,8 @@ module.exports = __webpack_require__(6).Object.keys;
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.2.14 Object.keys(O)
-var toObject = __webpack_require__(31);
-var $keys = __webpack_require__(32);
+var toObject = __webpack_require__(32);
+var $keys = __webpack_require__(33);
 
 __webpack_require__(70)('keys', function () {
   return function keys(it) {
@@ -39352,9 +39352,9 @@ __webpack_require__(70)('keys', function () {
 /***/ (function(module, exports, __webpack_require__) {
 
 var has = __webpack_require__(18);
-var toIObject = __webpack_require__(23);
+var toIObject = __webpack_require__(24);
 var arrayIndexOf = __webpack_require__(68)(false);
-var IE_PROTO = __webpack_require__(25)('IE_PROTO');
+var IE_PROTO = __webpack_require__(26)('IE_PROTO');
 
 module.exports = function (object, names) {
   var O = toIObject(object);
@@ -39388,8 +39388,8 @@ module.exports = Object('z').propertyIsEnumerable(0) ? Object : function (it) {
 
 // false -> Array#indexOf
 // true  -> Array#includes
-var toIObject = __webpack_require__(23);
-var toLength = __webpack_require__(33);
+var toIObject = __webpack_require__(24);
+var toLength = __webpack_require__(34);
 var toAbsoluteIndex = __webpack_require__(69);
 module.exports = function (IS_INCLUDES) {
   return function ($this, el, fromIndex) {
@@ -39415,7 +39415,7 @@ module.exports = function (IS_INCLUDES) {
 /* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var toInteger = __webpack_require__(24);
+var toInteger = __webpack_require__(25);
 var max = Math.max;
 var min = Math.min;
 module.exports = function (index, length) {
@@ -39431,7 +39431,7 @@ module.exports = function (index, length) {
 // most Object methods by ES6 should accept primitives
 var $export = __webpack_require__(8);
 var core = __webpack_require__(6);
-var fails = __webpack_require__(20);
+var fails = __webpack_require__(21);
 module.exports = function (KEY, exec) {
   var fn = (core.Object || {})[KEY] || Object[KEY];
   var exp = {};
@@ -39791,7 +39791,7 @@ var _createClass2 = __webpack_require__(12);
 
 var _createClass3 = _interopRequireDefault(_createClass2);
 
-var _keys = __webpack_require__(30);
+var _keys = __webpack_require__(31);
 
 var _keys2 = _interopRequireDefault(_keys);
 
@@ -40457,53 +40457,45 @@ SailPlayStatuses.service('SailPlayStatusesLastMonth', ["SailPlayApi", function (
       key: 'progress',
       value: function progress() {
 
-        if (!this.user() || this.list.length < 1) return;
+        if (this.list.length < 1) return 0;
 
-        var user_points = this.user().user_points;
+        var purchases_sum = this.sum();
 
-        var status_points = this.list.map(function (item) {
-          return item.sum;
-        });
+        var last_status = _angular2.default.copy(this.list).sort(function (a, b) {
+          return b.sum - a.sum;
+        })[0];
 
-        if (status_points[0] !== 0) {
-          return 0;
-        }
+        console.log(purchases_sum);
+        console.log(last_status);
 
-        function isNumeric(n) {
-          return !isNaN(parseFloat(n)) && isFinite(n);
-        }
-
-        var points = void 0;
-
-        if (isNumeric(user_points)) points = user_points;else points = user_points ? user_points.confirmed + user_points.spent + user_points.spent_extra : 0;
-
-        if (status_points[status_points.length - 1] && points > status_points[status_points.length - 1]) {
+        if (purchases_sum > last_status.sum) {
           return 100;
         }
 
-        var multiplier = 100 / (status_points.length - 1);
+        var multiplier = 100 / (this.list.length - 1);
 
         var state = 0;
 
-        for (var i = 1, len = status_points.length; i < len; i++) {
-          if (points >= status_points[i]) {
+        for (var i = 1, len = this.list.length; i < len; i++) {
+
+          if (purchases_sum >= this.list[i].sum) {
             state++;
           }
         }
 
         var current = 0;
 
-        var total = status_points[0];
+        var total = last_status.sum;
 
         if (state === 0) {
-          current = points;
-          total = status_points[state + 1];
+          current = purchases_sum;
+          total = this.list[state + 1].sum;
         } else {
-          current = points - status_points[state];
-          total = status_points[state + 1] ? status_points[state + 1] - status_points[state] : status_points[state];
+          current = purchases_sum - this.list[state].sum;
+          total = this.list[state + 1] ? this.list[state + 1].sum - this.list[state].sum : this.list[state].sum;
         }
 
-        return parseInt(current * 100 / total / (status_points.length - 1) + state * multiplier);
+        return parseInt(current * 100 / total / (this.list.length - 1) + state * multiplier);
       }
     }]);
     return SailPlayStatusesLastMonth;
@@ -40666,7 +40658,7 @@ var _angular = __webpack_require__(3);
 
 var _angular2 = _interopRequireDefault(_angular);
 
-var _sailplay = __webpack_require__(29);
+var _sailplay = __webpack_require__(30);
 
 var _sailplay2 = _interopRequireDefault(_sailplay);
 
@@ -41574,9 +41566,13 @@ var _index3 = __webpack_require__(138);
 
 var _index4 = _interopRequireDefault(_index3);
 
+var _index5 = __webpack_require__(142);
+
+var _index6 = _interopRequireDefault(_index5);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var Tools = exports.Tools = _angular2.default.module('magic.tools', [_angularUtilsPagination2.default, _angularUiMask2.default, _fonts2.default, _layout2.default, _widget2.default, _notifier2.default, _index2.default, _datepicker2.default, _index4.default]).filter('tools', function (MAGIC_CONFIG, $parse) {
+var Tools = exports.Tools = _angular2.default.module('magic.tools', [_angularUtilsPagination2.default, _angularUiMask2.default, _fonts2.default, _layout2.default, _widget2.default, _notifier2.default, _index2.default, _index6.default, _datepicker2.default, _index4.default]).filter('tools', function (MAGIC_CONFIG, $parse) {
 
   return function (key) {
     return $parse(key)(MAGIC_CONFIG.tools) || '';
@@ -42216,6 +42212,80 @@ var Tools = exports.Tools = _angular2.default.module('magic.tools', [_angularUti
 
     number = number.slice(0, 3) + '-' + number.slice(3, 5) + '-' + number.slice(5);
     return '+' + (country + " (" + city + ") " + number).trim();
+  };
+}).filter('masked', function () {
+  var cache = {};
+  var maskDefinitions = {
+    '9': /\d/,
+    'A': /[a-zA-Z]/,
+    '*': /[a-zA-Z0-9]/
+  };
+  function getPlaceholderChar(i) {
+    return '_';
+  }
+  function processRawMask(mask) {
+    if (cache[mask]) return cache[mask];
+    var characterCount = 0;
+
+    var maskCaretMap = [];
+    var maskPatterns = [];
+    var maskPlaceholder = '';
+    var minRequiredLength = 0;
+    if (_angular2.default.isString(mask)) {
+
+      var isOptional = false,
+          numberOfOptionalCharacters = 0,
+          splitMask = mask.split('');
+
+      _angular2.default.forEach(splitMask, function (chr, i) {
+        if (maskDefinitions[chr]) {
+
+          maskCaretMap.push(characterCount);
+
+          maskPlaceholder += getPlaceholderChar(i - numberOfOptionalCharacters);
+          maskPatterns.push(maskDefinitions[chr]);
+
+          characterCount++;
+          if (!isOptional) {
+            minRequiredLength++;
+          }
+
+          isOptional = false;
+        } else if (chr === '?') {
+          isOptional = true;
+          numberOfOptionalCharacters++;
+        } else {
+          maskPlaceholder += chr;
+          characterCount++;
+        }
+      });
+    }
+    // Caret position immediately following last position is valid.
+    maskCaretMap.push(maskCaretMap.slice().pop() + 1);
+    return cache[mask] = { maskCaretMap: maskCaretMap, maskPlaceholder: maskPlaceholder };
+  }
+
+  function maskValue(unmaskedValue, maskDef) {
+    unmaskedValue = unmaskedValue || '';
+    var valueMasked = '',
+        maskCaretMapCopy = maskDef.maskCaretMap.slice();
+
+    _angular2.default.forEach(maskDef.maskPlaceholder.split(''), function (chr, i) {
+      if (unmaskedValue.length && i === maskCaretMapCopy[0]) {
+        valueMasked += unmaskedValue.charAt(0) || '_';
+        unmaskedValue = unmaskedValue.substr(1);
+        maskCaretMapCopy.shift();
+      } else {
+        valueMasked += chr;
+      }
+    });
+    return valueMasked;
+  }
+
+  return function (value, mask) {
+    var maskDef = processRawMask(mask);
+    var maskedValue = maskValue(value, maskDef);
+    return maskedValue;
   };
 }).filter('nullVariable', function () {
 
@@ -43902,7 +43972,7 @@ var _asyncToGenerator2 = __webpack_require__(94);
 
 var _asyncToGenerator3 = _interopRequireDefault(_asyncToGenerator2);
 
-var _promise = __webpack_require__(38);
+var _promise = __webpack_require__(39);
 
 var _promise2 = _interopRequireDefault(_promise);
 
@@ -44842,7 +44912,7 @@ if (hadRuntime) {
 
 exports.__esModule = true;
 
-var _promise = __webpack_require__(38);
+var _promise = __webpack_require__(39);
 
 var _promise2 = _interopRequireDefault(_promise);
 
@@ -44905,7 +44975,7 @@ module.exports = __webpack_require__(6).Promise;
 var $at = __webpack_require__(98)(true);
 
 // 21.1.3.27 String.prototype[@@iterator]()
-__webpack_require__(39)(String, 'String', function (iterated) {
+__webpack_require__(40)(String, 'String', function (iterated) {
   this._t = String(iterated); // target
   this._i = 0;                // next index
 // 21.1.5.2.1 %StringIteratorPrototype%.next()
@@ -44924,8 +44994,8 @@ __webpack_require__(39)(String, 'String', function (iterated) {
 /* 98 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var toInteger = __webpack_require__(24);
-var defined = __webpack_require__(22);
+var toInteger = __webpack_require__(25);
+var defined = __webpack_require__(23);
 // true  -> String#at
 // false -> String#codePointAt
 module.exports = function (TO_STRING) {
@@ -44957,8 +45027,8 @@ module.exports = __webpack_require__(9);
 "use strict";
 
 var create = __webpack_require__(101);
-var descriptor = __webpack_require__(28);
-var setToStringTag = __webpack_require__(26);
+var descriptor = __webpack_require__(29);
+var setToStringTag = __webpack_require__(27);
 var IteratorPrototype = {};
 
 // 25.1.2.1.1 %IteratorPrototype%[@@iterator]()
@@ -44977,21 +45047,21 @@ module.exports = function (Constructor, NAME, next) {
 // 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
 var anObject = __webpack_require__(7);
 var dPs = __webpack_require__(102);
-var enumBugKeys = __webpack_require__(36);
-var IE_PROTO = __webpack_require__(25)('IE_PROTO');
+var enumBugKeys = __webpack_require__(37);
+var IE_PROTO = __webpack_require__(26)('IE_PROTO');
 var Empty = function () { /* empty */ };
 var PROTOTYPE = 'prototype';
 
 // Create object with fake `null` prototype: use iframe Object with cleared prototype
 var createDict = function () {
   // Thrash, waste and sodomy: IE GC bug
-  var iframe = __webpack_require__(21)('iframe');
+  var iframe = __webpack_require__(22)('iframe');
   var i = enumBugKeys.length;
   var lt = '<';
   var gt = '>';
   var iframeDocument;
   iframe.style.display = 'none';
-  __webpack_require__(41).appendChild(iframe);
+  __webpack_require__(42).appendChild(iframe);
   iframe.src = 'javascript:'; // eslint-disable-line no-script-url
   // createDict = iframe.contentWindow.Object;
   // html.removeChild(iframe);
@@ -45023,7 +45093,7 @@ module.exports = Object.create || function create(O, Properties) {
 
 var dP = __webpack_require__(13);
 var anObject = __webpack_require__(7);
-var getKeys = __webpack_require__(32);
+var getKeys = __webpack_require__(33);
 
 module.exports = __webpack_require__(10) ? Object.defineProperties : function defineProperties(O, Properties) {
   anObject(O);
@@ -45042,8 +45112,8 @@ module.exports = __webpack_require__(10) ? Object.defineProperties : function de
 
 // 19.1.2.9 / 15.2.3.2 Object.getPrototypeOf(O)
 var has = __webpack_require__(18);
-var toObject = __webpack_require__(31);
-var IE_PROTO = __webpack_require__(25)('IE_PROTO');
+var toObject = __webpack_require__(32);
+var IE_PROTO = __webpack_require__(26)('IE_PROTO');
 var ObjectProto = Object.prototype;
 
 module.exports = Object.getPrototypeOf || function (O) {
@@ -45089,13 +45159,13 @@ for (var i = 0; i < DOMIterables.length; i++) {
 var addToUnscopables = __webpack_require__(106);
 var step = __webpack_require__(107);
 var Iterators = __webpack_require__(15);
-var toIObject = __webpack_require__(23);
+var toIObject = __webpack_require__(24);
 
 // 22.1.3.4 Array.prototype.entries()
 // 22.1.3.13 Array.prototype.keys()
 // 22.1.3.29 Array.prototype.values()
 // 22.1.3.30 Array.prototype[@@iterator]()
-module.exports = __webpack_require__(39)(Array, 'Array', function (iterated, kind) {
+module.exports = __webpack_require__(40)(Array, 'Array', function (iterated, kind) {
   this._t = toIObject(iterated); // target
   this._i = 0;                   // next index
   this._k = kind;                // kind
@@ -45143,21 +45213,21 @@ module.exports = function (done, value) {
 
 "use strict";
 
-var LIBRARY = __webpack_require__(40);
+var LIBRARY = __webpack_require__(41);
 var global = __webpack_require__(4);
 var ctx = __webpack_require__(16);
-var classof = __webpack_require__(42);
+var classof = __webpack_require__(43);
 var $export = __webpack_require__(8);
 var isObject = __webpack_require__(14);
 var aFunction = __webpack_require__(17);
 var anInstance = __webpack_require__(109);
 var forOf = __webpack_require__(110);
-var speciesConstructor = __webpack_require__(43);
-var task = __webpack_require__(44).set;
+var speciesConstructor = __webpack_require__(44);
+var task = __webpack_require__(45).set;
 var microtask = __webpack_require__(115)();
-var newPromiseCapabilityModule = __webpack_require__(27);
-var perform = __webpack_require__(45);
-var promiseResolve = __webpack_require__(46);
+var newPromiseCapabilityModule = __webpack_require__(28);
+var perform = __webpack_require__(46);
+var promiseResolve = __webpack_require__(47);
 var PROMISE = 'Promise';
 var TypeError = global.TypeError;
 var process = global.process;
@@ -45351,7 +45421,7 @@ if (!USE_NATIVE) {
 }
 
 $export($export.G + $export.W + $export.F * !USE_NATIVE, { Promise: $Promise });
-__webpack_require__(26)($Promise, PROMISE);
+__webpack_require__(27)($Promise, PROMISE);
 __webpack_require__(117)(PROMISE);
 Wrapper = __webpack_require__(6)[PROMISE];
 
@@ -45436,7 +45506,7 @@ var ctx = __webpack_require__(16);
 var call = __webpack_require__(111);
 var isArrayIter = __webpack_require__(112);
 var anObject = __webpack_require__(7);
-var toLength = __webpack_require__(33);
+var toLength = __webpack_require__(34);
 var getIterFn = __webpack_require__(113);
 var BREAK = {};
 var RETURN = {};
@@ -45495,7 +45565,7 @@ module.exports = function (it) {
 /* 113 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var classof = __webpack_require__(42);
+var classof = __webpack_require__(43);
 var ITERATOR = __webpack_require__(5)('iterator');
 var Iterators = __webpack_require__(15);
 module.exports = __webpack_require__(6).getIteratorMethod = function (it) {
@@ -45532,7 +45602,7 @@ module.exports = function (fn, args, that) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var global = __webpack_require__(4);
-var macrotask = __webpack_require__(44).set;
+var macrotask = __webpack_require__(45).set;
 var Observer = global.MutationObserver || global.WebKitMutationObserver;
 var process = global.process;
 var Promise = global.Promise;
@@ -45673,8 +45743,8 @@ module.exports = function (exec, skipClosing) {
 var $export = __webpack_require__(8);
 var core = __webpack_require__(6);
 var global = __webpack_require__(4);
-var speciesConstructor = __webpack_require__(43);
-var promiseResolve = __webpack_require__(46);
+var speciesConstructor = __webpack_require__(44);
+var promiseResolve = __webpack_require__(47);
 
 $export($export.P + $export.R, 'Promise', { 'finally': function (onFinally) {
   var C = speciesConstructor(this, core.Promise || global.Promise);
@@ -45698,8 +45768,8 @@ $export($export.P + $export.R, 'Promise', { 'finally': function (onFinally) {
 
 // https://github.com/tc39/proposal-promise-try
 var $export = __webpack_require__(8);
-var newPromiseCapability = __webpack_require__(27);
-var perform = __webpack_require__(45);
+var newPromiseCapability = __webpack_require__(28);
+var perform = __webpack_require__(46);
 
 $export($export.S, 'Promise', { 'try': function (callbackfn) {
   var promiseCapability = newPromiseCapability.f(this);
@@ -46194,7 +46264,45 @@ var ToolsDatepicker = exports.ToolsDatepicker = _angular2.default.module("ui.dat
       });
     }
   };
-}]);
+}]).directive("spmDateInput", function ($filter) {
+
+  return {
+    restrict: 'A',
+    require: 'ngModel',
+    link: function link(scope, elm, attrs, NgModel) {
+
+      NgModel.$formatters.push(function (modelValue) {
+
+        if (!modelValue) return null;
+        //
+        // console.log(view_value);
+
+        return new Date(modelValue);
+      });
+
+      NgModel.$parsers.push(function (viewValue) {
+
+        var model_value = viewValue && $filter('date')(viewValue, 'yyyy-MM-dd') || '';
+
+        // console.log(model_value);
+
+        return model_value;
+      });
+
+      // NgModel.$validators.required = function(modelValue, viewValue) {
+      //   let valid = true;
+      //   angular.forEach(viewValue.split('.'), function(val) {
+      //     if (!val || val === "") valid = false;
+      //   });
+      //   return valid;
+      // };
+
+      // NgModel.$render = function() {
+      //   elm.val(NgModel.$viewValue);
+      // };
+    }
+  };
+});
 
 exports.default = ToolsDatepicker.name;
 
@@ -46291,10 +46399,140 @@ exports.push([module.i, ".spm_wrapper .spm_pagination {\n  display: flex;\n  ali
 /* 142 */
 /***/ (function(module, exports, __webpack_require__) {
 
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.ModalCenter = undefined;
+
+var _angular = __webpack_require__(3);
+
+var _angular2 = _interopRequireDefault(_angular);
+
+var _template = __webpack_require__(143);
+
+var _template2 = _interopRequireDefault(_template);
+
+__webpack_require__(144);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var ModalCenter = exports.ModalCenter = _angular2.default.module('magic.tools.modal.center', []).directive('magicModalCenter', function ($parse, tools, MAGIC_CONFIG) {
+
+  return {
+    restrict: 'E',
+    replace: true,
+    template: _template2.default,
+    scope: {
+      config: '=?',
+      onClose: '=?',
+      preventClose: '=?'
+    },
+    transclude: {
+      'title': '?magicModalTitle',
+      'body': '?magicModalBody'
+    },
+    link: function link(scope, elm, attrs) {
+
+      scope._modal_config = MAGIC_CONFIG.tools.modal;
+
+      scope.show = false;
+
+      scope.close = function () {
+        $parse(attrs.show).assign(scope.$parent, false);
+        // scope.$eval(attrs.onClose);
+        scope.onClose && scope.onClose();
+      };
+
+      elm.on('click', function (e) {
+        if (e.target === elm[0] && !scope.preventClose) {
+          scope.$apply(function () {
+            scope.close();
+          });
+        }
+      });
+
+      scope.$watch(function () {
+        return _angular2.default.toJson([scope.$parent.$eval(attrs.show)]);
+      }, function () {
+        var new_value = scope.$parent.$eval(attrs.show);
+        scope.show = new_value;
+        tools.body_lock(new_value);
+      });
+    }
+  };
+});
+
+exports.default = ModalCenter.name;
+
+/***/ }),
+/* 143 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"spm_modal_center\" data-ng-class=\"{ visible: show }\" tabindex=\"-1\" role=\"dialog\">\n\n  <div class=\"spm_modal_center_inner\">\n    <i class=\"spm_modal_center_close\" ng-click=\"$event.preventDefault(); !preventClose && close();\"></i>\n    <div class=\"spm_modal_center_content\">\n      <div class=\"spm_modal_center_content_title\" ng-transclude=\"title\"></div>\n      <div class=\"spm_modal_center_content_body\" ng-transclude=\"body\"></div>\n    </div>\n  </div>\n\n\n</div>";
+
+/***/ }),
+/* 144 */
+/***/ (function(module, exports, __webpack_require__) {
+
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(143);
+var content = __webpack_require__(145);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// Prepare cssTransformation
+var transform;
+
+var options = {"hmr":true}
+options.transform = transform
+// add the styles to the DOM
+var update = __webpack_require__(1)(content, options);
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/dist/cjs.js!./style.less", function() {
+			var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/dist/cjs.js!./style.less");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 145 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var escape = __webpack_require__(20);
+exports = module.exports = __webpack_require__(0)(false);
+// imports
+
+
+// module
+exports.push([module.i, ".spm_wrapper .spm_modal_center {\n  position: fixed;\n  left: 0;\n  top: 0;\n  width: 100%;\n  height: 100%;\n  z-index: 10000;\n  background-color: rgba(100, 100, 100, 0.7);\n  display: none;\n  overflow: auto;\n  text-align: center;\n}\n.spm_wrapper .spm_modal_center.visible {\n  display: block;\n}\n.spm_wrapper .spm_modal_center_inner {\n  margin: 20px auto;\n  background: #ffffff;\n  right: 0;\n  top: 0;\n  width: 100%;\n  max-width: 500px;\n  height: auto;\n  box-sizing: border-box;\n  padding: 30px 50px;\n  overflow: auto;\n  position: relative;\n  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.4);\n  text-align: left;\n}\n@media (max-width: 768px) {\n  .spm_wrapper .spm_modal_center_inner {\n    padding: 60px 30px;\n    height: auto;\n    min-height: 100%;\n  }\n}\n.spm_wrapper .spm_modal_center_close {\n  width: 30px;\n  height: 30px;\n  right: 10px;\n  top: 10px;\n  position: absolute;\n  cursor: pointer;\n  display: block;\n  background-repeat: no-repeat;\n  background-position: center center;\n  background-size: 15px 15px;\n  background-image: url(" + escape(__webpack_require__(146)) + ");\n}\n.spm_wrapper .spm_modal_center_close:hover {\n  opacity: 0.7;\n}\n.spm_wrapper .spm_modal_center-content {\n  width: 100%;\n  height: auto;\n}\n.spm_wrapper .spm_modal_center-content-title {\n  text-transform: uppercase;\n  font-weight: 800;\n  font-size: 40px;\n  line-height: 48px;\n  text-align: center;\n}\n@media (max-width: 768px) {\n  .spm_wrapper .spm_modal_center-content-title {\n    font-size: 30px;\n    line-height: 38px;\n  }\n}\n.spm_wrapper .spm_modal_center-content-body {\n  margin-top: 25px;\n  min-width: 340px;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 146 */
+/***/ (function(module, exports) {
+
+module.exports = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUiIGhlaWdodD0iMTUiIHZpZXdCb3g9IjAgMCAxNSAxNSIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTAgMEw2LjUgNi41TTEzIDEzTDYuNSA2LjVNNi41IDYuNUwxMyAwTDAgMTMiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDEgMSkiIHN0cm9rZT0iIzQzNDM0MyIvPgo8L3N2Zz4K"
+
+/***/ }),
+/* 147 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(148);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -46319,10 +46557,10 @@ if(false) {
 }
 
 /***/ }),
-/* 143 */
+/* 148 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var escape = __webpack_require__(47);
+var escape = __webpack_require__(20);
 exports = module.exports = __webpack_require__(0)(false);
 // imports
 exports.push([module.i, "@import url(https://fonts.googleapis.com/css?family=Roboto+Slab:300,400,700);", ""]);
@@ -46330,55 +46568,55 @@ exports.push([module.i, "@import url(https://fonts.googleapis.com/css?family=Rob
 exports.push([module.i, "@import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700);", ""]);
 
 // module
-exports.push([module.i, ".spm_wrapper .button_primary {\n  -webkit-box-sizing: border-box;\n  -moz-box-sizing: border-box;\n  box-sizing: border-box;\n}\n.spm_wrapper .sp_btn {\n  display: inline-block;\n  outline: none;\n  width: auto;\n  line-height: 35px;\n  text-decoration: none;\n  color: #ffffff;\n  font-size: 14px;\n  font-weight: 500;\n  background-color: #888888;\n  border: 0;\n  border-bottom: 1px solid #000000;\n  text-shadow: 0 0 1px #000000;\n  margin-right: 45px;\n  margin-top: 12px;\n  white-space: nowrap;\n  padding-left: 20px;\n  padding-right: 20px;\n  cursor: pointer;\n}\n.spm_wrapper .sp_btn:hover {\n  background-color: #7b7b7b;\n}\n.spm_wrapper .sp_btn[disabled] {\n  opacity: .5;\n}\n.spm_wrapper .spm_btn {\n  font-size: 16px;\n  padding: 10px 25px;\n  border-radius: 5px;\n  text-transform: uppercase;\n  text-decoration: none;\n  box-sizing: border-box;\n  color: white;\n  cursor: pointer;\n  outline: none;\n  -webkit-appearance: none;\n}\n.spm_wrapper .spm_btn.theme_1 {\n  border: 2px solid #ca5b54;\n  font-weight: bold;\n}\n.spm_wrapper .spm_btn.theme_1:hover {\n  background: #ca5b54;\n}\n.spm_wrapper .spm_btn.theme_1.type_filled {\n  background: #ca5b54;\n}\n.spm_wrapper .spm_btn.theme_1.type_filled:hover {\n  opacity: 0.7;\n}\n.spm_wrapper .spm_btn.theme_1.type_big {\n  border-radius: 5px;\n  font-size: 16px;\n  font-family: Roboto, sans-serif;\n  padding: 13px 60px;\n  line-height: 1;\n}\n.spm_wrapper .spm_btn.theme_1.type_cancel {\n  background-image: linear-gradient(to top, #bed4e8, #d5e5ea);\n  border: none;\n}\n.spm_wrapper .spm_btn.theme_1.type_cancel:hover {\n  background-image: linear-gradient(to top, #bed4e8, #d5e5ea);\n}\n.spm_wrapper .magic_select {\n  overflow: hidden;\n  width: 100%;\n  float: left;\n  height: 57px;\n  border: 0;\n  border-top: 2px solid #cccccc;\n  border-radius: 5px;\n  padding-left: 25px;\n  font-size: 18px;\n  outline: none;\n  box-sizing: border-box;\n  background-color: #ffffff;\n  position: relative;\n  display: inline-block;\n  background-image: url(https://d3sailplay.cdnvideo.ru/media/assets/assetfile/303e1f38393495b1a059952843abeeb0.png);\n  background-repeat: no-repeat;\n  background-position: right 10px center;\n  background-size: 10px;\n}\n.spm_wrapper .magic_select select {\n  position: absolute;\n  background: transparent;\n  border: none;\n  height: 100%;\n  width: 100%;\n  font-size: inherit;\n  font-weight: inherit;\n  font-family: inherit;\n  outline: none;\n  -webkit-appearance: none;\n  box-shadow: none;\n  background-image: none;\n}\n.spm_wrapper .form_field {\n  float: left;\n  width: 50%;\n  padding-bottom: 20px;\n  padding-right: 40px;\n  -webkit-box-sizing: border-box;\n  -moz-box-sizing: border-box;\n  box-sizing: border-box;\n  /* -------------------- Select Box Styles: stackoverflow.com Method */\n  /* -------------------- Source: http://stackoverflow.com/a/5809186 */\n}\n.spm_wrapper .form_field.type_full {\n  width: 100%;\n}\n.spm_wrapper .form_field .form_date {\n  float: left;\n  position: relative;\n  z-index: 1;\n}\n.spm_wrapper .form_field .form_date span {\n  color: #000000;\n  font-size: 18px;\n  float: left;\n  width: 100%;\n  box-sizing: border-box;\n  padding-left: 10px;\n  border: 2px solid #cccccc;\n  border-radius: 5px;\n  line-height: 57px;\n  height: 57px;\n  background-image: url('https://d3sailplay.cdnvideo.ru/media/assets/assetfile/303e1f38393495b1a059952843abeeb0.png');\n  background-repeat: no-repeat;\n  background-position: right 10px center;\n  background-size: 10px;\n}\n.spm_wrapper .form_field .form_date__popup {\n  display: none;\n  position: absolute;\n  top: 100%;\n  left: 0px;\n  right: 0px;\n  z-index: 2;\n  max-height: 100px;\n  overflow-x: hidden;\n  overflow-y: auto;\n  background-color: #ffffff;\n  border-radius: 0 0 5px 5px;\n  border: 1px solid #cccccc;\n  text-align: center;\n}\n.spm_wrapper .form_field .form_date__popup a {\n  float: left;\n  width: 100%;\n  line-height: 25px;\n  text-decoration: none;\n  color: #000000;\n  background: #ffffff;\n}\n.spm_wrapper .form_field .form_date__day {\n  width: 20%;\n}\n.spm_wrapper .form_field .form_date__month {\n  width: 48%;\n  margin: 0 1%;\n}\n.spm_wrapper .form_field .form_date__year {\n  width: 30%;\n}\n.spm_wrapper .form_field .form_date:hover .form_date__popup {\n  display: block;\n}\n.spm_wrapper .form_field .form_label {\n  width: 100%;\n  line-height: 100%;\n  color: #222222;\n  font-size: 16px;\n  float: left;\n}\n.spm_wrapper .form_field .form_textarea {\n  background-color: #ffffff;\n  float: left;\n  height: 100px;\n  resize: none;\n  border: 0;\n  border-top: 2px solid #cccccc;\n  border-radius: 5px;\n  padding-left: 25px;\n  width: 100%;\n  font-size: 18px;\n  outline: none;\n  box-sizing: border-box;\n}\n.spm_wrapper .form_field .form_input[type=\"text\"],\n.spm_wrapper .form_field .form_input[type=\"email\"] {\n  background-color: #ffffff;\n  float: left;\n  height: 57px;\n  border: 0;\n  border-top: 2px solid #cccccc;\n  border-radius: 5px;\n  padding-left: 25px;\n  width: 100%;\n  font-size: 18px;\n  outline: none;\n  box-sizing: border-box;\n}\n.spm_wrapper .form_field .form_select {\n  -webkit-appearance: button;\n  -webkit-border-radius: 2px;\n  -webkit-box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);\n  -webkit-padding-end: 20px;\n  -webkit-padding-start: 2px;\n  -webkit-user-select: none;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  color: #000000;\n  font-size: 18px;\n  float: left;\n  width: 100%;\n  box-sizing: border-box;\n  padding-left: 10px;\n  border: 2px solid #cccccc;\n  border-radius: 5px;\n  line-height: 57px;\n  height: 57px;\n  background-image: url('https://d3sailplay.cdnvideo.ru/media/assets/assetfile/303e1f38393495b1a059952843abeeb0.png');\n  background-repeat: no-repeat;\n  background-position: right 10px center;\n  background-size: 10px;\n  background-color: transparent;\n  outline: none;\n}\n@media only screen and (min-width: 530px) and (max-width: 949px), only screen and (max-width: 529px) {\n  .spm_wrapper .form_field {\n    width: 100%;\n    padding: 0 0 20px 0;\n  }\n}\n.spm_wrapper .spm_form_buttons {\n  text-align: center;\n  margin-top: 20px;\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  width: 100%;\n}\n@media (max-width: 365px) {\n  .spm_wrapper .spm_form_buttons {\n    display: flex;\n    flex-direction: column;\n    width: 100%;\n    max-width: 180px;\n    align-items: center;\n    justify-content: center;\n  }\n}\n.spm_wrapper .spm_form_buttons .spm_btn {\n  min-width: 150px;\n  margin-right: 0;\n  display: inline-block;\n  margin-top: 0 !important;\n  padding-left: 0 !important;\n  padding-right: 0 !important;\n  outline: none;\n  border: none;\n}\n@media (max-width: 365px) {\n  .spm_wrapper .spm_form_buttons .spm_btn {\n    margin: 0 0 20px;\n  }\n}\n.spm_wrapper .spm_form_buttons .spm_btn:last-child {\n  margin-right: 0;\n}\n@media (max-width: 365px) {\n  .spm_wrapper .spm_form_buttons .spm_btn:last-child {\n    margin: 0;\n  }\n}\n.spm_wrapper .spm_form_field {\n  -webkit-box-sizing: border-box;\n  -moz-box-sizing: border-box;\n  box-sizing: border-box;\n  margin-bottom: 30px;\n  display: block;\n  width: 100%;\n  position: relative;\n}\n.spm_wrapper .spm_form_field .spm_form_date {\n  position: relative;\n  z-index: 3;\n}\n.spm_wrapper .spm_form_field .spm_form_date_wrapper {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n}\n.spm_wrapper .spm_form_field .spm_form_date span {\n  width: 100%;\n  border: 1px solid #E0E0E0;\n  border-radius: 0;\n  line-height: 40px;\n  display: block;\n  cursor: pointer;\n  box-sizing: border-box;\n  font-size: 14px;\n  font-weight: 300;\n  position: relative;\n  color: #000000;\n  padding: 12px;\n  text-align: center;\n}\n.spm_wrapper .spm_form_field .spm_form_date__popup {\n  display: none;\n  position: absolute;\n  top: 100%;\n  left: 0px;\n  right: 0px;\n  z-index: 2;\n  max-height: 100px;\n  overflow-x: hidden;\n  overflow-y: auto;\n  border: 1px solid #E0E0E0;\n  background-color: #ffffff;\n  border-radius: 0;\n  border-top: none;\n  flex-direction: column;\n  justify-content: flex-start;\n}\n.spm_wrapper .spm_form_field .spm_form_date__popup a {\n  width: 100%;\n  font-size: 14px;\n  box-sizing: border-box;\n  font-weight: 500;\n  padding: 5px 22px;\n  text-decoration: none;\n  color: #000000;\n  text-align: center;\n  background: #ffffff;\n}\n.spm_wrapper .spm_form_field .spm_form_date.type_day {\n  width: 28%;\n}\n.spm_wrapper .spm_form_field .spm_form_date.type_day span {\n  border-top-right-radius: 0;\n  border-bottom-right-radius: 0;\n}\n.spm_wrapper .spm_form_field .spm_form_date.type_month {\n  width: 44%;\n}\n.spm_wrapper .spm_form_field .spm_form_date.type_month span {\n  border-right: none;\n  border-left: none;\n  border-radius: 0;\n}\n.spm_wrapper .spm_form_field .spm_form_date.type_year {\n  width: 28%;\n}\n.spm_wrapper .spm_form_field .spm_form_date.type_year span {\n  border-top-left-radius: 0;\n  border-bottom-left-radius: 0;\n}\n.spm_wrapper .spm_form_field .spm_form_date.type_active .spm_form_date__popup {\n  display: flex;\n}\n.spm_wrapper .spm_form_field .spm_form_date.type_active.type_day span {\n  border-bottom-left-radius: 0;\n}\n.spm_wrapper .spm_form_field .spm_form_date.type_active.type_year span {\n  border-bottom-right-radius: 0;\n}\n.spm_wrapper .spm_form_field .spm_form_date.type_empty span {\n  color: rgba(0, 0, 0, 0.4);\n}\n.spm_wrapper .spm_form_field .spm_form_label {\n  width: 100%;\n  opacity: 0.4;\n  display: block;\n  color: #000000;\n  font-weight: 300;\n  font-size: 16px;\n  color: #58839A;\n}\n.spm_wrapper .spm_form_field .spm_form_label.type_absolute {\n  transition: 0.3s ease-out;\n  -webkit-transition: 0.3s ease-out;\n  -moz-transition: 0.3s ease-out;\n  -ms-transition: 0.3s ease-out;\n  -o-transition: 0.3s ease-out;\n  position: absolute;\n  top: 0;\n  bottom: 0;\n  margin: auto;\n  left: 0;\n  padding: 25px 22px;\n  height: auto;\n  line-height: 1;\n  z-index: 1;\n}\n.spm_wrapper .spm_form_field .spm_form_select {\n  color: #000000;\n  font-size: 16px;\n  font-weight: 300;\n  padding: 23px 20px 22px;\n  line-height: 1;\n  border: 1px solid #E0E0E0;\n  width: 100%;\n  display: block;\n  outline: none;\n  box-sizing: border-box;\n  -webkit-appearance: none;\n  background: url(https://sailplays3.cdnvideo.ru/media/assets/assetfile/36af9f093e66ad05bf54dd8bee9ba4eb.svg) transparent no-repeat 95% center / auto 10px;\n  position: relative;\n  -webkit-border-radius: 0;\n  -moz-border-radius: 0;\n  border-radius: 0;\n  z-index: 2;\n  transition: 0.3s ease-out;\n  -webkit-transition: 0.3s ease-out;\n  -moz-transition: 0.3s ease-out;\n  -ms-transition: 0.3s ease-out;\n  -o-transition: 0.3s ease-out;\n}\n@media (max-width: 400px) {\n  .spm_wrapper .spm_form_field .spm_form_select {\n    background-image: none;\n  }\n}\n.spm_wrapper .spm_form_field .spm_form_select.ng-dirty.ng-invalid {\n  border-color: red;\n}\n.spm_wrapper .spm_form_field .spm_form_select.ng-not-empty {\n  padding: 34px 20px 14px;\n}\n.spm_wrapper .spm_form_field .spm_form_select.ng-not-empty + .spm_form_label {\n  font-size: 14px;\n  padding: 14px 20px;\n}\n.spm_wrapper .spm_form_field .spm_form_select::-webkit-input-placeholder {\n  color: rgba(0, 0, 0, 0.4);\n  font-family: inherit;\n  font-weight: 300;\n}\n.spm_wrapper .spm_form_field .spm_form_select:-moz-placeholder {\n  color: rgba(0, 0, 0, 0.4);\n  font-family: inherit;\n  font-weight: 300;\n}\n.spm_wrapper .spm_form_field .spm_form_select::-moz-placeholder {\n  color: rgba(0, 0, 0, 0.4);\n  font-family: inherit;\n  font-weight: 300;\n}\n.spm_wrapper .spm_form_field .spm_form_select:-ms-input-placeholder {\n  color: rgba(0, 0, 0, 0.4);\n  font-family: inherit;\n  font-weight: 300;\n}\n.spm_wrapper .spm_form_field .spm_form_input[type=\"text\"],\n.spm_wrapper .spm_form_field .spm_form_input[type=\"email\"],\n.spm_wrapper .spm_form_field .spm_form_input[type=\"tel\"] {\n  color: #000000;\n  font-size: 16px;\n  font-weight: 300;\n  padding: 23px 20px 22px;\n  line-height: 1;\n  border: 1px solid #E0E0E0;\n  width: 100%;\n  display: block;\n  outline: none;\n  box-sizing: border-box;\n  -webkit-appearance: none;\n  background: transparent;\n  position: relative;\n  z-index: 2;\n  transition: 0.3s ease-out;\n  -webkit-transition: 0.3s ease-out;\n  -moz-transition: 0.3s ease-out;\n  -ms-transition: 0.3s ease-out;\n  -o-transition: 0.3s ease-out;\n}\n.spm_wrapper .spm_form_field .spm_form_input[type=\"text\"].ng-dirty.ng-invalid,\n.spm_wrapper .spm_form_field .spm_form_input[type=\"email\"].ng-dirty.ng-invalid,\n.spm_wrapper .spm_form_field .spm_form_input[type=\"tel\"].ng-dirty.ng-invalid {\n  border-color: red;\n}\n.spm_wrapper .spm_form_field .spm_form_input[type=\"text\"]:focus,\n.spm_wrapper .spm_form_field .spm_form_input[type=\"email\"]:focus,\n.spm_wrapper .spm_form_field .spm_form_input[type=\"tel\"]:focus,\n.spm_wrapper .spm_form_field .spm_form_input[type=\"text\"].ng-not-empty,\n.spm_wrapper .spm_form_field .spm_form_input[type=\"email\"].ng-not-empty,\n.spm_wrapper .spm_form_field .spm_form_input[type=\"tel\"].ng-not-empty {\n  padding: 32px 20px 13px;\n}\n.spm_wrapper .spm_form_field .spm_form_input[type=\"text\"]:focus + .spm_form_label,\n.spm_wrapper .spm_form_field .spm_form_input[type=\"email\"]:focus + .spm_form_label,\n.spm_wrapper .spm_form_field .spm_form_input[type=\"tel\"]:focus + .spm_form_label,\n.spm_wrapper .spm_form_field .spm_form_input[type=\"text\"].ng-not-empty + .spm_form_label,\n.spm_wrapper .spm_form_field .spm_form_input[type=\"email\"].ng-not-empty + .spm_form_label,\n.spm_wrapper .spm_form_field .spm_form_input[type=\"tel\"].ng-not-empty + .spm_form_label {\n  font-size: 14px;\n  padding: 10px 20px;\n}\n.spm_wrapper .spm_form_field .spm_form_input[type=\"text\"]::-webkit-input-placeholder,\n.spm_wrapper .spm_form_field .spm_form_input[type=\"email\"]::-webkit-input-placeholder,\n.spm_wrapper .spm_form_field .spm_form_input[type=\"tel\"]::-webkit-input-placeholder {\n  color: #58839A;\n  font-family: inherit;\n  font-weight: 300;\n}\n.spm_wrapper .spm_form_field .spm_form_input[type=\"text\"]:-moz-placeholder,\n.spm_wrapper .spm_form_field .spm_form_input[type=\"email\"]:-moz-placeholder,\n.spm_wrapper .spm_form_field .spm_form_input[type=\"tel\"]:-moz-placeholder {\n  color: #58839A;\n  font-family: inherit;\n  font-weight: 300;\n}\n.spm_wrapper .spm_form_field .spm_form_input[type=\"text\"]::-moz-placeholder,\n.spm_wrapper .spm_form_field .spm_form_input[type=\"email\"]::-moz-placeholder,\n.spm_wrapper .spm_form_field .spm_form_input[type=\"tel\"]::-moz-placeholder {\n  color: #58839A;\n  font-family: inherit;\n  font-weight: 300;\n}\n.spm_wrapper .spm_form_field .spm_form_input[type=\"text\"]:-ms-input-placeholder,\n.spm_wrapper .spm_form_field .spm_form_input[type=\"email\"]:-ms-input-placeholder,\n.spm_wrapper .spm_form_field .spm_form_input[type=\"tel\"]:-ms-input-placeholder {\n  color: #58839A;\n  font-family: inherit;\n  font-weight: 300;\n}\n.spm_wrapper .spm_form_field .spm_form_checkbox {\n  position: relative;\n  display: block;\n  padding-left: 28px;\n  -webkit-box-sizing: border-box;\n  -moz-box-sizing: border-box;\n  box-sizing: border-box;\n  background-image: url(https://sailplays3.cdnvideo.ru/media/assets/assetfile/0074d36e09ae4824b8f30586845af8f2.png);\n  background-repeat: no-repeat;\n  background-size: 24px 24px;\n  background-position: -3px center;\n  cursor: pointer;\n}\n.spm_wrapper .spm_form_field .spm_form_checkbox.checked {\n  background-image: url(https://sailplays3.cdnvideo.ru/media/assets/assetfile/c8009532c53d1abd6a160b00c0092092.png);\n}\n.spm_wrapper .spm_form_field .spm_form_checkbox .spm_form_checkbox_label {\n  line-height: 40px;\n  font-size: 16px;\n  font-weight: 300;\n  color: #444444;\n}\n.spm_wrapper .spm_form_field .spm_form_checkbox .spm_form_checkbox_input {\n  top: 10px;\n  width: 20px;\n  height: 20px;\n  left: 0;\n  position: absolute;\n  visibility: hidden;\n}\n.spm_wrapper form.ng-invalid.ng-submitted .spm_form_date_wrapper.ng-dirty.ng-invalid .spm_form_date span {\n  border-color: red;\n}\n.spm_wrapper .overflow_hidden {\n  overflow: hidden;\n}\n.spm_wrapper .clearfix:after {\n  content: \"\";\n  display: table;\n  clear: both;\n}\n.spm_wrapper .transparent {\n  opacity: 0;\n}\n.spm_wrapper .spm_row {\n  -webkit-box-sizing: border-box;\n  -moz-box-sizing: border-box;\n  box-sizing: border-box;\n  margin-left: -15px;\n  margin-right: -15px;\n  display: block;\n  position: relative;\n}\n.spm_wrapper .spm_col {\n  padding-left: 15px;\n  padding-right: 15px;\n  -webkit-box-sizing: border-box;\n  -moz-box-sizing: border-box;\n  box-sizing: border-box;\n  min-height: 1px;\n  display: inline-block;\n  position: relative;\n  float: left;\n}\n.spm_wrapper .spm_col:after {\n  content: \"\";\n  display: table;\n  clear: both;\n}\n.spm_wrapper .ellipsis {\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  -o-text-overflow: ellipsis;\n}\n@font-face {\n  font-family: 'RotondaC bold';\n  src: url(" + escape(__webpack_require__(48)) + ");\n  src: url(" + escape(__webpack_require__(48)) + "?#iefix) format('embedded-opentype'), url(" + escape(__webpack_require__(144)) + ") format('woff2'), url(" + escape(__webpack_require__(145)) + ") format('woff'), url(" + escape(__webpack_require__(146)) + ") format('truetype');\n  font-weight: bold;\n  font-style: normal;\n}\n@font-face {\n  font-family: 'RotondaC';\n  src: url(" + escape(__webpack_require__(49)) + ");\n  src: url(" + escape(__webpack_require__(49)) + "?#iefix) format('embedded-opentype'), url(" + escape(__webpack_require__(147)) + ") format('woff2'), url(" + escape(__webpack_require__(148)) + ") format('woff'), url(" + escape(__webpack_require__(149)) + ") format('truetype');\n  font-weight: bold;\n  font-style: normal;\n}\n.spm_wrapper {\n  font-family: 'Roboto', sans-serif;\n}\n", ""]);
+exports.push([module.i, ".spm_wrapper .button_primary {\n  -webkit-box-sizing: border-box;\n  -moz-box-sizing: border-box;\n  box-sizing: border-box;\n}\n.spm_wrapper .sp_btn {\n  display: inline-block;\n  outline: none;\n  width: auto;\n  line-height: 35px;\n  text-decoration: none;\n  color: #ffffff;\n  font-size: 14px;\n  font-weight: 500;\n  background-color: #888888;\n  border: 0;\n  border-bottom: 1px solid #000000;\n  text-shadow: 0 0 1px #000000;\n  margin-right: 45px;\n  margin-top: 12px;\n  white-space: nowrap;\n  padding-left: 20px;\n  padding-right: 20px;\n  cursor: pointer;\n}\n.spm_wrapper .sp_btn:hover {\n  background-color: #7b7b7b;\n}\n.spm_wrapper .sp_btn[disabled] {\n  opacity: .5;\n}\n.spm_wrapper .spm_btn {\n  font-size: 16px;\n  padding: 10px 25px;\n  border-radius: 5px;\n  text-transform: uppercase;\n  text-decoration: none;\n  box-sizing: border-box;\n  color: white;\n  cursor: pointer;\n  outline: none;\n  -webkit-appearance: none;\n}\n.spm_wrapper .spm_btn.theme_1 {\n  border: 2px solid #ca5b54;\n  font-weight: bold;\n}\n.spm_wrapper .spm_btn.theme_1:hover {\n  background: #ca5b54;\n}\n.spm_wrapper .spm_btn.theme_1.type_filled {\n  background: #ca5b54;\n}\n.spm_wrapper .spm_btn.theme_1.type_filled:hover {\n  opacity: 0.7;\n}\n.spm_wrapper .spm_btn.theme_1.type_big {\n  border-radius: 5px;\n  font-size: 16px;\n  font-family: Roboto, sans-serif;\n  padding: 13px 60px;\n  line-height: 1;\n}\n.spm_wrapper .spm_btn.theme_1.type_cancel {\n  background-image: linear-gradient(to top, #bed4e8, #d5e5ea);\n  border: none;\n}\n.spm_wrapper .spm_btn.theme_1.type_cancel:hover {\n  background-image: linear-gradient(to top, #bed4e8, #d5e5ea);\n}\n.spm_wrapper .magic_select {\n  overflow: hidden;\n  width: 100%;\n  float: left;\n  height: 57px;\n  border: 0;\n  border-top: 2px solid #cccccc;\n  border-radius: 5px;\n  padding-left: 25px;\n  font-size: 18px;\n  outline: none;\n  box-sizing: border-box;\n  background-color: #ffffff;\n  position: relative;\n  display: inline-block;\n  background-image: url(https://d3sailplay.cdnvideo.ru/media/assets/assetfile/303e1f38393495b1a059952843abeeb0.png);\n  background-repeat: no-repeat;\n  background-position: right 10px center;\n  background-size: 10px;\n}\n.spm_wrapper .magic_select select {\n  position: absolute;\n  background: transparent;\n  border: none;\n  height: 100%;\n  width: 100%;\n  font-size: inherit;\n  font-weight: inherit;\n  font-family: inherit;\n  outline: none;\n  -webkit-appearance: none;\n  box-shadow: none;\n  background-image: none;\n}\n.spm_wrapper .form_field {\n  float: left;\n  width: 50%;\n  padding-bottom: 20px;\n  padding-right: 40px;\n  -webkit-box-sizing: border-box;\n  -moz-box-sizing: border-box;\n  box-sizing: border-box;\n  /* -------------------- Select Box Styles: stackoverflow.com Method */\n  /* -------------------- Source: http://stackoverflow.com/a/5809186 */\n}\n.spm_wrapper .form_field.type_full {\n  width: 100%;\n}\n.spm_wrapper .form_field .form_date {\n  float: left;\n  position: relative;\n  z-index: 1;\n}\n.spm_wrapper .form_field .form_date span {\n  color: #000000;\n  font-size: 18px;\n  float: left;\n  width: 100%;\n  box-sizing: border-box;\n  padding-left: 10px;\n  border: 2px solid #cccccc;\n  border-radius: 5px;\n  line-height: 57px;\n  height: 57px;\n  background-image: url('https://d3sailplay.cdnvideo.ru/media/assets/assetfile/303e1f38393495b1a059952843abeeb0.png');\n  background-repeat: no-repeat;\n  background-position: right 10px center;\n  background-size: 10px;\n}\n.spm_wrapper .form_field .form_date__popup {\n  display: none;\n  position: absolute;\n  top: 100%;\n  left: 0px;\n  right: 0px;\n  z-index: 2;\n  max-height: 100px;\n  overflow-x: hidden;\n  overflow-y: auto;\n  background-color: #ffffff;\n  border-radius: 0 0 5px 5px;\n  border: 1px solid #cccccc;\n  text-align: center;\n}\n.spm_wrapper .form_field .form_date__popup a {\n  float: left;\n  width: 100%;\n  line-height: 25px;\n  text-decoration: none;\n  color: #000000;\n  background: #ffffff;\n}\n.spm_wrapper .form_field .form_date__day {\n  width: 20%;\n}\n.spm_wrapper .form_field .form_date__month {\n  width: 48%;\n  margin: 0 1%;\n}\n.spm_wrapper .form_field .form_date__year {\n  width: 30%;\n}\n.spm_wrapper .form_field .form_date:hover .form_date__popup {\n  display: block;\n}\n.spm_wrapper .form_field .form_label {\n  width: 100%;\n  line-height: 100%;\n  color: #222222;\n  font-size: 16px;\n  float: left;\n}\n.spm_wrapper .form_field .form_textarea {\n  background-color: #ffffff;\n  float: left;\n  height: 100px;\n  resize: none;\n  border: 0;\n  border-top: 2px solid #cccccc;\n  border-radius: 5px;\n  padding-left: 25px;\n  width: 100%;\n  font-size: 18px;\n  outline: none;\n  box-sizing: border-box;\n}\n.spm_wrapper .form_field .form_input[type=\"text\"],\n.spm_wrapper .form_field .form_input[type=\"email\"] {\n  background-color: #ffffff;\n  float: left;\n  height: 57px;\n  border: 0;\n  border-top: 2px solid #cccccc;\n  border-radius: 5px;\n  padding-left: 25px;\n  width: 100%;\n  font-size: 18px;\n  outline: none;\n  box-sizing: border-box;\n}\n.spm_wrapper .form_field .form_select {\n  -webkit-appearance: button;\n  -webkit-border-radius: 2px;\n  -webkit-box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);\n  -webkit-padding-end: 20px;\n  -webkit-padding-start: 2px;\n  -webkit-user-select: none;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  color: #000000;\n  font-size: 18px;\n  float: left;\n  width: 100%;\n  box-sizing: border-box;\n  padding-left: 10px;\n  border: 2px solid #cccccc;\n  border-radius: 5px;\n  line-height: 57px;\n  height: 57px;\n  background-image: url('https://d3sailplay.cdnvideo.ru/media/assets/assetfile/303e1f38393495b1a059952843abeeb0.png');\n  background-repeat: no-repeat;\n  background-position: right 10px center;\n  background-size: 10px;\n  background-color: transparent;\n  outline: none;\n}\n@media only screen and (min-width: 530px) and (max-width: 949px), only screen and (max-width: 529px) {\n  .spm_wrapper .form_field {\n    width: 100%;\n    padding: 0 0 20px 0;\n  }\n}\n.spm_wrapper .spm_form_buttons {\n  text-align: center;\n  margin-top: 20px;\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  width: 100%;\n}\n@media (max-width: 365px) {\n  .spm_wrapper .spm_form_buttons {\n    display: flex;\n    flex-direction: column;\n    width: 100%;\n    max-width: 180px;\n    align-items: center;\n    justify-content: center;\n  }\n}\n.spm_wrapper .spm_form_buttons .spm_btn {\n  min-width: 150px;\n  margin-right: 0;\n  display: inline-block;\n  margin-top: 0 !important;\n  padding-left: 0 !important;\n  padding-right: 0 !important;\n  outline: none;\n  border: none;\n}\n@media (max-width: 365px) {\n  .spm_wrapper .spm_form_buttons .spm_btn {\n    margin: 0 0 20px;\n  }\n}\n.spm_wrapper .spm_form_buttons .spm_btn:last-child {\n  margin-right: 0;\n}\n@media (max-width: 365px) {\n  .spm_wrapper .spm_form_buttons .spm_btn:last-child {\n    margin: 0;\n  }\n}\n.spm_wrapper .spm_form_field {\n  -webkit-box-sizing: border-box;\n  -moz-box-sizing: border-box;\n  box-sizing: border-box;\n  margin-bottom: 30px;\n  display: block;\n  width: 100%;\n  position: relative;\n}\n.spm_wrapper .spm_form_field .spm_form_date {\n  position: relative;\n  z-index: 3;\n}\n.spm_wrapper .spm_form_field .spm_form_date_wrapper {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n}\n.spm_wrapper .spm_form_field .spm_form_date span {\n  width: 100%;\n  border: 1px solid #E0E0E0;\n  border-radius: 0;\n  line-height: 40px;\n  display: block;\n  cursor: pointer;\n  box-sizing: border-box;\n  font-size: 14px;\n  font-weight: 300;\n  position: relative;\n  color: #000000;\n  padding: 12px;\n  text-align: center;\n}\n.spm_wrapper .spm_form_field .spm_form_date__popup {\n  display: none;\n  position: absolute;\n  top: 100%;\n  left: 0px;\n  right: 0px;\n  z-index: 2;\n  max-height: 100px;\n  overflow-x: hidden;\n  overflow-y: auto;\n  border: 1px solid #E0E0E0;\n  background-color: #ffffff;\n  border-radius: 0;\n  border-top: none;\n  flex-direction: column;\n  justify-content: flex-start;\n}\n.spm_wrapper .spm_form_field .spm_form_date__popup a {\n  width: 100%;\n  font-size: 14px;\n  box-sizing: border-box;\n  font-weight: 500;\n  padding: 5px 22px;\n  text-decoration: none;\n  color: #000000;\n  text-align: center;\n  background: #ffffff;\n}\n.spm_wrapper .spm_form_field .spm_form_date.type_day {\n  width: 28%;\n}\n.spm_wrapper .spm_form_field .spm_form_date.type_day span {\n  border-top-right-radius: 0;\n  border-bottom-right-radius: 0;\n}\n.spm_wrapper .spm_form_field .spm_form_date.type_month {\n  width: 44%;\n}\n.spm_wrapper .spm_form_field .spm_form_date.type_month span {\n  border-right: none;\n  border-left: none;\n  border-radius: 0;\n}\n.spm_wrapper .spm_form_field .spm_form_date.type_year {\n  width: 28%;\n}\n.spm_wrapper .spm_form_field .spm_form_date.type_year span {\n  border-top-left-radius: 0;\n  border-bottom-left-radius: 0;\n}\n.spm_wrapper .spm_form_field .spm_form_date.type_active .spm_form_date__popup {\n  display: flex;\n}\n.spm_wrapper .spm_form_field .spm_form_date.type_active.type_day span {\n  border-bottom-left-radius: 0;\n}\n.spm_wrapper .spm_form_field .spm_form_date.type_active.type_year span {\n  border-bottom-right-radius: 0;\n}\n.spm_wrapper .spm_form_field .spm_form_date.type_empty span {\n  color: rgba(0, 0, 0, 0.4);\n}\n.spm_wrapper .spm_form_field .spm_form_label {\n  width: 100%;\n  opacity: 0.4;\n  display: block;\n  color: #000000;\n  font-weight: 300;\n  font-size: 16px;\n  color: #58839A;\n}\n.spm_wrapper .spm_form_field .spm_form_label.type_absolute {\n  transition: 0.3s ease-out;\n  -webkit-transition: 0.3s ease-out;\n  -moz-transition: 0.3s ease-out;\n  -ms-transition: 0.3s ease-out;\n  -o-transition: 0.3s ease-out;\n  position: absolute;\n  top: 0;\n  bottom: 0;\n  margin: auto;\n  left: 0;\n  padding: 25px 22px;\n  height: auto;\n  line-height: 1;\n  z-index: 1;\n}\n.spm_wrapper .spm_form_field .spm_form_select {\n  color: #000000;\n  font-size: 16px;\n  font-weight: 300;\n  padding: 23px 20px 22px;\n  line-height: 1;\n  border: 1px solid #E0E0E0;\n  width: 100%;\n  display: block;\n  outline: none;\n  box-sizing: border-box;\n  -webkit-appearance: none;\n  background: url(https://sailplays3.cdnvideo.ru/media/assets/assetfile/36af9f093e66ad05bf54dd8bee9ba4eb.svg) transparent no-repeat 95% center / auto 10px;\n  position: relative;\n  -webkit-border-radius: 0;\n  -moz-border-radius: 0;\n  border-radius: 0;\n  z-index: 2;\n  transition: 0.3s ease-out;\n  -webkit-transition: 0.3s ease-out;\n  -moz-transition: 0.3s ease-out;\n  -ms-transition: 0.3s ease-out;\n  -o-transition: 0.3s ease-out;\n}\n@media (max-width: 400px) {\n  .spm_wrapper .spm_form_field .spm_form_select {\n    background-image: none;\n  }\n}\n.spm_wrapper .spm_form_field .spm_form_select.ng-dirty.ng-invalid {\n  border-color: red;\n}\n.spm_wrapper .spm_form_field .spm_form_select.ng-not-empty {\n  padding: 34px 20px 14px;\n}\n.spm_wrapper .spm_form_field .spm_form_select.ng-not-empty + .spm_form_label {\n  font-size: 14px;\n  padding: 14px 20px;\n}\n.spm_wrapper .spm_form_field .spm_form_select::-webkit-input-placeholder {\n  color: rgba(0, 0, 0, 0.4);\n  font-family: inherit;\n  font-weight: 300;\n}\n.spm_wrapper .spm_form_field .spm_form_select:-moz-placeholder {\n  color: rgba(0, 0, 0, 0.4);\n  font-family: inherit;\n  font-weight: 300;\n}\n.spm_wrapper .spm_form_field .spm_form_select::-moz-placeholder {\n  color: rgba(0, 0, 0, 0.4);\n  font-family: inherit;\n  font-weight: 300;\n}\n.spm_wrapper .spm_form_field .spm_form_select:-ms-input-placeholder {\n  color: rgba(0, 0, 0, 0.4);\n  font-family: inherit;\n  font-weight: 300;\n}\n.spm_wrapper .spm_form_field .spm_form_input[type=\"text\"],\n.spm_wrapper .spm_form_field .spm_form_input[type=\"email\"],\n.spm_wrapper .spm_form_field .spm_form_input[type=\"tel\"] {\n  color: #000000;\n  font-size: 16px;\n  font-weight: 300;\n  padding: 23px 20px 22px;\n  line-height: 1;\n  border: 1px solid #E0E0E0;\n  width: 100%;\n  display: block;\n  outline: none;\n  box-sizing: border-box;\n  -webkit-appearance: none;\n  background: transparent;\n  position: relative;\n  z-index: 2;\n  transition: 0.3s ease-out;\n  -webkit-transition: 0.3s ease-out;\n  -moz-transition: 0.3s ease-out;\n  -ms-transition: 0.3s ease-out;\n  -o-transition: 0.3s ease-out;\n}\n.spm_wrapper .spm_form_field .spm_form_input[type=\"text\"].ng-dirty.ng-invalid,\n.spm_wrapper .spm_form_field .spm_form_input[type=\"email\"].ng-dirty.ng-invalid,\n.spm_wrapper .spm_form_field .spm_form_input[type=\"tel\"].ng-dirty.ng-invalid {\n  border-color: red;\n}\n.spm_wrapper .spm_form_field .spm_form_input[type=\"text\"]:focus,\n.spm_wrapper .spm_form_field .spm_form_input[type=\"email\"]:focus,\n.spm_wrapper .spm_form_field .spm_form_input[type=\"tel\"]:focus,\n.spm_wrapper .spm_form_field .spm_form_input[type=\"text\"].ng-not-empty,\n.spm_wrapper .spm_form_field .spm_form_input[type=\"email\"].ng-not-empty,\n.spm_wrapper .spm_form_field .spm_form_input[type=\"tel\"].ng-not-empty {\n  padding: 32px 20px 13px;\n}\n.spm_wrapper .spm_form_field .spm_form_input[type=\"text\"]:focus + .spm_form_label,\n.spm_wrapper .spm_form_field .spm_form_input[type=\"email\"]:focus + .spm_form_label,\n.spm_wrapper .spm_form_field .spm_form_input[type=\"tel\"]:focus + .spm_form_label,\n.spm_wrapper .spm_form_field .spm_form_input[type=\"text\"].ng-not-empty + .spm_form_label,\n.spm_wrapper .spm_form_field .spm_form_input[type=\"email\"].ng-not-empty + .spm_form_label,\n.spm_wrapper .spm_form_field .spm_form_input[type=\"tel\"].ng-not-empty + .spm_form_label {\n  font-size: 14px;\n  padding: 10px 20px;\n}\n.spm_wrapper .spm_form_field .spm_form_input[type=\"text\"]::-webkit-input-placeholder,\n.spm_wrapper .spm_form_field .spm_form_input[type=\"email\"]::-webkit-input-placeholder,\n.spm_wrapper .spm_form_field .spm_form_input[type=\"tel\"]::-webkit-input-placeholder {\n  color: #58839A;\n  font-family: inherit;\n  font-weight: 300;\n}\n.spm_wrapper .spm_form_field .spm_form_input[type=\"text\"]:-moz-placeholder,\n.spm_wrapper .spm_form_field .spm_form_input[type=\"email\"]:-moz-placeholder,\n.spm_wrapper .spm_form_field .spm_form_input[type=\"tel\"]:-moz-placeholder {\n  color: #58839A;\n  font-family: inherit;\n  font-weight: 300;\n}\n.spm_wrapper .spm_form_field .spm_form_input[type=\"text\"]::-moz-placeholder,\n.spm_wrapper .spm_form_field .spm_form_input[type=\"email\"]::-moz-placeholder,\n.spm_wrapper .spm_form_field .spm_form_input[type=\"tel\"]::-moz-placeholder {\n  color: #58839A;\n  font-family: inherit;\n  font-weight: 300;\n}\n.spm_wrapper .spm_form_field .spm_form_input[type=\"text\"]:-ms-input-placeholder,\n.spm_wrapper .spm_form_field .spm_form_input[type=\"email\"]:-ms-input-placeholder,\n.spm_wrapper .spm_form_field .spm_form_input[type=\"tel\"]:-ms-input-placeholder {\n  color: #58839A;\n  font-family: inherit;\n  font-weight: 300;\n}\n.spm_wrapper .spm_form_field .spm_form_checkbox {\n  position: relative;\n  display: block;\n  padding-left: 28px;\n  -webkit-box-sizing: border-box;\n  -moz-box-sizing: border-box;\n  box-sizing: border-box;\n  background-image: url(https://sailplays3.cdnvideo.ru/media/assets/assetfile/0074d36e09ae4824b8f30586845af8f2.png);\n  background-repeat: no-repeat;\n  background-size: 24px 24px;\n  background-position: -3px center;\n  cursor: pointer;\n}\n.spm_wrapper .spm_form_field .spm_form_checkbox.checked {\n  background-image: url(https://sailplays3.cdnvideo.ru/media/assets/assetfile/c8009532c53d1abd6a160b00c0092092.png);\n}\n.spm_wrapper .spm_form_field .spm_form_checkbox .spm_form_checkbox_label {\n  line-height: 40px;\n  font-size: 16px;\n  font-weight: 300;\n  color: #444444;\n}\n.spm_wrapper .spm_form_field .spm_form_checkbox .spm_form_checkbox_input {\n  top: 10px;\n  width: 20px;\n  height: 20px;\n  left: 0;\n  position: absolute;\n  visibility: hidden;\n}\n.spm_wrapper form.ng-invalid.ng-submitted .spm_form_date_wrapper.ng-dirty.ng-invalid .spm_form_date span {\n  border-color: red;\n}\n.spm_wrapper .overflow_hidden {\n  overflow: hidden;\n}\n.spm_wrapper .clearfix:after {\n  content: \"\";\n  display: table;\n  clear: both;\n}\n.spm_wrapper .transparent {\n  opacity: 0;\n}\n.spm_wrapper .spm_row {\n  -webkit-box-sizing: border-box;\n  -moz-box-sizing: border-box;\n  box-sizing: border-box;\n  margin-left: -15px;\n  margin-right: -15px;\n  display: block;\n  position: relative;\n}\n.spm_wrapper .spm_col {\n  padding-left: 15px;\n  padding-right: 15px;\n  -webkit-box-sizing: border-box;\n  -moz-box-sizing: border-box;\n  box-sizing: border-box;\n  min-height: 1px;\n  display: inline-block;\n  position: relative;\n  float: left;\n}\n.spm_wrapper .spm_col:after {\n  content: \"\";\n  display: table;\n  clear: both;\n}\n.spm_wrapper .ellipsis {\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  -o-text-overflow: ellipsis;\n}\n@font-face {\n  font-family: 'RotondaC bold';\n  src: url(" + escape(__webpack_require__(48)) + ");\n  src: url(" + escape(__webpack_require__(48)) + "?#iefix) format('embedded-opentype'), url(" + escape(__webpack_require__(149)) + ") format('woff2'), url(" + escape(__webpack_require__(150)) + ") format('woff'), url(" + escape(__webpack_require__(151)) + ") format('truetype');\n  font-weight: bold;\n  font-style: normal;\n}\n@font-face {\n  font-family: 'RotondaC';\n  src: url(" + escape(__webpack_require__(49)) + ");\n  src: url(" + escape(__webpack_require__(49)) + "?#iefix) format('embedded-opentype'), url(" + escape(__webpack_require__(152)) + ") format('woff2'), url(" + escape(__webpack_require__(153)) + ") format('woff'), url(" + escape(__webpack_require__(154)) + ") format('truetype');\n  font-weight: bold;\n  font-style: normal;\n}\n.spm_wrapper {\n  font-family: 'Roboto', sans-serif;\n}\n", ""]);
 
 // exports
 
 
 /***/ }),
-/* 144 */
+/* 149 */
 /***/ (function(module, exports) {
 
 module.exports = "data:font/woff2;base64,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"
 
 /***/ }),
-/* 145 */
+/* 150 */
 /***/ (function(module, exports) {
 
 module.exports = "data:font/woff;base64,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"
 
 /***/ }),
-/* 146 */
+/* 151 */
 /***/ (function(module, exports) {
 
 module.exports = "data:font/ttf;base64,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NDQJYWZpaTEwMDQ1CWFmaWkxMDA0NglhZmlpMTAwNDcJYWZpaTEwMDQ4CWFmaWkxMDA0OQlhZmlpMTAwNjUJYWZpaTEwMDY2CWFmaWkxMDA2NwlhZmlpMTAwNjgJYWZpaTEwMDY5CWFmaWkxMDA3MAlhZmlpMTAwNzIJYWZpaTEwMDczCWFmaWkxMDA3NAlhZmlpMTAwNzUJYWZpaTEwMDc2CWFmaWkxMDA3NwlhZmlpMTAwNzgJYWZpaTEwMDc5CWFmaWkxMDA4MAlhZmlpMTAwODEJYWZpaTEwMDgyCWFmaWkxMDA4MwlhZmlpMTAwODQJYWZpaTEwMDg1CWFmaWkxMDA4NglhZmlpMTAwODcJYWZpaTEwMDg4CWFmaWkxMDA4OQlhZmlpMTAwOTAJYWZpaTEwMDkxCWFmaWkxMDA5MglhZmlpMTAwOTMJYWZpaTEwMDk0CWFmaWkxMDA5NQlhZmlpMTAwOTYJYWZpaTEwMDk3CWFmaWkxMDA3MQlhZmlpMTAwOTkJYWZpaTEwMTAwCWFmaWkxMDEwMQlhZmlpMTAxMDIJYWZpaTEwMTAzCWFmaWkxMDEwNAlhZmlpMTAxMDUJYWZpaTEwMTA2CWFmaWkxMDEwNwlhZmlpMTAxMDgJYWZpaTEwMTA5CWFmaWkxMDExMAlhZmlpMTAxOTMJYWZpaTEwMDUwCWFmaWkxMDA5OARFdXJvCWFmaWk2MTM1MgduYnNwYWNlC2h5cGhlbm1pbnVzAAAAAAH//wACAAEAAAAOAAAAGAAAAAAAAgABAAMA5AABAAQAAAACAAAAAQAAAAoALAAuAAJjeXJsAA5sYXRuABgABAAAAAD//wAAAAQAAAAA//8AAAAAAAAAAQAAAAoAMAA+AAJjeXJsAA5sYXRuABoABAAAAAD//wABAAAABAAAAAD//wABAAAAAWtlcm4ACAAAAAEAAAABAAQAAgAAAAEACAABBUgABAAAAC0AZAB6AJAAmgC0ANYA5AD+AQwBHgFcAY4BxAH+AggCNgJAAkoCVAJyAnwCigKgAsYC8AL6AwADJgM0A1YDeAOCA5gDrgPIBCIELARGBFQEWgTIBM4FLAVCBUIABQBz/6YApP/LAKv/0wDX/60A3f+mAAUAc/+tAKT/ywCr/8sA1/+mAN3/vAACALL/ywDT/8sABgB8/+IAn//EAKH/0wCn/8QAsf/EALf/ywAIADf/pAA5/7YAOv/JADz/tgBZ/+4AWv/uAFz/7gCV/7YAAwAP/5EAEf+RACT/yQAGADf/kQA5/5EAOv+2ADz/fwBc/8kAlf+kAAMAD/+IABH/iAAk/7YABAA3/+4AOf/uADr/7gA8/9sADwAP/6QAEP+RABH/pAAd/6QAHv+kACT/pABE/5EARv+RAEj/kQBS/5EAVf+kAFb/kQBY/6QAWv+RAFz/kQAMAA//kQAQ/8kAEf+RAB3/yQAe/8kAJP+2AET/yQBI/8kAUv/JAFX/2wBY/9sAXP/uAA0AD/+2ABD/7gAR/7YAHf/uAB7/7gAk/8kARP/JAEj/2wBM//YAUv/bAFX/2wBY/9sAXP/uAA4AD/+RABD/nAAR/5EAHf+2AB7/tgAk/7YARP+kAEj/pABM/+4AUv+kAFP/tgBU/6QAWP+2AFn/yQACAEn/7gCVADIACwAP/7AAEP/JABH/sABG/+4AR//uAEj/7gBQABIAUQASAFL/7gBU/+4AlQAlAAIAD//JABH/yQACAA//2wAR/9sAAgAP/7YAEf+2AAcABf+tAAr/xACT/8QAlf/LANH/0wDT/7wA1f/aAAIA0f/pANX/8QADAHz/6QDS//EA1v/iAAUA0//pANf/6QDY/+IA2v/pAN3/2gAJAHP/pgCg/7wApP+1AKv/rQCs/7UA0wAeANUAHgDX/7UA3f+8AAoAc/+tAJT/3ACg/7wApP+mAKv/xACs/7wA0wAmANUAHgDX/8QA3f+1AAIAVv+2AJX/3AABAKb/8QAJAA//lgAQ/60AEf+PAJMAHgCVAB4ApP/TAKv/4gCu//EAswAIAAMApP/pAKv/8QCy//EACAAP/7UAEP/EABH/pgCTACYAlQAeAKD/4gCu//AAswAPAAgAD//LABH/rQCTAB4AlQAeAKD/6QCk/+IAq//iALIADwACAAX/vAAK/7UABQAF/8QACv/EAJP/0wCy/7wAt//TAAUApP/pAKb/8QCr/+kAsv/pALX/8QAGAA//lgAR/4cAEv/EAHP/0wDX/8sA3f/TABYAD/+mABD/hwAR/3EAHf+mAB7/rQBz/6YAoP+eAKL/rQCk/60Apf+eAKb/pgCo/60Aq/+tAKz/pgCt/60Arv+XALD/pgCz/7UAtv+tAL7/ngDX/7QA3f/EAAIABf+PAAr/vAAGAAX/pgAK/7UAk//TAJX/ywDR/9MA0/+8AAMA1//aANj/4gDa/+IAAQDX/+kAGwAP/8QAEP+1ABH/rQAd/8QAHv/LAHP/xAB8//EAnv/iAJ//0wCg/7UAov/TAKX/xACo/8sAqv/LAKv/wwCs/8sArv/EALD/xACz/8sAt/+8ALv/ywC9/8QAvv/LANL/8QDVABcA1v/iAN3/0wABANX/6QAXAA//tQAR/48AEv+eAB3/xAAe/8sAc/+tAHz/8QCf/9oAoP/EAKL/2gCk/7UApf/EAKb/6QCn/+IAq/+8AKz/ywCu/8sAsf/TALT/0wDTAB4A1v/xANf/ywDd/8sABQBz/+kA0//iANX/4gDa/+kA3f/TAAEAfP/pAAEALQAFAAoAEAASACQAKQAvADMANQA3ADkAOgA8AEkAVQBZAFoAXABzAHQAegB8AJIAlACVAKEAowCuALIAswC6ALwAvgDBAMIAyADJAMoAywDTANQA1QDWANgA2gAAAAEAAAAAzD2izwAAAAC+XkLfAAAAAL5eQt8="
 
 /***/ }),
-/* 147 */
+/* 152 */
 /***/ (function(module, exports) {
 
 module.exports = "data:font/woff2;base64,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"
 
 /***/ }),
-/* 148 */
+/* 153 */
 /***/ (function(module, exports) {
 
 module.exports = "data:font/woff;base64,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"
 
 /***/ }),
-/* 149 */
+/* 154 */
 /***/ (function(module, exports) {
 
 module.exports = "data:font/ttf;base64,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ADAAOwBQAFMAIAAwADAAMQAuADAAMAAwADsAQwBvAHIAZQAgADEAMQA2ADsAQQBPAEMAVwAgADEALgAwACAAMQA2ADEAAE9URiAxLjA7UFMgMDAxLjAwMDtDb3JlIDExNjtBT0NXIDEuMCAxNjEAAFIAbwB0AG8AbgBkAGEAQwAAUm90b25kYUMAAFAAbABlAGEAcwBlACAAcgBlAGYAZQByACAAdABvACAAdABoAGUAIABDAG8AcAB5AHIAaQBnAGgAdAAgAHMAZQBjAHQAaQBvAG4AIABmAG8AcgAgAHQAaABlACAAZgBvAG4AdAAgAHQAcgBhAGQAZQBtAGEAcgBrACAAYQB0AHQAcgBpAGIAdQB0AGkAbwBuACAAbgBvAHQAaQBjAGUAcwAuAABQbGVhc2UgcmVmZXIgdG8gdGhlIENvcHlyaWdodCBzZWN0aW9uIGZvciB0aGUgZm9udCB0cmFkZW1hcmsgYXR0cmlidXRpb24gbm90aWNlcy4AAAIAAAAAAAD/tQAyAAAAAAAAAAAAAAAAAAAAAAAAAAAA6wAAAAEAAgADAAQABQAGAAcACAAJAAoACwAMAA0ADgAPABAAEQASABMAFAAVABYAFwAYABkAGgAbABwAHQAeAB8AIAAhACIAIwAkACUAJgAnACgAKQAqACsALAAtAC4ALwAwADEAMgAzADQANQA2ADcAOAA5ADoAOwA8AD0APgA/AEAAQQBCAEMARABFAEYARwBIAEkASgBLAEwATQBOAE8AUABRAFIAUwBUAFUAVgBXAFgAWQBaAFsAXABdAF4AXwBgAGEAhQC9AOgAhgCLAKkApACKAIMAkwCXAIgAwwCqALgApgCoAQIBAwEEAQUBBgEHAQgBCQEKAQsBDAENAQ4BDwEQAREBEgETARQBFQEWARcBGAEZARoBGwEcAR0BHgEfASABIQEiASMBJAElASYBJwEoASkBKgErASwBLQEuAS8BMAExATIBMwE0ATUBNgE3ATgBOQE6ATsBPAE9AT4BPwFAAUEBQgFDAUQBRQFGAUcBSAFJAUoBSwFMAU0BTgFPAVABUQFSAVMBVAFVAVYBVwFYAVkBWgFbAVwBXQFeAV8AsgCzALYAtwDEALQAtQDFAIIAwgCHAKsAxgC+AL8BYAFhAIwApQCSAKcAjwCUAJUBYgFjCWFmaWkxMDAyMwlhZmlpMTAwNTEJYWZpaTEwMDUyCWFmaWkxMDA1MwlhZmlpMTAwNTQJYWZpaTEwMDU1CWFmaWkxMDA1NglhZmlpMTAwNTcJYWZpaTEwMDU4CWFmaWkxMDA1OQlhZmlpMTAwNjAJYWZpaTEwMDYxCWFmaWkxMDA2MglhZmlpMTAxNDUJYWZpaTEwMDE3CWFmaWkxMDAxOAlhZmlpMTAwMTkJYWZpaTEwMDIwCWFmaWkxMDAyMQlhZmlpMTAwMjIJYWZpaTEwMDI0CWFmaWkxMDAyNQlhZmlpMTAwMjYJYWZpaTEwMDI3CWFmaWkxMDAyOAlhZmlpMTAwMjkJYWZpaTEwMDMwCWFmaWkxMDAzMQlhZmlpMTAwMzIJYWZpaTEwMDMzCWFmaWkxMDAzNAlhZmlpMTAwMzUJYWZpaTEwMDM2CWFmaWkxMDAzNwlhZmlpMTAwMzgJYWZpaTEwMDM5CWFmaWkxMDA0MAlhZmlpMTAwNDEJYWZpaTEwMDQyCWFmaWkxMDA0MwlhZmlpMTAwNDQJYWZpaTEwMDQ1CWFmaWkxMDA0NglhZmlpMTAwNDcJYWZpaTEwMDQ4CWFmaWkxMDA0OQlhZmlpMTAwNjUJYWZpaTEwMDY2CWFmaWkxMDA2NwlhZmlpMTAwNjgJYWZpaTEwMDY5CWFmaWkxMDA3MAlhZmlpMTAwNzIJYWZpaTEwMDczCWFmaWkxMDA3NAlhZmlpMTAwNzUJYWZpaTEwMDc2CWFmaWkxMDA3NwlhZmlpMTAwNzgJYWZpaTEwMDc5CWFmaWkxMDA4MAlhZmlpMTAwODEJYWZpaTEwMDgyCWFmaWkxMDA4MwlhZmlpMTAwODQJYWZpaTEwMDg1CWFmaWkxMDA4NglhZmlpMTAwODcJYWZpaTEwMDg4CWFmaWkxMDA4OQlhZmlpMTAwOTAJYWZpaTEwMDkxCWFmaWkxMDA5MglhZmlpMTAwOTMJYWZpaTEwMDk0CWFmaWkxMDA5NQlhZmlpMTAwOTYJYWZpaTEwMDk3CWFmaWkxMDA3MQlhZmlpMTAwOTkJYWZpaTEwMTAwCWFmaWkxMDEwMQlhZmlpMTAxMDIJYWZpaTEwMTAzCWFmaWkxMDEwNAlhZmlpMTAxMDUJYWZpaTEwMTA2CWFmaWkxMDEwNwlhZmlpMTAxMDgJYWZpaTEwMTA5CWFmaWkxMDExMAlh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"
 
 /***/ }),
-/* 150 */
+/* 155 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(151);
+var content = __webpack_require__(156);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -46403,7 +46641,7 @@ if(false) {
 }
 
 /***/ }),
-/* 151 */
+/* 156 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -46417,7 +46655,7 @@ exports.push([module.i, "/*!\n * Bootstrap v4.0.0 (https://getbootstrap.com)\n *
 
 
 /***/ }),
-/* 152 */
+/* 157 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46425,19 +46663,19 @@ exports.push([module.i, "/*!\n * Bootstrap v4.0.0 (https://getbootstrap.com)\n *
 
 var _widget = __webpack_require__(2);
 
-var _template = __webpack_require__(153);
+var _template = __webpack_require__(158);
 
 var _template2 = _interopRequireDefault(_template);
 
-var _badge = __webpack_require__(154);
+var _badge = __webpack_require__(159);
 
 var _badge2 = _interopRequireDefault(_badge);
 
-var _line = __webpack_require__(155);
+var _line = __webpack_require__(160);
 
 var _line2 = _interopRequireDefault(_line);
 
-__webpack_require__(156);
+__webpack_require__(161);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -46502,31 +46740,31 @@ _widget.Widget.config(["MagicWidgetProvider", function (MagicWidgetProvider) {
 }]);
 
 /***/ }),
-/* 153 */
+/* 158 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"spm_badges-container container-fluid\">\n\n  <div class=\"container\">\n    <div class=\"row\">\n      <div class=\"col\">\n        <div class=\"spm_badges-container__left\">\n          <div class=\"spm_badges-header\" ng-bind=\"widget.texts.header\"></div>\n          <div class=\"spm_badges-sub-header\" ng-bind-html=\"widget.texts.sub_header | to_trusted\"></div>\n        </div>\n\n        <div class=\"spm_badges-container__right spm_badges-list\">\n          <div sailplay-badges class=\"badge_lines_container clearfix\">\n            <sailplay-magic-bootstrap-badge-line  class=\"one_level\" line=\"sailplay.badges.list().one_level_badges\" type=\"one_level\" config=\"widget\"></sailplay-magic-bootstrap-badge-line>\n            <sailplay-magic-bootstrap-badge-line class=\"multi_level\" ng-repeat=\"line in sailplay.badges.list().multilevel_badges\"\n                                       line=\"line\" config=\"widget\"></sailplay-magic-bootstrap-badge-line>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n\n</div>";
 
 /***/ }),
-/* 154 */
+/* 159 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"badge\">\n    <div class=\"badge_iner\" ng-click=\"on_click(badge)\">\n        <div class=\"badge_pic\">\n        <img ng-src=\"{{ (badge.is_received ? badge.thumbs.url_250x250 : badge.thumbs.url_gs) | sailplay_pic }}\" alt=\"{{ badge.name }}\">\n        </div>\n        <span class=\"badge_name\" ng-bind=\"badge.name\"></span>\n    </div>\n    <div class=\"badge_arrow\"></div>\n</div>";
 
 /***/ }),
-/* 155 */
+/* 160 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"clearfix\">\n    <div class=\"bon_item_main clearfix\" ng-show=\"line.length\">\n        <div class=\"bon_slide_cat_item_wrap\">\n            <div class=\"bon_slide_cat_item\">\n                <div class=\"bon_item_line\" ng-style=\"{left : left}\">\n\n                    <sailplay-magic-bootstrap-badge badge=\"badge\" on-click=\"badge_select(badge);\"\n                                          ng-repeat=\"badge in line\" ng-class=\"{ last: $last, type_active: badge.is_received }\"></sailplay-magic-bootstrap-badge>\n                </div>\n\n            </div>\n        </div>\n    </div>\n\n    <magic-modal class=\"modal_badge_selected\" data-ng-cloak data-show=\"badge_selected\">\n\n        <div>\n\n            <div class=\"modal_badge_image\">\n                <img class=\"gift_more_img\" data-ng-src=\"{{ badge_selected.thumbs.url_250x250 | sailplay_pic }}\"\n                     alt=\"{{ badge_selected.name }}\">\n            </div>\n\n            <div class=\"modal_badge_tools\">\n\n                <p>\n                    <span class=\"modal_badge_name\" data-ng-bind=\"badge_selected.name\"></span>\n                </p>\n\n                <!--<p style=\"margin-top: 10px;\">-->\n                <!--<span class=\"modal_badge_points\" data-ng-bind=\"(action_selected.points | number) + ' ' + (selected_gift.points | sailplay_pluralize:_tools.points.texts.pluralize)\"></span>-->\n                <!--</p>-->\n\n                <p style=\"margin-top: 10px;\">\n                    <span class=\"modal_badge_description\" data-ng-bind=\"badge_selected.descr\"></span>\n                </p>\n\n                <p class=\"modal_badge_buttons\">\n                      <span class=\"badge_share_button fb_icon\" data-ng-click=\"badge_share('fb', badge_selected)\">\n                        {{ _config.texts.share_fb }}\n                      </span>\n                                <span class=\"badge_share_button tw_icon\" style=\"margin-right: 20px;\" data-ng-click=\"badge_share('tw', badge_selected)\">\n                        {{ _config.texts.share_tw }}\n                      </span>\n                    <span class=\"sp_btn button_primary\" data-ng-click=\"badge_select(false);\">{{ _tools.buttons.texts.close }}</span>\n                </p>\n\n            </div>\n\n        </div>\n\n    </magic-modal>\n</div>";
 
 /***/ }),
-/* 156 */
+/* 161 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(157);
+var content = __webpack_require__(162);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -46551,7 +46789,7 @@ if(false) {
 }
 
 /***/ }),
-/* 157 */
+/* 162 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -46565,7 +46803,7 @@ exports.push([module.i, ".spm_wrapper .spm_badges {\n  position: relative;\n  ba
 
 
 /***/ }),
-/* 158 */
+/* 163 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46573,11 +46811,11 @@ exports.push([module.i, ".spm_wrapper .spm_badges {\n  position: relative;\n  ba
 
 var _widget = __webpack_require__(2);
 
-var _template = __webpack_require__(159);
+var _template = __webpack_require__(164);
 
 var _template2 = _interopRequireDefault(_template);
 
-__webpack_require__(160);
+__webpack_require__(165);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -46632,19 +46870,19 @@ _widget.Widget.config(["MagicWidgetProvider", function (MagicWidgetProvider) {
 }]);
 
 /***/ }),
-/* 159 */
+/* 164 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"container-fluid spm_gifts clearfix\" ng-if=\"widget.enabled\" ng-cloak sailplay-profile sailplay-gifts>\n\n  <div class=\"container\">\n    <div class=\"row\">\n\n      <div class=\"spm_gifts-container col\">\n\n        <div class=\"spm_gifts-container__left\">\n          <div class=\"spm_gifts-header\" ng-bind=\"widget.texts.header\"></div>\n          <div class=\"spm_gifts-sub-header\" ng-bind=\"widget.texts.sub_header\"></div>\n          <div class=\"spm_gifts-pagination\">\n            <dir-pagination-controls direction-links=\"true\" data-page-links=\"false\" pagination-id=\"gifts_pages\"\n                                     template-url=\"magic.pagination\" auto-hide=\"true\"></dir-pagination-controls>\n          </div>\n        </div>\n\n        <div class=\"spm_gifts-container__right spm_gifts-list\">\n\n          <div class=\"spm_gifts-item\"\n               dir-paginate=\"gift in gifts() | itemsPerPage:3 track by $index\" pagination-id=\"gifts_pages\"\n               ng-mouseenter=\"gift.actived=true\"\n               ng-mouseleave=\"gift.actived=false\"\n               ng-class=\"{type_disabled: gift.points>user().user_points.confirmed, type_enabled: gift.points<=user().user_points.confirmed, type_hovered: gift.actived}\">\n            <div class=\"spm_gifts-item-name\" ng-bind=\"gift.name\"></div>\n            <div class=\"spm_gifts-item-placeholder\" ng-bind=\"widget.texts.name_placeholder\"></div>\n            <a href=\"#\" class=\"spm_gifts-item-button type_recieve\" ng-bind=\"widget.texts.get\"\n               ng-click=\"$event.preventDefault();$root.$broadcast('gift:state', gift)\"></a>\n            <div class=\"spm_gifts-item-button type_points\"\n                 ng-bind=\"(gift.points|number)+' '+(gift.points|sailplay_pluralize:('points.texts.pluralize' | tools))\"></div>\n          </div>\n\n        </div>\n\n      </div>\n\n    </div>\n  </div>\n\n  <magic-modal show=\"$parent.$parent.show_gift\">\n    <magic-modal-title ng-bind=\"widget.texts.modals.gift.title\"></magic-modal-title>\n    <magic-modal-body>\n\n      <div class=\"spm_gifts-open\">\n        <i class=\"spm_gifts-open-image\"\n           ng-style=\"{'background-image': ($parent.show.thumbs.url_250x250 | sailplay_pic | background_image)}\"></i>\n        <div class=\"spm_gifts-open-name\" ng-bind=\"$parent.show.name\"></div>\n        <div class=\"spm_gifts-open-points\"\n             ng-bind=\"($parent.show.points|number) + ' ' + ($parent.show.points|sailplay_pluralize:('points.texts.pluralize' | tools))\"></div>\n        <div class=\"spm_gifts-open-descr\" ng-bind=\"$parent.show.descr\"></div>\n        <a href=\"#\" class=\"spm_gifts-open-button spm_btn theme_1 type_filled type_big\"\n           ng-bind=\"widget.texts.modals.gift.button\" ng-click=\"$event.preventDefault();getGift($parent.show)\"></a>\n      </div>\n\n    </magic-modal-body>\n  </magic-modal>\n\n  <magic-modal class=\"spm_gifts-success-modal\" show=\"$parent.$parent.show_success\">\n    <magic-modal-title ng-bind=\"widget.texts.modals.success.title\"></magic-modal-title>\n    <magic-modal-body data-ng-switch=\"purchased_gift.gift_type\">\n\n      <div class=\"spm_gifts-success-modal-body\" ng-bind-html=\"purchased_gift.gift_help_text || widget.texts.modals.success.body | to_trusted\"></div>\n\n      <div data-ng-switch-when=\"coupon\" class=\"spm_gifts-success-modal-body-coupon\">\n        <div class=\"spm_gifts-success-modal-body-coupon-message\">\n          {{ widget.texts.modals.success.coupon_title }}\n        </div>\n        <div class=\"spm_gifts-success-modal-body-coupon-input\">\n          <input type=\"text\" value=\"{{ purchased_gift.coupon_number }}\" disabled>\n        </div>\n      </div>\n\n    </magic-modal-body>\n  </magic-modal>\n\n</div>";
 
 /***/ }),
-/* 160 */
+/* 165 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(161);
+var content = __webpack_require__(166);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -46669,7 +46907,7 @@ if(false) {
 }
 
 /***/ }),
-/* 161 */
+/* 166 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -46683,7 +46921,7 @@ exports.push([module.i, ".spm_wrapper .bootstrap_gifts .spm_gifts {\n  position:
 
 
 /***/ }),
-/* 162 */
+/* 167 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46691,13 +46929,13 @@ exports.push([module.i, ".spm_wrapper .bootstrap_gifts .spm_gifts {\n  position:
 
 var _widget = __webpack_require__(2);
 
-var _template = __webpack_require__(163);
+var _template = __webpack_require__(168);
 
 var _template2 = _interopRequireDefault(_template);
 
-__webpack_require__(164);
+__webpack_require__(169);
 
-var _defaults = __webpack_require__(166);
+var _defaults = __webpack_require__(171);
 
 var _defaults2 = _interopRequireDefault(_defaults);
 
@@ -46756,19 +46994,19 @@ _widget.Widget.config(["MagicWidgetProvider", function (MagicWidgetProvider) {
 }]);
 
 /***/ }),
-/* 163 */
+/* 168 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"spm_gifts clearfix container-fluid\" ng-if=\"widget.enabled\" ng-cloak sailplay-profile sailplay-gifts>\n\n  <div class=\"spm_gifts-container row\">\n\n    <div class=\"spm_gifts-container__left col-lg-4 col-md-12\">\n      <div class=\"spm_gifts-header\" ng-bind=\"widget.texts.header\"></div>\n      <div class=\"spm_gifts-sub-header\" ng-bind=\"widget.texts.sub_header\"></div>\n      <div class=\"spm_gifts-pagination\">\n        <dir-pagination-controls direction-links=\"true\" pagination-id=\"gifts_pages\" template-url=\"magic.pagination\"\n                                 auto-hide=\"true\"></dir-pagination-controls>\n      </div>\n    </div>\n\n    <div class=\"spm_gifts-container__right spm_gifts-list col-lg-8 col-md-12\">\n\n      <div class=\"row\">\n        <div class=\"spm_gifts-item col-lg-4 col-md-4 col-sm-4 col-xs-12\"\n             dir-paginate=\"gift in gifts() | itemsPerPage:3 track by $index\" pagination-id=\"gifts_pages\"\n             ng-mouseenter=\"gift.actived=true\"\n             ng-mouseleave=\"gift.actived=false\"\n             ng-class=\"{type_disabled: !user() || gift.points>user().user_points.confirmed, type_enabled: gift.points<=user().user_points.confirmed, type_hovered: gift.actived}\">\n          <div class=\"spm_gifts-image\">\n            <img class=\"img-fluid\" data-ng-src=\"{{ gift.thumbs.url_250x250 | sailplay_pic }}\" alt=\"{{ gift.name }}\">\n          </div>\n          <div class=\"spm_gifts-item-name\" ng-bind=\"gift.name\"></div>\n          <div class=\"text-center display-inline-block\">\n            <a href=\"#\" class=\"spm_gifts-item-button type_recieve\" ng-bind=\"widget.texts.get\"\n               ng-click=\"$event.preventDefault();$root.$broadcast('gift:state', gift)\"></a>\n            <div class=\"spm_gifts-item-button type_points\"\n                 ng-bind=\"(gift.points|number)+' '+(gift.points|sailplay_pluralize:('points.texts.pluralize' | tools))\"></div>\n          </div>\n\n        </div>\n      </div>\n\n    </div>\n\n  </div>\n\n  <magic-modal show=\"$parent.$parent.show_gift\">\n    <magic-modal-title ng-bind=\"widget.texts.modals.gift.title\"></magic-modal-title>\n    <magic-modal-body>\n\n      <div class=\"spm_gifts-open\">\n        <i class=\"spm_gifts-open-image\"\n           ng-style=\"{'background-image': ($parent.show.thumbs.url_250x250 | sailplay_pic | background_image)}\"></i>\n        <div class=\"spm_gifts-open-name\" ng-bind=\"$parent.show.name\"></div>\n        <div class=\"spm_gifts-open-points\"\n             ng-bind=\"($parent.show.points|number) + ' ' + ($parent.show.points|sailplay_pluralize:('points.texts.pluralize' | tools))\"></div>\n        <div class=\"spm_gifts-open-descr\" ng-bind=\"$parent.show.descr\"></div>\n        <a href=\"#\" class=\"spm_gifts-open-button spm_btn theme_1 type_filled type_big\"\n           ng-bind=\"widget.texts.modals.gift.button\" ng-click=\"$event.preventDefault();getGift($parent.show)\"></a>\n      </div>\n\n    </magic-modal-body>\n  </magic-modal>\n\n  <magic-modal class=\"spm_gifts-success-modal\" show=\"$parent.$parent.show_success\">\n    <magic-modal-title ng-bind=\"widget.texts.modals.success.title\"></magic-modal-title>\n    <magic-modal-body data-ng-switch=\"purchased_gift.gift_type\">\n\n      <div class=\"spm_gifts-success-modal-body\" ng-bind-html=\"purchased_gift.gift_help_text || widget.texts.modals.success.body | to_trusted\"></div>\n\n      <div data-ng-switch-when=\"coupon\" class=\"spm_gifts-success-modal-body-coupon\">\n        <div class=\"spm_gifts-success-modal-body-coupon-message\">\n          {{ widget.texts.modals.success.coupon_title }}\n        </div>\n        <div class=\"spm_gifts-success-modal-body-coupon-input\">\n          <input type=\"text\" value=\"{{ purchased_gift.coupon_number }}\" disabled>\n        </div>\n      </div>\n\n    </magic-modal-body>\n  </magic-modal>\n\n</div>";
 
 /***/ }),
-/* 164 */
+/* 169 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(165);
+var content = __webpack_require__(170);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -46793,7 +47031,7 @@ if(false) {
 }
 
 /***/ }),
-/* 165 */
+/* 170 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -46807,13 +47045,13 @@ exports.push([module.i, ".spm_wrapper .bootstrap_gifts_image .spm_gifts {\n  pos
 
 
 /***/ }),
-/* 166 */
+/* 171 */
 /***/ (function(module, exports) {
 
 module.exports = {"styles":{"spm_gifts-item.type_hovered.type_enabled .spm_gifts-item-button.type_recieve":{"color":"#fff","margin":"50px auto auto auto","display":"inline-block","background-color":"rgb(252,46,162)"},"spm_gifts-header":{"font-size":"45px","font-family":"Akrobat, Roboto, sans-serif"},"spm_gifts-item.type_hovered.type_enabled .spm_gifts-item-name":{"display":"none"},"spm_gifts-container":{"max-width":"100%","padding":0},"spm_gifts-item-name":{"color":"rgb(154,152,147)","font-size":"20px","font-weight":300},"spm_gifts-container__right":{},"spm_gifts-item.type_disabled .spm_gifts-item-button.type_points":{"margin-top":"20px"},"spm_gifts-container__left":{"padding-right":"80px","padding-left":"80px"},"spm_gifts-success-modal-body":{"font-size":"20px","font-weight":300,"margin-bottom":"20px"},"spm_gifts-success-modal .spm_modal-content-title":{"margin-top":"20px"},"@media (max-width: 992px) | spm_gifts-list":{},"spm_gifts-success-modal-body-coupon-input input":{"padding":"10px 20px","width":"100%","font-size":"30px","margin-top":"5px"},"spm_gifts-sub-header":{"font-weight":300},"spm_gifts-item":{"border-radius":0,"padding":"80px 40px 50px 40px","font-family":"Open Sans, sans-serif","margin":0,"background-color":"#fff"},"spm_gifts-item-button.type_points":{"color":"#333","font-size":"24px","font-weight":600,"text-transform":"uppercase","margin-top":0},"spm_gifts-item-button.type_recieve":{"padding":"20px 35px","text-transform":"uppercase"},"spm_gifts-success-modal-body-coupon-message":{"font-weight":300}},"enabled":true,"id":"bootstrap_gifts_image","texts":{"sub_header":"Receive gifts from this list for accumulated points","header":"Gifts","name_placeholder":"cashback","modals":{"gift":{"button":"Recieve reward","title":"Information"},"success":{"body":"You received the gift!","coupon_title":"Your coupon number is:","title":"Congratulations"},"error":{"body":"An error occurred while receiving the gift.","title":"Error"}},"get":"Recieve reward"},"images":{},"options":{}}
 
 /***/ }),
-/* 167 */
+/* 172 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46821,11 +47059,11 @@ module.exports = {"styles":{"spm_gifts-item.type_hovered.type_enabled .spm_gifts
 
 var _widget = __webpack_require__(2);
 
-var _template = __webpack_require__(168);
+var _template = __webpack_require__(173);
 
 var _template2 = _interopRequireDefault(_template);
 
-__webpack_require__(169);
+__webpack_require__(174);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -46872,19 +47110,19 @@ _widget.Widget.config(["MagicWidgetProvider", function (MagicWidgetProvider) {
 }]);
 
 /***/ }),
-/* 168 */
+/* 173 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"spm_menu clearfix\" ng-show=\"widget.enabled\" ng-cloak sailplay-profile>\n    <div class=\"spm_menu-wrapper\">\n\n        <div class=\"spm_menu-container\">\n\n            <div class=\"spm_menu-list\" ng-show=\"widget.options.items && widget.options.items.length\">\n                <a class=\"spm_menu-item\" ng-repeat=\"item in widget.options.items track by $index\" ng-click=\"$event.preventDefault();onClick(item)\">\n                    <i ng-style=\"{'background-image': ((item.icon || widget.images.menu_icon)|background_image)}\"></i>\n                    <span ng-bind=\"item.label\"></span>\n                </a>\n            </div>\n\n            <div class=\"spm_menu-profile\" ng-show=\"user && user()\">\n                <i ng-style=\"{'background-image': (user().user.avatar['250x250'] | sailplay_pic | background_image)}\" ng-click=\"$parent.active=true\"></i>\n                <div class=\"spm_menu-profile-balance\" ng-click=\"$parent.active=true\">\n                    <span class=\"spm_menu-profile-balance_label\" ng-bind=\"widget.texts.your_balance\"></span>\n                    <span class=\"spm_menu-profile-balance_value\" ng-bind=\"(user().user_points.confirmed|number) + ' ' + (user().user_points.confirmed | sailplay_pluralize:('points.texts.pluralize' | tools))\"></span>\n                </div>\n                <div class=\"spm_menu-profile-dropdown\" ng-class=\"{type_open: $parent.active}\">\n                    <a href=\"#\" class=\"spm_menu-profile-dropdown-item type_mobile\" ng-repeat=\"item in widget.options.items track by $index\" ng-bind=\"item.label\" ng-click=\"$event.preventDefault();onClick(item)\"></a>\n                    <a href=\"#\" class=\"spm_menu-profile-dropdown-item\" ng-bind=\"widget.texts.edit_profile\" ng-click=\"$event.preventDefault();active=false;$root.$broadcast('profile:state', true)\"></a>\n                    <a class=\"spm_menu-profile-dropdown-item\" ng-href=\"{{widget.options.logout}}\" ng-bind=\"widget.texts.logout\"></a>\n                </div>\n            </div>\n\n        </div>\n\n    </div>\n</div>";
 
 /***/ }),
-/* 169 */
+/* 174 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(170);
+var content = __webpack_require__(175);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -46909,7 +47147,7 @@ if(false) {
 }
 
 /***/ }),
-/* 170 */
+/* 175 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -46923,7 +47161,7 @@ exports.push([module.i, ".spm_wrapper .spm_menu {\n  width: 100%;\n  height: 94p
 
 
 /***/ }),
-/* 171 */
+/* 176 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46931,13 +47169,13 @@ exports.push([module.i, ".spm_wrapper .spm_menu {\n  width: 100%;\n  height: 94p
 
 var _widget = __webpack_require__(2);
 
-var _template = __webpack_require__(172);
+var _template = __webpack_require__(177);
 
 var _template2 = _interopRequireDefault(_template);
 
-__webpack_require__(173);
+__webpack_require__(178);
 
-var _avatar = __webpack_require__(175);
+var _avatar = __webpack_require__(180);
 
 var _avatar2 = _interopRequireDefault(_avatar);
 
@@ -47038,19 +47276,19 @@ _widget.Widget.config(["MagicWidgetProvider", function (MagicWidgetProvider) {
 }]);
 
 /***/ }),
-/* 172 */
+/* 177 */
 /***/ (function(module, exports) {
 
 module.exports = "<section class=\"container-fluid spm_profile profile clearfix\" ng-if=\"widget.enabled\" ng-cloak sailplay-profile>\n\n  <div class=\"container state_authorized\" data-ng-if=\"user()\">\n    <div class=\"row align-items-center spm_profile_inner\">\n      <div class=\"col\">\n        <div class=\"position-relative d-flex align-items-center b-avatar mb-3\">\n          <div class=\"position-relative\">\n            <img ng-src=\"{{(user().user.avatar['250x250']|sailplay_pic) || widget.images.default_avatar || default_avatar}}\"\n                 class=\"rounded-circle cursor-pointer\" ng-click=\"$root.$broadcast('info:state', true)\">\n            <div class=\"spm_profile-welcome-name\" data-ng-if=\"widget.options.show_name\" >\n              {{ widget.texts.hi }} {{ user().user.name || widget.texts.no_name }}\n            </div>\n          </div>\n\n          <div class=\"b-avatar-menu position-relative d-flex align-items-center\"\n               ng-class=\"{type_active: $parent.$parent.menu_active}\" data-spm-click-outside=\"$parent.$parent.menu_active = false;\">\n            <div class=\"b-avatar-menu__icon rounded-circle d-flex bg-primary cursor-pointer align-items-center\"\n                 ng-click=\"$event.stopPropagation();$event.preventDefault();$parent.$parent.menu_active=!$parent.$parent.menu_active\">\n              <img class=\"mw-100 h-50\" ng-src=\"{{widget.images.icon_dots}}\">\n            </div>\n            <div class=\"b-avatar-menu__list position-relative d-flex align-items-left bg-white flex-column\">\n              <a href=\"#\"\n                 class=\"b-avatar-menu__item d-flex align-items-center font-weight-light text-dark py-3 pl-4 pr-5\"\n                 ng-click=\"$event.stopPropagation();$event.preventDefault();$root.$broadcast('info:state', true);$parent.$parent.menu_active=false\">\n                <i class=\"b-avatar-menu__item-icon\">\n                  <img class=\"mw-100 h-75\" ng-src=\"{{widget.images.icon_profile}}\">\n                </i>\n                <span ng-bind=\"widget.texts.menu_my_profile\"></span>\n              </a>\n              <a href=\"#\" data-ng-if=\"widget.options.auth_type === 'remote'\" class=\"b-avatar-menu__item d-flex align-items-center font-weight-light text-dark py-3 pl-4 pr-5\" data-ng-click=\"$event.preventDefault(); logout(); $parent.$parent.menu_active=false\">\n                <i class=\"b-avatar-menu__item-icon\">\n                  <img class=\"mw-100 h-75\" ng-src=\"{{widget.images.icon_logout}}\">\n                </i>\n                <span ng-bind=\"widget.texts.menu_logout\"></span>\n              </a>\n              <a href=\"#\" data-ng-if=\"widget.options.auth_type === 'auth_hash'\" class=\"b-avatar-menu__item d-flex align-items-center font-weight-light text-dark py-3 pl-4 pr-5\"\n                 ng-href=\"{{widget.options.logout_link}}\">\n                <i class=\"b-avatar-menu__item-icon\">\n                  <img class=\"mw-100 h-75\" ng-src=\"{{widget.images.icon_logout}}\">\n                </i>\n                <span ng-bind=\"widget.texts.menu_logout\"></span>\n              </a>\n            </div>\n          </div>\n        </div>\n        <h1 class=\"display-4 text-uppercase font-weight-bolder spm_profile-header\"\n            ng-bind-html=\"widget.texts.header|to_trusted\"></h1>\n        <p class=\"my-4 font-weight-light spm_profile-subheader\" ng-bind-html=\"widget.texts.sub_header|to_trusted\"></p>\n        <a class=\"btn btn-md btn-primary text-uppercase px-3 py-2 font-weight-bold learn_more_button\" href=\"#\" role=\"button\"\n           target=\"_blank\"\n           ng-click=\"$event.preventDefault();$root.$broadcast('text:state', true)\"\n           ng-bind=\"widget.texts.button_text\"></a>\n      </div>\n    </div>\n  </div>\n\n  <div class=\"container state_unauthorized\" data-ng-if=\"!user()\">\n    <div class=\"row align-items-center spm_profile_inner\">\n      <div class=\"col\">\n        <h1 class=\"display-4 text-uppercase font-weight-bolder\"\n            ng-bind-html=\"widget.texts.header|to_trusted\"></h1>\n        <p class=\"my-4 font-weight-light\" ng-bind-html=\"widget.texts.sub_header|to_trusted\"></p>\n        <a class=\"btn btn-md btn-primary text-uppercase px-3 py-2 font-weight-bold profile_login_button\" href=\"#\" role=\"button\"\n           target=\"_blank\"\n           ng-click=\"$event.preventDefault();login('remote', {widget: 'bootstrap_profile_stacked', element: 'profile_login_button'});\"\n           ng-bind=\"widget.texts.login_button_text\"></a>\n      </div>\n    </div>\n  </div>\n\n  <magic-modal ng-show=\"!$parent.show_profile\" show=\"$parent.$parent.show_info\">\n    <magic-modal-title>\n      <div class=\"b-avatar\">\n        <img ng-src=\"{{user().user.avatar['250x250']|sailplay_pic}}\" class=\"rounded-circle\">\n      </div>\n      <span class=\"spm_profile-info-modal-name b-name d-block my-5 text-black\" ng-bind=\"user().user.name && user().user.name + ' ' + (user().user.middle_name | nullVariable) || widget.texts.no_name_profile_title\"></span>\n    </magic-modal-title>\n    <magic-modal-body>\n\n      <div data-ng-repeat=\"field in profile_form.form.fields\" data-ng-if=\"field.value && field.name !== 'firstName' && field.name !== 'lastName' && field.name !== 'middleName'\" data-ng-switch=\"field.input\">\n\n        <!-- uncomment for subscriptions field -->\n        <!--<div class=\"b-info pb-3 pt-3 pr-3 d-flex flex-column flex-column-light align-items-center spm_profile-info-modal-field spm_form_field\" data-ng-switch-when=\"subscriptions\">-->\n          <!--<label class=\"spm_form_checkbox\" data-ng-class=\"{ checked: field.value.email === 1 }\">-->\n            <!--<input class=\"spm_form_checkbox_input\" type=\"checkbox\" data-ng-model=\"field.value.email\" data-ng-true-value=\"1\" data-ng-false-value=\"0\" disabled>-->\n            <!--<span class=\"spm_form_checkbox_label\" data-ng-bind=\"field.data.email_label\"></span>-->\n          <!--</label>-->\n          <!--<label class=\"spm_form_checkbox\" data-ng-class=\"{ checked: field.value.sms === 1 }\">-->\n            <!--<input class=\"spm_form_checkbox_input\" type=\"checkbox\" data-ng-model=\"field.value.sms\" data-ng-true-value=\"1\" data-ng-false-value=\"0\" disabled>-->\n            <!--<span class=\"spm_form_checkbox_label\" data-ng-bind=\"field.data.sms_label\"></span>-->\n          <!--</label>-->\n        <!--</div>-->\n\n        <div class=\"b-info pb-3 pt-3 pl-3 pr-3 d-flex align-items-center flex-column flex-column-light spm_profile-info-modal-field\" data-ng-switch-default>\n          <img class=\"spm_profile-info-modal-field-icon\" data-ng-if=\"field.icon\" ng-src=\"{{ field.icon }}\">\n          <span class=\"mt-2 spm_profile-info-modal-field-value\" ng-bind=\"field.value.split('  ').join(', ')\"></span>\n        </div>\n\n        <div class=\"b-info pb-3 pt-3 pl-3 pr-3 d-flex align-items-center flex-column flex-column-light spm_profile-info-modal-field\" data-ng-switch-when=\"select\">\n          <img class=\"spm_profile-info-modal-field-icon\" data-ng-if=\"field.icon\" ng-src=\"{{ field.icon }}\">\n          <span class=\"mt-2 spm_profile-info-modal-field-value\" ng-bind=\"profile_form.get_selected_value(field).text\"></span>\n        </div>\n\n      </div>\n\n      <!--<div ng-show=\"user().user.email\" class=\"b-info mb-5 pt-3 d-flex align-items-center flex-column flex-column-light\">-->\n        <!--<img ng-src=\"{{widget.images.icon_email}}\">-->\n        <!--<span class=\"mt-2\" ng-bind=\"user().user.email\"></span>-->\n      <!--</div>-->\n\n      <!--<div ng-show=\"user().user.phone\" class=\"b-info mb-5 d-flex align-items-center flex-column flex-column-light\">-->\n        <!--<img ng-src=\"{{widget.images.icon_phone}}\">-->\n        <!--<span class=\"mt-2\" ng-bind=\"user().user.phone|tel\"></span>-->\n      <!--</div>-->\n\n      <!--<div ng-show=\"user().user.birth_date\" class=\"b-info mb-5 d-flex align-items-center flex-column flex-column-light\">-->\n        <!--<img ng-src=\"{{widget.images.icon_bday}}\">-->\n        <!--<span class=\"mt-2\" ng-bind=\"user().user.birth_date|date:'d MMMM yyyy'\"></span>-->\n      <!--</div>-->\n\n      <div class=\"b-info d-flex align-items-center justify-content-center spm_profile-edit-profile-button\">\n        <a class=\"btn btn-md btn-primary text-uppercase px-3 py-2 font-weight-bold\" href=\"#\" role=\"button\"\n           ng-click=\"$event.preventDefault();$root.$broadcast('profile:state', true)\"\n           ng-bind=\"widget.texts.edit_profile\"></a>\n      </div>\n\n\n    </magic-modal-body>\n  </magic-modal>\n\n  <magic-modal on-close=\"revert_profile_form\" show=\"$parent.$parent.show_profile\" prevent-close=\"lock_profile\">\n    <magic-modal-title ng-bind-html=\"widget.texts.modals.profile.title|to_trusted\"></magic-modal-title>\n    <magic-modal-body>\n\n      <form name=\"ng_profile_form\" class=\"spm_profile-form\"\n            ng-submit=\"profile_form.submit(ng_profile_form, onSaveProfile);\">\n\n        <div class=\"spm_form_field\" ng-repeat=\"field in profile_form.form.fields\"\n             ng-switch=\"field.input\">\n\n          <div ng-switch-when=\"text\">\n            <input class=\"spm_form_input\" type=\"text\" placeholder=\"{{ field.placeholder }}\"\n                   ng-model=\"field.value\" ng-required=\"field.required\">\n            <label class=\"spm_form_label type_absolute\" ng-bind=\"field.label\"></label>\n          </div>\n\n          <div ng-switch-when=\"date\">\n            <label class=\"spm_form_label \" ng-bind=\"field.label\"></label>\n            <date-picker ng-model=\"field.value\" ng-required=\"field.required\"></date-picker>\n          </div>\n\n          <div ng-switch-when=\"phone\">\n            <input class=\"spm_form_input\" type=\"text\"\n                   ui-mask=\"{{ field.placeholder }}\" ng-model=\"field.value\"\n                   ng-required=\"field.required\">\n            <label class=\"spm_form_label type_absolute\" ng-bind=\"field.label\"></label>\n          </div>\n\n          <div ng-switch-when=\"email\">\n            <input class=\"spm_form_input\" type=\"email\" placeholder=\"{{ field.placeholder }}\"\n                   ng-model=\"field.value\" ng-required=\"field.required\">\n            <label class=\"spm_form_label type_absolute\">{{ field.label }}</label>\n          </div>\n\n          <div ng-switch-when=\"select\">\n            <select class=\"spm_form_select\" ng-model=\"field.value\"\n                    ng-options=\"item.value as item.text for item in field.data\" ng-required=\"field.required\"></select>\n            <label class=\"spm_form_label type_absolute\" ng-bind=\"field.label\"></label>\n          </div>\n\n        </div>\n\n        <div class=\"spm_form_buttons\">\n          <button class=\"spm_btn theme_1 type_big type_cancel font-weight-bold\" ng-click=\"$parent.close()\"\n                  ng-bind=\"widget.texts.modals.profile.cancel\"></button>\n          <input type=\"submit\" class=\"spm_btn theme_1 type_filled type_big font-weight-bold\"\n                 ng-value=\"widget.texts.modals.profile.save\"/>\n        </div>\n\n      </form>\n\n    </magic-modal-body>\n  </magic-modal>\n\n  <magic-modal show=\"$parent.$parent.show_history\">\n    <magic-modal-title>\n      <span class=\"d-block text-left\" ng-bind=\"widget.texts.modals.history.title\"></span>\n    </magic-modal-title>\n    <magic-modal-body>\n      <div sailplay-history>\n\n        <table class=\"spm_profile-history\" ng-show=\"history().length\">\n          <tbody>\n          <tr dir-paginate=\"item in history() | itemsPerPage:5\" pagination-id=\"history_pages\">\n            <td class=\"type_lighter\" ng-bind=\"item.action_date | date:'d MMM yyyy'\"></td>\n            <td>\n              <div ng-bind=\"item|history_item\"></div>\n            </td>\n            <td></td>\n            <!--<td ng-class=\"{type_positive:item.points_delta>0, type_negative:item.points_delta<0}\"-->\n            <!--ng-bind=\"item.points_delta?(item.points_delta|number):''\"></td>-->\n          </tr>\n          </tbody>\n        </table>\n\n        <dir-pagination-controls max-size=\"7\" direction-links=\"false\" pagination-id=\"history_pages\"\n                                 template-url=\"magic.pagination\"\n                                 auto-hide=\"true\"></dir-pagination-controls>\n\n        <div ng-hide=\"history().length\" ng-bind=\"widget.texts.modals.history.empty\"></div>\n\n      </div>\n    </magic-modal-body>\n  </magic-modal>\n\n  <magic-modal show=\"$parent.$parent.show_text\">\n    <magic-modal-title ng-bind-html=\"widget.texts.modals.text.title|to_trusted\"></magic-modal-title>\n    <magic-modal-body ng-bind-html=\"widget.texts.modals.text.body|to_trusted\"></magic-modal-body>\n  </magic-modal>\n\n</section>";
 
 /***/ }),
-/* 173 */
+/* 178 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(174);
+var content = __webpack_require__(179);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -47075,7 +47313,7 @@ if(false) {
 }
 
 /***/ }),
-/* 174 */
+/* 179 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -47089,13 +47327,13 @@ exports.push([module.i, ".spm_wrapper .bootstrap_profile .spm_profile {\n  posit
 
 
 /***/ }),
-/* 175 */
+/* 180 */
 /***/ (function(module, exports) {
 
 module.exports = "data:image/gif;base64,R0lGODlhfwF/AeYAAOfn58HBwcDAwL+/v7m5uby8vObm5ujo6L6+vri4uL29vbu7u7q6ure3t8LCwsDCwcLAweTk5OXl5ba2tt/f39XV1c7OzuHh4ePj4+Li4tra2sXFxc/Pz9LS0tzc3MfHx8vLy9bW1sjIyMPDw8rKysTExNfX18zMzNnZ2dHR0d7e3t3d3c3NzdDQ0ODg4NTU1MbGxtjY2NPT08HBv9vb28HBw8nJycLBv8HAvsG/wMDBw8LAw8DCv7/BwMLCwMHDwsLCxMHDwLq4ueDe38PBxMHAxcTAv7/BvsDBxcDAwsLBvdvb3eLj5d3e2d/h4MHCxNnd3sDAvry8utnd3Lu9vOjo6r24vMPBwtvb2efn5bm3uLy6u+Ph4ri6t7/DwsXAxL7Dv9za27m5u8G/xOfn6cPCwOnn6Onp6bu7vbq8uQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH/C1hNUCBEYXRhWE1QPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4gPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgNS4zLWMwMTEgNjYuMTQ1NjYxLCAyMDEyLzAyLzA2LTE0OjU2OjI3ICAgICAgICAiPiA8cmRmOlJERiB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiPiA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtbG5zOnhtcE1NPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvbW0vIiB4bWxuczpzdFJlZj0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL3NUeXBlL1Jlc291cmNlUmVmIyIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M2IChNYWNpbnRvc2gpIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOkYzNDAwNjc5QTQ0RTExRTJBNjYxQjE2NTdFQUQ3MzlDIiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOkYzNDAwNjdBQTQ0RTExRTJBNjYxQjE2NTdFQUQ3MzlDIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6RjM0MDA2NzdBNDRFMTFFMkE2NjFCMTY1N0VBRDczOUMiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6RjM0MDA2NzhBNDRFMTFFMkE2NjFCMTY1N0VBRDczOUMiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz4B//79/Pv6+fj39vX08/Lx8O/u7ezr6uno5+bl5OPi4eDf3t3c29rZ2NfW1dTT0tHQz87NzMvKycjHxsXEw8LBwL++vby7urm4t7a1tLOysbCvrq2sq6qpqKempaSjoqGgn56dnJuamZiXlpWUk5KRkI+OjYyLiomIh4aFhIOCgYB/fn18e3p5eHd2dXRzcnFwb25tbGtqaWhnZmVkY2JhYF9eXVxbWllYV1ZVVFNSUVBPTk1MS0pJSEdGRURDQkFAPz49PDs6OTg3NjU0MzIxMC8uLSwrKikoJyYlJCMiISAfHh0cGxoZGBcWFRQTEhEQDw4NDAsKCQgHBgUEAwIBAAAh+QQAAAAAACwAAAAAfwF/AQAH/4AAgoOEhYaHiImKi4yNjo+QkZKTlJWWl5iZmpucnZ6foKGio6SlpqeoqaqrrK2ur7CxsrO0tba3uLm6u7y9vr/AwcLDxMXGx8jJysvMzc7P0NHS09TV1tfY2drb3N3e3+Dh4uPk5ebn6Onq6+zt7u/w8fLz9PX29/j5+vv8/f7/AAMKHEiwoMGDCBMqXMiwocOHECNKnEixosWLGDNq3Mixo8ePIEOKHEmypMmTKFOqXMmypcuXHw0IkgmzpiOZNAHQNHDggMwDNoM+kmCChgYPKlQAACq06SGmOjkkmNAgQQIGEpbmdMq1pwEUU61eTaABqE+uaGWaSFA1AYG3BP8soJ179kRbAlcXLGAwIMLZuTWZGnAh4G6CBQUSK1hgYitgk3+hzuxA4C4BxAoUCBiAYITknJIfa/xLiKaHAVStEmCAGcGA169R8HwqumNoQRdENGhQ+S3rAghcCxi++UNtlH8x2BXruzVsAQECDEfg4XhJnwckcGBQtepbvQUUCCceXToC49ZDMsVggXtvuImBvx5eHrr0zUp1lk6P0cCFEwywxVaAv4U3XnkIRvcaCbPxtxENMLSlmm+KuTYAfQlKF91wA1DgmIP23KYIUyICEEEFhUno22/iwZbhi9INIMJSNOoH4jw5fWjITzvN5AEJDKTmVnMVPmcfjAhy6EH/gzfqU+J+QMl0QQsD7GYVb0RmZuGFRyKZYHE0PtmkPCL+pJULHQjAlmVEGgjbhV4iySEKY+4jWCE70XBClbxN2Bxibs7XZZwvDgeDjnW2E+WOUR6QwQsfLDCBgG4xAFeB4m05KKEwbjYAnYnWQ6IgjsYAggKTUnqVb5cpUKSgm9bHaYIDGIdoqOksekAEKJyQolh+rlaggZraF+usGW6GwApi4vpMszrhVAhQEWjAQgBrAjvkn+EBFxysyIZb3wByOfuNmfsNckEFIKjZVp/bMiAvoMRuyaW4+DrwmgPmcgPVbdVysIGkVzIHl7CAuprpm8Qdiy+nAiBwQb/UfLYj/wUv2DAAW3hdCZdq89Kbqb0NP2xyfQLEQDE2QEmwwgskBMCdhAJ2LCxrmIWn5ZtcOnwyssRVsPI0ErgQAwcfDFCZdyAfjDC9OrfIMHlJ/vyzADIMrQxUFMhAggBBwlszq4eF3K2W3xpJtc9WA+2AdB1onQwGJnxQQAOpujWhpSviHJ/Oab82HoYwOvB22+IK8PbbQsuty1agRRDCBlOx6XTIOddrb8+EI+55stE17jgtkM80SAYszKz3qpdCrdjCPHPe+ee0b6g4dCHcOvoq2DHpkwoiVKb3wXthltnxwQUO6+y1Nw+jCbuTPkhOKlCe96UFMBDfyLHL7vz3XjqgeP8AFegePSpm6XeBDVb6ianUU5cM/vxxih9AuefDMpsBBlgg/N7gMZCnZMc2+hkwOofbQI3y14qzeEAB7bMUpgJHtQNacFZvE4AGGAiLCJCgfW3KjJEGgKDDXfCEcSpBVjhYCovRAFVNY1GxUEhDZIlvABwg1UygxUJJMAkALSBAquATqHvV8IiE4pAGCZGdHoLiABgYgZXgsgBXWaiCSMxiguwXgLchIAAYkJaNnJiJKK2gAGML4OC0yMYMmTAAFxrAoXhIRkjQxARLG15irsi8NvqxixxCQA51WEdMAEUGqeFbFVuEgM4V8I809JQCQDXGQlbCAirS3gJc00gNVQ3/kllcnCeV1SFLZgIEu8HLahDDR1C6cov3CQ4Y6WhKPAEAk3uTjxFfycskCe5QeCJNLUkFmhdMUYa77KUybzgABchFMLR0Ik8MoIKOVSo8glKmNjdknmaWL5p19IkBCjMk7SkgmdvsJXQulDwPgbOHUeKAd1aDTXSmU5nT0UwEtPLO/MkkA+/BTDbvqU0TNpIzNhjmiAzwQbyY80AE1SZ0xKcv1xQgdwpFRAYmJNBHRlSLR7LfZjaDgX4y0AIgq6dHPwrKiCGABRk1hAT4dpgW9ZGlEh1pBio5TANoYEisbORKcQpJdnYAXQo9QPC+c04SEpWowymBSaN3N3nJZ6hP/4Ukh3YaUwC4YFXaE05WWWqfT03VcRSAi6vsOVZ8ZlAAossoBazCSra2dZsDaEFXATDXy1z1rkQdZEz7WkWxApalgpUrU+dzWMTuNa0EqGdjWYo/xUb2nFidLBsrq1DIYjOzms0iZ4fpWcyGlqCjraVnDXvabcK0q6WFU2t5eaTEdvYtn50tbcujV9ji1rS6VWZvB/tb2QaXlyl4bHFBe1wLZs23lzVuc0H5AuVGl7nTpV9cb3vd7LoyBNatonS9i8TbBQAFZ5XbBX7bSfL+kQbmcyJAu+veUNpnBXudb27rm0X7qCC9WovAcvnbxgwAeGgSeIsIsUvgzyG1pwugb/+Dj6jABSoUAfIC7oRreIJpdpUDq9GMUzdMwxfEl4wRGEBhx0viA25wr4LwwIoZ3OKHTQzG/mENRGt8wBXu1QAZYIAIWcxj55UAxqQCqJBHWmQDiuDAjhPwIoncZNqRAMk6iUBeOEPjKscJBEiOEj017OXmgRnLBhhwmZ13ZixbSrxdXvOL2gzloRWgVXaV88lOgGVBKADPVNazyV6LZQQAOs6Cjk5qY6o08QY60eJadEYb3VREJ1rSCg3AoSFtNcVhepiadrSl5QwdPvfZAX5lLKet1uYTO7EEfmXtqhMXnTYjeQOpfvSs5RQdG7i6jh+Ita537aUP/JqMwdOLrIn/Ha4j9znZf2U2vgRwbCeSQNijJrUAaGC6vYIA29IOl/gEcGUsf7uu2db2jWHMAnouO9xeGp8AwItk/4V12PBG4IZMDWMQ3zvdpK4wjFPgbnznGzoIxzLBI/vufL/IhAKAsU8qAG6HE2pxAhBmRl9g1YZb3I1d3Ct2KP7vj0NM4HsNQcVNHif0dJV/eCSATVlOKH5nVCYoQDW6ad6p6CS32tGLgBTVSmaeZ+jTZMQWUBegaqO/qAT7zCgqsWTOPLP8dgJAOgc1IKHf7Njp0rFfbHTFQcghgKMqBbiXjTUAB2CAp/mTAFMQCdS0g11WttuMDIDurP0dwNC8eajVTS5S/9ttgO99l8kKvFP1m97dhBcCTdl1EgKgLljtgs5gABDAVXgKgjJj9vjdZbUZCljyBW7Z+eghVh2c1Jk/Km+V6FefJEqSUQPLxfysBQC9Qqa18bSfFb3rKGDgB59QwyejAbK33+N7Ka6vtw5QHGB85yOpupb8QPWtn6y4kZEp/hM192EktOiDSAabHn+Gtjt5AOAeMU1Xf3mST8b1ql7+CFSZJQ2wl2jjPzrV8X2DQH3N938uUEsgsH3y5wA+xkGL8nnXpXuc5hmlw0IGQAOANmLyNyOmBEXC9n/RYXOWpAAl53wh5XP7xxQiIGRi9UbcR38CmAJV939vE4DKBxUYKP9+wXc4b/R2dbQVErAXlSZ/AuBy0tRtAFACBcB0Bkd4R+J9SFhHLaBjr2F9b4RfGaUCjeeCq2c4AeBsGXUADqCD3GdiXaUBdeVJXdhFATACnRdTIuB/o/dGHGB+5nIBzeQpx/c2bihyMfYtElhkt9N7WLYCeriGAtBbdmguMuECSVOFExWI/CUAI9A4iJc/vRMCJUAfXORw9uEAIFABF9AoffaAcARHXmhxbxMDl1h2+1MjJ/B1zGYsAcAghNSK0fMhJnBFbXdw4lMWkrGI5kKKghABWuJ4u1cCHrYUZ6FxPfVDACACNiWJusVFRzUIo4Jj0MQUMRBU1Bhcb3OAhiD/jI4jAXvUXvBmhH3WCDZQRUwGb+y3jrRxADRwf8zmAFxFjgxkAAGQGE1YZuVmYfKICAeQAmRIbPo3kI0AZDMmbQ4QdQrZCAcQKZj1jaFFaBGpCDiBAva4ai+WkYuAEwgwc1zYZJ3YhtMCkorQAjqYil7GRQ5gWyo5LTlxAR1ZZScZAFg4k4iwFTDwWQgHaQqkjw5oCN1YAPFnkoPSAUS5fwNwVRbZVgKwbunCkzXCExzgJlH5UeYVHTOCi/KYASoFad9klY6gVAKkZ4cDkWbZCB6whLNXYwHZlowAFAEwc2tXHh9JlyEJAC8wZFsZUXzYgHy5CMa4Sf9YX3rVlBnF/wJyWGUXAJYZaQAUAJeJOV2Gk1CMGVMb8JgkZh97WZh16X6OppSHJ5oSSSoS8JRxSV6Lk1ybGVMH0AEN2WDjZj8jIHcPhpo0ORMYsEeXOVkYMj7lw0S82ZNmAgJAWV9dCUjGNkaSOZkqcJPZ9YldtG7OeJy9aQBK2JqntRmdCCquF50qGQJwFph+dCQYGYXauQisKVslqVsINwJs2Z6RkAJjSV6fqHX2iQg26S3o2Ua405+UIGXeqVkmBIME2ggYgGfI2Fr2EY8LapgFF6Bs5AASOqGJkGAlWF/PpaGOUHwFSF5QCKKMIGAOaqFalFwm2ggoep78NVwtqggvWpH8xf+fJlqjgzdbIjijh6CjDzpbc+mjP7pYQdpaHEikiACkKppF6qikhMCk/AUDULqk3xEcR3paDkCehdmgKaqfChKbA1lNNfWOrikANlilgzACeYGUTVpDXDSkahphh4GlrlkfYKimOlEp7vimWUSleioICXYVuhSfsyVSKFelBqBlsZaljfVGMCCmfXYBqeeZ0wUdidqiPUEIX7Vyl2p4kipxfLVYwQlYb5OnxkmgH+IBRuqnRwQdmwp3/Rmrg4B7X+pdXUJtgQoAKKBm3vVGA/CGPooTLhBECvir0JGm07OgHGADGyAAd5NSB4qg9bEBFeABF5ABFxBGobo7SCVFNFP/dxayYZvhKnS6ATu1m1b5FyygIq2Tnw02HUsYIARwZHdCl0xBpvEyLFekhsz5GuZKrzuJmgZAd9yCTf1KrsqiMNlzjYUJFSDGp8TCM64KUqSUPAVga20pGSdwFYKnNhWbngOEAIBKsAAAApUKiI7qXg2zGZ4hmlChfQmgSyGbU8OxrBs7CJRzrIImAJ3HpYUEFCNgVUWXaALALDhrljwhABW6a/MmRvhqAApAqNPKYwKgsXx5AG9mqYkWAUBrSirQplVbY+JjAt3qODsLfxdiqHL2pGZJA2OhtuMzaxdClW2JLU3LbAjwoQNZIl+RSgxXqp8pACp0tomyqT9RJSkr/7jkunmh2Wc9khMmME8junsyorQGsDGph5g1+1HjNgADK49/IRMVkEqC17lkJQCamZFnYQBnFyBy65C2MwAa8LXeChQdwHhQmW83xIAqGYR8ipfhdjivAVOIYrg1YSb8o0MG0AK6a6PwdiTBYbam0yDLa7ui4bcAMFPiyrhkC0jrtCw8kT6Qg7w2YSa4NGbea7VeWK4jEJmSh72ioTtfMTy1ybuywhkBYHopqRWYSEiqWQGaG3i7S3OSpAB790Py+xiSIQEyAEHzJFDr22I8OEoAWwAatBPmCxMYYJAgRKjAgUUOB3ELmz0OkDvZ2SSOcRukgQHtRinYg5RJeXWBZP+uVdQCPkhMwZiqdJEIGuxV39Yd5cQiQzh6NTyvV0EC+REmOmEW0NjDSfsXFBA8EyA8fINMYxtugYQAibEXbgEDhAglPZIWJLKbHhAhILRKxqMpJugpXNzFfDMAHeAXUMuMC5wRocEUGgCuHPMdCUMyqNtcHMIZrgLHl3ECdlvGaPEvNmICAZAavgHCU2Yk/zdAhJwYrPEWMMBtO0RMc8EkApzGfjOxPQOCeQcbI4kYevEWAfACWfHEaCEBHQDB7vPHlGzKXzLIl6wX8hJZHCCsKUFHGNACBXA9ITRDuBwnqDyScHwVNhC6SdsRDQIV00wjGQAg7rpKr6JqgdxkDcP/Gcw8r3gxAr0nedhoFhtsDg+YLjxxASgLw8d8y8kMNLrMzHqxFwSAAHMczdioHo0oAtrSOgqzJf46z0mUJCObGYbMACwwMWUiEh6wAam0NwWSNiJs0DY0Lp4SMYWMzwwgAqF7x/+wx+0DMgkDshidL1w4bgkdHvJiKSMQA4SJxzoUAymiSg4FKBS0sikdJ8ZSzwq9F5YiAB3wyhoxTRWAAGmszSsGLqDT04ijRODc0QrGAjl8ELTKwoPgwHdDM9pcTwMF1Qb0zZeMxAygxISUPgiRIxJgAQTTx18NPzwt1p2my+BsyATwAbUrTiWSzsUwvjyCjTLhwsLTGxIEHnLd/834Z8nhfGeW4gCNMT1+vTWK4AIkoCoHsz3ITNcgBUeCE86rPAAvwJZkZw9PTJkAnc1+IzUXzdn9BdRLqBcJ4Ew+qK70YCa/EyFVPE9vFlRO7dpaRRycccGYvBogQAHEeA9QoQES/S4rUiQRszYTBdx+9FZu3Ex4/QHQfA85N9GrEdcWPdfU/aotTYLykgAOkJDnsM4lEgK/giXgrTbjzZWDHByLgRhDXZayug230rpJPRWqRCAnPdytPd/pZNfhnMlyLHfseS4W5sC0vC1+VUQFbuAEJdyCE7ALMLMc8HbBmMLV8C8RkAKowib3XEQ7auH3hOGEbMMzi8jMqB+T3f9Ckm0ibr0bfcIt4a3YKm4y9fzG2bMaNmB6sMwyGeA/XSex3sI5PT5b9Q3kHv0BS+INlh0kNSOxTV3hTT5WwOrZGR6w9fq41ZAb2TIW8R1HPL7lV/NGwt1IoG0pAaDew2Ax/UwIwIM3ljEv5/jbal6dsC3OT2tLOjTjPFzjptHcbkF1Ol0s4t3nd0XW9j2vljIAxdk7zEvodUkDDlDS8RzWjj5hsM3LBCDadey/u6ArKBAASz1B8vzpG5ZBy6wwvazPr1zksiAiJiAAQvIWbRooje7qgvwmCu0qCjbH93oLZZzUVhJ49OQcng7sVYbhoB1hBZACfiGQtJAds2zM9LT/zZsB7UZb312MzwXAAfVJCxJA4ssew/WS4uButfXd0dTOoqwwxkuR7gvgrnru67/+7qDe5h1tKQVQ1KaziKMLTTIRASyJNzitxhSe5v6OTyxuz5aCAJU+PbbuQ9k4CAqvOjZjVfwO8RF/4IxdyEOtfznB4JrwIRHAAQTzHpexxnw+8gdn12A+Asxi25UA2EvBHkEC81+NpaVM8zxn14YMAm/3tTxB2O7appkS3f1O9D0b7+ERYQvwAtRcRoQNLAK905zItlIfvVQ/rzCQ9JkQAUhuMNosHhsd9WG/amKX4VW/LAvpt+lu5RRdWIPj9m9PbN9szwugoIVwBlUJADEw/7VDlCWALPJ9H1rC7VJVtACwOU08lAFozNtex0d83/gHF0epXAAM0rrjWBoV4B7w3X+Jzficf6nDjRhQlyMYzxQSYBeGUdGttPrJ/FbD7Sr46MPbWwLdcdivsvm4b3JBGb6uIgD/tSPb6wBD5PT9qvrFD6ZxhN0D4AIfwp05PuGaP/0Y7YKez8UCEEZMJE+5xNreT93ifngN4gJ3gUxanv7zjHCN5Co5RBMfJLHCK//ADQgCDgIIAgoIFwAHAAMNBAQMBYcDAgIBl5iZmpucnZ6foKGio6SlpqeoqaqrrK2ur6KUAwgWBooMCZALCpSwvr/AwcLDxMXGx6EOmAIDA/8OBosMDAQLBQi9yNna29zd3t/HzRe2j5G8leDp6uvs7e6sgpgDHra5DJOW7/r7/P3+w/kCVKJxQEICIWisYfOnI8CMHDgC1ODxT9QDIkeI9KihrGKmfEYe1IjS0KNJXzmWAIighUAaXgv74QgS4MmlHRBOeqpx40ePAD50lNQJYQYQHD8i6ly6agwWMky6CNnVLJ6/BxAc5AiABEdOppogPJgRYIelG0tn1Ogx44FVsHBJCZiShYsYIVtgBuyXk+ygInE3TbzxpcwDnQ8OX6rhM7BjUAKaVHFCIAEVmJTQ8ROA5MYVAV5yUHRcwwiPB0GSBEB7smgNHw9w8NjxuDZmpxoeAAwhYKVa5opBzAZwMGPG18A1ZiiBoAMIBMAnkwAxLtHBEdvYM0ExMySXlHMec/jIQfbGUNK0fViCwL69+/fw48ufT58+GOqJZ9xIzL+///8ABijggAQWaOCBCCaoYABhABAIADs="
 
 /***/ }),
-/* 176 */
+/* 181 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47103,17 +47341,17 @@ module.exports = "data:image/gif;base64,R0lGODlhfwF/AeYAAOfn58HBwcDAwL+/v7m5uby8
 
 var _widget = __webpack_require__(2);
 
-var _template = __webpack_require__(177);
+var _template = __webpack_require__(182);
 
 var _template2 = _interopRequireDefault(_template);
 
-__webpack_require__(178);
+__webpack_require__(183);
 
-var _defaults = __webpack_require__(180);
+var _defaults = __webpack_require__(185);
 
 var _defaults2 = _interopRequireDefault(_defaults);
 
-var _avatar = __webpack_require__(181);
+var _avatar = __webpack_require__(186);
 
 var _avatar2 = _interopRequireDefault(_avatar);
 
@@ -47173,19 +47411,19 @@ _widget.Widget.config(["MagicWidgetProvider", function (MagicWidgetProvider) {
 }]);
 
 /***/ }),
-/* 177 */
+/* 182 */
 /***/ (function(module, exports) {
 
 module.exports = "<section class=\"spm_profile profile clearfix\" ng-if=\"widget.enabled\" ng-cloak sailplay-profile sailplay-fill-profile config=\"widget.options.config\">\n\n  <div class=\"container container-fluid spm_profile-container\">\n\n    <!-- authorized section -->\n    <div class=\"row\" data-ng-if=\"user()\">\n\n      <div class=\"col-lg-2 col-md-12 spm_profile-avatar\">\n\n        <div class=\"position-relative d-inline-block b-avatar mb-3\">\n\n          <!-- user pic -->\n          <img ng-src=\"{{ ( user().user.avatar['250x250'] | sailplay_pic ) || default_avatar}}\" class=\"rounded-circle profile_avatar\">\n\n          <!-- profile menu -->\n          <div class=\"b-avatar-menu position-absolute\">\n            <div class=\"b-avatar-menu__icon rounded-circle bg-primary cursor-pointer\"\n                 ng-click=\"menuActive=!menuActive\">\n              <img ng-src=\"{{widget.images.icon_dots}}\">\n            </div>\n          </div>\n\n          <div class=\"b-avatar-menu__list position-absolute bg-light\" data-ng-class=\"{type_active: menuActive}\" data-ng-mouseleave=\"menuActive=false\">\n            <a href=\"#\" class=\"b-avatar-menu__item d-flex align-items-center text-dark py-3 pl-4 pr-5\"\n               ng-click=\"$event.preventDefault();$root.$broadcast('info:state', true);menuActive=false\">\n              <i class=\"b-avatar-menu__item-icon\">\n                <img class=\"mw-100 h-75\" ng-src=\"{{widget.images.icon_profile}}\">\n              </i>\n              <span ng-bind=\"widget.texts.menu_my_profile\"></span>\n            </a>\n            <a href=\"#\" class=\"b-avatar-menu__item text-dark py-3 pl-4 pr-5\" data-ng-click=\"$event.preventDefault();logout();menuActive=false\">\n              <i class=\"b-avatar-menu__item-icon\">\n                <img class=\"mw-100 h-75\" ng-src=\"{{widget.images.icon_logout}}\">\n              </i>\n              <span ng-bind=\"widget.texts.menu_logout\"></span>\n            </a>\n          </div>\n\n        </div>\n\n      </div>\n\n      <div class=\"col col-lg-6 col-md-12 spm_profile-info\">\n\n        <div class=\"spm_profile-info-inner\">\n\n          <p class=\"font-weight-light spm_profile-subheader\">\n            <span>{{ user().user.name }}, </span>\n            <span ng-bind-html=\"widget.texts.sub_header | to_trusted\"></span>\n          </p>\n\n          <h1 class=\"display-4 text-uppercase font-weight-bolder spm_profile-header\" data-ng-bind-html=\"widget.texts.header|to_trusted\"></h1>\n\n          <p class=\"spm_profile-description\" data-ng-bind-html=\"widget.texts.description | to_trusted\"></p>\n\n          <button type=\"button\" class=\"btn btn-lg btn-primary spm_profile-login_button\" href=\"#\" role=\"button\" data-ng-click=\"open_learn_more()\" data-ng-bind=\"widget.texts.learn_more_button_text\"></button>\n\n        </div>\n\n      </div>\n\n      <div class=\"spm_status-bar status-bar col-lg-4 col-md-12 clearfix\" ng-cloak ng-class=\"{type_list: show_list}\">\n\n        <div>\n\n          <div class=\"align-items-top\">\n\n            <div class=\"b-current-status d-flex flex-column align-items-center text-center spm_profile-status\">\n              <i ng-style=\"currentStatus.style\"></i>\n              <h2 class=\"font-akrobat font-weight-bolder text-uppercase mb-0 spm_profile-status-name\" ng-bind=\"currentStatus.name || widget.texts.status.no_status\"></h2>\n              <div class=\"mt-1 font-weight-light\" ng-bind-html=\"(currentStatus.description|to_trusted) || widget.texts.status.no_status_description\"></div>\n            </div>\n\n            <div class=\"b-points d-flex spm_profile-points\" data-ng-click=\"$root.$broadcast('history:state', true)\">\n              <div class=\"display-1 text-center points-balance font-akrobat font-weight-bold text-uppercase spm_profile-points-confirmed\">{{ user().user_points.confirmed | number }} {{ widget.texts.points.label }}</div>\n            </div>\n\n          </div>\n\n        </div>\n\n        <div ng-show=\"show_list\" class=\"container py-0 py-lg-5 position-relative\">\n          <div class=\"b-list-close rounded-circle d-flex bg-primary cursor-pointer align-items-center position-absolute\"\n               ng-click=\"show_list=false\"></div>\n          <div class=\"row align-items-center\">\n            <div class=\"b-statuses col-md-12 my-5 my-lg-0 col-lg-4 d-flex flex-column align-items-center text-center\"\n                 ng-repeat=\"status in list track by $index\">\n              <i ng-style=\"status.style\"></i>\n              <h2 class=\"font-akrobat font-weight-bolder text-uppercase mb-0\" ng-bind=\"status.name\"></h2>\n              <h5 class=\"my-2\"\n                  ng-bind=\"(status.points|number)+' '+(status.points|sailplay_pluralize:('points.texts.pluralize'|tools))\"></h5>\n              <div class=\"font-weight-light\" ng-bind-html=\"status.description|to_trusted\"></div>\n            </div>\n          </div>\n        </div>\n\n      </div>\n\n    </div>\n\n    <!-- unauthorized section -->\n    <div class=\"row\" data-ng-if=\"!user()\">\n\n      <div class=\"col-lg-2 col-md-12 spm_profile-avatar\">\n\n        <div class=\"position-relative d-inline-block b-avatar mb-3\">\n\n          <!-- user pic -->\n          <img ng-src=\"{{ default_avatar }}\" class=\"rounded-circle profile_avatar\">\n\n        </div>\n\n      </div>\n\n      <div class=\"col col-lg-10 col-md-12 spm_profile-info\">\n\n\n        <div class=\"spm_profile-info-inner\">\n\n          <p class=\"font-weight-light spm_profile-subheader\">\n            <span ng-bind-html=\"widget.texts.sub_header | to_trusted\"></span>\n          </p>\n\n          <h1 class=\"display-4 text-uppercase font-weight-bolder spm_profile-header\" data-ng-bind-html=\"widget.texts.header|to_trusted\"></h1>\n\n          <p class=\"spm_profile-description\" data-ng-bind-html=\"widget.texts.description | to_trusted\"></p>\n\n          <button type=\"button\" class=\"btn btn-lg btn-primary spm_profile-login_button\" href=\"#\" role=\"button\" data-ng-click=\"$event.preventDefault(); login('remote', {widget: 'bootstrap_profile_stacked', element: 'profile_login_button'});\" data-ng-bind=\"widget.texts.login_button_text\"></button>\n\n        </div>\n\n      </div>\n\n    </div>\n\n  </div>\n\n  <magic-modal show=\"$parent.$parent.show_info\" class=\"spm_profile-info-modal\">\n    <magic-modal-title>\n      <div class=\"b-avatar spm_profile-info-modal-avatar\">\n        <img class=\"spm_profile-info-modal-avatar-image\" ng-src=\"{{user().user.avatar['250x250']|sailplay_pic}}\" class=\"rounded-circle\">\n      </div>\n      <span class=\"d-block my-5 spm_profile-info-modal-name\" ng-bind=\"user().user.name\"></span>\n    </magic-modal-title>\n    <magic-modal-body>\n\n      <div data-ng-repeat=\"field in sailplay.fill_profile.form.fields\" data-ng-if=\"field.value\" data-ng-switch=\"field.input\">\n\n        <div class=\"b-info pb-3 pt-3 pr-3 d-flex flex-column flex-column-light spm_profile-info-modal-field spm_form_field\" data-ng-switch-when=\"subscriptions\">\n          <label class=\"spm_form_checkbox\" data-ng-class=\"{ checked: field.value.email === 1 }\">\n            <input class=\"spm_form_checkbox_input\" type=\"checkbox\" data-ng-model=\"field.value.email\" data-ng-true-value=\"1\" data-ng-false-value=\"0\" disabled>\n            <span class=\"spm_form_checkbox_label\" data-ng-bind=\"field.data.email_label\"></span>\n          </label>\n          <label class=\"spm_form_checkbox\" data-ng-class=\"{ checked: field.value.sms === 1 }\">\n            <input class=\"spm_form_checkbox_input\" type=\"checkbox\" data-ng-model=\"field.value.sms\" data-ng-true-value=\"1\" data-ng-false-value=\"0\" disabled>\n            <span class=\"spm_form_checkbox_label\" data-ng-bind=\"field.data.sms_label\"></span>\n          </label>\n        </div>\n\n        <div class=\"b-info pb-3 pt-3 pr-3 d-flex flex-column flex-column-light spm_profile-info-modal-field\" data-ng-switch-default>\n          <img class=\"spm_profile-info-modal-field-icon\" data-ng-if=\"field.icon\" ng-src=\"{{ field.icon }}\">\n          <span class=\"spm_profile-info-modal-field-label\">{{ field.label }}</span>\n          <span class=\"mt-2 spm_profile-info-modal-field-value\" ng-bind=\"field.value.split('  ').join(', ')\"></span>\n        </div>\n\n      </div>\n\n\n      <!--<div class=\"b-info mb-5 d-flex align-items-center flex-column flex-column-light\">-->\n        <!--<img ng-src=\"{{widget.images.icon_phone}}\">-->\n        <!--<span class=\"mt-2\" ng-bind=\"user().user.phone|tel\"></span>-->\n      <!--</div>-->\n\n      <!--<div class=\"b-info mb-5 d-flex align-items-center flex-column flex-column-light\">-->\n        <!--<img ng-src=\"{{widget.images.icon_bday}}\">-->\n        <!--<span class=\"mt-2\" ng-bind=\"user().user.birth_date|date:'d MMMM yyyy'\"></span>-->\n      <!--</div>-->\n\n      <div class=\"b-info d-flex align-items-center justify-content-center spm_profile-info-modal-button\">\n        <a class=\"btn btn-md btn-primary text-uppercase px-3 py-2 font-weight-bolder\" href=\"#\" role=\"button\"\n           ng-click=\"$event.preventDefault();$root.$broadcast('info:state', false); $root.$broadcast('profile:state', true)\"\n           ng-bind=\"widget.texts.modals.profile.edit_button\"></a>\n      </div>\n\n\n    </magic-modal-body>\n  </magic-modal>\n\n\n  <magic-modal class=\"spm_profile-edit-modal\" on-close=\"revert_profile_form\" show=\"$parent.$parent.show_profile\" prevent-close=\"lock_profile\">\n    <magic-modal-title ng-bind-html=\"widget.texts.modals.profile.title|to_trusted\"></magic-modal-title>\n    <magic-modal-body>\n\n      <form name=\"profile_form\" class=\"spm_profile-form\"\n            ng-submit=\"sailplay.fill_profile.submit(profile_form, onSaveProfile);\">\n\n        <div class=\"spm_form_field spm_form_field_type_{{ field.input }}\" ng-repeat=\"field in sailplay.fill_profile.form.fields\"\n             ng-switch=\"field.input\">\n\n          <div ng-switch-when=\"text\" class=\"position-relative\">\n            <input class=\"spm_form_input\" type=\"text\" placeholder=\"{{ field.placeholder }}\"\n                   ng-model=\"field.value\" ng-required=\"field.required\">\n            <label class=\"spm_form_label type_absolute\" ng-bind=\"field.label\"></label>\n          </div>\n\n          <div ng-switch-when=\"date\" class=\"position-relative\">\n            <label class=\"spm_form_label \" ng-bind=\"field.label\"></label>\n            <date-picker ng-model=\"field.value\" ng-required=\"field.required\"></date-picker>\n          </div>\n\n          <div ng-switch-when=\"phone\" class=\"position-relative\">\n            <input class=\"spm_form_input\" type=\"text\"\n                   ui-mask=\"{{ field.placeholder }}\" ng-model=\"field.value\"\n                   ng-required=\"field.required\">\n            <label class=\"spm_form_label type_absolute\" ng-bind=\"field.label\"></label>\n          </div>\n\n          <div ng-switch-when=\"email\" class=\"position-relative\">\n            <input class=\"spm_form_input\" type=\"email\" placeholder=\"{{ field.placeholder }}\"\n                   ng-model=\"field.value\" ng-required=\"field.required\">\n            <label class=\"spm_form_label type_absolute\">{{ field.label }}</label>\n          </div>\n\n          <div ng-switch-when=\"select\" class=\"position-relative\">\n            <select class=\"spm_form_select\" ng-model=\"field.value\"\n                    ng-options=\"item.value as item.text for item in field.data\"></select>\n            <label class=\"spm_form_label type_absolute\" ng-bind=\"field.label\"></label>\n          </div>\n\n          <div class=\"container-left-profile_field-value position-relative\" data-ng-switch-when=\"radio\">\n            <label class=\"spm_form_label\" ng-bind=\"field.label\"></label>\n            <label class=\"spm_form_checkbox\" data-ng-class=\"{ checked: field.value === item.value }\" data-ng-repeat=\"item in field.data\">\n              <input class=\"spm_form_checkbox_input\" type=\"radio\" data-ng-model=\"field.value\" data-ng-value=\"item.value\">\n              <span class=\"spm_form_checkbox_label\" data-ng-bind=\"item.text\"></span>\n            </label>\n          </div>\n\n          <div class=\"container-left-profile_field-value position-relative\" data-ng-switch-when=\"checkbox\" data-sailplay-variable-checkbox data-ng-model=\"field.value\">\n            <label class=\"spm_form_label\" ng-bind=\"field.label\"></label>\n            <label class=\"spm_form_checkbox\" data-ng-repeat=\"item in field.data\" data-ng-class=\"{ checked: SailplayVariableCheckbox.value[item.value] }\">\n              <input class=\"spm_form_checkbox_input\" type=\"checkbox\" data-ng-model=\"SailplayVariableCheckbox.value[item.value]\" data-ng-change=\"SailplayVariableCheckbox.change()\">\n              <span class=\"spm_form_checkbox_label\" data-ng-bind=\"item.text\"></span>\n            </label>\n          </div>\n\n          <div class=\"container-left-profile_field-value position-relative\" data-ng-switch-when=\"subscriptions\"\n               data-ng-show=\"field.value\">\n            <label class=\"spm_form_checkbox\" data-ng-class=\"{ checked: field.value.email === 1 }\">\n              <input class=\"spm_form_checkbox_input\" type=\"checkbox\" data-ng-model=\"field.value.email\" data-ng-true-value=\"1\" data-ng-false-value=\"0\">\n              <span class=\"spm_form_checkbox_label\" data-ng-bind=\"field.data.email_label\"></span>\n            </label>\n            <label class=\"spm_form_checkbox\" data-ng-class=\"{ checked: field.value.sms === 1 }\">\n              <input class=\"spm_form_checkbox_input\" type=\"checkbox\" data-ng-model=\"field.value.sms\" data-ng-true-value=\"1\" data-ng-false-value=\"0\">\n              <span class=\"spm_form_checkbox_label\" data-ng-bind=\"field.data.sms_label\"></span>\n            </label>\n          </div>\n\n        </div>\n\n        <div class=\"spm_form_buttons\">\n          <button class=\"spm_btn theme_1 type_big type_cancel font-weight-bolder\" ng-click=\"$parent.close()\"\n                  ng-bind=\"widget.texts.modals.profile.cancel\"></button>\n          <input type=\"submit\" class=\"spm_btn theme_1 type_filled type_big font-weight-bolder\"\n                 ng-value=\"widget.texts.modals.profile.save\"/>\n        </div>\n\n      </form>\n\n    </magic-modal-body>\n  </magic-modal>\n\n\n  <magic-modal show=\"$parent.$parent.show_history\">\n    <magic-modal-title>\n      <span class=\"d-block text-left history_title\" ng-bind=\"widget.texts.modals.history.title\"></span>\n    </magic-modal-title>\n    <magic-modal-body>\n      <div sailplay-history>\n\n        <table class=\"spm_profile-history\" ng-show=\"history().length\">\n          <tbody>\n          <tr dir-paginate=\"item in history() | itemsPerPage:5\" pagination-id=\"history_pages\">\n            <td class=\"type_lighter\" ng-bind=\"item.action_date | date:'d MMM yyyy'\"></td>\n            <td>\n              <div ng-bind=\"item|history_item\"></div>\n            </td>\n            <td></td>\n            <!--<td ng-class=\"{type_positive:item.points_delta>0, type_negative:item.points_delta<0}\"-->\n            <!--ng-bind=\"item.points_delta?(item.points_delta|number):''\"></td>-->\n          </tr>\n          </tbody>\n        </table>\n\n        <dir-pagination-controls max-size=\"7\" direction-links=\"false\" data-page-links=\"true\" pagination-id=\"history_pages\"\n                                 template-url=\"magic.pagination\"\n                                 auto-hide=\"true\"></dir-pagination-controls>\n\n        <div ng-hide=\"history().length\" ng-bind=\"widget.texts.modals.history.empty\"></div>\n\n      </div>\n    </magic-modal-body>\n  </magic-modal>\n\n  <magic-modal class=\"learn_more_modal\" show=\"$parent.$parent.show_learn_more\">\n    <magic-modal-body>\n\n      <div class=\"mb-5 d-flex align-items-center flex-column flex-column-light\" data-ng-bind-html=\"widget.texts.learn_more_html | to_trusted\">\n\n      </div>\n\n    </magic-modal-body>\n  </magic-modal>\n\n</section>";
 
 /***/ }),
-/* 178 */
+/* 183 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(179);
+var content = __webpack_require__(184);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -47210,7 +47448,7 @@ if(false) {
 }
 
 /***/ }),
-/* 179 */
+/* 184 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -47224,19 +47462,19 @@ exports.push([module.i, ".bootstrap_profile_stacked .spm_profile {\n  position: 
 
 
 /***/ }),
-/* 180 */
+/* 185 */
 /***/ (function(module, exports) {
 
 module.exports = {"styles":{"b-list-close:hover":{"box-shadow":"-6px 6px 14px 0 rgba(145, 70, 13, 0.66)"},"spm_profile-points":{"background-color":"rgb(252,46,162)"},"b-next-status":{"position":"relative"},"spm_profile":{"background-image":"url(https://sailplays3.cdnvideo.ru/media/assets/assetfile/91db09a9ee09ff81fadffb1132423541.png)","font-family":"Roboto, sans-serif"},"history_title":{"font-family":"Akrobat, sans-serif"},"points-balance":{"font-size":"50px","font-weight":800,"line-height":"120%","letter-spacing":"2px"},"spm_profile-info-modal-field-label":{"color":"rgb(181,186,194)","font-weight":300},"spm_profile-subheader":{"color":"#fff","margin-top":"10px","font-family":"Akrobat, sans-serif","font-size":"35px"},"b-statuses h5":{"color":"#7e8c8a"},"spm_profile-info-modal-avatar":{"margin-top":"10px"},"spm_profile-info-modal-field":{"padding-left":"95px"},"spm_profile-info-modal-button a":{"letter-spacing":"1px","margin":"0 40px","padding":"15px","width":"100%","font-weight":400,"border":"none","display":"block","background-color":"rgb(252,46,162)"},"b-list-close:before":{"right":0,"bottom":0,"top":0,"transform":"rotate(135deg)","height":"2px","content":"''","width":"18px","background":"white","position":"absolute","margin":"auto","display":"block","left":0},"spm_profile-status-name":{"font-size":"35px"},"b-statuses":{"position":"static"},"spm_profile-login_button":{"font-size":"16px","color":"rgb(252,46,162)","box-shadow":"0 0 6px 0 rgba(0,0,0,0.3)","padding":"15px 70px","font-weight":"bold","background-color":"#fff"},"spm_profile-header":{"font-size":"55px","font-family":"Akrobat, sans-serif"},"spm_profile-info-modal-field-icon":{"left":"40px"},"b-points":{"cursor":"pointer"},"spm_profile-container":{"background-image":"url(https://sailplays3.cdnvideo.ru/media/assets/assetfile/a871188f76c392582c013d2cc875be3d.png)","background-position":"-1199px -544px"},"spm_profile-status":{"background-image":"url(https://sailplays3.cdnvideo.ru/media/assets/assetfile/01dfa00c60cd3a7f81bd5eb8c08af7da.png)","background-repeat":"repeat","background-color":"rgb(233,156,78)"},"spm_profile-info-modal-button":{"margin-top":"40px"},"@media (max-width: 750px) | spm_profile":{"background-position":"30% bottom"},"spm_profile-info-modal-avatar-image":{"border-radius":"50%","width":"130px","display":"inline-block"},"b-current-status > *":{"z-index":2},"spm_profile-info-modal-name":{"display":"none"},"b-avatar-menu__icon":{"background-color":"rgb(252,46,162)"},"b-statuses > *":{"z-index":5},"b-list-close":{"width":"54px","top":"-27px","right":0,"z-index":6,"height":"54px"},"spm_profile-form .spm_form_field_type_radio":{"border-bottom":"1px solid #eee","padding-bottom":"20px"},"b-list-close:after":{"right":0,"bottom":0,"top":0,"transform":"rotate(-135deg)","height":"2px","content":"''","width":"18px","background":"white","position":"absolute","margin":"auto","display":"block","left":0},"spm_profile-description":{"font-weight":"300"},"@media (min-width: 1678px) | spm_profile":{"background-size":"cover","background-position":"center bottom"},"b-next-status:before":{"opacity":0.2,"top":0,"height":"100%","content":"''","width":"2px","background":"#58839a","position":"absolute","left":"13%"},"spm_profile-header, .spm_profile-description, .spm_profile-status-name":{"color":"#fff"},"b-current-status":{"cursor":"pointer","position":"static"},"spm_profile-form .spm_form_field":{"padding-right":"50px","padding-left":"50px"}},"enabled":true,"id":"bootstrap_profile_stacked","texts":{"status":{"description":"Get <span style=\"color:#ca5b54;font-weight: 500;\">{{ (toNext|number)+' '+(toNext|sailplay_pluralize:'point,points,points') }}</span><br> to get gold status","description_final":"","no_status":"No status"},"description":"Here you can spend your points on gifts, look after your statuses and also carry out some extra tasks for extra points.","menu_logout":"Logout","sub_header":"Welcome to","modals":{"profile":{"cancel":"CANCEL","save":"SAVE","edit_button":"EDIT PROFILE","title":"PROFILE"},"history":{"date":"date","action":"action","points":"points","empty":"No actions","title":"HISTORY"}},"learn_more_button_text":"LEARN MORE","login_button_text":"SIGN IN","header":"FRIENDS WITH BENEFITS","menu_my_profile":"My profile","points":{"description":"Complete quests to recieve<br>extra points and statuses","label":"Points"},"learn_more_html":"<strong>How it works</strong><br>• Earn Points by shopping in store and telling others about Excitement with Hookups<br>• Friend referrals (Hookups) get you and your buddies 10% off a purchase when they mention your name at sign up<br>• More ways to earn points coming in the future!<br>• Redeem Points for store credits or our Pleasure Product of the Month (1 smoke, 1 love)<br>• Pssst... Every $200 spent = 2000 points = $20 in store credit or a $30+ gift item!<br>• Don’t wait too long between visits - shop with us often to keep points active!<br>• Level up your FWB Relationship Status to earn even more points and perks<br>• Keep track of your relationship status and refer friends on iloveexcitement.com/FWB-Rewards<br>• Receive special coupons and offers via text and email<br>• While you can opt out anytime if desired, you’ll miss out on the best deals and fun events delivered only via text!<br><br><br><strong>RELATIONSHIP STATUS (aka Tiers)</strong><br><strong>1st Level: Flirt</strong><br>• Intro level, every customer starts here.<br>• $0 to $99.99 spent in 12 mos<br>• 50 points given as bonus for signing up? - Welcome email and text triggered offering coupon for filling out profile online<br>• Birthday coupon (if you give us your bday) $10 off a $20 or more purchase + Double points on your birthday<br>• Receive texts and emails about special sales and events at Excitement<br>• Points expire if no purchases are made within 6 months of when the points were earned. If a purchase is made 1x per 6 mos, points remain.<br>• Points accrue a $1 = 10 points<br><br><strong>2nd Level: Fling</strong><br>• $100+ to $249.99 spent in 12 mos<br>• 100 Bonus Points Earned <br>• Birthday coupon (if you give us your bday) $10 off a $20 or more purchase + Double points on your birthday<br>• Receive texts and emails about special sales and events at Excitement<br>• Points expire if no purchases are made within 6 months of when the points were earned. If a purchase is made 1x per 6 mos, points remain.<br>• Earn 10% more in bonus points for every dollar spent at this level. Points accrue a $1 = 11 points<br><br><strong>3rd Level: Flame</strong><br>• $250+ to $499.99 spent in 12 mos<br>• 200 Bonus Points Earned <br>• Birthday coupon (if you give us your bday) $10 off a $20 or more purchase + Double points on your birthday<br>• Receive texts and emails about special sales and events at Excitement<br>• Points earned at this tier never expire (points earned at previous tiers expire according to tier level)<br>• Earn 20% more in bonus points for every dollar spent at this level. Points accrue a $1 = 12 points<br><br><strong>4th Level: Forever</strong><br>• $500+ spent in 12 mos<br>• 500 Bonus Points Earned<br>• Birthday coupon (if you give us your bday) $10 off a $20 or more purchase + Double points on your birthday<br>• Receive texts and emails about special sales and events at Excitement<br>• Points earned at this tier never expire (points earned at previous tiers expire according to tier level)<br>• Earn 30% more in bonus points for every dollar spent at this level. Points accrue at $1= 13 points<br>","error":"Error","open_history":"History"},"images":{"empty_status":"https://sailplays3.cdnvideo.ru/media/assets/assetfile/1834f62f62f6a5011d447636714ad89d.png","icon_logout":"https://sailplays3.cdnvideo.ru/media/assets/assetfile/4db300a4a8c7fcd8297b10f4d3111db8.svg","icon_close":"https://sailplays3.cdnvideo.ru/media/assets/assetfile/459234d99339b7ea5c10d772f9d62ba0.png","icon_dots":"https://sailplays3.cdnvideo.ru/media/assets/assetfile/721c1d38bb943115c0b16dc5214e76ee.png","icon_profile":"https://sailplays3.cdnvideo.ru/media/assets/assetfile/17a40631c608e73a886d21ce975b0510.svg","close":"https://sailplays3.cdnvideo.ru/media/assets/assetfile/459234d99339b7ea5c10d772f9d62ba0.png"},"options":{"config":{"fields":[{"name":"firstName","required":true,"label":"First name","input":"text","type":"system","icon":"https://sailplays3.cdnvideo.ru/media/assets/assetfile/4ee7f4b31961c7923f02ffc35f20be26.png"},{"name":"lastName","required":true,"label":"Last name","input":"text","type":"system","icon":"https://sailplays3.cdnvideo.ru/media/assets/assetfile/d04458f535df45771f7395d9011d4c8e.png"},{"name":"addEmail","required":true,"label":"Email","input":"email","type":"system","icon":"https://sailplays3.cdnvideo.ru/media/assets/assetfile/2cede30616fe34a5ab8b1bbc974c2982.png"},{"name":"addPhone","placeholder":"+9 (999) 999-99-99","required":true,"label":"Cell Phone","input":"phone","type":"system","icon":"https://sailplays3.cdnvideo.ru/media/assets/assetfile/acd9b6342c98789a2331c2c7a671a7b5.png"},{"name":"birthDate","required":true,"label":"Birthday","input":"date","type":"system","icon":"https://sailplays3.cdnvideo.ru/media/assets/assetfile/a46af2f06be991403f1f7f889dcc778d.png"},{"name":"zipcode","placeholder":"999999","required":true,"label":"Zip code","input":"phone","type":"variable","icon":"https://sailplays3.cdnvideo.ru/media/assets/assetfile/6f71aa4115d34789bea2678bc3c5b80b.png"},{"name":"anniversary","required":true,"label":"Date of your anniversary","input":"date","type":"variable","icon":"https://sailplays3.cdnvideo.ru/media/assets/assetfile/5fb1f1ceb6fa4d2ecc7b9153986feba0.png"},{"name":"gender","data":[{"text":"Male","value":"male"},{"text":"Female","value":"female"},{"text":"Transmale","value":"transmale"},{"text":"Transfemale","value":"transfemale"},{"text":"Non-Binary Gender","value":"nonbinary"}],"required":true,"label":"Gender","input":"select","type":"variable","icon":"https://sailplays3.cdnvideo.ru/media/assets/assetfile/88fbea9f5e881a6db7de0e3d30ecba7b.png"},{"name":"LGBTQIA","data":[{"text":"Yes","value":"yes"},{"text":"No","value":"no"}],"required":true,"label":"I am part of the queer or LGBTQIA+ community","input":"radio","type":"variable","icon":"https://sailplays3.cdnvideo.ru/media/assets/assetfile/7825d4007951f8713ab53105acf7304f.png"},{"name":"shop_for","data":[{"text":"Sex Toys and Products","value":"Sex Toys and Products"},{"text":"Lingerie","value":"Lingerie"},{"text":"Smoke Items","value":"Smoke Items"},{"text":"DVDs or Magazines","value":"DVDs or Magazines"}],"required":true,"label":"I shop at Excitement for:","input":"checkbox","type":"variable","icon":"https://sailplays3.cdnvideo.ru/media/assets/assetfile/3b977645504ec7eafff8f2ec4f9047f5.png"},{"name":"locations","data":[{"text":"Camp Hill, PA","value":"Camp Hill, PA"},{"text":"Harrisburg, PA","value":"Harrisburg, PA"},{"text":"Reading, PA","value":"Reading, PA"},{"text":"York, PA","value":"York, PA"},{"text":"Online at iloveexcitement.com","value":"Online at iloveexcitement.com"}],"required":true,"label":"I shop at these Excitement locations","input":"checkbox","type":"variable","icon":"https://sailplays3.cdnvideo.ru/media/assets/assetfile/91d4d2e8ac2055ca9704dcf6d3ed9a0d.png"},{"name":"subscriptions","data":{"email_label":"Opt in for email","sms_label":"Opt in for sms"},"required":false,"label":"","input":"subscriptions","type":"system","icon":"https://sailplays3.cdnvideo.ru/media/assets/assetfile/5fb1f1ceb6fa4d2ecc7b9153986feba0.png"}],"errors":{"email is not valid":"Неправильно указан email","-200010":"Такой email уже используется","phone is not valid":"Неправильно указан телефон","-200007":"Такой телефон уже используется"}}}}
 
 /***/ }),
-/* 181 */
+/* 186 */
 /***/ (function(module, exports) {
 
 module.exports = "data:image/gif;base64,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"
 
 /***/ }),
-/* 182 */
+/* 187 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47244,11 +47482,11 @@ module.exports = "data:image/gif;base64,R0lGODlhfwF/AeYAAOfn58HBwcDAwL+/v7m5uby8
 
 var _widget = __webpack_require__(2);
 
-var _template = __webpack_require__(183);
+var _template = __webpack_require__(188);
 
 var _template2 = _interopRequireDefault(_template);
 
-__webpack_require__(184);
+__webpack_require__(189);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -47288,19 +47526,19 @@ _widget.Widget.config(["MagicWidgetProvider", function (MagicWidgetProvider) {
 }]);
 
 /***/ }),
-/* 183 */
+/* 188 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"spm_quests container-fluid clearfix\" ng-if=\"widget.enabled\" ng-cloak sailplay-profile>\n\n  <div class=\"container\">\n    <div class=\"row\">\n\n      <div class=\"col\">\n\n        <div class=\"spm_quests-container\">\n\n          <div class=\"spm_quests-container__left\">\n            <div class=\"spm_quests-header\" ng-bind=\"widget.texts.header\"></div>\n            <div class=\"spm_quests-sub-header\" ng-bind=\"widget.texts.sub_header\"></div>\n          </div>\n\n          <div class=\"spm_quests-container__right spm_quests-list\" sailplay-actions>\n\n            <div class=\"spm_quests-item\" ng-repeat=\"action in actions().actions\" ng-mouseenter=\"action.loaded=true\">\n              <i class=\"spm_quests-item-icon\"\n                 ng-style=\"{backgroundImage: (action_data(action).pic|sailplay_pic|background_image)}\"></i>\n              <div class=\"spm_quests-item-content\">\n                <div class=\"spm_quests-item-name\" ng-bind=\"action_data(action).name\"></div>\n                <div class=\"spm_quests-item-points\" ng-show=\"action.points\"\n                     ng-bind=\"(action.points|number)+' '+(action.points|sailplay_pluralize:('points.texts.pluralize'|tools))\"></div>\n              </div>\n              <div class=\"spm_quests-item-hover\" ng-if=\"action.type!='fillProfile' && action.loaded\" sailplay-action\n                   styles=\"{{ action_styles(action_data(action)) }}\"\n                   action=\"action\" text=\"{{ action_data(action).button_text }}\">\n                <span ng-bind=\"action_data(action).button_text\"></span>\n              </div>\n              <div ng-if=\"action.type=='fillProfile'\" class=\"spm_quests-item-hover\">\n                <span ng-click=\"$root.$broadcast('profile:state', true)\" ng-bind=\"action_data(action).button_text\"></span>\n              </div>\n            </div>\n\n            <div class=\"spm_quests-item\" ng-repeat=\"action in actions_custom()\" ng-mouseenter=\"action.loaded=true\">\n              <i class=\"spm_quests-item-icon\" ng-style=\"{backgroundImage: (action.icon|sailplay_pic|background_image)}\"></i>\n              <div class=\"spm_quests-item-content\">\n                <div class=\"spm_quests-item-name\" ng-bind=\"action.name\"></div>\n                <div class=\"spm_quests-item-points\" ng-show=\"action.points\"\n                     ng-bind=\"(action.points|number)+' '+(action.points|sailplay_pluralize:('points.texts.pluralize'|tools))\"></div>\n              </div>\n              <div class=\"spm_quests-item-hover\" data-ng-click=\"custom.select(action)\">\n                {{ action.name }}\n              </div>\n            </div>\n\n          </div>\n\n        </div>\n\n      </div>\n\n    </div>\n  </div>\n\n\n  <magic-modal show=\"$parent.$parent.show_success\">\n    <magic-modal-title ng-bind=\"widget.texts.modals.success.title\"></magic-modal-title>\n    <magic-modal-body ng-bind-html=\"widget.texts.modals.success.body|to_trusted\"></magic-modal-body>\n  </magic-modal>\n\n  <magic-modal class=\"actions_custom_selected_modal\" data-ng-cloak data-show=\"custom.selected\">\n\n    <magic-modal-title>\n      {{ custom.selected.name }}\n    </magic-modal-title>\n    <magic-modal-body>\n\n      <div data-sailplay-action-custom data-action=\"custom.selected\"></div>\n\n    </magic-modal-body>\n\n\n  </magic-modal>\n\n</div>";
 
 /***/ }),
-/* 184 */
+/* 189 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(185);
+var content = __webpack_require__(190);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -47325,7 +47563,7 @@ if(false) {
 }
 
 /***/ }),
-/* 185 */
+/* 190 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -47339,7 +47577,7 @@ exports.push([module.i, ".spm_wrapper .bootstrap_quests .spm_quests {\n  positio
 
 
 /***/ }),
-/* 186 */
+/* 191 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47347,13 +47585,13 @@ exports.push([module.i, ".spm_wrapper .bootstrap_quests .spm_quests {\n  positio
 
 var _widget = __webpack_require__(2);
 
-var _template = __webpack_require__(187);
+var _template = __webpack_require__(192);
 
 var _template2 = _interopRequireDefault(_template);
 
-__webpack_require__(188);
+__webpack_require__(193);
 
-var _defaults = __webpack_require__(190);
+var _defaults = __webpack_require__(195);
 
 var _defaults2 = _interopRequireDefault(_defaults);
 
@@ -47386,120 +47624,10 @@ _widget.Widget.config(["MagicWidgetProvider", function (MagicWidgetProvider) {
 }]);
 
 /***/ }),
-/* 187 */
-/***/ (function(module, exports) {
-
-module.exports = "<div class=\"spm_quests clearfix container-fluid\" ng-if=\"widget.enabled\" ng-cloak sailplay-profile>\n\n  <div class=\"spm_quests-container row\">\n\n    <div class=\"spm_quests-container__left col-lg-4 col-md-12 col-sm-12 col-xs-12 order-lg-1 order-md-0 order-sm-0 order-xs-0\">\n      <div class=\"spm_quests-header\" ng-bind=\"widget.texts.header\"></div>\n      <div class=\"spm_quests-sub-header\" ng-bind=\"widget.texts.sub_header\"></div>\n    </div>\n\n    <div class=\"spm_quests-container__right spm_quests-list col-lg-8 col-md-12 col-sm-12 order-lg-0 order-md-1 order-sm-1 order-xs-1\" sailplay-actions>\n\n      <div class=\"row spm_quests-list-inner\">\n\n        <div ng-repeat=\"action in actions().actions\" class=\"col-xl-4 col-lg-6 col-md-6 col-sm-12\" >\n          <div class=\"spm_quests-item\" ng-mouseenter=\"action.loaded=true\">\n            <i class=\"spm_quests-item-icon\"\n               ng-style=\"{backgroundImage: (action_data(action).pic|sailplay_pic|background_image)}\"></i>\n            <div class=\"spm_quests-item-content\">\n              <div class=\"spm_quests-item-name\" ng-bind=\"action_data(action).name\"></div>\n              <div class=\"spm_quests-item-points\" ng-show=\"action.points\"\n                   ng-bind=\"(action.points|number)+' '+(action.points|sailplay_pluralize:('points.texts.pluralize'|tools))\"></div>\n            </div>\n            <div class=\"spm_quests-item-hover\" ng-if=\"action.type!='fillProfile' && (widget.options.preload_quests || action.loaded)\" sailplay-action\n                 styles=\"{{ action_styles(action_data(action)) }}\"\n                 action=\"action\" text=\"{{ action_data(action).button_text }}\">\n              <span ng-bind=\"action_data(action).button_text\"></span>\n            </div>\n            <div ng-if=\"action.type=='fillProfile'\" class=\"spm_quests-item-hover\">\n              <span ng-click=\"$root.$broadcast('profile:state', true)\" ng-bind=\"action_data(action).button_text\"></span>\n            </div>\n          </div>\n        </div>\n\n        <div class=\"col-xl-4 col-lg-6 col-md-6 col-sm-12\" ng-repeat=\"action in actions_custom()\">\n          <div class=\"spm_quests-item\" ng-mouseenter=\"action.loaded=true\">\n            <i class=\"spm_quests-item-icon\" ng-style=\"{backgroundImage: (action.icon|sailplay_pic|background_image)}\"></i>\n            <div class=\"spm_quests-item-content\">\n              <div class=\"spm_quests-item-name\" ng-bind=\"action.name\"></div>\n              <div class=\"spm_quests-item-points\" ng-show=\"action.points\"\n                   ng-bind=\"(action.points|number)+' '+(action.points|sailplay_pluralize:('points.texts.pluralize'|tools))\"></div>\n            </div>\n            <div class=\"spm_quests-item-hover\" sailplay-action-custom action=\"action\"></div>\n          </div>\n        </div>\n\n      </div>\n\n    </div>\n\n  </div>\n\n  <magic-modal show=\"$parent.$parent.show_success\">\n    <magic-modal-title ng-bind=\"widget.texts.modals.success.title\"></magic-modal-title>\n    <magic-modal-body ng-bind-html=\"widget.texts.modals.success.body|to_trusted\"></magic-modal-body>\n  </magic-modal>\n\n</div>";
-
-/***/ }),
-/* 188 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(189);
-if(typeof content === 'string') content = [[module.i, content, '']];
-// Prepare cssTransformation
-var transform;
-
-var options = {"hmr":true}
-options.transform = transform
-// add the styles to the DOM
-var update = __webpack_require__(1)(content, options);
-if(content.locals) module.exports = content.locals;
-// Hot Module Replacement
-if(false) {
-	// When the styles change, update the <style> tags
-	if(!content.locals) {
-		module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/dist/cjs.js!./style.less", function() {
-			var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/dist/cjs.js!./style.less");
-			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-			update(newContent);
-		});
-	}
-	// When the module is disposed, remove the <style> tags
-	module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 189 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(0)(false);
-// imports
-
-
-// module
-exports.push([module.i, ".spm_wrapper .bootstrap_quests_right {\n  position: relative;\n}\n.spm_wrapper .bootstrap_quests_right .spm_quests-container {\n  width: 100%;\n  height: 100%;\n  box-sizing: border-box;\n  margin: 0 auto;\n  padding: 50px 30px;\n}\n.spm_wrapper .bootstrap_quests_right .spm_quests-header {\n  font-weight: 900;\n  text-transform: uppercase;\n  font-size: 35px;\n  line-height: 1;\n  color: #000000;\n  position: relative;\n  letter-spacing: 2.3px;\n}\n.spm_wrapper .bootstrap_quests_right .spm_quests-sub-header {\n  font-weight: normal;\n  font-size: 16px;\n  line-height: 22px;\n  margin: 25px 0;\n  color: #000000;\n}\n.spm_wrapper .bootstrap_quests_right .spm_quests-list {\n  display: flex;\n  align-items: flex-start;\n  flex-wrap: wrap;\n  justify-content: flex-start;\n}\n@media (max-width: 992px) {\n  .spm_wrapper .bootstrap_quests_right .spm_quests-list {\n    align-items: center;\n    justify-content: center;\n    flex-wrap: wrap;\n  }\n}\n.spm_wrapper .bootstrap_quests_right .spm_quests-list-inner {\n  width: 100%;\n}\n.spm_wrapper .bootstrap_quests_right .spm_quests-item {\n  display: flex;\n  align-items: center;\n  justify-content: space-around;\n  position: relative;\n  height: 130px;\n  box-sizing: border-box;\n  padding: 0 8px;\n  margin: 10px;\n  overflow: hidden;\n  border-radius: 8px;\n  border: 1px solid #b4bac2;\n}\n.spm_wrapper .bootstrap_quests_right .spm_quests-item-hover {\n  display: none;\n  opacity: 0;\n  background: #ca5b54;\n  position: absolute;\n  left: 0;\n  top: 0;\n  width: 100%;\n  height: 100%;\n  z-index: 2;\n  align-items: center;\n  justify-content: center;\n  text-transform: uppercase;\n  font-weight: bold;\n  color: #ffffff;\n  font-family: Arial;\n}\n.spm_wrapper .bootstrap_quests_right .spm_quests-item-hover iframe {\n  width: 100% !important;\n  height: 100% !important;\n}\n.spm_wrapper .bootstrap_quests_right .spm_quests-item-hover > * {\n  cursor: pointer;\n}\n.spm_wrapper .bootstrap_quests_right .spm_quests-item-icon {\n  width: 75px;\n  height: 75px;\n  background-repeat: no-repeat;\n  background-position: center center;\n  background-size: contain;\n}\n.spm_wrapper .bootstrap_quests_right .spm_quests-item-content {\n  margin-left: 15px;\n  flex-basis: 65%;\n}\n@media (max-width: 500px) {\n  .spm_wrapper .bootstrap_quests_right .spm_quests-item-content {\n    flex-basis: 100%;\n    margin-left: 0;\n    margin-top: 15px;\n  }\n}\n.spm_wrapper .bootstrap_quests_right .spm_quests-item-name {\n  font-size: 16px;\n  line-height: 24px;\n  color: #222c3b;\n}\n.spm_wrapper .bootstrap_quests_right .spm_quests-item-points {\n  margin-top: 10px;\n  font-size: 16px;\n  line-height: 24px;\n  color: #222c3b;\n}\n@media (max-width: 800px) {\n  .spm_wrapper .bootstrap_quests_right .spm_quests-item {\n    margin: 25px 5px;\n  }\n}\n.spm_wrapper .bootstrap_quests_right .spm_quests-item:hover {\n  border-color: #ca5b54;\n}\n.spm_wrapper .bootstrap_quests_right .spm_quests-item:hover .spm_quests-item-hover {\n  opacity: 1;\n  visibility: visible;\n}\n.spm_wrapper .bootstrap_quests_right .spm_quests:hover .spm_quests-item-hover {\n  display: flex;\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 190 */
-/***/ (function(module, exports) {
-
-module.exports = {"styles":{"spm_quests-sub-header":{"color":"#fff","font-weight":300,"font-family":"Roboto, sans-serif"},"@media (max-width: 786px) | spm_quests-container__left":{"text-align":"center","padding-right":"10px","padding-left":"10px"},"spm_quests-item-name":{"color":"rgb(156,156,157)","font-weight":100},"spm_quests-header":{"color":"#fff","font-size":"45px","font-family":"Akrobat, Roboto, sans-serif"},"spm_quests-container__left":{"padding-right":"50px","padding-left":"50px"},"spm_quests":{"background-image":"url(https://sailplays3.cdnvideo.ru/media/assets/assetfile/77cd041c4a8e07e7c9400aa79a209046.png)","background-size":"cover","background-position":"top center","background-color":"rgb(35,38,45)"},"spm_quests-item":{"border-radius":0,"margin":"0 0 30px 0","border":"none","background-color":"rgb(56,56,58)"},"spm_quests-item-points":{"color":"#fff","font-size":"16px","text-transform":"uppercase"},"spm_quests-item-icon":{"background-size":"auto 50px"},"spm_quests-item-hover":{"background-color":"rgb(252,46,162)"}},"enabled":true,"id":"bootstrap_quests_right","texts":{"sub_header":"Complete quests to recieve extra points and statuses","header":"Quests","modals":{"success":{"body":"You have completed quest","title":"Congratulations"}}},"images":{},"options":{"preload_quests":true}}
-
-/***/ }),
-/* 191 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _widget = __webpack_require__(2);
-
-var _template = __webpack_require__(192);
-
-var _template2 = _interopRequireDefault(_template);
-
-__webpack_require__(193);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var widget = {
-  id: "bootstrap_status_bar",
-  template: _template2.default,
-  inject: ["$rootScope", "SailPlay", "SailPlayApi", "MAGIC_CONFIG", '$interpolate'],
-  controller: function controller($rootScope, SailPlay, SailPlayApi, MAGIC_CONFIG, $interpolate) {
-    return function (scope, elm, attrs) {
-
-      scope.show_list = false;
-      scope.currentStatus = null;
-      scope.nextStatus = null;
-      scope.list = scope.widget.options.list;
-      scope.toNext = 0;
-
-      scope.statusText = function (text) {
-        return $interpolate(text)(scope);
-      };
-
-      SailPlayApi.observe('load.user.info', function (user) {
-        if (!user) return;
-        var user_points = user.user_points.confirmed;
-        scope.currentStatus = scope.list.filter(function (status) {
-          return status.points <= user_points;
-        }).pop();
-        scope.nextStatus = scope.list.filter(function (status) {
-          return status.points > user_points;
-        }).shift();
-        scope.toNext = scope.nextStatus ? scope.nextStatus.points - user_points : null;
-      });
-    };
-  }
-};
-
-_widget.Widget.config(["MagicWidgetProvider", function (MagicWidgetProvider) {
-  MagicWidgetProvider.register(widget);
-}]);
-
-/***/ }),
 /* 192 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"spm_status-bar container-fluid status-bar clearfix\" ng-if=\"widget.enabled\" ng-cloak sailplay-profile ng-class=\"{type_list: show_list}\">\n\n    <div ng-show=\"!show_list && user()\" class=\"container py-5\">\n        <div class=\"row align-items-top\">\n\n            <div class=\"b-points col-12 col-md-6 col-lg-4 d-flex align-items-center spm_status-bar-points\" ng-click=\"$root.$broadcast('history:state', true)\">\n                <div class=\"w-75\">\n                    <h4 class=\"font-akrobat font-weight-bold text-uppercase mb-0\" ng-bind=\"widget.texts.points.label\"></h4>\n                    <div class=\"mt-3 font-weight-light\" ng-bind-html=\"widget.texts.points.description|to_trusted\"></div>\n                </div>\n                <div class=\"display-1 points-balance mr-auto font-akrobat font-weight-bold text-uppercase\" ng-bind=\"user().user_points.confirmed|number\"></div>\n            </div>\n\n            <div class=\"b-next-status my-5 my-md-0 col-12 col-md-6 col-lg-4 d-flex flex-column align-items-left spm_status-bar-next-status\">\n                <h4 class=\"font-akrobat font-weight-bold text-uppercase mb-0\" ng-bind=\"widget.texts.status.label\"></h4>\n                <div class=\"mt-3 font-weight-light\" ng-bind-html=\"statusText(toNext ? widget.texts.status.description : widget.texts.status.description_final)|to_trusted\"></div>\n            </div>\n\n            <div class=\"b-current-status col-12 mt-5 pt-md-5 col-md-12 mt-lg-0 pt-lg-0 col-lg-4 d-flex flex-column align-items-center text-center spm_status-bar-current-status\" ng-click=\"show_list=true\">\n                <i ng-style=\"currentStatus.style\"></i>\n                <h2 class=\"font-akrobat font-weight-bolder text-uppercase mb-0\" ng-bind=\"currentStatus.name\"></h2>\n                <div class=\"mt-1 font-weight-light\" ng-bind-html=\"currentStatus.description|to_trusted\"></div>\n            </div>\n\n        </div>\n    </div>\n\n    <div ng-show=\"show_list\" class=\"container py-0 py-lg-5 position-relative\">\n        <div class=\"b-list-close rounded-circle d-flex bg-primary cursor-pointer align-items-center position-absolute\"\n             ng-click=\"show_list=false\"></div>\n        <div class=\"row align-items-center justify-content-center\">\n            <div class=\"b-statuses col-md-12 my-5 my-lg-0 col-lg-4 d-flex flex-column align-items-center text-center\" ng-repeat=\"status in list track by $index\">\n                <i ng-style=\"status.style\"></i>\n                <h2 class=\"font-akrobat font-weight-bolder text-uppercase mb-0\" ng-bind=\"status.name\"></h2>\n                <h5 class=\"my-2\" ng-bind=\"(status.points|number)+' '+(status.points|sailplay_pluralize:('points.texts.pluralize'|tools))\"></h5>\n                <div class=\"font-weight-light\" ng-bind-html=\"status.description|to_trusted\"></div>\n            </div>\n        </div>\n    </div>\n\n</div>";
+module.exports = "<div class=\"spm_quests clearfix container-fluid\" ng-if=\"widget.enabled\" ng-cloak sailplay-profile>\n\n  <div class=\"spm_quests-container row\">\n\n    <div class=\"spm_quests-container__left col-lg-4 col-md-12 col-sm-12 col-xs-12 order-lg-1 order-md-0 order-sm-0 order-xs-0\">\n      <div class=\"spm_quests-header\" ng-bind=\"widget.texts.header\"></div>\n      <div class=\"spm_quests-sub-header\" ng-bind=\"widget.texts.sub_header\"></div>\n    </div>\n\n    <div class=\"spm_quests-container__right spm_quests-list col-lg-8 col-md-12 col-sm-12 order-lg-0 order-md-1 order-sm-1 order-xs-1\" sailplay-actions>\n\n      <div class=\"row spm_quests-list-inner\">\n\n        <div ng-repeat=\"action in actions().actions\" class=\"col-xl-4 col-lg-6 col-md-6 col-sm-12\" >\n          <div class=\"spm_quests-item\" ng-mouseenter=\"action.loaded=true\">\n            <i class=\"spm_quests-item-icon\"\n               ng-style=\"{backgroundImage: (action_data(action).pic|sailplay_pic|background_image)}\"></i>\n            <div class=\"spm_quests-item-content\">\n              <div class=\"spm_quests-item-name\" ng-bind=\"action_data(action).name\"></div>\n              <div class=\"spm_quests-item-points\" ng-show=\"action.points\"\n                   ng-bind=\"(action.points|number)+' '+(action.points|sailplay_pluralize:('points.texts.pluralize'|tools))\"></div>\n            </div>\n            <div class=\"spm_quests-item-hover\" ng-if=\"action.type!='fillProfile' && (widget.options.preload_quests || action.loaded)\" sailplay-action\n                 styles=\"{{ action_styles(action_data(action)) }}\"\n                 action=\"action\" text=\"{{ action_data(action).button_text }}\">\n              <span ng-bind=\"action_data(action).button_text\"></span>\n            </div>\n            <div ng-if=\"action.type=='fillProfile'\" class=\"spm_quests-item-hover\">\n              <span ng-click=\"$root.$broadcast('profile:state', true)\" ng-bind=\"action_data(action).button_text\"></span>\n            </div>\n          </div>\n        </div>\n\n        <div class=\"col-xl-4 col-lg-6 col-md-6 col-sm-12\" ng-repeat=\"action in actions_custom()\">\n          <div class=\"spm_quests-item\" ng-mouseenter=\"action.loaded=true\">\n            <i class=\"spm_quests-item-icon\" ng-style=\"{backgroundImage: (action.icon|sailplay_pic|background_image)}\"></i>\n            <div class=\"spm_quests-item-content\">\n              <div class=\"spm_quests-item-name\" ng-bind=\"action.name\"></div>\n              <div class=\"spm_quests-item-points\" ng-show=\"action.points\"\n                   ng-bind=\"(action.points|number)+' '+(action.points|sailplay_pluralize:('points.texts.pluralize'|tools))\"></div>\n            </div>\n            <div class=\"spm_quests-item-hover\" sailplay-action-custom action=\"action\"></div>\n          </div>\n        </div>\n\n      </div>\n\n    </div>\n\n  </div>\n\n  <magic-modal show=\"$parent.$parent.show_success\">\n    <magic-modal-title ng-bind=\"widget.texts.modals.success.title\"></magic-modal-title>\n    <magic-modal-body ng-bind-html=\"widget.texts.modals.success.body|to_trusted\"></magic-modal-body>\n  </magic-modal>\n\n</div>";
 
 /***/ }),
 /* 193 */
@@ -47541,13 +47669,19 @@ exports = module.exports = __webpack_require__(0)(false);
 
 
 // module
-exports.push([module.i, ".spm_wrapper .spm_status-bar {\n  position: relative;\n}\n", ""]);
+exports.push([module.i, ".spm_wrapper .bootstrap_quests_right {\n  position: relative;\n}\n.spm_wrapper .bootstrap_quests_right .spm_quests-container {\n  width: 100%;\n  height: 100%;\n  box-sizing: border-box;\n  margin: 0 auto;\n  padding: 50px 30px;\n}\n.spm_wrapper .bootstrap_quests_right .spm_quests-header {\n  font-weight: 900;\n  text-transform: uppercase;\n  font-size: 35px;\n  line-height: 1;\n  color: #000000;\n  position: relative;\n  letter-spacing: 2.3px;\n}\n.spm_wrapper .bootstrap_quests_right .spm_quests-sub-header {\n  font-weight: normal;\n  font-size: 16px;\n  line-height: 22px;\n  margin: 25px 0;\n  color: #000000;\n}\n.spm_wrapper .bootstrap_quests_right .spm_quests-list {\n  display: flex;\n  align-items: flex-start;\n  flex-wrap: wrap;\n  justify-content: flex-start;\n}\n@media (max-width: 992px) {\n  .spm_wrapper .bootstrap_quests_right .spm_quests-list {\n    align-items: center;\n    justify-content: center;\n    flex-wrap: wrap;\n  }\n}\n.spm_wrapper .bootstrap_quests_right .spm_quests-list-inner {\n  width: 100%;\n}\n.spm_wrapper .bootstrap_quests_right .spm_quests-item {\n  display: flex;\n  align-items: center;\n  justify-content: space-around;\n  position: relative;\n  height: 130px;\n  box-sizing: border-box;\n  padding: 0 8px;\n  margin: 10px;\n  overflow: hidden;\n  border-radius: 8px;\n  border: 1px solid #b4bac2;\n}\n.spm_wrapper .bootstrap_quests_right .spm_quests-item-hover {\n  display: none;\n  opacity: 0;\n  background: #ca5b54;\n  position: absolute;\n  left: 0;\n  top: 0;\n  width: 100%;\n  height: 100%;\n  z-index: 2;\n  align-items: center;\n  justify-content: center;\n  text-transform: uppercase;\n  font-weight: bold;\n  color: #ffffff;\n  font-family: Arial;\n}\n.spm_wrapper .bootstrap_quests_right .spm_quests-item-hover iframe {\n  width: 100% !important;\n  height: 100% !important;\n}\n.spm_wrapper .bootstrap_quests_right .spm_quests-item-hover > * {\n  cursor: pointer;\n}\n.spm_wrapper .bootstrap_quests_right .spm_quests-item-icon {\n  width: 75px;\n  height: 75px;\n  background-repeat: no-repeat;\n  background-position: center center;\n  background-size: contain;\n}\n.spm_wrapper .bootstrap_quests_right .spm_quests-item-content {\n  margin-left: 15px;\n  flex-basis: 65%;\n}\n@media (max-width: 500px) {\n  .spm_wrapper .bootstrap_quests_right .spm_quests-item-content {\n    flex-basis: 100%;\n    margin-left: 0;\n    margin-top: 15px;\n  }\n}\n.spm_wrapper .bootstrap_quests_right .spm_quests-item-name {\n  font-size: 16px;\n  line-height: 24px;\n  color: #222c3b;\n}\n.spm_wrapper .bootstrap_quests_right .spm_quests-item-points {\n  margin-top: 10px;\n  font-size: 16px;\n  line-height: 24px;\n  color: #222c3b;\n}\n@media (max-width: 800px) {\n  .spm_wrapper .bootstrap_quests_right .spm_quests-item {\n    margin: 25px 5px;\n  }\n}\n.spm_wrapper .bootstrap_quests_right .spm_quests-item:hover {\n  border-color: #ca5b54;\n}\n.spm_wrapper .bootstrap_quests_right .spm_quests-item:hover .spm_quests-item-hover {\n  opacity: 1;\n  visibility: visible;\n}\n.spm_wrapper .bootstrap_quests_right .spm_quests:hover .spm_quests-item-hover {\n  display: flex;\n}\n", ""]);
 
 // exports
 
 
 /***/ }),
 /* 195 */
+/***/ (function(module, exports) {
+
+module.exports = {"styles":{"spm_quests-sub-header":{"color":"#fff","font-weight":300,"font-family":"Roboto, sans-serif"},"@media (max-width: 786px) | spm_quests-container__left":{"text-align":"center","padding-right":"10px","padding-left":"10px"},"spm_quests-item-name":{"color":"rgb(156,156,157)","font-weight":100},"spm_quests-header":{"color":"#fff","font-size":"45px","font-family":"Akrobat, Roboto, sans-serif"},"spm_quests-container__left":{"padding-right":"50px","padding-left":"50px"},"spm_quests":{"background-image":"url(https://sailplays3.cdnvideo.ru/media/assets/assetfile/77cd041c4a8e07e7c9400aa79a209046.png)","background-size":"cover","background-position":"top center","background-color":"rgb(35,38,45)"},"spm_quests-item":{"border-radius":0,"margin":"0 0 30px 0","border":"none","background-color":"rgb(56,56,58)"},"spm_quests-item-points":{"color":"#fff","font-size":"16px","text-transform":"uppercase"},"spm_quests-item-icon":{"background-size":"auto 50px"},"spm_quests-item-hover":{"background-color":"rgb(252,46,162)"}},"enabled":true,"id":"bootstrap_quests_right","texts":{"sub_header":"Complete quests to recieve extra points and statuses","header":"Quests","modals":{"success":{"body":"You have completed quest","title":"Congratulations"}}},"images":{},"options":{"preload_quests":true}}
+
+/***/ }),
+/* 196 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47555,11 +47689,115 @@ exports.push([module.i, ".spm_wrapper .spm_status-bar {\n  position: relative;\n
 
 var _widget = __webpack_require__(2);
 
-var _actions = __webpack_require__(196);
+var _template = __webpack_require__(197);
+
+var _template2 = _interopRequireDefault(_template);
+
+__webpack_require__(198);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var widget = {
+  id: "bootstrap_status_bar",
+  template: _template2.default,
+  inject: ["$rootScope", "SailPlay", "SailPlayApi", "MAGIC_CONFIG", '$interpolate'],
+  controller: function controller($rootScope, SailPlay, SailPlayApi, MAGIC_CONFIG, $interpolate) {
+    return function (scope, elm, attrs) {
+
+      scope.show_list = false;
+      scope.currentStatus = null;
+      scope.nextStatus = null;
+      scope.list = scope.widget.options.list;
+      scope.toNext = 0;
+
+      scope.statusText = function (text) {
+        return $interpolate(text)(scope);
+      };
+
+      SailPlayApi.observe('load.user.info', function (user) {
+        if (!user) return;
+        var user_points = user.user_points.confirmed;
+        scope.currentStatus = scope.list.filter(function (status) {
+          return status.points <= user_points;
+        }).pop();
+        scope.nextStatus = scope.list.filter(function (status) {
+          return status.points > user_points;
+        }).shift();
+        scope.toNext = scope.nextStatus ? scope.nextStatus.points - user_points : null;
+      });
+    };
+  }
+};
+
+_widget.Widget.config(["MagicWidgetProvider", function (MagicWidgetProvider) {
+  MagicWidgetProvider.register(widget);
+}]);
+
+/***/ }),
+/* 197 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"spm_status-bar container-fluid status-bar clearfix\" ng-if=\"widget.enabled\" ng-cloak sailplay-profile ng-class=\"{type_list: show_list}\">\n\n    <div ng-show=\"!show_list && user()\" class=\"container py-5\">\n        <div class=\"row align-items-top\">\n\n            <div class=\"b-points col-12 col-md-6 col-lg-4 d-flex align-items-center spm_status-bar-points\" ng-click=\"$root.$broadcast('history:state', true)\">\n                <div class=\"w-75\">\n                    <h4 class=\"font-akrobat font-weight-bold text-uppercase mb-0\" ng-bind=\"widget.texts.points.label\"></h4>\n                    <div class=\"mt-3 font-weight-light\" ng-bind-html=\"widget.texts.points.description|to_trusted\"></div>\n                </div>\n                <div class=\"display-1 points-balance mr-auto font-akrobat font-weight-bold text-uppercase\" ng-bind=\"user().user_points.confirmed|number\"></div>\n            </div>\n\n            <div class=\"b-next-status my-5 my-md-0 col-12 col-md-6 col-lg-4 d-flex flex-column align-items-left spm_status-bar-next-status\">\n                <h4 class=\"font-akrobat font-weight-bold text-uppercase mb-0\" ng-bind=\"widget.texts.status.label\"></h4>\n                <div class=\"mt-3 font-weight-light\" ng-bind-html=\"statusText(toNext ? widget.texts.status.description : widget.texts.status.description_final)|to_trusted\"></div>\n            </div>\n\n            <div class=\"b-current-status col-12 mt-5 pt-md-5 col-md-12 mt-lg-0 pt-lg-0 col-lg-4 d-flex flex-column align-items-center text-center spm_status-bar-current-status\" ng-click=\"show_list=true\">\n                <i ng-style=\"currentStatus.style\"></i>\n                <h2 class=\"font-akrobat font-weight-bolder text-uppercase mb-0\" ng-bind=\"currentStatus.name\"></h2>\n                <div class=\"mt-1 font-weight-light\" ng-bind-html=\"currentStatus.description|to_trusted\"></div>\n            </div>\n\n        </div>\n    </div>\n\n    <div ng-show=\"show_list\" class=\"container py-0 py-lg-5 position-relative\">\n        <div class=\"b-list-close rounded-circle d-flex bg-primary cursor-pointer align-items-center position-absolute\"\n             ng-click=\"show_list=false\"></div>\n        <div class=\"row align-items-center justify-content-center\">\n            <div class=\"b-statuses col-md-12 my-5 my-lg-0 col-lg-4 d-flex flex-column align-items-center text-center\" ng-repeat=\"status in list track by $index\">\n                <i ng-style=\"status.style\"></i>\n                <h2 class=\"font-akrobat font-weight-bolder text-uppercase mb-0\" ng-bind=\"status.name\"></h2>\n                <h5 class=\"my-2\" ng-bind=\"(status.points|number)+' '+(status.points|sailplay_pluralize:('points.texts.pluralize'|tools))\"></h5>\n                <div class=\"font-weight-light\" ng-bind-html=\"status.description|to_trusted\"></div>\n            </div>\n        </div>\n    </div>\n\n</div>";
+
+/***/ }),
+/* 198 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(199);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// Prepare cssTransformation
+var transform;
+
+var options = {"hmr":true}
+options.transform = transform
+// add the styles to the DOM
+var update = __webpack_require__(1)(content, options);
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/dist/cjs.js!./style.less", function() {
+			var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/dist/cjs.js!./style.less");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 199 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(0)(false);
+// imports
+
+
+// module
+exports.push([module.i, ".spm_wrapper .spm_status-bar {\n  position: relative;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 200 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _widget = __webpack_require__(2);
+
+var _actions = __webpack_require__(201);
 
 var _actions2 = _interopRequireDefault(_actions);
 
-__webpack_require__(197);
+__webpack_require__(202);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -47610,19 +47848,19 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 });
 
 /***/ }),
-/* 196 */
+/* 201 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"{{ widget.id }} clearfix\">\n\n  <div id=\"magic_actions\" class=\"more_bonus container\" data-ng-show=\"widget.enabled\" data-ng-cloak>\n\n    <h3 class=\"bon_header\">\n      <span class=\"header\">{{ widget.texts.header }}</span>\n    </h3>\n    <h4 class=\"bon_sub_header\">\n      <span class=\"caption\">{{ widget.texts.caption }}</span>\n    </h4>\n\n    <div data-sailplay-actions class=\"clearfix\">\n\n      <div class=\"more_bonus_main\">\n\n        <div class=\"spm_row clearfix\">\n\n          <div class=\"spm_col\" data-ng-repeat=\"action in actions().actions\">\n            <div class=\"mb_item action\" data-ng-style=\"widget.styles.action\">\n              <div class=\"mb_item_left\">\n                <span class=\"action_name\" data-ng-bind=\"action_data(action).name\"></span>\n                <span class=\"action_points\" data-ng-show=\"action.points\" data-ng-bind=\"((action.points || 0) | number) + ' ' + (action.points | sailplay_pluralize:( 'points.texts.pluralize' | tools ))\"></span>\n                <a class=\"sp_btn button_primary\" data-ng-if=\"action_data(action).just_open_profile\" data-ng-click=\"open_profile()\">{{ action_data(action).button_text }}</a>                \n                <a class=\"sp_btn button_primary\" data-ng-if=\"!action_data(action).just_open_profile\" data-ng-click=\"action_select(action)\">{{ action_data(action).button_text }}</a>\n              </div>\n              <div class=\"mb_item_right\">\n                <img data-ng-src=\"{{ action_data(action).pic | sailplay_pic }}\" alt=\"\">\n              </div>\n            </div>\n          </div>\n\n          <div class=\"spm_col\" data-ng-repeat=\"action in actions_custom()\">\n            <div class=\"mb_item action\" data-ng-style=\"widget.styles.action\">\n              <div class=\"mb_item_left\">\n                <span class=\"action_name\" data-ng-bind=\"action.name\"></span>\n                <span class=\"action_points\" data-ng-show=\"action.points\" data-ng-bind=\"((action.points || 0) | number) + ' ' + (action.points | sailplay_pluralize:( 'points.texts.pluralize' | tools ))\"></span>\n                <a class=\"sp_btn button_primary\" data-ng-click=\"action_custom_select(action)\">{{ action.button_text }}</a>\n              </div>\n              <div class=\"mb_item_right\">\n                <img data-ng-src=\"{{ action.icon | sailplay_pic }}\" alt=\"\">\n              </div>\n            </div>\n          </div>\n\n          <div class=\"spm_col\" data-ng-repeat=\"quiz in $parent.quiz_list\" data-ng-if=\"quiz_list && quiz_list.length && ((!exist || !exist()) || !checkTag(quiz.tag, exist()))\" >\n            <div class=\"mb_item action\"data-ng-style=\"widget.styles.action\">\n              <div class=\"mb_item_left\">\n                <span class=\"action_name\" data-ng-bind=\"quiz.name\"></span>\n                <span class=\"action_points\" data-ng-show=\"quiz.points\" data-ng-bind=\"((quiz.points || 0) | number) + ' ' + (quiz.points | sailplay_pluralize:( 'points.texts.pluralize' | tools ))\"></span>\n                <a class=\"sp_btn button_primary\" data-ng-click=\"$event.preventDefault();open_quiz(quiz)\">{{ quiz.button_text }}</a>\n              </div>\n              <div class=\"mb_item_right\">\n                <img data-ng-src=\"{{ quiz.icon | sailplay_pic }}\" alt=\"\">\n              </div>\n            </div>\n          </div>\n\n        </div>\n\n      </div>\n\n      <magic-modal class=\"actions_selected_modal\" data-ng-cloak data-show=\"$parent.action_selected\">\n\n        <div>\n\n          <div class=\"action_image\">\n            <img class=\"gift_more_img\" data-ng-src=\"{{ action_data(action_selected).pic | sailplay_pic }}\"\n                 alt=\"{{ action_data(action_selected).name }}\">\n          </div>\n\n          <div class=\"action_tools\">\n\n            <p>\n              <span class=\"modal_action_name\" data-ng-bind=\"action_data(action_selected).name\"></span>\n            </p>\n\n            <p style=\"margin-top: 10px;\">\n              <span class=\"modal_action_points\" data-ng-bind=\"(action_selected.points | number) + ' ' + (selected_gift.points | sailplay_pluralize:( 'points.texts.pluralize' | tools ))\"></span>\n            </p>\n\n            <p style=\"margin-top: 10px;\">\n              <span class=\"modal_action_description\" data-ng-bind=\"action_data(action_selected).description\"></span>\n            </p>\n\n\n            <p class=\"action_buttons\">\n            <span data-sailplay-action\n                  data-styles=\"{{ action_styles(action_data(action_selected)) }}\"\n                  data-action=\"action_selected\"\n                  data-text=\"{{ action_data(action_selected).button_text }}\">\n              <span class=\"sp_btn button_primary\">{{ action_data(action_selected).button_text }}</span>\n            </span>\n            </p>\n\n          </div>\n\n        </div>\n\n      </magic-modal>\n\n      <magic-modal class=\"actions_custom_selected_modal\" data-ng-cloak data-show=\"$parent.action_custom_selected\">\n\n        <div data-sailplay-action-custom data-action=\"action_custom_selected\"></div>\n\n      </magic-modal>\n\n\n      <magic-modal class=\"actions_custom_selected_modal\" data-ng-cloak data-show=\"$parent.quiz.show\">\n\n        <div class=\"quiz_main\">\n\n          <div class=\"quiz_block\" data-ng-if=\"$parent.quiz.data\">\n\n            <div class=\"quiz_block__title\" data-ng-bind=\"$parent.quiz.data.name\"></div>\n\n            <div class=\"quiz_block__counter\" data-ng-bind=\"$parent.quiz.step + ' / ' + $parent.quiz.data.data.length\"></div>\n\n            <div class=\"quiz_block__name\" data-ng-bind=\"getCurrentTest().name\"></div>\n\n            <label data-ng-repeat=\"question in getCurrentTest().answers\"\n                   data-ng-switch=\"getCurrentTest().type\"\n                   data-ng-click=\"$event.preventDefault();change(question, getCurrentTest());\">\n\n              <input data-ng-switch-when=\"many\" type=\"checkbox\"\n                     name=\"quiz_[[ $index ]]\"\n                     data-ng-checked=\"check(question)\">\n\n              <input data-ng-switch-when=\"one\" type=\"radio\"\n                     name=\"quiz\"\n                     data-ng-checked=\"check(question)\">\n\n              <span data-ng-bind=\"question.text\"></span>\n\n            </label>\n\n            <textarea name=\"variable\" data-ng-show=\"needToShowVariable()\"\n                      data-ng-model=\"models.variable\"></textarea>\n\n            <div class=\"button_wrapper clearfix\">\n\n                <span data-ng-click=\"prev();\" class=\"quiz_block__btn prev\"\n                      data-ng-class=\"{type_disabled: $parent.quiz.step == 1}\">Prev</span>\n\n              <span data-ng-click=\"next();\" class=\"quiz_block__btn next\"\n                    data-ng-class=\"{type_disabled: !canPressNext() }\"\n                    data-ng-bind=\"step == $parent.quiz.data.data.length ? 'Finish' : 'Next' \">next</span>\n\n            </div>\n\n          </div>\n\n        </div>\n\n      </magic-modal>\n\n    </div>\n\n  </div>\n</div>";
 
 /***/ }),
-/* 197 */
+/* 202 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(198);
+var content = __webpack_require__(203);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -47647,7 +47885,7 @@ if(false) {
 }
 
 /***/ }),
-/* 198 */
+/* 203 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -47661,7 +47899,7 @@ exports.push([module.i, ".spm_wrapper .more_bonus {\n  float: left;\n  width: 10
 
 
 /***/ }),
-/* 199 */
+/* 204 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47669,19 +47907,19 @@ exports.push([module.i, ".spm_wrapper .more_bonus {\n  float: left;\n  width: 10
 
 var _widget = __webpack_require__(2);
 
-var _badges = __webpack_require__(200);
+var _badges = __webpack_require__(205);
 
 var _badges2 = _interopRequireDefault(_badges);
 
-var _badgesBadge = __webpack_require__(201);
+var _badgesBadge = __webpack_require__(206);
 
 var _badgesBadge2 = _interopRequireDefault(_badgesBadge);
 
-var _badgesLine = __webpack_require__(202);
+var _badgesLine = __webpack_require__(207);
 
 var _badgesLine2 = _interopRequireDefault(_badgesLine);
 
-__webpack_require__(203);
+__webpack_require__(208);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -47745,31 +47983,31 @@ _widget.Widget.directive('sailplayMagicBadgeLine', ["MAGIC_CONFIG", "SailPlaySha
 }]);
 
 /***/ }),
-/* 200 */
+/* 205 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"container clearfix\">\n\n  <div class=\"\">\n    <h3 class=\"bon_header\">\n      <span class=\"header\">{{ widget.texts.header }}</span>\n    </h3>\n    <h4 class=\"bon_sub_header\">\n      <span class=\"caption\">{{ widget.texts.caption }}</span>\n    </h4>\n  </div>\n\n\n  <div data-sailplay-badges class=\"badge_lines_container clearfix\">\n\n    <sailplay-magic-badge-line class=\"multi_level\" data-ng-repeat=\"line in sailplay.badges.list().multilevel_badges\" data-line=\"line\" data-config=\"widget\"></sailplay-magic-badge-line>\n\n    <sailplay-magic-badge-line class=\"one_level\" data-line=\"sailplay.badges.list().one_level_badges\" data-type=\"one_level\" data-config=\"widget\"></sailplay-magic-badge-line>\n\n  </div>\n\n\n</div>";
 
 /***/ }),
-/* 201 */
+/* 206 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"badge\">\n  <div class=\"badge_iner\" data-ng-click=\"on_click(badge)\">\n    <div class=\"badge_pic\">\n      <img data-ng-src=\"{{ (badge.is_received ? badge.thumbs.url_250x250 : badge.thumbs.url_gs) | sailplay_pic }}\" alt=\"{{ badge.name }}\">\n    </div>\n    <span class=\"badge_name\" data-ng-bind=\"badge.name\"></span>\n    <!--<span class=\"bon_tem_info badge_points\" data-ng-bind=\"(badge.points | number) + ' ' + (gift.points | sailplay_pluralize:_tools.points.texts.pluralize)\"></span>-->\n  </div>\n  <div class=\"badge_arrow\">\n\n  </div>\n</div>";
 
 /***/ }),
-/* 202 */
+/* 207 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"clearfix\">\n  <div class=\"bon_item_main clearfix\" data-ng-show=\"line.length\">\n\n    <div class=\"bon_slide_cat_item_wrap\" data-magic-gallery>\n      <div class=\"bon_slide_cat_item\">\n\n        <div class=\"bon_item_line\" data-ng-style=\"{left : left}\">\n\n          <sailplay-magic-badge data-magic-slide data-badge=\"badge\" data-on-click=\"badge_select(badge);\" data-ng-repeat=\"badge in line\" data-ng-class=\"{ last: $last }\"></sailplay-magic-badge>\n\n        </div>\n\n      </div>\n\n      <!--<a href=\"#\" class=\"arr_left arr_left slider_arrow_left\" data-ng-click=\"$event.preventDefault(); set_position('left');\" data-ng-show=\"show_left\"></a>-->\n      <!--<a href=\"#\" class=\"arr_right arr_right slider_arrow_right\" data-ng-click=\"$event.preventDefault(); set_position('right');\" data-ng-show=\"show_right\"></a>-->\n\n    </div>\n\n  </div>\n\n  <magic-modal class=\"modal_badge_selected\" data-ng-cloak data-show=\"badge_selected\">\n\n    <div>\n\n      <div class=\"modal_badge_image\">\n        <img class=\"gift_more_img\" data-ng-src=\"{{ badge_selected.thumbs.url_250x250 | sailplay_pic }}\"\n             alt=\"{{ badge_selected.name }}\">\n      </div>\n\n      <div class=\"modal_badge_tools\">\n\n        <p>\n          <span class=\"modal_badge_name\" data-ng-bind=\"badge_selected.name\"></span>\n        </p>\n\n        <!--<p style=\"margin-top: 10px;\">-->\n          <!--<span class=\"modal_badge_points\" data-ng-bind=\"(action_selected.points | number) + ' ' + (selected_gift.points | sailplay_pluralize:_tools.points.texts.pluralize)\"></span>-->\n        <!--</p>-->\n\n        <p style=\"margin-top: 10px;\">\n          <span class=\"modal_badge_description\" data-ng-bind=\"badge_selected.descr\"></span>\n        </p>\n\n        <p class=\"modal_badge_buttons\">\n          <span class=\"badge_share_button fb_icon\" data-ng-click=\"badge_share('fb', badge_selected)\">\n            {{ _config.texts.share_fb }}\n          </span>\n          <span class=\"badge_share_button tw_icon\" style=\"margin-right: 20px;\" data-ng-click=\"badge_share('tw', badge_selected)\">\n            {{ _config.texts.share_tw }}\n          </span>\n          <span class=\"sp_btn button_primary\" data-ng-click=\"badge_select(false);\">{{ _tools.buttons.texts.close }}</span>\n        </p>\n\n      </div>\n\n    </div>\n\n  </magic-modal>\n\n</div>";
 
 /***/ }),
-/* 203 */
+/* 208 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(204);
+var content = __webpack_require__(209);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -47794,7 +48032,7 @@ if(false) {
 }
 
 /***/ }),
-/* 204 */
+/* 209 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -47808,7 +48046,7 @@ exports.push([module.i, ".spm_wrapper .spm_tools_widget.badges {\n  float: left;
 
 
 /***/ }),
-/* 205 */
+/* 210 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47816,11 +48054,11 @@ exports.push([module.i, ".spm_wrapper .spm_tools_widget.badges {\n  float: left;
 
 var _widget = __webpack_require__(2);
 
-var _banner = __webpack_require__(206);
+var _banner = __webpack_require__(211);
 
 var _banner2 = _interopRequireDefault(_banner);
 
-__webpack_require__(207);
+__webpack_require__(212);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -47833,19 +48071,19 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 });
 
 /***/ }),
-/* 206 */
+/* 211 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"clearfix\">\n  <div class=\"bon_choice_main container block_images\" data-ng-cloak>\n    <img class=\"block_images__item\" data-ng-repeat=\"(key, value) in widget.images\" data-ng-src=\"{{ value }}\" alt=\"{{ key }}\">\n  </div>\n</div>\n";
 
 /***/ }),
-/* 207 */
+/* 212 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(208);
+var content = __webpack_require__(213);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -47870,7 +48108,7 @@ if(false) {
 }
 
 /***/ }),
-/* 208 */
+/* 213 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -47884,7 +48122,7 @@ exports.push([module.i, ".spm_wrapper .block_images {\n  width: 100%;\n}\n.spm_w
 
 
 /***/ }),
-/* 209 */
+/* 214 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47892,11 +48130,11 @@ exports.push([module.i, ".spm_wrapper .block_images {\n  width: 100%;\n}\n.spm_w
 
 var _widget = __webpack_require__(2);
 
-var _cardQuests = __webpack_require__(210);
+var _cardQuests = __webpack_require__(215);
 
 var _cardQuests2 = _interopRequireDefault(_cardQuests);
 
-__webpack_require__(211);
+__webpack_require__(216);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -47944,19 +48182,19 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 });
 
 /***/ }),
-/* 210 */
+/* 215 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"container clearfix\" id=\"magic_actions\">\n\n  <div class=\"card_quests\">\n\n    <h3 class=\"card_quests_header\">\n      <span class=\"header\">{{ widget.texts.header }}</span>\n    </h3>\n\n    <h4 class=\"card_quests_caption\">\n      <span class=\"caption\">{{ widget.texts.caption }}</span>\n    </h4>\n\n    <div data-sailplay-actions class=\"card_quests_list clearfix\">\n\n      <div class=\"spm_row clearfix\">\n\n          <div class=\"spm_col quest_card_container\" data-ng-repeat=\"action in actions().actions | filter:filter\">\n\n            <div class=\"quest_card\" title=\"{{ action_data(action).name }}\">\n\n              <div class=\"quest_card_image\">\n                <img data-ng-src=\"{{ action_data(action).pic | sailplay_pic }}\" alt=\"\">\n              </div>\n\n              <div class=\"quest_card_tools\">\n\n                <div class=\"quest_card_info\">\n                  <span class=\"quest_card_name ellipsis\" data-ng-bind=\"action_data(action).name\"></span>\n                  <span class=\"quest_card_points ellipsis\" data-ng-show=\"action.points\" data-ng-bind=\"((action.points || 0) | number) + ' ' + (action.points | sailplay_pluralize:( 'points.texts.pluralize' | tools ))\"></span>\n                </div>\n\n                <div class=\"quest_card_buttons\">\n                  <a class=\"button_primary\" data-ng-click=\"action_select(action)\">{{ action_data(action).button_text }}</a>\n                </div>\n\n              </div>\n\n            </div>\n\n          </div>\n\n          <div class=\"spm_col quest_card_container\" data-ng-repeat=\"action in actions_custom() | filter:filter\">\n\n            <div class=\"quest_card\" title=\"{{ action.name }}\">\n\n              <div class=\"quest_card_image\">\n                <img data-ng-src=\"{{ action.icon | sailplay_pic }}\" alt=\"\">\n              </div>\n\n              <div class=\"quest_card_tools\">\n\n                <div class=\"quest_card_info\">\n                  <span class=\"quest_card_name ellipsis\" data-ng-bind=\"action.name\"></span>\n                  <span class=\"quest_card_points ellipsis\" data-ng-show=\"action.points\" data-ng-bind=\"((action.points || 0) | number) + ' ' + (action.points | sailplay_pluralize:( 'points.texts.pluralize' | tools ))\"></span>\n                </div>\n\n                <div class=\"quest_card_buttons\">\n                  <a class=\"button_primary\" data-ng-click=\"action_custom_select(action)\">{{ action.button_text }}</a>\n                </div>\n\n              </div>\n\n            </div>\n\n          </div>\n\n        </div>\n\n\n      <magic-modal class=\"actions_selected_modal\" data-ng-cloak data-show=\"$parent.action_selected\">\n\n        <div>\n\n          <div class=\"action_image\">\n            <img class=\"gift_more_img\" data-ng-src=\"{{ action_data(action_selected).pic | sailplay_pic }}\"\n                 alt=\"{{ action_data(action_selected).name }}\">\n          </div>\n\n          <div class=\"action_tools\">\n\n            <p>\n              <span class=\"modal_action_name\" data-ng-bind=\"action_data(action_selected).name\"></span>\n            </p>\n\n            <p style=\"margin-top: 10px;\">\n              <span class=\"modal_action_points\" data-ng-bind=\"(action_selected.points | number) + ' ' + (selected_gift.points | sailplay_pluralize:( 'points.texts.pluralize' | tools ))\"></span>\n            </p>\n\n            <p style=\"margin-top: 10px;\">\n              <span class=\"modal_action_description\" data-ng-bind=\"action_data(action_selected).description\"></span>\n            </p>\n\n\n            <p class=\"action_buttons\">\n            <span data-sailplay-action\n                  data-styles=\"{{ action_styles(action_data(action_selected)) }}\"\n                  data-action=\"action_selected\"\n                  data-text=\"{{ action_data(action_selected).button_text }}\">\n              <span class=\"sp_btn button_primary\">{{ action_data(action_selected).button_text }}</span>\n            </span>\n            </p>\n\n          </div>\n\n        </div>\n\n      </magic-modal>\n\n      <magic-modal class=\"actions_custom_selected_modal\" data-ng-cloak data-show=\"$parent.action_custom_selected\">\n\n        <div data-sailplay-action-custom data-action=\"action_custom_selected\"></div>\n\n      </magic-modal>\n\n    </div>\n\n  </div>\n</div>";
 
 /***/ }),
-/* 211 */
+/* 216 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(212);
+var content = __webpack_require__(217);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -47981,7 +48219,7 @@ if(false) {
 }
 
 /***/ }),
-/* 212 */
+/* 217 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -47995,7 +48233,7 @@ exports.push([module.i, ".spm_wrapper .card_quests {\n  width: 90%;\n  margin: 4
 
 
 /***/ }),
-/* 213 */
+/* 218 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -48003,11 +48241,11 @@ exports.push([module.i, ".spm_wrapper .card_quests {\n  width: 90%;\n  margin: 4
 
 var _widget = __webpack_require__(2);
 
-var _charityPro = __webpack_require__(214);
+var _charityPro = __webpack_require__(219);
 
 var _charityPro2 = _interopRequireDefault(_charityPro);
 
-__webpack_require__(215);
+__webpack_require__(220);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -48244,19 +48482,19 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 });
 
 /***/ }),
-/* 214 */
+/* 219 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"sp_cp-widget container clearfix\">\n\n    <div class=\"sp_cp-widget__wrap clearfix\">\n\n        <div class=\"sp_cp-widget__left\" data-ng-show=\"user && user()\">\n\n            <a class=\"sp_cp-widget__btn sp_cp-widget__search-btn button_primary\"\n               data-ng-bind=\"widget.texts.button_search\"\n               data-ng-if=\"show_search_link && widget.options.search_link\"\n               data-ng-href=\"{{ widget.options.search_link }}\" target=\"_blank\"></a>\n\n            <a href=\"#\" class=\"sp_cp-widget__btn sp_cp-widget__form-btn button_primary\"\n               data-ng-bind=\"widget.texts.button_subscriptions\"\n               data-ng-if=\"widget.options.subscriptions_link\"\n               data-ng-href=\"{{ widget.options.subscriptions_link }}\" target=\"_blank\"></a>\n\n\n            <a href=\"#\" class=\"sp_cp-widget__btn sp_cp-widget__form-btn button_primary\"\n               data-ng-bind=\"widget.texts.button_form\"\n               data-ng-if=\"show_request_charity\"\n               data-ng-click=\"$event.preventDefault();$parent.show_form=true;\"></a>\n\n\n            <a href=\"#\" class=\"sp_cp-widget__btn sp_cp-widget__form-btn button_primary\"\n               data-ng-if=\"widget.options.payments_link\"\n               data-ng-bind=\"widget.texts.button_payments\"\n               data-ng-href=\"{{ widget.options.payments_link }}\" target=\"_blank\"></a>\n\n        </div>\n\n        <div class=\"sp_cp-widget__right\" data-ng-show=\"user && user()\">\n\n            <select class=\"sp_cp-widget__select\" data-ng-model=\"charity\"\n                    data-ng-disabled=\"disabled\"\n                    data-ng-change=\"charity_change()\"\n                    data-ng-options=\"item.tag as item.name for item in widget.options.charities\">\n                <option value=\"\" disabled selected ng-hide=\"charity\"\n                        data-ng-bind=\"widget.texts.select_charity\"></option>\n            </select>\n\n        </div>\n\n    </div>\n\n    <magic-modal class=\"sp_cp-widget__form\" data-show=\"show_form\">\n\n        <div class=\"sp_cp-widget__form-header\" data-ng-bind=\"widget.texts.request_charity_header\"></div>\n\n        <div class=\"sp_cp-widget__invalid-fields\" data-ng-if=\"!form\">Invalid form fields</div>\n\n        <form name=\"request_charity\" data-ng-submit=\"charity_form_submit(request_charity)\" data-ng-show=\"form\">\n\n            <div class=\"form_field\" data-ng-repeat=\"field in form\"\n                 data-ng-class=\"{type_full: field.full_width}\"\n                 data-ng-switch=\"field.input\">\n\n                <div data-ng-switch-when=\"image\" class=\"avatar_upload clearfix\">\n                    <img width=\"160px\"\n                         data-ng-src=\"{{ (field.value | sailplay_pic) || 'http://saike.ru/sailplay-magic/dist/img/profile/avatar_default.png'}}\"\n                         alt=\"\">\n                </div>\n\n                <div data-ng-switch-when=\"textarea\" class=\"clearfix\">\n                    <label class=\"form_label\" data-ng-bind-html=\"field.label | to_trusted\"></label>\n                    <textarea class=\"form_textarea\" placeholder=\"{{ field.placeholder }}\"\n                              data-ng-required=\"field.required\" data-ng-model=\"field.value\"></textarea>\n                </div>\n\n                <div data-ng-switch-when=\"text\" class=\"clearfix\">\n                    <label class=\"form_label\" data-ng-bind-html=\"field.label | to_trusted\"></label>\n                    <input class=\"form_input\" type=\"text\" placeholder=\"{{ field.placeholder }}\"\n                           data-ng-required=\"field.required\" data-ng-model=\"field.value\">\n                </div>\n\n                <div data-ng-switch-when=\"phone\" class=\"clearfix\">\n                    <label class=\"form_label\" data-ng-bind-html=\"field.label | to_trusted\"></label>\n                    <input class=\"form_input\" type=\"text\" data-ui-mask=\"{{ field.placeholder }}\"\n                           data-model-view-value=\"true\"\n                           data-ng-required=\"field.required\" data-ng-model=\"field.value\">\n                </div>\n\n                <div data-ng-switch-when=\"date\" class=\"clearfix\">\n                    <label class=\"form_label\" data-ng-bind-html=\"field.label | to_trusted\"></label>\n                    <date-picker data-model=\"field.value\"></date-picker>\n                </div>\n\n                <div data-ng-switch-when=\"select\" class=\"clearfix\">\n                    <label class=\"form_label\" data-ng-bind-html=\"field.label | to_trusted\"></label>\n                    <div class=\"magic_select form_input\">\n                        <select data-ng-model=\"field.value\"\n                                data-ng-required=\"field.required\"\n                                data-ng-options=\"item.value as item.text for item in field.data\"></select>\n                    </div>\n                </div>\n\n                <div data-ng-switch-when=\"email\" class=\"clearfix\">\n                    <label class=\"form_label\" data-ng-bind-html=\"field.label | to_trusted\"></label>\n                    <input class=\"form_input\" type=\"email\" placeholder=\"{{ field.placeholder }}\"\n                           data-ng-required=\"field.required\" data-ng-model=\"field.value\">\n                </div>\n\n            </div>\n\n            <div class=\"sp_cp-widget__form-submit_wrapper clearfix\">\n\n                <button type=\"submit\" class=\"sp_btn button_primary sp_cp-widget__form-submit_button\"\n                        data-ng-bind=\"widget.texts.request_charity_submit\"></button>\n\n                <button type=\"button\" class=\"sp_btn button_primary sp_cp-widget__form-back_button\"\n                        data-ng-bind=\"widget.texts.request_charity_back\"\n                        data-ng-click=\"charity_form_close(request_charity);\"></button>\n\n            </div>\n\n        </form>\n\n    </magic-modal>\n\n\n</div>";
 
 /***/ }),
-/* 215 */
+/* 220 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(216);
+var content = __webpack_require__(221);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -48281,7 +48519,7 @@ if(false) {
 }
 
 /***/ }),
-/* 216 */
+/* 221 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -48295,7 +48533,7 @@ exports.push([module.i, ".spm_wrapper .sp_cp-widget {\n  /* --------------------
 
 
 /***/ }),
-/* 217 */
+/* 222 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -48303,11 +48541,11 @@ exports.push([module.i, ".spm_wrapper .sp_cp-widget {\n  /* --------------------
 
 var _widget = __webpack_require__(2);
 
-var _event_message = __webpack_require__(218);
+var _event_message = __webpack_require__(223);
 
 var _event_message2 = _interopRequireDefault(_event_message);
 
-__webpack_require__(219);
+__webpack_require__(224);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -48360,19 +48598,19 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 });
 
 /***/ }),
-/* 218 */
+/* 223 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"event_message__wrapper container\">\n\n    <div class=\"event_message\" data-ng-repeat=\"item in messages\">\n\n        <img class=\"event_message__icon\" data-ng-src=\"{{ item.icon }}\" alt=\"{{ item.text }}\">\n        <span class=\"event_message__text\" data-ng-bind=\"item.text\"></span>\n\n    </div>\n\n</div>";
 
 /***/ }),
-/* 219 */
+/* 224 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(220);
+var content = __webpack_require__(225);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -48397,7 +48635,7 @@ if(false) {
 }
 
 /***/ }),
-/* 220 */
+/* 225 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -48411,19 +48649,19 @@ exports.push([module.i, ".spm_wrapper .event_message__wrapper {\n  text-align: c
 
 
 /***/ }),
-/* 221 */
+/* 226 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"bon_choice_main container\" data-ng-show=\"widget.enabled\" data-ng-cloak>\n  <h3 class=\"bon_header\">\n    <span class=\"header\">{{ widget.texts.header }}</span>\n  </h3>\n  <h4 class=\"bon_sub_header\">\n    <span class=\"caption\">{{ widget.texts.caption }}</span>\n  </h4>\n\n  <div data-sailplay-gifts class=\"clearfix\">\n    <div class=\"bon_item_main\" data-ng-show=\"gifts && gifts().length\" data-magic-slider>\n\n      <div class=\"bon_slide_cat_item_wrap\" data-magic-gallery>\n        <div class=\"bon_slide_cat_item\">\n\n          <div class=\"bon_item_line\" data-ng-style=\"{left : left}\">\n\n            <div class=\"bon_item gift\" data-magic-slide data-magic-gift data-ng-repeat=\"gift in gifts()\">\n              <div class=\"bon_item_iner\">\n                <img data-ng-src=\"{{ gift.thumbs.url_250x250 | sailplay_pic }}\" alt=\"{{ gift.name }}\">\n                <span class=\"bon_item_name gift_name\" data-ng-bind=\"gift.name\"></span>\n                <span class=\"bon_tem_info gift_points\" data-ng-bind=\"(gift.points | number) + ' ' + (gift.points | sailplay_pluralize:('points.texts.pluralize' | tools))\"></span>\n                <a href=\"#\" class=\"button_primary\" data-ng-click=\"gift_select(gift); $event.preventDefault();\">{{ widget.texts.get }}</a>\n              </div>\n            </div>\n\n          </div>\n\n        </div>\n\n        <a href=\"#\" class=\"arr_left arr_left slider_arrow_left\" data-ng-click=\"$event.preventDefault(); set_position('left');\" data-ng-show=\"show_left\"></a>\n        <a href=\"#\" class=\"arr_right arr_right slider_arrow_right\" data-ng-click=\"$event.preventDefault(); set_position('right');\" data-ng-show=\"show_right\"></a>\n\n      </div>\n\n    </div>\n\n    <magic-modal class=\"bns_overlay_gift\" data-ng-cloak data-show=\"modals.selected_gift\">\n\n      <div class=\"modal_gift_container\">\n\n        <img class=\"gift_more_img\" data-ng-src=\"{{ modals.selected_gift.thumbs.url_250x250 | sailplay_pic }}\"\n             alt=\"{{ modals.selected_gift.name }}\">\n\n        <div class=\"gift_more_block\">\n\n          <span class=\"gift_more_name modal_gift_name\" data-ng-bind=\"modals.selected_gift.name\"></span>\n\n          <span class=\"gift_more_points modal_gift_points\"\n                data-ng-bind=\"(modals.selected_gift.points | number) + ' ' + (modals.selected_gift.points | sailplay_pluralize:('points.texts.pluralize' | tools))\"></span>\n\n          <p class=\"gift_more_descr modal_gift_description\" data-ng-bind=\"modals.selected_gift.descr\"></p>\n\n          <div class=\"modal_gift_type_block clearfix\" data-gift-type data-types=\"widget.options.gift_types\" data-gift=\"modals.selected_gift\"></div>\n\n          <div class=\"modal_gift_buttons\">\n            <span class=\"alink button_primary\" data-ng-click=\"gift_select(false);\">{{ 'buttons.texts.close' | tools }}</span>\n\n            <span class=\"alink button_primary\"\n                  style=\"margin-left: 5px;\"\n                  data-ng-click=\"gift_confirm();\"\n                  data-ng-bind=\"gift_affordable(modals.selected_gift) ? widget.texts.get : widget.texts.no_points_button_text\">{{ widget.texts.get }}</span>\n          </div>\n\n        </div>\n      </div>\n\n    </magic-modal>\n\n    <magic-modal class=\"bns_overlay_gift_not_points\" data-ng-cloak data-show=\"modals.no_points_error\">\n      <div>\n        <p class=\"modal_gift_description\">\n          {{ widget.texts.no_points_message }}\n        </p>\n        <a class=\"alink button_primary earn_points_button\" href=\"#magic_actions\" data-ng-click=\"gift_unconfirm()\">{{ widget.texts.earn_points }}</a>\n        <a class=\"alink button_primary service_button\" target=\"_blank\" href=\"{{ widget.texts.partner_service_url }}\" data-ng-click=\"gift_unconfirm()\">{{ widget.texts.service }}</a>\n      </div>\n    </magic-modal>\n\n    <magic-modal class=\"bns_overlay_gift_complete\" data-ng-cloak data-show=\"modals.confirmed_gift\">\n      <div>\n        <p class=\"modal_gift_description\">\n          {{ widget.texts.confirm_message_start }}\n          {{ (modals.confirmed_gift.points | number) + ' ' + (modals.confirmed_gift.points | sailplay_pluralize:('points.texts.pluralize' | tools)) }}.\n          {{ widget.texts.confirm_message_end }}\n        </p>\n        <span class=\"alink button_primary\" data-ng-click=\"gift_unconfirm();\">{{ 'buttons.texts.close' | tools }}</span>\n        <span class=\"alink button_primary\" data-ng-click=\"gift_purchase(modals.confirmed_gift);\">{{ 'buttons.texts.get' | tools }}</span>\n      </div>\n    </magic-modal>\n  </div>\n\n\n</div>";
 
 /***/ }),
-/* 222 */
+/* 227 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(223);
+var content = __webpack_require__(228);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -48448,7 +48686,7 @@ if(false) {
 }
 
 /***/ }),
-/* 223 */
+/* 228 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -48462,7 +48700,7 @@ exports.push([module.i, ".spm_wrapper .bon_choice_main {\n  float: left;\n  widt
 
 
 /***/ }),
-/* 224 */
+/* 229 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -48524,7 +48762,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 });
 
 /***/ }),
-/* 225 */
+/* 230 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -48532,11 +48770,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var _widget = __webpack_require__(2);
 
-var _giftsGrid = __webpack_require__(226);
+var _giftsGrid = __webpack_require__(231);
 
 var _giftsGrid2 = _interopRequireDefault(_giftsGrid);
 
-__webpack_require__(227);
+__webpack_require__(232);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -48737,19 +48975,19 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 });
 
 /***/ }),
-/* 226 */
+/* 231 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"bon_choice_main container clearfix gifts_grid_widget\">\n\n    <h3 class=\"gifts_grid___header\">\n        <span class=\"header\" data-ng-bind=\"widget.texts.header\"></span>\n    </h3>\n\n    <h4 class=\"gifts_grid___caption\">\n        <span class=\"caption\" data-ng-bind=\"widget.texts.caption\"></span>\n    </h4>\n\n    <div class=\"gifts_grid__wrapper clearfix\">\n\n        <div class=\"gifts_grid__blocks clearfix\">\n\n            <div class=\"gifts_grid__block clearfix\">\n\n                <div class=\"gifts_grid__item clearfix\"\n                     data-ng-class=\"{\n                     'gift-available': isAvailableGift(gift),\n                     'gift-unavailable': !isAvailableGift(gift),\n                     'gift-points-not-enough': user().user_points.confirmed < gift.points\n                     }\"\n                     data-ng-repeat=\"gift in blocks[state] | filter:filter | orderBy:orderBy track by $index\">\n\n                    <span class=\"gifts_grid__item-name gift_name\" data-ng-bind=\"gift.name\"></span>\n\n                    <span class=\"gifts_grid__item-points gift_points\"\n                          data-ng-bind=\"(gift.points | number) + ' ' + (gift.points | sailplay_pluralize:('points.texts.pluralize' | tools))\"></span>\n\n                    <img class=\"gifts_grid__item-img gift_img\"\n                         data-ng-src=\"{{ gift.thumbs.url_250x250 | sailplay_pic }}\"\n                         alt=\"{{ gift.name }}\">\n\n\n                    <a class=\"gifts_grid__item-button button_primary\" href=\"#\"\n                       data-ng-bind=\"widget.texts.get\"\n                       data-ng-click=\"$event.preventDefault();open(gift)\"></a>\n\n\n                </div>\n\n            </div>\n\n        </div>\n\n        <a href=\"#\" class=\"gifts_grid__arrow gifts_grid__arrow_l slider_arrow_left\"\n           data-ng-if=\"state\"\n           data-ng-click=\"$event.preventDefault(); move(-1);\"></a>\n\n        <a href=\"#\" class=\"gifts_grid__arrow gifts_grid__arrow_r slider_arrow_right\"\n           data-ng-if=\"blocks.length && state != (blocks.length-1)\"\n           data-ng-click=\"$event.preventDefault(); move(1);\"></a>\n\n    </div>\n\n    <magic-modal class=\"bns_overlay_gift\" data-show=\"selected_gift\">\n\n        <div class=\"modal_gift_container\">\n\n            <img class=\"gift_more_img\" data-ng-src=\"{{ selected_gift.thumbs.url_250x250 | sailplay_pic }}\"\n                 alt=\"{{ selected_gift.name }}\">\n\n            <div class=\"gift_more_block\">\n\n                <span data-ng-bind=\"selected_gift\"></span>\n\n                <span class=\"gift_more_name modal_gift_name\" data-ng-bind=\"selected_gift.name\"></span>\n\n                <span class=\"gift_more_points modal_gift_points\"\n                      data-ng-bind=\"(selected_gift.points | number) + ' ' + (selected_gift.points | sailplay_pluralize:('points.texts.pluralize' | tools))\"></span>\n\n                <p class=\"gift_more_descr modal_gift_description\" data-ng-bind=\"selected_gift.descr\"></p>\n\n                <div class=\"modal_gift_buttons\">\n\n                    <span class=\"alink button_primary\" data-ng-click=\"$parent.$parent.selected_gift=null\">{{ 'buttons.texts.close' | tools }}</span>\n\n                    <span class=\"alink button_primary\"\n                          style=\"margin-left: 5px;\"\n                          data-ng-click=\"gift_confirm(selected_gift);\"\n                          data-ng-bind=\"widget.texts.get\"></span>\n                </div>\n\n            </div>\n        </div>\n\n\n</div>";
 
 /***/ }),
-/* 227 */
+/* 232 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(228);
+var content = __webpack_require__(233);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -48774,7 +49012,7 @@ if(false) {
 }
 
 /***/ }),
-/* 228 */
+/* 233 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -48788,7 +49026,7 @@ exports.push([module.i, ".spm_wrapper .gifts_grid_widget .gifts_grid__header {\n
 
 
 /***/ }),
-/* 229 */
+/* 234 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -48796,11 +49034,11 @@ exports.push([module.i, ".spm_wrapper .gifts_grid_widget .gifts_grid__header {\n
 
 var _widget = __webpack_require__(2);
 
-var _header = __webpack_require__(230);
+var _header = __webpack_require__(235);
 
 var _header2 = _interopRequireDefault(_header);
 
-__webpack_require__(231);
+__webpack_require__(236);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -48815,19 +49053,19 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 });
 
 /***/ }),
-/* 230 */
+/* 235 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"header_wrapper container\">\n\n  <h3 class=\"header_title\">\n    {{ widget.texts.title }}\n  </h3>\n\n  <h2 class=\"header_sub_title\">\n    {{ widget.texts.sub_title }}\n  </h2>\n\n</div>";
 
 /***/ }),
-/* 231 */
+/* 236 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(232);
+var content = __webpack_require__(237);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -48852,7 +49090,7 @@ if(false) {
 }
 
 /***/ }),
-/* 232 */
+/* 237 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -48866,7 +49104,7 @@ exports.push([module.i, ".spm_wrapper .spm_tools_widget.header .header_wrapper {
 
 
 /***/ }),
-/* 233 */
+/* 238 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -48874,11 +49112,11 @@ exports.push([module.i, ".spm_wrapper .spm_tools_widget.header .header_wrapper {
 
 var _widget = __webpack_require__(2);
 
-var _imageStatuses = __webpack_require__(234);
+var _imageStatuses = __webpack_require__(239);
 
 var _imageStatuses2 = _interopRequireDefault(_imageStatuses);
 
-__webpack_require__(235);
+__webpack_require__(240);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -48937,19 +49175,19 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 });
 
 /***/ }),
-/* 234 */
+/* 239 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"clearfix container\">\n\n  <div class=\"image-status-list\">\n\n    <div class=\"next_status_info\" data-ng-show=\"get_next_status().status\">\n\n      <div class=\"next_status_name\">\n        {{ widget.texts.next_status }} <span data-ng-style=\"{ color: get_next_status().status.color  }\">{{ get_next_status().status.status }}</span>\n      </div>\n\n      <div class=\"next_status_offset\">\n        {{ widget.texts.next_status_offset }} {{ get_next_status().offset }}\n      </div>\n\n    </div>\n\n    <div class=\"image-status-list__wrapper\" data-sailplay-statuses data-ng-cloak>\n\n      <div class=\"image-status-list__progress element-progress progress_line\"\n           data-ng-style=\"getProgress(user().user_points, _statuses)\"></div>\n\n      <div class=\"image-status-list__item element-item\"\n           data-ng-class=\"{ type_active : is_active_status(item) }\"\n           data-ng-repeat=\"item in _statuses\"\n           data-ng-style=\"generateOffset($index, _statuses)\">\n\n        <!--<div class=\"image-status-list__item-point element-item-point\"></div>-->\n\n        <div class=\"element-item-point-inner\">\n          <img class=\"status_image\" data-ng-src=\"{{ get_status_image(item) }}\" alt=\"\">\n        </div>\n\n      </div>\n\n    </div>\n\n  </div>\n</div>";
 
 /***/ }),
-/* 235 */
+/* 240 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(236);
+var content = __webpack_require__(241);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -48974,7 +49212,7 @@ if(false) {
 }
 
 /***/ }),
-/* 236 */
+/* 241 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -48988,7 +49226,7 @@ exports.push([module.i, ".spm_wrapper .image-status-list {\n  float: left;\n  wi
 
 
 /***/ }),
-/* 237 */
+/* 242 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -48996,11 +49234,11 @@ exports.push([module.i, ".spm_wrapper .image-status-list {\n  float: left;\n  wi
 
 var _widget = __webpack_require__(2);
 
-var _leaderboard = __webpack_require__(238);
+var _leaderboard = __webpack_require__(243);
 
 var _leaderboard2 = _interopRequireDefault(_leaderboard);
 
-__webpack_require__(239);
+__webpack_require__(244);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -49017,19 +49255,19 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 });
 
 /***/ }),
-/* 238 */
+/* 243 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"clearfix\">\n    <div class=\"container\" data-ng-show=\"widget.enabled\" data-ng-cloak>\n\n        <h3 class=\"bon_header\">\n            <span class=\"header\">{{ widget.texts.header }}</span>\n        </h3>\n        <h4 class=\"bon_sub_header\">\n            <span class=\"caption\">{{ widget.texts.caption }}</span>\n        </h4>\n\n        <ul class=\"leaderboard__list\" data-ng-if=\"data && data()\">\n\n            <li class=\"leaderboard__list-item type_headers\">\n\n                <span class=\"leaderboard__list-item__rank rows headers\">{{ widget.texts.rank }}</span>\n\n                <span class=\"leaderboard__list-item__name rows headers\">{{ widget.texts.full_name }}</span>\n\n                <span class=\"leaderboard__list-item__score rows headers\">{{ widget.texts.score }}</span>\n\n            </li>\n\n            <li class=\"leaderboard__list-item\" data-ng-repeat=\"member in $parent.data().members.members\"\n                data-ng-class=\"{ type_current : member.is_current_user }\">\n\n                <span class=\"leaderboard__list-item__rank rank rows\" data-ng-bind=\"member.rank\"></span>\n\n                <span class=\"leaderboard__list-item__name full_name rows\">\n\n                    <img class=\"leaderboard__list-item__photo photo\" data-ng-if=\"member.pic\"\n                         data-ng-src=\"{{ $parent.member.pic | sailplay_pic }}\"\n                         alt=\"{{ $parent.member.full_name || 'n/a' }}\">\n\n                    {{ member.full_name || 'n/a' }}\n\n                </span>\n\n                <span class=\"leaderboard__list-item__score score rows\" data-ng-bind=\"member.score\"></span>\n\n            </li>\n\n        </ul>\n\n\n    </div>\n</div>\n\n";
 
 /***/ }),
-/* 239 */
+/* 244 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(240);
+var content = __webpack_require__(245);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -49054,7 +49292,7 @@ if(false) {
 }
 
 /***/ }),
-/* 240 */
+/* 245 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -49068,7 +49306,7 @@ exports.push([module.i, ".spm_wrapper .spm_tools_widget.leaderboard .container {
 
 
 /***/ }),
-/* 241 */
+/* 246 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -49076,15 +49314,15 @@ exports.push([module.i, ".spm_wrapper .spm_tools_widget.leaderboard .container {
 
 var _widget = __webpack_require__(2);
 
-var _pointsStatus = __webpack_require__(242);
+var _pointsStatus = __webpack_require__(247);
 
 var _pointsStatus2 = _interopRequireDefault(_pointsStatus);
 
-var _history_pagination = __webpack_require__(243);
+var _history_pagination = __webpack_require__(248);
 
 var _history_pagination2 = _interopRequireDefault(_history_pagination);
 
-__webpack_require__(244);
+__webpack_require__(249);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -49155,25 +49393,25 @@ _widget.Widget.run(["$templateCache", function ($templateCache) {
 }]);
 
 /***/ }),
-/* 242 */
+/* 247 */
 /***/ (function(module, exports) {
 
 module.exports = "<div id=\"points-status\" class=\"bon_choice_main container clearfix\">\n\n    <div class=\"points-status__wrapper clearfix\">\n\n        <div class=\"points-status__left points_block clearfix\" data-ng-if=\"user()\">\n\n            <span class=\"points_confirmed\">\n                <span class=\"points_confirmed_value\" data-ng-bind=\"user().user_points.total | number\"></span>\n                <span class=\"points_confirmed_name\"\n                    data-ng-bind=\"user().user_points.total | sailplay_pluralize: ('points.texts.pluralize' | tools)\"></span>\n            </span>\n\n            <a class=\"button_primary history_button\" href=\"#\"\n               data-ng-click=\"$event.preventDefault(); $parent.history = true;\"\n               data-ng-bind=\"widget.texts.history_button\"></a>\n\n        </div>\n\n        <div class=\"points-status__right progress_block clearfix\">\n\n            <div class=\"progress_line_main\">\n\n                <div class=\"progress_line_bg progress_bar progress_bar_border\"></div>\n\n                <div class=\"progress_line progress_bar_filled\"\n                     data-ng-style=\"{ width: getProgress(user().user_points.total, widget.options.status_list) }\">\n                </div>\n\n                <div class=\"gift_item progress_bar_border\"\n                     data-ng-repeat=\"item in widget.options.status_list track by $index\"\n                     data-ng-class=\"{ act : item.points <= user().user_points.total, progress_bar_gift_filled: item.points <=user().user_points.total, progress_bar_gift: item.points > user().user_points.total}\"\n                     data-ng-style=\"{ left: (100/widget.options.status_list.length * ($index+1)) + '%', 'background-image': 'url(' + item.image +')' }\">\n\n                    <span class=\"gift_item_hint\" data-ng-bind=\"item.points | number\"></span>\n\n                </div>\n\n            </div>\n\n        </div>\n\n    </div>\n\n    <magic-modal class=\"bns_overlay_hist\" data-show=\"history\">\n\n        <div data-sailplay-history data-sailplay-profile>\n\n            <h3>\n                <span class=\"modal_history_header\" data-ng-bind=\"widget.texts.history.header\"></span>\n            </h3>\n            <h4 class=\"modal_history_caption\" data-ng-bind=\"widget.texts.history.caption\"></h4>\n\n            <table class=\"bns_hist_table\">\n\n                <tbody>\n\n                <tr data-dir-paginate=\"item in history() | itemsPerPage:10\" data-pagination-id=\"history_pages\">\n                    <td>\n                        <span class=\"modal_history_date\" data-ng-bind=\"item.action_date | date:'d/MM/yyyy'\"></span>\n                    </td>\n                    <td>\n                        <span><b class=\"modal_history_content\" data-ng-bind=\"item | history_item\"></b></span>\n                    </td>\n                    <td>\n                        <span class=\"modal_history_points\" data-ng-if=\"item.points_delta\"\n                              data-ng-bind=\"((item.points_delta|number) || 0) + ' ' + (item.points_delta | sailplay_pluralize:('points.texts.pluralize' | tools))\"></span>\n                    </td>\n                </tr>\n\n                </tbody>\n            </table>\n\n            <dir-pagination-controls data-max-size=\"7\" data-pagination-id=\"history_pages\"\n                                     data-template-url=\"points_status.history_pagination\"\n                                     data-auto-hide=\"true\"></dir-pagination-controls>\n        </div>\n\n\n    </magic-modal>\n\n</div>";
 
 /***/ }),
-/* 243 */
+/* 248 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"bns_hist_pager\" data-ng-if=\"1 < pages.length || !autoHide\">\n\n  <a data-ng-if=\"directionLinks\" data-ng-class=\"{ disabled : pagination.current == 1 }\" href=\"\" data-ng-click=\"setCurrent(pagination.current - 1)\">\n    &lsaquo;\n  </a>\n  <a data-ng-repeat=\"pageNumber in pages track by tracker(pageNumber, $index)\" data-ng-class=\"{ active : pagination.current == pageNumber, disabled : pageNumber == '...' }\" href=\"\" data-ng-click=\"setCurrent(pageNumber)\">\n    {{ pageNumber }}\n  </a>\n\n  <a data-ng-if=\"directionLinks\" data-ng-class=\"{ disabled : pagination.current == pagination.last }\" href=\"\" data-ng-click=\"setCurrent(pagination.current + 1)\">\n    &rsaquo;\n  </a>\n\n</div>";
 
 /***/ }),
-/* 244 */
+/* 249 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(245);
+var content = __webpack_require__(250);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -49198,7 +49436,7 @@ if(false) {
 }
 
 /***/ }),
-/* 245 */
+/* 250 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -49212,7 +49450,7 @@ exports.push([module.i, ".spm_wrapper #points-status .points-status__wrapper {\n
 
 
 /***/ }),
-/* 246 */
+/* 251 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -49220,15 +49458,15 @@ exports.push([module.i, ".spm_wrapper #points-status .points-status__wrapper {\n
 
 var _widget = __webpack_require__(2);
 
-var _points_rate_progress = __webpack_require__(247);
+var _points_rate_progress = __webpack_require__(252);
 
 var _points_rate_progress2 = _interopRequireDefault(_points_rate_progress);
 
-var _history_pagination = __webpack_require__(248);
+var _history_pagination = __webpack_require__(253);
 
 var _history_pagination2 = _interopRequireDefault(_history_pagination);
 
-__webpack_require__(249);
+__webpack_require__(254);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -49329,25 +49567,25 @@ _widget.Widget.run(["$templateCache", function ($templateCache) {
 }]);
 
 /***/ }),
-/* 247 */
+/* 252 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"points_rate_progress__wrapper container\" data-sailplay-badges>\n\n    <div class=\"points_rate_progress__points points_rate_progress__blocks\" data-ng-if=\"sailplay.user.info()\">\n        <span class=\"points_rate_progress__points-confirmed\">\n          <span class=\"points_rate_progress__points-confirmed-value\"\n                data-ng-bind=\"sailplay.user.info().user_points.confirmed | number\"></span>\n          <span class=\"points_rate_progress__points-confirmed-name\"\n                data-ng-bind=\"sailplay.user.info().user_points.confirmed | sailplay_pluralize: ('points.texts.pluralize' | tools)\"></span>\n        </span>\n        <a class=\"points_rate_progress__points-history button_link history_button\" href=\"#\"\n           data-ng-click=\"$event.preventDefault();$parent.show_history = true;\">{{ widget.texts.history_button }}</a>\n    </div>\n\n    <div class=\"points_rate_progress__progress points_rate_progress__blocks\"\n         data-ng-if=\"sailplay.user.info() && badges_list\">\n\n        <p class=\"points_rate_progress__progress-offset\">\n            <span class=\"points_rate_progress__progress-offset-text\" data-ng-bind=\"widget.texts.to_text_status\"></span>\n            <span class=\"points_rate_progress__progress-offset-value\">\n                {{ get_offset(sailplay.user.info().purchases.sum, badges_list) | number }}\n                {{ get_offset(sailplay.user.info().purchases.sum, badges_list) | sailplay_pluralize: ('rub.texts.pluralize' | tools) }}\n            </span>\n        </p>\n\n        <div class=\"points_rate_progress__progress-block\">\n            <div class=\"points_rate_progress__progress-block-line\" data-ng-style=\"get_progress(sailplay.user.info().purchases.sum, badges_list)\"></div>\n            <div class=\"points_rate_progress__progress-block-text\" data-ng-bind=\"get_next_status(sailplay.user.info().purchases.sum, badges_list).descr\"></div>\n            <!--<img class=\"points_rate_progress__progress-block-img\" data-ng-src=\"{{ get_next_status(sailplay.user.info().purchases.sum, badges_list).thumbs.url_100x100 | sailplay_pic }}\" alt=\"{{ get_next_status(sailplay.user.info().purchases.sum, badges_list).name }}\">-->\n        </div>\n\n    </div>\n\n    <div class=\"points_rate_progress__rate points_rate_progress__blocks\"\n         data-ng-if=\"sailplay.user.info() && badges_list\">\n\n        <span class=\"points_rate_progress__rate-value\" data-ng-bind=\"(get_current_status(sailplay.user.info().purchases.sum, badges_list).descr || '0%')\"></span>\n        <span class=\"points_rate_progress__rate-text\" data-ng-bind=\"widget.texts.points_rate\"></span>\n\n    </div>\n\n    <magic-modal class=\"bns_overlay_hist\" data-show=\"show_history\">\n\n        <div data-sailplay-history data-sailplay-profile>\n\n            <h3>\n                <span class=\"modal_history_header\">{{ widget.texts.history.header }}</span>\n                <!--<b>У вас {{ user().user_points.confirmed + ' ' + (user().user_points.confirmed | sailplay_pluralize:_tools.points.texts.pluralize) }}</b>-->\n            </h3>\n            <h4 class=\"modal_history_caption\">{{ widget.texts.history.caption }}</h4>\n\n            <table class=\"bns_hist_table\">\n\n                <tbody>\n\n                <tr data-dir-paginate=\"item in history() | itemsPerPage:10\" data-pagination-id=\"history_pages\">\n                    <td>\n                        <span class=\"modal_history_date\" data-ng-bind=\"item.action_date | date:'d/MM/yyyy'\"></span>\n                    </td>\n                    <td>\n                        <span><b class=\"modal_history_content\" data-ng-bind=\"item | history_item\"></b></span>\n                    </td>\n                    <td>\n                        <span class=\"modal_history_points\" data-ng-if=\"item.points_delta\" data-ng-bind=\"((item.points_delta|number) || 0) + ' ' + (item.points_delta | sailplay_pluralize:('points.texts.pluralize' | tools))\"></span>\n                    </td>\n                </tr>\n\n                </tbody>\n            </table>\n\n            <dir-pagination-controls data-max-size=\"7\" data-pagination-id=\"history_pages\"\n                                     data-template-url=\"points_rate_progress.history_pagination\"\n                                     data-auto-hide=\"true\"></dir-pagination-controls>\n        </div>\n\n\n\n    </magic-modal>\n\n</div>";
 
 /***/ }),
-/* 248 */
+/* 253 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"bns_hist_pager\" data-ng-if=\"1 < pages.length || !autoHide\">\n\n  <a data-ng-if=\"directionLinks\" data-ng-class=\"{ disabled : pagination.current == 1 }\" href=\"\" data-ng-click=\"setCurrent(pagination.current - 1)\">\n    &lsaquo;\n  </a>\n  <a data-ng-repeat=\"pageNumber in pages track by tracker(pageNumber, $index)\" data-ng-class=\"{ active : pagination.current == pageNumber, disabled : pageNumber == '...' }\" href=\"\" data-ng-click=\"setCurrent(pageNumber)\">\n    {{ pageNumber }}\n  </a>\n\n  <a data-ng-if=\"directionLinks\" data-ng-class=\"{ disabled : pagination.current == pagination.last }\" href=\"\" data-ng-click=\"setCurrent(pagination.current + 1)\">\n    &rsaquo;\n  </a>\n\n</div>";
 
 /***/ }),
-/* 249 */
+/* 254 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(250);
+var content = __webpack_require__(255);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -49372,7 +49610,7 @@ if(false) {
 }
 
 /***/ }),
-/* 250 */
+/* 255 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -49386,7 +49624,7 @@ exports.push([module.i, ".spm_wrapper .points_rate_progress__wrapper {\n  font-s
 
 
 /***/ }),
-/* 251 */
+/* 256 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -49394,17 +49632,17 @@ exports.push([module.i, ".spm_wrapper .points_rate_progress__wrapper {\n  font-s
 
 var _widget = __webpack_require__(2);
 
-var _profile = __webpack_require__(252);
+var _profile = __webpack_require__(257);
 
 var _profile2 = _interopRequireDefault(_profile);
 
-var _history_pagination = __webpack_require__(253);
+var _history_pagination = __webpack_require__(258);
 
 var _history_pagination2 = _interopRequireDefault(_history_pagination);
 
-__webpack_require__(254);
+__webpack_require__(259);
 
-var _avatar_default = __webpack_require__(258);
+var _avatar_default = __webpack_require__(263);
 
 var _avatar_default2 = _interopRequireDefault(_avatar_default);
 
@@ -49478,25 +49716,25 @@ _widget.Widget.run(["$templateCache", function ($templateCache) {
 // });
 
 /***/ }),
-/* 252 */
+/* 257 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"bon_profile_wrap container\" data-ng-show=\"widget.enabled\" data-ng-cloak>\n\n  <div class=\"bon_profile_info\" data-sailplay-profile data-sailplay-gifts>\n\n    <div class=\"bon_profile_top clearfix\">\n      <div class=\"bon_profile_top_left\">\n        <h3>\n          <span class=\"header\">{{ widget.texts.header }}</span>\n        </h3>\n        <h4>\n          <span class=\"caption\">{{ widget.texts.spoiler }}</span>\n        </h4>\n      </div>\n      <div class=\"bon_profile_right clearfix\" data-ng-if=\"user()\">\n        <div class=\"user_avatar\">\n          <img class=\"user_avatar_image\" data-ng-src=\"{{ (user().user.pic | sailplay_pic) || default_avatar}}\" alt=\"You\">\n          <a href=\"#\" class=\"logout_btn button_link\" data-ng-click=\"$event.preventDefault(); logout();\">{{ widget.texts.logout }}</a>\n        </div>\n        <div class=\"user_info\">\n          <span class=\"user_name\"  data-ng-bind=\"user().user.name || widget.texts.name_not_defined\"></span>\n          <span class=\"user_phone\" data-ng-if=\"user().user.phone\"  data-ng-bind=\"user().user.phone | tel\"></span>\n          <span class=\"user_email\" data-ng-if=\"user().user.email\"  data-ng-bind=\"user().user.email\"></span>\n        </div>\n        <div class=\"user_info\">\n          <a href=\"#\" class=\"edit_profile_btn button_link\" data-ng-click=\"$event.preventDefault(); profile.fill_profile(true);\">{{ widget.texts.edit_profile_button }}</a>\n        </div>\n      </div>\n      <div class=\"bon_profile_right clearfix\" data-ng-if=\"!user()\">\n        <button type=\"button\" class=\"sp_btn button_primary login_reg_btn\" data-ng-click=\"$event.preventDefault(); login('remote', {widget: 'profile', element: 'profile_login_button'});\">{{ widget.texts.login_reg }}</button>\n      </div>\n    </div>\n\n    <!-- status -->\n    <div class=\"status_block\" data-ng-if=\"user() && user().user_status.name\">\n      <span class=\"status_block_title\" data-ng-bind=\"widget.texts.user_status\"></span>\n      <img class=\"status_block_img\" data-ng-src=\"{{ user().user_status.pic | sailplay_pic }}\" alt=\"{{ user().user_status.name }}\">\n      <span class=\"status_block_name\" data-ng-bind=\"user().user_status.name || widget.texts.empty_status \"></span>\n    </div>\n\n    <div class=\"bon_profile_stat\">\n      <div class=\"bps_left points_block clearfix\" data-ng-if=\"user()\">\n        <span class=\"points_confirmed\">\n          <span class=\"points_confirmed_value\" data-ng-bind=\"user().user_points.confirmed | number\"></span>\n          <span class=\"points_confirmed_name\" data-ng-bind=\"user().user_points.confirmed | sailplay_pluralize: ('points.texts.pluralize' | tools)\"></span>\n        </span>\n        <a class=\"button_link history_button\" href=\"#\" data-ng-click=\"$event.preventDefault(); profile.history = true;\">{{ widget.texts.history_button }}</a>\n      </div>\n      <div class=\"bps_right progress_block clearfix\" data-ng-if=\"progress\">\n        <div class=\"progress_line_main\">\n          <div class=\"progress_line_bg progress_bar progress_bar_border\"></div>\n          <div class=\"progress_line progress_bar_filled\" data-procent=\"0\" data-ng-style=\"{ width: progress.plenum + '%' }\">\n            <div class=\"progress_text progress_bar_flag\" data-ng-show=\"progress.next.item\" data-ng-class=\"{ right_position: progress.plenum < 50 }\">\n              <span class=\"progress_bar_flag_text\" data-ng-bind=\"progress.next.offset + ' ' + (progress.next.offset | sailplay_pluralize:('points.texts.pluralize' | tools)) + ' ' + widget.texts.before_gift\"></span>\n            </div>\n          </div>\n\n          <div class=\"gift_item progress_bar_border\" data-ng-repeat=\"item in progress.items track by $index\"\n               data-ng-class=\"{ act : item.reached, progress_bar_gift_filled: item.reached, progress_bar_gift: !item.reached}\"\n               data-ng-style=\"{ left: item.get_left() }\">\n\n            <span class=\"gift_item_hint\" data-ng-bind=\"item.gifts[0].points\"></span>\n\n          </div>\n\n        </div>\n      </div>\n    </div>\n  </div>\n\n  <magic-modal class=\"bns_overlay_hist\" data-show=\"profile.history\">\n\n    <div data-sailplay-history data-sailplay-profile>\n\n      <h3>\n        <span class=\"modal_history_header\">{{ widget.texts.history.header }}</span>\n        <!--<b>У вас {{ user().user_points.confirmed + ' ' + (user().user_points.confirmed | sailplay_pluralize:_tools.points.texts.pluralize) }}</b>-->\n      </h3>\n      <h4 class=\"modal_history_caption\">{{ widget.texts.history.caption }}</h4>\n\n      <table class=\"bns_hist_table\">\n\n        <tbody>\n\n        <tr data-dir-paginate=\"item in history() | itemsPerPage:10\" data-pagination-id=\"history_pages\">\n          <td>\n            <span class=\"modal_history_date\" data-ng-bind=\"item.action_date | date:'d/MM/yyyy'\"></span>\n          </td>\n          <td>\n            <span><b class=\"modal_history_content\" data-ng-bind=\"item | history_item\"></b></span>\n          </td>\n          <td>\n            <span class=\"modal_history_points\" data-ng-if=\"item.points_delta\" data-ng-bind=\"((item.points_delta|number) || 0) + ' ' + (item.points_delta | sailplay_pluralize:('points.texts.pluralize' | tools))\"></span>\n          </td>\n        </tr>\n\n        </tbody>\n      </table>\n\n      <dir-pagination-controls data-max-size=\"7\" data-pagination-id=\"history_pages\"\n                               data-template-url=\"profile.history_pagination\"\n                               data-auto-hide=\"true\"></dir-pagination-controls>\n    </div>\n\n\n\n  </magic-modal>\n\n  <!--profile edit section-->\n  <magic-modal class=\"fill_profile_modal\" data-show=\"profile.show_fill_profile\">\n\n    <div class=\"mb_popup mb_popup_prof\" data-sailplay-fill-profile data-config=\"widget.fill_profile.config\">\n\n      <div class=\"mb_popup_top\">\n        <span class=\"modal_profile_header\">{{ widget.fill_profile.header }}</span>\n      </div>\n\n      <form name=\"fill_profile_form\" class=\"mb_popup_main mb_popup_main_mt\" data-ng-submit=\"sailplay.fill_profile.submit(fill_profile_form, profile.fill_profile);\">\n\n        <div class=\"form_field\" data-ng-repeat=\"field in sailplay.fill_profile.form.fields\" data-ng-switch=\"field.input\">\n\n          <div data-ng-switch-when=\"image\" class=\"avatar_upload clearfix\">\n            <img width=\"160px\" data-ng-src=\"{{ (field.value | sailplay_pic) || 'http://saike.ru/sailplay-magic/dist/img/profile/avatar_default.png'}}\" alt=\"\">\n          </div>\n\n          <div data-ng-switch-when=\"text\" class=\"clearfix\">\n            <label class=\"form_label\">{{ field.label }}</label>\n            <input class=\"form_input\" type=\"text\" placeholder=\"{{ field.placeholder }}\" data-ng-model=\"field.value\">\n          </div>\n\n          <div data-ng-switch-when=\"date\" class=\"clearfix\">\n            <label class=\"form_label\">{{ field.label }}</label>\n            <date-picker data-model=\"field.value\"></date-picker>\n          </div>\n\n          <div data-ng-switch-when=\"select\" class=\"clearfix\">\n            <label class=\"form_label\">{{ field.label }}</label>\n            <div class=\"magic_select form_input\">\n              <select data-ng-model=\"field.value\" data-ng-options=\"item.value as item.text for item in field.data\"></select>\n            </div>\n          </div>\n\n          <div data-ng-switch-when=\"phone\" class=\"clearfix\">\n            <label class=\"form_label\">{{ field.label }}</label>\n            <input class=\"form_input\" type=\"text\" data-model-view-value=\"true\" data-ui-mask=\"{{ field.placeholder }}\" data-ng-model=\"field.value\">\n          </div>\n\n          <div data-ng-switch-when=\"email\" class=\"clearfix\">\n            <label class=\"form_label\">{{ field.label }}</label>\n            <input class=\"form_input\" type=\"email\" placeholder=\"{{ field.placeholder }}\" data-ng-model=\"field.value\">\n          </div>\n\n        </div>\n\n        <div class=\"answ_text\">\n          <button type=\"submit\" class=\"sp_btn button_primary\">{{ 'buttons.texts.save' | tools }}</button>\n        </div>\n      </form>\n    </div>\n  </magic-modal>\n\n</div>";
 
 /***/ }),
-/* 253 */
+/* 258 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"bns_hist_pager\" data-ng-if=\"1 < pages.length || !autoHide\">\n\n  <a data-ng-if=\"directionLinks\" data-ng-class=\"{ disabled : pagination.current == 1 }\" href=\"\" data-ng-click=\"setCurrent(pagination.current - 1)\">\n    &lsaquo;\n  </a>\n  <a data-ng-repeat=\"pageNumber in pages track by tracker(pageNumber, $index)\" data-ng-class=\"{ active : pagination.current == pageNumber, disabled : pageNumber == '...' }\" href=\"\" data-ng-click=\"setCurrent(pageNumber)\">\n    {{ pageNumber }}\n  </a>\n\n  <a data-ng-if=\"directionLinks\" data-ng-class=\"{ disabled : pagination.current == pagination.last }\" href=\"\" data-ng-click=\"setCurrent(pagination.current + 1)\">\n    &rsaquo;\n  </a>\n\n</div>";
 
 /***/ }),
-/* 254 */
+/* 259 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(255);
+var content = __webpack_require__(260);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -49521,40 +49759,40 @@ if(false) {
 }
 
 /***/ }),
-/* 255 */
+/* 260 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var escape = __webpack_require__(47);
+var escape = __webpack_require__(20);
 exports = module.exports = __webpack_require__(0)(false);
 // imports
 
 
 // module
-exports.push([module.i, ".spm_wrapper .bon_profile_wrap {\n  float: left;\n  width: 100%;\n  padding: 0 5%;\n  -webkit-box-sizing: border-box;\n  -moz-box-sizing: border-box;\n  box-sizing: border-box;\n  background-color: #888888;\n  position: relative;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info {\n  width: 100%;\n  float: left;\n  position: relative;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_top_left {\n  float: left;\n  width: 580px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_top_left h3 {\n  float: left;\n  width: 100%;\n  font-size: 30px;\n  color: #ffffff;\n  font-family: 'RotondaC';\n  margin-top: 50px;\n  margin-bottom: 10px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_top_left h4 {\n  float: left;\n  width: 100%;\n  color: #ffffff;\n  font-size: 14px;\n  font-weight: 400;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right {\n  float: right;\n  width: 265px;\n  margin-top: 50px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right img {\n  border-radius: 100%;\n  -webkit-box-shadow: 0 2px 7px 1px rgba(0, 0, 0, 0.2);\n  box-shadow: 0 2px 7px 1px rgba(0, 0, 0, 0.2);\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right span {\n  font-size: 16px;\n  font-weight: 700;\n  margin-top: 18px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right .login_reg_btn {\n  float: right;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right .logout_btn {\n  width: auto;\n  font-size: 14px;\n  margin-top: 9px;\n  color: #ffffff;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right .edit_profile_btn {\n  font-size: 14px;\n  margin-top: 9px;\n  color: #ffffff;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right .user_avatar {\n  max-width: 81px;\n  float: right;\n  text-align: center;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right .user_info {\n  text-align: right;\n  float: left;\n  width: 165px;\n  color: #ffffff;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right .user_info span {\n  word-wrap: break-word;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right .user_avatar_image {\n  width: 100%;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat {\n  float: left;\n  width: 100%;\n  margin-top: 50px;\n  margin-bottom: 78px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .points_confirmed span {\n  color: inherit;\n  font-family: inherit;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .points_confirmed_name {\n  margin-left: 2px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_left {\n  float: left;\n  width: auto;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_left > span {\n  color: #ffffff;\n  display: block;\n  font-size: 33px;\n  font-family: 'RotondaC bold';\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_left > a {\n  font-size: 14px;\n  color: #ffffff;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right {\n  float: right;\n  width: 70%;\n  margin-top: 12px;\n  margin-right: 20px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main {\n  position: relative;\n  float: left;\n  width: 100%;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .progress_line_bg {\n  height: 14px;\n  border-top: 3px solid #000000;\n  background-color: #ffffff;\n  background-image: url(" + escape(__webpack_require__(256)) + ");\n  border-radius: 20px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .progress_line {\n  position: absolute;\n  left: 0px;\n  top: 3px;\n  width: 0%;\n  background-color: #ffffff;\n  height: 14px;\n  border-radius: 20px 0px 0px 20px;\n  -webkit-transition: all 1000ms ease;\n  -moz-transition: all 1000ms ease;\n  -ms-transition: all 1000ms ease;\n  -o-transition: all 1000ms ease;\n  transition: all 1000ms ease;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .progress_line .progress_text {\n  min-width: 100px;\n  position: absolute;\n  right: 0px;\n  padding-top: 32px;\n  border-right: 1px solid #fff;\n  top: 0px;\n  z-index: 1;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .progress_line .progress_text.right_position {\n  right: auto;\n  left: 100%;\n  border-left: 1px solid #fff;\n  border-right: none;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .progress_line .progress_text.right_position span {\n  border-radius: 0px 5px 5px 0px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .progress_line .progress_text span {\n  float: right;\n  line-height: 30px;\n  background-color: rgba(255, 255, 255, 0.2);\n  color: #ffffff;\n  font-size: 14px;\n  font-family: 'RotondaC';\n  border-radius: 5px 0px 0px 5px;\n  padding-left: 10px;\n  padding-right: 10px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .gift_item {\n  position: absolute;\n  top: 50%;\n  width: 36px;\n  height: 36px;\n  margin-top: -19px;\n  margin-left: -19px;\n  background-color: #cccccc;\n  border-radius: 6px;\n  -webkit-background-size: 20px 22px;\n  background-size: 20px 22px;\n  background-repeat: no-repeat;\n  background-position: center center;\n  border-top: 3px solid #000000;\n  background-image: url(" + escape(__webpack_require__(257)) + ");\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .gift_item.act {\n  background-color: #ffffff;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .gift_item_hint {\n  opacity: 0;\n  visibility: hidden;\n  display: inline-block;\n  position: absolute;\n  left: 0;\n  text-align: center;\n  width: 100%;\n  top: 0;\n  font-weight: bold;\n  transition: .3s ease;\n  color: white;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .gift_item:hover .gift_item_hint {\n  visibility: visible;\n  opacity: 1;\n  top: -20px;\n}\n.spm_wrapper .bon_profile_wrap .status_block {\n  width: 30%;\n  display: inline-block;\n}\n@media screen and (max-width: 650px) {\n  .spm_wrapper .bon_profile_wrap .status_block {\n    width: 100%;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_stat .bps_left {\n    text-align: left;\n  }\n}\n@media only screen and (min-width: 1129px) {\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right {\n    width: 100%;\n    margin-top: 30px;\n    margin-right: 0px;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_top_left {\n    width: 60%;\n  }\n}\n@media only screen and (min-width: 950px) and (max-width: 1128px) {\n  .spm_wrapper .bon_profile_wrap .progress_line_main .progress_text {\n    border: none !important;\n  }\n  .spm_wrapper .bon_profile_wrap .progress_line_main .progress_text:before {\n    content: '';\n    width: 1px;\n    background: white;\n    right: 0;\n    top: 0;\n    position: absolute;\n    height: 17px;\n    display: block;\n  }\n  .spm_wrapper .bon_profile_wrap .progress_line_main .progress_text span {\n    position: relative;\n    left: 50%;\n    border-radius: 5px !important;\n  }\n}\n@media only screen and (min-width: 530px) and (max-width: 949px) {\n  .spm_wrapper .bon_profile_wrap .bon_profile_info {\n    width: 100%;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right {\n    width: 265px;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_top_left {\n    width: 80%;\n    float: left;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right {\n    float: left;\n    width: 100%;\n    margin-top: 30px;\n    margin-bottom: 12px;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main {\n    float: left;\n    width: 95%;\n  }\n}\n@media only screen and (max-width: 529px) {\n  .spm_wrapper .bon_profile_wrap .bon_profile_info {\n    width: 100%;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right {\n    width: 265px;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_top_left {\n    width: 80%;\n    float: left;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right {\n    float: left;\n    width: 100%;\n    margin-top: 30px;\n    margin-bottom: 12px;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main {\n    float: left;\n    width: 95%;\n  }\n}\n.spm_wrapper .bns_hist_table {\n  float: left;\n  width: 100%;\n  margin-top: 12px;\n}\n.spm_wrapper .bns_hist_table td {\n  vertical-align: text-top;\n  padding: 5px 11px;\n}\n.spm_wrapper .bns_hist_table td:nth-child(1) {\n  color: #888888;\n  font-size: 13px;\n  line-height: 19px;\n  padding-right: 0px;\n  padding-left: 0px;\n  white-space: nowrap;\n}\n.spm_wrapper .bns_hist_table td:nth-child(2) {\n  color: #000000;\n  font-size: 12px;\n  font-weight: 200;\n  line-height: 19px;\n  position: relative;\n  padding-left: 0px;\n  width: 570px;\n}\n.spm_wrapper .bns_hist_table td:nth-child(2)::after {\n  position: absolute;\n  left: 0px;\n  width: 100%;\n  border-top: 1px dotted #444444;\n  top: 14px;\n  content: '';\n  display: block;\n}\n.spm_wrapper .bns_hist_table td:nth-child(2) span {\n  display: block;\n  position: relative;\n  z-index: 1;\n  font-size: 13px;\n  color: #222222;\n}\n.spm_wrapper .bns_hist_table td:nth-child(2) span b {\n  background-color: #ffffff;\n  padding-right: 15px;\n  padding-left: 11px;\n  font-weight: 200;\n}\n.spm_wrapper .bns_hist_table td:nth-child(2) span:first-child {\n  color: #000000;\n}\n.spm_wrapper .bns_hist_table td:nth-child(3) {\n  color: #444444;\n  font-size: 14px;\n  font-weight: bold;\n  text-align: right;\n  line-height: 19px;\n}\n.spm_wrapper .bns_hist_table td:nth-child(3) span {\n  display: block;\n  white-space: nowrap;\n  font-size: 13px;\n}\n.spm_wrapper .bns_hist_pager {\n  float: right;\n  font-size: 13px;\n}\n.spm_wrapper .bns_hist_pager a {\n  text-decoration: none;\n  color: #000;\n  margin-right: 4px;\n}\n.spm_wrapper .bns_hist_pager a.active {\n  font-weight: bold;\n}\n", ""]);
+exports.push([module.i, ".spm_wrapper .bon_profile_wrap {\n  float: left;\n  width: 100%;\n  padding: 0 5%;\n  -webkit-box-sizing: border-box;\n  -moz-box-sizing: border-box;\n  box-sizing: border-box;\n  background-color: #888888;\n  position: relative;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info {\n  width: 100%;\n  float: left;\n  position: relative;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_top_left {\n  float: left;\n  width: 580px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_top_left h3 {\n  float: left;\n  width: 100%;\n  font-size: 30px;\n  color: #ffffff;\n  font-family: 'RotondaC';\n  margin-top: 50px;\n  margin-bottom: 10px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_top_left h4 {\n  float: left;\n  width: 100%;\n  color: #ffffff;\n  font-size: 14px;\n  font-weight: 400;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right {\n  float: right;\n  width: 265px;\n  margin-top: 50px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right img {\n  border-radius: 100%;\n  -webkit-box-shadow: 0 2px 7px 1px rgba(0, 0, 0, 0.2);\n  box-shadow: 0 2px 7px 1px rgba(0, 0, 0, 0.2);\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right span {\n  font-size: 16px;\n  font-weight: 700;\n  margin-top: 18px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right .login_reg_btn {\n  float: right;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right .logout_btn {\n  width: auto;\n  font-size: 14px;\n  margin-top: 9px;\n  color: #ffffff;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right .edit_profile_btn {\n  font-size: 14px;\n  margin-top: 9px;\n  color: #ffffff;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right .user_avatar {\n  max-width: 81px;\n  float: right;\n  text-align: center;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right .user_info {\n  text-align: right;\n  float: left;\n  width: 165px;\n  color: #ffffff;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right .user_info span {\n  word-wrap: break-word;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right .user_avatar_image {\n  width: 100%;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat {\n  float: left;\n  width: 100%;\n  margin-top: 50px;\n  margin-bottom: 78px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .points_confirmed span {\n  color: inherit;\n  font-family: inherit;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .points_confirmed_name {\n  margin-left: 2px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_left {\n  float: left;\n  width: auto;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_left > span {\n  color: #ffffff;\n  display: block;\n  font-size: 33px;\n  font-family: 'RotondaC bold';\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_left > a {\n  font-size: 14px;\n  color: #ffffff;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right {\n  float: right;\n  width: 70%;\n  margin-top: 12px;\n  margin-right: 20px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main {\n  position: relative;\n  float: left;\n  width: 100%;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .progress_line_bg {\n  height: 14px;\n  border-top: 3px solid #000000;\n  background-color: #ffffff;\n  background-image: url(" + escape(__webpack_require__(261)) + ");\n  border-radius: 20px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .progress_line {\n  position: absolute;\n  left: 0px;\n  top: 3px;\n  width: 0%;\n  background-color: #ffffff;\n  height: 14px;\n  border-radius: 20px 0px 0px 20px;\n  -webkit-transition: all 1000ms ease;\n  -moz-transition: all 1000ms ease;\n  -ms-transition: all 1000ms ease;\n  -o-transition: all 1000ms ease;\n  transition: all 1000ms ease;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .progress_line .progress_text {\n  min-width: 100px;\n  position: absolute;\n  right: 0px;\n  padding-top: 32px;\n  border-right: 1px solid #fff;\n  top: 0px;\n  z-index: 1;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .progress_line .progress_text.right_position {\n  right: auto;\n  left: 100%;\n  border-left: 1px solid #fff;\n  border-right: none;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .progress_line .progress_text.right_position span {\n  border-radius: 0px 5px 5px 0px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .progress_line .progress_text span {\n  float: right;\n  line-height: 30px;\n  background-color: rgba(255, 255, 255, 0.2);\n  color: #ffffff;\n  font-size: 14px;\n  font-family: 'RotondaC';\n  border-radius: 5px 0px 0px 5px;\n  padding-left: 10px;\n  padding-right: 10px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .gift_item {\n  position: absolute;\n  top: 50%;\n  width: 36px;\n  height: 36px;\n  margin-top: -19px;\n  margin-left: -19px;\n  background-color: #cccccc;\n  border-radius: 6px;\n  -webkit-background-size: 20px 22px;\n  background-size: 20px 22px;\n  background-repeat: no-repeat;\n  background-position: center center;\n  border-top: 3px solid #000000;\n  background-image: url(" + escape(__webpack_require__(262)) + ");\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .gift_item.act {\n  background-color: #ffffff;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .gift_item_hint {\n  opacity: 0;\n  visibility: hidden;\n  display: inline-block;\n  position: absolute;\n  left: 0;\n  text-align: center;\n  width: 100%;\n  top: 0;\n  font-weight: bold;\n  transition: .3s ease;\n  color: white;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .gift_item:hover .gift_item_hint {\n  visibility: visible;\n  opacity: 1;\n  top: -20px;\n}\n.spm_wrapper .bon_profile_wrap .status_block {\n  width: 30%;\n  display: inline-block;\n}\n@media screen and (max-width: 650px) {\n  .spm_wrapper .bon_profile_wrap .status_block {\n    width: 100%;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_stat .bps_left {\n    text-align: left;\n  }\n}\n@media only screen and (min-width: 1129px) {\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right {\n    width: 100%;\n    margin-top: 30px;\n    margin-right: 0px;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_top_left {\n    width: 60%;\n  }\n}\n@media only screen and (min-width: 950px) and (max-width: 1128px) {\n  .spm_wrapper .bon_profile_wrap .progress_line_main .progress_text {\n    border: none !important;\n  }\n  .spm_wrapper .bon_profile_wrap .progress_line_main .progress_text:before {\n    content: '';\n    width: 1px;\n    background: white;\n    right: 0;\n    top: 0;\n    position: absolute;\n    height: 17px;\n    display: block;\n  }\n  .spm_wrapper .bon_profile_wrap .progress_line_main .progress_text span {\n    position: relative;\n    left: 50%;\n    border-radius: 5px !important;\n  }\n}\n@media only screen and (min-width: 530px) and (max-width: 949px) {\n  .spm_wrapper .bon_profile_wrap .bon_profile_info {\n    width: 100%;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right {\n    width: 265px;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_top_left {\n    width: 80%;\n    float: left;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right {\n    float: left;\n    width: 100%;\n    margin-top: 30px;\n    margin-bottom: 12px;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main {\n    float: left;\n    width: 95%;\n  }\n}\n@media only screen and (max-width: 529px) {\n  .spm_wrapper .bon_profile_wrap .bon_profile_info {\n    width: 100%;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right {\n    width: 265px;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_top_left {\n    width: 80%;\n    float: left;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right {\n    float: left;\n    width: 100%;\n    margin-top: 30px;\n    margin-bottom: 12px;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main {\n    float: left;\n    width: 95%;\n  }\n}\n.spm_wrapper .bns_hist_table {\n  float: left;\n  width: 100%;\n  margin-top: 12px;\n}\n.spm_wrapper .bns_hist_table td {\n  vertical-align: text-top;\n  padding: 5px 11px;\n}\n.spm_wrapper .bns_hist_table td:nth-child(1) {\n  color: #888888;\n  font-size: 13px;\n  line-height: 19px;\n  padding-right: 0px;\n  padding-left: 0px;\n  white-space: nowrap;\n}\n.spm_wrapper .bns_hist_table td:nth-child(2) {\n  color: #000000;\n  font-size: 12px;\n  font-weight: 200;\n  line-height: 19px;\n  position: relative;\n  padding-left: 0px;\n  width: 570px;\n}\n.spm_wrapper .bns_hist_table td:nth-child(2)::after {\n  position: absolute;\n  left: 0px;\n  width: 100%;\n  border-top: 1px dotted #444444;\n  top: 14px;\n  content: '';\n  display: block;\n}\n.spm_wrapper .bns_hist_table td:nth-child(2) span {\n  display: block;\n  position: relative;\n  z-index: 1;\n  font-size: 13px;\n  color: #222222;\n}\n.spm_wrapper .bns_hist_table td:nth-child(2) span b {\n  background-color: #ffffff;\n  padding-right: 15px;\n  padding-left: 11px;\n  font-weight: 200;\n}\n.spm_wrapper .bns_hist_table td:nth-child(2) span:first-child {\n  color: #000000;\n}\n.spm_wrapper .bns_hist_table td:nth-child(3) {\n  color: #444444;\n  font-size: 14px;\n  font-weight: bold;\n  text-align: right;\n  line-height: 19px;\n}\n.spm_wrapper .bns_hist_table td:nth-child(3) span {\n  display: block;\n  white-space: nowrap;\n  font-size: 13px;\n}\n.spm_wrapper .bns_hist_pager {\n  float: right;\n  font-size: 13px;\n}\n.spm_wrapper .bns_hist_pager a {\n  text-decoration: none;\n  color: #000;\n  margin-right: 4px;\n}\n.spm_wrapper .bns_hist_pager a.active {\n  font-weight: bold;\n}\n", ""]);
 
 // exports
 
 
 /***/ }),
-/* 256 */
+/* 261 */
 /***/ (function(module, exports) {
 
 module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEUAAAAOCAYAAAB5EtGGAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAO5JREFUeNrslrEKwjAQhptD6tSpTl0UhD6HD6BP6wvkOQqCLk5m6mQnL+WC1xwmZu4FaqQ/+fzvK0LNcX/oKlq3x/0ZvuP9Frdt9V1vzB3Lu2q5XphPlDW4NTzMsEfMR8pq3HYF7LhXETvqNbM3+HGme5aFPW4ndtYXurLcZz3LhwCnUhe8apan2C6wqbQ/2/7JjnuVsm0kc2ZDCPGHh5SQ8DR+CLEpIQm2I/aUEGJTQlivUjbvtWCDCpFsk/vLrE2IP2tUiGQbFSLZoELkzKBC5MygQuTMoELkzKBC5Mwm8+q+OiG+l1EhstdHgAEAt8yVBryjUM8AAAAASUVORK5CYII="
 
 /***/ }),
-/* 257 */
+/* 262 */
 /***/ (function(module, exports) {
 
 module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABkAAAAcCAYAAACUJBTQAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAR9JREFUeNrsVt0NgjAYLIQB6ga4gS4gjsAG6gTKk88++iROIBuAE4BO4AiMwAjeZz6SLw2/EYwPXHJpUq69a/u1QakGnFfhGnRVC6BZEOu+WzWDLmgOoisHg+PzkAiNZs0e1EK3gy5rNKkwkCCTHUiru4FV6QtwCaO87LANAy0MThBSiDkYcZ8PpszS4ATOWJvwqrZyXsdIIZN5ME2NhNrQUFqPtUpsm9dkIrFW7XCZjag6k22XgS2I5JlYZami2XScPOD20kF7J0MHBnSYcY+Uusd2fsLbHRN9g4U9wP63wlY/AJVwWHNz61Bwm/XUjwtL3I9YVM5QJXylR1XeeH+EEn7Qe/aTg59MJpPJ5A9Nxngtc9MkGNjgxf9h6i3AANemSGniswSTAAAAAElFTkSuQmCC"
 
 /***/ }),
-/* 258 */
+/* 263 */
 /***/ (function(module, exports) {
 
 module.exports = "data:image/png;base64,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"
 
 /***/ }),
-/* 259 */
+/* 264 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -49562,15 +49800,15 @@ module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFEAAABRCAYAAACq
 
 var _widget = __webpack_require__(2);
 
-var _profile_nr = __webpack_require__(260);
+var _profile_nr = __webpack_require__(265);
 
 var _profile_nr2 = _interopRequireDefault(_profile_nr);
 
-var _history_pagination = __webpack_require__(261);
+var _history_pagination = __webpack_require__(266);
 
 var _history_pagination2 = _interopRequireDefault(_history_pagination);
 
-__webpack_require__(262);
+__webpack_require__(267);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -49604,25 +49842,25 @@ _widget.Widget.run(["$templateCache", function ($templateCache) {
 }]);
 
 /***/ }),
-/* 260 */
+/* 265 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"spm_profile_nr clearfix\" data-ng-if=\"widget.enabled\" data-ng-cloak data-sailplay-profile>\n\n    <div class=\"spm_profile_nr-left\">\n\n        <div class=\"spm_profile_nr-header\"\n             data-ng-bind=\"user() ? (widget.texts.auth.header + user().user.name) : widget.texts.no_auth.header\"></div>\n        <div class=\"spm_profile_nr-description\"\n             data-ng-bind=\"widget.texts[user() ? 'auth' : 'no_auth'].description\"></div>\n\n        <div class=\"spm_profile_nr-buttons\" data-ng-if=\"user && user()\">\n            <a href=\"#\" class=\"button_primary spm_profile_nr-edit\"\n               data-ng-bind=\"widget.texts.edit\"\n               data-ng-click=\"$event.preventDefault();profile.show_fill_profile=true;\"></a>\n            <a href=\"#\" class=\"button_primary spm_profile_nr-logout\"\n               data-ng-click=\"$event.preventDefault();logout();\"></a>\n        </div>\n\n    </div>\n\n    <div class=\"spm_profile_nr-right\">\n\n        <div data-ng-if=\"user()\">\n\n            <div class=\"spm_profile_nr-avatar\" data-ng-style=\"{'background-image': (user().user.avatar['250x250'] | sailplay_pic | background_image)}\"></div>\n\n            <div class=\"spm_profile_nr-balance\">\n                <div class=\"spm_profile_nr-balance-hover\">\n                    <span class=\"spm_profile_nr-balance-value\" data-ng-bind=\"user().user_points.confirmed | number\"></span>\n                    <span class=\"spm_profile_nr-balance-placeholder\" data-ng-bind=\"widget.texts.balance\"></span>\n                    <a href=\"\" class=\"button_primary spm_profile_nr-history\" data-ng-bind=\"widget.texts.history\"\n                       data-ng-click=\"$event.preventDefault();profile.history=true;\"></a>\n                </div>\n            </div>\n\n        </div>\n\n        <a href=\"#\" class=\"spm_profile_nr-login\"\n           data-ng-if=\"!user()\"\n           data-ng-bind=\"widget.texts.login\"\n           data-ng-click=\"$event.preventDefault();login('remote', {widget: 'profile_nr', action: 'login_button'});\"></a>\n\n    </div>\n\n    <magic-modal class=\"bns_overlay_hist\" data-show=\"profile.history\">\n\n        <div data-sailplay-history data-sailplay-profile>\n\n            <h3>\n                <span class=\"modal_history_header\">{{ widget.texts.history.header }}</span>\n                <!--<b>У вас {{ user().user_points.confirmed + ' ' + (user().user_points.confirmed | sailplay_pluralize:_tools.points.texts.pluralize) }}</b>-->\n            </h3>\n            <h4 class=\"modal_history_caption\">{{ widget.texts.history.caption }}</h4>\n\n            <table class=\"bns_hist_table\">\n\n                <tbody>\n\n                <tr data-dir-paginate=\"item in history() | itemsPerPage:10\" data-pagination-id=\"history_pages\">\n                    <td>\n                        <span class=\"modal_history_date\" data-ng-bind=\"item.action_date | date:'d/MM/yyyy'\"></span>\n                    </td>\n                    <td>\n                        <span><b class=\"modal_history_content\" data-ng-bind=\"item | history_item\"></b></span>\n                    </td>\n                    <td>\n                        <span class=\"modal_history_points\" data-ng-if=\"item.points_delta\" data-ng-bind=\"((item.points_delta|number) || 0) + ' ' + (item.points_delta | sailplay_pluralize:('points.texts.pluralize' | tools))\"></span>\n                    </td>\n                </tr>\n\n                </tbody>\n            </table>\n\n            <dir-pagination-controls data-max-size=\"7\" data-pagination-id=\"history_pages\"\n                                     data-template-url=\"profile.history_pagination\"\n                                     data-auto-hide=\"true\"></dir-pagination-controls>\n        </div>\n\n\n\n    </magic-modal>\n\n    <!--profile edit section-->\n    <magic-modal class=\"fill_profile_modal\" data-show=\"profile.show_fill_profile\">\n\n        <div class=\"mb_popup mb_popup_prof\" data-sailplay-fill-profile data-config=\"widget.fill_profile.config\">\n\n            <div class=\"mb_popup_top\">\n                <span class=\"modal_profile_header\">{{ widget.fill_profile.header }}</span>\n            </div>\n\n            <form name=\"fill_profile_form\" class=\"mb_popup_main mb_popup_main_mt\" data-ng-submit=\"sailplay.fill_profile.submit(fill_profile_form, profile.fill_profile);\">\n\n                <div class=\"form_field\" data-ng-repeat=\"field in sailplay.fill_profile.form.fields\" data-ng-switch=\"field.input\">\n\n                    <div data-ng-switch-when=\"image\" class=\"avatar_upload clearfix\">\n                        <img width=\"160px\" data-ng-src=\"{{ (field.value | sailplay_pic) || 'http://saike.ru/sailplay-magic/dist/img/profile/avatar_default.png'}}\" alt=\"\">\n                    </div>\n\n                    <div data-ng-switch-when=\"text\" class=\"clearfix\">\n                        <label class=\"form_label\">{{ field.label }}</label>\n                        <input class=\"form_input\" type=\"text\" placeholder=\"{{ field.placeholder }}\" data-ng-model=\"field.value\">\n                    </div>\n\n                    <div data-ng-switch-when=\"date\" class=\"clearfix\">\n                        <label class=\"form_label\">{{ field.label }}</label>\n                        <date-picker data-model=\"field.value\"></date-picker>\n                    </div>\n\n                    <div data-ng-switch-when=\"select\" class=\"clearfix\">\n                        <label class=\"form_label\">{{ field.label }}</label>\n                        <div class=\"magic_select form_input\">\n                            <select data-ng-model=\"field.value\" data-ng-options=\"item.value as item.text for item in field.data\"></select>\n                        </div>\n                    </div>\n\n                    <div data-ng-switch-when=\"phone\" class=\"clearfix\">\n                        <label class=\"form_label\">{{ field.label }}</label>\n                        <input class=\"form_input\" type=\"text\" data-model-view-value=\"true\" data-ui-mask=\"{{ field.placeholder }}\" data-ng-model=\"field.value\">\n                    </div>\n\n                    <div data-ng-switch-when=\"email\" class=\"clearfix\">\n                        <label class=\"form_label\">{{ field.label }}</label>\n                        <input class=\"form_input\" type=\"email\" placeholder=\"{{ field.placeholder }}\" data-ng-model=\"field.value\">\n                    </div>\n\n                </div>\n\n                <div class=\"answ_text\">\n                    <button type=\"submit\" class=\"sp_btn button_primary\">{{ 'buttons.texts.save' | tools }}</button>\n                </div>\n            </form>\n        </div>\n    </magic-modal>\n\n</div>";
 
 /***/ }),
-/* 261 */
+/* 266 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"bns_hist_pager\" data-ng-if=\"1 < pages.length || !autoHide\">\n\n  <a data-ng-if=\"directionLinks\" data-ng-class=\"{ disabled : pagination.current == 1 }\" href=\"\" data-ng-click=\"setCurrent(pagination.current - 1)\">\n    &lsaquo;\n  </a>\n  <a data-ng-repeat=\"pageNumber in pages track by tracker(pageNumber, $index)\" data-ng-class=\"{ active : pagination.current == pageNumber, disabled : pageNumber == '...' }\" href=\"\" data-ng-click=\"setCurrent(pageNumber)\">\n    {{ pageNumber }}\n  </a>\n\n  <a data-ng-if=\"directionLinks\" data-ng-class=\"{ disabled : pagination.current == pagination.last }\" href=\"\" data-ng-click=\"setCurrent(pagination.current + 1)\">\n    &rsaquo;\n  </a>\n\n</div>";
 
 /***/ }),
-/* 262 */
+/* 267 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(263);
+var content = __webpack_require__(268);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -49647,7 +49885,7 @@ if(false) {
 }
 
 /***/ }),
-/* 263 */
+/* 268 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -49661,7 +49899,7 @@ exports.push([module.i, ".spm_wrapper .spm_profile_nr {\n  width: 100%;\n  max-w
 
 
 /***/ }),
-/* 264 */
+/* 269 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -49669,11 +49907,11 @@ exports.push([module.i, ".spm_wrapper .spm_profile_nr {\n  width: 100%;\n  max-w
 
 var _widget = __webpack_require__(2);
 
-var _statuses = __webpack_require__(265);
+var _statuses = __webpack_require__(270);
 
 var _statuses2 = _interopRequireDefault(_statuses);
 
-__webpack_require__(266);
+__webpack_require__(271);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -49726,19 +49964,19 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 });
 
 /***/ }),
-/* 265 */
+/* 270 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"clearfix container\">\n\n  <div class=\"status-list\">\n\n    <div class=\"next_status_info\" data-ng-show=\"get_next_status().status\">\n\n      <div class=\"next_status_name\">\n        {{ widget.texts.next_status }} <span data-ng-style=\"{ color: get_next_status().status.color  }\">{{ get_next_status().status.status }}</span>\n      </div>\n\n      <div class=\"next_status_offset\">\n        {{ widget.texts.next_status_offset }} {{ get_next_status().offset }}\n      </div>\n\n    </div>\n\n    <div class=\"status-list__wrapper\" data-sailplay-statuses data-ng-cloak>\n\n      <div class=\"status-list__progress element-progress progress_line\"\n           data-ng-style=\"getProgress(purchase_status ? user().purchases.sum : user().user_points, _statuses)\"></div>\n\n      <div class=\"status-list__item element-item\"\n           data-ng-class=\"{ type_active : item.points <= user().user_points.confirmed + user().user_points.spent + user().user_points.spent_extra }\"\n           data-ng-repeat=\"item in _statuses\"\n           data-ng-style=\"generateOffset($index, _statuses)\">\n\n        <div class=\"status-list__item-point element-item-point\"></div>\n\n        <div class=\"element-item-point-inner\" data-ng-style=\"{ backgroundColor: item.color }\"></div>\n\n        <div class=\"status-list__item-name element-item-name\" data-ng-bind=\"item.name\"></div>\n        <div class=\"status-list__item-status element-item-status\" data-ng-if=\"item.status\" data-ng-bind=\"item.status\"\n             style=\"{{ (item.color) ? ('color: ' +  item.color) : '' }}\"></div>\n\n      </div>\n\n    </div>\n\n  </div>\n</div>";
 
 /***/ }),
-/* 266 */
+/* 271 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(267);
+var content = __webpack_require__(272);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -49763,7 +50001,7 @@ if(false) {
 }
 
 /***/ }),
-/* 267 */
+/* 272 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -49777,7 +50015,7 @@ exports.push([module.i, ".spm_wrapper .status-list {\n  float: left;\n  width: 9
 
 
 /***/ }),
-/* 268 */
+/* 273 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -49785,13 +50023,13 @@ exports.push([module.i, ".spm_wrapper .status-list {\n  float: left;\n  width: 9
 
 var _widget = __webpack_require__(2);
 
-var _template = __webpack_require__(269);
+var _template = __webpack_require__(274);
 
 var _template2 = _interopRequireDefault(_template);
 
-__webpack_require__(270);
+__webpack_require__(275);
 
-var _defaults = __webpack_require__(272);
+var _defaults = __webpack_require__(277);
 
 var _defaults2 = _interopRequireDefault(_defaults);
 
@@ -49812,19 +50050,19 @@ _widget.Widget.config(["MagicWidgetProvider", function (MagicWidgetProvider) {
 }]);
 
 /***/ }),
-/* 269 */
+/* 274 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"spm_example\">\n\n  <h1>DEMO WIDGET</h1>\n\n</div>";
 
 /***/ }),
-/* 270 */
+/* 275 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(271);
+var content = __webpack_require__(276);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -49849,7 +50087,7 @@ if(false) {
 }
 
 /***/ }),
-/* 271 */
+/* 276 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -49863,13 +50101,13 @@ exports.push([module.i, "", ""]);
 
 
 /***/ }),
-/* 272 */
+/* 277 */
 /***/ (function(module, exports) {
 
 module.exports = {"id":"example","enabled":true,"styles":{},"options":{}}
 
 /***/ }),
-/* 273 */
+/* 278 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -49877,17 +50115,17 @@ module.exports = {"id":"example","enabled":true,"styles":{},"options":{}}
 
 var _widget = __webpack_require__(2);
 
-var _template = __webpack_require__(274);
+var _template = __webpack_require__(279);
 
 var _template2 = _interopRequireDefault(_template);
 
-__webpack_require__(275);
+__webpack_require__(280);
 
-var _defaults = __webpack_require__(277);
+var _defaults = __webpack_require__(282);
 
 var _defaults2 = _interopRequireDefault(_defaults);
 
-var _pagination = __webpack_require__(278);
+var _pagination = __webpack_require__(283);
 
 var _pagination2 = _interopRequireDefault(_pagination);
 
@@ -49915,19 +50153,19 @@ _widget.Widget.config(["MagicWidgetProvider", function (MagicWidgetProvider) {
 }]);
 
 /***/ }),
-/* 274 */
+/* 279 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"spm_pivko_history_wrapper\">\n\n  <div class=\"spm_pivko_history_wrapper_inner\">\n\n    <div class=\"spm_pivko_history_list\">\n\n      <div class=\"spm_pivko_history_list_inner\">\n\n        <div class=\"spm_pivko_history_list_title\">\n          <span>{{ widget.options.texts.history_title }}</span>\n        </div>\n\n        <div class=\"spm_pivko_history_list_empty\" data-ng-if=\"history.empty()\">\n\n          <div class=\"spm_pivko_history_list_empty_title\">\n            <span>{{ widget.options.texts.empty_list_title }}</span>\n          </div>\n\n          <div class=\"spm_pivko_history_list_empty_button\">\n            <a href=\"{{ widget.options.empty_list_button_link }}\" target=\"_blank\">{{ widget.options.texts.empty_list_button }}</a>\n          </div>\n\n        </div>\n\n        <div class=\"spm_pivko_history_list_items\" data-ng-if=\"!history.empty()\">\n\n          <div class=\"spm_pivko_history_list_item\" data-dir-paginate=\"item in history.list() | itemsPerPage:5\" data-pagination-id=\"history_pages\">\n\n            <div class=\"spm_pivko_history_list_item_header clearfix\" data-ng-click=\"history.purchase_info(item);\" data-ng-class=\"{ opened: history.info.purchases[item.id] }\">\n\n              <div class=\"spm_pivko_history_list_item_header_title\">\n\n                <span>\n                  {{ item|history_item }} {{ item.action_date | date:'d MMM yyyy' }}\n                </span>\n\n                <span class=\"spm_pivko_history_list_item_header_open_button\" data-ng-if=\"item.action === 'purchase'\" data-ng-class=\"{ opened: history.info.purchases[item.id] }\">&rsaquo;</span>\n\n              </div>\n\n              <div data-ng-if=\"item.price\" class=\"spm_pivko_history_list_item_header_points\">\n\n                <span>\n                  {{ item.price|number }} {{ widget.options.texts.currency_symbol }}\n                </span>\n\n              </div>\n\n            </div>\n\n            <div class=\"spm_pivko_history_list_item_info\" data-ng-if=\"history.info.purchases[item.id]\">\n\n              <ul class=\"spm_pivko_history_list_item_info_cart\">\n                <li class=\"spm_pivko_history_list_item_info_cart_position\" data-ng-repeat=\"cart_item in history.info.purchases[item.id].cart.cart.positions\">\n                  <div class=\"spm_pivko_history_list_item_info_cart_position_inner clearfix\">\n                    <div class=\"spm_pivko_history_list_item_info_cart_position_name\">\n                      <span>{{ cart_item.product.name || cart_item.product.sku }}</span>\n                    </div>\n                    <div class=\"spm_pivko_history_list_item_info_cart_position_price\">\n                      <span>{{ cart_item.new_price }} {{ widget.options.texts.currency_symbol }}</span>\n                    </div>\n                  </div>\n                </li>\n              </ul>\n\n            </div>\n\n            <div class=\"spm_pivko_history_list_item_body\">\n\n              <div class=\"spm_pivko_history_list_item_body_points\">\n\n                <div class=\"spm_pivko_history_list_item_body_points_debited\">\n                  <span>\n                    {{ widget.options.texts.points_debited }} {{ (item.debited_points_delta || 0 | number)+' '+(item.debited_points_delta|sailplay_pluralize:('points.texts.pluralize'|tools)) }}\n                  </span>\n                </div>\n\n                <div class=\"spm_pivko_history_list_item_body_points_credited\">\n                  <span>\n                    {{ widget.options.texts.points_credited }} {{ (item.points_delta || 0 |number)+' '+(item.points_delta|sailplay_pluralize:('points.texts.pluralize'|tools)) }}\n                  </span>\n                </div>\n\n              </div>\n\n            </div>\n\n          </div>\n\n          <div class=\"spm_pivko_history_list_pagination\">\n\n            <dir-pagination-controls max-size=\"7\" pagination-id=\"history_pages\" direction-links=\"true\" template-url=\"pivko.history.pagination\" auto-hide=\"true\"></dir-pagination-controls>\n\n          </div>\n\n        </div>\n\n      </div>\n\n    </div>\n\n    <div class=\"spm_pivko_history_help\">\n\n      <div class=\"spm_pivko_history_help_inner\">\n\n        <div class=\"spm_pivko_history_help_title\">\n          <span>{{ widget.options.texts.help_title }}</span>\n        </div>\n\n        <div class=\"spm_pivko_history_help_links\">\n\n          <div class=\"spm_pivko_history_help_links_inner\">\n\n            <div class=\"spm_pivko_history_help_links_item\" data-ng-repeat=\"link in widget.options.links\">\n\n              <div class=\"spm_pivko_history_help_links_item_inner\">\n                <a href=\"{{ link.url }}\">\n\n                  <span class=\"spm_pivko_history_help_links_item_icon\">\n                    <img data-ng-src=\"{{ link.icon }}\" alt=\"?\">\n                  </span>\n\n                  <span class=\"spm_pivko_history_help_links_item_text\">\n                    <span>{{ link.text }}</span>\n                  </span>\n\n                </a>\n              </div>\n\n            </div>\n\n          </div>\n\n        </div>\n\n      </div>\n\n    </div>\n\n  </div>\n\n</div>";
+module.exports = "<div class=\"spm_pivko_history_wrapper\">\n\n  <div class=\"spm_pivko_history_wrapper_inner\">\n\n    <div class=\"spm_pivko_history_list\">\n\n      <div class=\"spm_pivko_history_list_inner\">\n\n        <div class=\"spm_pivko_history_list_title\">\n          <span>{{ widget.options.texts.history_title }}</span>\n        </div>\n\n        <div class=\"spm_pivko_history_list_empty\" data-ng-if=\"history.empty()\">\n\n          <div class=\"spm_pivko_history_list_empty_title\">\n            <span>{{ widget.options.texts.empty_list_title }}</span>\n          </div>\n\n          <div class=\"spm_pivko_history_list_empty_button\">\n            <a href=\"{{ widget.options.empty_list_button_link }}\" target=\"_blank\">{{ widget.options.texts.empty_list_button }}</a>\n          </div>\n\n        </div>\n\n        <div class=\"spm_pivko_history_list_items\" data-ng-if=\"!history.empty()\">\n\n          <div class=\"spm_pivko_history_list_item\" data-dir-paginate=\"item in history.list() | itemsPerPage:5\" data-pagination-id=\"history_pages\">\n\n            <div class=\"spm_pivko_history_list_item_header clearfix\" data-ng-click=\"history.purchase_info(item);\" data-ng-class=\"{ opened: history.info.purchases[item.id] }\">\n\n              <div class=\"spm_pivko_history_list_item_header_title\">\n\n                <span>\n                  {{ item|history_item }} {{ item.action_date | date:'d MMM yyyy' }}\n                </span>\n\n                <span class=\"spm_pivko_history_list_item_header_open_button\" data-ng-if=\"item.action === 'purchase'\" data-ng-class=\"{ opened: history.info.purchases[item.id] }\">&rsaquo;</span>\n\n              </div>\n\n              <div data-ng-if=\"item.price\" class=\"spm_pivko_history_list_item_header_points\">\n\n                <span>\n                  {{ item.price|number }} {{ widget.options.texts.currency_symbol }}\n                </span>\n\n              </div>\n\n            </div>\n\n            <div class=\"spm_pivko_history_list_item_info\" data-ng-if=\"history.info.purchases[item.id]\">\n\n              <ul class=\"spm_pivko_history_list_item_info_cart\">\n                <li class=\"spm_pivko_history_list_item_info_cart_position\" data-ng-repeat=\"cart_item in history.info.purchases[item.id].cart.cart.positions\">\n                  <div class=\"spm_pivko_history_list_item_info_cart_position_inner clearfix\">\n                    <div class=\"spm_pivko_history_list_item_info_cart_position_name\">\n                      <span>{{ cart_item.product.name || cart_item.product.sku }}</span>\n                    </div>\n                    <div class=\"spm_pivko_history_list_item_info_cart_position_price\">\n                      <span>{{ cart_item.new_price }} {{ widget.options.texts.currency_symbol }}</span>\n                    </div>\n                  </div>\n                </li>\n              </ul>\n\n            </div>\n\n            <div class=\"spm_pivko_history_list_item_body\">\n\n              <div class=\"spm_pivko_history_list_item_body_points\">\n\n                <div class=\"spm_pivko_history_list_item_body_points_debited\" data-ng-if=\"item.debited_points_delta\">\n                  <span>\n                    {{ widget.options.texts.points_debited }} {{ (item.debited_points_delta || 0 | number)+' '+(item.debited_points_delta|sailplay_pluralize:('points.texts.pluralize'|tools)) }}\n                  </span>\n                </div>\n\n                <div class=\"spm_pivko_history_list_item_body_points_credited\" data-ng-if=\"item.points_delta\">\n                  <span>\n                    {{ widget.options.texts.points_credited }} {{ (item.points_delta || 0 |number)+' '+(item.points_delta|sailplay_pluralize:('points.texts.pluralize'|tools)) }}\n                  </span>\n                </div>\n\n              </div>\n\n            </div>\n\n          </div>\n\n          <div class=\"spm_pivko_history_list_pagination\">\n\n            <dir-pagination-controls max-size=\"7\" pagination-id=\"history_pages\" direction-links=\"true\" template-url=\"pivko.history.pagination\" auto-hide=\"true\"></dir-pagination-controls>\n\n          </div>\n\n        </div>\n\n      </div>\n\n    </div>\n\n    <div class=\"spm_pivko_history_help\">\n\n      <div class=\"spm_pivko_history_help_inner\">\n\n        <div class=\"spm_pivko_history_help_title\">\n          <span>{{ widget.options.texts.help_title }}</span>\n        </div>\n\n        <div class=\"spm_pivko_history_help_links\">\n\n          <div class=\"spm_pivko_history_help_links_inner\">\n\n            <div class=\"spm_pivko_history_help_links_item\" data-ng-repeat=\"link in widget.options.links\">\n\n              <div class=\"spm_pivko_history_help_links_item_inner\">\n                <a href=\"{{ link.url }}\" target=\"_blank\">\n\n                  <span class=\"spm_pivko_history_help_links_item_icon\">\n                    <img data-ng-src=\"{{ link.icon }}\" alt=\"?\">\n                  </span>\n\n                  <span class=\"spm_pivko_history_help_links_item_text\">\n                    <span>{{ link.text }}</span>\n                  </span>\n\n                </a>\n              </div>\n\n            </div>\n\n          </div>\n\n        </div>\n\n      </div>\n\n    </div>\n\n  </div>\n\n</div>";
 
 /***/ }),
-/* 275 */
+/* 280 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(276);
+var content = __webpack_require__(281);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -49952,7 +50190,7 @@ if(false) {
 }
 
 /***/ }),
-/* 276 */
+/* 281 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -49966,19 +50204,19 @@ exports.push([module.i, "@media (min-width: 768px) {\n  .spm_wrapper .pivko_hist
 
 
 /***/ }),
-/* 277 */
+/* 282 */
 /***/ (function(module, exports) {
 
 module.exports = {"id":"example","enabled":true,"styles":{},"options":{}}
 
 /***/ }),
-/* 278 */
+/* 283 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"spm_pivko_history_pagination\" ng-if=\"1 < pages.length || !autoHide\">\n\n  <a ng-if=\"directionLinks\" class=\"spm_pivko_history_pagination_direction_link\" ng-class=\"{disabled : pagination.current == 1}\" href=\"#\"\n     ng-click=\"$event.preventDefault();setCurrent(pagination.current - 1)\">\n    &lsaquo;&lsaquo;\n  </a>\n\n  <a ng-repeat=\"pageNumber in pages track by tracker(pageNumber, $index)\" class=\"spm_pivko_history_pagination_page_link\" ng-class=\"{type_active : pagination.current == pageNumber, type_disabled : pageNumber == '...'}\"\n     href=\"#\" ng-click=\"$event.preventDefault();setCurrent(pageNumber)\" ng-bind=\"pageNumber\"></a>\n\n  <a ng-if=\"directionLinks\" class=\"spm_pivko_history_pagination_direction_link\" ng-class=\"{disabled : pagination.current == pagination.last}\"\n     href=\"#\" ng-click=\"$event.preventDefault();setCurrent(pagination.current + 1)\">\n    &rsaquo;&rsaquo;\n  </a>\n\n</div>";
 
 /***/ }),
-/* 279 */
+/* 284 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -49986,13 +50224,13 @@ module.exports = "<div class=\"spm_pivko_history_pagination\" ng-if=\"1 < pages.
 
 var _widget = __webpack_require__(2);
 
-var _template = __webpack_require__(280);
+var _template = __webpack_require__(285);
 
 var _template2 = _interopRequireDefault(_template);
 
-__webpack_require__(281);
+__webpack_require__(286);
 
-var _defaults = __webpack_require__(283);
+var _defaults = __webpack_require__(293);
 
 var _defaults2 = _interopRequireDefault(_defaults);
 
@@ -50012,6 +50250,28 @@ var widget = {
 
       scope.profile_form = new SailPlayProfileForm(scope.widget.options.profile_form);
 
+      scope.profile_form_utils = {
+
+        show: false,
+        open: function open() {
+          scope.profile_form_utils.show = true;
+        },
+        close: function close(form) {
+          scope.profile_form.revert(form);
+          scope.profile_form_utils.show = false;
+        },
+        complete: function complete(e, data) {
+          if (data && data.status == "error") {
+            scope.$emit('notifier:notify', {
+              header: scope.widget.texts.error,
+              body: scope.widget.options.config.errors[data.status_code || data.message] || data.message
+            });
+          }
+          scope.profile_form_utils.show = false;
+          scope.$apply();
+        }
+      };
+
       scope.statuses = new SailPlayStatuses.TYPES[scope.widget.options.statuses.type](scope.widget.options.statuses);
 
       console.log(scope.statuses);
@@ -50025,105 +50285,10 @@ _widget.Widget.config(["MagicWidgetProvider", function (MagicWidgetProvider) {
 }]);
 
 /***/ }),
-/* 280 */
-/***/ (function(module, exports) {
-
-module.exports = "<div class=\"spm_pivko_profile_wrapper\">\n\n  <div class=\"spm_pivko_profile_wrapper_inner\">\n\n    <div class=\"spm_pivko_profile_info\">\n\n      <div class=\"spm_pivko_profile_info_inner\">\n\n        <div class=\"spm_pivko_profile_info_avatar\">\n          <img data-ng-src=\"{{(profile.user().user.avatar['250x250']|sailplay_pic) || widget.options.images.default_avatar || default_avatar}}\" alt=\"\">\n        </div>\n\n        <div class=\"spm_pivko_profile_info_name\">\n          <span>{{ profile.user().user.name || widget.options.texts.no_name }}</span>\n        </div>\n\n        <div class=\"spm_pivko_profile_info_oid\">\n\n          <div class=\"spm_pivko_profile_info_oid_label\">\n            <span>{{ widget.options.texts.oid_label }}</span>\n          </div>\n\n          <div class=\"spm_pivko_profile_info_oid_value\">\n            <span>{{ profile.user().user.origin_user_id || widget.options.texts.no_oid }}</span>\n          </div>\n\n        </div>\n\n        <div class=\"spm_pivko_profile_info_divider\"></div>\n\n        <div class=\"spm_pivko_profile_info_email\">\n          <span>{{ profile.user().user.email || widget.options.texts.no_email }}</span>\n        </div>\n\n        <div class=\"spm_pivko_profile_info_phone\">\n          <span>{{(profile.user().user.phone | tel) || widget.options.texts.no_phone }}</span>\n        </div>\n\n        <div class=\"spm_pivko_profile_info_edit_button\">\n          <button type=\"button\">{{ widget.options.texts.profile_button_text }}</button>\n        </div>\n\n      </div>\n\n    </div>\n\n    <div class=\"spm_pivko_profile_status\">\n      <div class=\"spm_pivko_profile_status_inner\">\n\n        <div class=\"spm_pivko_profile_status_points\">\n\n          <div class=\"spm_pivko_profile_status_points_inner\">\n\n            <div class=\"spm_pivko_profile_status_points_title\">\n              <span>{{ widget.options.texts.points_title }}</span>\n            </div>\n\n            <div class=\"spm_pivko_profile_status_points_confirmed\">\n              <span>{{ profile.user().user_points.confirmed }} {{ profile.user().user_points.confirmed | sailplay_pluralize: ('points.texts.pluralize' | tools) }}</span>\n            </div>\n\n            <div class=\"spm_pivko_profile_status_points_status\">\n              <div class=\"spm_pivko_profile_status_points_status_label\">\n                <span>{{ widget.options.texts.status_label }}</span>\n              </div>\n              <div class=\"spm_pivko_profile_status_points_status_value\">\n                <span>{{ statuses.current().status || widget.options.texts.no_status }}</span>\n              </div>\n            </div>\n\n          </div>\n\n        </div>\n\n        <div class=\"spm_pivko_profile_status_progress\">\n\n          <div class=\"spm_pivko_profile_status_progress_inner\">\n\n            <div class=\"spm_pivko_profile_status_progress_title\">\n              <span>Копи в следущем месяце больше</span>\n            </div>\n\n            <div class=\"spm_pivko_profile_status_progress_more_button\">\n              <button type=\"button\">Подробнее ></button>\n            </div>\n\n            <div class=\"spm_pivko_profile_status_progress_line_container\">\n\n              <div class=\"spm_pivko_profile_status_progress_line\">\n\n                <div class=\"spm_pivko_profile_status_progress_line_filled\" data-ng-style=\"{ width: statuses.progress() + '%' }\"></div>\n\n                <div class=\"spm_pivko_profile_status_progress_line_list\">\n                  <div class=\"spm_pivko_profile_status_progress_line_item\" data-ng-repeat=\"status in statuses.list\" data-ng-class=\"{ current: statuses.current() === status }\" data-ng-style=\"{ left: statuses.offset($index) + '%' }\">\n                    <div class=\"spm_pivko_profile_status_progress_line_item_icon\">\n                      <img class=\"spm_pivko_profile_status_progress_line_item_icon_inactive\" data-ng-src=\"{{ status.img_inactive }}\" alt=\"\">\n                      <img class=\"spm_pivko_profile_status_progress_line_item_icon_active\" data-ng-src=\"{{ status.img_active }}\" alt=\"\">\n                      <img class=\"spm_pivko_profile_status_progress_line_item_icon_current\" data-ng-src=\"{{ status.img_current }}\" alt=\"\">\n                    </div>\n                    <div class=\"spm_pivko_profile_status_progress_line_item_name\">\n                    <span>\n                      {{ status.status }}\n                    </span>\n                    </div>\n                  </div>\n                </div>\n\n              </div>\n\n            </div>\n\n          </div>\n\n        </div>\n\n      </div>\n    </div>\n\n  </div>\n\n</div>";
-
-/***/ }),
-/* 281 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(282);
-if(typeof content === 'string') content = [[module.i, content, '']];
-// Prepare cssTransformation
-var transform;
-
-var options = {"hmr":true}
-options.transform = transform
-// add the styles to the DOM
-var update = __webpack_require__(1)(content, options);
-if(content.locals) module.exports = content.locals;
-// Hot Module Replacement
-if(false) {
-	// When the styles change, update the <style> tags
-	if(!content.locals) {
-		module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/dist/cjs.js!./style.less", function() {
-			var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/dist/cjs.js!./style.less");
-			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-			update(newContent);
-		});
-	}
-	// When the module is disposed, remove the <style> tags
-	module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 282 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(0)(false);
-// imports
-
-
-// module
-exports.push([module.i, ".spm_wrapper .pivko_profile .spm_pivko_profile_wrapper {\n  text-align: left;\n}\n@media (min-width: 768px) {\n  .spm_wrapper .pivko_profile .spm_pivko_profile_wrapper {\n    width: 100%;\n    display: table;\n    border-collapse: separate;\n  }\n}\n@media (min-width: 768px) {\n  .spm_wrapper .pivko_profile .spm_pivko_profile_wrapper_inner {\n    display: table-row;\n  }\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_info {\n  display: inline-block;\n  font-size: 16px;\n  box-sizing: border-box;\n  background-color: #ffffff;\n}\n@media (min-width: 768px) {\n  .spm_wrapper .pivko_profile .spm_pivko_profile_info {\n    width: 20%;\n    display: table-cell;\n    vertical-align: top;\n    border-right: 20px solid transparent;\n    background-clip: padding-box;\n  }\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_info_avatar {\n  text-align: center;\n  padding: 25px 50px 10px 50px;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_info_avatar img {\n  width: 120px;\n  height: 120px;\n  border-radius: 60px;\n  display: inline-block;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_info_name {\n  text-align: center;\n  padding: 5px 30px;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_info_name span {\n  font-size: 20px;\n  line-height: 23px;\n  font-weight: bold;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_info_oid {\n  text-align: center;\n  padding: 5px 20px;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_info_oid_label {\n  font-size: 14px;\n  font-weight: 300;\n  color: #888888;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_info_oid_value {\n  font-size: 14px;\n  font-weight: 400;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_info_divider {\n  margin: 0 20px 10px 20px;\n  border-top: 1px solid #cccccc;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_info_email {\n  text-align: center;\n  padding: 0 20px;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_info_email span {\n  font-size: 16px;\n  font-weight: 300;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_info_phone {\n  text-align: center;\n  padding: 0 20px;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_info_phone span {\n  font-size: 16px;\n  font-weight: bold;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_info_edit_button {\n  text-align: center;\n  padding: 20px 30px 30px 30px;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_info_edit_button button {\n  border: none;\n  outline: none;\n  font-size: 16px;\n  font-weight: 300;\n  background-color: transparent;\n  cursor: pointer;\n  color: #888888;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status {\n  display: inline-block;\n  font-size: 16px;\n  box-sizing: border-box;\n  background-color: #ffffff;\n}\n@media (min-width: 768px) {\n  .spm_wrapper .pivko_profile .spm_pivko_profile_status {\n    width: 80%;\n    display: table-cell;\n    vertical-align: top;\n  }\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_points {\n  background-color: #eeeeee;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_points_inner {\n  padding: 50px;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_points_title {\n  font-size: 18px;\n  text-align: right;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_points_confirmed {\n  text-align: right;\n  font-size: 48px;\n  font-weight: bold;\n  line-height: 100%;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_points_status {\n  margin-top: 10px;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_points_status_label {\n  text-align: right;\n  font-size: 14px;\n  font-weight: bold;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_points_status_value {\n  text-align: right;\n  font-size: 16px;\n  font-weight: bold;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_title {\n  text-align: center;\n  margin: 15px auto 0 auto;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_title span {\n  font-size: 18px;\n  font-weight: bold;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_more_button {\n  text-align: center;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_more_button button {\n  border: none;\n  outline: none;\n  font-size: 12px;\n  font-weight: 300;\n  background-color: transparent;\n  cursor: pointer;\n  color: #888888;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_line {\n  margin: 40px 50px 70px 50px;\n  background-color: #eeeeee;\n  height: 6px;\n  border-radius: 3px;\n  position: relative;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_line_filled {\n  position: absolute;\n  top: 0;\n  left: 0;\n  height: 100%;\n  background-color: #888888;\n  border-radius: 3px;\n  transition: all 0.4s ease;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_line_list {\n  position: absolute;\n  width: 80%;\n  left: 10%;\n  height: 100%;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_line_item {\n  position: absolute;\n  width: 50px;\n  height: 80px;\n  top: -23px;\n  margin-left: -25px;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_line_item_icon img {\n  width: 100%;\n  display: block;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_line_item_icon_active,\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_line_item_icon_current {\n  display: none !important;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_line_item_name {\n  text-align: center;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_line_item_name span {\n  font-size: 12px;\n  color: #888888;\n  font-weight: 300;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_line_item.current .spm_pivko_profile_status_progress_line_item_name span {\n  font-weight: 600;\n  color: #444444;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_line_item.current .spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_line_item_icon_current {\n  display: block !important;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_line_item.current .spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_line_item_icon_active,\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_line_item.current .spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_line_item_icon_inactive {\n  display: none !important;\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 283 */
-/***/ (function(module, exports) {
-
-module.exports = {"id":"pivko_profile","enabled":true,"styles":{},"options":{}}
-
-/***/ }),
-/* 284 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _widget = __webpack_require__(2);
-
-var _template = __webpack_require__(285);
-
-var _template2 = _interopRequireDefault(_template);
-
-__webpack_require__(286);
-
-var _defaults = __webpack_require__(288);
-
-var _defaults2 = _interopRequireDefault(_defaults);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var widget = {
-  id: "pivko_quests",
-  template: _template2.default,
-  defaults: _defaults2.default,
-  inject: ["MAGIC_CONFIG", "SailPlay", "SailPlayQuests"],
-  controller: function controller(MAGIC_CONFIG, SailPlay, SailPlayQuests) {
-    return function (scope, elm, attrs) {
-
-      scope.quests = new SailPlayQuests();
-    };
-  }
-};
-
-_widget.Widget.config(["MagicWidgetProvider", function (MagicWidgetProvider) {
-  MagicWidgetProvider.register(widget);
-}]);
-
-/***/ }),
 /* 285 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"spm_pivko_quests_wrapper\">\n\n  <div class=\"spm_pivko_quests_wrapper_inner\">\n\n    <div class=\"spm_pivko_quests_title\">\n      <span>{{ widget.options.texts.title }}</span>\n    </div>\n\n    <div class=\"spm_pivko_quests_caption\">\n      <span>{{ widget.options.texts.caption }}</span>\n    </div>\n\n    <div class=\"spm_pivko_quests_list_empty\" data-ng-if=\"quests.empty()\">\n      <span>{{ widget.options.texts.empty_list_hint }}</span>\n    </div>\n\n    <div class=\"spm_pivko_quests_list\" data-ng-if=\"!quests.empty()\">\n\n      <div class=\"spm_pivko_quests_list_inner clearfix\">\n\n        <!-- SYSTEM QUESTS -->\n        <div class=\"spm_pivko_quests_list_item\" data-ng-repeat=\"quest in quests.list.system().actions\">\n\n          <div class=\"spm_pivko_quests_list_item_inner\">\n\n            <div class=\"spm_pivko_quests_list_item_header\">\n\n              <div class=\"spm_pivko_quests_list_item_header_inner clearfix\">\n\n                <div class=\"spm_pivko_quests_list_item_icon\">\n                  <img data-ng-src=\"{{ quests.data(quest).pic|sailplay_pic }}\" alt=\"\">\n                </div>\n\n                <div class=\"spm_pivko_quests_list_item_button\">\n                  <button type=\"button\">Выполнить</button>\n                </div>\n\n              </div>\n\n            </div>\n\n            <div class=\"spm_pivko_quests_list_item_body\">\n\n              <div class=\"spm_pivko_quests_list_item_body_inner\">\n\n                <div class=\"spm_pivko_quests_list_item_points\">\n                  <span>+ {{ (quest.points|number)+' '+(quest.points|sailplay_pluralize:('points.texts.pluralize'|tools)) }}</span>\n                </div>\n\n                <div class=\"spm_pivko_quests_list_item_name\">\n                  <span>{{ quests.data(quest).name }}</span>\n                </div>\n\n              </div>\n\n            </div>\n\n          </div>\n\n        </div>\n\n      </div>\n\n    </div>\n\n  </div>\n\n</div>";
+module.exports = "<div class=\"spm_pivko_profile_wrapper\">\n\n  <div class=\"spm_pivko_profile_wrapper_inner\">\n\n    <div class=\"spm_pivko_profile_info\">\n\n      <div class=\"spm_pivko_profile_info_inner\">\n\n        <div class=\"spm_pivko_profile_info_avatar\">\n          <img data-ng-src=\"{{(profile.user().user.avatar['250x250']|sailplay_pic) || widget.options.images.default_avatar || default_avatar}}\" alt=\"\">\n        </div>\n\n        <div class=\"spm_pivko_profile_info_name\">\n          <span>{{ profile.user().user.name || widget.options.texts.no_name }}</span>\n        </div>\n\n        <div class=\"spm_pivko_profile_info_oid\">\n\n          <div class=\"spm_pivko_profile_info_oid_label\">\n            <span>{{ widget.options.texts.oid_label }}</span>\n          </div>\n\n          <div class=\"spm_pivko_profile_info_oid_value\">\n            <span>{{ profile.user().user.origin_user_id || widget.options.texts.no_oid }}</span>\n          </div>\n\n        </div>\n\n        <div class=\"spm_pivko_profile_info_divider\"></div>\n\n        <div class=\"spm_pivko_profile_info_email\">\n          <span>{{ profile.user().user.email || widget.options.texts.no_email }}</span>\n        </div>\n\n        <div class=\"spm_pivko_profile_info_phone\">\n          <span>{{(profile.user().user.phone | masked:widget.options.phone_mask) || widget.options.texts.no_phone }}</span>\n        </div>\n\n        <div class=\"spm_pivko_profile_info_edit_button\">\n          <button type=\"button\" data-ng-click=\"profile_form_utils.open()\">{{ widget.options.texts.profile_button_text }}</button>\n        </div>\n\n      </div>\n\n    </div>\n\n    <div class=\"spm_pivko_profile_status\">\n      <div class=\"spm_pivko_profile_status_inner\">\n\n        <div class=\"spm_pivko_profile_status_points\">\n\n          <div class=\"spm_pivko_profile_status_points_inner\">\n\n            <div class=\"spm_pivko_profile_status_points_title\">\n              <span>{{ widget.options.texts.points_title }}</span>\n            </div>\n\n            <div class=\"spm_pivko_profile_status_points_confirmed\">\n              <span>{{ profile.user().user_points.confirmed }} {{ profile.user().user_points.confirmed | sailplay_pluralize: ('points.texts.pluralize' | tools) }}</span>\n            </div>\n\n            <div class=\"spm_pivko_profile_status_points_status\">\n              <div class=\"spm_pivko_profile_status_points_status_label\">\n                <span>{{ widget.options.texts.status_label }}</span>\n              </div>\n              <div class=\"spm_pivko_profile_status_points_status_value\">\n                <span>{{ statuses.current().status || widget.options.texts.no_status }}</span>\n              </div>\n            </div>\n\n          </div>\n\n        </div>\n\n        <div class=\"spm_pivko_profile_status_progress\">\n\n          <div class=\"spm_pivko_profile_status_progress_inner\">\n\n            <div class=\"spm_pivko_profile_status_progress_title\">\n              <span>Копи в следущем месяце больше</span>\n            </div>\n\n            <div class=\"spm_pivko_profile_status_progress_more_button\">\n              <a href=\"{{ widget.options.info_url }}\" target=\"_blank\">Подробнее ></a>\n            </div>\n\n            <div class=\"spm_pivko_profile_status_progress_line_container\">\n\n              <div class=\"spm_pivko_profile_status_progress_line\">\n\n                <div class=\"spm_pivko_profile_status_progress_line_filled\" data-ng-style=\"{ width: statuses.progress() + '%' }\"></div>\n\n                <div class=\"spm_pivko_profile_status_progress_line_list\">\n\n                  <!-- STATUS ITEM -->\n                  <div class=\"spm_pivko_profile_status_progress_line_item\" data-ng-repeat=\"status in statuses.list\" data-ng-class=\"{ current: statuses.current() === status }\" data-ng-style=\"{ left: statuses.offset($index) + '%' }\">\n\n                    <div class=\"spm_pivko_profile_status_progress_line_item_icon\">\n                      <img class=\"spm_pivko_profile_status_progress_line_item_icon_inactive\" data-ng-src=\"{{ status.img_inactive }}\" alt=\"\">\n                      <img class=\"spm_pivko_profile_status_progress_line_item_icon_active\" data-ng-src=\"{{ status.img_active }}\" alt=\"\">\n                      <img class=\"spm_pivko_profile_status_progress_line_item_icon_current\" data-ng-src=\"{{ status.img_current }}\" alt=\"\">\n                    </div>\n\n                    <div class=\"spm_pivko_profile_status_progress_line_item_name\">\n                      <span>\n                        {{ status.status }}\n                      </span>\n                    </div>\n\n                    <div class=\"spm_pivko_profile_status_progress_line_item_tooltip\">\n                      <div class=\"spm_pivko_profile_status_progress_line_item_tooltip_inner\">\n\n                        <div class=\"spm_pivko_profile_status_progress_line_item_tooltip_header\">\n\n                          <span class=\"spm_pivko_profile_status_progress_line_item_tooltip_header_start\">{{ widget.options.texts.status_tooltip_header_start }}</span>\n                          <span class=\"spm_pivko_profile_status_progress_line_item_tooltip_header_status\">\n                            {{ statuses.current().status || widget.options.texts.no_status }}\n                          </span>\n                          <span class=\"spm_pivko_profile_status_progress_line_item_tooltip_header_end\">{{ widget.options.texts.status_tooltip_header_end }}</span>\n\n                        </div>\n\n                      </div>\n                    </div>\n\n                  </div>\n                  <!-- /////////// -->\n\n                </div>\n\n              </div>\n\n            </div>\n\n          </div>\n\n        </div>\n\n      </div>\n    </div>\n\n  </div>\n\n</div>\n\n<magic-modal-center class=\"spm_pivko_profile_modal\" on-close=\"profile_form_utils.close\" data-show=\"profile_form_utils.show\">\n  <magic-modal-title>\n    <div class=\"spm_pivko_profile_modal_title\">\n      <span ng-bind-html=\"widget.options.texts.profile_modal_title|to_trusted\"></span>\n    </div>\n  </magic-modal-title>\n  <magic-modal-body>\n\n    <form name=\"ng_profile_form\" class=\"spm_profile-form\"\n          ng-submit=\"profile_form.submit(ng_profile_form, profile_form_utils.complete);\">\n\n      <div class=\"spm_form_field\" ng-repeat=\"field in profile_form.form.fields\"\n           ng-switch=\"field.input\">\n\n        <div ng-switch-when=\"text\">\n          <input class=\"spm_form_input\" type=\"text\" placeholder=\"{{ field.placeholder }}\"\n                 ng-model=\"field.value\" ng-required=\"field.required\">\n        </div>\n\n        <div ng-switch-when=\"date\">\n          <input class=\"spm_form_input\" type=\"date\"\n                 data-spm-date-input ng-model=\"field.value\" placeholder=\"{{ field.placeholder }}\"\n                 ng-required=\"field.required\">\n        </div>\n\n        <div ng-switch-when=\"phone\">\n          <input class=\"spm_form_input\" type=\"text\"\n                 ui-mask=\"{{ field.placeholder }}\" ng-model=\"field.value\"\n                 ng-required=\"field.required\">\n        </div>\n\n        <div ng-switch-when=\"email\">\n          <input class=\"spm_form_input\" type=\"email\" placeholder=\"{{ field.placeholder }}\"\n                 ng-model=\"field.value\" ng-required=\"field.required\">\n        </div>\n\n        <div ng-switch-when=\"select\">\n          <select class=\"spm_form_select\" ng-model=\"field.value\"\n                  ng-options=\"item.value as item.text for item in field.data\" ng-required=\"field.required\"></select>\n        </div>\n\n        <div data-ng-switch-when=\"radio\" class=\"spm_form_radio_field\">\n          <label class=\"spm_form_label\" ng-bind=\"field.label\"></label>\n          <label class=\"spm_form_checkbox\" data-ng-class=\"{ checked: field.value === item.value }\" data-ng-repeat=\"item in field.data\">\n            <input class=\"spm_form_checkbox_input\" type=\"radio\" data-ng-model=\"field.value\" data-ng-value=\"item.value\">\n            <span class=\"spm_form_checkbox_label\" data-ng-bind=\"item.text\"></span>\n          </label>\n        </div>\n\n      </div>\n\n      <div class=\"spm_form_buttons\">\n        <button type=\"submit\" class=\"spm_btn spm_pivko_profile_modal_save_button\" data-ng-disabled=\"ng_profile_form.$invalid\">{{ widget.options.texts.profile_modal_save_button }}</button>\n      </div>\n\n    </form>\n\n  </magic-modal-body>\n</magic-modal-center>";
 
 /***/ }),
 /* 286 */
@@ -50160,6 +50325,132 @@ if(false) {
 /* 287 */
 /***/ (function(module, exports, __webpack_require__) {
 
+var escape = __webpack_require__(20);
+exports = module.exports = __webpack_require__(0)(false);
+// imports
+
+
+// module
+exports.push([module.i, ".spm_wrapper .pivko_profile .spm_pivko_profile_wrapper {\n  text-align: left;\n}\n@media (min-width: 768px) {\n  .spm_wrapper .pivko_profile .spm_pivko_profile_wrapper {\n    width: 100%;\n    display: table;\n    border-collapse: separate;\n  }\n}\n@media (min-width: 768px) {\n  .spm_wrapper .pivko_profile .spm_pivko_profile_wrapper_inner {\n    display: table-row;\n  }\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_info {\n  display: inline-block;\n  font-size: 16px;\n  box-sizing: border-box;\n  background-color: #ffffff;\n}\n@media (min-width: 768px) {\n  .spm_wrapper .pivko_profile .spm_pivko_profile_info {\n    width: 20%;\n    display: table-cell;\n    vertical-align: top;\n    border-right: 20px solid transparent;\n    background-clip: padding-box;\n  }\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_info_avatar {\n  text-align: center;\n  padding: 25px 50px 10px 50px;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_info_avatar img {\n  width: 120px;\n  height: 120px;\n  border-radius: 60px;\n  display: inline-block;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_info_name {\n  text-align: center;\n  padding: 5px 30px;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_info_name span {\n  font-size: 20px;\n  line-height: 23px;\n  font-weight: bold;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_info_oid {\n  text-align: center;\n  padding: 5px 20px;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_info_oid_label {\n  font-size: 14px;\n  font-weight: 300;\n  color: #888888;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_info_oid_value {\n  font-size: 14px;\n  font-weight: 400;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_info_divider {\n  margin: 0 20px 10px 20px;\n  border-top: 1px solid #cccccc;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_info_email {\n  text-align: center;\n  padding: 0 20px;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_info_email span {\n  font-size: 16px;\n  font-weight: 300;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_info_phone {\n  text-align: center;\n  padding: 0 20px;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_info_phone span {\n  font-size: 16px;\n  font-weight: bold;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_info_edit_button {\n  text-align: center;\n  padding: 20px 30px 30px 30px;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_info_edit_button button {\n  border: none;\n  outline: none;\n  font-size: 16px;\n  font-weight: 300;\n  background-color: transparent;\n  cursor: pointer;\n  color: #888888;\n  padding-left: 20px;\n  position: relative;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_info_edit_button button:before {\n  content: '';\n  position: absolute;\n  left: 0;\n  top: 50%;\n  margin-top: -9px;\n  width: 15px;\n  height: 15px;\n  background-size: contain;\n  background-position: center center;\n  background-image: url(" + escape(__webpack_require__(288)) + ");\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status {\n  display: inline-block;\n  font-size: 16px;\n  box-sizing: border-box;\n  background-color: #ffffff;\n}\n@media (min-width: 768px) {\n  .spm_wrapper .pivko_profile .spm_pivko_profile_status {\n    width: 80%;\n    display: table-cell;\n    vertical-align: top;\n  }\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_points {\n  background-color: #eeeeee;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_points_inner {\n  padding: 50px;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_points_title {\n  font-size: 18px;\n  text-align: right;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_points_confirmed {\n  text-align: right;\n  font-size: 48px;\n  font-weight: bold;\n  line-height: 100%;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_points_status {\n  margin-top: 10px;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_points_status_label {\n  text-align: right;\n  font-size: 14px;\n  font-weight: bold;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_points_status_value {\n  text-align: right;\n  font-size: 16px;\n  font-weight: bold;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_title {\n  text-align: center;\n  margin: 15px auto 0 auto;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_title span {\n  font-size: 18px;\n  font-weight: bold;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_more_button {\n  text-align: center;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_more_button a {\n  display: inline-block;\n  border: none;\n  outline: none;\n  font-size: 12px;\n  font-weight: 300;\n  background-color: transparent;\n  cursor: pointer;\n  color: #888888;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_more_button a:visited {\n  color: #888888;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_line {\n  margin: 40px 50px 70px 50px;\n  background-color: #eeeeee;\n  height: 6px;\n  border-radius: 3px;\n  position: relative;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_line_filled {\n  position: absolute;\n  top: 0;\n  left: 0;\n  height: 100%;\n  background-color: #888888;\n  border-radius: 3px;\n  transition: all 0.4s ease;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_line_list {\n  position: absolute;\n  width: 80%;\n  left: 10%;\n  height: 100%;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_line_item {\n  position: absolute;\n  width: 50px;\n  height: 80px;\n  top: -23px;\n  margin-left: -25px;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_line_item_icon img {\n  width: 100%;\n  display: block;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_line_item_icon_active,\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_line_item_icon_current {\n  display: none !important;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_line_item_name {\n  text-align: center;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_line_item_name span {\n  font-size: 12px;\n  color: #888888;\n  font-weight: 300;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_line_item_tooltip {\n  position: absolute;\n  bottom: 130%;\n  min-width: 220px;\n  max-width: 250px;\n  left: 50%;\n  transform: translate(-50%, 0);\n  transition: opacity 0.1s ease;\n  opacity: 0;\n  visibility: hidden;\n  background-color: #ffffff;\n  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.4);\n  border-radius: 5px;\n  background-image: url(" + escape(__webpack_require__(289)) + ");\n  background-position: center 20px;\n  background-size: 20px 20px;\n  background-repeat: no-repeat;\n  padding-top: 30px;\n  z-index: 1;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_line_item_tooltip:after {\n  content: \"\";\n  position: absolute;\n  width: 20px;\n  height: 20px;\n  background: #ffffff;\n  transform: rotate(-135deg);\n  bottom: -9px;\n  margin-left: -10px;\n  left: 50%;\n  box-shadow: -2px -2px 5px -2px rgba(0, 0, 0, 0.5);\n  z-index: -1;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_line_item_tooltip_inner {\n  padding: 20px;\n  text-align: center;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_line_item_tooltip_header span {\n  font-size: 14px;\n  line-height: 14px;\n  font-weight: 300;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_line_item_tooltip_header_status {\n  font-weight: normal !important;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_line_item:hover .spm_pivko_profile_status_progress_line_item_tooltip {\n  opacity: 1;\n  visibility: visible;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_line_item.current .spm_pivko_profile_status_progress_line_item_name span {\n  font-weight: 600;\n  color: #444444;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_line_item.current .spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_line_item_icon_current {\n  display: block !important;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_line_item.current .spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_line_item_icon_active,\n.spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_line_item.current .spm_wrapper .pivko_profile .spm_pivko_profile_status_progress_line_item_icon_inactive {\n  display: none !important;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_modal_title {\n  text-align: center;\n  margin-bottom: 25px;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_modal_title span {\n  font-size: 20px;\n  font-weight: bold;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_modal .spm_form_input,\n.spm_wrapper .pivko_profile .spm_pivko_profile_modal .ng-not-empty {\n  border: 2px solid #cccccc;\n  line-height: 21px;\n  font-size: 18px;\n  padding: 15px 30px !important;\n  height: auto;\n  border-radius: 30px;\n  font-weight: normal;\n  width: 100%;\n  box-sizing: border-box;\n  outline: none;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_modal .spm_form_input[type=date],\n.spm_wrapper .pivko_profile .spm_pivko_profile_modal .ng-not-empty[type=date] {\n  padding: 12px 30px !important;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_modal .spm_form_radio_field {\n  padding: 0 32px;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_modal .spm_form_radio_field .spm_form_label,\n.spm_wrapper .pivko_profile .spm_pivko_profile_modal .spm_form_radio_field .spm_form_checkbox_label {\n  font-size: 18px;\n  line-height: 21px;\n  font-weight: normal;\n  color: #444444;\n  opacity: 1;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_modal .spm_form_label,\n.spm_wrapper .pivko_profile .spm_pivko_profile_modal .spm_form_checkbox {\n  display: inline-block;\n  width: auto;\n  margin-right: 20px;\n  margin-bottom: 0;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_modal .spm_form_checkbox {\n  background-image: url(" + escape(__webpack_require__(290)) + ");\n  background-size: 20px 20px;\n  background-position: center left;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_modal .spm_form_checkbox:hover {\n  background-image: url(" + escape(__webpack_require__(291)) + ");\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_modal .spm_form_checkbox.checked {\n  background-image: url(" + escape(__webpack_require__(292)) + ");\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_modal .spm_form_buttons {\n  text-align: center;\n  margin-bottom: 20px;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_modal .spm_form_buttons button[type=submit] {\n  display: inline-block;\n  font-size: 14px;\n  line-height: 16px;\n  border-radius: 25px;\n  padding: 17px 60px !important;\n  text-transform: none;\n  font-weight: 300;\n  background-color: #cccccc;\n  color: #444444;\n  margin: auto;\n}\n.spm_wrapper .pivko_profile .spm_pivko_profile_modal .spm_form_buttons button[type=submit]:disabled {\n  background-color: #eeeeee;\n  color: #888888;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 288 */
+/***/ (function(module, exports) {
+
+module.exports = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNSAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0xNC45NTMxIDYuNjY3MjFDMTQuOTI5MyA2LjQ1NjM2IDE0LjY4MzUgNi4yOTc5MSAxNC40NzA5IDYuMjk3OTFDMTMuNzgzNiA2LjI5NzkxIDEzLjE3MzcgNS44OTQzNCAxMi45MTc5IDUuMjcwMjFDMTIuNjU2NiA0LjYzMDk1IDEyLjgyNTEgMy44ODU0MyAxMy4zMzczIDMuNDE1NTZDMTMuNDk4NSAzLjI2ODE2IDEzLjUxODEgMy4wMjE0MiAxMy4zODI5IDIuODUwMDNDMTMuMDMxMSAyLjQwMzMyIDEyLjYzMTMgMS45OTk4IDEyLjE5NDcgMS42NTAwOUMxMi4wMjM4IDEuNTEyOTEgMTEuNzcyOSAxLjUzMiAxMS42MjQ3IDEuNjk2MTRDMTEuMTc3NiAyLjE5MTI0IDEwLjM3NDYgMi4zNzUyNCA5Ljc1NDEgMi4xMTYzNEM5LjEwODM1IDEuODQ0NzEgOC43MDExNCAxLjE5MDM4IDguNzQwOTkgMC40ODc5OTlDOC43NTQxMSAwLjI2NzM3OSA4LjU5Mjg3IDAuMDc1NTU3IDguMzcyOTEgMC4wNDk5Mzk4QzcuODEyNjcgLTAuMDE0ODU2NyA3LjI0NzUxIC0wLjAxNjg2NTggNi42ODU1OSAwLjA0NTQ3NDlDNi40NjgxNSAwLjA2OTQ3MzYgNi4zMDY5MSAwLjI1Njc3NSA2LjMxNDIyIDAuNDc0NjA1QzYuMzM4NjcgMS4xNzAwNiA1LjkyNjU1IDEuODEyOTUgNS4yODcyMiAyLjA3NDgxQzQuNjc0MTIgMi4zMjUyNCAzLjg3NjczIDIuMTQyNzkgMy40MzA1NyAxLjY1MjFDMy4yODMxMSAxLjQ5MDQ3IDMuMDM2MzcgMS40NzA2MSAyLjg2NDU4IDEuNjA0NUMyLjQxNTA2IDEuOTU3MTcgMi4wMDYyNCAyLjM2MTAxIDEuNjUxMjIgMi44MDQwNEMxLjUxMjc1IDIuOTc2MjcgMS41MzMxMiAzLjIyNTkxIDEuNjk1OTggMy4zNzQwOUMyLjIxNzk5IDMuODQ2ODEgMi4zODY1NCA0LjU5ODgxIDIuMTE1MzUgNS4yNDU0M0MxLjg1NjQ0IDUuODYxOTIgMS4yMTYyNyA2LjI1OTIzIDAuNDgzNDAyIDYuMjU5MjNDMC4yNDU1ODYgNi4yNTE1OSAwLjA3NjE5NTQgNi40MTEyMSAwLjA1MDE4NjkgNi42Mjc0MkMtMC4wMTU3ODMyIDcuMTkwODkgLTAuMDE2NTY0NSA3Ljc2NTAxIDAuMDQ2OTQ5OCA4LjMzMzA2QzAuMDcwNTAyNiA4LjU0NDggMC4zMjM4MzQgOC43MDE4NSAwLjUzODc2NyA4LjcwMTg1QzEuMTkxODggOC42ODUxNyAxLjgxODkzIDkuMDg5NTIgMi4wODE5OCA5LjcyOTYxQzIuMzQ0MTggMTAuMzY4OSAyLjE3NTYzIDExLjExMzkgMS42NjI2IDExLjU4NDJDMS41MDIxNCAxMS43MzE2IDEuNDgxNzcgMTEuOTc4IDEuNjE3IDEyLjE0OTNDMS45NjU1IDEyLjU5MzIgMi4zNjUzOSAxMi45OTcxIDIuODAzNTIgMTMuMzQ5N0MyLjk3NTM2IDEzLjQ4ODIgMy4yMjU0IDEzLjQ2ODcgMy4zNzQzNiAxMy4zMDQ1QzMuODIzMSAxMi44MDgyIDQuNjI2MDcgMTIuNjI0NSA1LjI0NDEzIDEyLjg4MzlDNS44OTE1IDEzLjE1NDcgNi4yOTg3IDEzLjgwOSA2LjI1ODg1IDE0LjUxMThDNi4yNDU4NSAxNC43MzI1IDYuNDA3ODcgMTQuOTI0NyA2LjYyNjk0IDE0Ljk0OTlDNi45MTM1MyAxNC45ODMzIDcuMjAxODYgMTUgNy40OTA5NiAxNUM3Ljc2NTM5IDE1IDguMDM5ODggMTQuOTg0OSA4LjMxNDMxIDE0Ljk1NDRDOC41MzE4MSAxNC45MzA0IDguNjkyOTQgMTQuNzQzMSA4LjY4NTYzIDE0LjUyNDlDOC42NjA0NSAxMy44Mjk4IDkuMDczMyAxMy4xODY5IDkuNzExNzkgMTIuOTI1NUMxMC4zMjkgMTIuNjczNCAxMS4xMjMxIDEyLjg1NzkgMTEuNTY5MyAxMy4zNDgxQzExLjcxNzYgMTMuNTA5NCAxMS45NjI2IDEzLjUyODkgMTIuMTM1MyAxMy4zOTU0QzEyLjU4NCAxMy4wNDM2IDEyLjk5MiAxMi42NDAxIDEzLjM0ODcgMTIuMTk1OEMxMy40ODcxIDEyLjAyNCAxMy40Njc2IDExLjc3NCAxMy4zMDM5IDExLjYyNThDMTIuNzgxOSAxMS4xNTMxIDEyLjYxMjUgMTAuNDAxIDEyLjg4MzcgOS43NTQ4NEMxMy4xMzg2IDkuMTQ2NTUgMTMuNzU1IDguNzM4MTMgMTQuNDE4IDguNzM4MTNMMTQuNTEwOCA4Ljc0MDUzQzE0LjcyNTggOC43NTggMTQuOTIzNyA4LjU5MjM1IDE0Ljk0OTcgOC4zNzI4NUMxNS4wMTU4IDcuODA4ODggMTUuMDE2NiA3LjIzNTI2IDE0Ljk1MzEgNi42NjcyMVpNNy41MTE4OSAxMC4wMTc1QzYuMTMyMzMgMTAuMDE3NSA1LjAxMDE3IDguODk1NDEgNS4wMTAxNyA3LjUxNTg3QzUuMDEwMTcgNi4xMzY0IDYuMTMyMzMgNS4wMTQyMSA3LjUxMTg5IDUuMDE0MjFDOC44OTE0MSA1LjAxNDIxIDEwLjAxMzYgNi4xMzY0IDEwLjAxMzYgNy41MTU4N0MxMC4wMTM2IDguODk1NDEgOC44OTE0MSAxMC4wMTc1IDcuNTExODkgMTAuMDE3NVoiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDAgMC42NjY2NTYpIiBmaWxsPSIjOUE5QTlBIi8+Cjwvc3ZnPgo="
+
+/***/ }),
+/* 289 */
+/***/ (function(module, exports) {
+
+module.exports = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjIiIGhlaWdodD0iMjIiIHZpZXdCb3g9IjAgMCAyMiAyMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEwLjk5OTggMEM0LjkzNDU1IDAgMCA0LjkzNDYgMCAxMUMwIDE3LjA2NTMgNC45MzQ1NSAyMiAxMC45OTk4IDIyQzE3LjA2NTUgMjIgMjIgMTcuMDY1MyAyMiAxMUMyMiA0LjkzNDYgMTcuMDY1NSAwIDEwLjk5OTggMFpNMTAuOTk5OCAyMC41NTczQzUuNzMwMjkgMjAuNTU3MyAxLjQ0MjY1IDE2LjI2OTkgMS40NDI2NSAxMUMxLjQ0MjY1IDUuNzMwMDYgNS43MzAyOSAxLjQ0MjcxIDEwLjk5OTggMS40NDI3MUMxNi4yNjk3IDEuNDQyNzEgMjAuNTU3MiA1LjczMDEyIDIwLjU1NzIgMTFDMjAuNTU3MyAxNi4yNjk5IDE2LjI2OTcgMjAuNTU3MyAxMC45OTk4IDIwLjU1NzNaIiBmaWxsPSIjQkRCREJEIi8+CjxwYXRoIGQ9Ik0xMC45OTk4IDcuNjM0NTJDMTEuNDk5NSA3LjYzNDUyIDExLjkwNTQgNy4yMjkxMSAxMS45MDU0IDYuNzI5MTFDMTEuOTA1NCA2LjIyOTEgMTEuNDk5NSA1LjgyMzUzIDEwLjk5OTggNS44MjM1M0MxMC40OTk2IDUuODIzNTMgMTAuMDk0NyA2LjIyOTEgMTAuMDk0NyA2LjcyOTExQzEwLjA5NDcgNy4yMjkxMSAxMC40OTk2IDcuNjM0NTIgMTAuOTk5OCA3LjYzNDUyWiIgZmlsbD0iI0JEQkRCRCIvPgo8cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTExIDE2LjQwMjlDMTAuNTE3NiAxNi40MDI5IDEwLjEyNjUgMTYuMDExOCAxMC4xMjY1IDE1LjUyOTRWOS42ODA4MkMxMC4xMjY1IDkuMTk4MzkgMTAuNTE3NiA4LjgwNzI5IDExIDguODA3MjlDMTEuNDgyNSA4LjgwNzI5IDExLjg3MzYgOS4xOTgzOSAxMS44NzM2IDkuNjgwODJWMTUuNTI5NEMxMS44NzM2IDE2LjAxMTggMTEuNDgyNSAxNi40MDI5IDExIDE2LjQwMjlaIiBmaWxsPSIjQkRCREJEIi8+Cjwvc3ZnPgo="
+
+/***/ }),
+/* 290 */
+/***/ (function(module, exports) {
+
+module.exports = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyMCAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGVsbGlwc2UgY3g9IjkuOTc5MjEiIGN5PSIxMCIgcng9IjkuOTc5MjEiIHJ5PSIxMCIgZmlsbD0iI0VCRUJFQiIvPgo8L3N2Zz4K"
+
+/***/ }),
+/* 291 */
+/***/ (function(module, exports) {
+
+module.exports = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyMCAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGVsbGlwc2UgY3g9IjkuOTc5MjEiIGN5PSIxMCIgcng9IjkuOTc5MjEiIHJ5PSIxMCIgZmlsbD0iI0M0QzRDNCIvPgo8L3N2Zz4K"
+
+/***/ }),
+/* 292 */
+/***/ (function(module, exports) {
+
+module.exports = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyMCAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGVsbGlwc2UgY3g9IjkuOTc5MjEiIGN5PSIxMCIgcng9IjkuOTc5MjEiIHJ5PSIxMCIgZmlsbD0iI0ZGRTAyRSIvPgo8L3N2Zz4K"
+
+/***/ }),
+/* 293 */
+/***/ (function(module, exports) {
+
+module.exports = {"id":"pivko_profile","enabled":true,"styles":{},"options":{}}
+
+/***/ }),
+/* 294 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _widget = __webpack_require__(2);
+
+var _template = __webpack_require__(295);
+
+var _template2 = _interopRequireDefault(_template);
+
+__webpack_require__(296);
+
+var _defaults = __webpack_require__(298);
+
+var _defaults2 = _interopRequireDefault(_defaults);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var widget = {
+  id: "pivko_quests",
+  template: _template2.default,
+  defaults: _defaults2.default,
+  inject: ["MAGIC_CONFIG", "SailPlay", "SailPlayQuests"],
+  controller: function controller(MAGIC_CONFIG, SailPlay, SailPlayQuests) {
+    return function (scope, elm, attrs) {
+
+      scope.quests = new SailPlayQuests();
+    };
+  }
+};
+
+_widget.Widget.config(["MagicWidgetProvider", function (MagicWidgetProvider) {
+  MagicWidgetProvider.register(widget);
+}]);
+
+/***/ }),
+/* 295 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"spm_pivko_quests_wrapper\">\n\n  <div class=\"spm_pivko_quests_wrapper_inner\">\n\n    <div class=\"spm_pivko_quests_title\">\n      <span>{{ widget.options.texts.title }}</span>\n    </div>\n\n    <div class=\"spm_pivko_quests_caption\">\n      <span>{{ widget.options.texts.caption }}</span>\n    </div>\n\n    <div class=\"spm_pivko_quests_list_empty\" data-ng-if=\"quests.empty()\">\n      <span>{{ widget.options.texts.empty_list_hint }}</span>\n    </div>\n\n    <div class=\"spm_pivko_quests_list\" data-ng-if=\"!quests.empty()\">\n\n      <div class=\"spm_pivko_quests_list_inner clearfix\">\n\n        <!-- SYSTEM QUESTS -->\n        <div class=\"spm_pivko_quests_list_item\" data-ng-repeat=\"quest in quests.list.system().actions\">\n\n          <div class=\"spm_pivko_quests_list_item_inner\">\n\n            <div class=\"spm_pivko_quests_list_item_header\">\n\n              <div class=\"spm_pivko_quests_list_item_header_inner clearfix\">\n\n                <div class=\"spm_pivko_quests_list_item_icon\">\n                  <img data-ng-src=\"{{ quests.data(quest).pic|sailplay_pic }}\" alt=\"\">\n                </div>\n\n                <div class=\"spm_pivko_quests_list_item_button\">\n                  <button type=\"button\">Выполнить</button>\n                </div>\n\n              </div>\n\n            </div>\n\n            <div class=\"spm_pivko_quests_list_item_body\">\n\n              <div class=\"spm_pivko_quests_list_item_body_inner\">\n\n                <div class=\"spm_pivko_quests_list_item_points\">\n                  <span>+ {{ (quest.points|number)+' '+(quest.points|sailplay_pluralize:('points.texts.pluralize'|tools)) }}</span>\n                </div>\n\n                <div class=\"spm_pivko_quests_list_item_name\">\n                  <span>{{ quests.data(quest).name }}</span>\n                </div>\n\n              </div>\n\n            </div>\n\n          </div>\n\n        </div>\n\n      </div>\n\n    </div>\n\n  </div>\n\n</div>";
+
+/***/ }),
+/* 296 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(297);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// Prepare cssTransformation
+var transform;
+
+var options = {"hmr":true}
+options.transform = transform
+// add the styles to the DOM
+var update = __webpack_require__(1)(content, options);
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/dist/cjs.js!./style.less", function() {
+			var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/dist/cjs.js!./style.less");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 297 */
+/***/ (function(module, exports, __webpack_require__) {
+
 exports = module.exports = __webpack_require__(0)(false);
 // imports
 
@@ -50171,10 +50462,10 @@ exports.push([module.i, ".spm_wrapper .pivko_quests .spm_pivko_quests_wrapper {\
 
 
 /***/ }),
-/* 288 */
+/* 298 */
 /***/ (function(module, exports) {
 
-module.exports = {"id":"pivko_quests","enabled":true,"styles":{},"options":{}}
+module.exports = {"styles":{},"enabled":false,"id":"pivko_quests","options":{"texts":{"caption":"Выполняйте задания и получайте бонусные рубли бесплатно","title":"Задания","empty_list_hint":"Здесь скоро появятся новые задания"}}}
 
 /***/ })
 /******/ ]);

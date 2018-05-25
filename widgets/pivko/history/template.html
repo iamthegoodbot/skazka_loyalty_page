@@ -69,13 +69,13 @@
 
               <div class="spm_pivko_history_list_item_body_points">
 
-                <div class="spm_pivko_history_list_item_body_points_debited">
+                <div class="spm_pivko_history_list_item_body_points_debited" data-ng-if="item.debited_points_delta">
                   <span>
                     {{ widget.options.texts.points_debited }} {{ (item.debited_points_delta || 0 | number)+' '+(item.debited_points_delta|sailplay_pluralize:('points.texts.pluralize'|tools)) }}
                   </span>
                 </div>
 
-                <div class="spm_pivko_history_list_item_body_points_credited">
+                <div class="spm_pivko_history_list_item_body_points_credited" data-ng-if="item.points_delta">
                   <span>
                     {{ widget.options.texts.points_credited }} {{ (item.points_delta || 0 |number)+' '+(item.points_delta|sailplay_pluralize:('points.texts.pluralize'|tools)) }}
                   </span>
@@ -114,7 +114,7 @@
             <div class="spm_pivko_history_help_links_item" data-ng-repeat="link in widget.options.links">
 
               <div class="spm_pivko_history_help_links_item_inner">
-                <a href="{{ link.url }}">
+                <a href="{{ link.url }}" target="_blank">
 
                   <span class="spm_pivko_history_help_links_item_icon">
                     <img data-ng-src="{{ link.icon }}" alt="?">

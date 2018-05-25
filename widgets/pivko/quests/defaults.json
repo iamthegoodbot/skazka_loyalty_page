@@ -1,6 +1,12 @@
 {
-  "id": "pivko_quests",
-  "enabled": true,
   "styles": {},
-  "options": {}
+  "enabled": false,
+  "id": "pivko_quests",
+  "options": {
+    "texts": {
+      "caption": "Выполняйте задания и получайте бонусные рубли бесплатно",
+      "title": "Задания",
+      "empty_list_hint": "Здесь скоро появятся новые задания"
+    }
+  }
 }

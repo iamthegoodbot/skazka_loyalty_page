@@ -77,55 +77,46 @@ SailPlayStatuses.service('SailPlayStatusesLastMonth', function (SailPlayApi) {
     }
     progress() {
 
-      if(!this.user() || this.list.length < 1) return;
+      if(this.list.length < 1) return 0;
 
-      let user_points = this.user().user_points;
+      let purchases_sum = this.sum();
 
-      let status_points = this.list.map(function (item) {
-        return item.sum
-      });
+      let last_status = angular.copy(this.list).sort((a, b) => {
+        return b.sum - a.sum;
+      })[0];
 
-      if(status_points[0] !== 0) {
-        return 0
-      }
+      console.log(purchases_sum);
+      console.log(last_status);
 
-      function isNumeric(n) {
-        return !isNaN(parseFloat(n)) && isFinite(n);
-      }
 
-      let points;
-
-      if (isNumeric(user_points)) points = user_points;
-
-      else points = user_points ? user_points.confirmed + user_points.spent + user_points.spent_extra : 0;
-
-      if (status_points[status_points.length - 1] && (points > status_points[status_points.length - 1])) {
+      if (purchases_sum > last_status.sum) {
         return 100
       }
 
-      let multiplier = 100 / (status_points.length - 1);
+      let multiplier = 100 / (this.list.length - 1);
 
       let state = 0;
 
-      for (let i = 1, len = status_points.length; i < len; i++) {
-        if (points >= status_points[i]) {
+      for (let i = 1, len = this.list.length; i < len; i++) {
+
+        if (purchases_sum >= this.list[i].sum) {
           state++;
         }
       }
 
       let current = 0;
 
-      let total = status_points[0];
+      let total = last_status.sum;
 
       if (state === 0) {
-        current = points;
-        total = status_points[state + 1];
+        current = purchases_sum;
+        total = this.list[state + 1].sum;
       } else {
-        current = (points - status_points[state]);
-        total = status_points[state + 1] ? (status_points[state + 1] - status_points[state]) : status_points[state];
+        current = (purchases_sum - this.list[state].sum);
+        total = this.list[state + 1] ? (this.list[state + 1].sum - this.list[state].sum) : this.list[state].sum;
       }
 
-      return parseInt((current * 100 / total / (status_points.length - 1)) + (state * multiplier));
+      return parseInt((current * 100 / total / (this.list.length - 1)) + (state * multiplier));
 
     }
   }
