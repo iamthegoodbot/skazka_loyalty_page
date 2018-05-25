@@ -1093,6 +1093,8 @@ var SailPlay = exports.SailPlay = _angular2.default.module('sailplay', [_sailpla
 
   SailPlay.on('login.success', function (res) {
 
+    console.log(res);
+
     $rootScope.auth_state = true;
     $rootScope.$broadcast('sailplay-login-success', res);
     $rootScope.$apply();
@@ -1146,6 +1148,8 @@ var SailPlay = exports.SailPlay = _angular2.default.module('sailplay', [_sailpla
         $rootScope.submited = false;
 
         type = type || auth_type;
+
+        console.log('authorize', type);
 
         switch (type) {
 
@@ -2053,6 +2057,8 @@ var magic = exports.magic = _angular2.default.module('magic', [_sailplay2.defaul
     SailPlayProvider.set_remote_config(MAGIC_CONFIG.auth.config || {
       background: 'transparent'
     });
+
+    SailPlayProvider.set_auth_type(MAGIC_CONFIG.auth.type || 'cookie');
   }
 
   //apply data from config
@@ -2061,8 +2067,6 @@ var magic = exports.magic = _angular2.default.module('magic', [_sailplay2.defaul
     SailPlayActionsDataProvider.set_actions_data(MAGIC_CONFIG.data.actions);
     SailPlayHistoryProvider.set_dictionary(MAGIC_CONFIG.data.history);
   }
-
-  //SailPlayProvider.set_auth_type(MAGIC_CONFIG.auth.type);
 }).directive('sailplayMagic', function (SailPlay, ipCookie, SailPlayApi, $document, $rootScope, MAGIC_CONFIG) {
 
   var MagicTemplate = ['<div class="spm_wrapper">', '<layout data-widgets="config.widgets"></layout>', '</div>'].join('');
@@ -40465,8 +40469,9 @@ SailPlayStatuses.service('SailPlayStatusesLastMonth', ["SailPlayApi", function (
           return b.sum - a.sum;
         })[0];
 
-        console.log(purchases_sum);
-        console.log(last_status);
+        // console.log(purchases_sum);
+        // console.log(last_status);
+
 
         if (purchases_sum > last_status.sum) {
           return 100;
@@ -40700,7 +40705,7 @@ var Core = exports.Core = _angular2.default.module('magic.core', [_sailplay2.def
   var TAGS = QuizService.getTags();
 
   //wait for sailplay inited, then try to login by cookie (we need to see unauthorized content)
-  SailPlay.authorize('cookie');
+  SailPlay.authorize();
 
   var offset = new Date().getTimezoneOffset(),
       o = Math.abs(offset);

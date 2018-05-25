@@ -35,6 +35,8 @@ export let SailPlay = angular.module('sailplay', [
 
     SailPlay.on('login.success', function (res) {
 
+      console.log(res);
+
       $rootScope.auth_state = true;
       $rootScope.$broadcast('sailplay-login-success', res);
       $rootScope.$apply();
@@ -98,6 +100,8 @@ export let SailPlay = angular.module('sailplay', [
           $rootScope.submited = false
 
           type = type || auth_type;
+
+          console.log('authorize', type);
 
           switch (type) {
 

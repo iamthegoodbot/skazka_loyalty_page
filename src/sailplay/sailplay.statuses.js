@@ -85,8 +85,8 @@ SailPlayStatuses.service('SailPlayStatusesLastMonth', function (SailPlayApi) {
         return b.sum - a.sum;
       })[0];
 
-      console.log(purchases_sum);
-      console.log(last_status);
+      // console.log(purchases_sum);
+      // console.log(last_status);
 
 
       if (purchases_sum > last_status.sum) {
