@@ -2324,7 +2324,7 @@ module.exports = function (it, S) {
     //simple jsonp service
     var JSONP = {
       currentScript: null,
-      get: function (url, data, success, error) {
+      get: function (url, data, success, error, timeout) {
         var src = url + (url.indexOf("?") + 1 ? "&" : "?");
         var head = document.getElementsByTagName("head")[0];
         var newScript = document.createElement("script");
@@ -2348,7 +2348,7 @@ module.exports = function (it, S) {
           catch (err) {
           }
           delete window.JSONP_CALLBACK[callback_name];
-        }, 10000);
+        }, timeout || 10000);
 
         window.JSONP_CALLBACK[callback_name] = function (data) {
           clearTimeout(jsonpTimeout);
@@ -2426,15 +2426,13 @@ module.exports = function (it, S) {
         frame = document.createElement('IFRAME');
         frame.style.border = 'none';
         frame.style.position = 'fixed';
-        frame.style.top = '0';
-        frame.style.left = '0';
-        frame.style.bottom = '0';
-        frame.style.right = '0';
+        frame.style.top = '100px';
+        frame.style.left = '50%';
         frame.style.width = '410px';
         frame.style.height = '510px';
         frame.created = true;
         frame.style.background = 'transparent';
-        frame.style.margin = 'auto';
+        frame.style.margin = '0 auto auto -205px';
         frame.style.zIndex = '100000';
         document.body.appendChild(frame);
       }
@@ -2443,6 +2441,7 @@ module.exports = function (it, S) {
 
       frame.name = frame_id;
       frame.id = frame_id;
+      frame.className = 'sailplay_login_frame';
 
       function onMessage(messageEvent) {
 
@@ -2616,7 +2615,25 @@ module.exports = function (it, S) {
     });
 
     sp.on('login.remote', function (options) {
-      remoteLogin(options);
+
+      //safari third-party cookies fix
+      var is_safari = navigator.userAgent.indexOf("Safari") > -1;
+      var is_chrome = navigator.userAgent.indexOf('Chrome') > -1;
+      if ((is_chrome) && (is_safari)) {is_safari = false;}
+      if (is_safari) {
+        let cookiepopup = window.open(_config.DOMAIN + '/users/reg/social/','143772850439','width=1,height=1,toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=-10000,top=-10000');
+        let checker = setInterval(function () {
+          if(cookiepopup.closed) {
+            clearInterval(checker);
+            remoteLogin(options);
+          }
+        }, 200);
+      }
+      else {
+        remoteLogin(options);
+      }
+
+
     });
 
     //////////////////
@@ -3140,7 +3157,7 @@ module.exports = function (it, S) {
       }
 
     });
-    
+
     // USER TAGS LIST
     sp.on("tags.list", function (data, callback) {
       if (_config == {}) {
@@ -3330,7 +3347,7 @@ module.exports = function (it, S) {
       });
     });
 
-    sp.on('purchases.info', function (data) {
+    sp.on('purchases.info', function (data, callback) {
       if (_config == {}) {
         initError();
         return;
@@ -3345,6 +3362,7 @@ module.exports = function (it, S) {
         } else {
           sp.send('purchases.info.error', res);
         }
+        callback && callback(res);
       });
     });
 
@@ -3410,7 +3428,7 @@ module.exports = function (it, S) {
       function isNode(o) {
         return (
           typeof Node === "object" ? o instanceof Node :
-          o && typeof o === "object" && typeof o.nodeType === "number" && typeof o.nodeName === "string"
+            o && typeof o === "object" && typeof o.nodeType === "number" && typeof o.nodeName === "string"
         );
       }
 
@@ -3418,7 +3436,7 @@ module.exports = function (it, S) {
       function isElement(o) {
         return (
           typeof HTMLElement === "object" ? o instanceof HTMLElement : //DOM2
-          o && typeof o === "object" && o !== null && o.nodeType === 1 && typeof o.nodeName === "string"
+            o && typeof o === "object" && o !== null && o.nodeType === 1 && typeof o.nodeName === "string"
         );
       }
 
@@ -46559,19 +46577,22 @@ var widget = {
 
       scope.profile_form = new SailPlayProfileForm(scope.widget.options.config);
 
-      if (scope.widget.options.fill_profile_required) {
+      scope.$on('sailplay-login-success', function () {
 
-        scope.profile_form.completed().then(function (is_completed) {
+        if (scope.widget.options.fill_profile_required) {
 
-          if (!is_completed) {
+          scope.profile_form.completed().then(function (is_completed) {
 
-            scope.force_fill_profile = true;
-            scope.show_profile = true;
+            if (!is_completed) {
 
-            scope.lock_profile = true;
-          }
-        });
-      }
+              scope.force_fill_profile = true;
+              scope.show_profile = true;
+
+              scope.lock_profile = true;
+            }
+          });
+        }
+      });
 
       $rootScope.$on("text:state", function (e, state) {
         scope.show_text = state;
