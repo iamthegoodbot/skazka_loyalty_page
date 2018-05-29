@@ -986,7 +986,7 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
           } else {
 
             callback && callback(null, user_res)
-            this.revert_profile_form();
+            this.revert();
 
           }
 

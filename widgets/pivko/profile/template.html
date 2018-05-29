@@ -88,7 +88,13 @@
 
               <div class="spm_pivko_profile_status_progress_line">
 
-                <div class="spm_pivko_profile_status_progress_line_filled" data-ng-style="{ width: statuses.progress() + '%' }"></div>
+                <div class="spm_pivko_profile_status_progress_line_start"></div>
+
+                <div class="spm_pivko_profile_status_progress_line_wrapper">
+                  <div class="spm_pivko_profile_status_progress_line_filled" data-ng-style="{ width: statuses.progress() + '%' }"></div>
+                </div>
+
+                <div class="spm_pivko_profile_status_progress_line_end" data-ng-if="statuses.progress() === 100"></div>
 
                 <div class="spm_pivko_profile_status_progress_line_list">
 
@@ -151,6 +157,10 @@
   </magic-modal-title>
   <magic-modal-body>
 
+    <div class="spm_pivko_profile_modal_errors" data-ng-if="profile_form_utils.error">
+      <span>{{ profile_form_utils.error }}</span>
+    </div>
+
     <form name="ng_profile_form" class="spm_profile-form"
           ng-submit="profile_form.submit(ng_profile_form, profile_form_utils.complete);">
 
@@ -185,11 +195,16 @@
         </div>
 
         <div data-ng-switch-when="radio" class="spm_form_radio_field">
-          <label class="spm_form_label" ng-bind="field.label"></label>
-          <label class="spm_form_checkbox" data-ng-class="{ checked: field.value === item.value }" data-ng-repeat="item in field.data">
-            <input class="spm_form_checkbox_input" type="radio" data-ng-model="field.value" data-ng-value="item.value">
-            <span class="spm_form_checkbox_label" data-ng-bind="item.text"></span>
-          </label>
+          <div class="d-inline-block align-top" style="width: 25%;">
+            <label class="spm_form_label" ng-bind="field.label"></label>
+          </div>
+          <div class="d-inline-block align-top" style="width: 73%;">
+            <label class="spm_form_checkbox" data-ng-class="{ checked: field.value === item.value }" data-ng-repeat="item in field.data">
+              <input class="spm_form_checkbox_input" type="radio" data-ng-model="field.value" data-ng-value="item.value">
+              <span class="spm_form_checkbox_label" data-ng-bind="item.text"></span>
+            </label>
+          </div>
+
         </div>
 
       </div>

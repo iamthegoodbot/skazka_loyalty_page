@@ -28,6 +28,12 @@
 
     }
 
+    @media @tablet_down {
+
+      display: block;
+
+    }
+
   }
 
   &_wrapper_inner {
@@ -35,6 +41,12 @@
     @media @tablet_up {
 
       display: table-row;
+
+    }
+
+    @media @tablet_down {
+
+      display: block;
 
     }
 
@@ -54,6 +66,13 @@
       vertical-align: top;
       border-right: 20px solid transparent;
       background-clip: padding-box;
+
+    }
+
+    @media @tablet_down {
+
+      border-right: none;
+      display: block;
 
     }
 
@@ -270,10 +289,43 @@
     &_progress_line {
 
       margin: 40px 50px 70px 50px;
-      background-color: @main_lighter;
       height: 6px;
       border-radius: 3px;
       position: relative;
+
+    }
+
+    &_progress_line_wrapper {
+
+      position: absolute;
+      left: 10%;
+      width: 80%;
+      height: 100%;
+      background-color: @main_lighter;
+
+    }
+
+    &_progress_line_start {
+
+      position: absolute;
+      left: 0;
+      top: 0;
+      border-radius: 3px 0 0 3px;
+      height: 6px;
+      width: 10%;
+      background-color: @main;
+
+    }
+
+    &_progress_line_end {
+
+      position: absolute;
+      right: 0;
+      top: 0;
+      border-radius: 0 3px 3px 0;
+      height: 6px;
+      width: 10%;
+      background-color: @main;
 
     }
 
@@ -284,7 +336,6 @@
       left: 0;
       height: 100%;
       background-color: @main;
-      border-radius: 3px;
       transition: all 0.4s ease;
 
     }
@@ -443,6 +494,21 @@
       span {
         font-size: 20px;
         font-weight: bold;
+      }
+
+    }
+
+    &_errors {
+
+      text-align: left;
+      padding: 10px 30px;
+      margin-bottom: 10px;
+
+      span {
+        color: @red;
+        line-height: 21px;
+        font-size: 18px;
+        font-weight: 300;
       }
 
     }

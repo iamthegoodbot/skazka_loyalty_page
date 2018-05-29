@@ -19,6 +19,7 @@ const widget = {
       scope.profile_form_utils = {
 
         show: false,
+        error: '',
         open: () => {
           scope.profile_form_utils.show = true;
         },
@@ -27,13 +28,17 @@ const widget = {
           scope.profile_form_utils.show = false;
         },
         complete(e, data) {
+          console.log(e, data);
+
           if (data && data.status == "error") {
-            scope.$emit('notifier:notify', {
-              header: scope.widget.texts.error,
-              body: scope.widget.options.config.errors[data.status_code || data.message] || data.message
-            });
+
+            scope.profile_form_utils.error = scope.widget.options.texts.errors[data.status_code || data.message] || data.message;
+
           }
-          scope.profile_form_utils.show = false;
+          else {
+            scope.profile_form_utils.show = false;
+            scope.profile_form_utils.error = '';
+          }
           scope.$apply();
         }
 
