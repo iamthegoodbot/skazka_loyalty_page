@@ -42,6 +42,7 @@
   &_list {
 
     background-color: @white;
+    padding-top: 30px;
 
     @media @tablet_up {
 
@@ -53,11 +54,24 @@
 
     }
 
+    @media @tablet_down {
+
+      margin-bottom: 15px;
+
+    }
+
     &_title {
 
       font-size: 20px;
       font-weight: bold;
-      margin-top: 30px;
+
+      @media @tablet_down {
+
+        font-size: 20px;
+        padding: 0 30px;
+        line-height: 23px;
+
+      }
 
     }
 
@@ -106,6 +120,12 @@
 
       padding: 20px 50px;
 
+      @media @tablet_down {
+
+        padding: 20px 15px;
+
+      }
+
     }
 
     &_item {
@@ -132,6 +152,13 @@
           line-height: 21px;
           color: @main_dark;
           font-weight: normal;
+
+          @media @tablet_down {
+
+            font-size: 14px;
+            line-height: 16px;
+
+          }
         }
 
       }
@@ -160,6 +187,12 @@
           border-radius: 5px;
           background-color: @main_lighter;
 
+          @media @tablet_down {
+
+            padding: 15px 10px;
+
+          }
+
         }
 
         &_cart_position {
@@ -180,6 +213,14 @@
               line-height: 16px;
               color: @main_dark;
               font-weight: 300;
+
+              @media @tablet_down {
+
+                font-size: 12px;
+                line-height: 14px;
+
+              }
+
             }
 
           }
@@ -193,6 +234,14 @@
               line-height: 16px;
               color: @main_dark;
               font-weight: 300;
+
+              @media @tablet_down {
+
+                font-size: 12px;
+                line-height: 14px;
+
+              }
+
             }
 
           }
@@ -211,6 +260,14 @@
           line-height: 21px;
           color: @main_dark;
           font-weight: normal;
+
+          @media @tablet_down {
+
+            font-size: 14px;
+            line-height: 16px;
+
+          }
+
         }
 
       }

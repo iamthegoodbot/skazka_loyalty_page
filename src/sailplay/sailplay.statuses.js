@@ -73,7 +73,7 @@ SailPlayStatuses.service('SailPlayStatusesLastMonth', function (SailPlayApi) {
 
     }
     offset(index) {
-      return ((100 / (this.list.length - 1)) * index); 
+      return ((100 / (this.list.length - 1)) * index);
     }
     offset_to(status){
       return status.sum - this.sum();
