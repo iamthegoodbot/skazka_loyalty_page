@@ -876,6 +876,23 @@ export let Tools = angular.module('magic.tools', [
     }
   };
 
+})
+
+.filter('interpolate', function($interpolate){
+
+  let filterFactory = function(){
+
+    return function(template, obj){
+
+      let exp = $interpolate(template);
+      return exp(obj);
+
+    };
+
+  };
+
+  return filterFactory();
+
 });
 
 export default Tools.name;

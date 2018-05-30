@@ -72,6 +72,7 @@
 
         </div>
 
+        <!-- DESKTOP PROGRESS -->
         <div class="spm_pivko_profile_status_progress">
 
           <div class="spm_pivko_profile_status_progress_inner">
@@ -131,6 +132,47 @@
 
                   </div>
                   <!-- /////////// -->
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- MOBILE PROGRESS -->
+        <div class="spm_pivko_profile_status_progress_mobile">
+
+          <div class="spm_pivko_profile_status_progress_mobile_inner">
+
+            <div class="spm_pivko_profile_status_progress_mobile_item" data-ng-repeat="status in statuses.list" data-ng-class="{ current: statuses.current() === status }">
+
+              <div class="spm_pivko_profile_status_progress_mobile_item_inner">
+
+                <div class="spm_pivko_profile_status_progress_mobile_item_icon">
+                  <img class="spm_pivko_profile_status_progress_mobile_item_icon_inactive" data-ng-if="statuses.current() !== status" data-ng-src="{{ status.img_inactive }}" alt="">
+                  <!--<img class="spm_pivko_profile_status_progress_line_item_icon_active" data-ng-src="{{ status.img_active }}" alt="">-->
+                  <img class="spm_pivko_profile_status_progress_mobile_item_icon_current" data-ng-if="statuses.current() === status" data-ng-src="{{ status.img_current }}" alt="">
+                </div>
+
+                <div class="spm_pivko_profile_status_progress_mobile_item_info">
+
+                  <div class="spm_pivko_profile_status_progress_mobile_item_info_text">
+
+                    <span data-ng-bind-html="status.description | to_trusted"></span>
+
+                  </div>
+
+                  <div class="spm_pivko_profile_status_progress_mobile_item_info_offset" data-ng-if="statuses.current() !== status">
+
+                    <span>{{ widget.options.texts.status_offset_label }}</span>
+                    <br>
+                    <span class="spm_pivko_profile_status_progress_mobile_item_info_offset_points">{{ statuses.offset(status) }} {{ statuses.offset(status) | sailplay_pluralize: ('points.texts.pluralize' | tools) }}</span>
+
+                  </div>
 
                 </div>
 
