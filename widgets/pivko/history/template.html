@@ -48,7 +48,7 @@
 
             </div>
 
-            <div class="spm_pivko_history_list_item_info" data-ng-if="history.info.purchases[item.id]">
+            <div class="spm_pivko_history_list_item_info" data-ng-class="{ spm_opened: history.info.purchases[item.id] }">
 
               <ul class="spm_pivko_history_list_item_info_cart">
                 <li class="spm_pivko_history_list_item_info_cart_position" data-ng-repeat="cart_item in history.info.purchases[item.id].cart.cart.positions">
