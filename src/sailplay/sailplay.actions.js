@@ -234,7 +234,7 @@ export let SailPlayActions = angular.module('sailplay.actions', [])
 
 })
 
-.service('SailPlayQuests', function (SailPlayApi, SailPlay, SailPlayActionsData) {
+.service('SailPlayQuests', function (SailPlayApi, SailPlay, SailPlayActionsData, tools) {
 
   return class SailPlayQuests {
 
@@ -276,6 +276,16 @@ export let SailPlayActions = angular.module('sailplay.actions', [])
       // console.log(this.list.custom());
 
       return system_action_length < 1 && custom_action_length < 1;
+
+    }
+    styles(quest){
+
+      let data = this.data(quest);
+
+      if(!data || !data.styles) return "";
+
+      return tools.stringify_widget_css("", data.styles);
+
 
     }
 

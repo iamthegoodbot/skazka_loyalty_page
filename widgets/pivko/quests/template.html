@@ -32,7 +32,9 @@
                 </div>
 
                 <div class="spm_pivko_quests_list_item_button">
-                  <button type="button">Выполнить</button>
+                  <button data-sailplay-action data-styles="{{ quests.styles(quest) }}" action="quest" text="{{ quests.data(quest).button_text }}">
+                    <span ng-bind="quests.data(quest).button_text"></span>
+                  </button>
                 </div>
 
               </div>

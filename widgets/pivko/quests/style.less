@@ -18,6 +18,12 @@
 
     margin-bottom: 30px;
 
+    @media @tablet_down {
+
+      margin-bottom: 0;
+
+    }
+
   }
 
   &_title {
@@ -26,6 +32,14 @@
     font-weight: bold;
     margin-top: 20px;
 
+    @media @tablet_down {
+
+      font-size: 24px;
+      line-height: 28px;
+      margin-bottom: 10px;
+
+    }
+
   }
 
   &_caption {
@@ -33,6 +47,14 @@
     font-size: 20px;
     color: @main;
     font-weight: 300;
+
+    @media @tablet_down {
+
+      font-size: 14px;
+      line-height: 16px;
+      padding: 0 15px;
+
+    }
 
   }
 
@@ -85,6 +107,8 @@
         button {
           border: none;
           outline: none;
+          padding: 0;
+          background-color: transparent;
         }
 
       }
@@ -128,6 +152,12 @@
       @media @tablet {
 
         width: 50%;
+
+      }
+
+      @media @mobile {
+
+        width: 100%;
 
       }
 
