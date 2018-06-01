@@ -15,6 +15,7 @@ Thumbs.db
 
 # Dev dependencies
 node_modules/
+package-lock.json
 
 # Dist
 # dist/
