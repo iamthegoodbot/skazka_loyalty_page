@@ -783,7 +783,7 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
                 break;
 
             }
-            console.log(form_field);
+            // console.log(form_field);
             return form_field;
           });
 

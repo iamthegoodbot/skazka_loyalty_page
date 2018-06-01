@@ -68,7 +68,7 @@
     </div>
   </div>
 
-  <magic-modal ng-show="!$parent.show_profile" show="$parent.$parent.show_info">
+  <magic-modal ng-show="!$parent.show_profile" show="$parent.show_info">
     <magic-modal-title>
       <div class="b-avatar">
         <img ng-src="{{user().user.avatar['250x250']|sailplay_pic}}" class="rounded-circle">
@@ -94,6 +94,16 @@
         <div class="b-info pb-3 pt-3 pl-3 pr-3 d-flex align-items-center flex-column flex-column-light spm_profile-info-modal-field" data-ng-switch-default>
           <img class="spm_profile-info-modal-field-icon" data-ng-if="field.icon" ng-src="{{ field.icon }}">
           <span class="mt-2 spm_profile-info-modal-field-value" ng-bind="field.value.split('  ').join(', ')"></span>
+        </div>
+
+        <div class="b-info pb-3 pt-3 pl-3 pr-3 d-flex align-items-center flex-column flex-column-light spm_profile-info-modal-field" data-ng-switch-when="phone">
+          <img class="spm_profile-info-modal-field-icon" data-ng-if="field.icon" ng-src="{{ field.icon }}">
+          <span class="mt-2 spm_profile-info-modal-field-value" ng-bind="field.value | tel"></span>
+        </div>
+
+        <div class="b-info pb-3 pt-3 pl-3 pr-3 d-flex align-items-center flex-column flex-column-light spm_profile-info-modal-field" data-ng-switch-when="date">
+          <img class="spm_profile-info-modal-field-icon" data-ng-if="field.icon" ng-src="{{ field.icon }}">
+          <span class="mt-2 spm_profile-info-modal-field-value" ng-bind="field.value | date:'dd/MM/yyyy'"></span>
         </div>
 
         <div class="b-info pb-3 pt-3 pl-3 pr-3 d-flex align-items-center flex-column flex-column-light spm_profile-info-modal-field" data-ng-switch-when="select">
@@ -128,7 +138,7 @@
     </magic-modal-body>
   </magic-modal>
 
-  <magic-modal on-close="profile_form.revert" show="$parent.$parent.show_profile" prevent-close="lock_profile">
+  <magic-modal on-close="profile_form.revert" show="$parent.show_profile" prevent-close="lock_profile">
     <magic-modal-title ng-bind-html="widget.texts.modals.profile.title|to_trusted"></magic-modal-title>
     <magic-modal-body>
 

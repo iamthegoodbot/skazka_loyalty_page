@@ -101,7 +101,7 @@ export let SailPlay = angular.module('sailplay', [
 
           type = type || auth_type;
 
-          console.log('authorize', type);
+          // console.log('authorize', type);
 
           switch (type) {
 

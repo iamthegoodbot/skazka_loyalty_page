@@ -45,7 +45,13 @@ export let ToolsDatepicker = angular
         scope.days = dateService.days;
         scope.years = dateService.years;
         scope.focused = false;
-        scope.months = $locale.DATETIME_FORMATS.MONTH;
+        scope.months = [ null ];
+
+        $locale.DATETIME_FORMATS.MONTH.forEach((month) => {
+
+          scope.months.push(month);
+
+        });
 
         scope.range = function(start, end) {
           var result = [];
