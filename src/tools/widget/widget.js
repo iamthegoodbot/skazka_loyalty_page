@@ -32,7 +32,7 @@ export let Widget = angular.module('magic.tools.widget', [])
 
         widget_scope.widget = widget;
 
-        console.log(widget);
+        // console.log(widget);
  
         function ResolveTemplate(){
           return new Promise((resolve, reject) => {

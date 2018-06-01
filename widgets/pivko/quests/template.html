@@ -19,7 +19,7 @@
       <div class="spm_pivko_quests_list_inner clearfix">
 
         <!-- SYSTEM QUESTS -->
-        <div class="spm_pivko_quests_list_item" data-ng-repeat="quest in quests.list.system().actions">
+        <div class="spm_pivko_quests_list_item {{ quest.action }} {{ quest.type }} {{ quest.socialType || '' }}" data-ng-repeat="quest in quests.list.system().actions">
 
           <div class="spm_pivko_quests_list_item_inner">
 
