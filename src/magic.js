@@ -25,6 +25,7 @@ export let magic = angular.module('magic', [SailPlay, core, Cookies, Tools, NgTo
         background: 'transparent'
       });
 
+      SailPlayProvider.set_auth_type(MAGIC_CONFIG.auth.type || 'cookie');
 
     }
 
@@ -36,7 +37,6 @@ export let magic = angular.module('magic', [SailPlay, core, Cookies, Tools, NgTo
 
     }
 
-    //SailPlayProvider.set_auth_type(MAGIC_CONFIG.auth.type);
 
   })
 

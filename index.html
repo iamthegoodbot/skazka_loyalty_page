@@ -45,6 +45,7 @@
 
     if (params.auth_hash) {
       SAILPLAY.on('init.success', function () {
+        console.log(params.auth_hash);
         SAILPLAY.send('login', params.auth_hash)
       })
     }

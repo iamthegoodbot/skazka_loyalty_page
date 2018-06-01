@@ -4,6 +4,7 @@ import SailPlayGifts from './sailplay.gifts';
 import SailPlayHistory from './sailplay.history';
 import SailPlayActions from './sailplay.actions';
 import SailPlayBadges from './sailplay.badges';
+import SailPlayStatuses from './sailplay.statuses';
 import Cookies from 'angular-cookie';
 
 export let SailPlay = angular.module('sailplay', [
@@ -12,6 +13,7 @@ export let SailPlay = angular.module('sailplay', [
   SailPlayHistory,
   SailPlayActions,
   SailPlayBadges,
+  SailPlayStatuses,
   Cookies
 ])
 
@@ -32,6 +34,8 @@ export let SailPlay = angular.module('sailplay', [
     });
 
     SailPlay.on('login.success', function (res) {
+
+      console.log(res);
 
       $rootScope.auth_state = true;
       $rootScope.$broadcast('sailplay-login-success', res);
@@ -96,6 +100,8 @@ export let SailPlay = angular.module('sailplay', [
           $rootScope.submited = false;
 
           type = type || auth_type;
+
+          console.log('authorize', type);
 
           switch (type) {
 
@@ -171,7 +177,8 @@ export let SailPlay = angular.module('sailplay', [
       'load.badges.list',
       'tags.exist',
       'tags.add',
-      'load.gifts.list'
+      'load.gifts.list',
+      'purchases.info'
 
     ];
 

@@ -1,0 +1,70 @@
+<div class="spm_pivko_quests_wrapper">
+
+  <div class="spm_pivko_quests_wrapper_inner">
+
+    <div class="spm_pivko_quests_title">
+      <span>{{ widget.options.texts.title }}</span>
+    </div>
+
+    <div class="spm_pivko_quests_caption">
+      <span>{{ widget.options.texts.caption }}</span>
+    </div>
+
+    <div class="spm_pivko_quests_list_empty" data-ng-if="quests.empty()">
+      <span>{{ widget.options.texts.empty_list_hint }}</span>
+    </div>
+
+    <div class="spm_pivko_quests_list" data-ng-if="!quests.empty()">
+
+      <div class="spm_pivko_quests_list_inner clearfix">
+
+        <!-- SYSTEM QUESTS -->
+        <div class="spm_pivko_quests_list_item" data-ng-repeat="quest in quests.list.system().actions">
+
+          <div class="spm_pivko_quests_list_item_inner">
+
+            <div class="spm_pivko_quests_list_item_header">
+
+              <div class="spm_pivko_quests_list_item_header_inner clearfix">
+
+                <div class="spm_pivko_quests_list_item_icon">
+                  <img data-ng-src="{{ quests.data(quest).pic|sailplay_pic }}" alt="">
+                </div>
+
+                <div class="spm_pivko_quests_list_item_button">
+                  <button data-sailplay-action data-styles="{{ quests.styles(quest) }}" action="quest" text="{{ quests.data(quest).button_text }}">
+                    <span ng-bind="quests.data(quest).button_text"></span>
+                  </button>
+                </div>
+
+              </div>
+
+            </div>
+
+            <div class="spm_pivko_quests_list_item_body">
+
+              <div class="spm_pivko_quests_list_item_body_inner">
+
+                <div class="spm_pivko_quests_list_item_points">
+                  <span>+ {{ (quest.points|number)+' '+(quest.points|sailplay_pluralize:('points.texts.pluralize'|tools)) }}</span>
+                </div>
+
+                <div class="spm_pivko_quests_list_item_name">
+                  <span>{{ quests.data(quest).name }}</span>
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

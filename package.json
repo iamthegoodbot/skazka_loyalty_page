@@ -17,7 +17,8 @@
     "angular-ui-mask": "^1.8.7",
     "angular-utils-pagination": "^0.11.1",
     "bootstrap": "^4.0.0",
-    "sailplay-hub": "^2.0.14",
+    "npm": "^6.0.1",
+    "sailplay-hub": "^2.0.38",
     "sailplay-hub-actions": "^1.0.8"
   },
   "devDependencies": {

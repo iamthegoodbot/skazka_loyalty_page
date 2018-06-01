@@ -234,6 +234,65 @@ export let SailPlayActions = angular.module('sailplay.actions', [])
 
 })
 
+.service('SailPlayQuests', function (SailPlayApi, SailPlay, SailPlayActionsData, tools) {
+
+  return class SailPlayQuests {
+
+    constructor(){
+
+      this.list = {
+        system: SailPlayApi.data('load.actions.list'),
+        custom: SailPlayApi.data('load.actions.custom.list')
+      }
+
+    }
+    perform(action){
+
+      SailPlay.send('actions.perform', action);
+
+    }
+    data(action){
+
+      let data = {};
+
+      if(!action) return data;
+
+      data = action;
+
+      if(action.socialType) data = SailPlayActionsData.social[action.socialType] && SailPlayActionsData.social[action.socialType][action.action];
+
+      if(SailPlayActionsData.system[action.type]) data = SailPlayActionsData.system[action.type];
+
+      // console.log(data);
+
+      return data;
+
+    }
+    empty(){
+
+      let system_action_length = this.list.system() && this.list.system().actions && this.list.system().actions.length || 0;
+      let custom_action_length = this.list.custom() && this.list.custom().length;
+      // console.log(this.list.system());
+      // console.log(this.list.custom());
+
+      return system_action_length < 1 && custom_action_length < 1;
+
+    }
+    styles(quest){
+
+      let data = this.data(quest);
+
+      if(!data || !data.styles) return "";
+
+      return tools.stringify_widget_css("", data.styles);
+
+
+    }
+
+  }
+
+})
+
 /**
  * @ngdoc directive
  * @name sailplay.actions.directive:sailplayAction
