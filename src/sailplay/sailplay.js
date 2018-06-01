@@ -95,7 +95,7 @@ export let SailPlay = angular.module('sailplay', [
 
         var sp = $window.SAILPLAY || {};
 
-        sp.authorize = function (type, from) {
+        sp.authorize = function (type, from, init) {
 
           $rootScope.submited = false;
 
@@ -131,10 +131,21 @@ export let SailPlay = angular.module('sailplay', [
 
             case 'remote':
 
+              let auth_hash = ipCookie(auth_hash_id);
+              if (auth_hash) {
+                sp.send('login', auth_hash);
+                break;
+              }
+
+              if(init) {
+                $rootScope.$broadcast('sailplay-login-error', {status: 'error', message: 'No auth_hash found'});
+                break;
+              }
+
               if(auth_options && auth_options.disable) {
                 $rootScope.$broadcast('sailplay-login-try', from);
                 sp.send('sailplay-login-try', from);
-                return;
+                break;
               }
 
               sp.send('login.remote', auth_options);
@@ -221,6 +232,8 @@ export let SailPlay = angular.module('sailplay', [
 
 
     self.data = function (key, value) {
+
+      // console.log(key, value);
 
       if (typeof value !== 'undefined') {
         data[key] = angular.copy(value);

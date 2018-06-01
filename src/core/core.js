@@ -39,10 +39,10 @@ export let Core = angular.module('magic.core', [
   let TAGS = QuizService.getTags();
 
   //wait for sailplay inited, then try to login by cookie (we need to see unauthorized content)
-  SailPlay.authorize();
+  SailPlay.authorize(false,false,true);
     
-  let offset = new Date().getTimezoneOffset(), o = Math.abs(offset)
-  let timezone =  (offset < 0 ? "+" : "-") + ("00" + Math.floor(o / 60)).slice(-2) + ":" + ("00" + (o % 60)).slice(-2)
+  let offset = new Date().getTimezoneOffset(), o = Math.abs(offset);
+  let timezone =  (offset < 0 ? "+" : "-") + ("00" + Math.floor(o / 60)).slice(-2) + ":" + ("00" + (o % 60)).slice(-2);
 
   //we need to save auth hash in cookies for authorize status tracking
   $rootScope.$on('sailplay-login-success', function(e, data){

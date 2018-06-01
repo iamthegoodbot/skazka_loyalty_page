@@ -4,7 +4,7 @@
 
   <div class="widgets_list clearfix">
 
-    <widget data-ng-repeat="widget in widgets" data-widget="widget"></widget>
+    <widget data-ng-repeat="widget in widgets" data-widget="widget" data-ng-if="widget.enabled"></widget>
 
   </div>
 
