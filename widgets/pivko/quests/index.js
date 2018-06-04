@@ -13,6 +13,18 @@ const widget = {
 
       scope.quests = new SailPlayQuests();
 
+      scope.quests_utils = {
+        custom: {
+          current: false,
+          close: () => {
+            scope.quests_utils.custom.current = false;
+          },
+          open: (quest) => {
+            scope.quests_utils.custom.current = quest;
+          }
+        }
+      };
+
     };
   }
 };

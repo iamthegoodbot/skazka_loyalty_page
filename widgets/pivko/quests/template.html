@@ -61,6 +61,49 @@
 
         </div>
 
+        <!-- CUSTOM QUESTS -->
+        <div class="spm_pivko_quests_list_item spm_custom_quest {{ quest.type }}" data-ng-repeat="quest in quests.list.custom()">
+
+          <div class="spm_pivko_quests_list_item_inner">
+
+            <div class="spm_pivko_quests_list_item_header">
+
+              <div class="spm_pivko_quests_list_item_header_inner clearfix">
+
+                <div class="spm_pivko_quests_list_item_icon">
+                  <img data-ng-src="{{ quest.icon|sailplay_pic }}" alt="">
+                </div>
+
+                <div class="spm_pivko_quests_list_item_button">
+                  <button type="button" data-ng-click="quests_utils.custom.open(quest)">
+                    <span ng-bind="quest.button_text"></span>
+                  </button>
+                </div>
+
+              </div>
+
+            </div>
+
+            <div class="spm_pivko_quests_list_item_body">
+
+              <div class="spm_pivko_quests_list_item_body_inner">
+
+                <div class="spm_pivko_quests_list_item_points">
+                  <span>+ {{ (quest.points|number)+' '+(quest.points|sailplay_pluralize:('points.texts.pluralize'|tools)) }}</span>
+                </div>
+
+                <div class="spm_pivko_quests_list_item_name">
+                  <span>{{ quest.name }}</span>
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
       </div>
 
     </div>
@@ -68,3 +111,13 @@
   </div>
 
 </div>
+
+<magic-modal-center class="spm_pivko_quests_custom_modal" on-close="quests_utils.custom.close" data-show="quests_utils.custom.current">
+  <magic-modal-title>
+  </magic-modal-title>
+  <magic-modal-body>
+
+    <div sailplay-action-custom action="quests_utils.custom.current"></div>
+
+  </magic-modal-body>
+</magic-modal-center>
