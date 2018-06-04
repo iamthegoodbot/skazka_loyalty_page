@@ -202,13 +202,36 @@
 
   &_custom_modal {
 
-    .sailplay_action_custom_frame {
-      width: 100%;
-      min-height: 92.5vh;
+    .spm_modal_center_content {
+      position: relative;
+      z-index: 0;
+    }
+
+    .spm_modal_center_close {
+      z-index: 1;
     }
 
     .spm_modal_center_inner {
       padding: 0;
+      @media @tablet_down {
+
+        min-height: 95.5%;
+
+      }
+
+    }
+
+    .sailplay_action_custom_frame {
+      width: 100%;
+      min-height: 92.5vh;
+      position: relative;
+      z-index: -1;
+      @media @tablet_down {
+
+        min-height: 94vh;
+
+      }
+
     }
 
   }
