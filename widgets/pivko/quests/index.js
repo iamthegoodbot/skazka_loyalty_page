@@ -17,7 +17,6 @@ const widget = {
         custom: {
           current: false,
           close: () => {
-            console.log('close', scope.quests_utils.custom.current);
             scope.quests_utils.custom.current = false;
           },
           open: (quest) => {
