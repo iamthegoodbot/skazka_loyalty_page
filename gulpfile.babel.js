@@ -1,11 +1,13 @@
 import gulp from 'gulp';
+import watch from 'gulp-watch';
+import server from 'gulp-connect';
 import run from 'run-sequence';
 
 import fs from 'fs';
-import path from 'path';
+import replace from 'replace-in-file';
 
 import webpack from 'webpack';
-import { development, production, migrator } from './webpack.config'; // <-- Contains ES6+
+import { development, production, migrator } from './webpack.config.babel'; // <-- Contains ES6+
 
 const PACKAGE = JSON.parse(fs.readFileSync('package.json', 'utf8'));
 
@@ -17,64 +19,61 @@ const paths = {
 };
 
 gulp.task('default', (callback) => {
-  run("webpack-dev-server", callback);
+  run("server", "watch", callback);
+});
+
+gulp.task('dev', (callback) => {
+  run("watch", callback);
 });
 
 gulp.task('build.magic', (callback) => {
-
   let bundler = webpack(development);
-
   bundler.run(callback);
-
 });
 
 gulp.task('build.migrator', (callback) => {
-
   let bundler = webpack(migrator);
-
   bundler.run(callback);
+});
 
+gulp.task('watch', () => {
+  return Promise.all([
+    watch([ paths.src, paths.widgets ], () => {
+      gulp.start('deploy.magic');
+    }),
+    watch([ paths.migrator ], () => {
+      gulp.start('deploy.migrator');
+    }),
+  ])
 });
 
 gulp.task('server', () => {
-  const server = require('gulp-connect');
   server.server({
-    port: 3000
+    port: 8000
   });
 });
 
-gulp.task("production-server", () => {
-  run('deploy.magic', 'server');
-})
-
-gulp.task("webpack-dev-server", () => {
-  const nodemon = require('gulp-nodemon')
-  nodemon({
-    script: 'server.js',
-    watch: ['server.js', 'webpack.config.js']
-  })
+//deploying section
+gulp.task('deploy.version', () => {
+  // console.log('PACKAGE',PACKAGE)
+  // console.log(`Deploying version: ${PACKAGE.version}`);
+  replace({
+    files: paths.dist + '/**/*',
+    replace: /\$\{MAGIC_VERSION\}/g,
+    with: PACKAGE.version
+  });
 });
 
-//deploying section
-
 gulp.task('deploy.magic', (callback) => {
-
   let bundler = webpack(production);
-
   bundler.run(callback);
-
 });
 
 gulp.task('deploy.migrator', (callback) => {
-
   let bundler = webpack(migrator);
-
   bundler.run(callback);
-
 });
 
 gulp.task('deploy', (callback) => {
-
-  run('deploy.magic', 'deploy.migrator', callback);
-
+  run('deploy.magic', 'deploy.migrator', 'deploy.version', callback);
 });

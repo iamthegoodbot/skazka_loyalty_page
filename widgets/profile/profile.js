@@ -42,7 +42,7 @@ Widget.filter('get_bonus_name', function (MAGIC_CONFIG) {
       }
 
     } else if (item.action=="purchase"){
-      return 'Покупка'
+      return 'Purchase'
     } else {
       return item.name
     }
@@ -68,6 +68,9 @@ const ProfileWidget = {
       scope.default_avatar = DefaultAvatarImage;
       $rootScope.$on('openProfile', () => {
         scope.profile.show_fill_profile = true;
+      })
+      $rootScope.$on('closeProfile', () => {
+        scope.profile.show_fill_profile = false;
       })
       scope.profile = {
         history: false,

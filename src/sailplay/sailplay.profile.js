@@ -1,5 +1,5 @@
 import angular from 'angular';
-import 'core-js/fn/array/find';
+
 
 export let SailPlayProfile = angular.module('sailplay.profile', [])
 
@@ -368,18 +368,31 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
           //}
           console.dir(form);
 
-          if (MAGIC_CONFIG.data.force_registration && MAGIC_CONFIG.data.force_registration.active && MAGIC_CONFIG.data.force_registration.tag_name && !$rootScope.submited){
+          if (MAGIC_CONFIG.data.force_registration && MAGIC_CONFIG.data.force_registration.active && MAGIC_CONFIG.data.force_registration.tag_name){
             
             const tagName = MAGIC_CONFIG.data.force_registration.tag_name
+            const tagNameToSet = MAGIC_CONFIG.data.force_registration.tag_to_set_after_submit
 
-            SailPlay.send('tags.exist', {tags: [tagName]}, function (res) {
+            SailPlay.send('tags.exist', {tags: [tagName, tagNameToSet]}, function (res) {
               if (res && res.tags.length) {
                 if (!res.tags[0].exist) {
                   $timeout(function(){
-                    console.info(scope.$parent.$id)
+
                     scope.$parent.reg_incomplete = true;
                     scope.$parent.preventClose = true;
-                    $rootScope.$broadcast('openProfile');
+
+                    if(res.tags[1].exist) {
+                      SailPlayApi.call('logout')
+                      const tagNameMessage = MAGIC_CONFIG.data.force_registration.messageAfterSubmit
+                      $rootScope.$broadcast('notifier:notify', {
+                        body: tagNameMessage
+                      });
+                      angular.element(document.querySelector('.spm_wrapper:not(.disable)')).addClass('disable')
+                      $rootScope.submited = true;
+                    } else {
+                      $rootScope.$broadcast('openProfile');
+                    }
+
                   }, 10)
                 } else {
                   scope.$parent.reg_incomplete = false;
@@ -487,7 +500,7 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
             } else {
 
               $rootScope.$broadcast('notifier:notify', {
-                body: user_res.message
+                body: MAGIC_CONFIG.data.profile.errors[user_res.status_code] || user_res.message
               });
 
               scope.$apply();

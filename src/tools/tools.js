@@ -490,7 +490,7 @@ export let Tools = angular.module('magic.tools', [
           slide.style.width = '';
         });
 
-        var _width = slides[0].offsetWidth || 0;
+        var _width = slides && slides[0] && slides[0].offsetWidth || 0;
 
         _width = _width ? _width + 6 : 0;
 

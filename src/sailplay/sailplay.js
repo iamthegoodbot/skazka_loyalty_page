@@ -33,7 +33,6 @@ export let SailPlay = angular.module('sailplay', [
 
     SailPlay.on('login.success', function (res) {
 
-      console.log('ls')
       $rootScope.auth_state = true;
       $rootScope.$broadcast('sailplay-login-success', res);
       $rootScope.$apply();
@@ -282,11 +281,9 @@ export let SailPlay = angular.module('sailplay', [
         scope.show = false;
 
         scope.$on('sailplay-login-remote-open', function(ev, auth_options){
-          console.log('elm',elm)
-          var options = {
-            node: elm[0],
-            ...auth_options
-          };
+          // console.log('elm',elm)
+          var options = angular.copy(auth_options || {});
+          options.node = elm[0];
           angular.merge(options, opts);
           SailPlay.config() && SailPlay.config().partner && SailPlay.send('login.remote', options);
           scope.show = true;

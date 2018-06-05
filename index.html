@@ -28,8 +28,6 @@
   <sailplay-magic></sailplay-magic>
   <script>
 
-    console.log(SAILPLAY.MagicMigrator);
-
     var params = SAILPLAY.url_params();
 
     var magic = new SAILPLAY.Magic({
@@ -41,6 +39,12 @@
       config: params.config || "thacker"
 
     });
+
+    if (params.auth_hash) {
+      SAILPLAY.on('init.success', function () {
+        SAILPLAY.send('login', params.auth_hash)
+      })
+    }
 
   </script>
 

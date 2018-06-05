@@ -7,318 +7,344 @@
 		var a = factory();
 		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
 	}
-})(this, function() {
+})(typeof self !== 'undefined' ? self : this, function() {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
-
+/******/
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
-
+/******/
 /******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId])
+/******/ 		if(installedModules[moduleId]) {
 /******/ 			return installedModules[moduleId].exports;
-
+/******/ 		}
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = installedModules[moduleId] = {
-/******/ 			exports: {},
-/******/ 			id: moduleId,
-/******/ 			loaded: false
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
 /******/ 		};
-
+/******/
 /******/ 		// Execute the module function
 /******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-
+/******/
 /******/ 		// Flag the module as loaded
-/******/ 		module.loaded = true;
-
+/******/ 		module.l = true;
+/******/
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
 /******/ 	}
-
-
+/******/
+/******/
 /******/ 	// expose the modules object (__webpack_modules__)
 /******/ 	__webpack_require__.m = modules;
-
+/******/
 /******/ 	// expose the module cache
 /******/ 	__webpack_require__.c = installedModules;
-
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
 /******/ 	// __webpack_public_path__
 /******/ 	__webpack_require__.p = "";
-
+/******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(0);
+/******/ 	return __webpack_require__(__webpack_require__.s = 1);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	__webpack_require__(1);
-	__webpack_require__(2);
-	__webpack_require__(3);
-	module.exports = __webpack_require__(4);
+"use strict";
 
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+function compare_versions(v1, v2, options) {
+  var lexicographical = options && options.lexicographical,
+      zeroExtend = options && options.zeroExtend,
+      v1parts = v1.split('.'),
+      v2parts = v2.split('.');
+
+  function isValidPart(x) {
+    return (lexicographical ? /^\d+[A-Za-z]*$/ : /^\d+$/).test(x);
+  }
+
+  if (!v1parts.every(isValidPart) || !v2parts.every(isValidPart)) {
+    return NaN;
+  }
+
+  if (zeroExtend) {
+    while (v1parts.length < v2parts.length) {
+      v1parts.push("0");
+    }while (v2parts.length < v1parts.length) {
+      v2parts.push("0");
+    }
+  }
+
+  if (!lexicographical) {
+    v1parts = v1parts.map(Number);
+    v2parts = v2parts.map(Number);
+  }
+
+  for (var i = 0; i < v1parts.length; ++i) {
+    if (v2parts.length == i) {
+      return 1;
+    }
+
+    if (v1parts[i] == v2parts[i]) {
+      continue;
+    } else if (v1parts[i] > v2parts[i]) {
+      return 1;
+    } else {
+      return -1;
+    }
+  }
+
+  if (v1parts.length != v2parts.length) {
+    return -1;
+  }
+
+  return 0;
+}
+
+var Migrator = {
+
+  version: '${MAGIC_VERSION}',
+
+  migrations: [],
+
+  migrate: function migrate(config, version_from, version_to) {
+
+    console.log(config);
+
+    console.log(version_from, version_to);
+
+    var direction = compare_versions(version_to, version_from);
+    console.log('direction: ', direction);
+
+    var required_migrations = [];
+
+    switch (direction) {
+      case 1:
+        required_migrations = Migrator.migrations.filter(function (migration) {
+          return compare_versions(migration.version, version_from) > 0 && compare_versions(migration.version, version_to) <= 0;
+        }).sort(function (migration_a, migration_b) {
+          return compare_versions(migration_a.version, migration_b.version);
+        });
+        required_migrations.forEach(function (migration) {
+          try {
+            migration.up && migration.up(config);
+          } catch (err) {
+            console.log(err);
+          }
+        });
+        break;
+      case -1:
+        required_migrations = Migrator.migrations.filter(function (migration) {
+          return compare_versions(migration.version, version_from) <= 0 && compare_versions(migration.version, version_to) > 0;
+        }).sort(function (migration_a, migration_b) {
+          return compare_versions(migration_b.version, migration_a.version);
+        });
+        required_migrations.forEach(function (migration) {
+          try {
+            migration.down && migration.down(config);
+          } catch (err) {
+            console.log(err);
+          }
+        });
+        break;
+    }
+
+    console.log(required_migrations);
+
+    return config;
+  },
+
+  create: function create(config) {
+    Migrator.migrations.push(config);
+  }
+
+};
+
+if (typeof window !== 'undefined') {
+
+  window.SAILPLAY = window.SAILPLAY || {};
+
+  window.SAILPLAY.MagicMigrator = Migrator;
+}
+
+exports.default = Migrator;
 
 /***/ }),
 /* 1 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-	'use strict';
+__webpack_require__(0);
+__webpack_require__(2);
+__webpack_require__(3);
+module.exports = __webpack_require__(4);
 
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	function compare_versions(v1, v2, options) {
-	  var lexicographical = options && options.lexicographical,
-	      zeroExtend = options && options.zeroExtend,
-	      v1parts = v1.split('.'),
-	      v2parts = v2.split('.');
-
-	  function isValidPart(x) {
-	    return (lexicographical ? /^\d+[A-Za-z]*$/ : /^\d+$/).test(x);
-	  }
-
-	  if (!v1parts.every(isValidPart) || !v2parts.every(isValidPart)) {
-	    return NaN;
-	  }
-
-	  if (zeroExtend) {
-	    while (v1parts.length < v2parts.length) {
-	      v1parts.push("0");
-	    }while (v2parts.length < v1parts.length) {
-	      v2parts.push("0");
-	    }
-	  }
-
-	  if (!lexicographical) {
-	    v1parts = v1parts.map(Number);
-	    v2parts = v2parts.map(Number);
-	  }
-
-	  for (var i = 0; i < v1parts.length; ++i) {
-	    if (v2parts.length == i) {
-	      return 1;
-	    }
-
-	    if (v1parts[i] == v2parts[i]) {
-	      continue;
-	    } else if (v1parts[i] > v2parts[i]) {
-	      return 1;
-	    } else {
-	      return -1;
-	    }
-	  }
-
-	  if (v1parts.length != v2parts.length) {
-	    return -1;
-	  }
-
-	  return 0;
-	}
-
-	var Migrator = {
-
-	  version: '${MAGIC_VERSION}',
-
-	  migrations: [],
-
-	  migrate: function migrate(config, version_from, version_to) {
-
-	    console.log(config);
-
-	    console.log(version_from, version_to);
-
-	    var direction = compare_versions(version_to, version_from);
-	    console.log('direction: ', direction);
-
-	    var required_migrations = [];
-
-	    switch (direction) {
-	      case 1:
-	        required_migrations = Migrator.migrations.filter(function (migration) {
-	          return compare_versions(migration.version, version_from) > 0 && compare_versions(migration.version, version_to) <= 0;
-	        }).sort(function (migration_a, migration_b) {
-	          return compare_versions(migration_a.version, migration_b.version);
-	        });
-	        required_migrations.forEach(function (migration) {
-	          try {
-	            migration.up && migration.up(config);
-	          } catch (err) {
-	            console.log(err);
-	          }
-	        });
-	        break;
-	      case -1:
-	        required_migrations = Migrator.migrations.filter(function (migration) {
-	          return compare_versions(migration.version, version_from) <= 0 && compare_versions(migration.version, version_to) > 0;
-	        }).sort(function (migration_a, migration_b) {
-	          return compare_versions(migration_b.version, migration_a.version);
-	        });
-	        required_migrations.forEach(function (migration) {
-	          try {
-	            migration.down && migration.down(config);
-	          } catch (err) {
-	            console.log(err);
-	          }
-	        });
-	        break;
-	    }
-
-	    console.log(required_migrations);
-
-	    return config;
-	  },
-
-	  create: function create(config) {
-	    Migrator.migrations.push(config);
-	  }
-
-	};
-
-	if (typeof window !== 'undefined') {
-
-	  window.SAILPLAY = window.SAILPLAY || {};
-
-	  window.SAILPLAY.MagicMigrator = Migrator;
-	}
-
-	exports.default = Migrator;
 
 /***/ }),
 /* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	'use strict';
+"use strict";
 
-	var _migrator = __webpack_require__(1);
 
-	var _migrator2 = _interopRequireDefault(_migrator);
+var _migrator = __webpack_require__(0);
 
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _migrator2 = _interopRequireDefault(_migrator);
 
-	_migrator2.default.create({
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	  //required param version
-	  version: '1.0.0'
+_migrator2.default.create({
 
-	});
+  //required param version
+  version: '1.0.0'
+
+});
 
 /***/ }),
 /* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	'use strict';
+"use strict";
 
-	var _migrator = __webpack_require__(1);
 
-	var _migrator2 = _interopRequireDefault(_migrator);
+var _migrator = __webpack_require__(0);
 
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _migrator2 = _interopRequireDefault(_migrator);
 
-	_migrator2.default.create({
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	  //required param version
-	  version: '2.0.0',
+_migrator2.default.create({
 
-	  //this function ups version of config
-	  up: function up(config) {
+  //required param version
+  version: '2.0.0',
 
-	    //migrate names to ids
-	    config.widgets && config.widgets.forEach(function (widget) {
+  //this function ups version of config
+  up: function up(config) {
 
-	      widget.id = widget.name;
+    //migrate names to ids
+    config.widgets && config.widgets.forEach(function (widget) {
 
-	      delete widget.name;
-	    });
+      widget.id = widget.name;
 
-	    //add new property for magic config
-	    config.$MAGIC = {};
+      delete widget.name;
+    });
 
-	    //move old properties from global to $MAGIC
-	    ["auth", "widgets", "tools", "data"].forEach(function (prop) {
-	      config.$MAGIC[prop] = config[prop];
-	      delete config[prop];
-	    });
+    //add new property for magic config
+    config.$MAGIC = {};
 
-	    //update date form styles
-	    var date_input_styles = config.$MAGIC.tools.forms.styles['form_date span'];
+    //move old properties from global to $MAGIC
+    ["auth", "widgets", "tools", "data"].forEach(function (prop) {
+      config.$MAGIC[prop] = config[prop];
+      delete config[prop];
+    });
 
-	    if (date_input_styles) {
-	      config.$MAGIC.tools.forms.styles['form_date select'] = date_input_styles;
-	    }
+    //update date form styles
+    var date_input_styles = config.$MAGIC.tools.forms.styles['form_date span'];
 
-	    //update status widget
-	    var status_widgets = config.$MAGIC.widgets.filter(function (widget) {
-	      return widget.id === 'statuses';
-	    });
+    if (date_input_styles) {
+      config.$MAGIC.tools.forms.styles['form_date select'] = date_input_styles;
+    }
 
-	    status_widgets.forEach(function (widget) {
-	      widget.styles['next_status_info'] = {
-	        "display": "none"
-	      };
-	    });
-	  },
+    //update status widget
+    var status_widgets = config.$MAGIC.widgets.filter(function (widget) {
+      return widget.id === 'statuses';
+    });
 
-	  down: function down(config) {
+    status_widgets.forEach(function (widget) {
+      widget.styles['next_status_info'] = {
+        "display": "none"
+      };
+    });
+  },
 
-	    //redo status widget
+  down: function down(config) {
 
-	    var status_widgets = config.$MAGIC.widgets.filter(function (widget) {
-	      return widget.id === 'statuses';
-	    });
+    //redo status widget
 
-	    status_widgets.forEach(function (widget) {
-	      delete widget.styles['next_status_info'];
-	    });
+    var status_widgets = config.$MAGIC.widgets.filter(function (widget) {
+      return widget.id === 'statuses';
+    });
 
-	    //redo date form styles
-	    var date_input_styles = config.$MAGIC.tools.forms.styles['form_date span'];
+    status_widgets.forEach(function (widget) {
+      delete widget.styles['next_status_info'];
+    });
 
-	    if (date_input_styles) {
-	      delete config.$MAGIC.tools.forms.styles['form_date select'];
-	    }
+    //redo date form styles
+    var date_input_styles = config.$MAGIC.tools.forms.styles['form_date span'];
 
-	    //migrate ids to names
-	    config.widgets && config.widgets.forEach(function (widget) {
+    if (date_input_styles) {
+      delete config.$MAGIC.tools.forms.styles['form_date select'];
+    }
 
-	      widget.id = widget.name;
+    //migrate ids to names
+    config.widgets && config.widgets.forEach(function (widget) {
 
-	      delete widget.name;
-	    });
+      widget.id = widget.name;
 
-	    //redo move old properties from global to $MAGIC
-	    ["auth", "widgets", "tools", "data"].forEach(function (prop) {
-	      config[prop] = config.$MAGIC[prop];
-	      delete config.$MAGIC[prop];
-	    });
+      delete widget.name;
+    });
 
-	    //delete new property for magic config
-	    delete config.$MAGIC;
-	  }
+    //redo move old properties from global to $MAGIC
+    ["auth", "widgets", "tools", "data"].forEach(function (prop) {
+      config[prop] = config.$MAGIC[prop];
+      delete config.$MAGIC[prop];
+    });
 
-	});
+    //delete new property for magic config
+    delete config.$MAGIC;
+  }
+
+});
 
 /***/ }),
 /* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	'use strict';
+"use strict";
 
-	var _migrator = __webpack_require__(1);
 
-	var _migrator2 = _interopRequireDefault(_migrator);
+var _migrator = __webpack_require__(0);
 
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _migrator2 = _interopRequireDefault(_migrator);
 
-	_migrator2.default.create({
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	  //required param version
-	  version: '2.0.1'
+_migrator2.default.create({
 
-	});
+  //required param version
+  version: '2.0.1'
+
+});
 
 /***/ })
-/******/ ])
+/******/ ]);
 });
-;
