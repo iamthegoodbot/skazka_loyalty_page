@@ -884,6 +884,8 @@ export let Tools = angular.module('magic.tools', [
 
     return function(template, obj){
 
+      if(!template) return '';
+
       let exp = $interpolate(template);
       return exp(obj);
 

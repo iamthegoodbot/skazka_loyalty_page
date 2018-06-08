@@ -26,7 +26,7 @@
 
           <div class="spm_pivko_history_list_item" data-dir-paginate="item in history.list() | itemsPerPage:5" data-pagination-id="history_pages">
 
-            <div class="spm_pivko_history_list_item_header clearfix" data-ng-click="history.purchase_info(item);" data-ng-class="{ opened: history.info.purchases[item.id] }">
+            <div class="spm_pivko_history_list_item_header clearfix {{ item.action }}" data-ng-click="history.purchase_info(item);" data-ng-class="{ opened: history.info.purchases[item.id] }">
 
               <div class="spm_pivko_history_list_item_header_title">
 
@@ -79,6 +79,14 @@
                   <span>
                     {{ widget.options.texts.points_credited }} {{ (item.points_delta || 0 |number)+' '+(item.points_delta|sailplay_pluralize:('points.texts.pluralize'|tools)) }}
                   </span>
+                </div>
+
+                <div data-ng-if="item.expiry_info" class="spm_pivko_history_list_item_body_points_expire">
+                  <div data-ng-repeat="expiry in item.expiry_info">
+                    <span>
+                      {{ widget.options.texts.expire_text | interpolate:expiry }}
+                    </span>
+                  </div>
                 </div>
 
               </div>

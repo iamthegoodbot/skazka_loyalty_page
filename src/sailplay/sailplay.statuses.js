@@ -2,7 +2,7 @@ import angular from 'angular';
 
 export let SailPlayStatuses = angular.module('sailplay.statuses', []);
 
-SailPlayStatuses.service('SailPlayStatusesLastMonth', function (SailPlayApi) {
+SailPlayStatuses.service('SailPlayStatusesLastMonth', function (SailPlayApi, SailPlay, $rootScope) {
 
   return class SailPlayStatusesLastMonth {
     constructor(config) {
@@ -12,6 +12,33 @@ SailPlayStatuses.service('SailPlayStatusesLastMonth', function (SailPlayApi) {
       this.history = SailPlayApi.data('load.user.history');
 
       this.list = config.list || [];
+
+      this.tags_exist = [];
+
+      if(this.list.length > 0) {
+
+        SailPlay.send('tags.exist', {tags: this.list.map(status => status.tag)}, (res) => {
+          if (res && res.tags) {
+            this.tags_exist = res.tags;
+          }
+          console.log(this.tags_exist);
+          $rootScope.$apply();
+        });
+
+      }
+
+    }
+    received(){
+
+      let received = false;
+
+      this.tags_exist.forEach((item) => {
+
+        if(item.exist) received = this.list.filter(status => status.tag === item.name)[0];
+
+      });
+
+      return received;
 
     }
     current() {

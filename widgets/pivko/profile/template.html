@@ -64,7 +64,7 @@
                 <span>{{ widget.options.texts.status_label }}</span>
               </div>
               <div class="spm_pivko_profile_status_points_status_value">
-                <span>{{ statuses.current().status || widget.options.texts.no_status }}</span>
+                <span>{{ statuses.received().status || widget.options.texts.no_status }}</span>
               </div>
             </div>
 
@@ -124,6 +124,14 @@
                             {{ statuses.current().status || widget.options.texts.no_status }}
                           </span>
                           <span class="spm_pivko_profile_status_progress_line_item_tooltip_header_end">{{ widget.options.texts.status_tooltip_header_end }}</span>
+
+                        </div>
+
+                        <div class="spm_pivko_profile_status_progress_line_item_tooltip_offset" data-ng-if="statuses.current() !== status">
+
+                          <span>{{ widget.options.texts.status_offset_label }}</span>
+                          <br>
+                          <span class="spm_pivko_profile_status_progress_line_item_tooltip_offset_points">{{ statuses.offset_to(status) }} {{ statuses.offset_to(status) | sailplay_pluralize: ('points.texts.pluralize' | tools) }}</span>
 
                         </div>
 
