@@ -25,6 +25,12 @@
       </section>
     </section>
 
+    <section class="your-balance" data-ng-if="user()">
+      <div class="your-balance-value" ng-bind="user().user_points.confirmed | number"></div>
+      <div class="your-balance-placeholder" ng-bind-html="widget.texts.your_balance.placeholder | to_trusted"></div>
+      <div class="your-balance-text hover-popup" ng-bind-html="widget.texts.your_balance.text | to_trusted"></div>
+    </section>
+
     <section data-ng-show="$parent.currentTab == '1'" class="main-content" data-ng-if="!user()">
       <section>
         <div class="content-header">

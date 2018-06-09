@@ -51,6 +51,7 @@
   },
   "devDependencies": {
     "angular-sanitize": "^1.6.4",
+    "autoprefixer": "^8.6.2",
     "connect-static-file": "^1.2.0",
     "file-loader": "^0.11.2",
     "gulp-connect": "^5.2.0",
@@ -58,6 +59,7 @@
     "gulp-nodemon": "^2.2.1",
     "gulp-watch": "^4.3.11",
     "ng-annotate-loader": "^0.2.0",
+    "postcss-loader": "^2.1.5",
     "proxy-middleware": "^0.15.0",
     "webpack": "^1.15.0",
     "webpack-dev-server": "^1.16.5"

@@ -94,6 +94,7 @@
     margin: auto;
     padding: 0 60px;
     box-sizing: border-box;
+    position: relative;
   }
 
   & .bon_profile_wrap {
@@ -1668,6 +1669,78 @@
     .status_block {
       width: 30%;
       display: inline-block;
+    }
+
+    & .your-balance {
+      position: absolute;
+      right: 60px;
+      top: 140px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      line-height: 1.18;
+      color: white;
+      text-transform: uppercase;
+      &-value {
+        font-size: 68px;
+      }
+      &-placeholder {
+        font-size: 22px;
+        margin-left: 10px;
+      }
+      &-text {
+        display: none;
+        position: absolute;
+        left: -330px;
+        top: -55px;
+        height: 60px;
+        align-items: center;
+        justify-content: center;
+        &:before {
+          content: '';
+          display: block;
+          position: absolute;
+          right: -20px;
+          bottom: 43%;
+          width: 0;
+          height: 0;
+          border: 10px solid transparent;
+          border-left-color: black;
+          @media (max-width: @tabletWidth) {
+            display: none;
+          }
+        }
+
+        &:after {
+          content: '';
+          display: block;
+          position: absolute;
+          right: -18px;
+          bottom: 45%;
+          width: 0;
+          height: 0;
+          border: 9px solid transparent;
+          border-left-color: white;
+          @media (max-width: @tabletWidth) {
+            display: none;
+          }
+        }
+      }
+      &:hover {
+        .your-balance-text {
+          display: flex;
+        }
+      }
+
+      @media (max-width: @tabletWidth) {
+        left: auto;
+        top: auto;
+        z-index: 1;
+        position: relative;
+        justify-content: left;
+        padding: 30px 60px 0;
+      }
     }
 
     @media screen and (max-width: 650px) {

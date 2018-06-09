@@ -55,7 +55,7 @@ let loaders = [
   },
   {
     test: /\.less$/,
-    loader: "style-loader!css-loader?sourceMap=true!less-loader?sourceMap=true"
+    loader: "style-loader!css-loader?sourceMap=true!postcss-loader?sourceMap=true!less-loader?sourceMap=true"
   },
   //fonts loaders
   { test: /\.svg$/, loader: 'url?limit=65000&mimetype=image/svg+xml' },
@@ -75,7 +75,8 @@ let resolve = {
   root: __dirname,
   modulesDirectories: ['node_modules'],
   alias: {
-    "@core": path.join(__dirname, 'src', 'core')
+    "@core": path.join(__dirname, 'src', 'core'),
+    "@theme": path.join(__dirname, 'src', 'theme')
   }
 };
 
