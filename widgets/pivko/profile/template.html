@@ -225,6 +225,7 @@
         <div ng-switch-when="date">
           <input class="spm_form_input" type="date"
                  data-spm-date-input ng-model="field.value" placeholder="{{ field.placeholder }}"
+                 min="{{ field.data.min_date }}" max="{{ field.data.max_date }}"
                  ng-required="field.required">
         </div>
 

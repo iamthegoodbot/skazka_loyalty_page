@@ -288,6 +288,10 @@ export let SailPlayActions = angular.module('sailplay.actions', [])
 
 
     }
+    reload(){
+      SailPlay.send('load.actions.list');
+      SailPlay.send('load.actions.custom.list');
+    }
 
   }
 

@@ -18,6 +18,7 @@ const widget = {
           current: false,
           close: () => {
             scope.quests_utils.custom.current = false;
+            scope.quests.reload();
           },
           open: (quest) => {
             scope.quests_utils.custom.current = quest;
