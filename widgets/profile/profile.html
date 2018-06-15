@@ -111,7 +111,7 @@
 
           <div data-ng-switch-when="text" class="clearfix">
             <label class="form_label">{{ field.label }}</label>
-            <input class="form_input" type="text" placeholder="{{ field.placeholder }}" data-ng-model="field.value">
+            <input class="form_input" type="text" placeholder="{{ field.placeholder }}" data-ng-model="field.value" data-ng-disabled="field.disabled">
           </div>
 
           <div data-ng-switch-when="date" class="clearfix">

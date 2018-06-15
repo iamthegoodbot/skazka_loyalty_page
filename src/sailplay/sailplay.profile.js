@@ -329,6 +329,12 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
                     form_field.value = user.user.email || '';
                     break;
 
+                  case 'addOid':
+
+                    form_field.value = user.user.origin_user_id || '';
+                    if (form_field.value) form_field.disabled = true;
+                    break;
+
                   case 'sex':
 
                     form_field.value = user.user.sex || '';
@@ -373,33 +379,36 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
             const tagName = MAGIC_CONFIG.data.force_registration.tag_name
             const tagNameToSet = MAGIC_CONFIG.data.force_registration.tag_to_set_after_submit
 
-            SailPlay.send('tags.exist', {tags: [tagName, tagNameToSet]}, function (res) {
-              if (res && res.tags.length) {
-                if (!res.tags[0].exist) {
-                  $timeout(function(){
-
-                    scope.$parent.reg_incomplete = true;
-                    scope.$parent.preventClose = true;
-
-                    if(res.tags[1].exist) {
-                      SailPlayApi.call('logout')
-                      const tagNameMessage = MAGIC_CONFIG.data.force_registration.messageAfterSubmit
-                      $rootScope.$broadcast('notifier:notify', {
-                        body: tagNameMessage
-                      });
-                      angular.element(document.querySelector('.spm_wrapper:not(.disable)')).addClass('disable')
-                      $rootScope.submited = true;
-                    } else {
-                      $rootScope.$broadcast('openProfile');
-                    }
-
-                  }, 10)
-                } else {
-                  scope.$parent.reg_incomplete = false;
-                  scope.$parent.preventClose = false;
+            setTimeout(() => {
+              SailPlay.send('tags.exist', {tags: [tagName, tagNameToSet]}, function (res) {
+                if (res && res.tags.length) {
+                  if (!res.tags[0].exist) {
+                    $timeout(function(){
+  
+                      scope.$parent.reg_incomplete = true;
+                      scope.$parent.preventClose = true;
+  
+                      if(res.tags[1].exist) {
+                        SailPlayApi.call('logout')
+                        const tagNameMessage = MAGIC_CONFIG.data.force_registration.messageAfterSubmit
+                        $rootScope.$broadcast('notifier:notify', {
+                          body: tagNameMessage
+                        });
+                        angular.element(document.querySelector('.spm_wrapper:not(.disable)')).addClass('disable')
+                        $rootScope.submited = true;
+                      } else {
+                        $rootScope.$broadcast('openProfile');
+                      }
+  
+                    }, 10)
+                  } else {
+                    scope.$parent.reg_incomplete = false;
+                    scope.$parent.preventClose = false;
+                  }
                 }
-              }
-            })
+              })
+            }, 1000)
+
           }
 
           saved_form = angular.copy(form);
@@ -457,6 +466,10 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
 
           if (req_user.addEmail && data_user && data_user.email && data_user.email == req_user.addEmail) {
             delete req_user.addEmail;
+          }
+
+          if (req_user.addOid && data_user && data_user.origin_user_id && data_user.origin_user_id == req_user.addOid) {
+            delete req_user.addOid;
           }
 
           if (req_user.birthDate) {

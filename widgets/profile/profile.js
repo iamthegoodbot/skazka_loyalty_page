@@ -42,7 +42,7 @@ Widget.filter('get_bonus_name', function (MAGIC_CONFIG) {
       }
 
     } else if (item.action=="purchase"){
-      return 'Purchase'
+      return item.order_num ? 'Purchase - ' + item.order_num : 'Purchase'
     } else {
       return item.name
     }

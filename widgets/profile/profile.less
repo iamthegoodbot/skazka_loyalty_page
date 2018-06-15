@@ -43,7 +43,7 @@
       }
       .user_info {
         height: 180px;
-        display: none;
+        display: block;
         position: absolute;
         top: 10px;
         width: 200px !important;
@@ -67,6 +67,7 @@
         border-radius: 50px;
         top: 42px;
         right: 8px;
+        display: none;
       }
       & .user_avatar_profile_btn {
         padding-top: 8px;
@@ -207,11 +208,11 @@
           & .history_button {
             font-size: 16px;
             position: absolute;
-            display: none;
+            // display: none;
           }
-          &:hover .history_button {
-            display: block;
-          }
+          // &:hover .history_button {
+            // display: block;
+          // }
           &>span>span:nth-of-type(2) {
             padding-top: 14px;
           }
