@@ -24,10 +24,12 @@
           </div>
           <div class="spm_gifts-item-name" ng-bind="gift.name"></div>
           <div class="text-center display-inline-block">
-            <a href="#" class="spm_gifts-item-button type_recieve" ng-bind="widget.texts.get"
+            <a href="#" class="spm_gifts-item-button type_recieve" 
+               ng-bind="widget.texts.get"
                ng-click="$event.preventDefault();$root.$broadcast('gift:state', gift)"></a>
-            <div class="spm_gifts-item-button type_points"
-                 ng-bind="(gift.points|number)+' '+(gift.points|sailplay_pluralize:('points.texts.pluralize' | tools))"></div>
+            <a href="#" class="spm_gifts-item-button type_points"
+               ng-bind="(gift.points|number)+' '+(gift.points|sailplay_pluralize:('points.texts.pluralize' | tools))"
+               ng-click="$event.preventDefault();$root.$broadcast('gift:state', gift)"></a>
           </div>
 
         </div>
@@ -48,7 +50,13 @@
         <div class="spm_gifts-open-points"
              ng-bind="($parent.show.points|number) + ' ' + ($parent.show.points|sailplay_pluralize:('points.texts.pluralize' | tools))"></div>
         <div class="spm_gifts-open-descr" ng-bind="$parent.show.descr"></div>
+
+        <div class="spm_gifts-open-button spm_btn theme_1 type_cancel type_big"
+          ng-show="!user() || $parent.show.points>user().user_points.confirmed"
+          ng-bind="($parent.show.points|number)+' '+($parent.show.points|sailplay_pluralize:('points.texts.pluralize' | tools))"></div>
+        
         <a href="#" class="spm_gifts-open-button spm_btn theme_1 type_filled type_big"
+           ng-show="gift.points<=user().user_points.confirmed"
            ng-bind="widget.texts.modals.gift.button" ng-click="$event.preventDefault();getGift($parent.show)"></a>
       </div>
 
@@ -62,9 +70,7 @@
       <div class="spm_gifts-success-modal-body" ng-bind-html="purchased_gift.gift_help_text || widget.texts.modals.success.body | to_trusted"></div>
 
       <div data-ng-switch-when="coupon" class="spm_gifts-success-modal-body-coupon">
-        <div class="spm_gifts-success-modal-body-coupon-message">
-          {{ widget.texts.modals.success.coupon_title }}
-        </div>
+        <div class="spm_gifts-success-modal-body-coupon-message" ng-bind="widget.texts.modals.success.coupon_title"></div>
         <div class="spm_gifts-success-modal-body-coupon-input">
           <input type="text" value="{{ purchased_gift.coupon_number }}" disabled>
         </div>
