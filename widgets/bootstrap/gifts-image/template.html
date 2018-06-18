@@ -56,7 +56,7 @@
           ng-bind="($parent.show.points|number)+' '+($parent.show.points|sailplay_pluralize:('points.texts.pluralize' | tools))"></div>
         
         <a href="#" class="spm_gifts-open-button spm_btn theme_1 type_filled type_big"
-           ng-show="gift.points<=user().user_points.confirmed"
+           ng-show="$parent.show.points<=user().user_points.confirmed"
            ng-bind="widget.texts.modals.gift.button" ng-click="$event.preventDefault();getGift($parent.show)"></a>
       </div>
 
