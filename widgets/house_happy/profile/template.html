@@ -60,7 +60,7 @@
   </div>
 
   <div class="spm_profile-right">
-    <div class="spm_profile-status-circle" ng-click="$parent.$parent.show_history=true">
+    <div class="spm_profile-status-circle" ng-show="user()" ng-click="$parent.$parent.show_history=true">
       <div class="spm_profile-status-circle_name" ng-bind="user().user_status.name || widget.texts.without_status"></div>
       <div class="spm_profile-status-circle_points-value" ng-bind="user().user_points.confirmed | number"></div>
       <div class="spm_profile-status-circle_points-placeholder" ng-bind="widget.texts.bonus_points"></div>
