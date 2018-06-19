@@ -10,7 +10,7 @@
 
     .spm_gifts {
       position: relative;
-      background: #ecf0f0;
+      background: white;
 
       &-container {
         width: 100%;
@@ -19,17 +19,13 @@
         box-sizing: border-box;
         margin: 0 auto;
         box-sizing: border-box;
-        padding-top: 80px;
-        padding-bottom: 80px;
+        padding: 60px 0 80px;
         overflow: hidden;
 
         display: flex;
         align-items: center;
         justify-content: flex-start;
-
-        @media (max-width: 992px) {
-          flex-direction: column;
-        }
+        flex-direction: column;
 
         &__left {
           box-sizing: border-box;
@@ -65,7 +61,7 @@
         font-weight: normal;
         font-size: 14px;
         line-height: 22px;
-        margin: 25px 0;
+        margin: 25px 0 0;
         color: @black;
       }
 
@@ -75,6 +71,8 @@
         flex-wrap: nowrap;
         justify-content: flex-start;
         width: 100%;
+        margin-top: 50px;
+        flex-wrap: wrap;
         @media (max-width: 992px) {
           align-items: center;
           justify-content: center;
@@ -93,6 +91,8 @@
         min-height: 280px;
         margin: 0 8px;
         color: @white;
+        width: 23%;
+        margin: 1%;
         //background-color: #ca5b54;
         border-radius: 8px;
         .transition(box-shadow 0.3s linear);
@@ -100,7 +100,6 @@
 
         @media (max-width: 992px) {
           width: 48%;
-          margin: 1%;
         }
 
         @media (max-width: 600px) {
@@ -179,6 +178,7 @@
       }
 
       &-pagination {
+        margin-top: 50px;
         .spm_pagination {
           justify-content: flex-start;
           @media (max-width: 992px) {

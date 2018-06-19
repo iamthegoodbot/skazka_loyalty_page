@@ -1,11 +1,8 @@
 {
     "styles": {
-        "spm_quests-sub-header": {
-            "font-weight": 300
-        },
-        "spm_quests-item:hover": {
-            "border-color": "#58aaf7"
-        },
+      "spm_quests": {
+        "background": "#f2f9fe"
+      },
         "spm_quests-item-content": {
             "flex-basis": "60%"
         },
@@ -16,12 +13,15 @@
         },
         "spm_quests-header": {
             "font-family": "HelveticaNueBold, Roboto, sans-serif",
-            "text-transform": "none"
+            "text-transform": "none",
+            "margin-bottom": "40px"
         },
         "spm_quests-item": {
-            "max-width": "275px",
-            "border-color": "#e5e6e7",
-            "border-radius": "4px"
+            "max-width": "31.3%",
+            "background": "white",
+            "box-shadow": "0 3px 4px 0 rgba(148, 181, 204, 0.42)",
+            "border": "none",
+            "border-radius": "6px"
         },
         "spm_quests-item-icon": {
             "max-height": "48px",
@@ -35,11 +35,10 @@
     "enabled": true,
     "id": "bootstrap_quests_center",
     "texts": {
-        "sub_header": "Complete quests to recieve extra points and statuses",
-        "header": "Quests",
+        "header": "Earn extra points",
         "modals": {
             "success": {
-                "body": "Текст, который можно редактировать в конфиге",
+                "body": "Some text on config",
                 "title": "Congratulations"
             }
         }

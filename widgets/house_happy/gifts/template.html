@@ -5,20 +5,14 @@
 
       <div class="spm_gifts-container col">
 
-        <div class="spm_gifts-container__left">
-          <div class="spm_gifts-header" ng-bind="widget.texts.header"></div>
-          <div class="spm_gifts-sub-header" ng-bind="widget.texts.sub_header"></div>
-          <div class="spm_gifts-pagination">
-            <dir-pagination-controls direction-links="true" data-page-links="false" pagination-id="gifts_pages"
-                                     template-url="magic.pagination" auto-hide="true"></dir-pagination-controls>
-          </div>
-        </div>
+        <div class="spm_gifts-header" ng-show="widget.texts.header" ng-bind="widget.texts.header"></div>
+        <div class="spm_gifts-sub-header" ng-show="widget.texts.sub_header" ng-bind="widget.texts.sub_header"></div>
 
-        <div class="spm_gifts-container__right spm_gifts-list">
+        <div class="spm_gifts-list">
 
           <div class="spm_gifts-item"
                ng-style="{'background-image' : ('linear-gradient(to bottom, rgba(155, 155, 155, 0), rgba(47, 51, 54, 0.99)), url('+ (gift.thumbs.url_250x250 | sailplay_pic) + ')') }"
-               dir-paginate="gift in gifts() | itemsPerPage:3 track by $index" pagination-id="gifts_pages"
+               ng-repeat="gift in gifts() track by $index"
                ng-mouseenter="gift.actived=true"
                ng-mouseleave="gift.actived=false"
                ng-class="{type_disabled: gift.points>user().user_points.confirmed, type_enabled: gift.points<=user().user_points.confirmed, type_hovered: gift.actived}">

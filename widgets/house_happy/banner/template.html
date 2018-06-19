@@ -1,0 +1,7 @@
+<div class="container-fluid spm_banner clearfix" ng-if="widget.enabled" ng-cloak>
+    <div class="container">
+        <div class="spm_banner_item" ng-repeat="banner in widget.options.data track by $index" ng-style="{backgroundImage: (banner.image | background_image)}">
+            <div class="spm_banner_item-text" ng-bind-html="banner.text | to_trusted"></div>
+        </div>
+    </div>
+</div>

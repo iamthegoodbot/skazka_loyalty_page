@@ -11,9 +11,94 @@
 
     .spm_profile {
       position: relative;
-      background-repeat: no-repeat;
-      background-position: center top;
-      background-size: cover;
+      background-repeat: repeat;
+      background-position: left top;
+      background-size: 180px auto;
+      background-image: url(https://sailplays3.cdnvideo.ru/media/assets/assetfile/3983f7460fc0267d020abcd09a748848.png);
+
+
+      &-right {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 50%;
+        height: 100%;
+        background-position: left center;
+        background-repeat: no-repeat;
+        background-size: cover;
+
+        @media (min-width: 1200px) {
+          width: ~"calc(50% + 100px)";
+        }
+
+        @media (max-width: 850px) {
+          position: relative;
+          height: 300px;
+          width: 100%;
+          margin: 0 0 10%;
+        }
+      }
+
+      &-status-circle {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        margin: auto;
+        width: 290px;
+        height: 290px;
+        border-radius: 50%;
+        box-shadow: 0 2px 88px 0 rgba(9, 4, 38, 0.58);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        right: 0;
+        left: 0;
+        cursor: pointer;
+        background-image: url(https://sailplays3.cdnvideo.ru/media/assets/assetfile/ac8c16dbae091547b21f6151ec405b27.png);
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: cover;
+
+        @media (min-width: 851px) {
+          right: 5%;
+          left: auto;
+        }
+
+        @media (min-width: 992px) {
+          right: auto;
+          left: 0;
+        }
+
+        &_name {
+          font-family: 'Open Sans';
+          font-size: 24px;
+          font-weight: bold;
+          letter-spacing: 1.8px;
+          text-align: center;
+          text-transform: uppercase;
+          color: #233e51;
+        }
+
+        &_points-value {
+          margin-top: 20px;
+          font-family: 'Open Sans';
+          font-size: 70px;
+          font-weight: bold;
+          line-height: 0.86;
+          text-align: center;
+          color: #233e51;
+        }
+        
+        &_points-placeholder {
+          margin-top: 18px;
+          font-family: 'Open Sans';
+          font-size: 20px;
+          line-height: 1.4;
+          text-align: center;
+          color: #233e51;
+        }
+      }
 
       .b-name {
         letter-spacing: 2px;
