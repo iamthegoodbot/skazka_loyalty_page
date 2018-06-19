@@ -1,0 +1,12 @@
+<div class="spm_modal_center" data-ng-class="{ visible: show }" tabindex="-1" role="dialog">
+
+  <div class="spm_modal_center_inner">
+    <i class="spm_modal_center_close" ng-click="$event.preventDefault(); !preventClose && close();"></i>
+    <div class="spm_modal_center_content">
+      <div class="spm_modal_center_content_title" ng-transclude="title"></div>
+      <div class="spm_modal_center_content_body" ng-transclude="body"></div>
+    </div>
+  </div>
+
+
+</div>

@@ -52,11 +52,11 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
          * @param {string}  type   Authorization type.
          * @param {object}  from   Where it call.
          */
-          scope.login = function (type, from) {
+        scope.login = function (type, from) {
 
           SailPlay.authorize(type, from);
 
-         };
+        };
 
         /**
          * @ngdoc method
@@ -119,6 +119,79 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
       }
 
     };
+
+  })
+
+  .service('SailPlayProfile', function (SailPlayApi, SailPlay, $q) {
+
+    return class SailPlayProfile {
+
+      constructor(){
+
+        this.user = SailPlayApi.data('load.user.info');
+
+
+
+      }
+      logout() {
+
+        SailPlay.send('logout');
+
+      }
+      login(type, from) {
+
+        SailPlay.authorize(type, from);
+
+      }
+      tags_add(params, callback) {
+
+        if (!params) return;
+
+        var tags = params.tags || [];
+
+        if (tags.length > 0) {
+
+          function chunk(array, chunkSize) {
+            return [].concat.apply([], array.map(function (elem, i) {
+              return i % chunkSize ? [] : [array.slice(i, i + chunkSize)];
+            }));
+          }
+
+          var chunked_tags = chunk(tags, 10);
+
+          var tag_promises = [];
+
+          angular.forEach(chunked_tags, function (chunk) {
+
+            var promise = $q(function (resolve, reject) {
+
+              SailPlay.send('tags.add', {tags: chunk}, function (tags_res) {
+                if (tags_res.status === 'ok') {
+
+                  resolve(tags_res);
+
+                  //sp.send('leads.submit.success', { lead: self, response: user_res, tags: res });
+                } else {
+                  reject(tags_res);
+                  //sp.send('leads.submit.error', { lead: self, response: user_res, tags: res });
+                }
+              });
+
+            });
+
+            tag_promises.push(promise);
+
+          });
+
+          $q.all(tag_promises).then(function (tags_res) {
+
+            callback && callback(tags_res);
+
+          });
+        }
+
+      };
+    }
 
   })
 
@@ -710,7 +783,7 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
                 break;
 
             }
-            console.log(form_field);
+            // console.log(form_field);
             return form_field;
           });
 
@@ -738,7 +811,7 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
         });
 
       }
-      revert_profile_form(form) {
+      revert(form) {
         if (form) {
           form.$setPristine();
           form.$setUntouched();
@@ -912,8 +985,8 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
 
           } else {
 
-            callback(null, user_res)
-            this.revert_profile_form();
+            callback && callback(null, user_res)
+            this.revert();
 
           }
 
@@ -955,6 +1028,7 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
         })
 
       }
+
 
     }
 

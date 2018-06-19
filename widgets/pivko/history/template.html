@@ -1,0 +1,150 @@
+<div class="spm_pivko_history_wrapper">
+
+  <div class="spm_pivko_history_wrapper_inner">
+
+    <div class="spm_pivko_history_list">
+
+      <div class="spm_pivko_history_list_inner">
+
+        <div class="spm_pivko_history_list_title">
+          <span>{{ widget.options.texts.history_title }}</span>
+        </div>
+
+        <div class="spm_pivko_history_list_empty" data-ng-if="history.empty()">
+
+          <div class="spm_pivko_history_list_empty_title">
+            <span>{{ widget.options.texts.empty_list_title }}</span>
+          </div>
+
+          <div class="spm_pivko_history_list_empty_button">
+            <a href="{{ widget.options.empty_list_button_link }}" target="_blank">{{ widget.options.texts.empty_list_button }}</a>
+          </div>
+
+        </div>
+
+        <div class="spm_pivko_history_list_items" data-ng-if="!history.empty()">
+
+          <div class="spm_pivko_history_list_item" data-dir-paginate="item in history.list() | itemsPerPage:5" data-pagination-id="history_pages">
+
+            <div class="spm_pivko_history_list_item_header clearfix {{ item.action }}" data-ng-click="history.purchase_info(item);" data-ng-class="{ opened: history.info.purchases[item.id] }">
+
+              <div class="spm_pivko_history_list_item_header_title">
+
+                <span>
+                  {{ item|history_item }} {{ item.action_date | date:'d MMM yyyy' }}
+                </span>
+
+                <span class="spm_pivko_history_list_item_header_open_button" data-ng-if="item.action === 'purchase'" data-ng-class="{ opened: history.info.purchases[item.id] }">&rsaquo;</span>
+
+              </div>
+
+              <div data-ng-if="item.price" class="spm_pivko_history_list_item_header_points">
+
+                <span>
+                  {{ item.price|number }} <span class="spm_pivko_history_currency_symbol">{{ widget.options.texts.currency_symbol }}</span>
+                </span>
+
+              </div>
+
+            </div>
+
+            <div class="spm_pivko_history_list_item_info" data-ng-class="{ spm_opened: history.info.purchases[item.id] }">
+
+              <ul class="spm_pivko_history_list_item_info_cart">
+                <li class="spm_pivko_history_list_item_info_cart_position" data-ng-repeat="cart_item in history.info.purchases[item.id].cart.cart.positions">
+                  <div class="spm_pivko_history_list_item_info_cart_position_inner clearfix">
+                    <div class="spm_pivko_history_list_item_info_cart_position_name">
+                      <span>{{ cart_item.product.name || cart_item.product.sku }}</span>
+                    </div>
+                    <div class="spm_pivko_history_list_item_info_cart_position_price">
+                      <span>{{ cart_item.new_price }} {{ widget.options.texts.currency_symbol }}</span>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+
+            </div>
+
+            <div class="spm_pivko_history_list_item_body">
+
+              <div class="spm_pivko_history_list_item_body_points">
+
+                <div class="spm_pivko_history_list_item_body_points_debited" data-ng-if="item.debited_points_delta">
+                  <span>
+                    {{ widget.options.texts.points_debited }} {{ (item.debited_points_delta || 0 | number)+' '+(item.debited_points_delta|sailplay_pluralize:('points.texts.pluralize'|tools)) }}
+                  </span>
+                </div>
+
+                <div class="spm_pivko_history_list_item_body_points_credited" data-ng-if="item.points_delta">
+                  <span>
+                    {{ widget.options.texts.points_credited }} {{ (item.points_delta || 0 |number)+' '+(item.points_delta|sailplay_pluralize:('points.texts.pluralize'|tools)) }}
+                  </span>
+                </div>
+
+                <div data-ng-if="item.expiry_info" class="spm_pivko_history_list_item_body_points_expire">
+                  <div data-ng-repeat="expiry in item.expiry_info">
+                    <span>
+                      {{ widget.options.texts.expire_text | interpolate:expiry }}
+                    </span>
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+          <div class="spm_pivko_history_list_pagination">
+
+            <dir-pagination-controls max-size="7" pagination-id="history_pages" direction-links="true" template-url="pivko.history.pagination" auto-hide="true"></dir-pagination-controls>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="spm_pivko_history_help">
+
+      <div class="spm_pivko_history_help_inner">
+
+        <div class="spm_pivko_history_help_title">
+          <span>{{ widget.options.texts.help_title }}</span>
+        </div>
+
+        <div class="spm_pivko_history_help_links">
+
+          <div class="spm_pivko_history_help_links_inner">
+
+            <div class="spm_pivko_history_help_links_item" data-ng-repeat="link in widget.options.links">
+
+              <div class="spm_pivko_history_help_links_item_inner">
+                <a href="{{ link.url }}" target="_blank">
+
+                  <span class="spm_pivko_history_help_links_item_icon">
+                    <img data-ng-src="{{ link.icon }}" alt="?">
+                  </span>
+
+                  <span class="spm_pivko_history_help_links_item_text">
+                    <span>{{ link.text }}</span>
+                  </span>
+
+                </a>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

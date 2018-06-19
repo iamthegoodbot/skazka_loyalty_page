@@ -1,0 +1,428 @@
+@import "~@theme/colors";
+
+.spm_wrapper {
+
+  .pivko_history {
+
+    .spm_pivko_history {
+
+      //widget styles
+      .spm_pivko_history();
+
+    }
+
+  }
+
+}
+
+.spm_pivko_history() {
+
+  &_wrapper {
+
+    @media @tablet_up {
+
+      width: 100%;
+      display: table;
+      border-collapse: separate;
+
+    }
+
+  }
+
+  &_wrapper_inner {
+
+    @media @tablet_up {
+
+      display: table-row;
+
+    }
+
+  }
+
+  &_list {
+
+    background-color: @white;
+    padding-top: 30px;
+
+    @media @tablet_up {
+
+      width: 68%;
+      display: table-cell;
+      vertical-align: top;
+      border-right: 20px solid transparent;
+      background-clip: padding-box;
+
+    }
+
+    @media @tablet_down {
+
+      margin-bottom: 15px;
+
+    }
+
+    &_title {
+
+      font-size: 20px;
+      font-weight: bold;
+
+      @media @tablet_down {
+
+        font-size: 20px;
+        padding: 0 30px;
+        line-height: 23px;
+
+      }
+
+    }
+
+
+    &_empty {
+
+      margin-top: 10px;
+
+      &_title {
+
+        span {
+          font-size: 20px;
+          font-weight: 300;
+          color: @main;
+        }
+
+      }
+
+      &_button {
+
+        margin-top: 20px;
+        margin-bottom: 30px;
+
+        a {
+
+          display: inline-block;
+          font-size: 14px;
+          padding: 15px 50px;
+          border-radius: 25px;
+          border: none;
+          background-color: @main_light;
+          outline: none;
+          text-decoration: none;
+          color: @main_darker;
+          &:visited {
+            color: @main_darker;
+          }
+
+        }
+
+      }
+
+    }
+
+    &_items {
+
+      padding: 20px 50px;
+
+      @media @tablet_down {
+
+        padding: 20px 15px;
+
+      }
+
+    }
+
+    &_item {
+
+      &_header {
+        padding: 10px 0;
+        border-bottom: 1px solid @main;
+
+        &.opened {
+
+          border-bottom: none;
+
+        }
+
+        //history item types
+        &.purchase {
+
+          cursor: pointer;
+
+        }
+
+
+      }
+
+      &_header_title {
+
+        float: left;
+        text-align: left;
+
+        span {
+          font-size: 18px;
+          line-height: 21px;
+          color: @main_dark;
+          font-weight: normal;
+
+          @media @tablet_down {
+
+            font-size: 14px;
+            line-height: 16px;
+
+          }
+        }
+
+      }
+
+      &_header_open_button {
+
+        display: inline-block;
+        transform: rotate(90deg);
+        margin-left: 10px;
+
+        &.opened {
+
+          transform: rotate(-90deg) translateY(-15%);
+
+        }
+
+      }
+
+      &_info {
+
+        max-height: 0;
+        overflow-y: hidden;
+        -webkit-transition: max-height 0.5s ease-in-out;
+        -moz-transition: max-height 0.5s ease-in-out;
+        -o-transition: max-height 0.5s ease-in-out;
+        transition: max-height 0.5s ease-in-out;
+        transition-delay: -0.4s;
+
+        &.spm_opened {
+
+          max-height: 2000px;
+          overflow-y: hidden;
+          -webkit-transition: max-height 0.5s ease-in-out;
+          -moz-transition: max-height 0.5s ease-in-out;
+          -o-transition: max-height 0.5s ease-in-out;
+          transition: max-height 0.5s ease-in-out;
+          transition-delay: 0s;
+
+        }
+
+        &_cart {
+
+          display: block;
+          list-style: none;
+          padding: 20px;
+          border-radius: 5px;
+          background-color: @main_lighter;
+
+          @media @tablet_down {
+
+            padding: 15px 10px;
+
+          }
+
+        }
+
+        &_cart_position {
+
+          text-align: left;
+          margin-bottom: 5px;
+
+          &:last-child {
+            margin-bottom: 0;
+          }
+
+          &_name {
+
+            float: left;
+
+            span {
+              font-size: 14px;
+              line-height: 16px;
+              color: @main_dark;
+              font-weight: 300;
+
+              @media @tablet_down {
+
+                font-size: 12px;
+                line-height: 14px;
+
+              }
+
+            }
+
+          }
+
+          &_price {
+
+            float: right;
+
+            span {
+              font-size: 14px;
+              line-height: 16px;
+              color: @main_dark;
+              font-weight: 300;
+
+              @media @tablet_down {
+
+                font-size: 12px;
+                line-height: 14px;
+
+              }
+
+            }
+
+          }
+
+        }
+
+
+      }
+
+      &_header_points {
+
+        float: right;
+
+        span {
+          font-size: 18px;
+          line-height: 21px;
+          color: @main_dark;
+          font-weight: normal;
+
+          @media @tablet_down {
+
+            font-size: 14px;
+            line-height: 16px;
+
+          }
+
+        }
+
+      }
+
+      &_body {
+
+        text-align: left;
+
+      }
+
+
+      &_body_points {
+
+        margin: 10px 0;
+
+        span {
+
+          font-size: 14px;
+          line-height: 16px;
+          color: @main;
+          font-weight: 300;
+
+        }
+
+      }
+
+    }
+
+  }
+
+  &_pagination {
+
+    margin-top: 30px;
+    text-align: left;
+    margin-bottom: 10px;
+
+    a {
+      display: inline-block;
+      font-size: 14px;
+      line-height: 16px;
+      font-weight: 300;
+      color: @main_dark;
+      padding: 10px;
+      text-decoration: none;
+      border-radius: 5px;
+      margin-right: 2px;
+      &:visited {
+        color: @main_dark;
+      }
+      &:first-child {
+
+        margin-left: -10px;
+
+      }
+    }
+
+    &_direction_link {
+
+    }
+
+    &_page_link.type_active, &_page_link:hover {
+
+      background-color: @main_lighter;
+
+    }
+
+  }
+
+  &_help {
+
+    &_inner {
+      background-color: @white;
+      padding: 30px 0;
+    }
+
+    @media @tablet_up {
+
+      width: 32%;
+      display: table-cell;
+      vertical-align: top;
+      background-clip: padding-box;
+
+    }
+
+    &_title {
+
+      //margin-top: 30px;
+      font-size: 20px;
+      font-weight: bold;
+
+    }
+
+    &_links {
+      margin-top: 10px;
+      padding: 10px 40px;
+
+      a {
+
+        color: @main_dark;
+        display: block;
+        position: relative;
+        text-align: left;
+        padding: 15px 0 15px 40px;
+
+        &:visited {
+          color: @main_dark;
+        }
+
+      }
+
+      &_item_icon {
+
+        position: absolute;
+        left: 0;
+        top: 50%;
+        margin-top: -13px;
+
+        img {
+          width: 24px;
+          height: 24px;
+          display: block;
+        }
+
+      }
+
+    }
+
+  }
+
+}

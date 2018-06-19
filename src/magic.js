@@ -7,14 +7,19 @@ import Cookies from 'angular-cookie';
 import NgTouch from 'angular-touch';
 import Tools from './tools/tools';
 import { WidgetRegister } from '@core/widget'
+import DynamicLocale from 'angular-dynamic-locale';
 // import NgLocale from 'angular-i18n';
 
 import './theme/theme.less';
 import './theme/bootstrap.scss';
 
-export let magic = angular.module('magic', [SailPlay, core, Cookies, Tools, NgTouch])
+export let magic = angular.module('magic', [SailPlay, core, Cookies, Tools, NgTouch, DynamicLocale])
 
-  .config(function (SailPlayProvider, MAGIC_CONFIG, SailPlayHistoryProvider, SailPlayActionsDataProvider) {
+  .config(function (SailPlayProvider, MAGIC_CONFIG, SailPlayHistoryProvider, SailPlayActionsDataProvider, tmhDynamicLocaleProvider, LANG) {
+
+    //set path for locales
+    tmhDynamicLocaleProvider.localeLocationPattern('https://cdnjs.cloudflare.com/ajax/libs/angular-i18n/1.7.0/angular-locale_{{locale}}.js');
+    tmhDynamicLocaleProvider.defaultLocale(LANG);
 
     //authorization configurations
     if (MAGIC_CONFIG.auth) {
@@ -25,6 +30,7 @@ export let magic = angular.module('magic', [SailPlay, core, Cookies, Tools, NgTo
         background: 'transparent'
       });
 
+      SailPlayProvider.set_auth_type(MAGIC_CONFIG.auth.type || 'cookie');
 
     }
 
@@ -36,7 +42,6 @@ export let magic = angular.module('magic', [SailPlay, core, Cookies, Tools, NgTo
 
     }
 
-    //SailPlayProvider.set_auth_type(MAGIC_CONFIG.auth.type);
 
   })
 
@@ -175,6 +180,8 @@ export default class Magic {
       Core.constant('MAGIC_CONFIG_DATA', res_config.config);
 
       Core.constant('MAGIC_CONFIG', res_config.config.config.$MAGIC);
+
+      Core.constant('LANG', config.lang || 'en');
 
       const app_container = config.root || document.getElementsByTagName('sailplay-magic')[0];
 

@@ -45,7 +45,13 @@ export let ToolsDatepicker = angular
         scope.days = dateService.days;
         scope.years = dateService.years;
         scope.focused = false;
-        scope.months = $locale.DATETIME_FORMATS.MONTH;
+        scope.months = [ null ];
+
+        $locale.DATETIME_FORMATS.MONTH.forEach((month) => {
+
+          scope.months.push(month);
+
+        });
 
         scope.range = function(start, end) {
           var result = [];
@@ -104,6 +110,49 @@ export let ToolsDatepicker = angular
 
       }
     };
-  }]);
+  }])
+
+  .directive("spmDateInput", function ($filter) {
+
+    return {
+      restrict: 'A',
+      require: 'ngModel',
+      link: function (scope, elm, attrs, NgModel) {
+
+        NgModel.$formatters.push(function(modelValue) {
+
+          if(!modelValue) return null;
+          //
+          // console.log(view_value);
+
+          return new Date(modelValue);
+
+        });
+
+        NgModel.$parsers.push(function(viewValue) {
+
+          let model_value = viewValue && $filter('date')(viewValue, 'yyyy-MM-dd') || '';
+
+          // console.log(model_value);
+
+          return model_value;
+        });
+
+        // NgModel.$validators.required = function(modelValue, viewValue) {
+        //   let valid = true;
+        //   angular.forEach(viewValue.split('.'), function(val) {
+        //     if (!val || val === "") valid = false;
+        //   });
+        //   return valid;
+        // };
+
+        // NgModel.$render = function() {
+        //   elm.val(NgModel.$viewValue);
+        // };
+
+      }
+    }
+
+  });
 
 export default ToolsDatepicker.name;

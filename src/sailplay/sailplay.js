@@ -4,6 +4,7 @@ import SailPlayGifts from './sailplay.gifts';
 import SailPlayHistory from './sailplay.history';
 import SailPlayActions from './sailplay.actions';
 import SailPlayBadges from './sailplay.badges';
+import SailPlayStatuses from './sailplay.statuses';
 import Cookies from 'angular-cookie';
 
 export let SailPlay = angular.module('sailplay', [
@@ -12,6 +13,7 @@ export let SailPlay = angular.module('sailplay', [
   SailPlayHistory,
   SailPlayActions,
   SailPlayBadges,
+  SailPlayStatuses,
   Cookies
 ])
 
@@ -32,6 +34,8 @@ export let SailPlay = angular.module('sailplay', [
     });
 
     SailPlay.on('login.success', function (res) {
+
+      console.log(res);
 
       $rootScope.auth_state = true;
       $rootScope.$broadcast('sailplay-login-success', res);
@@ -91,11 +95,13 @@ export let SailPlay = angular.module('sailplay', [
 
         var sp = $window.SAILPLAY || {};
 
-        sp.authorize = function (type, from) {
+        sp.authorize = function (type, from, init) {
 
-          $rootScope.submited = false
+          $rootScope.submited = false;
 
           type = type || auth_type;
+
+          // console.log('authorize', type);
 
           switch (type) {
 
@@ -125,10 +131,21 @@ export let SailPlay = angular.module('sailplay', [
 
             case 'remote':
 
+              let auth_hash = ipCookie(auth_hash_id);
+              if (auth_hash) {
+                sp.send('login', auth_hash);
+                break;
+              }
+
+              if(init) {
+                $rootScope.$broadcast('sailplay-login-error', {status: 'error', message: 'No auth_hash found'});
+                break;
+              }
+
               if(auth_options && auth_options.disable) {
                 $rootScope.$broadcast('sailplay-login-try', from);
                 sp.send('sailplay-login-try', from);
-                return;
+                break;
               }
 
               sp.send('login.remote', auth_options);
@@ -171,7 +188,8 @@ export let SailPlay = angular.module('sailplay', [
       'load.badges.list',
       'tags.exist',
       'tags.add',
-      'load.gifts.list'
+      'load.gifts.list',
+      'purchases.info'
 
     ];
 
@@ -214,6 +232,8 @@ export let SailPlay = angular.module('sailplay', [
 
 
     self.data = function (key, value) {
+
+      // console.log(key, value);
 
       if (typeof value !== 'undefined') {
         data[key] = angular.copy(value);

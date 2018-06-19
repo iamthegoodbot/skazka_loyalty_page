@@ -22,23 +22,26 @@ const widget = {
 
       scope.profile_form = new SailPlayProfileForm(scope.widget.options.config);
 
-      if(scope.widget.options.fill_profile_required) {
+      scope.$on('sailplay-login-success', () => {
 
-        scope.profile_form.completed().then((is_completed) => {
+        if(scope.widget.options.fill_profile_required) {
 
-          if(!is_completed) {
+          scope.profile_form.completed().then((is_completed) => {
 
-            scope.force_fill_profile = true;
-            scope.show_profile = true;
+            if(!is_completed) {
 
-            scope.lock_profile = true;
+              scope.force_fill_profile = true;
+              scope.show_profile = true;
 
-          }
+              scope.lock_profile = true;
 
-        });
+            }
 
-      }
+          });
 
+        }
+
+      });
 
       $rootScope.$on("text:state", (e, state) => {
         scope.show_text = state;
