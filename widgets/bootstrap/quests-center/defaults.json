@@ -1,0 +1,49 @@
+{
+    "styles": {
+        "spm_quests-sub-header": {
+            "font-weight": 300
+        },
+        "spm_quests-item:hover": {
+            "border-color": "#58aaf7"
+        },
+        "spm_quests-item-content": {
+            "flex-basis": "60%"
+        },
+        "spm_quests-item-name": {
+            "font-size": "16px",
+            "text-transform": "none",
+            "letter-spacing": "normal"
+        },
+        "spm_quests-header": {
+            "font-family": "HelveticaNueBold, Roboto, sans-serif",
+            "text-transform": "none"
+        },
+        "spm_quests-item": {
+            "max-width": "275px",
+            "border-color": "#e5e6e7",
+            "border-radius": "4px"
+        },
+        "spm_quests-item-icon": {
+            "max-height": "48px",
+            "max-width": "55px",
+            "background-size": "contain"
+        },
+        "spm_quests-item-hover": {
+            "background-color": "#58aaf7"
+        }
+    },
+    "enabled": true,
+    "id": "bootstrap_quests_center",
+    "texts": {
+        "sub_header": "Complete quests to recieve extra points and statuses",
+        "header": "Quests",
+        "modals": {
+            "success": {
+                "body": "Текст, который можно редактировать в конфиге",
+                "title": "Congratulations"
+            }
+        }
+    },
+    "images": {},
+    "options": {}
+}
