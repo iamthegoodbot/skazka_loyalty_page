@@ -3,7 +3,7 @@
   <div class="container state_authorized" data-ng-if="user()">
     <div class="row align-items-center spm_profile_inner">
       <div class="col">
-        <div class="position-relative d-flex align-items-center b-avatar mb-3">
+        <div class="position-relative d-flex align-items-start b-avatar mb-3">
           <div class="position-relative">
             <img ng-src="{{ widget.images.default_avatar }}" class="rounded-circle cursor-pointer b-avatar-image" ng-click="$root.$broadcast('profile:state', true)">
             <div class="spm_profile-welcome-name" data-ng-if="widget.options.show_name">

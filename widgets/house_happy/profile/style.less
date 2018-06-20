@@ -37,6 +37,10 @@
           width: 100%;
           margin: 0 0 10%;
         }
+
+        @media (max-width: 400px) {
+          margin: 50px 0 10%;
+        }
       }
 
       &-status-circle {
@@ -68,6 +72,11 @@
         @media (min-width: 992px) {
           right: auto;
           left: 0;
+        }
+
+        @media (max-width: 350px) {
+          width: 230px;
+          height: 230px;
         }
 
         &_name {
@@ -106,15 +115,24 @@
 
       .spm_profile_inner {
         height: 625px;
+        @media (max-width: 850px) {
+          text-align: center
+        }
       }
       .b-avatar {
+        @media (max-width: 850px) {
+          justify-content: center;
+        }
         img {
           width: 115px;
-          height: 115px
+          height: 115px;
         }
         .b-avatar-menu {
           margin-left: -15px;
           z-index: 2;
+          @media (max-width: 850px) {
+            margin-top: 25px;
+          }
           &__icon {
             width: 45px;
             height: 45px;
@@ -139,6 +157,9 @@
             z-index: 2;
             margin-left: -5px;
             box-shadow: -20px 10px 40px 0 rgba(38,124,160,0.30);
+            @media (max-width: 850px) {
+              position: absolute !important;
+            }
             &:before {
               right: 100%;
               top: 50%;
