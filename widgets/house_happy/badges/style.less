@@ -65,8 +65,9 @@
             height: auto;
             position: relative;
             z-index: 2;
+            opacity: 0.5;
           }
-          &.is_hovered {
+          &.is_received {
             &:before {
               content: "";
               display: block;
@@ -86,6 +87,9 @@
               &:before {
                 transform: scale(1);
               }
+            }
+            img {
+              opacity: 1;
             }
           }
           @media (max-width: 850px) {

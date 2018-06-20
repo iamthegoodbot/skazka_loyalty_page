@@ -50440,7 +50440,7 @@ _widget.Widget.config(["MagicWidgetProvider", function (MagicWidgetProvider) {
 /* 283 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container-fluid spm_badge_list clearfix\" ng-if=\"widget.enabled\" ng-cloak>\n    <div class=\"container\">\n        <div class=\"spm_badge_list-header\" ng-show=\"widget.texts.header\" ng-bind=\"widget.texts.header\"></div>\n        <div class=\"spm_badge_list-sub-header\" ng-show=\"widget.texts.sub_header\" ng-bind=\"widget.texts.sub_header\"></div>\n    </div>\n    <div class=\"spm_badge_list-container\" sailplay-badges>\n\n        <div class=\"spm_badge_list-list\">\n            <img class=\"spm_badge_list-list-blank\" ng-src=\"{{ widget.images.blank_item }}\" ng-repeat=\"blank in blank_elements track by $index\">\n            <div class=\"spm_badge_list-list-item\" ng-class=\"{is_hovered: badge.is_received || !user()}\" ng-repeat=\"badge in sailplay.badges.list().one_level_badges\">\n                <img ng-src=\"{{ badge.is_received || !user() ? badge.thumbs.url_250x250  : badge.thumbs.url_gs }}\">\n            </div>\n            <img class=\"spm_badge_list-list-blank\" ng-src=\"{{ widget.images.blank_item }}\" ng-repeat=\"blank in blank_elements track by $index\">\n        </div>\n\n        <div ng-repeat=\"line in sailplay.badges.list().multilevel_badges\">\n            <div class=\"spm_badge_list-list\">\n                <img class=\"spm_badge_list-list-blank\" ng-src=\"{{ widget.images.blank_item }}\" ng-repeat=\"blank in blank_elements track by $index\">\n                <div class=\"spm_badge_list-list-item\" ng-class=\"{is_hovered: badge.is_received || !user()}\" ng-repeat=\"badge in line\">\n                    <img ng-src=\"{{ badge.is_received || !user() ? badge.thumbs.url_250x250  : badge.thumbs.url_gs }}\">\n                </div>\n                <img class=\"spm_badge_list-list-blank\" ng-src=\"{{ widget.images.blank_item }}\" ng-repeat=\"blank in blank_elements track by $index\">\n            </div>\n        </div>\n\n    </div>\n</div>";
+module.exports = "<div class=\"container-fluid spm_badge_list clearfix\" ng-if=\"widget.enabled\" ng-cloak>\n    <div class=\"container\">\n        <div class=\"spm_badge_list-header\" ng-show=\"widget.texts.header\" ng-bind=\"widget.texts.header\"></div>\n        <div class=\"spm_badge_list-sub-header\" ng-show=\"widget.texts.sub_header\" ng-bind=\"widget.texts.sub_header\"></div>\n    </div>\n    <div class=\"spm_badge_list-container\" sailplay-badges sailplay-profile>\n\n        <div class=\"spm_badge_list-list\" ng-show=\"sailplay.badges.list().one_level_badges.length\">\n            <img class=\"spm_badge_list-list-blank\" ng-src=\"{{ widget.images.blank_item }}\" ng-repeat=\"blank in blank_elements track by $index\">\n            <div class=\"spm_badge_list-list-item\" ng-class=\"{is_received: badge.is_received || !user()}\" ng-repeat=\"badge in sailplay.badges.list().one_level_badges\">\n                <img ng-src=\"{{ badge.thumbs.url_250x250 }}\">\n            </div>\n            <img class=\"spm_badge_list-list-blank\" ng-src=\"{{ widget.images.blank_item }}\" ng-repeat=\"blank in blank_elements track by $index\">\n        </div>\n\n        <div ng-repeat=\"line in sailplay.badges.list().multilevel_badges\">\n            <div class=\"spm_badge_list-list\">\n                <img class=\"spm_badge_list-list-blank\" ng-src=\"{{ widget.images.blank_item }}\" ng-repeat=\"blank in blank_elements track by $index\">\n                <div class=\"spm_badge_list-list-item\" ng-class=\"{is_received: badge.is_received || !user()}\" ng-repeat=\"badge in line\">\n                    <img ng-src=\"{{ badge.thumbs.url_250x250 }}\">\n                </div>\n                <img class=\"spm_badge_list-list-blank\" ng-src=\"{{ widget.images.blank_item }}\" ng-repeat=\"blank in blank_elements track by $index\">\n            </div>\n        </div>\n\n    </div>\n</div>";
 
 /***/ }),
 /* 284 */
@@ -50482,7 +50482,7 @@ exports = module.exports = __webpack_require__(0)(undefined);
 
 
 // module
-exports.push([module.i, ".spm_wrapper .house_happy_badges .spm_badge_list {\n  position: relative;\n  background: white;\n  padding: 100px 0;\n}\n.spm_wrapper .house_happy_badges .spm_badge_list-header {\n  font-weight: 900;\n  text-transform: uppercase;\n  font-size: 35px;\n  line-height: 1;\n  color: #000000;\n  position: relative;\n  letter-spacing: 2.3px;\n  text-align: center;\n}\n.spm_wrapper .house_happy_badges .spm_badge_list-sub-header {\n  font-weight: normal;\n  font-size: 14px;\n  line-height: 22px;\n  margin: 25px 0 0;\n  color: #000000;\n}\n.spm_wrapper .house_happy_badges .spm_badge_list-container {\n  padding-top: 50px;\n}\n.spm_wrapper .house_happy_badges .spm_badge_list-list {\n  display: -webkit-box;\n  display: -webkit-flex;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n  -webkit-align-items: center;\n      -ms-flex-align: center;\n          align-items: center;\n  -webkit-box-pack: center;\n  -webkit-justify-content: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n  padding: 22.5px 0;\n  width: 100%;\n  overflow: hidden;\n}\n@media (max-width: 850px) {\n  .spm_wrapper .house_happy_badges .spm_badge_list-list {\n    -webkit-flex-wrap: wrap;\n        -ms-flex-wrap: wrap;\n            flex-wrap: wrap;\n    padding: 75px 0;\n  }\n}\n@media (max-width: 850px) {\n  .spm_wrapper .house_happy_badges .spm_badge_list-list-blank {\n    display: none;\n  }\n}\n.spm_wrapper .house_happy_badges .spm_badge_list-list-item {\n  margin: 0 10px;\n  position: relative;\n}\n.spm_wrapper .house_happy_badges .spm_badge_list-list-item img {\n  width: 250px;\n  height: auto;\n  position: relative;\n  z-index: 2;\n}\n.spm_wrapper .house_happy_badges .spm_badge_list-list-item.is_hovered:before {\n  content: \"\";\n  display: block;\n  width: 190px;\n  height: 20px;\n  margin: auto;\n  position: absolute;\n  bottom: 15px;\n  left: 20px;\n  right: 0;\n  -webkit-box-shadow: 0 20px 34px 0 rgba(155, 168, 202, 0.9);\n          box-shadow: 0 20px 34px 0 rgba(155, 168, 202, 0.9);\n  -webkit-transform: scale(0);\n      -ms-transform: scale(0);\n          transform: scale(0);\n  -webkit-transition: all 0.5s ease;\n  -o-transition: all 0.5s ease;\n  transition: all 0.5s ease;\n  z-index: 1;\n}\n.spm_wrapper .house_happy_badges .spm_badge_list-list-item.is_hovered:hover:before {\n  -webkit-transform: scale(1);\n      -ms-transform: scale(1);\n          transform: scale(1);\n}\n@media (max-width: 850px) {\n  .spm_wrapper .house_happy_badges .spm_badge_list-list-item {\n    margin: 20px;\n  }\n}\n", ""]);
+exports.push([module.i, ".spm_wrapper .house_happy_badges .spm_badge_list {\n  position: relative;\n  background: white;\n  padding: 100px 0;\n}\n.spm_wrapper .house_happy_badges .spm_badge_list-header {\n  font-weight: 900;\n  text-transform: uppercase;\n  font-size: 35px;\n  line-height: 1;\n  color: #000000;\n  position: relative;\n  letter-spacing: 2.3px;\n  text-align: center;\n}\n.spm_wrapper .house_happy_badges .spm_badge_list-sub-header {\n  font-weight: normal;\n  font-size: 14px;\n  line-height: 22px;\n  margin: 25px 0 0;\n  color: #000000;\n}\n.spm_wrapper .house_happy_badges .spm_badge_list-container {\n  padding-top: 50px;\n}\n.spm_wrapper .house_happy_badges .spm_badge_list-list {\n  display: -webkit-box;\n  display: -webkit-flex;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n  -webkit-align-items: center;\n      -ms-flex-align: center;\n          align-items: center;\n  -webkit-box-pack: center;\n  -webkit-justify-content: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n  padding: 22.5px 0;\n  width: 100%;\n  overflow: hidden;\n}\n@media (max-width: 850px) {\n  .spm_wrapper .house_happy_badges .spm_badge_list-list {\n    -webkit-flex-wrap: wrap;\n        -ms-flex-wrap: wrap;\n            flex-wrap: wrap;\n    padding: 75px 0;\n  }\n}\n@media (max-width: 850px) {\n  .spm_wrapper .house_happy_badges .spm_badge_list-list-blank {\n    display: none;\n  }\n}\n.spm_wrapper .house_happy_badges .spm_badge_list-list-item {\n  margin: 0 10px;\n  position: relative;\n}\n.spm_wrapper .house_happy_badges .spm_badge_list-list-item img {\n  width: 250px;\n  height: auto;\n  position: relative;\n  z-index: 2;\n  opacity: 0.5;\n}\n.spm_wrapper .house_happy_badges .spm_badge_list-list-item.is_received:before {\n  content: \"\";\n  display: block;\n  width: 190px;\n  height: 20px;\n  margin: auto;\n  position: absolute;\n  bottom: 15px;\n  left: 20px;\n  right: 0;\n  -webkit-box-shadow: 0 20px 34px 0 rgba(155, 168, 202, 0.9);\n          box-shadow: 0 20px 34px 0 rgba(155, 168, 202, 0.9);\n  -webkit-transform: scale(0);\n      -ms-transform: scale(0);\n          transform: scale(0);\n  -webkit-transition: all 0.5s ease;\n  -o-transition: all 0.5s ease;\n  transition: all 0.5s ease;\n  z-index: 1;\n}\n.spm_wrapper .house_happy_badges .spm_badge_list-list-item.is_received:hover:before {\n  -webkit-transform: scale(1);\n      -ms-transform: scale(1);\n          transform: scale(1);\n}\n.spm_wrapper .house_happy_badges .spm_badge_list-list-item.is_received img {\n  opacity: 1;\n}\n@media (max-width: 850px) {\n  .spm_wrapper .house_happy_badges .spm_badge_list-list-item {\n    margin: 20px;\n  }\n}\n", ""]);
 
 // exports
 
@@ -50595,8 +50595,24 @@ var widget = {
 
       SailPlay.on('gifts.purchase.success', function (res) {
         $rootScope.$apply(function () {
-          scope.requested_gift = angular.copy(scope.show_gift);
-          scope.show_gift = false;
+          var data = {};
+          var d = new Date();
+          data[scope.show_gift.name + " response " + d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear()] = scope.request_message;
+          data.response = scope.request_message;
+          data.sku = res.gift_sku;
+          SailPlay.send('vars.add', { custom_vars: data }, function (vars_res) {
+            $rootScope.$apply(function () {
+              if (vars_res && vars_res.status == 'ok') {
+                scope.requested_gift = angular.copy(scope.show_gift);
+                scope.show_gift = false;
+              } else {
+                $rootScope.$broadcast('notifier:notify', {
+                  header: widget.texts.modals.error.title,
+                  body: vars_res.message || widget.texts.modals.error.body
+                });
+              }
+            });
+          });
         });
       });
 
@@ -50613,25 +50629,8 @@ var widget = {
 
       scope.getGift = function (gift) {
         if (!gift || !scope.request_message || !scope.request_message.length) return;
-        var data = {};
-        var name_of_variable = $interpolate(scope.widget.options.variable_template)(gift);
-        if (!name_of_variable) {
-          console.error('Wrong name of variable');
-          return;
-        }
-        data[name_of_variable] = scope.request_message;
-        SailPlay.send('vars.add', { custom_vars: data }, function (vars_res) {
-          $rootScope.$apply(function () {
-            scope.requested_gift = false;
-            if (vars_res && vars_res.status == 'ok') {
-              SailPlay.send('gifts.purchase', { gift: gift });
-            } else {
-              $rootScope.$broadcast('notifier:notify', {
-                header: widget.texts.modals.error.title,
-                body: vars_res.message || widget.texts.modals.error.body
-              });
-            }
-          });
+        SailPlay.send('gifts.purchase', {
+          gift: gift
         });
       };
 

@@ -1,4 +1,6 @@
-import { Widget } from "@core/widget";
+import {
+  Widget
+} from "@core/widget";
 import Template from "./template.html";
 import "./style.less";
 
@@ -14,8 +16,25 @@ const widget = {
 
       SailPlay.on('gifts.purchase.success', (res) => {
         $rootScope.$apply(() => {
-          scope.requested_gift = angular.copy(scope.show_gift);
-          scope.show_gift = false;
+          let data = {};
+          let d = new Date();
+          data[`${scope.show_gift.name} response ${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}`] = scope.request_message;
+          data.response = scope.request_message;
+          data.sku = res.gift_sku
+          SailPlay.send('vars.add', {custom_vars: data}, vars_res => {
+            $rootScope.$apply(() => {
+              if (vars_res && vars_res.status == 'ok') {
+                scope.requested_gift = angular.copy(scope.show_gift);
+                scope.show_gift = false;
+              } else {
+                $rootScope.$broadcast('notifier:notify', {
+                  header: widget.texts.modals.error.title,
+                  body: vars_res.message || widget.texts.modals.error.body
+                });
+              }
+            })
+          });
+
         });
       });
 
@@ -30,27 +49,11 @@ const widget = {
         });
       });
 
+
       scope.getGift = gift => {
         if (!gift || !scope.request_message || !scope.request_message.length) return;
-        let data = {};
-        let name_of_variable = $interpolate(scope.widget.options.variable_template)(gift);
-        if (!name_of_variable) {
-          console.error('Wrong name of variable');
-          return;
-        }
-        data[name_of_variable] = scope.request_message;
-        SailPlay.send('vars.add', {custom_vars: data}, vars_res => {
-          $rootScope.$apply(() => {
-            scope.requested_gift = false;
-            if (vars_res && vars_res.status == 'ok') {
-              SailPlay.send('gifts.purchase', {gift: gift});
-            } else {
-              $rootScope.$broadcast('notifier:notify', {
-                header: widget.texts.modals.error.title,
-                body: vars_res.message || widget.texts.modals.error.body
-              });
-            }
-          })
+        SailPlay.send('gifts.purchase', {
+          gift: gift
         });
       };
 
