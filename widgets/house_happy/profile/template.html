@@ -129,7 +129,7 @@
     </magic-modal-body>
   </magic-modal>
 
-  <magic-modal ng-if="user()" on-close="revert_profile_form" show="$parent.$parent.show_profile" prevent-close="lock_profile">
+  <magic-modal ng-if="user()" on-close="revert_profile_form" show="$parent.$parent.$parent.show_profile" prevent-close="lock_profile">
     <magic-modal-title ng-bind-html="widget.texts.modals.profile.title|to_trusted"></magic-modal-title>
     <magic-modal-body>
 
