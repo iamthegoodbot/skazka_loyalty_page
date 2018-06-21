@@ -266,5 +266,73 @@
 
     }
 
+
   }
+    //selected badge modal
+    .modal_badge_selected {
+
+      .bns_overlay_iner {
+        .box-sizing(border-box);
+        width: 600px;
+      }
+  
+      .modal_badge_image {
+        display: inline-block;
+        .box-sizing(border-box);
+        width: 100%;
+        height: 250px;
+        padding: 0;
+        vertical-align: middle;
+        overflow: hidden;
+        text-align: center;
+        img {
+          width: auto;
+          height: 100%;
+          vertical-align: top;
+        }
+      }
+  
+      .modal_badge_tools {
+  
+        display: inline-block;
+        .box-sizing(border-box);
+        width: 100%;
+        padding: 40px 0;
+        vertical-align: middle;
+        text-align: center;
+  
+        .modal_badge_name {
+          font-size: 20px;
+  
+        }
+  
+        .modal_badge_description {
+  
+        }
+  
+      }
+  
+      .modal_badge_buttons {
+        margin-top: 30px;
+      }
+  
+      .badge_share_button {
+        vertical-align: middle;
+        display: inline-block;
+        width: 40px;
+        height: 40px;
+        background-position: center;
+        background-size: 20px 20px;
+        background-repeat: no-repeat;
+        cursor: pointer;
+        margin-right: 10px;
+        .transition(all 0.3s linear);
+        background-color: @main_light;
+        border-radius: 20px;
+        &:hover {
+          background-color: @main;
+        }
+      }
+  
+    }
 }

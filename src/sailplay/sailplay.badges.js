@@ -33,6 +33,22 @@ export let SailPlayBadges = angular.module('sailplay.badges', [])
   }
 })
 
+.filter('badgeParse', () => {
+  return badge => {
+
+    let json = {};
+
+    try {
+      json = JSON.parse(badge.descr)
+    } catch (e) {
+      // Oh well, but whatever...
+    }
+
+    return json;
+    
+  }
+})
+
 /**
  * @ngdoc directive
  * @name sailplay.badges.directive:sailplayStatuses
