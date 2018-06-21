@@ -18,6 +18,7 @@ export let Modal = angular.module('magic.tools.modal', [])
     transclude: {
       'title': '?magicModalTitle',
       'body': '?magicModalBody',
+      'footer': '?magicModalFooter',
     },
     link: function(scope, elm, attrs){
 

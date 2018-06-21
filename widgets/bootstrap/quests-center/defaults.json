@@ -1,0 +1,48 @@
+{
+    "styles": {
+      "spm_quests": {
+        "background": "#f2f9fe"
+      },
+        "spm_quests-item-content": {
+            "flex-basis": "60%"
+        },
+        "spm_quests-item-name": {
+            "font-size": "16px",
+            "text-transform": "none",
+            "letter-spacing": "normal"
+        },
+        "spm_quests-header": {
+            "font-family": "HelveticaNueBold, Roboto, sans-serif",
+            "text-transform": "none",
+            "margin-bottom": "40px"
+        },
+        "spm_quests-item": {
+            "max-width": "31.3%",
+            "background": "white",
+            "box-shadow": "0 3px 4px 0 rgba(148, 181, 204, 0.42)",
+            "border": "none",
+            "border-radius": "6px"
+        },
+        "spm_quests-item-icon": {
+            "max-height": "48px",
+            "max-width": "55px",
+            "background-size": "contain"
+        },
+        "spm_quests-item-hover": {
+            "background-color": "#58aaf7"
+        }
+    },
+    "enabled": true,
+    "id": "bootstrap_quests_center",
+    "texts": {
+        "header": "Earn extra points",
+        "modals": {
+            "success": {
+                "body": "Some text on config",
+                "title": "Congratulations"
+            }
+        }
+    },
+    "images": {},
+    "options": {}
+}

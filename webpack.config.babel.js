@@ -81,7 +81,11 @@ let loaders = [
       loader: "style-loader" // creates style nodes from JS strings
     }, {
       loader: "css-loader" // translates CSS into CommonJS
-    }, {
+    }, 
+    {
+      loader: 'postcss-loader', // Run post css actions
+    },
+    {
       loader: "less-loader" // compiles Less to CSS
     }]
   },
@@ -93,7 +97,11 @@ let loaders = [
       loader: "style-loader" // creates style nodes from JS strings
     }, {
       loader: "css-loader" // translates CSS into CommonJS
-    }, {
+    }, 
+    {
+      loader: 'postcss-loader', // Run post css actions
+    },
+    {
       loader: "stylus-loader" // compiles Stylus to CSS
     }]
   },
@@ -109,12 +117,6 @@ let loaders = [
       },
       {
         loader: 'postcss-loader', // Run post css actions
-        options: {
-          plugins: function() {
-            // post css plugins, can be exported to postcss.config.js
-            return [require('precss'), require('autoprefixer')];
-          }
-        }
       },
       {
         loader: 'sass-loader' // compiles Sass to CSS

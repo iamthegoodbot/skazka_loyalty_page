@@ -1,0 +1,102 @@
+@import (reference) "~@theme/mixins";
+@import (reference) "~@theme/helpers";
+@import (reference) "~@theme/colors";
+
+@maxWidth: 1200px;
+
+.spm_wrapper {
+  .house_happy_badges {
+    .spm_badge_list {
+      position: relative;
+      background: white;
+      padding: 100px 0;
+
+      &-header {
+        font-weight: 900;
+        text-transform: uppercase;
+        font-size: 35px;
+        line-height: 1;
+        color: @black;
+        position: relative;
+        letter-spacing: 2.3px;
+        text-align: center;
+      }
+
+      &-sub-header {
+        font-weight: normal;
+        font-size: 14px;
+        line-height: 22px;
+        margin: 25px 0 0;
+        color: @black;
+      }
+
+      &-container {
+        padding-top: 50px;
+      }
+
+      &-list {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 22.5px 0;
+        // background-image: url(https://sailplays3.cdnvideo.ru/media/assets/assetfile/d6197c1212acb32df0cb248b26b5092e.svg);
+        // background-position: left center;
+        // background-repeat: repeat-x;
+        // background-size: 250px auto;
+        width: 100%;
+        overflow: hidden;
+
+        @media (max-width: 850px) {
+          flex-wrap: wrap;
+          padding: 75px 0;
+        }
+
+        &-blank {
+          @media (max-width: 850px) {
+            display: none;
+          }
+        }
+
+        &-item {
+          margin: 0 10px;
+          position: relative;
+          img {
+            width: 250px;
+            height: auto;
+            position: relative;
+            z-index: 2;
+            opacity: 0.5;
+          }
+          &.is_received {
+            &:before {
+              content: "";
+              display: block;
+              width: 190px;
+              height: 20px;
+              margin: auto;
+              position: absolute;
+              bottom: 15px;
+              left: 20px;
+              right: 0;
+              box-shadow: 0 20px 34px 0 rgba(155, 168, 202, 0.9);
+              transform: scale(0);
+              transition: all 0.5s ease;
+              z-index: 1;
+            }
+            &:hover {
+              &:before {
+                transform: scale(1);
+              }
+            }
+            img {
+              opacity: 1;
+            }
+          }
+          @media (max-width: 850px) {
+            margin: 20px;
+          }
+        }
+      }
+    }
+  }
+}

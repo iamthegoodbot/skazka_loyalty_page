@@ -3527,8 +3527,13 @@ iferr@^0.1.5:
   resolved "https://registry.yarnpkg.com/iferr/-/iferr-0.1.5.tgz#c60eed69e6d8fdb6b3104a1fcbca1c192dc5b501"
 
 iferr@^1.0.0:
+<<<<<<< HEAD
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/iferr/-/iferr-1.0.2.tgz#e9fde49a9da06dc4a4194c6c9ed6d08305037a6d"
+=======
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/iferr/-/iferr-1.0.1.tgz#37b878f51d1e91a12d9f84ae7fca922a64c53a54"
+>>>>>>> master
 
 ignore-walk@^3.0.1:
   version "3.0.1"

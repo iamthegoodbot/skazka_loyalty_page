@@ -1,0 +1,27 @@
+<div class="container-fluid spm_badge_list clearfix" ng-if="widget.enabled" ng-cloak>
+    <div class="container">
+        <div class="spm_badge_list-header" ng-show="widget.texts.header" ng-bind="widget.texts.header"></div>
+        <div class="spm_badge_list-sub-header" ng-show="widget.texts.sub_header" ng-bind="widget.texts.sub_header"></div>
+    </div>
+    <div class="spm_badge_list-container" sailplay-badges sailplay-profile>
+
+        <div class="spm_badge_list-list" ng-show="sailplay.badges.list().one_level_badges.length">
+            <img class="spm_badge_list-list-blank" ng-src="{{ widget.images.blank_item }}" ng-repeat="blank in blank_elements track by $index">
+            <div class="spm_badge_list-list-item" ng-class="{is_received: badge.is_received || !user()}" ng-repeat="badge in sailplay.badges.list().one_level_badges">
+                <img ng-src="{{ badge.thumbs.url_250x250 }}">
+            </div>
+            <img class="spm_badge_list-list-blank" ng-src="{{ widget.images.blank_item }}" ng-repeat="blank in blank_elements track by $index">
+        </div>
+
+        <div ng-repeat="line in sailplay.badges.list().multilevel_badges">
+            <div class="spm_badge_list-list">
+                <img class="spm_badge_list-list-blank" ng-src="{{ widget.images.blank_item }}" ng-repeat="blank in blank_elements track by $index">
+                <div class="spm_badge_list-list-item" ng-class="{is_received: badge.is_received || !user()}" ng-repeat="badge in line">
+                    <img ng-src="{{ badge.thumbs.url_250x250 }}">
+                </div>
+                <img class="spm_badge_list-list-blank" ng-src="{{ widget.images.blank_item }}" ng-repeat="blank in blank_elements track by $index">
+            </div>
+        </div>
+
+    </div>
+</div>
