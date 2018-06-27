@@ -1,22 +1,17 @@
-<div class="spm_badges-container container-fluid">
+<div class="spm_badges-container">
 
-  <div class="container">
-    <div class="row">
-      <div class="col">
-        <div class="spm_badges-container__left">
-          <div class="spm_badges-header" ng-bind="widget.texts.header"></div>
-          <div class="spm_badges-sub-header" ng-bind-html="widget.texts.sub_header | to_trusted"></div>
-        </div>
+    <div class="spm_badges-container__left">
+        <div class="spm_badges-header" ng-bind="widget.texts.header"></div>
+        <div class="spm_badges-sub-header" ng-bind-html="widget.texts.sub_header | to_trusted"></div>
+    </div>
 
-        <div class="spm_badges-container__right spm_badges-list">
-          <div sailplay-badges class="badge_lines_container clearfix">
+    <div class="spm_badges-container__right spm_badges-list">
+        <div sailplay-badges class="badge_lines_container clearfix">
             <sailplay-magic-bootstrap-badge-line  class="one_level" line="sailplay.badges.list().one_level_badges" type="one_level" config="widget"></sailplay-magic-bootstrap-badge-line>
             <sailplay-magic-bootstrap-badge-line class="multi_level" ng-repeat="line in sailplay.badges.list().multilevel_badges"
                                        line="line" config="widget"></sailplay-magic-bootstrap-badge-line>
-          </div>
         </div>
-      </div>
     </div>
-  </div>
+    
 
 </div>
