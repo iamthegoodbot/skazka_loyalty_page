@@ -4,11 +4,35 @@
             <div class="bon_slide_cat_item">
                 <div class="bon_item_line" ng-style="{left : left}">
 
-                    <sailplay-magic-badge magic-slide badge="badge" on-click="badge_select(badge);"
-                                          ng-repeat="badge in line" ng-class="{ last: $last, type_active: badge.is_received }"></sailplay-magic-badge>
+                    <sailplay-magic-badge magic-slide badge="badge" on-click="badge_select(badge);" ng-repeat="badge in line" ng-class="{ last: $last, type_active: badge.is_received }"></sailplay-magic-badge>
                 </div>
 
             </div>
         </div>
     </div>
+
+    <magic-modal class="modal_badge_selected" data-ng-cloak data-show="badge_selected">
+        <magic-modal-body>
+            <div>
+
+                <div class="modal_badge_image">
+                    <img class="gift_more_img" data-ng-src="{{ badge_selected.is_received ? badge_selected.thumbs.url_250x250 : ( (badge_selected | badgeParse).image || (badge_selected.thumbs.url_gs | sailplay_pic) ) }}" alt="{{ badge_selected.name }}">
+                </div>
+
+                <div class="modal_badge_tools">
+
+                    <p style="margin-top: 10px;">
+                        <span class="modal_badge_name" data-ng-bind="badge_selected.name"></span>
+                    </p>
+
+                    <p style="margin-top: 10px;">
+                        <span class="modal_badge_description" data-ng-bind="(badge_selected | badgeParse).description"></span>
+                    </p>
+
+                </div>
+
+            </div>
+        </magic-modal-body>
+    </magic-modal>
+
 </div>

@@ -51,7 +51,6 @@ Widget.directive('sailplayMagicBadgeLine', function(MAGIC_CONFIG, SailPlayShare,
       scope.badge_selected = false;
 
       scope.badge_select = function (badge) {
-        return;
         scope.badge_selected = badge || false;
       };
 
