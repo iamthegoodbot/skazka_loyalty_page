@@ -188,7 +188,7 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
    *
    * @description
    * Factory for checking user profile after signup
-   *   
+   *
    */
 
   .factory('fillProfileTag', (SailPlay, SailPlayApi, MAGIC_CONFIG, $q, $rootScope) => {
@@ -264,9 +264,9 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
             '_': /[0-9]/,
             'd':/[0-3]/,
             'm':/[01]/,
-            '1':/[0-1]/, 
-            '2':/[0-2]/, 
-            '3':/[0-3]/, 
+            '1':/[0-1]/,
+            '2':/[0-2]/,
+            '3':/[0-3]/,
             'y':/[12]/
           }
         }
@@ -287,9 +287,9 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
           var custom_fields = [];
           form.fields = config.fields.map(function (field) {
             var form_field = new SailPlayFillProfile.Field(field);
-            if (field.type == 'variable') 
+            if (field.type == 'variable')
               custom_fields.push(form_field)
-            
+
             //we need to assign received values to form
             switch (form_field.type) {
 
@@ -358,11 +358,11 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
           //}
           // console.dir(form);
 
-          saved_form = angular.copy(form);                        
+          saved_form = angular.copy(form);
 
-          if (custom_fields.length) {            
+          if (custom_fields.length) {
             SailPlayApi.call("vars.batch", { names: custom_fields.map(field => { return field.name }) }, (res) => {
-              angular.forEach(res.vars, variable => {                
+              angular.forEach(res.vars, variable => {
                 angular.forEach(custom_fields, field => {
                   if (field.name == variable.name) field.value = variable.value;
                 })
@@ -371,7 +371,7 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
           }
 
           if (MAGIC_CONFIG.data.force_registration && MAGIC_CONFIG.data.force_registration.active && MAGIC_CONFIG.data.force_registration.tag_name && !$rootScope.submited){
-            
+
             const tagName = MAGIC_CONFIG.data.force_registration.tag_name
 
             SailPlay.send('tags.exist', {tags: [tagName]}, function (res) {
@@ -428,7 +428,7 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
             return;
           }
 
-          var data_user = SailPlayApi.data('load.user.info')() && SailPlayApi.data('load.user.info')().user;         
+          var data_user = SailPlayApi.data('load.user.info')() && SailPlayApi.data('load.user.info')().user;
           var req_user = {},
             custom_user_vars = {};
 
@@ -450,7 +450,7 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
           if (req_user.addOid && data_user && data_user.origin_user_id && data_user.origin_user_id == req_user.addOid) {
             delete req_user.addOid;
           }
-          
+
           if (req_user.sex && data_user && data_user.sex && data_user.sex == req_user.sex) {
             delete req_user.sex;
           }
@@ -481,7 +481,7 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
           //   bd[1] = parseInt(bd[1]) < 10 ? '0' + parseInt(bd[1]) : bd[1];
           //   req_user.birthDate = bd.reverse().join('-');
           // }
-          
+
           if (req_user.birthDate && data_user && data_user.birth_date && data_user.birth_date == req_user.birthDate) {
             delete req_user.birthDate;
           }
@@ -489,10 +489,9 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
 
           // Check to the fill profile action (only system field)
           let fill_profile_flag = false;
-          let required_fields = scope.sailplay.fill_profile.form.fields.filter(item => (item.required && item.type=='system'));
-          if(required_fields.length == Object.keys(req_user).length) {
-            fill_profile_flag = true
-          }
+          let required_fields = scope.sailplay.fill_profile.form.fields.filter(item => (item.required));
+          fill_profile_flag = required_fields.every(field => field.value);
+
           console.log('fill_profile_flag',fill_profile_flag)
           console.log('req_user', req_user)
           console.log('required_fields',required_fields)
@@ -539,7 +538,7 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
                         callback({status: "verify", identifier: 'phone' ,value: verifyPhone})
                       }
                     });
-                  })  
+                  })
               } else {
                 if (typeof callback == 'function') callback(req_user, user_res);
                 SailPlayApi.call('load.user.info', {all: 1, purchases: 1}, () => {
