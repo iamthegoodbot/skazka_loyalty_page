@@ -37875,7 +37875,7 @@ var SailPlayProfile = exports.SailPlayProfile = _angular2.default.module('sailpl
  *
  * @description
  * Factory for checking user profile after signup
- *   
+ *
  */
 
 .factory('fillProfileTag', function (SailPlay, SailPlayApi, MAGIC_CONFIG, $q, $rootScope) {
@@ -38171,11 +38171,12 @@ var SailPlayProfile = exports.SailPlayProfile = _angular2.default.module('sailpl
         // Check to the fill profile action (only system field)
         var fill_profile_flag = false;
         var required_fields = scope.sailplay.fill_profile.form.fields.filter(function (item) {
-          return item.required && item.type == 'system';
+          return item.required;
         });
-        if (required_fields.length == (0, _keys2.default)(req_user).length) {
-          fill_profile_flag = true;
-        }
+        fill_profile_flag = required_fields.every(function (field) {
+          return field.value;
+        });
+
         console.log('fill_profile_flag', fill_profile_flag);
         console.log('req_user', req_user);
         console.log('required_fields', required_fields);
