@@ -143,54 +143,7 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
         SailPlay.authorize(type, from);
 
       }
-      tags_add(params, callback) {
-
-        if (!params) return;
-
-        var tags = params.tags || [];
-
-        if (tags.length > 0) {
-
-          function chunk(array, chunkSize) {
-            return [].concat.apply([], array.map(function (elem, i) {
-              return i % chunkSize ? [] : [array.slice(i, i + chunkSize)];
-            }));
-          }
-
-          var chunked_tags = chunk(tags, 10);
-
-          var tag_promises = [];
-
-          angular.forEach(chunked_tags, function (chunk) {
-
-            var promise = $q(function (resolve, reject) {
-
-              SailPlay.send('tags.add', {tags: chunk}, function (tags_res) {
-                if (tags_res.status === 'ok') {
-
-                  resolve(tags_res);
-
-                  //sp.send('leads.submit.success', { lead: self, response: user_res, tags: res });
-                } else {
-                  reject(tags_res);
-                  //sp.send('leads.submit.error', { lead: self, response: user_res, tags: res });
-                }
-              });
-
-            });
-
-            tag_promises.push(promise);
-
-          });
-
-          $q.all(tag_promises).then(function (tags_res) {
-
-            callback && callback(tags_res);
-
-          });
-        }
-
-      };
+      
     }
 
   })
@@ -237,9 +190,21 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
           this.placeholder_char = params.placeholder_char;
           this.required = params.required;
           this.input = params.input || 'text';
+          this.tag_prefix = params.tag_prefix;
+          
+          if(params.depend) {
+            this.depend = params.depend;
+          }
 
           if (params.data) {
             this.data = params.data;
+          }
+
+          this.isValid = () => {
+            if(this.type == 'checkbox') {
+              return this.data.filter(item => item.model).length
+            }
+            return true;
           }
 
           this.value = '';
@@ -363,7 +328,7 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
             var form_field = new SailPlayFillProfile.Field(field);
             if (field.type == 'variable') 
               custom_fields.push(form_field)
-            
+
             //we need to assign received values to form
             switch (form_field.type) {
 
@@ -599,8 +564,6 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
           console.log('fill_profile_flag',fill_profile_flag);
           console.log('req_user', req_user);
           console.log('required_fields',required_fields);
-          console.log('required_fields',custom_user_vars);
-
 
           SailPlay.send('users.update', req_user, function (user_res) {
 
@@ -700,23 +663,43 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
 
         this.form = {};
 
+        this.tag_list = [];
+
         this._form_cache = {};
 
         this.reg_incomplete = false;
 
         this.preventClose = false;
 
+        this.checkDependency = item => {
+          let show = true;
+          if(item.depend) {
+            let dependItem = this.form.fields.find(field => field.name == item.depend.name);
+            show = dependItem && this.checkDependency(dependItem) && dependItem.value === item.depend.value
+            if (!show) {
+              item.value = undefined;
+            }
+          }
+          return show;
+        };
+
         if (!config) {
           console.error('Provide fill_profile_config');
         }
+
+        var self = this;
 
         SailPlayApi.observe('load.user.info', user => {
           if (!user) return;
           var form = this.form;
           var custom_fields = [];
+
           form.fields = this.config.fields.map(function (field) {
             var form_field = new SailPlayFillProfile.Field(field);
             if (field.type == 'variable')
+              custom_fields.push(form_field)
+
+            if (form_field.data && form_field.data.length && form_field.data.filter(item => item.custom).length) 
               custom_fields.push(form_field)
 
             //we need to assign received values to form
@@ -767,7 +750,6 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
                     break;
 
                   case 'sex':
-
                     form_field.value = user.user.sex || '';
                     break;
 
@@ -794,21 +776,206 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
           //}
           // console.dir(form);
 
-          this._form_cache = angular.copy(form);
+          // this._form_cache = angular.copy(form);
+
 
           if (custom_fields.length) {
             SailPlayApi.call("vars.batch", { names: custom_fields.map(field => { return field.name }) }, (res) => {
               angular.forEach(res.vars, variable => {
                 angular.forEach(custom_fields, field => {
-                  if (field.name == variable.name) field.value = variable.value;
+                  if(field.type === 'system' || field.type === 'tag') {
+                    if (field.name == variable.name && variable.value && field.data) {
+                      angular.forEach(field.data, _field => {
+                        if (_field.custom) {
+                          field.value = _field.value;
+                          _field.custom_value = variable.value;
+                        }
+                      })
+                    }
+                  } else {
+                    if (field.name == variable.name) field.value = variable.value;
+                  }
                 })
               })
+              self._form_cache = angular.copy(form);
             })
+          } else {
+            self._form_cache = angular.copy(form);
           }
+
+          SailPlayApi.call("tags.list", {}, ({ tags }) => {
+            
+            if (!tags || !tags.length) return;
+
+            self.tag_list = angular.copy(tags);
+            // Обход - поля формы
+            angular.forEach(form.fields, _field => {
+              if (_field.type === 'tag' && _field.data) {
+
+                // Возможнные значения
+                angular.forEach(_field.data, item => {
+                  let tag = _field.tag_prefix ? _field.tag_prefix + item.value : _field.name + ' ' + item.value;
+                  let exist = tags.find(_tag => _tag.tag === tag);
+                  if (exist && _field.input === 'radio') {
+                    _field.value = item.value
+                  } else if (exist && _field.input === 'checkbox') {
+                    item.model = true
+                  }
+                })
+
+              }
+            })
+
+            this._form_cache = angular.copy(form);
+
+          })
 
           form.auth_hash = SailPlay.config().auth_hash;
 
         });
+
+      }
+      tags_delete(params, callback) {
+
+        if (!params) return;
+
+        var tags = params.tags || [];
+
+        if (tags.length > 0) {
+
+          function chunk(array, chunkSize) {
+            return [].concat.apply([], array.map(function (elem, i) {
+              return i % chunkSize ? [] : [array.slice(i, i + chunkSize)];
+            }));
+          }
+
+          var chunked_tags = chunk(tags, 10);
+
+          var tag_promises = [];
+
+          angular.forEach(chunked_tags, function (chunk) {
+
+            var promise = $q(function (resolve, reject) {
+
+              SailPlay.send('tags.delete', {tags: chunk}, function (tags_res) {
+                if (tags_res.status === 'ok') {
+
+                  resolve(tags_res);
+
+                  //sp.send('leads.submit.success', { lead: self, response: user_res, tags: res });
+                } else {
+                  reject(tags_res);
+                  //sp.send('leads.submit.error', { lead: self, response: user_res, tags: res });
+                }
+              });
+
+            });
+
+            tag_promises.push(promise);
+
+          });
+
+          $q.all(tag_promises).then(function (tags_res) {
+
+            callback && callback(tags_res);
+
+          });
+        }
+      }
+      tags_add(params, callback) {
+
+        if (!params) return;
+
+        var tags = params.tags || [];
+
+        if (tags.length > 0) {
+
+          function chunk(array, chunkSize) {
+            return [].concat.apply([], array.map(function (elem, i) {
+              return i % chunkSize ? [] : [array.slice(i, i + chunkSize)];
+            }));
+          }
+
+          var chunked_tags = chunk(tags, 10);
+
+          var tag_promises = [];
+
+          angular.forEach(chunked_tags, function (chunk) {
+
+            var promise = $q(function (resolve, reject) {
+
+              SailPlay.send('tags.add', {tags: chunk}, function (tags_res) {
+                if (tags_res.status === 'ok') {
+
+                  resolve(tags_res);
+
+                  //sp.send('leads.submit.success', { lead: self, response: user_res, tags: res });
+                } else {
+                  reject(tags_res);
+                  //sp.send('leads.submit.error', { lead: self, response: user_res, tags: res });
+                }
+              });
+
+            });
+
+            tag_promises.push(promise);
+
+          });
+
+          $q.all(tag_promises).then(function (tags_res) {
+
+            callback && callback(tags_res);
+
+          });
+        }
+
+      }
+      tags_exist(params, callback) {
+
+        if (!params) return;
+
+        var tags = params.tags || [];
+
+        if (tags.length > 0) {
+
+          function chunk(array, chunkSize) {
+            return [].concat.apply([], array.map(function (elem, i) {
+              return i % chunkSize ? [] : [array.slice(i, i + chunkSize)];
+            }));
+          }
+
+          var chunked_tags = chunk(tags, 10);
+
+          var tag_promises = [];
+
+          angular.forEach(chunked_tags, function (chunk) {
+
+            var promise = $q(function (resolve, reject) {
+
+              SailPlay.send('tags.exist', {tags: chunk}, function (tags_res) {
+                if (tags_res.status === 'ok') {
+
+                  resolve(tags_res);
+
+                  //sp.send('leads.submit.success', { lead: self, response: user_res, tags: res });
+                } else {
+                  reject(tags_res);
+                  //sp.send('leads.submit.error', { lead: self, response: user_res, tags: res });
+                }
+              });
+
+            });
+
+            tag_promises.push(promise);
+
+          });
+
+          $q.all(tag_promises).then(function (tags_res) {
+
+            callback && callback(tags_res);
+
+          });
+        }
 
       }
       revert(form) {
@@ -845,15 +1012,74 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
           return;
         }
 
+
+        let self = this;
+
         var data_user = SailPlayApi.data('load.user.info')() && SailPlayApi.data('load.user.info')().user;
         var req_user = {},
-          custom_user_vars = {};
+          custom_user_vars = {},
+          user_tags_add = [],
+          user_tags_delete = [];
 
+        // SORRY FOR THIS
         angular.forEach(this.form.fields, function (item) {
           if (item.type == 'variable') {
             custom_user_vars[item.name] = item.value
-          } else
+          } else if (item.type == 'tag') {
+            // Если это тег
+            if (item.input === 'radio') {
+              // Radio buttons
+              angular.forEach(item.data, function(_item) {
+                let tag = item.tag_prefix ? item.tag_prefix + _item.value : item.name + ' ' + _item.value;
+                // Если отмечено значение
+                if(_item.value == item.value) {
+                  user_tags_add.push(tag);
+                  // Если имеется пользовательский вариант
+                  if (_item.custom) custom_user_vars[item.name] = _item.custom_value
+                  
+                } else {
+                  // Удаляем значения
+                  user_tags_delete.push(tag);
+                  if (_item.custom) custom_user_vars[item.name] = ''
+                }
+              })
+            } else if (item.input === 'checkbox') {
+              // Checkboxes
+              let selectedOptions = item.data.filter(option => option.model).map(option => item.tag_prefix ? item.tag_prefix + option.value : item.name + ' ' + option.value);
+              let unselectedOptions = item.data.filter(option => !option.model).map(option => item.tag_prefix ? item.tag_prefix + option.value : item.name + ' ' + option.value);
+
+              user_tags_add = [...user_tags_add, ...selectedOptions]
+              user_tags_delete = [...user_tags_delete, ...unselectedOptions]
+            } else {
+              // Остальные типы инпутов
+              let tag = item.tag_prefix ? item.tag_prefix + item.value : item.name + ' ' + item.value;
+              let unselectedOptions = item.data.filter(option => option.value != item.value).map(option => item.tag_prefix ? item.tag_prefix + option.value : item.name + ' ' + option.value);
+
+              user_tags_add.push(tag);
+              user_tags_delete = [...user_tags_delete, ...unselectedOptions]
+            }
+          } else if (item.type == 'system') {
+            if (item.input === 'radio') {
+              angular.forEach(item.data, function(_item) {
+                let tag = item.tag_prefix ? item.tag_prefix + _item.value : item.name + ' ' + _item.value;
+                // Если отмечено значение
+                if(_item.value == item.value) {
+                  user_tags_add.push(tag);
+                  // Если имеется пользовательский вариант
+                  if (_item.custom) custom_user_vars[item.name] = _item.custom_value
+                  else req_user[item.name] = item.value;
+                } else {
+                  // Удаляем значения
+                  user_tags_delete.push(tag);
+                  if (_item.custom) custom_user_vars[item.name] = ''
+                }
+              })
+            } else {
+              req_user[item.name] = item.value;
+            }
+          } else {
             req_user[item.name] = item.value;
+          }
         });
 
         if (req_user.addPhone && data_user && data_user.phone && data_user.phone.replace(/\D/g, '') == req_user.addPhone.replace(/\D/g, '')) {
@@ -922,20 +1148,35 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
         }
 
 
+
         // Check to the fill profile action (only system field)
         let fill_profile_flag = false;
         let required_fields = this.form.fields.filter(item => (item.required));
         fill_profile_flag = required_fields.every(field => field.value);
 
-        console.log('fill_profile_flag',fill_profile_flag);
-        console.log('req_user', req_user);
-        console.log('required_fields',required_fields);
-        console.log('required_fields',custom_user_vars);
+       
+        user_tags_delete = user_tags_delete.filter(tag => {
+          return self.tag_list.find(item => item.tag === tag)
+        })
+        user_tags_add = user_tags_add.filter(tag => {
+          return !self.tag_list.find(item => item.tag === tag)
+        })
 
+        if (user_tags_delete.length) {
+          self.tags_delete({tags: user_tags_delete}, () => {
+            if (user_tags_add.length) {
+              self.tags_add({tags: user_tags_add});
+            }
+          });
+        } else if (user_tags_add.length) {
+          self.tags_add({tags: user_tags_add});
+        }
 
         SailPlay.send('users.update', req_user, (user_res) => {
 
           if (user_res.status === 'ok') {
+
+            self._form_cache = angular.copy(self.form);
 
             if(fill_profile_flag) {
               SailPlay.send('tags.add', {tags: [MAGIC_CONFIG.data.FILL_PROFILE_TAG]})

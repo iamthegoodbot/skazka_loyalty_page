@@ -13,6 +13,16 @@ const widget = {
     return (scope, elm, attrs) => {
       scope.show_success = false;
 
+      scope.custom = {
+        selected: false,
+        select: (action) => {
+
+          scope.custom.selected = action;
+          console.log(scope.custom.selected);
+
+        }
+      };
+
       scope.action_styles = action_data => {
         return (
           action_data &&
@@ -24,6 +34,7 @@ const widget = {
       SailPlay.on('actions.perform.success', res => {
         scope.$apply(function() {
           scope.show_success = true;
+          scope.custom.selected = false;
         });
       });
     };

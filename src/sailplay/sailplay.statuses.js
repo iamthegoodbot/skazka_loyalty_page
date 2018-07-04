@@ -15,9 +15,11 @@ SailPlayStatuses.service('SailPlayStatusesLastMonth', function (SailPlayApi, Sai
 
       this.tags_exist = [];
 
-      if(this.list.length > 0) {
+      if (this.list.length > 0) {
 
-        SailPlay.send('tags.exist', {tags: this.list.map(status => status.tag)}, (res) => {
+        SailPlay.send('tags.exist', {
+          tags: this.list.map(status => status.tag)
+        }, (res) => {
           if (res && res.tags) {
             this.tags_exist = res.tags;
           }
@@ -28,13 +30,13 @@ SailPlayStatuses.service('SailPlayStatusesLastMonth', function (SailPlayApi, Sai
       }
 
     }
-    received(){
+    received() {
 
       let received = false;
 
       this.tags_exist.forEach((item) => {
 
-        if(item.exist) received = this.list.filter(status => status.tag === item.name)[0];
+        if (item.exist) received = this.list.filter(status => status.tag === item.name)[0];
 
       });
 
@@ -42,9 +44,9 @@ SailPlayStatuses.service('SailPlayStatusesLastMonth', function (SailPlayApi, Sai
 
     }
     current() {
-      if(!this.list) return;
-      let sum =  this.sum();
-      const current_statuses = this.list.filter(x=>x.sum<=sum);
+      if (!this.list) return;
+      let sum = this.sum();
+      const current_statuses = this.list.filter(x => x.sum <= sum);
 
       // console.log(current_statuses);
       // this.current = current_statuses.pop();
@@ -52,18 +54,18 @@ SailPlayStatuses.service('SailPlayStatusesLastMonth', function (SailPlayApi, Sai
     }
     next() {
 
-      if(!this.list) return;
+      if (!this.list) return;
 
       let user = this.user();
 
-      if(!user) {
+      if (!user) {
         return {
           status: this.list[0],
           offset: this.list[0].sum
         };
       }
 
-      let sum =  this.sum();
+      let sum = this.sum();
 
       let future_statuses = this.list.sort((a, b) => {
         return a.sum > b.sum;
@@ -79,7 +81,7 @@ SailPlayStatuses.service('SailPlayStatusesLastMonth', function (SailPlayApi, Sai
     }
     sum() {
       let history = this.history();
-      if(!history || !history.length) return 0;
+      if (!history || !history.length) return 0;
       let now = new Date();
 
       let purchases = history.filter(item => {
@@ -90,8 +92,8 @@ SailPlayStatuses.service('SailPlayStatusesLastMonth', function (SailPlayApi, Sai
 
       // console.log(purchases);
 
-      let sum = purchases.reduce((prev, next)=> {
-        return prev+next.price
+      let sum = purchases.reduce((prev, next) => {
+        return prev + next.price
       }, 0);
 
       // console.log(sum);
@@ -102,12 +104,12 @@ SailPlayStatuses.service('SailPlayStatusesLastMonth', function (SailPlayApi, Sai
     offset(index) {
       return ((100 / (this.list.length - 1)) * index);
     }
-    offset_to(status){
+    offset_to(status) {
       return status.sum - this.sum();
     }
     progress() {
 
-      if(this.list.length < 1) return 0;
+      if (this.list.length < 1) return 0;
 
       let purchases_sum = this.sum();
 
@@ -153,10 +155,30 @@ SailPlayStatuses.service('SailPlayStatusesLastMonth', function (SailPlayApi, Sai
 
 });
 
-SailPlayStatuses.service('SailPlayStatuses', function (SailPlayStatusesLastMonth) {
+SailPlayStatuses.service('SailPlayStatusesPoints', function (SailPlayApi) {
+  return class SailPlayStatusesPoints {
+    constructor(config) {
+      this.user = SailPlayApi.data('load.user.info');
+      this.list = config.list || [];
+    }
+    received() {
+      let user = this.user();
+      if (!user) return [];
+      let user_points = user.user_points.confirmed;
+      return this.list.filter(item => item.points <= user_points)
+    }
+    current() {
+      let received = this.received();
+      return received.length ? received[received.length - 1] : undefined;
+    }
+  }
+})
+
+SailPlayStatuses.service('SailPlayStatuses', function (SailPlayStatusesLastMonth, SailPlayStatusesPoints) {
 
   this.TYPES = {
-    last_month: SailPlayStatusesLastMonth
+    last_month: SailPlayStatusesLastMonth,
+    points: SailPlayStatusesPoints
   };
 
 });

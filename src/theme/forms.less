@@ -145,7 +145,7 @@
   }
 
   .form_input {
-    &[type="text"], &[type="email"] {
+    &[type="text"], &[type="email"], &[type="date"] {
       background-color: @white;
       float: left;
       height: 57px;
@@ -420,7 +420,7 @@
   }
 
   .spm_form_input {
-     &[type="text"], &[type="email"], &[type="tel"] {
+     &[type="text"], &[type="email"], &[type="tel"], &[type="date"] {
       color: @black;
       font-size: 16px;
       font-weight: 300;
@@ -442,9 +442,15 @@
       }
       &:focus, &.ng-not-empty {
         padding: 32px 20px 13px;
+        &[type="date"] {
+          padding: 23px 20px 22px;
+        }
         & + .spm_form_label {
           font-size: 14px;
           padding: 10px 20px;
+          &.type_absolute {
+            padding: 12px 22px;
+          }
         }
       }
       .placeholder({
@@ -461,26 +467,39 @@
     display: block;
     padding-left: 28px;
     .box-sizing(border-box);
-
-    background-image: url(https://sailplays3.cdnvideo.ru/media/assets/assetfile/0074d36e09ae4824b8f30586845af8f2.png);
-    background-repeat: no-repeat;
-    background-size: 24px 24px;
-    background-position: -3px center;
     cursor: pointer;
-
-    &.checked {
-      background-image: url(https://sailplays3.cdnvideo.ru/media/assets/assetfile/c8009532c53d1abd6a160b00c0092092.png);
+    
+    &:before {
+      content: '';
+      position: absolute;
+      top: 10px;
+      left: 0;
+      width: 20px;
+      height: 20px;
+      border: 2px solid #bdcdd7;
     }
 
-    .spm_form_checkbox_label {
+
+    &.checked {
+      &:after {
+        content: '';
+        position: absolute;
+        top: 15px;
+        left: 5px;
+        width: 10px;
+        height: 10px;
+        background: #bdcdd7;
+      }
+    }
+
+    &_label {
       line-height: 40px;
       font-size: 16px;
       font-weight: 300;
       color: @main_dark
     }
 
-    .spm_form_checkbox_input {
-
+    &_input {
       top: 10px;
       width: 20px;
       height: 20px;
@@ -488,6 +507,57 @@
       position: absolute;
       visibility: hidden;
 
+    }
+
+  }
+
+  .spm_form_radio {
+
+    position: relative;
+    display: block;
+    padding-left: 28px;
+    .box-sizing(border-box);
+    cursor: pointer;
+
+    &:before {
+      content: '';
+      position: absolute;
+      top: 10px;
+      left: 0;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 2px solid #bdcdd7;
+    }
+
+
+    &.checked {
+      &:after {
+        content: '';
+        position: absolute;
+        top: 15px;
+        left: 5px;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: #bdcdd7;
+      }
+    }
+
+    &_label {
+      line-height: 40px;
+      font-size: 16px;
+      font-weight: 300;
+      color: @main_dark
+    }
+
+    &_input {
+      top: 10px;
+      width: 20px;
+      height: 20px;
+      left: 0;
+      position: absolute;
+      visibility: hidden;
     }
 
   }
