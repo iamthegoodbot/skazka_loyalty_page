@@ -1,0 +1,157 @@
+<section ng-if="widget.enabled" ng-cloak ng-class="{status_list: statuses_utils.show}" class="container-fluid spm_profile profile clearfix">
+
+    <div ng-hide="statuses_utils.show" class="container text-container">
+        <img ng-if="profile.user()" ng-src="{{ profile.user().user.pic }}" ng-click="profile_form_utils.open()" class="profile">
+        <div class="d-flex flex-column">
+            <h1 ng-bind="profile.user() ? (profile.user().user.first_name + ', ' + widget.texts.header) : widget.texts.header" class="header"></h1>
+            <p ng-bind-html="widget.texts.caption | to_trusted" class="lead"></p>
+        </div>
+    </div>
+
+    <div ng-show="statuses_utils.show" class="status-list-container">
+
+        <div class="container d-flex flex-row align-items-center justify-content-center">
+            <div class="status-item" ng-repeat="item in statuses.list" ng-class="{type_active: item.points <= profile.user().user_points.confirmed}">
+                <img ng-src="{{ item.points <= profile.user().user_points.confirmed ? item.img_active : item.img_inactive }}" class="status-item__img">
+                <div ng-bind="item.status" class="status-item__name"></div>
+                <div ng-bind-html="item.description | to_trusted" class="status-item__description"></div>
+            </div>
+            <i ng-click="statuses_utils.close()" class="status-list-close"></i>
+        </div>
+
+    </div>
+
+    <div ng-hide="statuses_utils.show" class="status-container">
+        <div ng-click="statuses_utils.open()" class="current-status">
+            <div ng-if="!statuses.current()" class="status-item">
+                <img src="https://sailplays3.cdnvideo.ru/media/assets/assetfile/c90b1c2b4f43e3cd78ad34dae22cd83e.svg" class="status-item__img">
+                <div ng-bind="widget.texts.without_status" class="status-item__name"></div>
+            </div>
+
+            <div ng-if="statuses.current()" class="status-item">
+                <img ng-src="{{ statuses.current().img_active }}" class="status-item__img">
+                <div ng-bind="statuses.current().status" class="status-item__name"></div>
+                <div ng-bind-html="statuses.current().description | to_trusted" class="status-item__description"></div>
+            </div>
+        </div>
+        <div ng-if="profile.user()" ng-click="history_utils.open()" class="current-balance">
+            <span ng-bind="profile.user().user_points.confirmed"></span>
+            <span ng-bind="profile.user().user_points.confirmed | sailplay_pluralize: ('points.texts.pluralize' | tools)"></span>
+        </div>
+    </div>
+
+</section>
+
+<magic-modal-center show="history_utils.show">
+    <magic-modal-title>
+        <span ng-bind="widget.texts.modals.history.title" class="d-block text-left"></span>
+    </magic-modal-title>
+    <magic-modal-body>
+
+        <table ng-show="!history.empty()" class="spm_profile-history">
+            <tbody>
+                <tr dir-paginate="item in history.list() | itemsPerPage:5" pagination-id="history_pages">
+                    <td ng-bind="item.action_date | date:'d MMM yyyy'" class="type_lighter"></td>
+                    <td>
+                        <div ng-bind="item | history_item"></div>
+                    </td>
+                    <td></td>
+                    <!--<td ng-class="{type_positive:item.points_delta>0, type_negative:item.points_delta<0}"-->
+                    <!--ng-bind="item.points_delta?(item.points_delta|number):''"></td>-->
+                </tr>
+            </tbody>
+        </table>
+
+        <dir-pagination-controls max-size="7" direction-links="false" pagination-id="history_pages" template-url="jardin.history.pagination"
+            auto-hide="true"></dir-pagination-controls>
+
+        <div ng-if="history.empty()" ng-bind-html="widget.texts.modals.history.empty | to_trusted"></div>
+
+    </magic-modal-body>
+</magic-modal-center>
+
+<magic-modal-center on-close="profile_form_utils.close" show="profile_form_utils.show">
+    <magic-modal-title>
+        <span ng-bind="widget.texts.modals.profile.title" class="d-block text-left"></span>
+    </magic-modal-title>
+    <magic-modal-body>
+
+        <form name="ng_profile_form" class="spm_profile-form" ng-submit="profile_form.submit(ng_profile_form, profile_form_utils.complete);">
+
+            <div class="spm_form_field" ng-repeat="field in profile_form.form.fields | filter:profile_form.checkDependency" ng-switch="field.input">
+
+                <div ng-switch-when="text">
+                    <input class="spm_form_input" type="text" placeholder="{{ field.placeholder }}" ng-model="field.value" ng-required="field.required">
+                    <label class="spm_form_label type_absolute" ng-bind="field.label"></label>
+                </div>
+
+                <div ng-switch-when="date">
+                    <label class="spm_form_label" ng-bind="field.label"></label>
+                    <input class="spm_form_input" type="date" spm-date-input ng-model="field.value" placeholder="{{ field.placeholder }}" min="{{ field.data.min_date }}"
+                        max="{{ field.data.max_date }}" ng-required="field.required">
+                </div>
+
+                <div ng-switch-when="phone">
+                    <input class="spm_form_input" type="text" ui-mask="{{ field.placeholder }}" ng-model="field.value" ng-required="field.required">
+                    <label class="spm_form_label type_absolute" ng-bind="field.label"></label>
+                </div>
+
+                <div ng-switch-when="email">
+                    <input class="spm_form_input" type="email" placeholder="{{ field.placeholder }}" ng-model="field.value" ng-required="field.required">
+                    <label class="spm_form_label type_absolute" ng-bind="field.label"></label>
+                </div>
+
+                <div ng-switch-when="select">
+                    <label class="spm_form_label type_absolute" ng-bind="field.label"></label>
+                    <select class="spm_form_select" ng-model="field.value" ng-options="item.value as item.text for item in field.data" ng-required="field.required"></select>
+                </div>
+
+                <div ng-switch-when="radio" class="spm_form_radio_field">
+                    <div class="d-inline-block align-top" style="width: 40%;">
+                        <label class="spm_form_label" ng-bind="field.label"></label>
+                    </div>
+                    <div class="d-inline-block align-top" style="width: 59%;">
+                        <label class="spm_form_radio" ng-class="{ checked: field.value === item.value }" ng-repeat="item in field.data">
+                            <input class="spm_form_radio_input" type="radio" ng-model="field.value" ng-value="item.value" ng-required="field.required && !field.value">
+                            <span class="spm_form_radio_label" ng-bind="item.text"></span>
+                            <div ng-if="item.custom && field.value === item.value">
+                                <input type="text" ng-model="item.custom_value" required>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <div ng-switch-when="checkbox" class="spm_form_checkbox_field">
+                    <div class="d-inline-block align-top" style="width: 40%;">
+                        <label class="spm_form_label" ng-bind="field.label"></label>
+                    </div>
+                    <div class="d-inline-block align-top" style="width: 59%;">
+                        <label class="spm_form_checkbox" ng-class="{ checked: item.model }" ng-repeat="item in field.data">
+                            <input class="spm_form_checkbox_input" type="checkbox" ng-model="item.model" ng-required="field.required && !field.isValid()">
+                            <span class="spm_form_checkbox_label" ng-bind="item.text"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div ng-switch-when="subscriptions">
+                    <div class="d-inline-block align-top" style="width: 40%;">
+                        <label class="spm_form_label" ng-bind-html="field.label | to_trusted"></label>
+                    </div>
+                    <div class="d-inline-block align-top" style="width: 59%;">
+                        <label class="spm_form_checkbox" ng-class="{ checked: field.value[item.key] }" ng-repeat="item in field.data">
+                            <input class="spm_form_checkbox_input" type="checkbox" ng-model="field.value[item.key]" ng-true-value="1" ng-false-value="0">
+                            <span class="spm_form_checkbox_label" ng-bind-html="item.text | to_trusted"></span>
+                        </label>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="spm_form_buttons">
+                <input type="submit" class="spm_btn" ng-disabled="ng_profile_form.$invalid" ng-value="widget.texts.modals.profile.save" />
+            </div>
+
+        </form>
+
+    </magic-modal-body>
+</magic-modal-center>

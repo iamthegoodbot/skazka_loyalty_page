@@ -1,0 +1,16 @@
+<div class="spm_pivko_history_pagination" ng-if="1 < pages.length || !autoHide">
+
+    <a ng-if="directionLinks" class="spm_pivko_history_pagination_direction_link" ng-class="{disabled : pagination.current == 1}"
+        href="#" ng-click="$event.preventDefault();setCurrent(pagination.current - 1)">
+        &lsaquo;&lsaquo;
+    </a>
+
+    <a ng-repeat="pageNumber in pages track by tracker(pageNumber, $index)" class="spm_pivko_history_pagination_page_link" ng-class="{type_active : pagination.current == pageNumber, type_disabled : pageNumber == '...'}"
+        href="#" ng-click="$event.preventDefault();setCurrent(pageNumber)" ng-bind="pageNumber"></a>
+
+    <a ng-if="directionLinks" class="spm_pivko_history_pagination_direction_link" ng-class="{disabled : pagination.current == pagination.last}"
+        href="#" ng-click="$event.preventDefault();setCurrent(pagination.current + 1)">
+        &rsaquo;&rsaquo;
+    </a>
+
+</div>

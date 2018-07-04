@@ -1,0 +1,285 @@
+{
+    "styles": {},
+    "enabled": true,
+    "options": {
+        "profile_form": {
+            "fields": [{
+                    "name": "firstName",
+                    "label": "First name",
+                    "required": true,
+                    "input": "text",
+                    "type": "system"
+                },
+                {
+                    "name": "lastName",
+                    "label": "Last name",
+                    "required": true,
+                    "input": "text",
+                    "type": "system"
+                },
+                {
+                    "name": "home_zip_code",
+                    "label": "Home zip code",
+                    "required": true,
+                    "input": "text",
+                    "type": "variable"
+                },
+                {
+                    "input": "radio",
+                    "type": "system",
+                    "name": "sex",
+                    "data": [{
+                            "text": "Male",
+                            "value": 1
+                        },
+                        {
+                            "text": "Female",
+                            "value": 2
+                        },
+                        {
+                            "text": "Other",
+                            "custom": true,
+                            "tag_prefix": "Other Gender - "
+                        }
+                    ],
+                    "label": "Gender"
+                },
+                {
+                    "name": "birthDate",
+                    "label": "Birth date",
+                    "data": {
+                        "max_date": "2018-06-14",
+                        "min_date": "1920-01-01"
+                    },
+                    "input": "date",
+                    "type": "system"
+                },
+                {
+                    "input": "radio",
+                    "type": "tag",
+                    "name": "visit",
+                    "data": [{
+                            "text": "Yes",
+                            "value": "First Visit"
+                        },
+                        {
+                            "text": "No",
+                            "value": "Not First Visit"
+                        }
+                    ],
+                    "label": "Is this your first visit to a dispensary?"
+                },
+
+                {
+                    "input": "radio",
+                    "type": "tag",
+                    "name": "medical_card",
+                    "data": [{
+                            "text": "Yes",
+                            "value": true
+                        },
+                        {
+                            "text": "No",
+                            "value": false
+                        }
+                    ],
+                    "label": "Do you have a valid medical card?"
+                },
+                {
+                    "input": "text",
+                    "type": "variable",
+                    "name": "state",
+                    "label": "Which state?"
+                },
+
+                {
+                    "input": "radio",
+                    "type": "tag",
+                    "tag_prefix": "Consumes -",
+                    "name": "consumes",
+                    "data": [{
+                            "text": "Daily",
+                            "value": "daily"
+                        },
+                        {
+                            "text": "Weekly",
+                            "value": "weekly"
+                        },
+                        {
+                            "text": "Monthly",
+                            "value": "monthly"
+                        },
+                        {
+                            "text": "Infrequently",
+                            "value": "infrequently"
+                        }
+                    ],
+                    "label": "How often do you typical consume cannabis?"
+                },
+                {
+                    "input": "multiselect",
+                    "type": "tag",
+                    "tag_prefix": "Consumption -",
+                    "name": "consumption",
+                    "data": [{
+                            "text": "Flower",
+                            "value": "flower"
+                        },
+                        {
+                            "text": "Concentrate",
+                            "value": "concentrate"
+                        },
+                        {
+                            "text": "Vape",
+                            "value": "vape"
+                        },
+                        {
+                            "text": "Solid edibles",
+                            "value": "solid edibles"
+                        },
+                        {
+                            "text": "Liquid edibles",
+                            "value": "liquid edibles"
+                        },
+                        {
+                            "text": "Tincture",
+                            "value": "tincture"
+                        },
+                        {
+                            "text": "Topical",
+                            "value": "topical"
+                        },
+                        {
+                            "text": "CBD products",
+                            "value": "CBD products"
+                        }
+                    ],
+                    "label": "Preferred means of consumptions?"
+                },
+
+                {
+                    "input": "radio",
+                    "type": "tag",
+                    "name": "hear_about_us",
+                    "data": [{
+                            "text": "existing customer",
+                            "value": "existing customer"
+                        },
+                        {
+                            "text": "radio",
+                            "value": "radio"
+                        },
+                        {
+                            "text": "magazine",
+                            "value": "magazine"
+                        },
+                        {
+                            "text": "television",
+                            "value": "television"
+                        },
+                        {
+                            "text": "billboard",
+                            "value": "billboard"
+                        },
+                        {
+                            "text": "Weedmaps",
+                            "value": "Weedmaps"
+                        },
+                        {
+                            "text": "Leafly",
+                            "value": "Leafly"
+                        },
+                        {
+                            "text": "Instagram",
+                            "value": "Instagram"
+                        },
+                        {
+                            "text": "Facebook",
+                            "value": "Facebook"
+                        },
+                        {
+                            "text": "twitter",
+                            "value": "twitter"
+                        },
+                        {
+                            "text": "google",
+                            "value": "google"
+                        },
+                        {
+                            "text": "yelp",
+                            "value": "yelp"
+                        },
+                        {
+                            "text": "word of mouth referral",
+                            "value": "word of mouth referral"
+                        },
+                        {
+                            "text": "other",
+                            "value": "other"
+                        }
+                    ],
+                    "label": "How did you hear about us?"
+                },
+
+                {
+                    "name": "subscription_sms",
+                    "label": "Opt into SMS",
+                    "input": "radio",
+                    "type": "system"
+                }
+
+
+            ],
+            "tag": "Заполнил профиль"
+        },
+        "statuses": {
+            "type": "points",
+            "list": [{
+                    "status": "STATUS 1",
+                    "img_active": "https://sailplays3.cdnvideo.ru/media/assets/assetfile/4b860bbf4ce74fbcf9a373d29770346d.svg",
+                    "description": "You receive a 1% discount",
+                    "img_inactive": "https://sailplays3.cdnvideo.ru/media/assets/assetfile/c90b1c2b4f43e3cd78ad34dae22cd83e.svg",
+                    "points": 100
+                },
+                {
+                    "status": "STATUS 2",
+                    "img_active": "https://sailplays3.cdnvideo.ru/media/assets/assetfile/4b860bbf4ce74fbcf9a373d29770346d.svg",
+                    "description": "You receive a 3% discount",
+                    "img_inactive": "https://sailplays3.cdnvideo.ru/media/assets/assetfile/c90b1c2b4f43e3cd78ad34dae22cd83e.svg",
+                    "points": 200
+                },
+                {
+                    "status": "STATUS 3",
+                    "img_active": "https://sailplays3.cdnvideo.ru/media/assets/assetfile/4b860bbf4ce74fbcf9a373d29770346d.svg",
+                    "description": "You receive a 5% discount",
+                    "img_inactive": "https://sailplays3.cdnvideo.ru/media/assets/assetfile/c90b1c2b4f43e3cd78ad34dae22cd83e.svg",
+                    "points": 300
+                },
+                {
+                    "status": "STATUS 4",
+                    "img_active": "https://sailplays3.cdnvideo.ru/media/assets/assetfile/4b860bbf4ce74fbcf9a373d29770346d.svg",
+                    "description": "You receive a 10% discount",
+                    "img_inactive": "https://sailplays3.cdnvideo.ru/media/assets/assetfile/c90b1c2b4f43e3cd78ad34dae22cd83e.svg",
+                    "points": 400
+                }
+            ]
+        }
+    },
+    "texts": {
+        "header": "Welcome to the loyalty program",
+        "caption": "Here you can spend your points on gifts, look after your statuses and also carry out some extra tasks for extra points.",
+        "without_status": "Without status",
+        "modals": {
+            "history": {
+                "title": "History",
+                "empty": "Empty history"
+            },
+            "profile": {
+                "title": "Profile",
+                "save": "Save"
+            }
+        }
+    },
+    "images": {},
+    "id": "jardin_profile"
+}
