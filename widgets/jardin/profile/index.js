@@ -15,6 +15,8 @@ const widget = {
   controller(SailPlayProfile, SailPlayProfileHistory, SailPlayProfileForm, SailPlayStatuses) {
     return (scope, elm, attrs) => {
 
+      scope.menu_active = false;
+
       // Profile part
       scope.profile = new SailPlayProfile();
       scope.profile_form = new SailPlayProfileForm(scope.widget.options.profile_form);
