@@ -11,8 +11,8 @@ const widget = {
   id: "jardin_profile",
   template: Template,
   defaults: defaults,
-  inject: ["SailPlayProfile", "SailPlayProfileHistory", "SailPlayProfileForm", "SailPlayStatuses"],
-  controller(SailPlayProfile, SailPlayProfileHistory, SailPlayProfileForm, SailPlayStatuses) {
+  inject: ["SailPlayProfile", "SailPlayProfileHistory", "SailPlayProfileForm", "SailPlayStatuses", "MAGIC_CONFIG", "SailPlay"],
+  controller(SailPlayProfile, SailPlayProfileHistory, SailPlayProfileForm, SailPlayStatuses, MAGIC_CONFIG, SailPlay) {
     return (scope, elm, attrs) => {
 
       scope.menu_active = false;
@@ -28,6 +28,7 @@ const widget = {
           scope.profile_form_utils.show = true;
         },
         close: (form) => {
+          SailPlay.send('tags.add', {tags: [MAGIC_CONFIG.data.FILL_PROFILE_TAG]})
           scope.profile_form.revert(form);
           scope.profile_form_utils.show = false;
         },
@@ -45,6 +46,12 @@ const widget = {
         }
 
       };
+      SailPlay.send('tags.exist', {tags: [MAGIC_CONFIG.data.FILL_PROFILE_TAG]}, ({ tags }) => {
+        if(tags && tags[0] && !tags[0].exist) {
+          scope.profile_form_utils.show = true;
+          scope.$digest();
+        }
+      })
 
       // Status part
       scope.statuses = new SailPlayStatuses.TYPES[scope.widget.options.statuses.type](scope.widget.options.statuses);

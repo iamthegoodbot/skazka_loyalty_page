@@ -51311,8 +51311,8 @@ var widget = {
   id: "jardin_profile",
   template: _template2.default,
   defaults: _defaults2.default,
-  inject: ["SailPlayProfile", "SailPlayProfileHistory", "SailPlayProfileForm", "SailPlayStatuses"],
-  controller: function controller(SailPlayProfile, SailPlayProfileHistory, SailPlayProfileForm, SailPlayStatuses) {
+  inject: ["SailPlayProfile", "SailPlayProfileHistory", "SailPlayProfileForm", "SailPlayStatuses", "MAGIC_CONFIG", "SailPlay"],
+  controller: function controller(SailPlayProfile, SailPlayProfileHistory, SailPlayProfileForm, SailPlayStatuses, MAGIC_CONFIG, SailPlay) {
     return function (scope, elm, attrs) {
 
       scope.menu_active = false;
@@ -51328,6 +51328,7 @@ var widget = {
           scope.profile_form_utils.show = true;
         },
         close: function close(form) {
+          SailPlay.send('tags.add', { tags: [MAGIC_CONFIG.data.FILL_PROFILE_TAG] });
           scope.profile_form.revert(form);
           scope.profile_form_utils.show = false;
         },
@@ -51343,6 +51344,14 @@ var widget = {
           scope.$apply();
         }
       };
+      SailPlay.send('tags.exist', { tags: [MAGIC_CONFIG.data.FILL_PROFILE_TAG] }, function (_ref) {
+        var tags = _ref.tags;
+
+        if (tags && tags[0] && !tags[0].exist) {
+          scope.profile_form_utils.show = true;
+          scope.$digest();
+        }
+      });
 
       // Status part
       scope.statuses = new SailPlayStatuses.TYPES[scope.widget.options.statuses.type](scope.widget.options.statuses);
