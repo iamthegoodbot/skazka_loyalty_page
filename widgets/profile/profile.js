@@ -63,7 +63,7 @@ const ProfileWidget = {
 
       scope.currentStatus = badgeProgress
 
-      scope.show_login = false
+      scope.show_login = false;
 
       scope.default_avatar = DefaultAvatarImage;
       $rootScope.$on('openProfile', () => {
@@ -79,6 +79,16 @@ const ProfileWidget = {
 
           scope.profile.show_fill_profile = state || false;
 
+        }
+      }
+
+      scope.overview = {
+        show: false,
+        open: function() {
+          scope.overview.show = true;
+        },
+        hide: function() {
+          scope.overview.show = false;
         }
       }
 

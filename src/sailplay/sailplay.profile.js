@@ -317,7 +317,7 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
                   case 'birthDate':
 
                     var bd = user.user.birth_date && user.user.birth_date.split('-');
-                    form_field.value = bd ? [parseInt(bd[2]), parseInt(bd[1]), parseInt(bd[0])] : [null, null, null];
+                    form_field.value = bd ? [parseInt(bd[2]), parseInt(bd[1]), parseInt(bd[0])] : [1, 1, null];
                     break;
 
                   case 'addPhone':

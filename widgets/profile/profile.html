@@ -12,6 +12,7 @@
           <a href="#" class="edit_profile_btn button_link" data-ng-click="$event.preventDefault(); profile.fill_profile(true);">{{ widget.texts.edit_profile_button }}</a>
           <a href="#" class="logout_btn button_link" data-ng-click="$event.preventDefault(); logout();">{{ widget.texts.logout }}</a>      
         </div>
+        <a class="overview_btn" href="#" ng-click="$event.preventDefault();overview.open()">{{ widget.texts.overview }}</a>
       </div>
     </div>
 
@@ -19,7 +20,7 @@
 
       <div class="bon_profile_top_left">
         <h3>
-          <span class="header">{{ user() ? (user().user.first_name + ', ' + widget.texts.header) : widget.texts.header }}</span>
+          <span class="header">{{ user() && user().user.first_name ? (user().user.first_name + ', ' + widget.texts.header) : widget.texts.header }}</span>
         </h3>
         <h4>
           <span class="caption">{{ widget.texts.spoiler }}</span>
@@ -143,6 +144,10 @@
         </div>
       </form>
     </div>
+  </magic-modal>
+
+  <magic-modal class="bns_overlay_overview" data-ng-cloak data-show="overview.show">
+    <img ng-src="{{ widget.images.overview }}">
   </magic-modal>
 
 </div>
