@@ -32,8 +32,6 @@ export let Widget = angular.module('magic.tools.widget', [])
 
         widget_scope.widget = widget;
 
-        // console.log(widget);
- 
         function ResolveTemplate(){
           return new Promise((resolve, reject) => {
             if(scope.widget.customize && scope.widget.customize.templateUrl) {
@@ -52,7 +50,7 @@ export let Widget = angular.module('magic.tools.widget', [])
                 try {
                   remoteCtrl = eval(res.data);
                 } catch(e) {
-                  console.log('Wrong customize controller');
+                  // console.log('Wrong customize controller');
                 }
                 if(!remoteCtrl) return reject();
                 WIDGET_CONFIG.controller.$inject = remoteCtrl.inject || [];
@@ -72,7 +70,7 @@ export let Widget = angular.module('magic.tools.widget', [])
             widget_wrapper.append($compile(getTemplate)(widget_scope));
             $injector.invoke(getController)(widget_scope, widget_wrapper, attrs);
           } catch(e) {
-            console.log('ResolveWidget issue', e)
+            // console.log('ResolveWidget issue', e)
           }
         }
 

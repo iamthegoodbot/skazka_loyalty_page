@@ -428,16 +428,10 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
                 break;
 
             }
-            console.log(form_field);
             return form_field;
           });
 
           form.auth_hash = SailPlay.config().auth_hash;
-          //angular.extend(scope.profile_form.user, user.user);
-          //if(ipCookie(FillProfile.cookie_name) && SailPlay.config().auth_hash === ipCookie(FillProfile.cookie_name).user.auth_hash ){
-          //  angular.extend(scope.profile_form, ipCookie(FillProfile.cookie_name));
-          //}
-          // console.dir(form);
 
           saved_form = angular.copy(form);                        
 
@@ -595,11 +589,6 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
           let fill_profile_flag = false;
           let required_fields = scope.sailplay.fill_profile.form.fields.filter(item => (item.required && item.type=='system'));
           fill_profile_flag = required_fields.every(field => field.value);
-
-          console.log('fill_profile_flag',fill_profile_flag);
-          console.log('req_user', req_user);
-          console.log('required_fields',required_fields);
-          console.log('required_fields',custom_user_vars);
 
 
           SailPlay.send('users.update', req_user, function (user_res) {
@@ -783,16 +772,10 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
                 break;
 
             }
-            // console.log(form_field);
             return form_field;
           });
 
           form.auth_hash = SailPlay.config().auth_hash;
-          //angular.extend(scope.profile_form.user, user.user);
-          //if(ipCookie(FillProfile.cookie_name) && SailPlay.config().auth_hash === ipCookie(FillProfile.cookie_name).user.auth_hash ){
-          //  angular.extend(scope.profile_form, ipCookie(FillProfile.cookie_name));
-          //}
-          // console.dir(form);
 
           this._form_cache = angular.copy(form);
 
@@ -927,12 +910,6 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
         let required_fields = this.form.fields.filter(item => (item.required));
         fill_profile_flag = required_fields.every(field => field.value);
 
-        console.log('fill_profile_flag',fill_profile_flag);
-        console.log('req_user', req_user);
-        console.log('required_fields',required_fields);
-        console.log('required_fields',custom_user_vars);
-
-
         SailPlay.send('users.update', req_user, (user_res) => {
 
           if (user_res.status === 'ok') {
@@ -1004,11 +981,9 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
 
           if (MAGIC_CONFIG.data.FILL_PROFILE_TAG){
 
-            console.log(MAGIC_CONFIG.data.FILL_PROFILE_TAG);
 
             SailPlay.send('tags.exist', {tags: [MAGIC_CONFIG.data.FILL_PROFILE_TAG]}, (res) => {
 
-              console.log(res);
               if (res && res.tags.length) {
                 if (res.tags[0].exist) {
                   resolve(true);
@@ -1053,8 +1028,6 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
 
           this.NgModel.$render = () => {
 
-            console.log(this.NgModel.$modelValue);
-
             if(this.NgModel.$modelValue) {
 
               let variables = this.NgModel.$modelValue.split('  ');
@@ -1064,8 +1037,6 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
                 this.value[variable] = true;
 
               });
-
-              console.log(this.value);
 
             }
 

@@ -17,7 +17,7 @@ export let Widget = angular.module('magic.widget', [])
       const unique = !get_widget_config(widget_config.id);
       if(!unique) {
 
-        console.error(`Duplucate widgets ID: ${widget_config.id}`);
+        // console.error(`Duplucate widgets ID: ${widget_config.id}`);
 
       }
       unique && registered_widgets.push(widget_config);
@@ -39,8 +39,6 @@ export let Widget = angular.module('magic.widget', [])
 })
 
 .run(function (MagicWidget) {
-
-  console.log(MagicWidget.registered());
 
 });
 

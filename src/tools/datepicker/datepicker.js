@@ -122,8 +122,6 @@ export let ToolsDatepicker = angular
         NgModel.$formatters.push(function(modelValue) {
 
           if(!modelValue) return null;
-          //
-          // console.log(view_value);
 
           return new Date(modelValue);
 
@@ -132,8 +130,6 @@ export let ToolsDatepicker = angular
         NgModel.$parsers.push(function(viewValue) {
 
           let model_value = viewValue && $filter('date')(viewValue, 'yyyy-MM-dd') || '';
-
-          // console.log(model_value);
 
           return model_value;
         });

@@ -12,7 +12,7 @@
 
           <div class="spm_quests-list" sailplay-actions>
 
-            <div class="spm_quests-item" ng-repeat="action in actions().actions" ng-mouseenter="action.loaded=true">
+            <div class="spm_quests-item" ng-repeat="action in actions().actions">
               <i class="spm_quests-item-icon"
                  ng-style="{backgroundImage: (action_data(action).pic|sailplay_pic|background_image)}"></i>
               <div class="spm_quests-item-content">
@@ -20,7 +20,7 @@
                 <div class="spm_quests-item-points" ng-show="action.points"
                      ng-bind="(action.points|number)+' '+(action.points|sailplay_pluralize:('points.texts.pluralize'|tools))"></div>
               </div>
-              <div class="spm_quests-item-hover" ng-if="action.type!='fillProfile' && action.loaded" sailplay-action
+              <div class="spm_quests-item-hover" ng-if="action.type!='fillProfile'" sailplay-action
                    styles="{{ action_styles(action_data(action)) }}"
                    action="action" text="{{ action_data(action).button_text }}">
                 <span ng-bind="action_data(action).button_text"></span>
@@ -30,7 +30,7 @@
               </div>
             </div>
 
-            <div class="spm_quests-item" ng-repeat="action in actions_custom()" ng-mouseenter="action.loaded=true">
+            <div class="spm_quests-item" ng-repeat="action in actions_custom()">
               <i class="spm_quests-item-icon" ng-style="{backgroundImage: (action.icon|sailplay_pic|background_image)}"></i>
               <div class="spm_quests-item-content">
                 <div class="spm_quests-item-name" ng-bind="action.name"></div>

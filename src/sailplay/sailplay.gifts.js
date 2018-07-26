@@ -23,8 +23,6 @@ export let SailPlayGifts = angular.module('sailplay.gifts', [])
 
       scope.gifts = SailPlayApi.data('load.gifts.list');
 
-      console.log(scope.gifts());
-
       let user = SailPlayApi.data('load.user.info');
 
       scope.gift_purchase = function(gift){
@@ -41,7 +39,6 @@ export let SailPlayGifts = angular.module('sailplay.gifts', [])
 
 
       SailPlayApi.observe('load.gifts.list', result => {
-        console.log(result);
         build_progress(result, user()).then((progress) => {
           scope.progress = progress
           if(scope.$root.$$phase != '$digest'){

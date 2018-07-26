@@ -37,8 +37,6 @@ GiftTypeRegister({
 
     return (scope, elm) => {
 
-      console.log('custom vars scope:', scope);
-
       let purchasing = false;
 
       SailPlay.on('gifts.purchase', (params) => {
@@ -49,13 +47,9 @@ GiftTypeRegister({
 
       SailPlay.on('gifts.purchase.success', function (res) {
 
-        console.dir(res);
-
         if (!purchasing) return;
 
         purchasing = false;
-
-        console.log(scope.options.data.fields);
 
         scope.$digest();
 
@@ -66,8 +60,6 @@ GiftTypeRegister({
         });
 
         SailPlay.send('vars.add', {custom_vars: custom_vars}, function (vars_res) {
-
-          console.log('custom vars added:', vars_res);
 
         });
 

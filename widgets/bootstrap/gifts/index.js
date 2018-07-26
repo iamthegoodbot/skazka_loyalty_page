@@ -31,7 +31,6 @@ const widget = {
           scope.show_gift = false;
           scope.show_success = true;
           scope.purchased_gift = res;
-          console.log(scope.purchased_gift);
         });
       });
 

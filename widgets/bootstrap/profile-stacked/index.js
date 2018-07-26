@@ -45,7 +45,6 @@ const widget = {
       scope.open_learn_more = () => {
 
         scope.show_learn_more = true;
-        console.log(scope.show_learn_more);
 
       };
 

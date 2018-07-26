@@ -15,7 +15,6 @@ const widget = {
         select: (action) => {
 
           scope.custom.selected = action;
-          console.log(scope.custom.selected);
 
         }
       };
