@@ -263,8 +263,6 @@ export let SailPlayActions = angular.module('sailplay.actions', [])
 
       if(SailPlayActionsData.system[action.type]) data = SailPlayActionsData.system[action.type];
 
-      // console.log(data);
-
       return data;
 
     }
@@ -272,8 +270,6 @@ export let SailPlayActions = angular.module('sailplay.actions', [])
 
       let system_action_length = this.list.system() && this.list.system().actions && this.list.system().actions.length || 0;
       let custom_action_length = this.list.custom() && this.list.custom().length;
-      // console.log(this.list.system());
-      // console.log(this.list.custom());
 
       return system_action_length < 1 && custom_action_length < 1;
 

@@ -21,7 +21,6 @@ SailPlayStatuses.service('SailPlayStatusesLastMonth', function (SailPlayApi, Sai
           if (res && res.tags) {
             this.tags_exist = res.tags;
           }
-          console.log(this.tags_exist);
           $rootScope.$apply();
         });
 
@@ -46,8 +45,6 @@ SailPlayStatuses.service('SailPlayStatusesLastMonth', function (SailPlayApi, Sai
       let sum =  this.sum();
       const current_statuses = this.list.filter(x=>x.sum<=sum);
 
-      // console.log(current_statuses);
-      // this.current = current_statuses.pop();
       return current_statuses[current_statuses.length - 1];
     }
     next() {
@@ -84,17 +81,13 @@ SailPlayStatuses.service('SailPlayStatusesLastMonth', function (SailPlayApi, Sai
 
       let purchases = history.filter(item => {
         let purchase_date = new Date(item.action_date);
-        // console.log(purchase_date.getFullYear(), now.getFullYear(), purchase_date.getMonth(), now.getMonth());
         return item.action === 'purchase' && purchase_date.getFullYear() === now.getFullYear() && purchase_date.getMonth() === now.getMonth();
       });
 
-      // console.log(purchases);
 
       let sum = purchases.reduce((prev, next)=> {
         return prev+next.price
       }, 0);
-
-      // console.log(sum);
 
       return sum
 
@@ -114,9 +107,6 @@ SailPlayStatuses.service('SailPlayStatusesLastMonth', function (SailPlayApi, Sai
       let last_status = angular.copy(this.list).sort((a, b) => {
         return b.sum - a.sum;
       })[0];
-
-      // console.log(purchases_sum);
-      // console.log(last_status);
 
 
       if (purchases_sum > last_status.sum) {

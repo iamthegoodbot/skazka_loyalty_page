@@ -73,7 +73,6 @@ const widget = {
       };
 
       let closeMenu = () => {
-        console.log('closeMenu', scope.menu_active);
         if(scope.force_fill_profile) return;
         scope.$apply(() => {
           scope.menu_active = false;

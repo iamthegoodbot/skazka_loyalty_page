@@ -35,8 +35,6 @@ export let SailPlay = angular.module('sailplay', [
 
     SailPlay.on('login.success', function (res) {
 
-      console.log(res);
-
       $rootScope.auth_state = true;
       $rootScope.$broadcast('sailplay-login-success', res);
       $rootScope.$apply();
@@ -100,8 +98,6 @@ export let SailPlay = angular.module('sailplay', [
           $rootScope.submited = false;
 
           type = type || auth_type;
-
-          // console.log('authorize', type);
 
           switch (type) {
 
@@ -214,8 +210,6 @@ export let SailPlay = angular.module('sailplay', [
           
           if (observers[point] && observers[point].length)
             observers[point].forEach(fn => fn(res))
-          console.log('sailplay.api:' + point + '.success');
-          //console.log(JSON.stringify(self.data(point)()));
       });
 
       SailPlay.on(point + '.error', function (res) {
@@ -233,7 +227,6 @@ export let SailPlay = angular.module('sailplay', [
 
     self.data = function (key, value) {
 
-      // console.log(key, value);
 
       if (typeof value !== 'undefined') {
         data[key] = angular.copy(value);
@@ -306,9 +299,7 @@ export let SailPlay = angular.module('sailplay', [
 
         var logged = false;
 
-        console.dir(opts);
         angular.merge(options, opts);
-        console.dir(options);
 
         scope.$on('sailplay-init-success', function () {
           SailPlay.send('login.remote', options);

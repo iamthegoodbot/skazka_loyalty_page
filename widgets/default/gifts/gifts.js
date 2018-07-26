@@ -73,7 +73,7 @@ WidgetRegister({
       });
 
       SailPlay.on('gift.purchase.error', function(error){
-        console.dir(error);
+
         $rootScope.$broadcast('notifier:notify', {
 
           header: scope.widget.texts.purchase_error_header,

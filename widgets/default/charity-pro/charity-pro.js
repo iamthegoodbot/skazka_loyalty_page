@@ -36,8 +36,6 @@ WidgetRegister({
       // User info
       scope.user = SailPlayApi.data('load.user.info');
 
-      console.log('user', scope.user());
-
       scope.$watch(() => {
         return angular.toJson([SailPlayApi.data('load.user.info')()]);
       }, (new_val, old_val) => {

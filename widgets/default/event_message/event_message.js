@@ -48,7 +48,6 @@ WidgetRegister({
           return check(item.events)
         });
 
-        console.log('scope.messages', scope.messages);
       }
 
     }

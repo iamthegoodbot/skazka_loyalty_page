@@ -28,7 +28,6 @@ const widget = {
           scope.profile_form_utils.show = false;
         },
         complete(e, data) {
-          console.log(e, data);
 
           if (data && data.status == "error") {
 
@@ -46,8 +45,6 @@ const widget = {
 
       scope.statuses = new SailPlayStatuses.TYPES[scope.widget.options.statuses.type](scope.widget.options.statuses);
 
-      console.log(scope.statuses);
-      // scope.default_avatar = DefaultAvatarImage;
 
     };
   }

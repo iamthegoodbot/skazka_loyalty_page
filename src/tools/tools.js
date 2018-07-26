@@ -210,9 +210,6 @@ export let Tools = angular.module('magic.tools', [
 
       });
 
-      //var parent = $(element).parent();
-      //console.dir(parent);
-
 
 
     }

@@ -57,14 +57,10 @@ export let SailPlayHistory = angular.module('sailplay.history', [])
     }
     empty(){
 
-      // console.log(this.list());
-
       return !this.list() || this.list().length < 1;
 
     }
     purchase_info(purchase){
-
-      console.log(purchase);
 
       if(purchase.action !== 'purchase') return;
 
@@ -89,8 +85,6 @@ export let SailPlayHistory = angular.module('sailplay.history', [])
         }
 
         $rootScope.$apply();
-
-        console.log(res);
 
       });
 

@@ -144,11 +144,9 @@ export let magic = angular.module('magic', [SailPlay, core, Cookies, Tools, NgTo
         };
 
         SailPlay.on('actions.social.connect.error', function (e) {
-          console.dir(e);
         });
 
         SailPlay.on('actions.social.connect.success', function (e) {
-          console.dir(e);
         });
 
       }
