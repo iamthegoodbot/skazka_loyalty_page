@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js">
+<!--<![endif]-->
+
+<head>
+  <meta charset="utf-8">
+  <title>SailPlay MAGIC!</title>
+  <meta name="description" content="SailPlay Magic!">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="favicon.png" type="image/png">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.7.2/angular.min.js"></script>
+  <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-cookie/4.1.0/angular-cookie.min.js"></script>-->
+
+  <script src="dist/prod/sailplay-magic.js"></script>
+
+  <style>
+    body {
+        padding: 0;
+        margin: 0;
+    }
+  </style>
+
+</head>
+
+<body>
+  <div></div>
+  <sailplay-magic></sailplay-magic>
+  <script>
+
+    var params = SAILPLAY.url_params();
+
+    var magic = new SAILPLAY.Magic({
+
+      partner_id: params.partner_id || 1,
+      dep_id: params.dep_id || '',
+      domain: params.domain || "https://sailplay.ru",
+      lang: params.lang || "ru",
+      config: params.config || "default",
+
+    });
+
+    if (params.auth_hash) {
+      SAILPLAY.on('init.success', function () {
+        console.log(params.auth_hash);
+        SAILPLAY.send('login', params.auth_hash)
+      })
+    }
+
+  </script>
+
+</body>
+
+</html>
