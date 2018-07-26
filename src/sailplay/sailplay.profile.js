@@ -797,6 +797,8 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
           this._form_cache = angular.copy(form);
 
           if (custom_fields.length) {
+            console.log('custom_fields',custom_fields)
+            return;
             SailPlayApi.call("vars.batch", { names: custom_fields.map(field => { return field.name }) }, (res) => {
               angular.forEach(res.vars, variable => {
                 angular.forEach(custom_fields, field => {
@@ -804,7 +806,15 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
                 })
               })
             })
-          }
+            let tags = [];
+            custom_fields.forEach(_field => {
+              let selected = _field.data.filter(item => item.value === _field.value)[0]
+              if (selected) tags.push(selected.tag)
+            })
+            if(tags.length) {
+              SailPlayApi.call("tags.add", { tags: tags })
+            }
+           }
 
           form.auth_hash = SailPlay.config().auth_hash;
 
@@ -927,10 +937,10 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
         let required_fields = this.form.fields.filter(item => (item.required));
         fill_profile_flag = required_fields.every(field => field.value);
 
-        console.log('fill_profile_flag',fill_profile_flag);
-        console.log('req_user', req_user);
-        console.log('required_fields',required_fields);
-        console.log('required_fields',custom_user_vars);
+        // console.log('fill_profile_flag',fill_profile_flag);
+        // console.log('req_user', req_user);
+        // console.log('required_fields',required_fields);
+        // console.log('required_fields',custom_user_vars);
 
 
         SailPlay.send('users.update', req_user, (user_res) => {
