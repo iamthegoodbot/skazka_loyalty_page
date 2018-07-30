@@ -31,7 +31,7 @@
           </div>
         </div>
 
-        <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12" ng-repeat="action in actions_custom()">
+        <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12" ng-repeat="action in actions_custom()" data-ng-init="action.loaded = widget.options.preload_quests || false">
           <div class="spm_quests-item" ng-mouseenter="action.loaded=true">
             <i class="spm_quests-item-icon" ng-style="{backgroundImage: (action.icon|sailplay_pic|background_image)}"></i>
             <div class="spm_quests-item-content">

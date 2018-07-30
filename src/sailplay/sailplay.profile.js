@@ -1090,6 +1090,27 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
       }
     };
 
+  })
+
+  .filter('sailplay_profile_avatar', function () {
+
+    return function (url, default_avatar) {
+
+      if(default_avatar) {
+
+        let is_default = url.includes('no_avatar');
+
+        return is_default ? default_avatar : url;
+
+      }
+      else {
+
+        return url;
+
+      }
+
+    }
+
   });
 
 export default SailPlayProfile.name;
