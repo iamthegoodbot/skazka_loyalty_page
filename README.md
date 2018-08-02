@@ -14,7 +14,7 @@
 
 ## Current version
 
-### 2.2.7
+### 2.2.8
 
 ## Description
 
@@ -22,12 +22,12 @@ Multi functional, fully-configurable, widget-based loyalty page
 
 ## Setup
 
-At first, you need to setup JSON config for required partner in admin panel: 
+At first, you need to setup JSON config for required partner in admin panel:
 
 [https://sailplay.net/spanel/#/settings/widgets](ttps://sailplay.net/spanel/#/settings/widgets)
-    
+
 Then, place this code to any place in your page:
-    
+
 ```html
   <script src="https://cdn.rawgit.com/iamthegoodbot/skazka_loyalty_page/2.2.7/dist/prod/sailplay-magic.js"></script>
   <sailplay-magic></sailplay-magic>

@@ -17,6 +17,7 @@ const widget = {
       scope.show_info = false;
       scope.lock_profile = false;
       scope.show_learn_more = false;
+      scope.list = scope.widget.options.list;
 
       $rootScope.$on("info:state", (e, state) => {
         scope.show_info = state;
@@ -50,6 +51,12 @@ const widget = {
       };
 
       scope.default_avatar = DefaultAvatarImage;
+
+      SailPlayApi.observe('load.user.info', user => {
+        if (!user) return;
+        let user_status_name = user.user_status && user.user_status.name;
+        scope.currentStatus = scope.list.filter(status => status.name === user_status_name).pop();
+      });
 
     };
   }
