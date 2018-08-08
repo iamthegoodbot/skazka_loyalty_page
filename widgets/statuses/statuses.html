@@ -11,7 +11,7 @@
         <div class="status-list_item_label" data-ng-repeat="item in _statuses" title="{{item.description}}">
           <span class="status-list__item-status" data-ng-bind="item.status"></span>
           <span class="status-list__item-status-img">
-            <svg-img item="item" svgid="'svg-'+$id"></svg-img>
+            <img src="{{user().user_points.confirmed >= item.points ? item.img_active : item.img_inactive}}"></svg-img>
           </span>
           <span class="status-list__item-status-description" data-ng-bind="item.description"></span>
         </div>

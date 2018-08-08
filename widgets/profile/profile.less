@@ -71,7 +71,7 @@
           text-decoration: underline !important;
         }
       }
-      img:not(.user_avatar_profile_btn) {
+      img:not(.user_avatar_profile_btn):not(.status_confirmed_icon_image) {
         border-radius: 100%;
         -webkit-box-shadow: 0 2px 7px 1px rgba(0, 0, 0, 0.2);
         box-shadow: 0 2px 7px 1px rgba(0, 0, 0, 0.2);
@@ -134,7 +134,7 @@
           margin-top: 60px;
           margin-bottom: 10px;
           @media screen and (max-width: 991px){
-            margin-top: 20px !important;         
+            margin-top: 20px !important;
           }
         }
         h4 {
@@ -203,7 +203,7 @@
           flex-grow: 1;
           border-left: 1px solid rgb(157, 52, 56);
           @media screen and (max-width: 991px){
-            padding-left: 15px !important;         
+            padding-left: 15px !important;
           }
           &>span>span:nth-of-type(1) {
             font-size: 16px;
@@ -239,7 +239,7 @@
         & .status_block {
           & .status_confirmed_icon {
             text-transform: capitalize;
-            & object {
+            .status_confirmed_icon_image {
               height: 38px;
               transform: translateY(5px);
             }
@@ -600,7 +600,7 @@
   background-color: rgb(247, 247, 246);
   border-radius: 50px;
   &.active {
-    background-color: rgb(146, 29, 34);  
+    background-color: rgb(146, 29, 34);
     &>span{
       color: white;
     }
@@ -641,7 +641,7 @@
     }
   }
   &>div:nth-of-type(2){
-    
+
   }
   &>div:nth-of-type(3){
     width: 150px;

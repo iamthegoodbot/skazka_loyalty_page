@@ -3381,7 +3381,7 @@ module.exports = function (bitmap, value) {
 /***/ (function(module, exports) {
 
 /**
- * @license AngularJS v1.7.2
+ * @license AngularJS v1.7.0
  * (c) 2010-2018 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -3394,8 +3394,7 @@ module.exports = function (bitmap, value) {
 */
 
 var minErrConfig = {
-  objectMaxDepth: 5,
-  urlErrorParamsEnabled: true
+  objectMaxDepth: 5
 };
 
 /**
@@ -3418,20 +3417,11 @@ var minErrConfig = {
  * * `objectMaxDepth`  **{Number}** - The max depth for stringifying objects. Setting to a
  *   non-positive or non-numeric value, removes the max depth limit.
  *   Default: 5
- *
- * * `urlErrorParamsEnabled`  **{Boolean}** - Specifies wether the generated error url will
- *   contain the parameters of the thrown error. Disabling the parameters can be useful if the
- *   generated error url is very long.
- *
- *   Default: true. When used without argument, it returns the current value.
  */
 function errorHandlingConfig(config) {
   if (isObject(config)) {
     if (isDefined(config.objectMaxDepth)) {
       minErrConfig.objectMaxDepth = isValidObjectMaxDepth(config.objectMaxDepth) ? config.objectMaxDepth : NaN;
-    }
-    if (isDefined(config.urlErrorParamsEnabled) && isBoolean(config.urlErrorParamsEnabled)) {
-      minErrConfig.urlErrorParamsEnabled = config.urlErrorParamsEnabled;
     }
   } else {
     return minErrConfig;
@@ -3446,7 +3436,6 @@ function errorHandlingConfig(config) {
 function isValidObjectMaxDepth(maxDepth) {
   return isNumber(maxDepth) && maxDepth > 0;
 }
-
 
 /**
  * @description
@@ -3481,7 +3470,7 @@ function isValidObjectMaxDepth(maxDepth) {
 function minErr(module, ErrorConstructor) {
   ErrorConstructor = ErrorConstructor || Error;
 
-  var url = 'https://errors.angularjs.org/1.7.2/';
+  var url = 'https://errors.angularjs.org/1.7.0/';
   var regex = url.replace('.', '\\.') + '[\\s\\S]*';
   var errRegExp = new RegExp(regex, 'g');
 
@@ -3511,10 +3500,8 @@ function minErr(module, ErrorConstructor) {
 
     message += '\n' + url + (module ? module + '/' : '') + code;
 
-    if (minErrConfig.urlErrorParamsEnabled) {
-      for (i = 0, paramPrefix = '?'; i < templateArgs.length; i++, paramPrefix = '&') {
-        message += paramPrefix + 'p' + i + '=' + encodeURIComponent(templateArgs[i]);
-      }
+    for (i = 0, paramPrefix = '?'; i < templateArgs.length; i++, paramPrefix = '&') {
+      message += paramPrefix + 'p' + i + '=' + encodeURIComponent(templateArgs[i]);
     }
 
     return new ErrorConstructor(message);
@@ -6072,7 +6059,6 @@ function toDebugString(obj, maxDepth) {
   ngInitDirective,
   ngNonBindableDirective,
   ngPluralizeDirective,
-  ngRefDirective,
   ngRepeatDirective,
   ngShowDirective,
   ngStyleDirective,
@@ -6161,11 +6147,11 @@ function toDebugString(obj, maxDepth) {
 var version = {
   // These placeholder strings will be replaced by grunt's `build` task.
   // They need to be double- or single-quoted.
-  full: '1.7.2',
+  full: '1.7.0',
   major: 1,
   minor: 7,
-  dot: 2,
-  codeName: 'extreme-compatiplication'
+  dot: 0,
+  codeName: 'nonexistent-physiology'
 };
 
 
@@ -6239,7 +6225,6 @@ function publishExternalAPI(angular) {
             ngInit: ngInitDirective,
             ngNonBindable: ngNonBindableDirective,
             ngPluralize: ngPluralizeDirective,
-            ngRef: ngRefDirective,
             ngRepeat: ngRepeatDirective,
             ngShow: ngShowDirective,
             ngStyle: ngStyleDirective,
@@ -6312,7 +6297,7 @@ function publishExternalAPI(angular) {
       });
     }
   ])
-  .info({ angularVersion: '1.7.2' });
+  .info({ angularVersion: '1.7.0' });
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -10934,11 +10919,6 @@ function $TemplateCacheProvider() {
  *   One-way binding is useful if you do not plan to propagate changes to your isolated scope bindings
  *   back to the parent. However, it does not make this completely impossible.
  *
- *   By default, the {@link ng.$rootScope.Scope#$watch `$watch`}
- *   method is used for tracking changes, and the equality check is based on object identity.
- *   It's also possible to watch the evaluated value shallowly with
- *   {@link ng.$rootScope.Scope#$watchCollection `$watchCollection`}: use `<*` or `<*attr`
- *
  * * `&` or `&attr` - provides a way to execute an expression in the context of the parent scope. If
  *   no `attr` name is specified then the attribute name is assumed to be the same as the local name.
  *   Given `<my-component my-attr="count = count + value">` and the isolate scope definition `scope: {
@@ -11668,7 +11648,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
   var bindingCache = createMap();
 
   function parseIsolateBindings(scope, directiveName, isController) {
-    var LOCAL_REGEXP = /^([@&]|[=<](\*?))(\??)\s*([\w$]*)$/;
+    var LOCAL_REGEXP = /^([@&<]|=(\*?))(\??)\s*([\w$]*)$/;
 
     var bindings = createMap();
 
@@ -13170,7 +13150,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
 
               // We have transclusion slots,
               // collect them up, compile them and store their transclusion functions
-              $template = window.document.createDocumentFragment();
+              $template = [];
 
               var slotMap = createMap();
               var filledSlots = createMap();
@@ -13198,10 +13178,10 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
                 var slotName = slotMap[directiveNormalize(nodeName_(node))];
                 if (slotName) {
                   filledSlots[slotName] = true;
-                  slots[slotName] = slots[slotName] || window.document.createDocumentFragment();
-                  slots[slotName].appendChild(node);
+                  slots[slotName] = slots[slotName] || [];
+                  slots[slotName].push(node);
                 } else {
-                  $template.appendChild(node);
+                  $template.push(node);
                 }
               });
 
@@ -13215,11 +13195,9 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
               for (var slotName in slots) {
                 if (slots[slotName]) {
                   // Only define a transclusion function if the slot was filled
-                  slots[slotName] = compilationGenerator(mightHaveMultipleTransclusionError, slots[slotName].childNodes, transcludeFn);
+                  slots[slotName] = compilationGenerator(mightHaveMultipleTransclusionError, slots[slotName], transcludeFn);
                 }
               }
-
-              $template = $template.childNodes;
             }
 
             $compileNode.empty(); // clear contents
@@ -14217,7 +14195,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
             var initialValue = destination[scopeName] = parentGet(scope);
             initialChanges[scopeName] = new SimpleChange(_UNINITIALIZED_VALUE, destination[scopeName]);
 
-            removeWatch = scope[definition.collection ? '$watchCollection' : '$watch'](parentGet, function parentValueWatchAction(newValue, oldValue) {
+            removeWatch = scope.$watch(parentGet, function parentValueWatchAction(newValue, oldValue) {
               if (oldValue === newValue) {
                 if (oldValue === initialValue || (isLiteral && equals(oldValue, initialValue))) {
                   return;
@@ -28501,11 +28479,7 @@ var inputType = {
    * error docs for more information and an example of how to convert your model if necessary.
    * </div>
    *
-   *
-   *
-   * @knownIssue
-   *
-   * ### HTML5 constraint validation and `allowInvalid`
+   * ## Issues with HTML5 constraint validation
    *
    * In browsers that follow the
    * [HTML5 specification](https://html.spec.whatwg.org/multipage/forms.html#number-state-%28type=number%29),
@@ -28514,17 +28488,6 @@ var inputType = {
    * which means the view / model values in `ngModel` and subsequently the scope value
    * will also be an empty string.
    *
-   * @knownIssue
-   *
-   * ### Large numbers and `step` validation
-   *
-   * The `step` validation will not work correctly for very large numbers (e.g. 9999999999) due to
-   * Javascript's arithmetic limitations. If you need to handle large numbers, purpose-built
-   * libraries (e.g. https://github.com/MikeMcl/big.js/), can be included into AngularJS by
-   * {@link guide/forms#modifying-built-in-validators overwriting the validators}
-   * for `number` and / or `step`, or by {@link guide/forms#custom-validation applying custom validators}
-   * to an `input[text]` element. The source for `input[number]` type can be used as a starting
-   * point for both implementations.
    *
    * @param {string} ngModel Assignable AngularJS expression to data-bind to.
    * @param {string=} name Property name of the form under which the control is published.
@@ -32842,7 +32805,6 @@ function NgModelController($scope, $exceptionHandler, $attr, $element, $parse, $
   this.$$currentValidationRunId = 0;
 
   this.$$scope = $scope;
-  this.$$rootScope = $scope.$root;
   this.$$attr = $attr;
   this.$$element = $element;
   this.$$animate = $animate;
@@ -33420,7 +33382,7 @@ NgModelController.prototype = {
       this.$$pendingDebounce = this.$$timeout(function() {
         that.$commitViewValue();
       }, debounceDelay);
-    } else if (this.$$rootScope.$$phase) {
+    } else if (this.$$scope.$root.$$phase) {
       this.$commitViewValue();
     } else {
       this.$$scope.$apply(function() {
@@ -33976,7 +33938,7 @@ ModelOptions.prototype = {
     options = extend({}, options);
 
     // Inherit options from the parent if specified by the value `"$inherit"`
-    forEach(options, /** @this */ function(option, key) {
+    forEach(options, /* @this */ function(option, key) {
       if (option === '$inherit') {
         if (key === '*') {
           inheritAll = true;
@@ -35420,301 +35382,6 @@ var ngPluralizeDirective = ['$locale', '$interpolate', '$log', function($locale,
       function updateElementText(newText) {
         element.text(newText || '');
       }
-    }
-  };
-}];
-
-/**
- * @ngdoc directive
- * @name ngRef
- * @restrict A
- *
- * @description
- * The `ngRef` attribute tells AngularJS to assign the controller of a component (or a directive)
- * to the given property in the current scope. It is also possible to add the jqlite-wrapped DOM
- * element to the scope.
- *
- * If the element with `ngRef` is destroyed `null` is assigned to the property.
- *
- * Note that if you want to assign from a child into the parent scope, you must initialize the
- * target property on the parent scope, otherwise `ngRef` will assign on the child scope.
- * This commonly happens when assigning elements or components wrapped in {@link ngIf} or
- * {@link ngRepeat}. See the second example below.
- *
- *
- * @element ANY
- * @param {string} ngRef property name - A valid AngularJS expression identifier to which the
- *                       controller or jqlite-wrapped DOM element will be bound.
- * @param {string=} ngRefRead read value - The name of a directive (or component) on this element,
- *                            or the special string `$element`. If a name is provided, `ngRef` will
- *                            assign the matching controller. If `$element` is provided, the element
- *                            itself is assigned (even if a controller is available).
- *
- *
- * @example
- * ### Simple toggle
- * This example shows how the controller of the component toggle
- * is reused in the template through the scope to use its logic.
- * <example name="ng-ref-component" module="myApp">
- *   <file name="index.html">
- *     <my-toggle ng-ref="myToggle"></my-toggle>
- *     <button ng-click="myToggle.toggle()">Toggle</button>
- *     <div ng-show="myToggle.isOpen()">
- *       You are using a component in the same template to show it.
- *     </div>
- *   </file>
- *   <file name="index.js">
- *     angular.module('myApp', [])
- *     .component('myToggle', {
- *       controller: function ToggleController() {
- *         var opened = false;
- *         this.isOpen = function() { return opened; };
- *         this.toggle = function() { opened = !opened; };
- *       }
- *     });
- *   </file>
- *   <file name="protractor.js" type="protractor">
- *      it('should publish the toggle into the scope', function() {
- *        var toggle = element(by.buttonText('Toggle'));
- *        expect(toggle.evaluate('myToggle.isOpen()')).toEqual(false);
- *        toggle.click();
- *        expect(toggle.evaluate('myToggle.isOpen()')).toEqual(true);
- *      });
- *   </file>
- * </example>
- *
- * @example
- * ### ngRef inside scopes
- * This example shows how `ngRef` works with child scopes. The `ngRepeat`-ed `myWrapper` components
- * are assigned to the scope of `myRoot`, because the `toggles` property has been initialized.
- * The repeated `myToggle` components are published to the child scopes created by `ngRepeat`.
- * `ngIf` behaves similarly - the assignment of `myToggle` happens in the `ngIf` child scope,
- * because the target property has not been initialized on the `myRoot` component controller.
- *
- * <example name="ng-ref-scopes" module="myApp">
- *   <file name="index.html">
- *     <my-root></my-root>
- *   </file>
- *   <file name="index.js">
- *     angular.module('myApp', [])
- *     .component('myRoot', {
- *       templateUrl: 'root.html',
- *       controller: function() {
- *         this.wrappers = []; // initialize the array so that the wrappers are assigned into the parent scope
- *       }
- *     })
- *     .component('myToggle', {
- *       template: '<strong>myToggle</strong><button ng-click="$ctrl.toggle()" ng-transclude></button>',
- *       transclude: true,
- *       controller: function ToggleController() {
- *         var opened = false;
- *         this.isOpen = function() { return opened; };
- *         this.toggle = function() { opened = !opened; };
- *       }
- *     })
- *     .component('myWrapper', {
- *       transclude: true,
- *       template: '<strong>myWrapper</strong>' +
- *         '<div>ngRepeatToggle.isOpen(): {{$ctrl.ngRepeatToggle.isOpen() | json}}</div>' +
- *         '<my-toggle ng-ref="$ctrl.ngRepeatToggle"><ng-transclude></ng-transclude></my-toggle>'
- *     });
- *   </file>
- *   <file name="root.html">
- *     <strong>myRoot</strong>
- *     <my-toggle ng-ref="$ctrl.outerToggle">Outer Toggle</my-toggle>
- *     <div>outerToggle.isOpen(): {{$ctrl.outerToggle.isOpen() | json}}</div>
- *     <div><em>wrappers assigned to root</em><br>
- *     <div ng-repeat="wrapper in $ctrl.wrappers">
- *       wrapper.ngRepeatToggle.isOpen(): {{wrapper.ngRepeatToggle.isOpen() | json}}
- *     </div>
- *
- *     <ul>
- *       <li ng-repeat="(index, value) in [1,2,3]">
- *         <strong>ngRepeat</strong>
- *         <div>outerToggle.isOpen(): {{$ctrl.outerToggle.isOpen() | json}}</div>
- *         <my-wrapper ng-ref="$ctrl.wrappers[index]">ngRepeat Toggle {{$index + 1}}</my-wrapper>
- *       </li>
- *     </ul>
- *
- *     <div>ngIfToggle.isOpen(): {{ngIfToggle.isOpen()}} // This is always undefined because it's
- *       assigned to the child scope created by ngIf.
- *     </div>
- *     <div ng-if="true">
-          <strong>ngIf</strong>
- *        <my-toggle ng-ref="ngIfToggle">ngIf Toggle</my-toggle>
- *        <div>ngIfToggle.isOpen(): {{ngIfToggle.isOpen() | json}}</div>
- *        <div>outerToggle.isOpen(): {{$ctrl.outerToggle.isOpen() | json}}</div>
- *     </div>
- *   </file>
- *   <file name="styles.css">
- *     ul {
- *       list-style: none;
- *       padding-left: 0;
- *     }
- *
- *     li[ng-repeat] {
- *       background: lightgreen;
- *       padding: 8px;
- *       margin: 8px;
- *     }
- *
- *     [ng-if] {
- *       background: lightgrey;
- *       padding: 8px;
- *     }
- *
- *     my-root {
- *       background: lightgoldenrodyellow;
- *       padding: 8px;
- *       display: block;
- *     }
- *
- *     my-wrapper {
- *       background: lightsalmon;
- *       padding: 8px;
- *       display: block;
- *     }
- *
- *     my-toggle {
- *       background: lightblue;
- *       padding: 8px;
- *       display: block;
- *     }
- *   </file>
- *   <file name="protractor.js" type="protractor">
- *      var OuterToggle = function() {
- *        this.toggle = function() {
- *          element(by.buttonText('Outer Toggle')).click();
- *        };
- *        this.isOpen = function() {
- *          return element.all(by.binding('outerToggle.isOpen()')).first().getText();
- *        };
- *      };
- *      var NgRepeatToggle = function(i) {
- *        var parent = element.all(by.repeater('(index, value) in [1,2,3]')).get(i - 1);
- *        this.toggle = function() {
- *          element(by.buttonText('ngRepeat Toggle ' + i)).click();
- *        };
- *        this.isOpen = function() {
- *          return parent.element(by.binding('ngRepeatToggle.isOpen() | json')).getText();
- *        };
- *        this.isOuterOpen = function() {
- *          return parent.element(by.binding('outerToggle.isOpen() | json')).getText();
- *        };
- *      };
- *      var NgRepeatToggles = function() {
- *        var toggles = [1,2,3].map(function(i) { return new NgRepeatToggle(i); });
- *        this.forEach = function(fn) {
- *          toggles.forEach(fn);
- *        };
- *        this.isOuterOpen = function(i) {
- *          return toggles[i - 1].isOuterOpen();
- *        };
- *      };
- *      var NgIfToggle = function() {
- *        var parent = element(by.css('[ng-if]'));
- *        this.toggle = function() {
- *          element(by.buttonText('ngIf Toggle')).click();
- *        };
- *        this.isOpen = function() {
- *          return by.binding('ngIfToggle.isOpen() | json').getText();
- *        };
- *        this.isOuterOpen = function() {
- *          return parent.element(by.binding('outerToggle.isOpen() | json')).getText();
- *        };
- *      };
- *
- *      it('should toggle the outer toggle', function() {
- *        var outerToggle = new OuterToggle();
- *        expect(outerToggle.isOpen()).toEqual('outerToggle.isOpen(): false');
- *        outerToggle.toggle();
- *        expect(outerToggle.isOpen()).toEqual('outerToggle.isOpen(): true');
- *      });
- *
- *      it('should toggle all outer toggles', function() {
- *        var outerToggle = new OuterToggle();
- *        var repeatToggles = new NgRepeatToggles();
- *        var ifToggle = new NgIfToggle();
- *        expect(outerToggle.isOpen()).toEqual('outerToggle.isOpen(): false');
- *        expect(repeatToggles.isOuterOpen(1)).toEqual('outerToggle.isOpen(): false');
- *        expect(repeatToggles.isOuterOpen(2)).toEqual('outerToggle.isOpen(): false');
- *        expect(repeatToggles.isOuterOpen(3)).toEqual('outerToggle.isOpen(): false');
- *        expect(ifToggle.isOuterOpen()).toEqual('outerToggle.isOpen(): false');
- *        outerToggle.toggle();
- *        expect(outerToggle.isOpen()).toEqual('outerToggle.isOpen(): true');
- *        expect(repeatToggles.isOuterOpen(1)).toEqual('outerToggle.isOpen(): true');
- *        expect(repeatToggles.isOuterOpen(2)).toEqual('outerToggle.isOpen(): true');
- *        expect(repeatToggles.isOuterOpen(3)).toEqual('outerToggle.isOpen(): true');
- *        expect(ifToggle.isOuterOpen()).toEqual('outerToggle.isOpen(): true');
- *      });
- *
- *      it('should toggle each repeat iteration separately', function() {
- *        var repeatToggles = new NgRepeatToggles();
- *
- *        repeatToggles.forEach(function(repeatToggle) {
- *          expect(repeatToggle.isOpen()).toEqual('ngRepeatToggle.isOpen(): false');
- *          expect(repeatToggle.isOuterOpen()).toEqual('outerToggle.isOpen(): false');
- *          repeatToggle.toggle();
- *          expect(repeatToggle.isOpen()).toEqual('ngRepeatToggle.isOpen(): true');
- *          expect(repeatToggle.isOuterOpen()).toEqual('outerToggle.isOpen(): false');
- *        });
- *      });
- *   </file>
- * </example>
- *
- */
-
-var ngRefMinErr = minErr('ngRef');
-
-var ngRefDirective = ['$parse', function($parse) {
-  return {
-    priority: -1, // Needed for compatibility with element transclusion on the same element
-    restrict: 'A',
-    compile: function(tElement, tAttrs) {
-      // Get the expected controller name, converts <data-some-thing> into "someThing"
-      var controllerName = directiveNormalize(nodeName_(tElement));
-
-      // Get the expression for value binding
-      var getter = $parse(tAttrs.ngRef);
-      var setter = getter.assign || function() {
-        throw ngRefMinErr('nonassign', 'Expression in ngRef="{0}" is non-assignable!', tAttrs.ngRef);
-      };
-
-      return function(scope, element, attrs) {
-        var refValue;
-
-        if (attrs.hasOwnProperty('ngRefRead')) {
-          if (attrs.ngRefRead === '$element') {
-            refValue = element;
-          } else {
-            refValue = element.data('$' + attrs.ngRefRead + 'Controller');
-
-            if (!refValue) {
-              throw ngRefMinErr(
-                'noctrl',
-                'The controller for ngRefRead="{0}" could not be found on ngRef="{1}"',
-                attrs.ngRefRead,
-                tAttrs.ngRef
-              );
-            }
-          }
-        } else {
-          refValue = element.data('$' + controllerName + 'Controller');
-        }
-
-        refValue = refValue || element;
-
-        setter(scope, refValue);
-
-        // when the element is removed, remove it (nullify it)
-        element.on('$destroy', function() {
-          // only remove it if value has not changed,
-          // because animations (and other procedures) may duplicate elements
-          if (getter(scope) === refValue) {
-            setter(scope, null);
-          }
-        });
-      };
     }
   };
 }];
@@ -45810,7 +45477,7 @@ _widget.Widget.run(["$templateCache", function ($templateCache) {
 /* 149 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"bon_profile_wrap container\" data-ng-show=\"widget.enabled\" data-ng-cloak>\n\n  <div class=\"bon_profile_info\" data-sailplay-profile data-sailplay-gifts>\n\n    <div data-ng-if=\"user()\" class=\"bon_profile_avatar\">\n      <div class=\"user_avatar\">\n        <img class=\"user_avatar_image\" data-ng-src=\"{{ (user().user.pic | sailplay_pic) || default_avatar}}\" alt=\"You\">\n        <div class=\"user_avatar_profile_btn_container\" data-ng-clickk=\"$event.preventDefault(); profile.fill_profile(true);\">\n              <img class=\"user_avatar_profile_btn\" src=\"https://sailplays3.cdnvideo.ru/media/assets/assetfile/67eac019ec6671a75b4141492cfe0769.png\">\n        </div>\n        <div class=\"user_info\">\n          <a href=\"#\" class=\"edit_profile_btn button_link\" data-ng-click=\"$event.preventDefault(); profile.fill_profile(true);\">{{ widget.texts.edit_profile_button }}</a>\n          <a href=\"#\" class=\"logout_btn button_link\" data-ng-click=\"$event.preventDefault(); logout();\">{{ widget.texts.logout }}</a>      \n        </div>\n        <a class=\"overview_btn\" href=\"#\" ng-click=\"$event.preventDefault();overview.open()\">{{ widget.texts.overview }}</a>\n      </div>\n    </div>\n\n    <div class=\"bon_profile_top clearfix\">\n\n      <div class=\"bon_profile_top_left\">\n        <h3>\n          <span class=\"header\">{{ user() && user().user.first_name ? (user().user.first_name + ', ' + widget.texts.header) : widget.texts.header }}</span>\n        </h3>\n        <h4>\n          <span class=\"caption\">{{ widget.texts.spoiler }}</span>\n        </h4>\n      </div>\n    </div>\n    <div class=\"bon_profile_login clearfix\" data-ng-if=\"!user()\">\n      <button type=\"button\" class=\"sp_btn button_login login_reg_btn\" data-ng-click=\"$event.preventDefault(); login('remote'); $parent.$parent.show_login = true;\">{{ widget.texts.login_reg }}</button>\n    </div>\n\n    <!-- status -->\n\n    <div data-ng-if=\"user()\" class=\"bon_profile_stat\">\n      <div class=\"bps_left points_block clearfix\" data-ng-if=\"user()\">\n        <span class=\"points_confirmed\">\n          <span class=\"points_confirmed_name\" data-ng-bind=\"user().user_points.confirmed | sailplay_pluralize: ('points.texts.pluralize' | tools)\"></span>\n          <span class=\"points_confirmed_value\" data-ng-bind=\"user().user_points.confirmed | number\"></span>\n        </span>\n        <a class=\"button_link history_button\" href=\"#\" data-ng-click=\"$event.preventDefault(); profile.history = true;\">{{ widget.texts.history_button }}</a>\n      </div>\n      <div class=\"bps_left status_block clearfix\" data-ng-if=\"user()\">\n        <span class=\"points_confirmed\">\n          <span class=\"status_confirmed_name\" data-ng-bind=\"widget.texts.user_status\"></span>\n          <span class=\"status_confirmed_icon\" title=\"{{currentStatus.current_status.description}}\" >{{ currentStatus.current_status.status }}\n          <svg-img src=\"currentStatus.getCurrentStatus().img_current\"></svg-img></span>\n        </span>\n      </div>\n    </div>\n  </div>\n\n\n  <magic-modal class=\"bns_overlay_login\" data-show=\"show_login\">\n    <div sailplay-remote-login></div>\n  </magic-modal>\n\n  <magic-modal class=\"bns_overlay_hist\" data-show=\"profile.history\">\n\n    <div data-sailplay-history data-sailplay-profile>\n\n      <h3>\n        <span class=\"modal_history_header\">{{ widget.texts.history.header }}</span>\n        <!--<b>У вас {{ user().user_points.confirmed + ' ' + (user().user_points.confirmed | sailplay_pluralize:_tools.points.texts.pluralize) }}</b>-->\n      </h3>\n      <h4 class=\"modal_history_caption\">{{ widget.texts.history.caption }}</h4>\n      <div class=\"clearfix\"></div>\n      <div class=\"history_container\">\n        <div class=\"history_entry\" data-dir-paginate=\"item in history() | itemsPerPage:5\" data-pagination-id=\"history_pages\">\n          <div>\n            <span class=\"modal_history_name\" data-ng-bind=\"item | get_bonus_name\"></span>\n            <span class=\"modal_history_date\" data-ng-bind=\"item.action_date | date:'MM.d.yyyy'\"></span>\n          </div>\n          <div>\n          </div>\n          <div>\n            <span class=\"modal_history_points\" data-ng-if=\"item.points_delta\" data-ng-bind=\"((item.points_delta|number) || 0) + ' ' + (item.points_delta | sailplay_pluralize:('points.texts.pluralize' | tools))\"></span>\n          </div>\n        </div>\n      </div>\n\n      <div class=\"modal_history_controls_container\">\n        <dir-pagination-controls data-max-size=\"5\" data-pagination-id=\"history_pages\"\n                                 data-template-url=\"profile.history_pagination\"\n                                 data-auto-hide=\"true\"></dir-pagination-controls>\n        <button type=\"nothing\" class=\"sp_btn button_primary modal_history_close\" data-ng-click=\"$event.preventDefault(); $parent.$parent.close()\">{{ 'buttons.texts.close' | tools }}</button>\n      </div>\n    </div>\n\n\n\n\n  </magic-modal>\n\n  <!--profile edit section-->\n  <magic-modal class=\"fill_profile_modal\" data-show=\"profile.show_fill_profile\">\n\n    <div class=\"mb_popup mb_popup_prof\" data-sailplay-fill-profile data-config=\"widget.fill_profile.config\">\n\n      <div class=\"mb_popup_top\">\n        <span class=\"modal_profile_header\">{{ widget.fill_profile.header }}</span>\n      </div>\n\n      <form name=\"fill_profile_form\" class=\"mb_popup_main mb_popup_main_mt\" data-ng-submit=\"sailplay.fill_profile.submit(fill_profile_form, profile.fill_profile);\">\n\n        <div class=\"form_field\" data-ng-repeat=\"field in sailplay.fill_profile.form.fields\" data-ng-switch=\"field.input\">\n\n          <div data-ng-switch-when=\"image\" class=\"avatar_upload clearfix\">\n            <img width=\"160px\" data-ng-src=\"{{ (field.value | sailplay_pic) || 'http://saike.ru/sailplay-magic/dist/img/profile/avatar_default.png'}}\" alt=\"\">\n          </div>\n\n          <div data-ng-switch-when=\"text\" class=\"clearfix\">\n            <label class=\"form_label\">{{ field.label }}</label>\n            <input class=\"form_input\" type=\"text\" placeholder=\"{{ field.placeholder }}\" data-ng-model=\"field.value\" data-ng-disabled=\"field.disabled\">\n          </div>\n\n          <div data-ng-switch-when=\"date\" class=\"clearfix\">\n            <label class=\"form_label date_label\">{{ field.label }}</label>\n            <date-picker data-model=\"field.value\"></date-picker>\n          </div>\n\n          <div data-ng-switch-when=\"select\" class=\"clearfix\">\n            <label class=\"form_label\">{{ field.label }}</label>\n            <div class=\"magic_select form_input\">\n              <select data-ng-model=\"field.value\" data-ng-options=\"item.value as item.text for item in field.data\"></select>\n            </div>\n          </div>\n\n          <div data-ng-switch-when=\"phone\" class=\"clearfix\">\n            <label class=\"form_label\">{{ field.label }}</label>\n            <input class=\"form_input\" type=\"text\" data-model-view-value=\"true\" data-ui-mask=\"{{ field.placeholder }}\" data-ng-model=\"field.value\">\n          </div>\n\n          <div data-ng-switch-when=\"email\" class=\"clearfix\">\n            <label class=\"form_label\">{{ field.label }}</label>\n            <input class=\"form_input\" type=\"email\" placeholder=\"{{ field.placeholder }}\" data-ng-model=\"field.value\">\n          </div>\n\n        </div>\n\n        <div class=\"answ_text\">\n          <button type=\"submit\" class=\"sp_btn button_primary\">{{ 'buttons.texts.save' | tools }}</button>\n        </div>\n      </form>\n    </div>\n  </magic-modal>\n\n  <magic-modal class=\"bns_overlay_overview\" data-ng-cloak data-show=\"overview.show\">\n    <img ng-src=\"{{ widget.images.overview }}\">\n  </magic-modal>\n\n</div>";
+module.exports = "<div class=\"bon_profile_wrap container\" data-ng-show=\"widget.enabled\" data-ng-cloak>\n\n  <div class=\"bon_profile_info\" data-sailplay-profile data-sailplay-gifts>\n\n    <div data-ng-if=\"user()\" class=\"bon_profile_avatar\">\n      <div class=\"user_avatar\">\n        <img class=\"user_avatar_image\" data-ng-src=\"{{ (user().user.pic | sailplay_pic) || default_avatar}}\" alt=\"You\">\n        <div class=\"user_avatar_profile_btn_container\" data-ng-clickk=\"$event.preventDefault(); profile.fill_profile(true);\">\n              <img class=\"user_avatar_profile_btn\" src=\"https://sailplays3.cdnvideo.ru/media/assets/assetfile/67eac019ec6671a75b4141492cfe0769.png\">\n        </div>\n        <div class=\"user_info\">\n          <a href=\"#\" class=\"edit_profile_btn button_link\" data-ng-click=\"$event.preventDefault(); profile.fill_profile(true);\">{{ widget.texts.edit_profile_button }}</a>\n          <a href=\"#\" class=\"logout_btn button_link\" data-ng-click=\"$event.preventDefault(); logout();\">{{ widget.texts.logout }}</a>\n        </div>\n        <a class=\"overview_btn\" href=\"#\" ng-click=\"$event.preventDefault();overview.open()\">{{ widget.texts.overview }}</a>\n      </div>\n    </div>\n\n    <div class=\"bon_profile_top clearfix\">\n\n      <div class=\"bon_profile_top_left\">\n        <h3>\n          <span class=\"header\">{{ user() ? ( user().user.first_name ? (widget.texts.header +  ', ' + user().user.first_name) : widget.texts.header ) : widget.texts.header_no_auth }}</span>\n        </h3>\n        <h4>\n          <span class=\"caption\">{{ widget.texts.spoiler }}</span>\n        </h4>\n      </div>\n    </div>\n    <div class=\"bon_profile_login clearfix\" data-ng-if=\"!user()\">\n      <button type=\"button\" class=\"sp_btn button_login login_reg_btn\" data-ng-click=\"$event.preventDefault(); login('remote'); $parent.$parent.show_login = true;\">{{ widget.texts.login_reg }}</button>\n    </div>\n\n    <!-- status -->\n    <div data-ng-if=\"user()\" class=\"bon_profile_stat\">\n      <div class=\"bps_left points_block clearfix\">\n        <span class=\"points_confirmed\">\n          <span class=\"points_confirmed_name\" data-ng-bind=\"user().user_points.confirmed | sailplay_pluralize: ('points.texts.pluralize' | tools)\"></span>\n          <span class=\"points_confirmed_value\" data-ng-bind=\"user().user_points.confirmed | number\"></span>\n        </span>\n        <a class=\"button_link history_button\" href=\"#\" data-ng-click=\"$event.preventDefault(); profile.history = true;\">{{ widget.texts.history_button }}</a>\n      </div>\n      <div class=\"bps_left status_block clearfix\">\n        <span class=\"points_confirmed\">\n          <span class=\"status_confirmed_name\" data-ng-bind=\"widget.texts.user_status\"></span>\n          <span class=\"status_confirmed_icon\" title=\"{{currentStatus.current_status.description}}\" >{{ currentStatus.current_status.status }}\n          <img class=\"status_confirmed_icon_image\" src=\"{{currentStatus.getCurrentStatus().img_current}}\"></img></span>\n        </span>\n      </div>\n    </div>\n\n\n  </div>\n</div>\n\n\n\n  <magic-modal class=\"bns_overlay_login\" data-show=\"show_login\">\n    <div sailplay-remote-login></div>\n  </magic-modal>\n\n  <magic-modal class=\"bns_overlay_hist\" data-show=\"profile.history\">\n\n    <div data-sailplay-history data-sailplay-profile>\n\n      <h3>\n        <span class=\"modal_history_header\">{{ widget.texts.history.header }}</span>\n        <!--<b>У вас {{ user().user_points.confirmed + ' ' + (user().user_points.confirmed | sailplay_pluralize:_tools.points.texts.pluralize) }}</b>-->\n      </h3>\n      <h4 class=\"modal_history_caption\">{{ widget.texts.history.caption }}</h4>\n      <div class=\"clearfix\"></div>\n      <div class=\"history_container\">\n        <div class=\"history_entry\" data-dir-paginate=\"item in history() | itemsPerPage:5\" data-pagination-id=\"history_pages\">\n          <div>\n            <span class=\"modal_history_name\" data-ng-bind=\"item | get_bonus_name\"></span>\n            <span class=\"modal_history_date\" data-ng-bind=\"item.action_date | date:'MM.d.yyyy'\"></span>\n          </div>\n          <div>\n          </div>\n          <div>\n            <span class=\"modal_history_points\" data-ng-if=\"item.points_delta\" data-ng-bind=\"((item.points_delta|number) || 0) + ' ' + (item.points_delta | sailplay_pluralize:('points.texts.pluralize' | tools))\"></span>\n          </div>\n        </div>\n      </div>\n\n      <div class=\"modal_history_controls_container\">\n        <dir-pagination-controls data-max-size=\"5\" data-pagination-id=\"history_pages\"\n                                 data-template-url=\"profile.history_pagination\"\n                                 data-auto-hide=\"true\"></dir-pagination-controls>\n        <button type=\"nothing\" class=\"sp_btn button_primary modal_history_close\" data-ng-click=\"$event.preventDefault(); $parent.$parent.close()\">{{ 'buttons.texts.close' | tools }}</button>\n      </div>\n    </div>\n\n\n\n\n  </magic-modal>\n\n  <!--profile edit section-->\n  <magic-modal class=\"fill_profile_modal\" data-show=\"profile.show_fill_profile\">\n\n    <div class=\"mb_popup mb_popup_prof\" data-sailplay-fill-profile data-config=\"widget.fill_profile.config\">\n\n      <div class=\"mb_popup_top\">\n        <span class=\"modal_profile_header\">{{ widget.fill_profile.header }}</span>\n      </div>\n\n      <form name=\"fill_profile_form\" class=\"mb_popup_main mb_popup_main_mt\" data-ng-submit=\"sailplay.fill_profile.submit(fill_profile_form, profile.fill_profile);\">\n\n        <div class=\"form_field\" data-ng-repeat=\"field in sailplay.fill_profile.form.fields\" data-ng-switch=\"field.input\">\n\n          <div data-ng-switch-when=\"image\" class=\"avatar_upload clearfix\">\n            <img width=\"160px\" data-ng-src=\"{{ (field.value | sailplay_pic) || 'http://saike.ru/sailplay-magic/dist/img/profile/avatar_default.png'}}\" alt=\"\">\n          </div>\n\n          <div data-ng-switch-when=\"text\" class=\"clearfix\">\n            <label class=\"form_label\">{{ field.label }}</label>\n            <input class=\"form_input\" type=\"text\" placeholder=\"{{ field.placeholder }}\" data-ng-model=\"field.value\" data-ng-disabled=\"field.disabled\">\n          </div>\n\n          <div data-ng-switch-when=\"date\" class=\"clearfix\">\n            <label class=\"form_label date_label\">{{ field.label }}</label>\n            <date-picker data-model=\"field.value\"></date-picker>\n          </div>\n\n          <div data-ng-switch-when=\"select\" class=\"clearfix\">\n            <label class=\"form_label\">{{ field.label }}</label>\n            <div class=\"magic_select form_input\">\n              <select data-ng-model=\"field.value\" data-ng-options=\"item.value as item.text for item in field.data\"></select>\n            </div>\n          </div>\n\n          <div data-ng-switch-when=\"phone\" class=\"clearfix\">\n            <label class=\"form_label\">{{ field.label }}</label>\n            <input class=\"form_input\" type=\"text\" data-model-view-value=\"true\" data-ui-mask=\"{{ field.placeholder }}\" data-ng-model=\"field.value\">\n          </div>\n\n          <div data-ng-switch-when=\"email\" class=\"clearfix\">\n            <label class=\"form_label\">{{ field.label }}</label>\n            <input class=\"form_input\" type=\"email\" placeholder=\"{{ field.placeholder }}\" data-ng-model=\"field.value\">\n          </div>\n\n        </div>\n\n        <div class=\"answ_text\">\n          <button type=\"submit\" class=\"sp_btn button_primary\">{{ 'buttons.texts.save' | tools }}</button>\n        </div>\n      </form>\n    </div>\n  </magic-modal>\n\n  <magic-modal class=\"bns_overlay_overview\" data-ng-cloak data-show=\"overview.show\">\n    <img ng-src=\"{{ widget.images.overview }}\">\n  </magic-modal>\n\n</div>\n";
 
 /***/ }),
 /* 150 */
@@ -45859,7 +45526,7 @@ exports = module.exports = __webpack_require__(0)(false);
 
 
 // module
-exports.push([module.i, ".spm_wrapper .bon_profile_wrap {\n  float: left;\n  width: 100%;\n  padding: 0 3%;\n  -webkit-box-sizing: border-box;\n  -moz-box-sizing: border-box;\n  box-sizing: border-box;\n  background-color: #921d22;\n  position: relative;\n}\n.spm_wrapper .bon_profile_wrap > * {\n  min-height: 292px;\n}\n.spm_wrapper .bon_profile_wrap .bns_overlay_overview img {\n  max-width: 100%;\n}\n.spm_wrapper .bon_profile_wrap .overview_btn {\n  height: 40px;\n  width: 100px;\n  display: block;\n  margin-top: 20px;\n  line-height: 40px;\n  font-weight: 400;\n  font-family: Open Sans, sans-serif;\n  background: white;\n  color: #921d22;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info {\n  width: 100%;\n  display: flex;\n  float: left;\n  position: relative;\n}\n@media screen and (max-width: 991px) {\n  .spm_wrapper .bon_profile_wrap .bon_profile_info {\n    flex-wrap: wrap;\n  }\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .user_avatar {\n  position: relative;\n  max-width: 100px;\n  float: right;\n  text-align: center;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .user_avatar:hover .user_info {\n  display: block;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .user_avatar .user_avatar_image {\n  width: 100%;\n  margin-top: 44px;\n  border-radius: 90em;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .user_info {\n  height: 180px;\n  display: block;\n  position: absolute;\n  top: 10px;\n  width: 200px !important;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .user_info a {\n  width: 50% !important;\n  color: white;\n  text-decoration: underline !important;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info img:not(.user_avatar_profile_btn) {\n  border-radius: 100%;\n  -webkit-box-shadow: 0 2px 7px 1px rgba(0, 0, 0, 0.2);\n  box-shadow: 0 2px 7px 1px rgba(0, 0, 0, 0.2);\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .user_avatar_profile_btn_container {\n  height: 21.75px;\n  width: 20.25px;\n  padding: 1px 3px;\n  background-color: white;\n  position: absolute;\n  border-radius: 50px;\n  top: 42px;\n  right: 8px;\n  display: none;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .user_avatar_profile_btn {\n  padding-top: 8px;\n  width: 100%;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_avatar {\n  min-width: 100px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_login {\n  order: 4;\n  width: 40%;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n}\n@media screen and (max-width: 991px) {\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_login {\n    width: 100%;\n  }\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_login .button_login {\n  background-color: white;\n  color: #921d22;\n  height: 66px;\n  width: 252px;\n  font-size: 24px;\n  font-weight: 400;\n  font-family: Open Sans, sans-serif;\n  margin-right: 0;\n  margin-bottom: 40px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_top {\n  min-width: 50%;\n  flex-grow: 2;\n}\n@media screen and (max-width: 991px) {\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_top {\n    order: 2;\n    min-height: 200px;\n  }\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_top_left {\n  float: left;\n  padding-left: 15px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_top_left h3 {\n  float: left;\n  width: 100%;\n  font-size: 30px;\n  color: #ffffff;\n  margin-top: 60px;\n  margin-bottom: 10px;\n}\n@media screen and (max-width: 991px) {\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_top_left h3 {\n    margin-top: 20px !important;\n  }\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_top_left h4 {\n  float: left;\n  width: 100%;\n  color: #ffffff;\n  font-size: 14px;\n  font-weight: 400;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right {\n  float: right;\n  width: 265px;\n  margin-top: 50px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right img {\n  border-radius: 100%;\n  -webkit-box-shadow: 0 2px 7px 1px rgba(0, 0, 0, 0.2);\n  box-shadow: 0 2px 7px 1px rgba(0, 0, 0, 0.2);\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right span {\n  font-size: 16px;\n  font-weight: 700;\n  margin-top: 18px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right .login_reg_btn {\n  float: right;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right .logout_btn {\n  width: auto;\n  font-size: 14px;\n  margin-top: 9px;\n  color: #ffffff;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right .edit_profile_btn {\n  font-size: 14px;\n  margin-top: 9px;\n  color: #ffffff;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right .user_info {\n  text-align: right;\n  float: left;\n  width: 165px;\n  color: #ffffff;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right .user_info span {\n  word-wrap: break-word;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat {\n  float: left;\n  min-width: 350px;\n  display: flex;\n  margin-top: 50px;\n  margin-bottom: 78px;\n}\n@media screen and (max-width: 991px) {\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat {\n    min-width: 180px;\n    flex-grow: 2;\n    margin-bottom: 10px;\n  }\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .points_block,\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .status_block {\n  padding-top: 18px;\n  min-height: 108px;\n  width: 50%;\n  padding-left: 20px;\n  flex-grow: 1;\n  border-left: 1px solid #9d3438;\n}\n@media screen and (max-width: 991px) {\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .points_block,\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .status_block {\n    padding-left: 15px !important;\n  }\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .points_block > span > span:nth-of-type(1),\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .status_block > span > span:nth-of-type(1) {\n  font-size: 16px;\n  display: block;\n  text-transform: capitalize;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .points_block > span > span:nth-of-type(2),\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .status_block > span > span:nth-of-type(2) {\n  padding-top: 12px;\n  font-size: 38px;\n  display: block;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .points_block {\n  padding-right: 20px;\n}\n@media screen and (max-width: 991px) {\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .points_block {\n    border-left: none;\n    padding-right: 0;\n  }\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .points_block .history_button {\n  font-size: 16px;\n  position: absolute;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .points_block > span > span:nth-of-type(2) {\n  padding-top: 14px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .status_block .status_confirmed_icon {\n  text-transform: capitalize;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .status_block .status_confirmed_icon object {\n  height: 38px;\n  transform: translateY(5px);\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .points_confirmed span {\n  color: inherit;\n  font-family: inherit;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .points_confirmed_name {\n  margin-left: 2px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_left {\n  float: left;\n  width: auto;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_left > span {\n  color: #ffffff;\n  display: block;\n  font-size: 33px;\n  font-family: 'RotondaC bold';\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_left > a {\n  font-size: 14px;\n  color: #ffffff;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right {\n  float: right;\n  width: 70%;\n  margin-top: 12px;\n  margin-right: 20px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main {\n  position: relative;\n  float: left;\n  width: 100%;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .progress_line_bg {\n  height: 14px;\n  border-top: 3px solid #000000;\n  background-color: #ffffff;\n  background-image: url(" + escape(__webpack_require__(154)) + ");\n  border-radius: 20px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .progress_line {\n  position: absolute;\n  left: 0px;\n  top: 3px;\n  width: 0%;\n  background-color: #ffffff;\n  height: 14px;\n  border-radius: 20px 0px 0px 20px;\n  -webkit-transition: all 1000ms ease;\n  -moz-transition: all 1000ms ease;\n  -ms-transition: all 1000ms ease;\n  -o-transition: all 1000ms ease;\n  transition: all 1000ms ease;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .progress_line .progress_text {\n  min-width: 100px;\n  position: absolute;\n  right: 0px;\n  padding-top: 32px;\n  border-right: 1px solid #fff;\n  top: 0px;\n  z-index: 1;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .progress_line .progress_text.right_position {\n  right: auto;\n  left: 100%;\n  border-left: 1px solid #fff;\n  border-right: none;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .progress_line .progress_text.right_position span {\n  border-radius: 0px 5px 5px 0px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .progress_line .progress_text span {\n  float: right;\n  line-height: 30px;\n  background-color: rgba(255, 255, 255, 0.2);\n  color: #ffffff;\n  font-size: 14px;\n  font-family: 'RotondaC';\n  border-radius: 5px 0px 0px 5px;\n  padding-left: 10px;\n  padding-right: 10px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .gift_item {\n  position: absolute;\n  top: 50%;\n  width: 36px;\n  height: 36px;\n  margin-top: -19px;\n  margin-left: -19px;\n  background-color: #cccccc;\n  border-radius: 6px;\n  -webkit-background-size: 20px 22px;\n  background-size: 20px 22px;\n  background-repeat: no-repeat;\n  background-position: center center;\n  border-top: 3px solid #000000;\n  background-image: url(" + escape(__webpack_require__(155)) + ");\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .gift_item.act {\n  background-color: #ffffff;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .gift_item_hint {\n  opacity: 0;\n  visibility: hidden;\n  display: inline-block;\n  position: absolute;\n  left: 0;\n  text-align: center;\n  width: 100%;\n  top: 0;\n  font-weight: bold;\n  transition: .3s ease;\n  color: white;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .gift_item:hover .gift_item_hint {\n  visibility: visible;\n  opacity: 1;\n  top: -20px;\n}\n.spm_wrapper .bon_profile_wrap .bns_overlay_iner {\n  width: 500px !important;\n}\n.spm_wrapper .bon_profile_wrap .status_block {\n  width: 30%;\n  display: inline-block;\n}\n@media screen and (max-width: 650px) {\n  .spm_wrapper .bon_profile_wrap .status_block {\n    width: 100%;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_stat .bps_left {\n    text-align: left;\n  }\n}\n@media only screen and (min-width: 1200px) {\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right {\n    width: 100%;\n    margin-top: 30px;\n    margin-right: 0px;\n  }\n}\n@media only screen and (min-width: 992px) and (max-width: 1199px) {\n  .spm_wrapper .bon_profile_wrap .progress_line_main .progress_text {\n    border: none !important;\n  }\n  .spm_wrapper .bon_profile_wrap .progress_line_main .progress_text:before {\n    content: '';\n    width: 1px;\n    background: white;\n    right: 0;\n    top: 0;\n    position: absolute;\n    height: 17px;\n    display: block;\n  }\n  .spm_wrapper .bon_profile_wrap .progress_line_main .progress_text span {\n    position: relative;\n    left: 50%;\n    border-radius: 5px !important;\n  }\n}\n@media only screen and (min-width: 768px) and (max-width: 991px) {\n  .spm_wrapper .bon_profile_wrap .bon_profile_info {\n    width: 100%;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right {\n    width: 265px;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right {\n    float: left;\n    width: 100%;\n    margin-top: 30px;\n    margin-bottom: 12px;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main {\n    float: left;\n    width: 95%;\n  }\n}\n@media only screen and (max-width: 767px) {\n  .spm_wrapper .bon_profile_wrap .bon_profile_info {\n    width: 100%;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right {\n    width: 265px;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right {\n    float: left;\n    width: 100%;\n    margin-top: 30px;\n    margin-bottom: 12px;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main {\n    float: left;\n    width: 95%;\n  }\n}\n.spm_wrapper .bns_hist_table {\n  float: left;\n  width: 100%;\n  margin-top: 12px;\n}\n.spm_wrapper .bns_hist_table td {\n  vertical-align: text-top;\n  padding: 5px 11px;\n}\n.spm_wrapper .bns_hist_table td:nth-child(1) {\n  color: #888888;\n  font-size: 13px;\n  line-height: 19px;\n  padding-right: 0px;\n  padding-left: 0px;\n  white-space: nowrap;\n}\n.spm_wrapper .bns_hist_table td:nth-child(2) {\n  color: #000000;\n  font-size: 12px;\n  font-weight: 200;\n  line-height: 19px;\n  position: relative;\n  padding-left: 0px;\n  width: 570px;\n}\n.spm_wrapper .bns_hist_table td:nth-child(2)::after {\n  position: absolute;\n  left: 0px;\n  width: 100%;\n  border-top: 1px dotted #444444;\n  top: 14px;\n  content: '';\n  display: block;\n}\n.spm_wrapper .bns_hist_table td:nth-child(2) span {\n  display: block;\n  position: relative;\n  z-index: 1;\n  font-size: 13px;\n  color: #222222;\n}\n.spm_wrapper .bns_hist_table td:nth-child(2) span b {\n  background-color: #ffffff;\n  padding-right: 15px;\n  padding-left: 11px;\n  font-weight: 200;\n}\n.spm_wrapper .bns_hist_table td:nth-child(2) span:first-child {\n  color: #000000;\n}\n.spm_wrapper .bns_hist_table td:nth-child(3) {\n  color: #444444;\n  font-size: 14px;\n  font-weight: bold;\n  text-align: right;\n  line-height: 19px;\n}\n.spm_wrapper .bns_hist_table td:nth-child(3) span {\n  display: block;\n  white-space: nowrap;\n  font-size: 13px;\n}\n.spm_wrapper .bns_hist_pager {\n  float: left;\n  font-size: 13px;\n}\n.spm_wrapper .bns_hist_pager a {\n  text-decoration: none;\n  color: #acacab;\n  margin-right: 4px;\n  line-height: 30px;\n  text-align: center;\n  font-size: 22px;\n  font-weight: 300;\n}\n.spm_wrapper .bns_hist_pager a.active {\n  color: white;\n}\n.history_container {\n  margin-top: 10px !important;\n}\n.modal_history_content_container .modal_history_content_header {\n  display: block;\n  color: #999999;\n  text-decoration: underline;\n  cursor: pointer;\n  cursor: hand;\n}\n.modal_history_content_container ul {\n  padding-left: 34px;\n  display: none;\n  padding-bottom: 6px;\n}\n.modal_history_content_container ul li {\n  padding-top: 6px;\n}\n.modal_history_content_container.open ul {\n  display: inline-block;\n}\n.modal_history_content {\n  min-width: 100px;\n  display: inline-block;\n}\n.modal_history_controls_container {\n  margin-top: 22px !important;\n  display: flex;\n  flex-direction: column;\n  justify-content: space-between;\n}\n.bns_hist_pager > a {\n  display: inline-block;\n  height: 33px;\n  width: 33px;\n  background-color: #f7f7f6;\n  border-radius: 50px;\n}\n.bns_hist_pager > a.active {\n  background-color: #921d22;\n}\n.bns_hist_pager > a.active > span {\n  color: white;\n}\n.bns_hist_pager > a > span {\n  font-size: 18px;\n  display: inline-block;\n  color: #9b9d9d;\n  font-weight: normal;\n  font-family: Open Sans, sans-serif;\n  text-align: center;\n  width: 100%;\n  transform: translateY(6px);\n}\n.bns_hist_pager > a + a {\n  margin-left: 10px !important;\n}\n.history_entry {\n  min-height: 63px;\n  padding-top: 14px !important;\n  border-bottom: 1px solid #ededed !important;\n}\n.history_entry > * {\n  display: inline-block;\n  text-align: left;\n}\n.history_entry > * > * {\n  display: block;\n}\n.history_entry > div:nth-of-type(1) {\n  min-width: 123.75px;\n  float: left;\n}\n.history_entry > div:nth-of-type(1) > .modal_history_date {\n  padding-top: 10px;\n  font-size: 18px;\n  color: #7f7f7f;\n}\n.history_entry > div:nth-of-type(3) {\n  width: 150px;\n  float: right;\n}\n.history_entry > div:nth-of-type(3) > .modal_history_price {\n  color: #4fb666;\n  text-align: right;\n  font-size: 20px;\n  font-weight: 600;\n}\n.history_entry > div:nth-of-type(3) > .modal_history_points {\n  text-align: right;\n  color: #921d22;\n  font-weight: 900;\n  font-family: Open Sans, sans-serif;\n  font-size: 19px;\n  padding-top: 5px;\n  white-space: nowrap;\n}\n.history_entry > div:nth-of-type(3) > .modal_history_points + .modal_history_price {\n  padding-top: 8px;\n}\n.modal_history_header {\n  color: #921d22;\n}\n.modal_history_name {\n  font-size: 16px !important;\n}\n.bns_overlay_login.visible {\n  animation: 0.5s linear 0s 1 showeffect;\n}\n.bns_overlay_login .bns_overlay_iner {\n  width: 300px;\n}\n.bns_overlay_login iframe {\n  width: 100%;\n  height: 500px;\n}\n@keyframes showeffect {\n  0% {\n    display: none;\n    visibility: hidden;\n  }\n  99% {\n    display: none;\n    visibility: hidden;\n  }\n  100% {\n    display: block;\n    visibility: visible;\n  }\n}\n@keyframes avatarhover {\n  0% {\n    display: block;\n    visibility: visible;\n  }\n  99% {\n    display: block;\n    visibility: visible;\n  }\n  100% {\n    display: none;\n    visibility: hidden;\n  }\n}\n", ""]);
+exports.push([module.i, ".spm_wrapper .bon_profile_wrap {\n  float: left;\n  width: 100%;\n  padding: 0 3%;\n  -webkit-box-sizing: border-box;\n  -moz-box-sizing: border-box;\n  box-sizing: border-box;\n  background-color: #921d22;\n  position: relative;\n}\n.spm_wrapper .bon_profile_wrap > * {\n  min-height: 292px;\n}\n.spm_wrapper .bon_profile_wrap .bns_overlay_overview img {\n  max-width: 100%;\n}\n.spm_wrapper .bon_profile_wrap .overview_btn {\n  height: 40px;\n  width: 100px;\n  display: block;\n  margin-top: 20px;\n  line-height: 40px;\n  font-weight: 400;\n  font-family: Open Sans, sans-serif;\n  background: white;\n  color: #921d22;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info {\n  width: 100%;\n  display: flex;\n  float: left;\n  position: relative;\n}\n@media screen and (max-width: 991px) {\n  .spm_wrapper .bon_profile_wrap .bon_profile_info {\n    flex-wrap: wrap;\n  }\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .user_avatar {\n  position: relative;\n  max-width: 100px;\n  float: right;\n  text-align: center;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .user_avatar:hover .user_info {\n  display: block;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .user_avatar .user_avatar_image {\n  width: 100%;\n  margin-top: 44px;\n  border-radius: 90em;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .user_info {\n  height: 180px;\n  display: block;\n  position: absolute;\n  top: 10px;\n  width: 200px !important;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .user_info a {\n  width: 50% !important;\n  color: white;\n  text-decoration: underline !important;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info img:not(.user_avatar_profile_btn):not(.status_confirmed_icon_image) {\n  border-radius: 100%;\n  -webkit-box-shadow: 0 2px 7px 1px rgba(0, 0, 0, 0.2);\n  box-shadow: 0 2px 7px 1px rgba(0, 0, 0, 0.2);\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .user_avatar_profile_btn_container {\n  height: 21.75px;\n  width: 20.25px;\n  padding: 1px 3px;\n  background-color: white;\n  position: absolute;\n  border-radius: 50px;\n  top: 42px;\n  right: 8px;\n  display: none;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .user_avatar_profile_btn {\n  padding-top: 8px;\n  width: 100%;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_avatar {\n  min-width: 100px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_login {\n  order: 4;\n  width: 40%;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n}\n@media screen and (max-width: 991px) {\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_login {\n    width: 100%;\n  }\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_login .button_login {\n  background-color: white;\n  color: #921d22;\n  height: 66px;\n  width: 252px;\n  font-size: 24px;\n  font-weight: 400;\n  font-family: Open Sans, sans-serif;\n  margin-right: 0;\n  margin-bottom: 40px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_top {\n  min-width: 50%;\n  flex-grow: 2;\n}\n@media screen and (max-width: 991px) {\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_top {\n    order: 2;\n    min-height: 200px;\n  }\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_top_left {\n  float: left;\n  padding-left: 15px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_top_left h3 {\n  float: left;\n  width: 100%;\n  font-size: 30px;\n  color: #ffffff;\n  margin-top: 60px;\n  margin-bottom: 10px;\n}\n@media screen and (max-width: 991px) {\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_top_left h3 {\n    margin-top: 20px !important;\n  }\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_top_left h4 {\n  float: left;\n  width: 100%;\n  color: #ffffff;\n  font-size: 14px;\n  font-weight: 400;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right {\n  float: right;\n  width: 265px;\n  margin-top: 50px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right img {\n  border-radius: 100%;\n  -webkit-box-shadow: 0 2px 7px 1px rgba(0, 0, 0, 0.2);\n  box-shadow: 0 2px 7px 1px rgba(0, 0, 0, 0.2);\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right span {\n  font-size: 16px;\n  font-weight: 700;\n  margin-top: 18px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right .login_reg_btn {\n  float: right;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right .logout_btn {\n  width: auto;\n  font-size: 14px;\n  margin-top: 9px;\n  color: #ffffff;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right .edit_profile_btn {\n  font-size: 14px;\n  margin-top: 9px;\n  color: #ffffff;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right .user_info {\n  text-align: right;\n  float: left;\n  width: 165px;\n  color: #ffffff;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right .user_info span {\n  word-wrap: break-word;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat {\n  float: left;\n  min-width: 350px;\n  display: flex;\n  margin-top: 50px;\n  margin-bottom: 78px;\n}\n@media screen and (max-width: 991px) {\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat {\n    min-width: 180px;\n    flex-grow: 2;\n    margin-bottom: 10px;\n  }\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .points_block,\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .status_block {\n  padding-top: 18px;\n  min-height: 108px;\n  width: 50%;\n  padding-left: 20px;\n  flex-grow: 1;\n  border-left: 1px solid #9d3438;\n}\n@media screen and (max-width: 991px) {\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .points_block,\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .status_block {\n    padding-left: 15px !important;\n  }\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .points_block > span > span:nth-of-type(1),\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .status_block > span > span:nth-of-type(1) {\n  font-size: 16px;\n  display: block;\n  text-transform: capitalize;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .points_block > span > span:nth-of-type(2),\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .status_block > span > span:nth-of-type(2) {\n  padding-top: 12px;\n  font-size: 38px;\n  display: block;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .points_block {\n  padding-right: 20px;\n}\n@media screen and (max-width: 991px) {\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .points_block {\n    border-left: none;\n    padding-right: 0;\n  }\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .points_block .history_button {\n  font-size: 16px;\n  position: absolute;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .points_block > span > span:nth-of-type(2) {\n  padding-top: 14px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .status_block .status_confirmed_icon {\n  text-transform: capitalize;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .status_block .status_confirmed_icon .status_confirmed_icon_image {\n  height: 38px;\n  transform: translateY(5px);\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .points_confirmed span {\n  color: inherit;\n  font-family: inherit;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .points_confirmed_name {\n  margin-left: 2px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_left {\n  float: left;\n  width: auto;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_left > span {\n  color: #ffffff;\n  display: block;\n  font-size: 33px;\n  font-family: 'RotondaC bold';\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_left > a {\n  font-size: 14px;\n  color: #ffffff;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right {\n  float: right;\n  width: 70%;\n  margin-top: 12px;\n  margin-right: 20px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main {\n  position: relative;\n  float: left;\n  width: 100%;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .progress_line_bg {\n  height: 14px;\n  border-top: 3px solid #000000;\n  background-color: #ffffff;\n  background-image: url(" + escape(__webpack_require__(154)) + ");\n  border-radius: 20px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .progress_line {\n  position: absolute;\n  left: 0px;\n  top: 3px;\n  width: 0%;\n  background-color: #ffffff;\n  height: 14px;\n  border-radius: 20px 0px 0px 20px;\n  -webkit-transition: all 1000ms ease;\n  -moz-transition: all 1000ms ease;\n  -ms-transition: all 1000ms ease;\n  -o-transition: all 1000ms ease;\n  transition: all 1000ms ease;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .progress_line .progress_text {\n  min-width: 100px;\n  position: absolute;\n  right: 0px;\n  padding-top: 32px;\n  border-right: 1px solid #fff;\n  top: 0px;\n  z-index: 1;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .progress_line .progress_text.right_position {\n  right: auto;\n  left: 100%;\n  border-left: 1px solid #fff;\n  border-right: none;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .progress_line .progress_text.right_position span {\n  border-radius: 0px 5px 5px 0px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .progress_line .progress_text span {\n  float: right;\n  line-height: 30px;\n  background-color: rgba(255, 255, 255, 0.2);\n  color: #ffffff;\n  font-size: 14px;\n  font-family: 'RotondaC';\n  border-radius: 5px 0px 0px 5px;\n  padding-left: 10px;\n  padding-right: 10px;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .gift_item {\n  position: absolute;\n  top: 50%;\n  width: 36px;\n  height: 36px;\n  margin-top: -19px;\n  margin-left: -19px;\n  background-color: #cccccc;\n  border-radius: 6px;\n  -webkit-background-size: 20px 22px;\n  background-size: 20px 22px;\n  background-repeat: no-repeat;\n  background-position: center center;\n  border-top: 3px solid #000000;\n  background-image: url(" + escape(__webpack_require__(155)) + ");\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .gift_item.act {\n  background-color: #ffffff;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .gift_item_hint {\n  opacity: 0;\n  visibility: hidden;\n  display: inline-block;\n  position: absolute;\n  left: 0;\n  text-align: center;\n  width: 100%;\n  top: 0;\n  font-weight: bold;\n  transition: .3s ease;\n  color: white;\n}\n.spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main .gift_item:hover .gift_item_hint {\n  visibility: visible;\n  opacity: 1;\n  top: -20px;\n}\n.spm_wrapper .bon_profile_wrap .bns_overlay_iner {\n  width: 500px !important;\n}\n.spm_wrapper .bon_profile_wrap .status_block {\n  width: 30%;\n  display: inline-block;\n}\n@media screen and (max-width: 650px) {\n  .spm_wrapper .bon_profile_wrap .status_block {\n    width: 100%;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_stat .bps_left {\n    text-align: left;\n  }\n}\n@media only screen and (min-width: 1200px) {\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right {\n    width: 100%;\n    margin-top: 30px;\n    margin-right: 0px;\n  }\n}\n@media only screen and (min-width: 992px) and (max-width: 1199px) {\n  .spm_wrapper .bon_profile_wrap .progress_line_main .progress_text {\n    border: none !important;\n  }\n  .spm_wrapper .bon_profile_wrap .progress_line_main .progress_text:before {\n    content: '';\n    width: 1px;\n    background: white;\n    right: 0;\n    top: 0;\n    position: absolute;\n    height: 17px;\n    display: block;\n  }\n  .spm_wrapper .bon_profile_wrap .progress_line_main .progress_text span {\n    position: relative;\n    left: 50%;\n    border-radius: 5px !important;\n  }\n}\n@media only screen and (min-width: 768px) and (max-width: 991px) {\n  .spm_wrapper .bon_profile_wrap .bon_profile_info {\n    width: 100%;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right {\n    width: 265px;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right {\n    float: left;\n    width: 100%;\n    margin-top: 30px;\n    margin-bottom: 12px;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main {\n    float: left;\n    width: 95%;\n  }\n}\n@media only screen and (max-width: 767px) {\n  .spm_wrapper .bon_profile_wrap .bon_profile_info {\n    width: 100%;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_right {\n    width: 265px;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right {\n    float: left;\n    width: 100%;\n    margin-top: 30px;\n    margin-bottom: 12px;\n  }\n  .spm_wrapper .bon_profile_wrap .bon_profile_info .bon_profile_stat .bps_right .progress_line_main {\n    float: left;\n    width: 95%;\n  }\n}\n.spm_wrapper .bns_hist_table {\n  float: left;\n  width: 100%;\n  margin-top: 12px;\n}\n.spm_wrapper .bns_hist_table td {\n  vertical-align: text-top;\n  padding: 5px 11px;\n}\n.spm_wrapper .bns_hist_table td:nth-child(1) {\n  color: #888888;\n  font-size: 13px;\n  line-height: 19px;\n  padding-right: 0px;\n  padding-left: 0px;\n  white-space: nowrap;\n}\n.spm_wrapper .bns_hist_table td:nth-child(2) {\n  color: #000000;\n  font-size: 12px;\n  font-weight: 200;\n  line-height: 19px;\n  position: relative;\n  padding-left: 0px;\n  width: 570px;\n}\n.spm_wrapper .bns_hist_table td:nth-child(2)::after {\n  position: absolute;\n  left: 0px;\n  width: 100%;\n  border-top: 1px dotted #444444;\n  top: 14px;\n  content: '';\n  display: block;\n}\n.spm_wrapper .bns_hist_table td:nth-child(2) span {\n  display: block;\n  position: relative;\n  z-index: 1;\n  font-size: 13px;\n  color: #222222;\n}\n.spm_wrapper .bns_hist_table td:nth-child(2) span b {\n  background-color: #ffffff;\n  padding-right: 15px;\n  padding-left: 11px;\n  font-weight: 200;\n}\n.spm_wrapper .bns_hist_table td:nth-child(2) span:first-child {\n  color: #000000;\n}\n.spm_wrapper .bns_hist_table td:nth-child(3) {\n  color: #444444;\n  font-size: 14px;\n  font-weight: bold;\n  text-align: right;\n  line-height: 19px;\n}\n.spm_wrapper .bns_hist_table td:nth-child(3) span {\n  display: block;\n  white-space: nowrap;\n  font-size: 13px;\n}\n.spm_wrapper .bns_hist_pager {\n  float: left;\n  font-size: 13px;\n}\n.spm_wrapper .bns_hist_pager a {\n  text-decoration: none;\n  color: #acacab;\n  margin-right: 4px;\n  line-height: 30px;\n  text-align: center;\n  font-size: 22px;\n  font-weight: 300;\n}\n.spm_wrapper .bns_hist_pager a.active {\n  color: white;\n}\n.history_container {\n  margin-top: 10px !important;\n}\n.modal_history_content_container .modal_history_content_header {\n  display: block;\n  color: #999999;\n  text-decoration: underline;\n  cursor: pointer;\n  cursor: hand;\n}\n.modal_history_content_container ul {\n  padding-left: 34px;\n  display: none;\n  padding-bottom: 6px;\n}\n.modal_history_content_container ul li {\n  padding-top: 6px;\n}\n.modal_history_content_container.open ul {\n  display: inline-block;\n}\n.modal_history_content {\n  min-width: 100px;\n  display: inline-block;\n}\n.modal_history_controls_container {\n  margin-top: 22px !important;\n  display: flex;\n  flex-direction: column;\n  justify-content: space-between;\n}\n.bns_hist_pager > a {\n  display: inline-block;\n  height: 33px;\n  width: 33px;\n  background-color: #f7f7f6;\n  border-radius: 50px;\n}\n.bns_hist_pager > a.active {\n  background-color: #921d22;\n}\n.bns_hist_pager > a.active > span {\n  color: white;\n}\n.bns_hist_pager > a > span {\n  font-size: 18px;\n  display: inline-block;\n  color: #9b9d9d;\n  font-weight: normal;\n  font-family: Open Sans, sans-serif;\n  text-align: center;\n  width: 100%;\n  transform: translateY(6px);\n}\n.bns_hist_pager > a + a {\n  margin-left: 10px !important;\n}\n.history_entry {\n  min-height: 63px;\n  padding-top: 14px !important;\n  border-bottom: 1px solid #ededed !important;\n}\n.history_entry > * {\n  display: inline-block;\n  text-align: left;\n}\n.history_entry > * > * {\n  display: block;\n}\n.history_entry > div:nth-of-type(1) {\n  min-width: 123.75px;\n  float: left;\n}\n.history_entry > div:nth-of-type(1) > .modal_history_date {\n  padding-top: 10px;\n  font-size: 18px;\n  color: #7f7f7f;\n}\n.history_entry > div:nth-of-type(3) {\n  width: 150px;\n  float: right;\n}\n.history_entry > div:nth-of-type(3) > .modal_history_price {\n  color: #4fb666;\n  text-align: right;\n  font-size: 20px;\n  font-weight: 600;\n}\n.history_entry > div:nth-of-type(3) > .modal_history_points {\n  text-align: right;\n  color: #921d22;\n  font-weight: 900;\n  font-family: Open Sans, sans-serif;\n  font-size: 19px;\n  padding-top: 5px;\n  white-space: nowrap;\n}\n.history_entry > div:nth-of-type(3) > .modal_history_points + .modal_history_price {\n  padding-top: 8px;\n}\n.modal_history_header {\n  color: #921d22;\n}\n.modal_history_name {\n  font-size: 16px !important;\n}\n.bns_overlay_login.visible {\n  animation: 0.5s linear 0s 1 showeffect;\n}\n.bns_overlay_login .bns_overlay_iner {\n  width: 300px;\n}\n.bns_overlay_login iframe {\n  width: 100%;\n  height: 500px;\n}\n@keyframes showeffect {\n  0% {\n    display: none;\n    visibility: hidden;\n  }\n  99% {\n    display: none;\n    visibility: hidden;\n  }\n  100% {\n    display: block;\n    visibility: visible;\n  }\n}\n@keyframes avatarhover {\n  0% {\n    display: block;\n    visibility: visible;\n  }\n  99% {\n    display: block;\n    visibility: visible;\n  }\n  100% {\n    display: none;\n    visibility: hidden;\n  }\n}\n", ""]);
 
 // exports
 
@@ -46138,7 +45805,7 @@ _widget.Widget.factory('badgeProgress', ["MAGIC_CONFIG", "SailPlayApi", function
 /* 163 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"clearfix container\">\n\n  <div data-ng-if=\"user()\" class=\"status-list\">\n\n    <div class=\"status-list__wrapper\" data-sailplay-statuses data-ng-cloak>\n\n      <div class=\"status-list__progress element-progress progress_line\"\n           data-ng-style=\"getProgress(purchase_status ? user().purchases.sum : user().user_points, _statuses)\"></div>\n\n      <div class=\"status-list_item_labels\">\n        <div class=\"status-list_item_label\" data-ng-repeat=\"item in _statuses\" title=\"{{item.description}}\">\n          <span class=\"status-list__item-status\" data-ng-bind=\"item.status\"></span>\n          <span class=\"status-list__item-status-img\">\n            <svg-img item=\"item\" svgid=\"'svg-'+$id\"></svg-img>\n          </span>\n          <span class=\"status-list__item-status-description\" data-ng-bind=\"item.description\"></span>\n        </div>\n      </div>\n\n    </div>\n\n  </div>\n</div>";
+module.exports = "<div class=\"clearfix container\">\n\n  <div data-ng-if=\"user()\" class=\"status-list\">\n\n    <div class=\"status-list__wrapper\" data-sailplay-statuses data-ng-cloak>\n\n      <div class=\"status-list__progress element-progress progress_line\"\n           data-ng-style=\"getProgress(purchase_status ? user().purchases.sum : user().user_points, _statuses)\"></div>\n\n      <div class=\"status-list_item_labels\">\n        <div class=\"status-list_item_label\" data-ng-repeat=\"item in _statuses\" title=\"{{item.description}}\">\n          <span class=\"status-list__item-status\" data-ng-bind=\"item.status\"></span>\n          <span class=\"status-list__item-status-img\">\n            <img src=\"{{user().user_points.confirmed >= item.points ? item.img_active : item.img_inactive}}\"></svg-img>\n          </span>\n          <span class=\"status-list__item-status-description\" data-ng-bind=\"item.description\"></span>\n        </div>\n      </div>\n\n    </div>\n\n  </div>\n</div>\n";
 
 /***/ }),
 /* 164 */

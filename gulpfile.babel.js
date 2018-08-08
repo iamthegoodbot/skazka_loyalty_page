@@ -27,8 +27,18 @@ gulp.task('dev', (callback) => {
 });
 
 gulp.task('build.magic', (callback) => {
+
+  let externals = (process.env.npm_config_externals || "").split(',');
+  console.log(externals);
+
+  // development.entry['sailplay-magic-vendor'] = development.entry['sailplay-magic-vendor'].filter(vendor => exclude_vendors.indexOf(vendor) < 0);
+  // console.log(development.entry['sailplay-magic-vendor']);
+  development.externals = externals;
+
   let bundler = webpack(development);
+
   bundler.run(callback);
+
 });
 
 gulp.task('build.migrator', (callback) => {
@@ -55,8 +65,7 @@ gulp.task('server', () => {
 
 //deploying section
 gulp.task('deploy.version', () => {
-  // console.log('PACKAGE',PACKAGE)
-  // console.log(`Deploying version: ${PACKAGE.version}`);
+  console.log(`Deploying version: ${PACKAGE.version}`);
   replace({
     files: paths.dist + '/**/*',
     replace: /\$\{MAGIC_VERSION\}/g,
@@ -65,6 +74,9 @@ gulp.task('deploy.version', () => {
 });
 
 gulp.task('deploy.magic', (callback) => {
+  let externals = (process.env.npm_config_externals || "").split(',');
+  console.log(externals);
+  production.externals = externals;
   let bundler = webpack(production);
   bundler.run(callback);
 });
@@ -75,5 +87,19 @@ gulp.task('deploy.migrator', (callback) => {
 });
 
 gulp.task('deploy', (callback) => {
-  run('deploy.magic', 'deploy.migrator', 'deploy.version', callback);
+
+  let env = process.env.npm_config_env;
+  console.log({ env: env });
+
+  if(env === 'dev') {
+
+    run('build.magic', 'build.migrator', callback);
+
+  }
+  else {
+
+    run('deploy.magic', 'deploy.migrator', 'deploy.version', callback);
+
+  }
+
 });
