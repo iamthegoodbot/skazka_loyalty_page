@@ -81,14 +81,31 @@ let loaders = [
       loader: "style-loader" // creates style nodes from JS strings
     }, {
       loader: "css-loader" // translates CSS into CommonJS
-    }, 
-    {
-      loader: 'postcss-loader', // Run post css actions
     },
     {
       loader: "less-loader" // compiles Less to CSS
     }]
   },
+  // {
+  //   test: /\.css$/,
+  //   exclude: /(node_modules|bower_components)/,
+  //   use: [
+  //     // {
+  //     //   loader: "css-loader" // translates CSS into CommonJS
+  //     // },
+  //     {
+  //       loader: 'postcss-loader',
+  //       options: {
+  //         ident: 'postcss',
+  //         plugins: (loader) => [
+  //           // require('postcss-import')({ root: loader.resourcePath }),
+  //           // require('postcss-preset-env')(),
+  //           require('postcss-class-prefix')('spm--')
+  //         ]
+  //       }
+  //     }
+  //   ]
+  // },
 
   {
     test: /\.styl$/,
@@ -122,13 +139,7 @@ let loaders = [
         loader: 'sass-loader' // compiles Sass to CSS
       }
     ]
-  },
-
-  {
-    test: /\.css$/,
-    exclude: /(node_modules|bower_components)/,
-    loader: 'style-loader!css-loader'
-  },
+  }
 
 ];
 

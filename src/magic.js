@@ -11,7 +11,6 @@ import DynamicLocale from 'angular-dynamic-locale';
 // import NgLocale from 'angular-i18n';
 
 import './theme/theme.less';
-import './theme/bootstrap.scss';
 
 export let magic = angular.module('magic', [SailPlay, core, Cookies, Tools, NgTouch, DynamicLocale])
 
@@ -48,7 +47,7 @@ export let magic = angular.module('magic', [SailPlay, core, Cookies, Tools, NgTo
   .directive('sailplayMagic', function (SailPlay, ipCookie, SailPlayApi, $document, $rootScope, MAGIC_CONFIG) {
 
     const MagicTemplate = [
-      '<div class="spm_wrapper">',
+      '<div class="spm_wrapper spm-iso">',
       '<layout data-widgets="config.widgets"></layout>',
       '</div>'
     ].join('');
