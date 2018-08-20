@@ -797,23 +797,13 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
           this._form_cache = angular.copy(form);
 
           if (custom_fields.length) {
-            console.log('custom_fields',custom_fields)
-            return;
-            SailPlayApi.call("vars.batch", { names: custom_fields.map(field => { return field.name }) }, (res) => {
+            SailPlayApi.call("vars.batch", {names: []}, (res) => {
               angular.forEach(res.vars, variable => {
                 angular.forEach(custom_fields, field => {
                   if (field.name == variable.name) field.value = variable.value;
                 })
               })
             })
-            let tags = [];
-            custom_fields.forEach(_field => {
-              let selected = _field.data.filter(item => item.value === _field.value)[0]
-              if (selected) tags.push(selected.tag)
-            })
-            if(tags.length) {
-              SailPlayApi.call("tags.add", { tags: tags })
-            }
            }
 
           form.auth_hash = SailPlay.config().auth_hash;
@@ -952,12 +942,52 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
             }
 
             if (Object.keys(custom_user_vars).length) {
-              SailPlay.send('vars.add', {custom_vars: custom_user_vars}, (res_vars) => {
-                if (!res_vars.status == 'ok')
-                  $rootScope.$broadcast('notifier:notify', {
-                    body: res_vars.message
-                  });
+              
+              // SailPlay.send('vars.add', {custom_vars: custom_user_vars}, (res_vars) => {
+              //   if (!res_vars.status == 'ok')
+              //     $rootScope.$broadcast('notifier:notify', {
+              //       body: res_vars.message
+              //     });
+              // })
+
+
+              let tags = [];
+              let variables = [];
+              let custom_fields = this.form.fields.filter(item => item.type == 'variable')
+
+              custom_fields.forEach(_field => {
+                variables.push({
+                  name: _field.name,
+                  value: _field.value
+                })
+                let selected = _field.data && _field.data.filter(item => item.value === _field.value)[0]
+                if (selected && selected.tag) tags.push(selected.tag)
               })
+
+              // variables 
+              if(variables.length) {
+                do {
+                  let _variables = {};
+                  let chunk = variables.splice(0, 19);
+                  chunk.forEach(item => {
+                    _variables[item.name] = item.value
+                  })
+                  console.log('vars.add', _variables)
+                  SailPlayApi.call("vars.add", { custom_vars: _variables })
+                } while(variables.length)
+              }
+
+              // tags 
+              if(tags.length) {
+                do {
+                  let chunk = tags.splice(0, 19)
+                  console.log('tags.add', chunk)
+                  SailPlayApi.call("tags.add", { tags: chunk })
+                } while(tags.length)
+              }
+
+
+
             }
 
             if(MAGIC_CONFIG.data.force_registration && MAGIC_CONFIG.data.force_registration.active) {
@@ -1014,11 +1044,11 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
 
           if (MAGIC_CONFIG.data.FILL_PROFILE_TAG){
 
-            console.log(MAGIC_CONFIG.data.FILL_PROFILE_TAG);
+            // console.log(MAGIC_CONFIG.data.FILL_PROFILE_TAG);
 
             SailPlay.send('tags.exist', {tags: [MAGIC_CONFIG.data.FILL_PROFILE_TAG]}, (res) => {
 
-              console.log(res);
+              // console.log(res);
               if (res && res.tags.length) {
                 if (res.tags[0].exist) {
                   resolve(true);
@@ -1063,7 +1093,7 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
 
           this.NgModel.$render = () => {
 
-            console.log(this.NgModel.$modelValue);
+            // console.log(this.NgModel.$modelValue);
 
             if(this.NgModel.$modelValue) {
 
@@ -1075,7 +1105,7 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
 
               });
 
-              console.log(this.value);
+              // console.log(this.value);
 
             }
 

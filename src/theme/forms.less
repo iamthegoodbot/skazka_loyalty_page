@@ -372,12 +372,10 @@
       bottom: 0;
       margin: auto;
       left: 0;
-      padding: 25px 45px 25px 22px;
+      padding: 25px 22px;
       height: auto;
       line-height: 1;
       z-index: 1;
-      display: flex;
-      align-items: center;
     }
   }
 
@@ -407,11 +405,17 @@
     &.ng-dirty.ng-invalid {
       border-color: red;
     }
+    & + .spm_form_label {
+      display: flex;
+      align-items: center;
+      padding: 25px 45px 25px 22px;
+    }
     &.ng-not-empty {
       padding: 34px 20px 14px;
       & + .spm_form_label {
-        font-size: 14px;
+        font-size: 12px;
         padding: 14px 20px;
+        display: block;
       }
     }
     .placeholder({
