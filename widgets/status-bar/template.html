@@ -3,15 +3,19 @@
     <div ng-show="!show_list" class="container py-5" ng-show="user()">
         <div class="row align-items-top">
 
-            <div class="b-points col-12 col-md-6 col-lg-4 d-flex align-items-center" ng-click="$root.$broadcast('history:state', true)">
+            <div class="b-points col-12 col-md-8 col-lg-5 d-flex align-items-center" ng-click="$root.$broadcast('history:state', true)">
                 <div class="w-75">
                     <h4 class="font-akrobat font-weight-bold text-uppercase mb-0" ng-bind="widget.texts.points.label"></h4>
                     <div class="mt-3 font-weight-light" ng-bind-html="widget.texts.points.description|to_trusted"></div>
                 </div>
                 <div class="display-1 points-balance mr-auto font-akrobat font-weight-bold text-uppercase" ng-bind="user().user_points.confirmed || 0 |number"></div>
+                <div ng-if="user().user_points.unconfirmed" class="unconfirmedPoints d-flex align-items-start flex-column ml-3 font-akrobat text-muted">
+                    <span class="font-weight-bold h2 mb-0" ng-bind="'+' + (user().user_points.unconfirmed | number)"></span>
+                    <span class="font-weight-weight pl-3" ng-bind="widget.texts.inactive_points"></span>
+                </div>
             </div>
 
-            <div class="b-next-status my-5 my-md-0 col-12 col-md-6 col-lg-4 d-flex flex-column align-items-left">
+            <div class="b-next-status my-5 my-md-0 col-12 col-md-4 col-lg-3 d-flex flex-column align-items-left">
                 <h4 class="font-akrobat font-weight-bold text-uppercase mb-0" ng-bind="widget.texts.status.label"></h4>
                 <div class="mt-3 font-weight-light" ng-bind-html="statusText(user() ? (toNext ? widget.texts.status.description : widget.texts.status.description_final) : widget.texts.status.description_unauthed)|to_trusted"></div>
             </div>

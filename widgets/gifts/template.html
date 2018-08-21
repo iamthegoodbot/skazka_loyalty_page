@@ -44,7 +44,10 @@
 
     <magic-modal show="$parent.$parent.show_success">
         <magic-modal-title ng-bind="widget.texts.modals.success.title"></magic-modal-title>
-        <magic-modal-body ng-bind-html="widget.texts.modals.success.body|to_trusted"></magic-modal-body>
+        <magic-modal-body>
+            <div ng-bind-html="widget.texts.modals.success.body|to_trusted"></div>
+            <div ng-show="purchased_gift && purchased_gift.coupon_number" class="text-coupon" ng-bind="purchased_gift.coupon_number"></div>
+        </magic-modal-body>
     </magic-modal>
 
 </div>

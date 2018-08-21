@@ -10,6 +10,7 @@ const widget = {
     return (scope, elm, attrs) => {
       scope.show_success = false;
       scope.show_gift = false;
+      scope.purchased_gift = null;
 
       scope.getGift = gift => {
         SailPlay.send('gifts.purchase', {gift: gift});
@@ -27,6 +28,7 @@ const widget = {
 
       SailPlay.on('gifts.purchase.success', (res) => {
         $rootScope.$apply(() => {
+          scope.purchased_gift = res;
           scope.show_gift = false;
           scope.show_success = true;
         });
