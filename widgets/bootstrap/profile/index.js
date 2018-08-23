@@ -22,7 +22,8 @@ const widget = {
 
       scope.profile_form = new SailPlayProfileForm(scope.widget.options.config);
 
-      scope.$on('sailplay-login-success', function () {
+      scope.$on('sailplay-login-success', () => {
+
         if(scope.widget.options.fill_profile_required) {
 
           scope.profile_form.completed().then((is_completed) => {
@@ -39,6 +40,7 @@ const widget = {
           });
 
         }
+
       });
 
       $rootScope.$on("text:state", (e, state) => {
@@ -73,7 +75,7 @@ const widget = {
         scope.$apply();
       };
 
-      scope.closeMenu = () => {
+      let closeMenu = () => {
         console.log('closeMenu', scope.menu_active);
         if(scope.force_fill_profile) return;
         scope.$apply(() => {
@@ -81,11 +83,20 @@ const widget = {
         })
       };
 
-      document.body.addEventListener('click', scope.closeMenu);
+      document.body.addEventListener('click', closeMenu);
 
-      
+      // $timeout(() => {
+      //   if(scope.widget.options.fill_profile_required && !scope.sailplay.fill_profile.form.valid()) {
+      //
+      //     $rootScope.$broadcast('profile:state', true);
+      //
+      //   }
+      // }, 10);
+
+
+
       scope.$on('$destroy', () => {
-        document.body.removeEventListener('click', scope.closeMenu)
+        document.body.removeEventListener('click', closeMenu)
       })
 
     };

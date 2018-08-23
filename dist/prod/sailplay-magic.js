@@ -49435,6 +49435,7 @@ var widget = {
       scope.profile_form = new SailPlayProfileForm(scope.widget.options.config);
 
       scope.$on('sailplay-login-success', function () {
+
         if (scope.widget.options.fill_profile_required) {
 
           scope.profile_form.completed().then(function (is_completed) {
@@ -49481,7 +49482,7 @@ var widget = {
         scope.$apply();
       };
 
-      scope.closeMenu = function () {
+      var closeMenu = function closeMenu() {
         console.log('closeMenu', scope.menu_active);
         if (scope.force_fill_profile) return;
         scope.$apply(function () {
@@ -49489,10 +49490,19 @@ var widget = {
         });
       };
 
-      document.body.addEventListener('click', scope.closeMenu);
+      document.body.addEventListener('click', closeMenu);
+
+      // $timeout(() => {
+      //   if(scope.widget.options.fill_profile_required && !scope.sailplay.fill_profile.form.valid()) {
+      //
+      //     $rootScope.$broadcast('profile:state', true);
+      //
+      //   }
+      // }, 10);
+
 
       scope.$on('$destroy', function () {
-        document.body.removeEventListener('click', scope.closeMenu);
+        document.body.removeEventListener('click', closeMenu);
       });
     };
   }
