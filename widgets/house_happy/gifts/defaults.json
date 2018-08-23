@@ -1,0 +1,63 @@
+{
+    "styles": {
+        "spm_gifts-header": {
+            "font-family": "HelveticaNueBold, Roboto, sans-serif",
+            "text-transform": "none"
+        },
+        "spm_gifts-open-button.type_disabled": {
+            "border-color": "#b3bcc3",
+            "background-color": "#b3bcc3"
+        },
+        "spm_gifts-item.type_enabled": {
+            "box-shadow": "0 15px 20px 0 rgba(88, 169, 247, 0.3)"
+        },
+        "spm_gifts-item-button": {
+            "letter-spacing": "normal",
+            "text-transform": "none",
+            "font-family": "HelveticaNueLight"
+        },
+        "spm_gifts-sub-header": {
+            "font-weight": 300
+        },
+        "spm_gifts-item": {
+            "border-radius": "4px",
+            "background-size": "cover",
+            "box-shadow": "none",
+            "font-family": "Open Sans, sans-serif",
+            "max-width": "275px",
+            "background-position": "center center",
+            "background-color": "#58aaf7"
+        },
+        "spm_gifts-open-name": {
+            "color": "#58aaf7"
+        }
+    },
+    "enabled": true,
+    "id": "house_happy_gifts",
+    "texts": {
+        "header": "Redeem your rewards for Home Services",
+        "modals": {
+            "gift": {
+                "footer": "Do you have a question about your service request?<br>Call your Home Maintenance Concierge at <a href=\"tel:18556947868\" target=\"_blank\">1-855-694-7868</a> or <a href=\"#\" target=\"_blank\">chat with your Concierge online</a>",
+                "button": "REQUEST SERVICE",
+                "message_label": "When is the most convenient time(s) to complete this service?",
+                "message_placeholder": "Example: Monday, Thursday morning before 11 am",
+                "title": "Order"
+            },
+            "success": {
+                "body": "Your service request been successfully submitted! You will receive a phone call from your Home Serveces Concierge to schedule your service within the next business day, as well as a confirmation email.",
+                "footer": "Prefer to place your order over the phone?<br>Call your Home Maintenance Concierge at <a href=\"tel:18556947868\" target=\"_blank\">1-855-694-7868</a> or <a href=\"#\" target=\"_blank\">chat with your Concierge online</a>",
+                "title": "Congratulations"
+            },
+            "error": {
+                "body": "An error occurred while receiving the gift.",
+                "title": "Error"
+            }
+        },
+        "get": "Request"
+    },
+    "images": {},
+    "options": {
+        "variable_template": "{{name}} response"
+    }
+}

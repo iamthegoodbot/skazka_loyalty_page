@@ -1,0 +1,270 @@
+<div class="spm_pivko_profile_wrapper">
+
+  <div class="spm_pivko_profile_wrapper_inner">
+
+    <div class="spm_pivko_profile_info">
+
+      <div class="spm_pivko_profile_info_inner">
+
+        <div class="spm_pivko_profile_info_avatar">
+          <img data-ng-src="{{(profile.user().user.avatar['250x250']|sailplay_pic) || widget.options.images.default_avatar || default_avatar}}" alt="">
+        </div>
+
+        <div class="spm_pivko_profile_info_name">
+          <span>{{ profile.user().user.name || widget.options.texts.no_name }}</span>
+        </div>
+
+        <div class="spm_pivko_profile_info_oid">
+
+          <div class="spm_pivko_profile_info_oid_label">
+            <span>{{ widget.options.texts.oid_label }}</span>
+          </div>
+
+          <div class="spm_pivko_profile_info_oid_value">
+            <span>{{ profile.user().user.origin_user_id || widget.options.texts.no_oid }}</span>
+          </div>
+
+        </div>
+
+        <div class="spm_pivko_profile_info_divider"></div>
+
+        <div class="spm_pivko_profile_info_email">
+          <span>{{ profile.user().user.email || widget.options.texts.no_email }}</span>
+        </div>
+
+        <div class="spm_pivko_profile_info_phone">
+          <span>{{(profile.user().user.phone | masked:widget.options.phone_mask) || widget.options.texts.no_phone }}</span>
+        </div>
+
+        <div class="spm_pivko_profile_info_edit_button">
+          <button type="button" data-ng-click="profile_form_utils.open()">{{ widget.options.texts.profile_button_text }}</button>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="spm_pivko_profile_status">
+      <div class="spm_pivko_profile_status_inner">
+
+        <div class="spm_pivko_profile_status_points">
+
+          <div class="spm_pivko_profile_status_points_inner">
+
+            <div class="spm_pivko_profile_status_points_title">
+              <span>{{ widget.options.texts.points_title }}</span>
+            </div>
+
+            <div class="spm_pivko_profile_status_points_confirmed">
+              <span>{{ profile.user().user_points.confirmed }} {{ profile.user().user_points.confirmed | sailplay_pluralize: ('points.texts.pluralize' | tools) }}</span>
+            </div>
+
+            <div class="spm_pivko_profile_status_points_status">
+              <div class="spm_pivko_profile_status_points_status_label">
+                <span>{{ widget.options.texts.status_label }}</span>
+              </div>
+              <div class="spm_pivko_profile_status_points_status_value">
+                <span>{{ statuses.received().status || widget.options.texts.no_status }}</span>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- DESKTOP PROGRESS -->
+        <div class="spm_pivko_profile_status_progress">
+
+          <div class="spm_pivko_profile_status_progress_inner">
+
+            <div class="spm_pivko_profile_status_progress_title">
+              <span>Копи в следущем месяце больше</span>
+            </div>
+
+            <div class="spm_pivko_profile_status_progress_more_button">
+              <a href="{{ widget.options.info_url }}" target="_blank">Подробнее ></a>
+            </div>
+
+            <div class="spm_pivko_profile_status_progress_line_container">
+
+              <div class="spm_pivko_profile_status_progress_line">
+
+                <div class="spm_pivko_profile_status_progress_line_start"></div>
+
+                <div class="spm_pivko_profile_status_progress_line_wrapper">
+                  <div class="spm_pivko_profile_status_progress_line_filled" data-ng-style="{ width: statuses.progress() + '%' }"></div>
+                </div>
+
+                <div class="spm_pivko_profile_status_progress_line_end" data-ng-if="statuses.progress() === 100"></div>
+
+                <div class="spm_pivko_profile_status_progress_line_list">
+
+                  <!-- STATUS ITEM -->
+                  <div class="spm_pivko_profile_status_progress_line_item" data-ng-repeat="status in statuses.list" data-ng-class="{ current: statuses.current() === status }" data-ng-style="{ left: statuses.offset($index) + '%' }">
+
+                    <div class="spm_pivko_profile_status_progress_line_item_icon">
+                      <img class="spm_pivko_profile_status_progress_line_item_icon_inactive" data-ng-src="{{ status.img_inactive }}" alt="">
+                      <img class="spm_pivko_profile_status_progress_line_item_icon_active" data-ng-src="{{ status.img_active }}" alt="">
+                      <img class="spm_pivko_profile_status_progress_line_item_icon_current" data-ng-src="{{ status.img_current }}" alt="">
+                    </div>
+
+                    <div class="spm_pivko_profile_status_progress_line_item_name">
+                      <span>
+                        {{ status.status }}
+                      </span>
+                    </div>
+
+                    <div class="spm_pivko_profile_status_progress_line_item_tooltip">
+                      <div class="spm_pivko_profile_status_progress_line_item_tooltip_inner">
+
+                        <div class="spm_pivko_profile_status_progress_line_item_tooltip_header">
+
+                          <span class="spm_pivko_profile_status_progress_line_item_tooltip_header_start">{{ widget.options.texts.status_tooltip_header_start }}</span>
+                          <span class="spm_pivko_profile_status_progress_line_item_tooltip_header_status">
+                            {{ statuses.current().status || widget.options.texts.no_status }}
+                          </span>
+                          <span class="spm_pivko_profile_status_progress_line_item_tooltip_header_end">{{ widget.options.texts.status_tooltip_header_end }}</span>
+
+                        </div>
+
+                        <div class="spm_pivko_profile_status_progress_line_item_tooltip_offset" data-ng-if="statuses.current() !== status">
+
+                          <span>{{ widget.options.texts.status_offset_label }}</span>
+                          <br>
+                          <span class="spm_pivko_profile_status_progress_line_item_tooltip_offset_points">{{ statuses.offset_to(status) }} {{ statuses.offset_to(status) | sailplay_pluralize: ('points.texts.pluralize' | tools) }}</span>
+
+                        </div>
+
+                      </div>
+                    </div>
+
+                  </div>
+                  <!-- /////////// -->
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- MOBILE PROGRESS -->
+        <div class="spm_pivko_profile_status_progress_mobile">
+
+          <div class="spm_pivko_profile_status_progress_mobile_inner">
+
+            <div class="spm_pivko_profile_status_progress_mobile_item" data-ng-repeat="status in statuses.list" data-ng-class="{ current: statuses.current() === status }">
+
+              <div class="spm_pivko_profile_status_progress_mobile_item_inner">
+
+                <div class="spm_pivko_profile_status_progress_mobile_item_icon">
+                  <img class="spm_pivko_profile_status_progress_mobile_item_icon_inactive" data-ng-if="statuses.current() !== status" data-ng-src="{{ status.img_inactive }}" alt="">
+                  <!--<img class="spm_pivko_profile_status_progress_line_item_icon_active" data-ng-src="{{ status.img_active }}" alt="">-->
+                  <img class="spm_pivko_profile_status_progress_mobile_item_icon_current" data-ng-if="statuses.current() === status" data-ng-src="{{ status.img_current }}" alt="">
+                </div>
+
+                <div class="spm_pivko_profile_status_progress_mobile_item_info">
+
+                  <div class="spm_pivko_profile_status_progress_mobile_item_info_text">
+
+                    <span data-ng-bind-html="status.description | to_trusted"></span>
+
+                  </div>
+
+                  <div class="spm_pivko_profile_status_progress_mobile_item_info_offset" data-ng-if="statuses.current() !== status">
+
+                    <span>{{ widget.options.texts.status_offset_label }}</span>
+                    <br>
+                    <span class="spm_pivko_profile_status_progress_mobile_item_info_offset_points">{{ statuses.offset_to(status) }} {{ statuses.offset_to(status) | sailplay_pluralize: ('points.texts.pluralize' | tools) }}</span>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<magic-modal-center class="spm_pivko_profile_modal" on-close="profile_form_utils.close" data-show="profile_form_utils.show">
+  <magic-modal-title>
+    <div class="spm_pivko_profile_modal_title">
+      <span ng-bind-html="widget.options.texts.profile_modal_title|to_trusted"></span>
+    </div>
+  </magic-modal-title>
+  <magic-modal-body>
+
+    <div class="spm_pivko_profile_modal_errors" data-ng-if="profile_form_utils.error">
+      <span>{{ profile_form_utils.error }}</span>
+    </div>
+
+    <form name="ng_profile_form" class="spm_profile-form"
+          ng-submit="profile_form.submit(ng_profile_form, profile_form_utils.complete);">
+
+      <div class="spm_form_field" ng-repeat="field in profile_form.form.fields"
+           ng-switch="field.input">
+
+        <div ng-switch-when="text">
+          <input class="spm_form_input" type="text" placeholder="{{ field.placeholder }}"
+                 ng-model="field.value" ng-required="field.required">
+        </div>
+
+        <div ng-switch-when="date">
+          <input class="spm_form_input" type="date"
+                 data-spm-date-input ng-model="field.value" placeholder="{{ field.placeholder }}"
+                 min="{{ field.data.min_date }}" max="{{ field.data.max_date }}"
+                 ng-required="field.required">
+        </div>
+
+        <div ng-switch-when="phone">
+          <input class="spm_form_input" type="text"
+                 ui-mask="{{ field.placeholder }}" ng-model="field.value"
+                 ng-required="field.required">
+        </div>
+
+        <div ng-switch-when="email">
+          <input class="spm_form_input" type="email" placeholder="{{ field.placeholder }}"
+                 ng-model="field.value" ng-required="field.required">
+        </div>
+
+        <div ng-switch-when="select">
+          <select class="spm_form_select" ng-model="field.value"
+                  ng-options="item.value as item.text for item in field.data" ng-required="field.required"></select>
+        </div>
+
+        <div data-ng-switch-when="radio" class="spm_form_radio_field">
+          <div class="d-inline-block align-top" style="width: 25%;">
+            <label class="spm_form_label" ng-bind="field.label"></label>
+          </div>
+          <div class="d-inline-block align-top" style="width: 73%;">
+            <label class="spm_form_checkbox" data-ng-class="{ checked: field.value === item.value }" data-ng-repeat="item in field.data">
+              <input class="spm_form_checkbox_input" type="radio" data-ng-model="field.value" data-ng-value="item.value">
+              <span class="spm_form_checkbox_label" data-ng-bind="item.text"></span>
+            </label>
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="spm_form_buttons">
+        <button type="submit" class="spm_btn spm_pivko_profile_modal_save_button" data-ng-disabled="ng_profile_form.$invalid">{{ widget.options.texts.profile_modal_save_button }}</button>
+      </div>
+
+    </form>
+
+  </magic-modal-body>
+</magic-modal-center>

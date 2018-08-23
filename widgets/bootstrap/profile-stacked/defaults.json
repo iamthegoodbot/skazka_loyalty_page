@@ -405,6 +405,7 @@
         "phone is not valid": "Неправильно указан телефон",
         "-200007": "Такой телефон уже используется"
       }
-    }
+    },
+    "default_avatar": "https://sailplays3.cdnvideo.ru/media/assets/assetfile/9c4c6eda4813ab3ffe091b3a00de8df5.jpg"
   }
 }

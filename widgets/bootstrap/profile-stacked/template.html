@@ -10,7 +10,7 @@
         <div class="position-relative d-inline-block b-avatar mb-3">
 
           <!-- user pic -->
-          <img ng-src="{{ ( user().user.avatar['250x250'] | sailplay_pic ) || default_avatar}}" class="rounded-circle profile_avatar">
+          <img ng-src="{{ ( user().user.avatar['250x250'] | sailplay_pic | sailplay_profile_avatar:widget.options.default_avatar ) || default_avatar}}" class="rounded-circle profile_avatar">
 
           <!-- profile menu -->
           <div class="b-avatar-menu position-absolute">
@@ -106,7 +106,7 @@
         <div class="position-relative d-inline-block b-avatar mb-3">
 
           <!-- user pic -->
-          <img ng-src="{{ default_avatar }}" class="rounded-circle profile_avatar">
+          <img ng-src="{{ widget.options.default_avatar || default_avatar }}" class="rounded-circle profile_avatar">
 
         </div>
 
@@ -164,17 +164,6 @@
         </div>
 
       </div>
-
-
-      <!--<div class="b-info mb-5 d-flex align-items-center flex-column flex-column-light">-->
-        <!--<img ng-src="{{widget.images.icon_phone}}">-->
-        <!--<span class="mt-2" ng-bind="user().user.phone|tel"></span>-->
-      <!--</div>-->
-
-      <!--<div class="b-info mb-5 d-flex align-items-center flex-column flex-column-light">-->
-        <!--<img ng-src="{{widget.images.icon_bday}}">-->
-        <!--<span class="mt-2" ng-bind="user().user.birth_date|date:'d MMMM yyyy'"></span>-->
-      <!--</div>-->
 
       <div class="b-info d-flex align-items-center justify-content-center spm_profile-info-modal-button">
         <a class="btn btn-md btn-primary text-uppercase px-3 py-2 font-weight-bolder" href="#" role="button"
