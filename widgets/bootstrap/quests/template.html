@@ -14,7 +14,7 @@
 
           <div class="spm_quests-container__right spm_quests-list" sailplay-actions>
 
-            <div class="spm_quests-item" ng-repeat="action in actions().actions" ng-mouseenter="action.loaded=true">
+            <div class="spm_quests-item" ng-repeat="action in actions().actions" data-ng-init="action.loaded = widget.options.preload_quests || false" ng-mouseenter="action.loaded=true">
               <i class="spm_quests-item-icon"
                  ng-style="{backgroundImage: (action_data(action).pic|sailplay_pic|background_image)}"></i>
               <div class="spm_quests-item-content">
@@ -32,7 +32,7 @@
               </div>
             </div>
 
-            <div class="spm_quests-item" ng-repeat="action in actions_custom()" ng-mouseenter="action.loaded=true">
+            <div class="spm_quests-item" ng-repeat="action in actions_custom()" data-ng-init="action.loaded = widget.options.preload_quests || false" ng-mouseenter="action.loaded=true">
               <i class="spm_quests-item-icon" ng-style="{backgroundImage: (action.icon|sailplay_pic|background_image)}"></i>
               <div class="spm_quests-item-content">
                 <div class="spm_quests-item-name" ng-bind="action.name"></div>
