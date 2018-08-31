@@ -190,6 +190,9 @@
         align-items: flex-start;
         justify-content: center;
         flex-direction: column;
+        @media (max-width: 750px) {
+          align-items: center;
+        }
       }
       &-placeholder {
         font-size: 18px;
@@ -355,6 +358,17 @@
         @media (max-width: 850px) {
           font-size: 12px;
           line-height: 16px;
+        }
+        @media (max-width: 650px) { 
+          visibility: visible;
+          opacity: 1;
+          position: static;
+          left: auto;
+          top: auto;
+          transform: none;
+          text-align: center;
+          color: #b38486;
+          margin-bottom: 10px;
         }
       }
 

@@ -9,6 +9,10 @@ const widget = {
   controller($rootScope, SailPlay, SailPlayApi, tools) {
     return (scope, elm, attrs) => {
       scope.active = false;
+      scope.toggleMenu = () => {
+        console.log('toggleMenu', scope.active, !scope.active)
+        scope.active = !scope.active
+      }
       scope.onClick = item => {
         let element = document.querySelector(item.selector);
         if(scope.active) {
@@ -25,14 +29,15 @@ const widget = {
       };
 
       let onBodyClick = e => {
+        console.log('onBodyClick')
         if(scope.active) {
           scope.active = false;
           scope.$digest();
         }
       };
 
-      document.body.addEventListener("click", onBodyClick, true);
-      document.body.addEventListener("touchstart", onBodyClick, true);
+      document.body.addEventListener("click", onBodyClick, false);
+      document.body.addEventListener("touchstart", onBodyClick, false);
 
       scope.$on("$destroy", () => {
         document.body.removeEventListener("click", onBodyClick);

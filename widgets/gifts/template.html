@@ -8,7 +8,7 @@
         <div class="spm_gifts-list">
 
             <div class="spm_gifts-item"
-                dir-paginate="gift in gifts() | itemsPerPage:6 track by $index" pagination-id="gifts_pages"
+                dir-paginate="gift in gifts() | orderBy:'-points' | itemsPerPage:6 track by $index" pagination-id="gifts_pages"
                 ng-click="gift.actived=true"
                 ng-mouseleave="gift.actived=false"
                 ng-class="{type_disabled: gift.points>user().user_points.confirmed, type_enabled: gift.points<=user().user_points.confirmed, type_hovered: gift.actived}">
