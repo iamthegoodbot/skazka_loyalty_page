@@ -42,6 +42,7 @@ export let ToolsDatepicker = angular.module('ui.datepicker', [])
       scope: {
         model: '=',
         lang: '=?',
+        required: '=?',
         disabled: '=?'
       },
       link: function (scope) {
