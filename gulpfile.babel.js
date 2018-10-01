@@ -55,7 +55,7 @@ gulp.task('watch', () => {
 
 gulp.task('server', () => {
   server.server({
-    port: 3000
+    port: 8000
   });
 });
 

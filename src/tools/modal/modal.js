@@ -1,6 +1,7 @@
 import angular from 'angular';
 import ModalTemplate from './modal.html';
 import './modal.less';
+import close_image from './close.png';
 
 export let Modal = angular.module('magic.tools.modal', [])
 
@@ -19,6 +20,8 @@ export let Modal = angular.module('magic.tools.modal', [])
       scope._modal_config = MAGIC_CONFIG.tools.modal;
 
       scope.show = false;
+
+      scope.close_image = close_image;
 
       scope.close = function(){
         $parse(attrs.show).assign(scope.$parent, false);

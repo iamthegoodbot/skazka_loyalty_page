@@ -124,7 +124,7 @@
 
           <div data-ng-switch-when="text" class="clearfix">
             <label class="form_label">{{ field.label }}</label>
-            <input class="form_input" type="text" placeholder="{{ field.placeholder }}" data-ng-model="field.value">
+            <input class="form_input" type="text" placeholder="{{ field.placeholder }}" data-ng-model="field.value" data-ng-required="field.required">
           </div>
 
           <div data-ng-switch-when="date" class="clearfix">
@@ -141,19 +141,21 @@
 
           <div data-ng-switch-when="phone" class="clearfix">
             <label class="form_label">{{ field.label }}</label>
-            <input class="form_input" type="text" data-model-view-value="true" data-ui-mask="{{ field.placeholder }}" data-ng-model="field.value">
+            <input class="form_input" type="text" data-model-view-value="true" data-ui-mask="{{ field.placeholder }}" data-ng-model="field.value" data-ng-required="field.required">
           </div>
 
           <div data-ng-switch-when="email" class="clearfix">
             <label class="form_label">{{ field.label }}</label>
-            <input class="form_input" type="email" placeholder="{{ field.placeholder }}" data-ng-model="field.value">
+            <input class="form_input" type="email" placeholder="{{ field.placeholder }}" data-ng-model="field.value"  data-ng-required="field.required">
           </div>
 
         </div>
 
         <div class="answ_text">
-          <button type="submit" class="sp_btn button_primary">{{ 'buttons.texts.save' | tools }}</button>
+          <button type="submit" class="sp_btn button_primary" data-ng-disabled="fill_profile_form.$invalid">{{ 'buttons.texts.save' | tools }}</button>
         </div>
+
+
       </form>
     </div>
   </magic-modal>

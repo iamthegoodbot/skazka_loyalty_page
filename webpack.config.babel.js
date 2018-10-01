@@ -49,8 +49,16 @@ let loaders = [
     loader: 'babel',
     query: {
       cacheDirectory: true,
-      plugins: ['transform-decorators-legacy', 'transform-runtime' ],
-      presets: ['es2015', 'es2017', 'es2016', 'stage-0']
+      plugins: [ "@babel/plugin-syntax-dynamic-import", "@babel/plugin-proposal-class-properties" ],
+      presets: [
+        [
+          '@babel/preset-env',
+          {
+            "shippedProposals": true,
+            "modules": "umd"
+          }
+        ]
+      ]
     }
   },
   {
@@ -140,3 +148,5 @@ export let migrator = {
     loaders: loaders
   }
 };
+
+export default development;
