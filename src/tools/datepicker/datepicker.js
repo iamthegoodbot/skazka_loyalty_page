@@ -24,7 +24,7 @@ export let ToolsDatepicker = angular.module('ui.datepicker', [])
 
     var current_year = new Date().getFullYear();
     var arr = [];
-    for (var i = 90; i > 0; i--) {
+    for (var i = 300; i > 0; i--) {
       arr.push(current_year - i);
     }
 
