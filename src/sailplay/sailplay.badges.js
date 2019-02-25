@@ -61,12 +61,6 @@ export let SailPlayBadges = angular.module('sailplay.badges', [])
           return item.points
         });
 
-        if(status_points[0] !== 0) {
-          return {
-            width: '0'
-          };
-        }
-
         function isNumeric(n) {
           return !isNaN(parseFloat(n)) && isFinite(n);
         }

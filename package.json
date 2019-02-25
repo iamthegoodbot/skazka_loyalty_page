@@ -37,6 +37,7 @@
     "less": "^2.7.1",
     "less-loader": "^2.2.3",
     "lodash": "^4.17.4",
+    "natives": "^1.1.6",
     "required-loader": "^1.2.11",
     "run-sequence": "^1.2.2",
     "sailplay-hub": "^2.0.14",

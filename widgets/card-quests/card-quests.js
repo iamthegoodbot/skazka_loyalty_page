@@ -44,6 +44,7 @@ WidgetRegister({
 
       SailPlay.on('actions.perform.success', function(){
        scope.$apply(function(){
+         SailPlayApi.call('load.user.info');
          scope.action_selected = false;
        });
       });
