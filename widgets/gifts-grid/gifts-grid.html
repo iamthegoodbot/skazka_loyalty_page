@@ -17,7 +17,7 @@
 
     <div data-sailplay-gifts class="clearfix xs-gifts">
       <div class="bon_item_main" data-ng-show="gifts && gifts().length" data-magic-slider>
-        
+
         <div class="bon_slide_cat_item_wrap">
           <div class="bon_slide_cat_item">
 
@@ -96,7 +96,7 @@
 
               <div data-ng-show="giftSuccess" class="headers-container">
                 <h3 data-ng-bind="widget.texts.giftSuccessHeader"></h3>
-                <h4 data-ng-bind="widget.texts.giftSuccessContent"></h4>
+                <h4 data-ng-bind="widget.texts.purchase_success_header"></h4>
               </div>
 
 
@@ -113,7 +113,7 @@
               </div>
               <div class="modal_gift_buttons">
 
-                  <span data-ng-show="giftSuccess" class="alink button_primary" 
+                  <span data-ng-show="giftSuccess" class="alink button_primary"
                         data-ng-click="$parent.$parent.selected_gift=null; $parent.$parent.giftSuccess=false"
                         style="margin: 5px;">{{ 'buttons.texts.ok' | tools }}</span>
 
@@ -121,11 +121,11 @@
                         style="margin: 5px;"
                         data-ng-click="gift_confirm(selected_gift);"
                         data-ng-bind="widget.texts.get"></span>
-                
+
                 </div>
             </div>
 
-            
+
 
             <!--div class="gift_more_block">
 
