@@ -295,6 +295,7 @@ export let SailPlay = angular.module('sailplay', [
         });
 
         scope.$on('sailplay-login-success', function () {
+          console.log('sailplay-login-success')
           logged = true;
         });
 

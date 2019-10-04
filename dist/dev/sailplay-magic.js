@@ -623,7 +623,7 @@ return webpackJsonp([0],[
 	  });
 
 	  SailPlay.on('login.success', function (res) {
-
+		console.log('login.success')
 	    $rootScope.auth_state = true;
 	    $rootScope.$broadcast('sailplay-login-success', res);
 	    $rootScope.$apply();
