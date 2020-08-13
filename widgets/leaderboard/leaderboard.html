@@ -20,10 +20,10 @@
 
             </li>
 
-            <li class="leaderboard__list-item" data-ng-repeat="member in $parent.data().members.members"
+            <li class="leaderboard__list-item" data-ng-repeat="member in $parent.data().members.members | filter:emptyOrNull"
                 data-ng-class="{ type_current : member.is_current_user }">
 
-                <span class="leaderboard__list-item__rank rank rows" data-ng-bind="member.rank"></span>
+                <span class="leaderboard__list-item__rank rank rows">{{ !member.is_current_user ? $index + 1 : member.rank}}</span>
 
                 <span class="leaderboard__list-item__name full_name rows">
 

@@ -8,16 +8,15 @@
 .font-face(@dir, @name, @file_name, @weight){
   @font-face {
     font-family: @name;
-    src: url('@{dir}@{file_name}.woff2') format('woff2'),
-    url('@{dir}@{file_name}.woff') format('woff'),
-    url('@{dir}@{file_name}.ttf') format('truetype');
+    src: url('@{dir}@{file_name}.ttf') format('truetype');
     font-weight: @weight;
     font-style: normal;
   }
 }
 
 //define fonts
-.font-face(@font_dir, 'Bebas Neue', 'bebasneueregular', 'normal');
+.font-face(@font_dir, 'Rockwell EB', 'RockwellExtraBold', 'bolder');
+.font-face(@font_dir, 'Badaboom', 'Badaboom', 'bolder');
 
 .spm_wrapper {
   //default font

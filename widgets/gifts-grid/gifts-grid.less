@@ -5,19 +5,61 @@
 .spm_wrapper {
 
   .gifts_grid_widget {
+    border-bottom: 10px black solid;
+
+    overflow: visible;
+
+    & .parallax-img, & .parallax-img-s {
+      height: inherit;
+      width: 95%;
+      position: absolute;
+      display: none;
+    }
+
+    @media screen and (max-width: 650px) {
+      & .parallax-img-s {
+        display: block;
+      }
+    }
+
+    @media screen and (min-width: 651px) {
+      & .parallax-img {
+        display: block;
+      }
+    }
+
+    .triangle {
+      border-color: white transparent transparent transparent;
+    }
+
+    background-color: #a20b36;
 
     .gifts_grid {
 
-      &__header {
+      &___header {
         width: 90%;
         display: block;
         margin: 0 auto;
+        color: white;
+        text-align: center;
+        padding-top: 50px;
+        font-family: 'Rockwell EB';
+        font-size: 46px;
+        font-weight: 900;
+        padding-bottom: 60px;
       }
 
-      &__caption {
+      &___caption {
+        padding-top: 5px;
         width: 90%;
         display: block;
+        color: white;
+        text-align: center;
+        font-family: "open sans condensed";
+        font-weight: 300;
+        font-size: 26px;
         margin: 0 auto;
+        padding-bottom: 70px;
       }
 
       &__wrapper {
@@ -26,56 +68,153 @@
         height: auto;
         margin: 0 auto;
         position: relative;
+        padding: 0 50px;
+        box-sizing: border-box;
       }
 
       &__blocks {
         display: block;
         width: 100%;
-        padding: 0 50px;
         box-sizing: border-box;
         position: relative;
+        margin: 0 auto;
+        border-bottom: 10px white solid;
+        @media screen and (max-width: 400px) {
+          border: none;
+        }
+        &.spoilered {
+          max-height: 520px;
+          overflow: hidden;
+          @media screen and (max-width: 400px) {
+            max-height: 1100px;
+          }
+        }
+        @media (min-width: 940px) and (max-width: 1220px) {
+          max-width: 960px;
+        }
+        @media (min-width: 651px) and (max-width: 939px) {
+          max-width: 660px;
+        }
       }
 
       &__block {
-        display: block;
+        display: flex;
         width: 100%;
         height: auto;
-        float: left;
+        justify-content: center;
+        flex-wrap: wrap;
+        padding: 40px 0;
+        border: 10px white solid;
+        @media screen and (max-width: 400px) {
+          border: none;
+        }
+        box-sizing: border-box;
+        border-bottom: none;
+      }
+
+      &__spoiler {
+        display: none;
+      }
+
+      &__more_btn {
+        cursor: pointer;
+        transform: translateY(30px);
+        text-transform: uppercase;
+        font-family: 'Rockwell EB';
+        font-size: 24px;
+        display: block;
+        background-color: #FFFFFF;
+        color: #a20b36;
+        width: 200px;
+        margin: 0 auto 1px auto;
+        padding: 15px;
+        text-align: center;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
       }
 
       &__item {
-        width: 33.3%;
+        border-radius: 10px;
+        background-color: white;
+        width: 20%;
         height: auto;
         float: left;
         box-sizing: border-box;
-        padding: 3%;
+        padding: 20px;
         position: relative;
+        display: flex;
+        flex-direction: column;
+        margin: 10px;
+        min-height: 389px;
+        min-width: 260px;
 
-        @media (max-width: 800px) {
-          width: 50%;
-        }
-
-        @media (max-width: 500px) {
+        @media (max-width: 650px) {
           width: 100%;
+          max-width: 360px;
+          min-height: 420px;
         }
 
         &-img {
           display: inline-block;
-          width: 100%;
+          width: 210px;
+          margin: 0px auto;
+          @media screen and (max-width: 650px) {
+            height: auto;
+            margin: 10px auto;
+            max-width: 250px;
+          }
         }
 
         &-name {
+          word-wrap: break-word;
+          margin-bottom: 10px;
+          padding-top: 40px;
+          font-size: 20px;
           display: inline-block;
+          text-align: left;
           width: 100%;
+          line-height: 1.1;
+          font-weight: bold;
+          text-transform: uppercase;
+          text-align: center;
         }
 
         &-points {
           display: inline-block;
           width: 100%;
+          font-size: 24px;
         }
 
         &-button {
+          color: #a20b36;
+          background-color: transparent !important;
           display: inline-block;
+          padding: 10px;
+          padding-left: 0px;
+          font-family: "Rockwell EB";
+          font-size: 22px;
+          text-decoration: none;
+          text-align: center;
+          margin-top: 0px;
+          position: absolute;
+          bottom: 25px;
+          left: 10%;
+          width: 80%;
+          @media screen and (max-width: 767px) {
+            &:not(.modal) {
+              min-width: 160px;
+              padding-left: 10px;
+              background-color: black !important;
+              color:white;
+            }
+          }
+        }
+
+        &:hover .gifts_grid__item-button:not(.modal) {
+          min-width: 160px;
+          padding-left: 10px;
+          background-color: black !important;
+          color:white;
         }
 
       }
@@ -102,7 +241,84 @@
       }
 
     }
+    .xs-gifts {
+      display: none;
+    }
 
+    .modal_gift_container .bon_item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      .headers-container {
+        color: white;
+        margin: 0 auto;
+        width: 300px;
+      }
+      & h4 {
+        color: white;
+        font-family: 'open sans condensed';
+        font-weight: 300;
+        opacity: 1;
+        font-size: 19px;
+      } 
+      & h3 {
+        font-style: italic;
+        font-family: 'raleway';
+        font-weight: 900;
+      }
+      & .gifts_grid__item {
+        width: 270px;
+        height: 360px;
+        margin-bottom: 24px;
+      }
+    }
+    .modal_gift_buttons {
+      justify-content: center;
+      display: flex;
+      flex-wrap: wrap;
+      & .button_primary {
+        padding: 5px;
+        font-size: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        background-color: #a20b36;
+        border-radius: 10px;
+        color: #ffffff;
+        font-family: 'Rockwell EB';
+        font-size: 22px;
+        padding: 20px;
+        width: 100%;
+        max-width: 190px;
+        height: 50px;
+        cursor: pointer;
+        @media screen and (max-width: 650px) {
+          &.gifts_grid__item-button.modal {
+            width: auto;
+            padding: 8px 0;
+          }
+        }
+      }
+    }
   }
 
+  .grid_buttons_container {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translate3d(-50%,-50%,0);
+  }
+
+  .bns_overlay_gift .bns_overlay_iner {
+    width: 200px !important;
+    @media screen and (max-width: 400px) {
+      width: 100% !important;
+      border-radius: 0;
+    }
+    padding: 0 40px 20px 40px !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    border-radius: 10px;
+  }
 }

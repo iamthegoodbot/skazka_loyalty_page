@@ -1,72 +1,106 @@
 <div class="bon_profile_wrap container" data-ng-show="widget.enabled" data-ng-cloak>
-
   <div class="bon_profile_info" data-sailplay-profile data-sailplay-gifts>
-
-    <div class="bon_profile_top clearfix">
-      <div class="bon_profile_top_left">
-        <h3>
-          <span class="header">{{ widget.texts.header }}</span>
-        </h3>
-        <h4>
-          <span class="caption">{{ widget.texts.spoiler }}</span>
-        </h4>
-      </div>
-      <div class="bon_profile_right clearfix" data-ng-if="user()">
-        <div class="user_avatar">
-          <img class="user_avatar_image" data-ng-src="{{ (user().user.pic | sailplay_pic) || default_avatar}}" alt="You">
-          <a href="#" class="logout_btn button_link" data-ng-click="$event.preventDefault(); logout();">{{ widget.texts.logout }}</a>
-        </div>
-        <div class="user_info">
-          <span class="user_name"  data-ng-bind="user().user.name || widget.texts.name_not_defined"></span>
-          <span class="user_phone" data-ng-if="user().user.phone"  data-ng-bind="user().user.phone | tel"></span>
-          <span class="user_email" data-ng-if="user().user.email"  data-ng-bind="user().user.email"></span>
-        </div>
-        <div class="user_info">
-          <a href="#" class="edit_profile_btn button_link" data-ng-click="$event.preventDefault(); profile.fill_profile(true);">{{ widget.texts.edit_profile_button }}</a>
-        </div>
-      </div>
-      <div class="bon_profile_right clearfix" data-ng-if="!user()">
-        <button type="button" class="sp_btn button_primary login_reg_btn" data-ng-click="$event.preventDefault(); login('remote', {widget: 'profile', element: 'profile_login_button'});">{{ widget.texts.login_reg }}</button>
-      </div>
-    </div>
-
-    <!-- status -->
-    <div class="status_block" data-ng-if="user() && user().user_status.name">
-      <span class="status_block_title" data-ng-bind="widget.texts.user_status"></span>
-      <img class="status_block_img" data-ng-src="{{ user().user_status.pic | sailplay_pic }}" alt="{{ user().user_status.name }}">
-      <span class="status_block_name" data-ng-bind="user().user_status.name || widget.texts.empty_status "></span>
-    </div>
-
-    <div class="bon_profile_stat">
-      <div class="bps_left points_block clearfix" data-ng-if="user()">
-        <span class="points_confirmed">
-          <span class="points_confirmed_value" data-ng-bind="user().user_points.confirmed | number"></span>
-          <span class="points_confirmed_name" data-ng-bind="user().user_points.confirmed | sailplay_pluralize: ('points.texts.pluralize' | tools)"></span>
-        </span>
-        <a class="button_link history_button" href="#" data-ng-click="$event.preventDefault(); profile.history = true;">{{ widget.texts.history_button }}</a>
-      </div>
-      <div class="bps_right progress_block clearfix" data-ng-if="progress">
-        <div class="progress_line_main">
-          <div class="progress_line_bg progress_bar progress_bar_border"></div>
-          <div class="progress_line progress_bar_filled" data-procent="0" data-ng-style="{ width: progress.plenum + '%' }">
-            <div class="progress_text progress_bar_flag" data-ng-show="progress.next.item" data-ng-class="{ right_position: progress.plenum < 50 }">
-              <span class="progress_bar_flag_text" data-ng-bind="progress.next.offset + ' ' + (progress.next.offset | sailplay_pluralize:('points.texts.pluralize' | tools)) + ' ' + widget.texts.before_gift"></span>
+    <div class="sp_profile">
+      <div class="sp_profile_left">
+        <div class="sp_profile_left_top">
+          <div class="sp_avatar_wrapper">
+            <img class="sp_avatar" data-ng-src="{{ (user().user.pic | sailplay_pic) || default_avatar}}" alt="You">
+            <div class="logout_btn button_link"  data-ng-if="user()" data-ng-click="$event.preventDefault(); logout();">{{ widget.texts.logout }}</div>
+          </div>
+          <div class="sp_header_wrapper">
+            <div class="sp_top_header">
+              <span class="sp_top_name"  data-ng-bind="user().user.name.split(' ')[0] ? user().user.name.split(' ')[0] + ',': widget.texts.name_not_defined"></span>
+              <span class="sp_top_text">{{ widget.texts.header_top }}</span>
             </div>
+            <span class="sp_header">{{ widget.texts.header }}</span>
+            <span class="sp_spoiler" data-ng-bind-html="widget.texts.spoiler | to_trusted"></span>
           </div>
+        </div>
+        <div class="sp_profile_left_bottom" >
+          <div class="sp_edit_profile_cta"  data-ng-if="user()" data-ng-bind-html="widget.texts.edit_profile_cta | to_trusted"></div>
+          <div class="sp_edit_profile_cta"  data-ng-if="!user()" data-ng-bind-html="widget.texts.login_cta | to_trusted"></div>
+          <div class="sp_edit_profile_arrows"></div>
+          <div class="sp_edit_profile"  data-ng-if="user()" data-ng-click="$event.preventDefault(); profile.fill_profile(true);">{{ widget.texts.edit_profile_button }}</div>
+          <div class="sp_edit_profile"  data-ng-if="!user()" data-ng-click="$event.preventDefault(); login('remote', {widget: 'profile', element: 'profile_login_button'});">{{ widget.texts.login }}</div>
+        </div>        
+      </div>
+      <div class="sp_profile_right">
+        <div class="sp_points_wrapper">
+          <span class="sp_points" data-ng-bind="user().user_points.confirmed || 0 | number"></span>
+          <span class="sp_points_name" data-ng-bind="user().user_points.confirmed | sailplay_pluralize: ('points.texts.pluralize' | tools)"></span>
+        </div>
+        <span class="sp_history_button"  data-ng-if="user() data-ng-click="$event.preventDefault(); profile.history = true;">{{ widget.texts.history_button }}</span>
+      </div>
+    </div>
 
-          <div class="gift_item progress_bar_border" data-ng-repeat="item in progress.items track by $index"
-               data-ng-class="{ act : item.reached, progress_bar_gift_filled: item.reached, progress_bar_gift: !item.reached}"
-               data-ng-style="{ left: item.get_left() }">
-
-            <span class="gift_item_hint" data-ng-bind="item.gifts[0].points"></span>
-
+    <div style="display:none">
+      <div class="bon_profile_top clearfix">
+        <div class="bon_profile_top_left">
+          <h3>
+            <span class="header">{{ widget.texts.header }}</span>
+          </h3>
+          <h4>
+            <span class="caption">{{ widget.texts.spoiler }}</span>
+          </h4>
+        </div>
+        <div class="bon_profile_right clearfix" data-ng-if="user()">
+          <div class="user_avatar">
+            <img class="user_avatar_image" data-ng-src="{{ (user().user.pic | sailplay_pic) || default_avatar}}" alt="You">
+            
           </div>
-
+          <div class="user_info">
+            <span class="user_name"  data-ng-bind="user().user.name || widget.texts.name_not_defined"></span>
+            <span class="user_phone" data-ng-if="user().user.phone"  data-ng-bind="user().user.phone | tel"></span>
+            <span class="user_email" data-ng-if="user().user.email"  data-ng-bind="user().user.email"></span>
+          </div>
+          <div class="user_info">
+            <a href="#" class="edit_profile_btn button_link" data-ng-click="$event.preventDefault(); profile.fill_profile(true);">{{ widget.texts.edit_profile_button }}</a>
+          </div>
+        </div>
+        <div class="bon_profile_right clearfix" data-ng-if="!user()">
+          <button type="button" class="sp_btn button_primary login_reg_btn" data-ng-click="$event.preventDefault(); login('remote', {widget: 'profile', element: 'profile_login_button'});">{{ widget.texts.login_reg }}</button>
         </div>
       </div>
-      <div data-ng-show="!!widget.texts.faq.text" class="bps_faq_btn" data-ng-bind="widget.texts.faq.button" data-ng-click="$event.preventDefault(); profile.openFaq=true;"></div>
+  
+      <!-- status -->
+      <div class="status_block" data-ng-if="user() && user().user_status.name">
+        <span class="status_block_title" data-ng-bind="widget.texts.user_status"></span>
+        <img class="status_block_img" data-ng-src="{{ user().user_status.pic | sailplay_pic }}" alt="{{ user().user_status.name }}">
+        <span class="status_block_name" data-ng-bind="user().user_status.name || widget.texts.empty_status "></span>
+      </div>
+  
+      <div class="bon_profile_stat">
+        <div class="bps_left points_block clearfix" data-ng-if="user()">
+          <span class="points_confirmed">
+            <span class="points_confirmed_value" data-ng-bind="user().user_points.confirmed | number"></span>
+            <span class="points_confirmed_name" data-ng-bind="user().user_points.confirmed | sailplay_pluralize: ('points.texts.pluralize' | tools)"></span>
+          </span>
+          <a class="button_link history_button" href="#" data-ng-click="$event.preventDefault(); profile.history = true;">{{ widget.texts.history_button }}</a>
+        </div>
+        <div class="bps_right progress_block clearfix" data-ng-if="progress">
+          <div class="progress_line_main">
+            <div class="progress_line_bg progress_bar progress_bar_border"></div>
+            <div class="progress_line progress_bar_filled" data-procent="0" data-ng-style="{ width: progress.plenum + '%' }">
+              <div class="progress_text progress_bar_flag" data-ng-show="progress.next.item" data-ng-class="{ right_position: progress.plenum < 50 }">
+                <span class="progress_bar_flag_text" data-ng-bind="progress.next.offset + ' ' + (progress.next.offset | sailplay_pluralize:('points.texts.pluralize' | tools)) + ' ' + widget.texts.before_gift"></span>
+              </div>
+            </div>
+  
+            <div class="gift_item progress_bar_border" data-ng-repeat="item in progress.items track by $index"
+                 data-ng-class="{ act : item.reached, progress_bar_gift_filled: item.reached, progress_bar_gift: !item.reached}"
+                 data-ng-style="{ left: item.get_left() }">
+  
+              <span class="gift_item_hint" data-ng-bind="item.gifts[0].points"></span>
+  
+            </div>
+  
+          </div>
+        </div>
+        <div data-ng-show="!!widget.texts.faq.text" class="bps_faq_btn" data-ng-bind="widget.texts.faq.button" data-ng-click="$event.preventDefault(); profile.openFaq=true;"></div>
+      </div>
     </div>
-  </div>
+    </div>
+    
 
 <!-- faq section -->
 <magic-modal class="faq_modal" data-show="profile.openFaq">
@@ -131,7 +165,7 @@
         <span class="modal_profile_header">{{ widget.fill_profile.header }}</span>
       </div>
 
-      <form name="fill_profile_form" class="mb_popup_main mb_popup_main_mt" data-ng-submit="sailplay.fill_profile.submit(fill_profile_form, profile.fill_profile);">
+      <form name="fill_profile_form" class="fill_profile_form mb_popup_main mb_popup_main_mt" data-ng-submit="sailplay.fill_profile.submit(fill_profile_form, profile.fill_profile);">
 
         <div class="form_field" data-ng-repeat="field in sailplay.fill_profile.form.fields" data-ng-switch="field.input">
 

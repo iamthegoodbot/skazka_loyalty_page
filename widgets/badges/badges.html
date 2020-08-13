@@ -10,12 +10,16 @@
   </div>
 
 
-  <div data-sailplay-badges class="badge_lines_container clearfix">
+  <div data-sailplay-badges class="badge_lines_container clearfix"  data-ng-class="{spoilered: !showMore}">
 
     <sailplay-magic-badge-line class="multi_level" data-ng-repeat="line in sailplay.badges.list().multilevel_badges" data-line="line" data-config="widget"></sailplay-magic-badge-line>
 
     <sailplay-magic-badge-line class="one_level" data-line="sailplay.badges.list().one_level_badges" data-type="one_level" data-config="widget"></sailplay-magic-badge-line>
 
+    <div class="grid_buttons_container">
+      <a class="more_btn button_primary" data-ng-show="!showMore" data-ng-click="showMoreBadges(true)" data-ng-bind="widget.texts.more"></a>
+      <a class="more_btn button_primary" data-ng-show="showMore" data-ng-click="showMoreBadges(false)" data-ng-bind="widget.texts.less"></a>
+    </div>
   </div>
 
 

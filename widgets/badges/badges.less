@@ -11,19 +11,23 @@
   .spm_tools_widget.badges {
     float: left;
     width: 100%;
-    background-color: @main_lighter;
+    background-color: #a20b36;
+    text-transform: uppercase;
     overflow: hidden;
+    border-bottom: 10px white solid;
 
     .container {
       width: 100%;
-      padding: 80px 5% 40px 5%;
+      padding: 80px 5% 0 5%;
       .box-sizing(border-box);
     }
 
     .bon_header {
-      color: @black;
-      font-size: 30px;
-      font-family: 'RotondaC', 'Roboto', sans-serif;
+      color: white;
+      text-align: center;
+      font-family: 'Rockwell EB';
+      font-size: 46px;
+      font-weight: 900;
     }
     .bon_sub_header {
       font-size: 14px;
@@ -102,6 +106,16 @@
       width: 100%;
       .box-sizing(border-box);
 
+
+      &.spoilered {
+        max-height: 600px;
+        overflow: hidden;
+
+        @media screen and (min-width: 651px) {
+          max-height: 420px;
+          overflow: hidden;
+        }
+      }
     }
 
     .one_level {
@@ -129,7 +143,6 @@
         float: left;
         width: 100%;
         height: 100%;
-        cursor: pointer;
 
         span {
           white-space: normal;
@@ -143,10 +156,12 @@
         }
 
         .badge_name {
-          font-size: 16px;
           width: 100%;
           text-align: center;
-          margin-top: 10px;
+          margin-top: 15px;
+          color: white;
+          font-family: 'Badaboom';
+          font-size: 26px;
         }
         .bon_tem_info {
           font-size: 14px;
@@ -198,7 +213,7 @@
         background-position: center left;
         background-size: 100% 100%;
         background-repeat: no-repeat;
-
+        display: none;
       }
 
       &.last {
@@ -272,6 +287,30 @@
       }
     }
 
+  }
+
+  .grid_buttons_container {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translate3d(-50%,-50%,0);
+  }
+
+  .more_btn {
+    cursor: pointer;
+    transform: translateY(30px);
+    text-transform: uppercase;
+    font-family: 'Rockwell EB';
+    font-size: 24px;
+    display: block;
+    background-color: #FFFFFF;
+    color: #a20b36;
+    width: 200px;
+    margin: 0 auto;
+    padding: 15px;
+    text-align: center;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
   }
 
 }

@@ -1,0 +1,191 @@
+
+.spm_wrapper {
+  font-family: Rockwell;
+
+  .sp_profile {
+    display: flex;
+    width: 100%;
+    background-color: #f9b640;
+    border-bottom: 10px black solid;
+
+
+    @media screen and (max-width: 1000px) {
+      flex-direction: column;
+    }
+  
+    &_left {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      padding: 40px 40px 40px 40px;
+      box-sizing: border-box;
+      &_top {
+        display: flex;
+        margin-bottom: 80px;
+        .sp_avatar_wrapper {
+          position: relative;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          margin-right: 60px;
+
+          &:hover {
+            .logout_btn {
+              display: flex;
+            }
+          }
+
+          @media screen and (max-width: 1000px) {
+            display: none;
+          }
+          .sp_avatar {
+            border-radius: 50%;
+            width: 100px;
+            height: 100px;
+            margin-bottom: 20px;
+          }
+          .logout_btn {
+            display: none;
+            cursor: pointer;
+            position: absolute;
+            top: 0;
+            left: 0;
+            color: white;
+            background-color: #a20b36;
+            border-radius: 50%;
+            height: 100px;
+            width: 100px;
+            align-items: center;
+            justify-content: center;
+          }
+        }
+        .sp_header_wrapper {
+          display: flex;
+          flex-direction: column;
+          .sp_top_header {
+            margin-bottom: 5px;
+            .sp_top_name, .sp_top_text {
+              font-size: 20px;
+            }
+          }
+          .sp_header {
+            font-family: 'Rockwell EB';
+            font-size: 46px;
+            margin-bottom: 15px;
+            font-weight: bolder;
+          }
+          .sp_spoiler {
+            font-size: 20px;
+          }
+        }
+      }
+      &_bottom {
+        display: flex;
+        padding-left: 160px;
+        align-items: center;
+
+        @media screen and (max-width: 400px) {
+          flex-direction: column;
+        }
+
+        @media screen and (max-width: 1000px) {
+          padding-left: 0;
+        }
+        .sp_edit_profile_cta {
+          font-size: 20px;
+          margin-right: 20px;
+
+          @media screen and (max-width: 400px) {
+            margin-bottom: 40px;
+            margin-right: 0;
+            box-sizing: border-box;
+          }
+        }
+        .sp_edit_profile_arrows {
+          width: 150px;
+          height: 100px;
+          margin-right: 20px;
+
+          background-image: url(https://sailplays3.cdnvideo.ru/media/assets/assetfile/5e239be919456a2401d20afb7d8822e1.png);
+          background-size: contain;
+          background-position: center;
+          background-repeat: no-repeat;
+
+          @media screen and (max-width: 400px) {
+            display: none;
+          }
+        }
+        .sp_edit_profile {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          text-align: center;
+          background-color: #a20b36;
+          border-radius: 10px;
+          color: #ffffff;
+          font-family: 'Rockwell EB';
+          font-size: 22px;
+          padding: 20px;
+          width: 100%;
+          max-width: 190px;
+          height: 50px;
+          cursor: pointer;
+        }
+      }
+    }
+    &_right {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      max-width: 400px;
+      background-color: #a20b36;
+      box-sizing: border-box;
+
+      @media screen and (max-width: 1000px) {
+        max-width: 100%;
+      }
+  
+      padding: 50px;
+      .sp_points_wrapper {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 12px;
+        text-align: center;
+      }
+      .sp_points, .sp_points_name {
+        font-family: 'Rockwell EB';
+        color: #FFFFFF;
+        font-size: 46px;
+        text-transform: uppercase;
+      }
+      .sp_points {
+        margin-right: 5px;
+      }
+      .sp_history_button {
+        cursor: pointer;
+        color: #FFFFFF;
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .fill_profile_form {
+    .sp_btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      background-color: #a20b36;
+      border-radius: 10px;
+      color: #ffffff;
+      font-family: 'Rockwell EB';
+      font-size: 22px;
+      width: 100%;
+      max-width: 190px;
+      height: 50px;
+      cursor: pointer;
+    }
+  }
+}

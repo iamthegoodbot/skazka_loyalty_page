@@ -10,6 +10,13 @@ WidgetRegister({
   controller: () => {
     return (scope, elm, attrs) => {
 
+      scope.showMore = false
+
+      scope.showMoreBadges = (bool) => {
+        console.log(bool)
+        scope.showMore = bool
+      }
+
     }
   }
 });
@@ -56,8 +63,9 @@ Widget.directive('sailplayMagicBadgeLine', function(MAGIC_CONFIG, SailPlayShare,
       scope.badge_selected = false;
 
       scope.badge_select = function (badge) {
+        return
         scope.badge_selected = badge || false;
-      };
+      };s
 
       scope.badge_share = function (network, badge) {
         SailPlayShare(network, scope._config.texts.share_url || $window.location.href, badge.name, badge.descr, badge.thumbs.url_250x250);
