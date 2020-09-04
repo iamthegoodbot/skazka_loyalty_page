@@ -3772,8 +3772,8 @@ lodash.memoize@^4.1.2:
   resolved "https://registry.yarnpkg.com/lodash.memoize/-/lodash.memoize-4.1.2.tgz#bcc6c49a42a2840ed997f323eada5ecd182e0bfe"
 
 lodash.mergewith@^4.6.0:
-  version "4.6.1"
-  resolved "https://registry.yarnpkg.com/lodash.mergewith/-/lodash.mergewith-4.6.1.tgz#639057e726c3afbdb3e7d42741caa8d6e4335927"
+  version "4.6.2"
+  resolved "https://registry.yarnpkg.com/lodash.mergewith/-/lodash.mergewith-4.6.2.tgz#617121f89ac55f59047c7aec1ccd6654c6590f55"
 
 lodash.restparam@^3.0.0:
   version "3.6.1"
@@ -4780,6 +4780,12 @@ postcss-calc@^5.2.0:
     postcss "^5.0.2"
     postcss-message-helpers "^2.0.0"
     reduce-css-calc "^1.2.6"
+
+postcss-class-prefix@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/postcss-class-prefix/-/postcss-class-prefix-0.3.0.tgz#d69e86d062a3403853b3f34c9476441c3ddfe7d3"
+  dependencies:
+    postcss "^5.0.4"
 
 postcss-cli@^5.0.0:
   version "5.0.0"
