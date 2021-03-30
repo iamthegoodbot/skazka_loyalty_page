@@ -4781,6 +4781,12 @@ postcss-calc@^5.2.0:
     postcss-message-helpers "^2.0.0"
     reduce-css-calc "^1.2.6"
 
+postcss-class-prefix@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/postcss-class-prefix/-/postcss-class-prefix-0.3.0.tgz#d69e86d062a3403853b3f34c9476441c3ddfe7d3"
+  dependencies:
+    postcss "^5.0.4"
+
 postcss-cli@^5.0.0:
   version "5.0.0"
   resolved "https://registry.yarnpkg.com/postcss-cli/-/postcss-cli-5.0.0.tgz#3d6aee7652b8dc6566f0189dd90d11bb0a535a20"
@@ -6928,8 +6934,8 @@ xtend@~3.0.0:
   resolved "https://registry.yarnpkg.com/xtend/-/xtend-3.0.0.tgz#5cce7407baf642cba7becda568111c493f59665a"
 
 y18n@^3.2.1:
-  version "3.2.1"
-  resolved "https://registry.yarnpkg.com/y18n/-/y18n-3.2.1.tgz#6d15fba884c08679c0d77e88e7759e811e07fa41"
+  version "3.2.2"
+  resolved "https://registry.yarnpkg.com/y18n/-/y18n-3.2.2.tgz#85c901bd6470ce71fc4bb723ad209b70f7f28696"
 
 yallist@^2.1.2:
   version "2.1.2"
