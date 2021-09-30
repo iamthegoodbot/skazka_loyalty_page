@@ -113,10 +113,12 @@
 
                 <span class="gifts_grid__item-name gift_name" data-ng-bind="selected_gift.name"></span>
 
+
                 <a class="gifts_grid__item-button button_primary modal" href="#"
                      data-ng-bind="(selected_gift.points | number) + ' ' + (selected_gift.points | sailplay_pluralize:('points.texts.pluralize' | tools))"></a>
               </div>
               <div class="modal_gift_buttons">
+                <div data-ng-bind="gift_code"> </div>
 
                   <span data-ng-show="giftSuccess" class="alink button_primary"
                         data-ng-click="$parent.$parent.selected_gift=null; $parent.$parent.giftSuccess=false"

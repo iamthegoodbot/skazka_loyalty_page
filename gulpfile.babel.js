@@ -5,7 +5,7 @@ import fs from 'fs';
 import path from 'path';
 
 import webpack from 'webpack';
-import { development, production, migrator } from './webpack.config'; // <-- Contains ES6+
+import { development, production, migrator } from './webpack.config.babel'; // <-- Contains ES6+
 
 const PACKAGE = JSON.parse(fs.readFileSync('package.json', 'utf8'));
 

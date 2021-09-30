@@ -9,13 +9,13 @@
   @font-face {
     font-family: @name;
     src: url('@{dir}@{file_name}.ttf') format('truetype');
-    font-weight: @weight;
     font-style: normal;
   }
 }
 
 //define fonts
 .font-face(@font_dir, 'Rockwell EB', 'RockwellExtraBold', 'bolder');
+.font-face(@font_dir, 'Rockwell', 'Rockwell', '400');
 .font-face(@font_dir, 'Badaboom', 'Badaboom', 'bolder');
 
 .spm_wrapper {

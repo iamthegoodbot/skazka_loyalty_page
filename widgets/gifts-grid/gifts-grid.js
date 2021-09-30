@@ -24,6 +24,8 @@ WidgetRegister({
 
       scope.gifts = [];
 
+      scope.gift_code = "";
+
       scope.showMore = false
 
       scope.$on('showMore', (ev, showMore)=>{
@@ -203,6 +205,9 @@ WidgetRegister({
         $rootScope.$apply(() => {
           //scope.selected_gift = null;
           scope.giftSuccess = true
+          let date = new Date()
+          res.coupon_number = scope.selected_gift.name.substring(0,5).toUpperCase() + '_' + (scope.selected_gift.id * String(date.getMinutes())* String(date.getSeconds()))
+          console.log(res.coupon_number)
           SailPlayApi.call('load.gifts.list');
           SailPlayApi.call('load.user.info');
 

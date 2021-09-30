@@ -11,6 +11,10 @@
     "prod-server": "gulp production-server",
     "bundle": "rm -rf node_modules/ && npm install"
   },
+
+  "resolutions": {
+    "graceful-fs": "^4.2.4"
+  },
   "dependencies": {
     "angular": "^1.6.4",
     "angular-cookie": "^4.1.0",
