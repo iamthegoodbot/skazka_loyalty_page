@@ -265,7 +265,6 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
         restrict: 'A',
         scope: false,
         link: function(scope, elm, attrs) {
-            console.log(SailPlayApi)
 
             var config = scope.$eval(attrs.config);
 
@@ -365,6 +364,12 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
                             })
                         })
                     })
+                }
+
+                if (config.load_vars) {
+                    setInterval(function() {
+                        SailPlayApi.call("vars.batch", { names: config.load_vars }, (res) => { return })
+                    }, 5000)
                 }
 
                 if (MAGIC_CONFIG.data.force_registration && MAGIC_CONFIG.data.force_registration.active && MAGIC_CONFIG.data.force_registration.tag_name && !$rootScope.submited) {

@@ -90,7 +90,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	  value: true
+	    value: true
 	});
 	exports.default = exports.magic = undefined;
 
@@ -146,174 +146,175 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var magic = exports.magic = _angular2.default.module('magic', [_sailplay2.default, _core2.default, _angularCookie2.default, _tools2.default, _angularTouch2.default]).config(function (SailPlayProvider, MAGIC_CONFIG, SailPlayHistoryProvider, SailPlayActionsDataProvider) {
 
-	  //authorization configurations
-	  if (MAGIC_CONFIG.auth) {
+	    //authorization configurations
+	    if (MAGIC_CONFIG.auth) {
 
-	    SailPlayProvider.set_auth_hash_id(MAGIC_CONFIG.auth.auth_hash_id);
+	        SailPlayProvider.set_auth_hash_id(MAGIC_CONFIG.auth.auth_hash_id);
 
-	    SailPlayProvider.set_remote_config(MAGIC_CONFIG.auth.config || {
-	      background: 'transparent'
-	    });
-	  }
+	        SailPlayProvider.set_remote_config(MAGIC_CONFIG.auth.config || {
+	            background: 'transparent'
+	        });
+	    }
 
-	  //apply data from config
-	  if (MAGIC_CONFIG.data) {
+	    //apply data from config
+	    if (MAGIC_CONFIG.data) {
 
-	    SailPlayActionsDataProvider.set_actions_data(MAGIC_CONFIG.data.actions);
-	    SailPlayHistoryProvider.set_dictionary(MAGIC_CONFIG.data.history);
-	  }
+	        SailPlayActionsDataProvider.set_actions_data(MAGIC_CONFIG.data.actions);
+	        SailPlayHistoryProvider.set_dictionary(MAGIC_CONFIG.data.history);
+	    }
 
-	  //SailPlayProvider.set_auth_type(MAGIC_CONFIG.auth.type);
+	    //SailPlayProvider.set_auth_type(MAGIC_CONFIG.auth.type);
 	}).directive('sailplayMagic', function (SailPlay, ipCookie, SailPlayApi, $document, $rootScope, MAGIC_CONFIG) {
 
-	  var MagicTemplate = ['<div class="spm_wrapper">', '<layout data-widgets="config.widgets"></layout>', '</div>'].join('');
+	    var MagicTemplate = ['<div class="spm_wrapper">', '<layout data-widgets="config.widgets"></layout>', '</div>'].join('');
 
-	  return {
-	    restrict: 'E',
-	    replace: true,
-	    scope: true,
-	    template: MagicTemplate,
-	    link: function link(scope) {
+	    return {
+	        restrict: 'E',
+	        replace: true,
+	        scope: true,
+	        template: MagicTemplate,
+	        link: function link(scope) {
 
-	      scope.config = MAGIC_CONFIG;
+	            scope.config = MAGIC_CONFIG;
 
-	      scope.show_statuses_list = false;
+	            scope.show_statuses_list = false;
 
-	      scope.show_profile_action = true;
+	            scope.show_profile_action = true;
 
-	      scope.show_login = false;
+	            scope.show_login = false;
 
-	      scope.$on('sailplay-login-cancel', function () {
-	        scope.show_login = false;
-	      });
+	            scope.$on('sailplay-login-cancel', function () {
+	                scope.show_login = false;
+	            });
 
-	      scope.$on('sailplay-login-success', function () {
-	        scope.show_login = false;
-	      });
+	            scope.$on('sailplay-login-success', function () {
+	                scope.show_login = false;
+	            });
 
-	      scope.fill_profile = function () {
+	            scope.fill_profile = function () {
 
-	        scope.show_profile_info = true;
-	      };
+	                scope.show_profile_info = true;
+	            };
 
-	      scope.body_lock = function (state) {
+	            scope.body_lock = function (state) {
 
-	        if (state) {
-	          $document[0].body.classList.add('body_lock');
-	        } else {
-	          $document[0].body.classList.remove('body_lock');
+	                if (state) {
+	                    $document[0].body.classList.add('body_lock');
+	                } else {
+	                    $document[0].body.classList.remove('body_lock');
+	                }
+	            };
+
+	            scope.close_profile = function () {
+
+	                scope.show_profile_info = false;
+
+	                scope.body_lock(false);
+	            };
+
+	            scope.on_submit_profile = function () {
+	                scope.show_profile_action = false;
+	                scope.close_profile();
+	            };
+
+	            scope.open_profile = function () {
+	                scope.show_profile_info = true;
+	                scope.body_lock(true);
+	            };
+
+	            SailPlay.on('tags.exist.success', function (res) {
+	                console.log(res.tags);
+
+	                if (res.status === 'ok' && res.tags && res.tags.length && res.tags[0].exist) {
+
+	                    scope.show_profile_action = false;
+	                    scope.$apply();
+	                }
+	            });
+
+	            scope.gift_points_notify = function () {
+	                $rootScope.$broadcast('notifier:notify', { header: '', body: 'You do not currently have enough points to redeem this gift. Earn additional points by staying with us or taking the actions below!' });
+	            };
+
+	            scope.has_avatar = function () {
+
+	                var has_avatar = false;
+
+	                if (SailPlayApi.data('load.user.info')() && SailPlayApi.data('load.user.info')().user.pic.indexOf('no_avatar') < 0) {
+
+	                    has_avatar = true;
+	                }
+
+	                return has_avatar;
+	            };
+
+	            SailPlay.on('actions.social.connect.error', function (e) {
+	                console.dir(e);
+	            });
+
+	            SailPlay.on('actions.social.connect.success', function (e) {
+	                console.dir(e);
+	            });
 	        }
-	      };
-
-	      scope.close_profile = function () {
-
-	        scope.show_profile_info = false;
-
-	        scope.body_lock(false);
-	      };
-
-	      scope.on_submit_profile = function () {
-	        scope.show_profile_action = false;
-	        scope.close_profile();
-	      };
-
-	      scope.open_profile = function () {
-	        scope.show_profile_info = true;
-	        scope.body_lock(true);
-	      };
-
-	      SailPlay.on('tags.exist.success', function (res) {
-
-	        if (res.status === 'ok' && res.tags && res.tags.length && res.tags[0].exist) {
-
-	          scope.show_profile_action = false;
-	          scope.$apply();
-	        }
-	      });
-
-	      scope.gift_points_notify = function () {
-	        $rootScope.$broadcast('notifier:notify', { header: '', body: 'You do not currently have enough points to redeem this gift. Earn additional points by staying with us or taking the actions below!' });
-	      };
-
-	      scope.has_avatar = function () {
-
-	        var has_avatar = false;
-
-	        if (SailPlayApi.data('load.user.info')() && SailPlayApi.data('load.user.info')().user.pic.indexOf('no_avatar') < 0) {
-
-	          has_avatar = true;
-	        }
-
-	        return has_avatar;
-	      };
-
-	      SailPlay.on('actions.social.connect.error', function (e) {
-	        console.dir(e);
-	      });
-
-	      SailPlay.on('actions.social.connect.success', function (e) {
-	        console.dir(e);
-	      });
-	    }
-	  };
+	    };
 	});
 
 	//define magic class
 	var Magic = (_temp = _class = function () {
-	  function Magic(config) {
-	    var _this = this;
+	    function Magic(config) {
+	        var _this = this;
 
-	    (0, _classCallCheck3.default)(this, Magic);
-
-
-	    config = config || {};
-
-	    _sailplayHub2.default.send('init', config);
-
-	    _sailplayHub2.default.on('init.success', function (res) {
-
-	      if (_this.inited) return;
-
-	      _sailplayHub2.default.send('magic.config', config.config);
-	    });
-
-	    _sailplayHub2.default.on('magic.config.success', function (res_config) {
-
-	      if (_this.inited || !res_config.config || !res_config.config.config.$MAGIC) return;
-
-	      _core.Core.constant('MAGIC_CONFIG_DATA', res_config.config);
-
-	      _core.Core.constant('MAGIC_CONFIG', res_config.config.config.$MAGIC);
-
-	      var app_container = config.root || document.getElementsByTagName('sailplay-magic')[0];
-
-	      app_container && _angular2.default.bootstrap(app_container, [magic.name]);
-
-	      _this.inited = true;
-	    });
-
-	    _sailplayHub2.default.on('magic.config.error', function () {
-	      alert('Cannot load config with name: ' + config.config);
-	    });
-
-	    //public reference to main angular module
-	    this.module = magic;
-
-	    //store inited property for disable reinit
-	    this.inited = false;
-	  }
-
-	  //public method for authorize
+	        (0, _classCallCheck3.default)(this, Magic);
 
 
-	  (0, _createClass3.default)(Magic, [{
-	    key: 'authorize',
-	    value: function authorize() {}
+	        config = config || {};
 
-	    //////////////// this variable will replace to package version when deploy
+	        _sailplayHub2.default.send('init', config);
 
-	  }]);
-	  return Magic;
+	        _sailplayHub2.default.on('init.success', function (res) {
+
+	            if (_this.inited) return;
+
+	            _sailplayHub2.default.send('magic.config', config.config);
+	        });
+
+	        _sailplayHub2.default.on('magic.config.success', function (res_config) {
+
+	            if (_this.inited || !res_config.config || !res_config.config.config.$MAGIC) return;
+
+	            _core.Core.constant('MAGIC_CONFIG_DATA', res_config.config);
+
+	            _core.Core.constant('MAGIC_CONFIG', res_config.config.config.$MAGIC);
+
+	            var app_container = config.root || document.getElementsByTagName('sailplay-magic')[0];
+
+	            app_container && _angular2.default.bootstrap(app_container, [magic.name]);
+
+	            _this.inited = true;
+	        });
+
+	        _sailplayHub2.default.on('magic.config.error', function () {
+	            alert('Cannot load config with name: ' + config.config);
+	        });
+
+	        //public reference to main angular module
+	        this.module = magic;
+
+	        //store inited property for disable reinit
+	        this.inited = false;
+	    }
+
+	    //public method for authorize
+
+
+	    (0, _createClass3.default)(Magic, [{
+	        key: 'authorize',
+	        value: function authorize() {}
+
+	        //////////////// this variable will replace to package version when deploy
+
+	    }]);
+	    return Magic;
 	}(), _class.Widget = _widget.WidgetRegister, _class.version = '${MAGIC_VERSION}', _temp);
 
 	//extend SAILPLAY with Magic class
@@ -664,1211 +665,1191 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	(function () {
+	(function() {
 
-	  var SAILPLAY = (function () {
+	    var SAILPLAY = (function() {
 
-	    //methods that not supported in old browsers
-	    if (!Array.prototype.indexOf) {
-	      Array.prototype.indexOf = function (elt /*, from*/) {
-	        var len = this.length >>> 0;
+	        //methods that not supported in old browsers
+	        if (!Array.prototype.indexOf) {
+	            Array.prototype.indexOf = function(elt /*, from*/ ) {
+	                var len = this.length >>> 0;
 
-	        var from = Number(arguments[1]) || 0;
-	        from = (from < 0) ? Math.ceil(from) : Math.floor(from);
-	        if (from < 0)
-	          from += len;
+	                var from = Number(arguments[1]) || 0;
+	                from = (from < 0) ? Math.ceil(from) : Math.floor(from);
+	                if (from < 0)
+	                    from += len;
 
-	        for (; from < len; from++) {
-	          if (from in this &&
-	            this[from] === elt)
-	            return from;
-	        }
-	        return -1;
-	      };
-	    }
-
-	    var cookies = {
-	      createCookie: function (name, value, days) {
-	        var expires;
-	        if (days) {
-	          var date = new Date();
-	          date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-	          expires = "; expires=" + date.toGMTString();
-	        }
-	        else expires = "";
-	        document.cookie = name + "=" + value + expires + "; path=/";
-	      },
-	      readCookie: function (name) {
-	        var nameEQ = name + "=";
-	        var ca = document.cookie.split(';');
-	        for (var i = 0; i < ca.length; i++) {
-	          var c = ca[i];
-	          while (c.charAt(0) == ' ') c = c.substring(1, c.length);
-	          if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
-	        }
-	        return null;
-	      },
-	      eraseCookie: function (name) {
-	        cookies.createCookie(name, "", -1);
-	      }
-	    };
-
-	    //simple jsonp service
-	    var JSONP = {
-	      currentScript: null,
-	      get: function (url, data, success, error, timeout) {
-	        var src = url + (url.indexOf("?") + 1 ? "&" : "?");
-	        var head = document.getElementsByTagName("head")[0];
-	        var newScript = document.createElement("script");
-	        var params = [];
-
-	        data = data || {};
-
-	        //auth_hash checking
-	        if (!_config.auth_hash) {
-	          delete data.auth_hash;
+	                for (; from < len; from++) {
+	                    if (from in this &&
+	                        this[from] === elt)
+	                        return from;
+	                }
+	                return -1;
+	            };
 	        }
 
-	        window.JSONP_CALLBACK = window.JSONP_CALLBACK || {};
-
-	        var callback_name = 'sailplay_' + new Date().getTime() + Math.random().toString().replace('.', '');
-
-	        var jsonpTimeout = setTimeout(function () {
-	          try {
-	            head.removeChild(newScript);
-	          }
-	          catch (err) {
-	          }
-	          delete window.JSONP_CALLBACK[callback_name];
-	        }, timeout || 10000);
-
-	        window.JSONP_CALLBACK[callback_name] = function (data) {
-	          clearTimeout(jsonpTimeout);
-	          try {
-	            head.removeChild(newScript);
-	          }
-	          catch (err) {
-	          }
-	          delete window.JSONP_CALLBACK[callback_name];
-	          success && success(data);
+	        var cookies = {
+	            createCookie: function(name, value, days) {
+	                var expires;
+	                if (days) {
+	                    var date = new Date();
+	                    date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+	                    expires = "; expires=" + date.toGMTString();
+	                } else expires = "";
+	                document.cookie = name + "=" + value + expires + "; path=/";
+	            },
+	            readCookie: function(name) {
+	                var nameEQ = name + "=";
+	                var ca = document.cookie.split(';');
+	                for (var i = 0; i < ca.length; i++) {
+	                    var c = ca[i];
+	                    while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+	                    if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+	                }
+	                return null;
+	            },
+	            eraseCookie: function(name) {
+	                cookies.createCookie(name, "", -1);
+	            }
 	        };
 
-	        data["callback"] = 'JSONP_CALLBACK.' + callback_name;
-	        if (_config.dep_id) data.dep_id = _config.dep_id;
+	        //simple jsonp service
+	        var JSONP = {
+	            currentScript: null,
+	            get: function(url, data, success, error, timeout) {
+	                var src = url + (url.indexOf("?") + 1 ? "&" : "?");
+	                var head = document.getElementsByTagName("head")[0];
+	                var newScript = document.createElement("script");
+	                var params = [];
 
-	        for (var param_name in data) {
-	          params.push(param_name + "=" + encodeURIComponent(data[param_name]));
-	        }
-	        src += params.join("&");
+	                data = data || {};
 
-	        newScript.type = "text/javascript";
-	        newScript.src = src;
-	        newScript.onerror = function (ex) {
-	          try {
-	            head.removeChild(newScript);
-	          }
-	          catch (err) {
-	          }
-	          delete window.JSONP_CALLBACK[callback_name];
-	          error && error(ex);
+	                //auth_hash checking
+	                if (!_config.auth_hash) {
+	                    delete data.auth_hash;
+	                }
+
+	                window.JSONP_CALLBACK = window.JSONP_CALLBACK || {};
+
+	                var callback_name = 'sailplay_' + new Date().getTime() + Math.random().toString().replace('.', '');
+
+	                var jsonpTimeout = setTimeout(function() {
+	                    try {
+	                        head.removeChild(newScript);
+	                    } catch (err) {}
+	                    delete window.JSONP_CALLBACK[callback_name];
+	                }, timeout || 10000);
+
+	                window.JSONP_CALLBACK[callback_name] = function(data) {
+	                    clearTimeout(jsonpTimeout);
+	                    try {
+	                        head.removeChild(newScript);
+	                    } catch (err) {}
+	                    delete window.JSONP_CALLBACK[callback_name];
+	                    success && success(data);
+	                };
+
+	                data["callback"] = 'JSONP_CALLBACK.' + callback_name;
+	                if (_config.dep_id) data.dep_id = _config.dep_id;
+
+	                for (var param_name in data) {
+	                    params.push(param_name + "=" + encodeURIComponent(data[param_name]));
+	                }
+	                src += params.join("&");
+
+	                newScript.type = "text/javascript";
+	                newScript.src = src;
+	                newScript.onerror = function(ex) {
+	                    try {
+	                        head.removeChild(newScript);
+	                    } catch (err) {}
+	                    delete window.JSONP_CALLBACK[callback_name];
+	                    error && error(ex);
+	                };
+
+	                head.insertBefore(newScript, head.firstChild);
+	            },
+	            success: null
 	        };
 
-	        head.insertBefore(newScript, head.firstChild);
-	      },
-	      success: null
-	    };
+	        var sp = {};
 
-	    var sp = {};
+	        //observer pattern
+	        var _handlers = {};
 
-	    //observer pattern
-	    var _handlers = {};
+	        sp.on = function(event, handler) {
+	            if (typeof(_handlers[event]) == "undefined")
+	                _handlers[event] = [];
+	            _handlers[event].push(handler);
+	        };
 
-	    sp.on = function (event, handler) {
-	      if (typeof (_handlers[event]) == "undefined")
-	        _handlers[event] = [];
-	      _handlers[event].push(handler);
-	    };
+	        sp.send = function(event, data, callback) {
+	            if (_handlers[event]) {
+	                for (var i = 0; i < _handlers[event].length; i++) {
+	                    _handlers[event][i](data, callback);
+	                }
+	            }
+	        };
 
-	    sp.send = function (event, data, callback) {
-	      if (_handlers[event]) {
-	        for (var i = 0; i < _handlers[event].length; i++) {
-	          _handlers[event][i](data, callback);
-	        }
-	      }
-	    };
+	        //private config
+	        var _config = {};
+	        var _remote_login_init = false;
 
-	    //private config
-	    var _config = {};
-	    var _remote_login_init = false;
-
-	    function initError() {
-	      alert('Please init SailPlay HUB first!');
-	    }
-
-	    function remoteLogin(opts) {
-
-	      var frame;
-
-	      opts = opts || {};
-
-	      if (opts.node && opts.node.nodeType == 1 && opts.node.tagName == 'IFRAME') {
-	        frame = opts.node;
-	      }
-	      else {
-	        frame = document.createElement('IFRAME');
-	        frame.style.border = 'none';
-	        frame.style.position = 'fixed';
-	        frame.style.top = '100px';
-	        frame.style.left = '50%';
-	        frame.style.width = '410px';
-	        frame.style.height = '510px';
-	        frame.created = true;
-	        frame.style.background = 'transparent';
-	        frame.style.margin = '0 auto auto -205px';
-	        frame.style.zIndex = '100000';
-	        document.body.appendChild(frame);
-	      }
-
-	      var frame_id = frame.id || 'sailplay_login_frame_' + new Date().getTime();
-
-	      frame.name = frame_id;
-	      frame.id = frame_id;
-	      frame.className = 'sailplay_login_frame';
-
-	      function onMessage(messageEvent) {
-
-	        var data = {};
-
-	        var _domain = _config.DOMAIN.indexOf('http:') != -1 || _config.DOMAIN.indexOf('https:') != -1 ? _config.DOMAIN : window.location.protocol + _config.DOMAIN;
-
-	        if (messageEvent.origin == _domain) {
-	          try {
-	            data = JSON.parse(messageEvent.data);
-	          }
-	          catch (e) {
-
-	          }
-	        }
-	        if (data.name == 'login.success') {
-	          sp.send('login.do', data.auth_hash);
-	          return;
-	        }
-	        if (data.name == 'login.cancel') {
-	          sp.send('login.cancel');
-	          cancelLogin();
-	          return;
-	        }
-	        if (data.name == 'login.check') {
-	          if (data.auth_hash == 'None') {
-	            sp.send('logout');
-	          }
-	          else {
-	            cancelLogin();
-	            sp.send('login.do', data.auth_hash)
-	          }
-	          return;
-	        }
-	        if (data.name == 'logout.success') {
-	          _config.auth_hash = '';
-	          sp.send('logout.success');
+	        function initError() {
+	            alert('Please init SailPlay HUB first!');
 	        }
 
-	      }
+	        function remoteLogin(opts) {
 
-	      function cancelLogin() {
-	        if (frame.created) {
-	          document.body.removeChild(frame);
-	          window.removeEventListener("message", onMessage, false);
-	          _remote_login_init = false;
-	        }
-	      }
+	            var frame;
 
-	      var params = {};
-	      params.partner_id = _config.partner.id;
-	      params.dep_id = _config.dep_id || '';
-	      params.background = opts.background || '';
-	      params.partner_info = opts.partner_info || 0;
-	      if(opts.reg_match_email_oid) {
-	        params.reg_match_email_oid = opts.reg_match_email_oid;
-	      }
-	      if(opts.css_link) {
-	        params.css_link = opts.css_link;
-	      }
-	      if (opts.lang) {
-	        params.lang = opts.lang;
-	      }
-	      params.disabled_options = opts.disabled_options || '';
-	      params.texts = JSON.stringify(opts.texts || '');
+	            opts = opts || {};
 
+	            if (opts.node && opts.node.nodeType == 1 && opts.node.tagName == 'IFRAME') {
+	                frame = opts.node;
+	            } else {
+	                frame = document.createElement('IFRAME');
+	                frame.style.border = 'none';
+	                frame.style.position = 'fixed';
+	                frame.style.top = '100px';
+	                frame.style.left = '50%';
+	                frame.style.width = '410px';
+	                frame.style.height = '510px';
+	                frame.created = true;
+	                frame.style.background = 'transparent';
+	                frame.style.margin = '0 auto auto -205px';
+	                frame.style.zIndex = '100000';
+	                document.body.appendChild(frame);
+	            }
 
-	      var params_string = [];
+	            var frame_id = frame.id || 'sailplay_login_frame_' + new Date().getTime();
 
-	      var src = _config.DOMAIN + '/users/auth-page/?';
-	      for (var param_name in params) {
-	        params_string.push(param_name + "=" + encodeURIComponent(params[param_name]));
-	      }
-	      src += params_string.join("&");
+	            frame.name = frame_id;
+	            frame.id = frame_id;
+	            frame.className = 'sailplay_login_frame';
 
-	      frame.setAttribute('src', src);
+	            function onMessage(messageEvent) {
 
-	      if (!_remote_login_init) {
-	        window.addEventListener("message", onMessage, false);
-	        _remote_login_init = true;
-	      }
+	                var data = {};
 
-	    }
+	                var _domain = _config.DOMAIN.indexOf('http:') != -1 || _config.DOMAIN.indexOf('https:') != -1 ? _config.DOMAIN : window.location.protocol + _config.DOMAIN;
 
-	    //init function
-	    sp.on('init', function (params) {
-	      if (!params) {
-	        alert('SailPlay: provide required parameters');
-	      }
-	      if (!params.partner_id) {
-	        alert('SailPlay: provide partner_id');
-	        return;
-	      }
-	      JSONP.get((params.domain || 'http://sailplay.ru') + '/js-api/' + params.partner_id + '/config/', {
-	        lang: params.lang || 'ru',
-	        dep_id: (params.dep_id || '')
-	      }, function (response) {
-	        if (response && response.status == 'ok') {
+	                if (messageEvent.origin == _domain) {
+	                    try {
+	                        data = JSON.parse(messageEvent.data);
+	                    } catch (e) {
 
-	          _config = response.config;
-	          _config.DOMAIN = (params.domain || 'http://sailplay.ru');
-	          _config.dep_id = params.dep_id || '';
-	          _config.env.staticUrl = params.static_url || _config.env.staticUrl;
-	          _config.social_networks = ['fb', 'vk', 'tw', 'gp', 'ok'];
-	          _config.platform = params.platform || 'desktop';
-
-	          //postmessage events init
-	          //1. bind action events
-	          function onActionMessage(messageEvent) {
-	            var data = {};
-	            if (messageEvent.origin == _config.DOMAIN) {
-	              try {
-	                data = JSON.parse(messageEvent.data);
-	              }
-	              catch (e) {
-
-	              }
-
-	              switch (data && data.name) {
-	                case 'actions.perform.success':
-	                  sp.send('actions.perform.success', data);
-	                  break;
-	                case 'actions.perform.error':
-	                  sp.send('actions.perform.error', data);
-	                  break;
-	                case 'actions.social.connect.complete':
-	                  sp.send('actions.social.connect.complete', data);
-	                  break;
-	                case 'actions.social.connect.success':
-	                  sp.send('actions.social.connect.success', data);
-	                  break;
-	                case 'actions.social.connect.error':
-	                  sp.send('actions.social.connect.error', data);
-	                  break;
-	                case 'friend_invite_cookie':
-	                  break;
-	                case 'actions.social.gp.like.mouseenter':
-	                  sp.send('actions.social.gp.like.mouseenter');
-	                  break;
-	                case 'actions.social.gp.like.mouseleave':
-	                  sp.send('actions.social.gp.like.mouseleave');
-	                  break;
-	              }
+	                    }
+	                }
+	                if (data.name == 'login.success') {
+	                    sp.send('login.do', data.auth_hash);
+	                    return;
+	                }
+	                if (data.name == 'login.cancel') {
+	                    sp.send('login.cancel');
+	                    cancelLogin();
+	                    return;
+	                }
+	                if (data.name == 'login.check') {
+	                    if (data.auth_hash == 'None') {
+	                        sp.send('logout');
+	                    } else {
+	                        cancelLogin();
+	                        sp.send('login.do', data.auth_hash)
+	                    }
+	                    return;
+	                }
+	                if (data.name == 'logout.success') {
+	                    _config.auth_hash = '';
+	                    sp.send('logout.success');
+	                }
 
 	            }
-	          }
 
-	          window.addEventListener("message", onActionMessage, false);
+	            function cancelLogin() {
+	                if (frame.created) {
+	                    document.body.removeChild(frame);
+	                    window.removeEventListener("message", onMessage, false);
+	                    _remote_login_init = false;
+	                }
+	            }
 
-	          //2. recieve ref_hash info
-	          _config.ref_hash = sp.url_params().ref_hash || '';
-	          //var cookie_frame = document.createElement('IFRAME');
-	          //cookie_frame.style.width = 0;
-	          //cookie_frame.style.height = 0;
-	          //cookie_frame.style.top = '-10000px';
-	          //cookie_frame.style.left = '-10000px';
-	          //cookie_frame.src = _config.DOMAIN + '/js-api/' + _config.partner.id + '/actions/social-widget/v2/';
-	          //document.body.appendChild(cookie_frame);
-	          //cookie_frame.onload = function(){
-	          //  document.body.removeChild(cookie_frame);
-	          //};
+	            var params = {};
+	            params.partner_id = _config.partner.id;
+	            params.dep_id = _config.dep_id || '';
+	            params.background = opts.background || '';
+	            params.partner_info = opts.partner_info || 0;
+	            if (opts.reg_match_email_oid) {
+	                params.reg_match_email_oid = opts.reg_match_email_oid;
+	            }
+	            if (opts.css_link) {
+	                params.css_link = opts.css_link;
+	            }
+	            if (opts.lang) {
+	                params.lang = opts.lang;
+	            }
+	            params.disabled_options = opts.disabled_options || '';
+	            params.texts = JSON.stringify(opts.texts || '');
 
-	          sp.send('init.success', _config);
-	          //        console.dir(_config);
-	        } else {
-	          sp.send('init.error', response);
-	          alert('SailPlay: app load failed!');
+
+	            var params_string = [];
+
+	            var src = _config.DOMAIN + '/users/auth-page/?';
+	            for (var param_name in params) {
+	                params_string.push(param_name + "=" + encodeURIComponent(params[param_name]));
+	            }
+	            src += params_string.join("&");
+
+	            frame.setAttribute('src', src);
+
+	            if (!_remote_login_init) {
+	                window.addEventListener("message", onMessage, false);
+	                _remote_login_init = true;
+	            }
+
 	        }
-	      });
 
-	    });
+	        //init function
+	        sp.on('init', function(params) {
+	            if (!params) {
+	                alert('SailPlay: provide required parameters');
+	            }
+	            if (!params.partner_id) {
+	                alert('SailPlay: provide partner_id');
+	                return;
+	            }
+	            JSONP.get((params.domain || 'http://sailplay.ru') + '/js-api/' + params.partner_id + '/config/', {
+	                lang: params.lang || 'ru',
+	                dep_id: (params.dep_id || '')
+	            }, function(response) {
+	                if (response && response.status == 'ok') {
 
-	    sp.on('login.remote', function (options) {
+	                    _config = response.config;
+	                    _config.DOMAIN = (params.domain || 'http://sailplay.ru');
+	                    _config.dep_id = params.dep_id || '';
+	                    _config.env.staticUrl = params.static_url || _config.env.staticUrl;
+	                    _config.social_networks = ['fb', 'vk', 'tw', 'gp', 'ok'];
+	                    _config.platform = params.platform || 'desktop';
 
-	      //safari third-party cookies fix
-	      var is_safari = navigator.userAgent.indexOf("Safari") > -1;
-	      var is_chrome = navigator.userAgent.indexOf('Chrome') > -1;
-	      if ((is_chrome) && (is_safari)) {is_safari = false;}
-	      if (is_safari) {
-	        var cookiepopup = window.open(_config.DOMAIN + '/users/reg/social/','143772850439','width=1,height=1,toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=-10000,top=-10000');
-	        var checker = setInterval(function () {
-	          if(cookiepopup.closed) {
-	            clearInterval(checker);
-	            remoteLogin(options);
-	          }
-	        }, 200);
-	      }
-	      else {
-	        remoteLogin(options);
-	      }
+	                    //postmessage events init
+	                    //1. bind action events
+	                    function onActionMessage(messageEvent) {
+	                        var data = {};
+	                        if (messageEvent.origin == _config.DOMAIN) {
+	                            try {
+	                                data = JSON.parse(messageEvent.data);
+	                            } catch (e) {
 
+	                            }
 
-	    });
+	                            switch (data && data.name) {
+	                                case 'actions.perform.success':
+	                                    sp.send('actions.perform.success', data);
+	                                    break;
+	                                case 'actions.perform.error':
+	                                    sp.send('actions.perform.error', data);
+	                                    break;
+	                                case 'actions.social.connect.complete':
+	                                    sp.send('actions.social.connect.complete', data);
+	                                    break;
+	                                case 'actions.social.connect.success':
+	                                    sp.send('actions.social.connect.success', data);
+	                                    break;
+	                                case 'actions.social.connect.error':
+	                                    sp.send('actions.social.connect.error', data);
+	                                    break;
+	                                case 'friend_invite_cookie':
+	                                    break;
+	                                case 'actions.social.gp.like.mouseenter':
+	                                    sp.send('actions.social.gp.like.mouseenter');
+	                                    break;
+	                                case 'actions.social.gp.like.mouseleave':
+	                                    sp.send('actions.social.gp.like.mouseleave');
+	                                    break;
+	                            }
 
-	    //////////////////
-	    //bind hub events
-	    sp.on('language.set', function (lang) {
-	      if (_config == {}) {
-	        initError();
-	        return;
-	      }
-	      if (typeof lang == 'string') {
-	        JSONP.get(_config.DOMAIN + '/js-api/' + _config.partner.id + '/config/', {lang: lang}, function (response) {
-	          if (response && response.status == 'ok') {
-	            _config.lang = response.config.lang;
-	            sp.send('language.set.success', _config.lang);
-	            //        console.dir(_config);
-	          } else {
-	            sp.send('language.set.error', response);
-	          }
+	                        }
+	                    }
+
+	                    window.addEventListener("message", onActionMessage, false);
+
+	                    //2. recieve ref_hash info
+	                    _config.ref_hash = sp.url_params().ref_hash || '';
+	                    //var cookie_frame = document.createElement('IFRAME');
+	                    //cookie_frame.style.width = 0;
+	                    //cookie_frame.style.height = 0;
+	                    //cookie_frame.style.top = '-10000px';
+	                    //cookie_frame.style.left = '-10000px';
+	                    //cookie_frame.src = _config.DOMAIN + '/js-api/' + _config.partner.id + '/actions/social-widget/v2/';
+	                    //document.body.appendChild(cookie_frame);
+	                    //cookie_frame.onload = function(){
+	                    //  document.body.removeChild(cookie_frame);
+	                    //};
+
+	                    sp.send('init.success', _config);
+	                    //        console.dir(_config);
+	                } else {
+	                    sp.send('init.error', response);
+	                    alert('SailPlay: app load failed!');
+	                }
+	            });
+
 	        });
-	      }
-	    });
 
-	    //////////////////
-	    //bind api events
+	        sp.on('login.remote', function(options) {
 
-	    //LOGIN & LOGOUT
-	    sp.on('login.do', function (auth_hash) {
-	      _config.auth_hash = auth_hash;
-	//    cookies.createCookie('sp_auth_hash', _config.auth_hash);
-	      var params = {
-	        auth_hash: _config.auth_hash
-	      };
-	      JSONP.get(_config.DOMAIN + _config.urls.users.info, params, function (res) {
-	        //      console.dir(res);
-	        if (res.status == 'ok') {
-	          sp.send('login.success', res.user);
-	        } else {
-	          _config.auth_hash = '';
-	//        cookies.eraseCookie('sp_auth_hash');
-	          sp.send('login.error', res);
-	        }
-	      });
-	    });
-
-	    sp.on('login', function (auth_hash) {
-
-	      if (_config == {}) {
-	        initError();
-	        return;
-	      }
-
-	      sp.send('login.do', auth_hash);
-
-	    });
-
-	    sp.on('logout', function () {
-	      if (_config == {}) {
-	        initError();
-	        return;
-	      }
-	      var req = document.createElement('iframe');
-	      req.width = 0;
-	      req.height = 0;
-	      req.style.border = 'none';
-	      req.src = _config.DOMAIN + '/users/logout/';
-	      document.body.appendChild(req);
-	      req.onload = function () {
-	        document.body.removeChild(req);
-	        _config.auth_hash = '';
-	        cookies.eraseCookie('sp_auth_hash');
-	        sp.send('logout.success');
-	      };
+	            //safari third-party cookies fix
+	            var is_safari = navigator.userAgent.indexOf("Safari") > -1;
+	            var is_chrome = navigator.userAgent.indexOf('Chrome') > -1;
+	            if ((is_chrome) && (is_safari)) { is_safari = false; }
+	            if (is_safari) {
+	                var cookiepopup = window.open(_config.DOMAIN + '/users/reg/social/', '143772850439', 'width=1,height=1,toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=-10000,top=-10000');
+	                var checker = setInterval(function() {
+	                    if (cookiepopup.closed) {
+	                        clearInterval(checker);
+	                        remoteLogin(options);
+	                    }
+	                }, 200);
+	            } else {
+	                remoteLogin(options);
+	            }
 
 
-	    });
+	        });
 
-	    //USER INFO
-	    sp.on('load.user.info', function (p, callback) {
-	      if (_config == {}) {
-	        initError();
-	        return;
-	      }
-	      var params = {
-	        user_status: 1,
-	        badges: 1,
-	        last_badge: 1
-	      };
-	      if (p && p.purchases) {
-	        params.purchases = p.purchases;
-	      }
-	      if (p && p.all) {
-	        params.all = p.all;
-	      }
-	      if (p && p.user) {
-	        for (var param in p.user) {
-	          params[param] = p.user[param];
-	        }
-	      }
-	      else {
-	        params.auth_hash = _config.auth_hash;
-	      }
-	      JSONP.get(_config.DOMAIN + _config.urls.users.info, params, function (res) {
-	        callback && callback(res);
-	        if (res.status == 'ok') {
-	          sp.send('load.user.info.success', res);
-	        } else {
-	          sp.send('load.user.info.error', res);
-	        }
-	      });
-	    });
-
-	    sp.on('users.update', function (params, callback) {
-
-	      if (_config == {}) {
-	        initError();
-	        return;
-	      }
-
-	      params = params || {};
-
-	      if (_config.auth_hash) {
-	        params.auth_hash = _config.auth_hash;
-	      }
-
-	      JSONP.get(_config.DOMAIN + '/js-api/' + _config.partner.id + '/users/update/', params, function (res) {
-
-	        callback && callback(res);
-
-	        if (res.status === 'ok') {
-	          sp.send('users.update.success', res);
-	        }
-	        else {
-	          sp.send('users.update.error', res);
-	        }
-	      });
-
-	    });
-
-	    //user feedback
-	    sp.on('users.feedback', function (params, callback) {
-
-	      if (_config == {}) {
-	        initError();
-	        return;
-	      }
-
-	      params = params || {};
-
-	      if (_config.auth_hash) {
-	        params.auth_hash = _config.auth_hash;
-	      }
-	      else {
-	        sp.send('auth.error');
-	        return;
-	      }
-
-	      JSONP.get(_config.DOMAIN + _config.urls.users.feedback, params, function (res) {
-
-	        callback && callback(res);
-
-	        if (res.status === 'ok') {
-	          sp.send('users.feedback.success', res);
-	        }
-	        else {
-	          sp.send('users.feedback.error', res);
-	        }
-	      });
-
-	    });
-
-	    //USER HISTORY
-	    sp.on('load.user.history', function (params) {
-	      if (_config == {}) {
-	        initError();
-	        return;
-	      }
-
-	      params = params || {};
-
-	      if (_config.auth_hash) {
-	        params.auth_hash = _config.auth_hash;
-	      }
-
-	      JSONP.get(_config.DOMAIN + _config.urls.users.history, params, function (res) {
-	        //      console.dir(res);
-	        if (res.status == 'ok') {
-	          sp.send('load.user.history.success', res.history);
-	        } else {
-	          sp.send('load.user.history.error', res);
-	        }
-	      });
-	    });
-
-	    //GIFTS GET INFO
-	    sp.on('gifts.get', function (giftId) {
-	      if (_config == {}) {
-	        initError();
-	        return;
-	      }
-	      var params = {
-	        gift_id: giftId,
-	        auth_hash: _config.auth_hash
-	      };
-	      JSONP.get(_config.DOMAIN + _config.urls.gifts.get, params, function (res) {
-	        //      console.dir(res);
-	        if (res.status == 'ok') {
-	          sp.send('gifts.get.success', res.gift);
-	        } else {
-	          sp.send('gifts.get.error', res);
-	        }
-	      });
-	    });
-
-	    //GIFTS LIST
-	    sp.on('load.gifts.list', function (params) {
-
-	      if (_config == {}) {
-	        initError();
-	        return;
-	      }
-
-	      params = params || {};
-
-	      if (_config.auth_hash) {
-	        params.auth_hash = _config.auth_hash;
-	      }
-
-	      params.lang = params.lang || _config.lang || 'ru';
-
-	      JSONP.get(_config.DOMAIN + _config.urls.gifts.list, params, function (res) {
-	        //      console.dir(res);
-	        if (res.status == 'ok') {
-	          sp.send('load.gifts.list.success', res.gifts);
-	        } else {
-	          sp.send('load.gifts.list.error', res);
-	        }
-	      });
-	    });
-
-	    //GIFT CATEGORIES
-	    sp.on('load.gifts.categories', function (params) {
-
-	      if (_config == {}) {
-	        initError();
-	        return;
-	      }
-
-	      params = params || {};
-
-	      JSONP.get(_config.DOMAIN + _config.urls.gifts.categories_list, params, function (res) {
-	        if (res.status == 'ok') {
-	          sp.send('load.gifts.categories.success', res.categories);
-	        } else {
-	          sp.send('load.gifts.categories.error', res);
-	        }
-	      });
-
-	    });
-
-	    //GET GIFT
-	    function forceCompleteGiftPurchase(giftPurchase, opts) {
-	      var params = {
-	        gift_public_key: giftPurchase.gift_public_key,
-	        auth_hash: _config.auth_hash
-	      };
-	      if (opts && opts.no_user_sms) {
-	        params.no_user_sms = opts.no_user_sms;
-	      }
-	      JSONP.get(_config.DOMAIN + _config.urls.gifts.purchase.force_confirm, params, function (res) {
-	        if (res.status == 'ok') {
-	          sp.send('gift.purchase.force_complete.success', res);
-	        } else {
-	          sp.send('gift.purchase.force_complete.error', res);
-	        }
-	        //      console.dir(res);
-	      });
-	    }
-
-	    //CREATE GIFT PURCHASE V1
-	    sp.on('gifts.purchase', function (p) {
-	      if (_config == {}) {
-	        initError();
-	        return;
-	      }
-	      var gift = p.gift || {};
-	      if (!_config.auth_hash) {
-	        sp.send('gifts.purchase.auth.error', gift);
-	      } else {
-	        var params = {
-	          gift_id: gift.id,
-	          dep_id: _config.dep_id || _config.partner.depId || '',
-	          auth_hash: _config.auth_hash
-	        };
-	        JSONP.get(_config.DOMAIN + _config.urls.gifts.purchase.purchase, params, function (res) {
-	          if (res.status == 'ok') {
-	            sp.send('gifts.purchase.success', res);
-	            if (res.is_completed) {
-	              var requestedPurchase = res;
-	              if (!requestedPurchase.request_to_partner_url) {
-	                forceCompleteGiftPurchase(requestedPurchase, p.options);
-	              } else {
-	                var reqGiftPurchase = {
-	                  gift_public_key: requestedPurchase['gift_public_key'],
-	                  gift_sku: requestedPurchase['gift_sku'],
-	                  auth_hash: _config.auth_hash
-	                };
-	                if (requestedPurchase['user_phone']) {
-	                  reqGiftPurchase['user_phone'] = requestedPurchase['user_phone'];
-	                }
-	                if (requestedPurchase['email']) {
-	                  reqGiftPurchase['email'] = requestedPurchase['email'];
-	                }
-	                JSONP.get(requestedPurchase.request_to_partner_url, reqGiftPurchase, function (res) {
-	                  sp.send('gifts.purchase.partner_request.success', res);
-	                }, function (res) {
-	                  sp.send('gifts.purchase.partner_request.error', res);
-	                  forceCompleteGiftPurchase(requestedPurchase, p.options);
+	        //////////////////
+	        //bind hub events
+	        sp.on('language.set', function(lang) {
+	            if (_config == {}) {
+	                initError();
+	                return;
+	            }
+	            if (typeof lang == 'string') {
+	                JSONP.get(_config.DOMAIN + '/js-api/' + _config.partner.id + '/config/', { lang: lang }, function(response) {
+	                    if (response && response.status == 'ok') {
+	                        _config.lang = response.config.lang;
+	                        sp.send('language.set.success', _config.lang);
+	                        //        console.dir(_config);
+	                    } else {
+	                        sp.send('language.set.error', response);
+	                    }
 	                });
-	              }
 	            }
-	          } else {
-	            sp.send('gift.purchase.error', res);
-	          }
-	          //        console.dir(res);
 	        });
-	      }
-	    });
 
-	    //BADGES LIST
-	    sp.on('load.badges.list', function (p) {
-	      if (_config == {}) {
-	        initError();
-	        return;
-	      }
-	      var params = {
-	        auth_hash: _config.auth_hash,
-	        lang: p && p.lang || _config.lang || 'ru'
-	      };
-	      if(p){
-	        if(p.include_rules) {
-	          params.include_rules = 1;
+	        //////////////////
+	        //bind api events
+
+	        //LOGIN & LOGOUT
+	        sp.on('login.do', function(auth_hash) {
+	            _config.auth_hash = auth_hash;
+	            //    cookies.createCookie('sp_auth_hash', _config.auth_hash);
+	            var params = {
+	                auth_hash: _config.auth_hash
+	            };
+	            JSONP.get(_config.DOMAIN + _config.urls.users.info, params, function(res) {
+	                //      console.dir(res);
+	                if (res.status == 'ok') {
+	                    sp.send('login.success', res.user);
+	                } else {
+	                    _config.auth_hash = '';
+	                    //        cookies.eraseCookie('sp_auth_hash');
+	                    sp.send('login.error', res);
+	                }
+	            });
+	        });
+
+	        sp.on('login', function(auth_hash) {
+
+	            if (_config == {}) {
+	                initError();
+	                return;
+	            }
+
+	            sp.send('login.do', auth_hash);
+
+	        });
+
+	        sp.on('logout', function() {
+	            if (_config == {}) {
+	                initError();
+	                return;
+	            }
+	            var req = document.createElement('iframe');
+	            req.width = 0;
+	            req.height = 0;
+	            req.style.border = 'none';
+	            req.src = _config.DOMAIN + '/users/logout/';
+	            document.body.appendChild(req);
+	            req.onload = function() {
+	                document.body.removeChild(req);
+	                _config.auth_hash = '';
+	                cookies.eraseCookie('sp_auth_hash');
+	                sp.send('logout.success');
+	            };
+
+
+	        });
+
+	        //USER INFO
+	        sp.on('load.user.info', function(p, callback) {
+	            if (_config == {}) {
+	                initError();
+	                return;
+	            }
+	            var params = {
+	                user_status: 1,
+	                badges: 1,
+	                last_badge: 1
+	            };
+	            if (p && p.purchases) {
+	                params.purchases = p.purchases;
+	            }
+	            if (p && p.all) {
+	                params.all = p.all;
+	            }
+	            if (p && p.user) {
+	                for (var param in p.user) {
+	                    params[param] = p.user[param];
+	                }
+	            } else {
+	                params.auth_hash = _config.auth_hash;
+	            }
+	            JSONP.get(_config.DOMAIN + _config.urls.users.info, params, function(res) {
+	                callback && callback(res);
+	                if (res.status == 'ok') {
+	                    sp.send('load.user.info.success', res);
+	                } else {
+	                    sp.send('load.user.info.error', res);
+	                }
+	            });
+	        });
+
+	        sp.on('users.update', function(params, callback) {
+
+	            if (_config == {}) {
+	                initError();
+	                return;
+	            }
+
+	            params = params || {};
+
+	            if (_config.auth_hash) {
+	                params.auth_hash = _config.auth_hash;
+	            }
+
+	            JSONP.get(_config.DOMAIN + '/js-api/' + _config.partner.id + '/users/update/', params, function(res) {
+
+	                callback && callback(res);
+
+	                if (res.status === 'ok') {
+	                    sp.send('users.update.success', res);
+	                } else {
+	                    sp.send('users.update.error', res);
+	                }
+	            });
+
+	        });
+
+	        //user feedback
+	        sp.on('users.feedback', function(params, callback) {
+
+	            if (_config == {}) {
+	                initError();
+	                return;
+	            }
+
+	            params = params || {};
+
+	            if (_config.auth_hash) {
+	                params.auth_hash = _config.auth_hash;
+	            } else {
+	                sp.send('auth.error');
+	                return;
+	            }
+
+	            JSONP.get(_config.DOMAIN + _config.urls.users.feedback, params, function(res) {
+
+	                callback && callback(res);
+
+	                if (res.status === 'ok') {
+	                    sp.send('users.feedback.success', res);
+	                } else {
+	                    sp.send('users.feedback.error', res);
+	                }
+	            });
+
+	        });
+
+	        //USER HISTORY
+	        sp.on('load.user.history', function(params) {
+	            if (_config == {}) {
+	                initError();
+	                return;
+	            }
+
+	            params = params || {};
+
+	            if (_config.auth_hash) {
+	                params.auth_hash = _config.auth_hash;
+	            }
+
+	            JSONP.get(_config.DOMAIN + _config.urls.users.history, params, function(res) {
+	                //      console.dir(res);
+	                if (res.status == 'ok') {
+	                    sp.send('load.user.history.success', res.history);
+	                } else {
+	                    sp.send('load.user.history.error', res);
+	                }
+	            });
+	        });
+
+	        //GIFTS GET INFO
+	        sp.on('gifts.get', function(giftId) {
+	            if (_config == {}) {
+	                initError();
+	                return;
+	            }
+	            var params = {
+	                gift_id: giftId,
+	                auth_hash: _config.auth_hash
+	            };
+	            JSONP.get(_config.DOMAIN + _config.urls.gifts.get, params, function(res) {
+	                //      console.dir(res);
+	                if (res.status == 'ok') {
+	                    sp.send('gifts.get.success', res.gift);
+	                } else {
+	                    sp.send('gifts.get.error', res);
+	                }
+	            });
+	        });
+
+	        //GIFTS LIST
+	        sp.on('load.gifts.list', function(params) {
+
+	            if (_config == {}) {
+	                initError();
+	                return;
+	            }
+
+	            params = params || {};
+
+	            if (_config.auth_hash) {
+	                params.auth_hash = _config.auth_hash;
+	            }
+
+	            params.lang = params.lang || _config.lang || 'ru';
+
+	            JSONP.get(_config.DOMAIN + _config.urls.gifts.list, params, function(res) {
+	                //      console.dir(res);
+	                if (res.status == 'ok') {
+	                    sp.send('load.gifts.list.success', res.gifts);
+	                } else {
+	                    sp.send('load.gifts.list.error', res);
+	                }
+	            });
+	        });
+
+	        //GIFT CATEGORIES
+	        sp.on('load.gifts.categories', function(params) {
+
+	            if (_config == {}) {
+	                initError();
+	                return;
+	            }
+
+	            params = params || {};
+
+	            JSONP.get(_config.DOMAIN + _config.urls.gifts.categories_list, params, function(res) {
+	                if (res.status == 'ok') {
+	                    sp.send('load.gifts.categories.success', res.categories);
+	                } else {
+	                    sp.send('load.gifts.categories.error', res);
+	                }
+	            });
+
+	        });
+
+	        //GET GIFT
+	        function forceCompleteGiftPurchase(giftPurchase, opts) {
+	            var params = {
+	                gift_public_key: giftPurchase.gift_public_key,
+	                auth_hash: _config.auth_hash
+	            };
+	            if (opts && opts.no_user_sms) {
+	                params.no_user_sms = opts.no_user_sms;
+	            }
+	            JSONP.get(_config.DOMAIN + _config.urls.gifts.purchase.force_confirm, params, function(res) {
+	                if (res.status == 'ok') {
+	                    sp.send('gift.purchase.force_complete.success', res);
+	                } else {
+	                    sp.send('gift.purchase.force_complete.error', res);
+	                }
+	                //      console.dir(res);
+	            });
 	        }
-	      }
-	      JSONP.get(_config.DOMAIN + _config.urls.badges.list, params, function (res) {
 
-	        //      console.dir(res);
-	        if (res.status == 'ok') {
+	        //CREATE GIFT PURCHASE V1
+	        sp.on('gifts.purchase', function(p) {
+	            if (_config == {}) {
+	                initError();
+	                return;
+	            }
+	            var gift = p.gift || {};
+	            if (!_config.auth_hash) {
+	                sp.send('gifts.purchase.auth.error', gift);
+	            } else {
+	                var params = {
+	                    gift_id: gift.id,
+	                    dep_id: _config.dep_id || _config.partner.depId || '',
+	                    auth_hash: _config.auth_hash
+	                };
+	                JSONP.get(_config.DOMAIN + _config.urls.gifts.purchase.purchase, params, function(res) {
+	                    if (res.status == 'ok') {
+	                        sp.send('gifts.purchase.success', res);
+	                        if (res.is_completed) {
+	                            var requestedPurchase = res;
+	                            if (!requestedPurchase.request_to_partner_url) {
+	                                forceCompleteGiftPurchase(requestedPurchase, p.options);
+	                            } else {
+	                                var reqGiftPurchase = {
+	                                    gift_public_key: requestedPurchase['gift_public_key'],
+	                                    gift_sku: requestedPurchase['gift_sku'],
+	                                    auth_hash: _config.auth_hash
+	                                };
+	                                if (requestedPurchase['user_phone']) {
+	                                    reqGiftPurchase['user_phone'] = requestedPurchase['user_phone'];
+	                                }
+	                                if (requestedPurchase['email']) {
+	                                    reqGiftPurchase['email'] = requestedPurchase['email'];
+	                                }
+	                                JSONP.get(requestedPurchase.request_to_partner_url, reqGiftPurchase, function(res) {
+	                                    sp.send('gifts.purchase.partner_request.success', res);
+	                                }, function(res) {
+	                                    sp.send('gifts.purchase.partner_request.error', res);
+	                                    forceCompleteGiftPurchase(requestedPurchase, p.options);
+	                                });
+	                            }
+	                        }
+	                    } else {
+	                        sp.send('gift.purchase.error', res);
+	                    }
+	                    //        console.dir(res);
+	                });
+	            }
+	        });
 
-	          function create_badge_actions(badge) {
-	            if (badge && badge.is_received) {
+	        //BADGES LIST
+	        sp.on('load.badges.list', function(p) {
+	            if (_config == {}) {
+	                initError();
+	                return;
+	            }
+	            var params = {
+	                auth_hash: _config.auth_hash,
+	                lang: p && p.lang || _config.lang || 'ru'
+	            };
+	            if (p) {
+	                if (p.include_rules) {
+	                    params.include_rules = 1;
+	                }
+	            }
+	            JSONP.get(_config.DOMAIN + _config.urls.badges.list, params, function(res) {
 
-	              badge.actions = {};
+	                //      console.dir(res);
+	                if (res.status == 'ok') {
 
-	              for (var sn in _config.social_networks) {
+	                    function create_badge_actions(badge) {
+	                        if (badge && badge.is_received) {
 
-	                badge.actions[_config.social_networks[sn]] = {
+	                            badge.actions = {};
 
-	                  socialType: _config.social_networks[sn],
-	                  action: 'badge',
-	                  shortLink: window.location.href,
-	                  pic: badge.thumbs.url_250x250,
-	                  badgeId: badge.id,
-	                  msg: badge.share_msg
+	                            for (var sn in _config.social_networks) {
 
+	                                badge.actions[_config.social_networks[sn]] = {
+
+	                                    socialType: _config.social_networks[sn],
+	                                    action: 'badge',
+	                                    shortLink: window.location.href,
+	                                    pic: badge.thumbs.url_250x250,
+	                                    badgeId: badge.id,
+	                                    msg: badge.share_msg
+
+	                                };
+
+	                            }
+	                        }
+	                    }
+
+	                    for (var ch in res.multilevel_badges) {
+
+	                        var multi_line = res.multilevel_badges[ch];
+
+	                        for (var b in multi_line) {
+
+	                            create_badge_actions(multi_line[b]);
+
+	                        }
+
+	                    }
+
+	                    for (var olb in res.one_level_badges) {
+
+	                        create_badge_actions(res.one_level_badges[olb]);
+
+	                    }
+
+	                    sp.send('load.badges.list.success', res);
+	                } else {
+	                    sp.send('load.badges.list.error', res);
+	                }
+	            });
+	        });
+
+	        //PROMO-CODES SECTION
+	        sp.on('promocodes.apply', function(promocode) {
+	            if (_config == {}) {
+	                initError();
+	                return;
+	            }
+	            promocode.auth_hash = _config.auth_hash;
+	            if (_config.auth_hash) {
+	                JSONP.get(_config.DOMAIN + _config.urls.promocodes.apply, promocode, function(res) {
+	                    if (res.status == 'ok') {
+	                        sp.send('promocodes.apply.success', res);
+	                    } else {
+	                        sp.send('promocodes.apply.error', res);
+	                    }
+	                });
+	            } else {
+	                sp.send('promocodes.apply.auth.error', action);
+	            }
+	        });
+
+	        // user update
+	        sp.on("user.update", function(params) {
+	            if (_config == {}) {
+	                initError();
+	                return;
+	            }
+	            JSONP.get(_config.DOMAIN + "/js-api/" + _config.partner.id + "/users/update/", params, function(res) {
+	                if (res.status == 'ok') {
+	                    sp.send('user.update.success', res);
+	                } else {
+	                    sp.send('user.update.error', res);
+	                }
+	            })
+	        });
+
+	        //TAGS SECTIONS
+	        sp.on('tags.add', function(data, callback) {
+	            if (_config == {}) {
+	                initError();
+	                return;
+	            }
+	            if (_config.auth_hash || data.user) {
+	                var tagsObj = {
+	                    tags: data.tags && data.tags.join(',') || []
+	                };
+	                if (data.user) {
+	                    for (var p in data.user) {
+	                        tagsObj[p] = data.user[p];
+	                    }
+	                } else {
+	                    tagsObj.auth_hash = _config.auth_hash;
+	                }
+	                JSONP.get(_config.DOMAIN + _config.urls.tags.add, tagsObj, function(res) {
+	                    callback && callback(res);
+	                    if (res.status == 'ok') {
+	                        sp.send('tags.add.success', res);
+	                    } else {
+	                        sp.send('tags.add.error', res);
+	                    }
+	                });
+	            } else {
+	                SAILPLAY.send('tags.add.auth.error', data);
+	            }
+	        });
+
+	        sp.on('tags.delete', function(data, callback) {
+	            if (_config == {}) {
+	                initError();
+	                return;
+	            }
+	            if (_config.auth_hash || data.user) {
+	                var tagsObj = {
+	                    tags: data.tags && data.tags.join(',') || []
+	                };
+	                if (data.user) {
+	                    for (var p in data.user) {
+	                        tagsObj[p] = data.user[p];
+	                    }
+	                } else {
+	                    tagsObj.auth_hash = _config.auth_hash;
+	                }
+	                JSONP.get(_config.DOMAIN + _config.urls.tags.delete, tagsObj, function(res) {
+	                    callback && callback(res);
+	                    if (res.status == 'ok') {
+	                        sp.send('tags.delete.success', res);
+	                    } else {
+	                        sp.send('tags.delete.error', res);
+	                    }
+	                });
+	            } else {
+	                SAILPLAY.send('tags.delete.auth.error', data);
+	            }
+	        });
+
+	        // tag exist
+	        sp.on("tags.exist", function(data, callback) {
+	            if (_config == {}) {
+	                initError();
+	                return;
+	            }
+	            if (_config.auth_hash || data.user) {
+	                var obj = {
+	                    tags: JSON.stringify(data.tags)
+	                };
+	                if (data.user) {
+	                    for (var p in data.user) {
+	                        obj[p] = data.user[p];
+	                    }
+	                } else {
+	                    obj.auth_hash = _config.auth_hash;
+	                }
+	                obj.lang = data.lang || _config.lang || 'ru';
+	                JSONP.get(_config.DOMAIN + _config.urls.tags.exist, obj, function(res) {
+	                    if (res.status == 'ok') {
+	                        sp.send('tags.exist.success', res);
+	                    } else {
+	                        sp.send('tags.exist.error', res);
+	                    }
+	                    callback && callback(res);
+	                });
+	            } else {
+	                sp.send('tags.exist.auth.error', data);
+	            }
+
+	        });
+
+	        // USER TAGS LIST
+	        sp.on("tags.list", function(data, callback) {
+	            if (_config == {}) {
+	                initError();
+	                return;
+	            }
+	            if (_config.auth_hash || data.user) {
+	                var obj = {};
+	                if (data.params) {
+	                    for (var p in data.params) {
+	                        obj[p] = data.params[p];
+	                    }
+	                }
+	                if (data.user) {
+	                    for (var p in data.user) {
+	                        obj[p] = data.user[p];
+	                    }
+	                } else {
+	                    obj.auth_hash = _config.auth_hash;
+	                }
+	                obj.lang = data.lang || _config.lang || 'ru';
+	                JSONP.get(_config.DOMAIN + _config.urls.tags.list, obj, function(res) {
+	                    if (res.status == 'ok') {
+	                        sp.send('tags.list.success', res);
+	                    } else {
+	                        sp.send('tags.list.error', res);
+	                    }
+	                    callback && callback(res);
+	                });
+	            } else {
+	                sp.send('tags.list.auth.error', data);
+	            }
+
+	        });
+
+	        /**
+	         * Add variables to user
+	         * @object data {custom_vars:{}, user: {}}
+	         * @function callback
+	         */
+	        sp.on('vars.add', function(data, callback) {
+
+	            if (_config == {}) {
+	                initError();
+	                return;
+	            }
+
+	            if (_config.auth_hash || data.user) {
+
+	                var obj = data.custom_vars;
+
+	                if (data.user)
+	                    for (var p in data.user) obj[p] = data.user[p];
+	                else
+	                    obj.auth_hash = _config.auth_hash;
+
+	                obj.lang = data.lang || _config.lang || 'ru';
+
+	                JSONP.get(_config.DOMAIN + _config.urls.users.custom_variables.add, obj, function(res) {
+	                    if (res.status == 'ok')
+	                        sp.send('vars.add.success', res);
+	                    else
+	                        sp.send('vars.add.error', res);
+	                    callback && callback(res);
+	                });
+
+	            } else {
+	                sp.send('vars.add.auth.error', data);
+	            }
+
+	        });
+
+	        /**
+	         * Get user variables
+	         * @object data {names: [], user: {}}
+	         * @function callback
+	         */
+	        sp.on("vars.batch", function(data, callback) {
+
+	            if (_config == {}) {
+	                initError();
+	                return;
+	            }
+
+	            if (_config.auth_hash || data.user) {
+
+	                var obj = {
+	                    names: JSON.stringify(data.names)
 	                };
 
-	              }
+	                if (data.user)
+	                    for (var p in data.user) obj[p] = data.user[p];
+	                else
+	                    obj.auth_hash = _config.auth_hash;
+
+	                obj.lang = data.lang || _config.lang || 'ru';
+
+	                JSONP.get(_config.DOMAIN + _config.urls.users.custom_variables.batch_get, obj, function(res) {
+	                    if (res.status == 'ok') {
+	                        sp.send('vars.batch.success', res);
+	                    } else
+	                        sp.send('vars.batch.error', res);
+	                    callback && callback(res);
+	                });
+
+	            } else {
+	                sp.send('vars.batch.auth.error', data);
 	            }
-	          }
 
-	          for (var ch in res.multilevel_badges) {
+	        });
 
-	            var multi_line = res.multilevel_badges[ch];
+	        //LEADERBOARD SECTION
+	        sp.on('leaderboard.load', function() {
+	            if (_config == {}) {
+	                initError();
+	                return;
+	            }
+	            var tagsObj = {
+	                auth_hash: _config.auth_hash
+	            };
+	            JSONP.get(_config.DOMAIN + _config.urls.leaderboard.data, tagsObj, function(res) {
+	                if (res.status == 'ok') {
+	                    sp.send('leaderboard.load.success', res.data);
+	                } else {
+	                    sp.send('leaderboard.load.error', res);
+	                }
+	            });
+	        });
 
-	            for (var b in multi_line) {
-
-	              create_badge_actions(multi_line[b]);
-
+	        //REVIEWS SECTION
+	        sp.on('load.reviews.list', function(data) {
+	            if (_config == {}) {
+	                initError();
+	                return;
 	            }
 
-	          }
+	            var req_data = {};
 
-	          for (var olb in res.one_level_badges) {
+	            if (data) {
+	                req_data.page = data.page || 1
+	            }
 
-	            create_badge_actions(res.one_level_badges[olb]);
-
-	          }
-
-	          sp.send('load.badges.list.success', res);
-	        } else {
-	          sp.send('load.badges.list.error', res);
-	        }
-	      });
-	    });
-
-	    //PROMO-CODES SECTION
-	    sp.on('promocodes.apply', function (promocode) {
-	      if (_config == {}) {
-	        initError();
-	        return;
-	      }
-	      promocode.auth_hash = _config.auth_hash;
-	      if (_config.auth_hash) {
-	        JSONP.get(_config.DOMAIN + _config.urls.promocodes.apply, promocode, function (res) {
-	          if (res.status == 'ok') {
-	            sp.send('promocodes.apply.success', res);
-	          } else {
-	            sp.send('promocodes.apply.error', res);
-	          }
-	        });
-	      } else {
-	        sp.send('promocodes.apply.auth.error', action);
-	      }
-	    });
-
-	    // user update
-	    sp.on("user.update", function (params) {
-	      if (_config == {}) {
-	        initError();
-	        return;
-	      }
-	      JSONP.get(_config.DOMAIN + "/js-api/" + _config.partner.id + "/users/update/", params, function (res) {
-	        if (res.status == 'ok') {
-	          sp.send('user.update.success', res);
-	        } else {
-	          sp.send('user.update.error', res);
-	        }
-	      })
-	    });
-
-	    //TAGS SECTIONS
-	    sp.on('tags.add', function (data, callback) {
-	      if (_config == {}) {
-	        initError();
-	        return;
-	      }
-	      if (_config.auth_hash || data.user) {
-	        var tagsObj = {
-	          tags: data.tags && data.tags.join(',') || []
-	        };
-	        if (data.user) {
-	          for (var p in data.user) {
-	            tagsObj[p] = data.user[p];
-	          }
-	        }
-	        else {
-	          tagsObj.auth_hash = _config.auth_hash;
-	        }
-	        JSONP.get(_config.DOMAIN + _config.urls.tags.add, tagsObj, function (res) {
-	          callback && callback(res);
-	          if (res.status == 'ok') {
-	            sp.send('tags.add.success', res);
-	          } else {
-	            sp.send('tags.add.error', res);
-	          }
-	        });
-	      } else {
-	        SAILPLAY.send('tags.add.auth.error', data);
-	      }
-	    });
-
-	    sp.on('tags.delete', function (data, callback) {
-	      if (_config == {}) {
-	        initError();
-	        return;
-	      }
-	      if (_config.auth_hash || data.user) {
-	        var tagsObj = {
-	          tags: data.tags && data.tags.join(',') || []
-	        };
-	        if (data.user) {
-	          for (var p in data.user) {
-	            tagsObj[p] = data.user[p];
-	          }
-	        }
-	        else {
-	          tagsObj.auth_hash = _config.auth_hash;
-	        }
-	        JSONP.get(_config.DOMAIN + _config.urls.tags.delete, tagsObj, function (res) {
-	          callback && callback(res);
-	          if (res.status == 'ok') {
-	            sp.send('tags.delete.success', res);
-	          } else {
-	            sp.send('tags.delete.error', res);
-	          }
-	        });
-	      } else {
-	        SAILPLAY.send('tags.delete.auth.error', data);
-	      }
-	    });
-
-	    // tag exist
-	    sp.on("tags.exist", function (data, callback) {
-	      if (_config == {}) {
-	        initError();
-	        return;
-	      }
-	      if (_config.auth_hash || data.user) {
-	        var obj = {
-	          tags: JSON.stringify(data.tags)
-	        };
-	        if (data.user) {
-	          for (var p in data.user) {
-	            obj[p] = data.user[p];
-	          }
-	        }
-	        else {
-	          obj.auth_hash = _config.auth_hash;
-	        }
-	        obj.lang = data.lang || _config.lang || 'ru';
-	        JSONP.get(_config.DOMAIN + _config.urls.tags.exist, obj, function (res) {
-	          if (res.status == 'ok') {
-	            sp.send('tags.exist.success', res);
-	          } else {
-	            sp.send('tags.exist.error', res);
-	          }
-	          callback && callback(res);
-	        });
-	      } else {
-	        sp.send('tags.exist.auth.error', data);
-	      }
-
-	    });
-
-	    // USER TAGS LIST
-	    sp.on("tags.list", function (data, callback) {
-	      if (_config == {}) {
-	        initError();
-	        return;
-	      }
-	      if (_config.auth_hash || data.user) {
-	        var obj = {};
-	        if(data.params) {
-	          for (var p in data.params) {
-	            obj[p] = data.params[p];
-	          }
-	        }
-	        if (data.user) {
-	          for (var p in data.user) {
-	            obj[p] = data.user[p];
-	          }
-	        } else {
-	          obj.auth_hash = _config.auth_hash;
-	        }
-	        obj.lang = data.lang || _config.lang || 'ru';
-	        JSONP.get(_config.DOMAIN + _config.urls.tags.list, obj, function (res) {
-	          if (res.status == 'ok') {
-	            sp.send('tags.list.success', res);
-	          } else {
-	            sp.send('tags.list.error', res);
-	          }
-	          callback && callback(res);
-	        });
-	      } else {
-	        sp.send('tags.list.auth.error', data);
-	      }
-
-	    });
-
-	    /**
-	     * Add variables to user
-	     * @object data {custom_vars:{}, user: {}}
-	     * @function callback
-	     */
-	    sp.on('vars.add', function (data, callback) {
-
-	      if (_config == {}) {
-	        initError();
-	        return;
-	      }
-
-	      if (_config.auth_hash || data.user) {
-
-	        var obj = data.custom_vars;
-
-	        if (data.user)
-	          for (var p in data.user) obj[p] = data.user[p];
-	        else
-	          obj.auth_hash = _config.auth_hash;
-
-	        obj.lang = data.lang || _config.lang || 'ru';
-
-	        JSONP.get(_config.DOMAIN + _config.urls.users.custom_variables.add, obj, function (res) {
-	          if (res.status == 'ok')
-	            sp.send('vars.add.success', res);
-	          else
-	            sp.send('vars.add.error', res);
-	          callback && callback(res);
+	            JSONP.get(_config.DOMAIN + _config.urls.reviews.list, req_data, function(res) {
+	                if (res.status == 'ok') {
+	                    sp.send('load.reviews.list.success', { page: res.page, pages: res.pages, reviews: res.reviews });
+	                } else {
+	                    sp.send('load.reviews.list.error', res);
+	                }
+	            });
 	        });
 
-	      } else {
-	        sp.send('vars.add.auth.error', data);
-	      }
+	        sp.on('reviews.add', function(data) {
+	            if (_config == {}) {
+	                initError();
+	                return;
+	            }
+	            var req_data = {
+	                auth_hash: _config.auth_hash,
+	                rating: data.rating || '',
+	                review: data.review || ''
+	            };
+	            JSONP.get(_config.DOMAIN + _config.urls.reviews.add, req_data, function(res) {
+	                if (res.status == 'ok') {
+	                    sp.send('reviews.add.success', res);
+	                } else {
+	                    sp.send('reviews.add.error', res);
+	                }
+	            });
+	        });
 
-	    });
+	        sp.on('purchases.add', function(data) {
+	            if (_config == {}) {
+	                initError();
+	                return;
+	            }
+	            var req_data = {
+	                auth_hash: _config.auth_hash,
+	                price: data.price || '',
+	                order_num: data.order_num || ''
+	            };
+	            JSONP.get(_config.DOMAIN + _config.urls.purchase, req_data, function(res) {
+	                if (res.status == 'ok') {
+	                    sp.send('purchases.add.success', res);
+	                } else {
+	                    sp.send('purchases.add.error', res);
+	                }
+	            });
+	        });
 
-	    /**
-	     * Get user variables
-	     * @object data {names: [], user: {}}
-	     * @function callback
-	     */
-	    sp.on("vars.batch", function (data, callback) {
+	        sp.on('purchases.info', function(data, callback) {
+	            if (_config == {}) {
+	                initError();
+	                return;
+	            }
+	            var req_data = {
+	                auth_hash: _config.auth_hash,
+	                id: data.id || ''
+	            };
+	            JSONP.get(_config.DOMAIN + _config.urls.purchases.get, req_data, function(res) {
+	                if (res.status == 'ok') {
+	                    sp.send('purchases.info.success', res);
+	                } else {
+	                    sp.send('purchases.info.error', res);
+	                }
+	                callback && callback(res);
+	            });
+	        });
 
-	      if (_config == {}) {
-	        initError();
-	        return;
-	      }
+	        sp.on('user.referral', function(data, callback) {
+	            if (_config == {}) {
+	                initError();
+	                return;
+	            }
+	            var req_data = {
+	                auth_hash: _config.auth_hash
+	            };
+	            JSONP.get(_config.DOMAIN + _config.urls.users.referral, req_data, function(res) {
+	                if (res.status == 'ok') {
+	                    sp.send('purchases.info.success', res);
+	                } else {
+	                    sp.send('purchases.info.error', res);
+	                }
+	                callback && callback(res);
+	            });
+	        });
 
-	      if (_config.auth_hash || data.user) {
+	        sp.on('magic.config', function(name) {
+	            if (_config == {}) {
+	                initError();
+	                return;
+	            }
+	            JSONP.get(_config.DOMAIN + _config.urls.loyalty_page_config_by_name, { name: name || 'default' }, function(res) {
+	                if (res.status == 'ok') {
+	                    sp.send('magic.config.success', res);
+	                } else {
+	                    sp.send('magic.config.error', res);
+	                }
+	            });
+	        });
 
-	        var obj = {
-	          names: JSON.stringify(data.names)
+	        //utils
+	        sp.config = function() {
+	            return _config;
 	        };
 
-	        if (data.user)
-	          for (var p in data.user) obj[p] = data.user[p];
-	        else
-	          obj.auth_hash = _config.auth_hash;
+	        sp.find_by_properties = function(arr, props) {
+	            var filtered_arr = [];
+	            for (var i = 0; i < arr.length; i += 1) {
+	                var seeked = arr[i];
+	                var good = true;
+	                for (var p in props) {
+	                    if (props[p] != seeked[p]) {
+	                        good = false;
+	                    }
+	                }
+	                if (good) filtered_arr.push(seeked);
+	            }
+	            return filtered_arr;
+	        };
 
-	        obj.lang = data.lang || _config.lang || 'ru';
+	        sp.jsonp = JSONP;
 
-	        JSONP.get(_config.DOMAIN + _config.urls.users.custom_variables.batch_get, obj, function (res) {
-	          if (res.status == 'ok')
-	            sp.send('vars.batch.success', res);
-	          else
-	            sp.send('vars.batch.error', res);
-	          callback && callback(res);
-	        });
+	        sp.cookies = cookies;
 
-	      } else {
-	        sp.send('vars.batch.auth.error', data);
-	      }
+	        sp.is_dom = function(obj) {
+	            //Returns true if it is a DOM node
 
-	    });
+	            function isNode(o) {
+	                return (
+	                    typeof Node === "object" ? o instanceof Node :
+	                    o && typeof o === "object" && typeof o.nodeType === "number" && typeof o.nodeName === "string"
+	                );
+	            }
 
-	    //LEADERBOARD SECTION
-	    sp.on('leaderboard.load', function () {
-	      if (_config == {}) {
-	        initError();
-	        return;
-	      }
-	      var tagsObj = {
-	        auth_hash: _config.auth_hash
-	      };
-	      JSONP.get(_config.DOMAIN + _config.urls.leaderboard.data, tagsObj, function (res) {
-	        if (res.status == 'ok') {
-	          sp.send('leaderboard.load.success', res.data);
-	        } else {
-	          sp.send('leaderboard.load.error', res);
-	        }
-	      });
-	    });
+	            //Returns true if it is a DOM element
+	            function isElement(o) {
+	                return (
+	                    typeof HTMLElement === "object" ? o instanceof HTMLElement : //DOM2
+	                    o && typeof o === "object" && o !== null && o.nodeType === 1 && typeof o.nodeName === "string"
+	                );
+	            }
 
-	    //REVIEWS SECTION
-	    sp.on('load.reviews.list', function (data) {
-	      if (_config == {}) {
-	        initError();
-	        return;
-	      }
+	            return isNode(obj) || isElement(obj);
 
-	      var req_data = {};
+	        };
 
-	      if (data) {
-	        req_data.page = data.page || 1
-	      }
+	        sp.url_params = function() {
+	            // This function is anonymous, is executed immediately and
+	            // the return value is assigned to QueryString!
+	            var query_string = {};
+	            var query = window.location.search.substring(1);
+	            var vars = query.split("&");
+	            for (var i = 0; i < vars.length; i++) {
+	                var pair = vars[i].split("=");
+	                var uri_component = pair && pair[1] ? pair[1].replace(/%([^\d].)/, "%25$1") : '';
+	                // If first entry with this name
+	                if (typeof query_string[pair[0]] === "undefined") {
+	                    query_string[pair[0]] = decodeURIComponent(uri_component);
+	                    // If second entry with this name
+	                } else if (typeof query_string[pair[0]] === "string") {
+	                    query_string[pair[0]] = [query_string[pair[0]], decodeURIComponent(uri_component)];
+	                    // If third or later entry with this name
+	                } else {
+	                    query_string[pair[0]].push(decodeURIComponent(uri_component));
+	                }
+	            }
+	            return query_string;
+	        };
 
-	      JSONP.get(_config.DOMAIN + _config.urls.reviews.list, req_data, function (res) {
-	        if (res.status == 'ok') {
-	          sp.send('load.reviews.list.success', {page: res.page, pages: res.pages, reviews: res.reviews});
-	        } else {
-	          sp.send('load.reviews.list.error', res);
-	        }
-	      });
-	    });
+	        return sp;
 
-	    sp.on('reviews.add', function (data) {
-	      if (_config == {}) {
-	        initError();
-	        return;
-	      }
-	      var req_data = {
-	        auth_hash: _config.auth_hash,
-	        rating: data.rating || '',
-	        review: data.review || ''
-	      };
-	      JSONP.get(_config.DOMAIN + _config.urls.reviews.add, req_data, function (res) {
-	        if (res.status == 'ok') {
-	          sp.send('reviews.add.success', res);
-	        } else {
-	          sp.send('reviews.add.error', res);
-	        }
-	      });
-	    });
+	    }());
 
-	    sp.on('purchases.add', function (data) {
-	      if (_config == {}) {
-	        initError();
-	        return;
-	      }
-	      var req_data = {
-	        auth_hash: _config.auth_hash,
-	        price: data.price || '',
-	        order_num: data.order_num || ''
-	      };
-	      JSONP.get(_config.DOMAIN + _config.urls.purchase, req_data, function (res) {
-	        if (res.status == 'ok') {
-	          sp.send('purchases.add.success', res);
-	        } else {
-	          sp.send('purchases.add.error', res);
-	        }
-	      });
-	    });
-
-	    sp.on('purchases.info', function (data, callback) {
-	      if (_config == {}) {
-	        initError();
-	        return;
-	      }
-	      var req_data = {
-	        auth_hash: _config.auth_hash,
-	        id: data.id || ''
-	      };
-	      JSONP.get(_config.DOMAIN + _config.urls.purchases.get, req_data, function (res) {
-	        if (res.status == 'ok') {
-	          sp.send('purchases.info.success', res);
-	        } else {
-	          sp.send('purchases.info.error', res);
-	        }
-	        callback && callback(res);
-	      });
-	    });
-
-	    sp.on('user.referral', function (data, callback) {
-	      if (_config == {}) {
-	        initError();
-	        return;
-	      }
-	      var req_data = {
-	        auth_hash: _config.auth_hash
-	      };
-	      JSONP.get(_config.DOMAIN + _config.urls.users.referral, req_data, function (res) {
-	        if (res.status == 'ok') {
-	          sp.send('purchases.info.success', res);
-	        } else {
-	          sp.send('purchases.info.error', res);
-	        }
-	        callback && callback(res);
-	      });
-	    });
-
-	    sp.on('magic.config', function (name) {
-	      if (_config == {}) {
-	        initError();
-	        return;
-	      }
-	      JSONP.get(_config.DOMAIN + _config.urls.loyalty_page_config_by_name, { name: name || 'default' }, function (res) {
-	        if (res.status == 'ok') {
-	          sp.send('magic.config.success', res);
-	        } else {
-	          sp.send('magic.config.error', res);
-	        }
-	      });
-	    });
-
-	    //utils
-	    sp.config = function () {
-	      return _config;
-	    };
-
-	    sp.find_by_properties = function (arr, props) {
-	      var filtered_arr = [];
-	      for (var i = 0; i < arr.length; i += 1) {
-	        var seeked = arr[i];
-	        var good = true;
-	        for (var p in props) {
-	          if (props[p] != seeked[p]) {
-	            good = false;
-	          }
-	        }
-	        if (good) filtered_arr.push(seeked);
-	      }
-	      return filtered_arr;
-	    };
-
-	    sp.jsonp = JSONP;
-
-	    sp.cookies = cookies;
-
-	    sp.is_dom = function (obj) {
-	      //Returns true if it is a DOM node
-
-	      function isNode(o) {
-	        return (
-	          typeof Node === "object" ? o instanceof Node :
-	            o && typeof o === "object" && typeof o.nodeType === "number" && typeof o.nodeName === "string"
-	        );
-	      }
-
-	      //Returns true if it is a DOM element
-	      function isElement(o) {
-	        return (
-	          typeof HTMLElement === "object" ? o instanceof HTMLElement : //DOM2
-	            o && typeof o === "object" && o !== null && o.nodeType === 1 && typeof o.nodeName === "string"
-	        );
-	      }
-
-	      return isNode(obj) || isElement(obj);
-
-	    };
-
-	    sp.url_params = function () {
-	      // This function is anonymous, is executed immediately and
-	      // the return value is assigned to QueryString!
-	      var query_string = {};
-	      var query = window.location.search.substring(1);
-	      var vars = query.split("&");
-	      for (var i = 0; i < vars.length; i++) {
-	        var pair = vars[i].split("=");
-	        var uri_component = pair && pair[1] ? pair[1].replace(/%([^\d].)/, "%25$1") : '';
-	        // If first entry with this name
-	        if (typeof query_string[pair[0]] === "undefined") {
-	          query_string[pair[0]] = decodeURIComponent(uri_component);
-	          // If second entry with this name
-	        } else if (typeof query_string[pair[0]] === "string") {
-	          query_string[pair[0]] = [query_string[pair[0]], decodeURIComponent(uri_component)];
-	          // If third or later entry with this name
-	        } else {
-	          query_string[pair[0]].push(decodeURIComponent(uri_component));
-	        }
-	      }
-	      return query_string;
-	    };
-
-	    return sp;
-
-	  }());
-
-	  if(typeof window !== 'undefined') window.SAILPLAY = SAILPLAY;
-	  if(true) module.exports = SAILPLAY;
-	  if(true) exports = SAILPLAY;
+	    if (typeof window !== 'undefined') window.SAILPLAY = SAILPLAY;
+	    if (true) module.exports = SAILPLAY;
+	    if (true) exports = SAILPLAY;
 
 	}());
-
 
 /***/ }),
 /* 33 */
@@ -38676,7 +38657,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	  value: true
+	    value: true
 	});
 	exports.SailPlay = undefined;
 
@@ -38712,285 +38693,285 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var SailPlay = exports.SailPlay = _angular2.default.module('sailplay', [_sailplay2.default, _sailplay4.default, _sailplay6.default, _sailplay8.default, _sailplay10.default, _angularCookie2.default]).run(function (SailPlay, $rootScope) {
 
-	  SailPlay.on('init.success', function (res) {
+	    SailPlay.on('init.success', function (res) {
 
-	    $rootScope.$broadcast('sailplay-init-success', res);
-	    $rootScope.$apply();
-	  });
+	        $rootScope.$broadcast('sailplay-init-success', res);
+	        $rootScope.$apply();
+	    });
 
-	  SailPlay.on('login.error', function (res) {
+	    SailPlay.on('login.error', function (res) {
 
-	    $rootScope.$broadcast('sailplay-login-error', res);
-	    $rootScope.$apply();
-	  });
+	        $rootScope.$broadcast('sailplay-login-error', res);
+	        $rootScope.$apply();
+	    });
 
-	  SailPlay.on('login.success', function (res) {
+	    SailPlay.on('login.success', function (res) {
 
-	    $rootScope.auth_state = true;
-	    $rootScope.$broadcast('sailplay-login-success', res);
-	    $rootScope.$apply();
-	  });
+	        $rootScope.auth_state = true;
+	        $rootScope.$broadcast('sailplay-login-success', res);
+	        $rootScope.$apply();
+	    });
 
-	  SailPlay.on('login.cancel', function (res) {
+	    SailPlay.on('login.cancel', function (res) {
 
-	    $rootScope.$broadcast('sailplay-login-cancel', res);
-	    $rootScope.$apply();
-	  });
+	        $rootScope.$broadcast('sailplay-login-cancel', res);
+	        $rootScope.$apply();
+	    });
 
-	  SailPlay.on('logout.success', function (res) {
+	    SailPlay.on('logout.success', function (res) {
 
-	    $rootScope.auth_state = false;
-	    $rootScope.$broadcast('sailplay-logout-success', res);
-	    $rootScope.$apply();
-	  });
+	        $rootScope.auth_state = false;
+	        $rootScope.$broadcast('sailplay-logout-success', res);
+	        $rootScope.$apply();
+	    });
 	}).provider('SailPlay', function () {
 
-	  var auth_type = 'url';
+	    var auth_type = 'url';
 
-	  var auth_options = {};
+	    var auth_options = {};
 
-	  var auth_hash_id = 'sailplay_auth_hash';
+	    var auth_hash_id = 'sailplay_auth_hash';
 
-	  return {
+	    return {
 
-	    set_auth_type: function set_auth_type(type, options) {
+	        set_auth_type: function set_auth_type(type, options) {
 
-	      if (type) auth_type = type;
+	            if (type) auth_type = type;
 
-	      if (options) auth_options = options;
-	    },
+	            if (options) auth_options = options;
+	        },
 
-	    set_auth_hash_id: function set_auth_hash_id(name) {
+	        set_auth_hash_id: function set_auth_hash_id(name) {
 
-	      if (name) auth_hash_id = name;
-	    },
+	            if (name) auth_hash_id = name;
+	        },
 
-	    set_remote_config: function set_remote_config(new_config) {
+	        set_remote_config: function set_remote_config(new_config) {
 
-	      _angular2.default.merge(auth_options, new_config);
-	    },
+	            _angular2.default.merge(auth_options, new_config);
+	        },
 
-	    $get: function $get($window, $rootScope, ipCookie) {
+	        $get: function $get($window, $rootScope, ipCookie) {
 
-	      var sp = $window.SAILPLAY || {};
+	            var sp = $window.SAILPLAY || {};
 
-	      sp.authorize = function (type, from) {
+	            sp.authorize = function (type, from) {
 
-	        $rootScope.submited = false;
+	                $rootScope.submited = false;
 
-	        type = type || auth_type;
+	                type = type || auth_type;
 
-	        switch (type) {
+	                switch (type) {
 
-	          case 'url':
+	                    case 'url':
 
-	            var params = sp.url_params();
+	                        var params = sp.url_params();
 
-	            if (params) {
-	              sp.send('login', params[auth_hash_id]);
-	            } else {
-	              $rootScope.$broadcast('sailplay-login-error', { status: 'error', message: 'No auth_hash found' });
-	            }
+	                        if (params) {
+	                            sp.send('login', params[auth_hash_id]);
+	                        } else {
+	                            $rootScope.$broadcast('sailplay-login-error', { status: 'error', message: 'No auth_hash found' });
+	                        }
 
-	            break;
+	                        break;
 
-	          case 'cookie':
+	                    case 'cookie':
 
-	            var auth_hash = ipCookie(auth_hash_id);
-	            if (auth_hash) {
-	              sp.send('login', auth_hash);
-	            } else {
-	              $rootScope.$broadcast('sailplay-login-error', { status: 'error', message: 'No auth_hash found' });
-	            }
-	            break;
+	                        var auth_hash = ipCookie(auth_hash_id);
+	                        if (auth_hash) {
+	                            sp.send('login', auth_hash);
+	                        } else {
+	                            $rootScope.$broadcast('sailplay-login-error', { status: 'error', message: 'No auth_hash found' });
+	                        }
+	                        break;
 
-	          case 'remote':
+	                    case 'remote':
 
-	            if (auth_options && auth_options.disable) {
-	              $rootScope.$broadcast('sailplay-login-try', from);
-	              sp.send('sailplay-login-try', from);
-	              return;
-	            }
+	                        if (auth_options && auth_options.disable) {
+	                            $rootScope.$broadcast('sailplay-login-try', from);
+	                            sp.send('sailplay-login-try', from);
+	                            return;
+	                        }
 
-	            sp.send('login.remote', auth_options);
+	                        sp.send('login.remote', auth_options);
 
+	                }
+	            };
+
+	            sp.auth_hash_id = auth_hash_id;
+
+	            sp.set_auth_hash_cookie = function (auth_hash) {
+	                ipCookie(auth_hash_id, auth_hash);
+	            };
+
+	            return sp;
 	        }
-	      };
 
-	      sp.auth_hash_id = auth_hash_id;
-
-	      sp.set_auth_hash_cookie = function (auth_hash) {
-	        ipCookie(auth_hash_id, auth_hash);
-	      };
-
-	      return sp;
-	    }
-
-	  };
+	    };
 	}).service('SailPlayApi', function ($q, SailPlay, $rootScope, $timeout) {
 
-	  var self = this;
+	    var self = this;
 
-	  var data = {};
+	    var data = {};
 
-	  var observers = {};
+	    var observers = {};
 
-	  var points = ['load.user.info', 'leaderboard.load', 'load.user.history', 'load.actions.list', 'load.actions.custom.list', 'load.badges.list', 'tags.exist', 'tags.add', 'load.gifts.list'];
+	    var points = ['load.user.info', 'leaderboard.load', 'load.user.history', 'load.actions.list', 'load.actions.custom.list', 'load.badges.list', 'tags.exist', 'tags.add', 'load.gifts.list', 'vars.batch'];
 
-	  self.points = [];
-	  self.observe = function (name, fn) {
-	    if (!observers[name]) observers[name] = [];
-	    var currentId = observers[name].length;
-	    fn.id = currentId;
-	    observers[name].push(fn);
+	    self.points = [];
+	    self.observe = function (name, fn) {
+	        if (!observers[name]) observers[name] = [];
+	        var currentId = observers[name].length;
+	        fn.id = currentId;
+	        observers[name].push(fn);
 
-	    return function () {
-	      var fn = observers[name].find(function (obj) {
-	        return obj.id == currentId;
-	      });
-	      observers[name].splice(fn.id, 1);
+	        return function () {
+	            var fn = observers[name].find(function (obj) {
+	                return obj.id == currentId;
+	            });
+	            observers[name].splice(fn.id, 1);
+	        };
 	    };
-	  };
 
-	  _angular2.default.forEach(points, function (point) {
-	    SailPlay.on(point + '.success', function (res) {
-	      $rootScope.$apply(function () {
-	        self.data(point, res);
-	      });
+	    _angular2.default.forEach(points, function (point) {
+	        SailPlay.on(point + '.success', function (res) {
+	            $rootScope.$apply(function () {
+	                self.data(point, res);
+	            });
 
-	      if (observers[point] && observers[point].length) observers[point].forEach(function (fn) {
-	        return fn(res);
-	      });
-	      console.log('sailplay.api:' + point + '.success');
-	      //console.log(JSON.stringify(self.data(point)()));
+	            if (observers[point] && observers[point].length) observers[point].forEach(function (fn) {
+	                return fn(res);
+	            });
+	            console.log('sailplay.api:' + point + '.success');
+	            //console.log(JSON.stringify(self.data(point)()));
+	        });
+
+	        SailPlay.on(point + '.error', function (res) {
+	            $rootScope.$apply(function () {
+	                self.data(point, null);
+	            });
+
+	            if (observers[point] && observers[point].length) observers[point].forEach(function (fn) {
+	                return fn(null);
+	            });
+	        });
 	    });
 
-	    SailPlay.on(point + '.error', function (res) {
-	      $rootScope.$apply(function () {
-	        self.data(point, null);
-	      });
+	    self.data = function (key, value) {
 
-	      if (observers[point] && observers[point].length) observers[point].forEach(function (fn) {
-	        return fn(null);
-	      });
-	    });
-	  });
+	        if (typeof value !== 'undefined') {
+	            data[key] = _angular2.default.copy(value);
+	        }
 
-	  self.data = function (key, value) {
-
-	    if (typeof value !== 'undefined') {
-	      data[key] = _angular2.default.copy(value);
-	    }
-
-	    return function () {
-	      return data[key];
+	        return function () {
+	            return data[key];
+	        };
 	    };
-	  };
 
-	  self.call = function (name, params, callback) {
+	    self.call = function (name, params, callback) {
 
-	    SailPlay.send(name, params, callback);
-	  };
+	        SailPlay.send(name, params, callback);
+	    };
 
-	  self.reset = function () {
-	    data = {};
-	  };
+	    self.reset = function () {
+	        data = {};
+	    };
 	}).filter('sailplay_pluralize', function () {
-	  var cases = [2, 0, 1, 1, 1, 2];
-	  return function (input, titles) {
-	    input = Math.abs(input);
-	    titles = titles && titles.split(',') || [];
-	    return titles[input % 100 > 4 && input % 100 < 20 ? 2 : cases[input % 10 < 5 ? input % 10 : 5]];
-	  };
+	    var cases = [2, 0, 1, 1, 1, 2];
+	    return function (input, titles) {
+	        input = Math.abs(input);
+	        titles = titles && titles.split(',') || [];
+	        return titles[input % 100 > 4 && input % 100 < 20 ? 2 : cases[input % 10 < 5 ? input % 10 : 5]];
+	    };
 	}).filter('sailplay_pic', function (SailPlay, $window) {
 
-	  function repair_pic_url(url) {
-	    if (/^((http|https|ftp):\/\/)/.test(url)) {
-	      return url;
+	    function repair_pic_url(url) {
+	        if (/^((http|https|ftp):\/\/)/.test(url)) {
+	            return url;
+	        }
+	        if (url.indexOf('//') === 0) {
+	            return $window.location.protocol + url;
+	        } else {
+	            return SailPlay.config().DOMAIN + url;
+	        }
 	    }
-	    if (url.indexOf('//') === 0) {
-	      return $window.location.protocol + url;
-	    } else {
-	      return SailPlay.config().DOMAIN + url;
-	    }
-	  }
 
-	  return function (pic_url) {
+	    return function (pic_url) {
 
-	    if (!pic_url) return '';
+	        if (!pic_url) return '';
 
-	    return repair_pic_url(pic_url);
-	  };
+	        return repair_pic_url(pic_url);
+	    };
 	}).directive('sailplayRemoteLogin', function (SailPlay) {
 
-	  return {
-	    restrict: 'A',
-	    replace: true,
-	    template: '<iframe></iframe>',
-	    link: function link(scope, elm, attrs) {
+	    return {
+	        restrict: 'A',
+	        replace: true,
+	        template: '<iframe></iframe>',
+	        link: function link(scope, elm, attrs) {
 
-	      var opts = scope.$eval(attrs.sailplayRemoteLogin);
+	            var opts = scope.$eval(attrs.sailplayRemoteLogin);
 
-	      var options = {
-	        node: elm[0]
-	      };
+	            var options = {
+	                node: elm[0]
+	            };
 
-	      var logged = false;
+	            var logged = false;
 
-	      console.dir(opts);
-	      _angular2.default.merge(options, opts);
-	      console.dir(options);
+	            console.dir(opts);
+	            _angular2.default.merge(options, opts);
+	            console.dir(options);
 
-	      scope.$on('sailplay-init-success', function () {
-	        SailPlay.send('login.remote', options);
-	      });
+	            scope.$on('sailplay-init-success', function () {
+	                SailPlay.send('login.remote', options);
+	            });
 
-	      scope.$on('sailplay-login-success', function () {
-	        logged = true;
-	      });
+	            scope.$on('sailplay-login-success', function () {
+	                logged = true;
+	            });
 
-	      scope.$on('sailplay-logout-success', function () {
+	            scope.$on('sailplay-logout-success', function () {
 
-	        if (logged) {
+	                if (logged) {
 
-	          logged = false;
+	                    logged = false;
 
-	          var src = elm[0].src;
+	                    var src = elm[0].src;
 
-	          elm[0].src = '';
+	                    elm[0].src = '';
 
-	          elm[0].src = src;
+	                    elm[0].src = src;
+	                }
+	            });
+
+	            SailPlay.config() && SailPlay.config().partner && SailPlay.send('login.remote', options);
 	        }
-	      });
-
-	      SailPlay.config() && SailPlay.config().partner && SailPlay.send('login.remote', options);
-	    }
-	  };
+	    };
 	}).factory('SailPlayShare', function ($window) {
-	  return function (network, url, title, description, image) {
+	    return function (network, url, title, description, image) {
 
-	    var share_url = '';
+	        var share_url = '';
 
-	    switch (network) {
+	        switch (network) {
 
-	      case 'fb':
+	            case 'fb':
 
-	        share_url = 'http://www.facebook.com/sharer.php?s=100';
-	        share_url += '&t=' + encodeURIComponent(title);
-	        share_url += '&u=' + encodeURIComponent(url);
-	        break;
+	                share_url = 'http://www.facebook.com/sharer.php?s=100';
+	                share_url += '&t=' + encodeURIComponent(title);
+	                share_url += '&u=' + encodeURIComponent(url);
+	                break;
 
-	      case 'tw':
+	            case 'tw':
 
-	        share_url = 'https://twitter.com/intent/tweet?tw_p=tweetbutton';
-	        share_url += '&original_referer=' + encodeURIComponent(url);
-	        share_url += '&url=' + encodeURIComponent(url);
-	        share_url += '&text=' + encodeURIComponent(description);
+	                share_url = 'https://twitter.com/intent/tweet?tw_p=tweetbutton';
+	                share_url += '&original_referer=' + encodeURIComponent(url);
+	                share_url += '&url=' + encodeURIComponent(url);
+	                share_url += '&text=' + encodeURIComponent(description);
 
-	    }
+	        }
 
-	    $window[0].open(share_url, '_blank', 'toolbar=0,status=0,width=626,height=436,location=no');
-	  };
+	        $window[0].open(share_url, '_blank', 'toolbar=0,status=0,width=626,height=436,location=no');
+	    };
 	});
 
 	exports.default = SailPlay.name;
@@ -39002,7 +38983,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	  value: true
+	    value: true
 	});
 	exports.SailPlayProfile = undefined;
 
@@ -39030,102 +39011,116 @@ return /******/ (function(modules) { // webpackBootstrap
 	 */
 	.directive('sailplayProfile', function (SailPlayApi, SailPlay, $q) {
 
-	  return {
+	    return {
 
-	    restrict: 'A', replace: false, scope: true, link: function link(scope) {
+	        restrict: 'A',
+	        replace: false,
+	        scope: true,
+	        link: function link(scope) {
 
-	      /**
-	       * @ngdoc method
-	       * @name user
-	       * @methodOf sailplay.profile.directive:sailplayProfile
-	       * @description
-	       * Returns user's data stored in API service with key: 'load.user.info'
-	       *
-	       * @returns {Object} User's profile data
-	       */
-	      scope.user = SailPlayApi.data('load.user.info');
+	            /**
+	             * @ngdoc method
+	             * @name user
+	             * @methodOf sailplay.profile.directive:sailplayProfile
+	             * @description
+	             * Returns user's data stored in API service with key: 'load.user.info'
+	             *
+	             * @returns {Object} User's profile data
+	             */
+	            scope.user = SailPlayApi.data('load.user.info');
 
-	      /**
-	       * @ngdoc method
-	       * @name logout
-	       * @methodOf sailplay.profile.directive:sailplayProfile
-	       * @description
-	       * Logout current user, clear session cookies
-	       */
-	      scope.logout = function () {
+	            /**
+	             * @ngdoc method
+	             * @name user
+	             * @methodOf sailplay.profile.directive:sailplayProfile
+	             * @description
+	             * Returns user's variables data stored in API service with key: 'vars.batch'
+	             *
+	             * @returns {Object} User's profile data
+	             */
+	            scope.vars = SailPlayApi.data('vars.batch');
 
-	        SailPlay.send('logout');
-	      };
+	            /**
+	             * @ngdoc method
+	             * @name logout
+	             * @methodOf sailplay.profile.directive:sailplayProfile
+	             * @description
+	             * Logout current user, clear session cookies
+	             */
+	            scope.logout = function () {
 
-	      /**
-	       * @ngdoc method
-	       * @name login
-	       * @methodOf sailplay.profile.directive:sailplayProfile
-	       * @description
-	       * Login by type.
-	       * @param {string}  type   Authorization type.
-	       * @param {object}  from   Where it call.
-	       */
-	      scope.login = function (type, from) {
+	                SailPlay.send('logout');
+	            };
 
-	        SailPlay.authorize(type, from);
-	      };
+	            /**
+	             * @ngdoc method
+	             * @name login
+	             * @methodOf sailplay.profile.directive:sailplayProfile
+	             * @description
+	             * Login by type.
+	             * @param {string}  type   Authorization type.
+	             * @param {object}  from   Where it call.
+	             */
+	            scope.login = function (type, from) {
 
-	      /**
-	       * @ngdoc method
-	       * @name tags_add
-	       * @methodOf sailplay.profile.directive:sailplayProfile
-	       * @description
-	       * Add array of tags to current_user or user in params
-	       * @param {object}  params   Object with params:  tags - array of tag names, user (optional)
-	       * @param {function}  callback   Not required attribute, used for callback action after success
-	       */
-	      scope.tags_add = function (params, callback) {
+	                SailPlay.authorize(type, from);
+	            };
 
-	        if (!params) return;
+	            /**
+	             * @ngdoc method
+	             * @name tags_add
+	             * @methodOf sailplay.profile.directive:sailplayProfile
+	             * @description
+	             * Add array of tags to current_user or user in params
+	             * @param {object}  params   Object with params:  tags - array of tag names, user (optional)
+	             * @param {function}  callback   Not required attribute, used for callback action after success
+	             */
+	            scope.tags_add = function (params, callback) {
 
-	        var tags = params.tags || [];
+	                if (!params) return;
 
-	        if (tags.length > 0) {
-	          var chunk = function chunk(array, chunkSize) {
-	            return [].concat.apply([], array.map(function (elem, i) {
-	              return i % chunkSize ? [] : [array.slice(i, i + chunkSize)];
-	            }));
-	          };
+	                var tags = params.tags || [];
 
-	          var chunked_tags = chunk(tags, 10);
+	                if (tags.length > 0) {
+	                    var chunk = function chunk(array, chunkSize) {
+	                        return [].concat.apply([], array.map(function (elem, i) {
+	                            return i % chunkSize ? [] : [array.slice(i, i + chunkSize)];
+	                        }));
+	                    };
 
-	          var tag_promises = [];
+	                    var chunked_tags = chunk(tags, 10);
 
-	          _angular2.default.forEach(chunked_tags, function (chunk) {
+	                    var tag_promises = [];
 
-	            var promise = $q(function (resolve, reject) {
+	                    _angular2.default.forEach(chunked_tags, function (chunk) {
 
-	              SailPlay.send('tags.add', { tags: chunk }, function (tags_res) {
-	                if (tags_res.status === 'ok') {
+	                        var promise = $q(function (resolve, reject) {
 
-	                  resolve(tags_res);
+	                            SailPlay.send('tags.add', { tags: chunk }, function (tags_res) {
+	                                if (tags_res.status === 'ok') {
 
-	                  //sp.send('leads.submit.success', { lead: self, response: user_res, tags: res });
-	                } else {
-	                  reject(tags_res);
-	                  //sp.send('leads.submit.error', { lead: self, response: user_res, tags: res });
+	                                    resolve(tags_res);
+
+	                                    //sp.send('leads.submit.success', { lead: self, response: user_res, tags: res });
+	                                } else {
+	                                    reject(tags_res);
+	                                    //sp.send('leads.submit.error', { lead: self, response: user_res, tags: res });
+	                                }
+	                            });
+	                        });
+
+	                        tag_promises.push(promise);
+	                    });
+
+	                    $q.all(tag_promises).then(function (tags_res) {
+
+	                        callback && callback(tags_res);
+	                    });
 	                }
-	              });
-	            });
-
-	            tag_promises.push(promise);
-	          });
-
-	          $q.all(tag_promises).then(function (tags_res) {
-
-	            callback && callback(tags_res);
-	          });
+	            };
 	        }
-	      };
-	    }
 
-	  };
+	    };
 	})
 
 	/**
@@ -39136,47 +39131,47 @@ return /******/ (function(modules) { // webpackBootstrap
 	 */
 	.provider('SailPlayFillProfile', function () {
 
-	  var profile_tag = 'Completed Profile';
-	  var cookie_name = 'sailplay_profile_form';
+	    var profile_tag = 'Completed Profile';
+	    var cookie_name = 'sailplay_profile_form';
 
-	  return {
+	    return {
 
-	    set_tag: function set_tag(tag) {
+	        set_tag: function set_tag(tag) {
 
-	      profile_tag = tag || profile_tag;
-	    },
+	            profile_tag = tag || profile_tag;
+	        },
 
-	    set_cookie_name: function set_cookie_name(name) {
+	        set_cookie_name: function set_cookie_name(name) {
 
-	      cookie_name = name || cookie_name;
-	    },
+	            cookie_name = name || cookie_name;
+	        },
 
-	    $get: function $get() {
+	        $get: function $get() {
 
-	      this.tag = profile_tag;
+	            this.tag = profile_tag;
 
-	      this.cookie_name = cookie_name;
+	            this.cookie_name = cookie_name;
 
-	      this.Field = function (params) {
+	            this.Field = function (params) {
 
-	        this.type = params.type;
-	        this.name = params.name;
-	        this.label = params.label;
-	        this.placeholder = params.placeholder;
-	        this.required = params.required;
-	        this.input = params.input || 'text';
+	                this.type = params.type;
+	                this.name = params.name;
+	                this.label = params.label;
+	                this.placeholder = params.placeholder;
+	                this.required = params.required;
+	                this.input = params.input || 'text';
 
-	        if (params.data) {
-	          this.data = params.data;
+	                if (params.data) {
+	                    this.data = params.data;
+	                }
+
+	                this.value = '';
+	            };
+
+	            return this;
 	        }
 
-	        this.value = '';
-	      };
-
-	      return this;
-	    }
-
-	  };
+	    };
 	})
 
 	/**
@@ -39191,46 +39186,46 @@ return /******/ (function(modules) { // webpackBootstrap
 	 */
 
 	.factory('fillProfileTag', function (SailPlay, SailPlayApi, MAGIC_CONFIG, $q, $rootScope) {
-	  var obj = {};
-	  obj.checkSubmitForm = function (form) {
-	    return $q(function (res, rej) {
-	      if (MAGIC_CONFIG.data.force_registration && MAGIC_CONFIG.data.force_registration.active) {
-	        var config = MAGIC_CONFIG.data.force_registration;
-	        var requiredFields = config.required_fields;
-	        var isProfileFilled = requiredFields.reduce(function (acc, x) {
-	          var field = form.find(function (field) {
-	            return field.name == x;
-	          });
-	          if (field === void 0) {
-	            return false;
-	          }
-	          if (Object.prototype.toString.call(field.value) === '[object Array]') {
-	            return field.value.length === 3 && (0, _keys2.default)(field.value).reduce(function (acc, key, index) {
-	              return !!field.value[key] && acc;
-	            }, true);
-	          } else {
-	            return acc && !!field.value;
-	          }
-	        }, true);
-	        if (isProfileFilled) {
-	          if (MAGIC_CONFIG.data.force_registration.tag_to_set_after_submit) {
-	            var tagName = MAGIC_CONFIG.data.force_registration.tag_to_set_after_submit;
-	            SailPlay.send('tags.add', { tags: [tagName] }, function () {
-	              res(true);
-	            });
-	          } else {
-	            console.error("No fill tag_to_set_after_submit in config");
-	            res(true);
-	          }
-	        } else {
-	          res(false);
-	        }
-	      } else {
-	        res(true);
-	      }
-	    });
-	  };
-	  return obj;
+	    var obj = {};
+	    obj.checkSubmitForm = function (form) {
+	        return $q(function (res, rej) {
+	            if (MAGIC_CONFIG.data.force_registration && MAGIC_CONFIG.data.force_registration.active) {
+	                var config = MAGIC_CONFIG.data.force_registration;
+	                var requiredFields = config.required_fields;
+	                var isProfileFilled = requiredFields.reduce(function (acc, x) {
+	                    var field = form.find(function (field) {
+	                        return field.name == x;
+	                    });
+	                    if (field === void 0) {
+	                        return false;
+	                    }
+	                    if (Object.prototype.toString.call(field.value) === '[object Array]') {
+	                        return field.value.length === 3 && (0, _keys2.default)(field.value).reduce(function (acc, key, index) {
+	                            return !!field.value[key] && acc;
+	                        }, true);
+	                    } else {
+	                        return acc && !!field.value;
+	                    }
+	                }, true);
+	                if (isProfileFilled) {
+	                    if (MAGIC_CONFIG.data.force_registration.tag_to_set_after_submit) {
+	                        var tagName = MAGIC_CONFIG.data.force_registration.tag_to_set_after_submit;
+	                        SailPlay.send('tags.add', { tags: [tagName] }, function () {
+	                            res(true);
+	                        });
+	                    } else {
+	                        console.error("No fill tag_to_set_after_submit in config");
+	                        res(true);
+	                    }
+	                } else {
+	                    res(false);
+	                }
+	            } else {
+	                res(true);
+	            }
+	        });
+	    };
+	    return obj;
 	})
 
 	/**
@@ -39247,245 +39242,256 @@ return /******/ (function(modules) { // webpackBootstrap
 	 */
 	.directive('sailplayFillProfile', function (SailPlay, $rootScope, $q, ipCookie, SailPlayApi, SailPlayFillProfile, $timeout, MAGIC_CONFIG, fillProfileTag) {
 
-	  return {
+	    return {
 
-	    restrict: 'A', scope: false, link: function link(scope, elm, attrs) {
+	        restrict: 'A',
+	        scope: false,
+	        link: function link(scope, elm, attrs) {
 
-	      var config = scope.$eval(attrs.config);
+	            var config = scope.$eval(attrs.config);
 
-	      scope.sailplay = scope.sailplay || {};
+	            scope.sailplay = scope.sailplay || {};
 
-	      scope.sailplay.fill_profile = {
-	        config: config, form: {}
-	      };
+	            scope.sailplay.fill_profile = {
+	                config: config,
+	                form: {}
+	            };
 
-	      if (!config) {
-	        console.error('Provide fill_profile_config');
-	      }
-
-	      var saved_form = false;
-
-	      SailPlayApi.observe('load.user.info', function (user) {
-	        if (!user) return;
-	        var form = scope.sailplay.fill_profile.form;
-	        var custom_fields = [];
-	        form.fields = config.fields.map(function (field) {
-	          var form_field = new SailPlayFillProfile.Field(field);
-	          if (field.type == 'variable') custom_fields.push(form_field);
-
-	          //we need to assign received values to form
-	          switch (form_field.type) {
-
-	            //we need define type
-	            case 'system':
-	              //bind different values to form field
-	              switch (form_field.name) {
-
-	                case 'firstName':
-
-	                  form_field.value = user.user.first_name || '';
-	                  break;
-
-	                case 'lastName':
-
-	                  form_field.value = user.user.last_name || '';
-	                  break;
-
-	                case 'middleName':
-
-	                  form_field.value = user.user.middle_name || '';
-	                  break;
-
-	                case 'birthDate':
-
-	                  var bd = user.user.birth_date && user.user.birth_date.split('-');
-	                  form_field.value = bd ? [parseInt(bd[2]), parseInt(bd[1]), parseInt(bd[0])] : [null, null, null];
-	                  break;
-
-	                case 'addPhone':
-	                  form_field.value = user.user.phone || '';
-	                  break;
-
-	                case 'addEmail':
-
-	                  form_field.value = user.user.email || '';
-	                  break;
-
-	                case 'addOid':
-
-	                  form_field.value = user.user.origin_user_id || '';
-	                  break;
-
-	                case 'sex':
-
-	                  form_field.value = user.user.sex || '';
-	                  break;
-
-	              }
-
-	              break;
-
-	          }
-
-	          return form_field;
-	        });
-
-	        form.auth_hash = SailPlay.config().auth_hash;
-	        //angular.extend(scope.profile_form.user, user.user);
-	        //if(ipCookie(FillProfile.cookie_name) && SailPlay.config().auth_hash === ipCookie(FillProfile.cookie_name).user.auth_hash ){
-	        //  angular.extend(scope.profile_form, ipCookie(FillProfile.cookie_name));
-	        //}
-	        // console.dir(form);
-
-	        saved_form = _angular2.default.copy(form);
-
-	        if (custom_fields.length) {
-	          SailPlayApi.call("vars.batch", { names: custom_fields.map(function (field) {
-	              return field.name;
-	            }) }, function (res) {
-	            _angular2.default.forEach(res.vars, function (variable) {
-	              _angular2.default.forEach(custom_fields, function (field) {
-	                if (field.name == variable.name) field.value = variable.value;
-	              });
-	            });
-	          });
-	        }
-
-	        if (MAGIC_CONFIG.data.force_registration && MAGIC_CONFIG.data.force_registration.active && MAGIC_CONFIG.data.force_registration.tag_name && !$rootScope.submited) {
-
-	          var tagName = MAGIC_CONFIG.data.force_registration.tag_name;
-
-	          SailPlay.send('tags.exist', { tags: [tagName] }, function (res) {
-	            if (res && res.tags.length) {
-	              if (!res.tags[0].exist) {
-	                $timeout(function () {
-	                  scope.$parent.reg_incomplete = true;
-	                  scope.$parent.preventClose = true;
-	                  $rootScope.$broadcast('openProfile');
-	                }, 10);
-	              } else {
-	                scope.$parent.reg_incomplete = false;
-	                scope.$parent.preventClose = false;
-	              }
+	            if (!config) {
+	                console.error('Provide fill_profile_config');
 	            }
-	          });
-	        }
 
-	        form.auth_hash = SailPlay.config().auth_hash;
+	            var saved_form = false;
 
-	        if (scope.$root.$$phase != '$digest') scope.$digest();
-	      });
+	            SailPlayApi.observe('load.user.info', function (user) {
+	                if (!user) return;
+	                var form = scope.sailplay.fill_profile.form;
+	                var custom_fields = [];
+	                form.fields = config.fields.map(function (field) {
+	                    var form_field = new SailPlayFillProfile.Field(field);
+	                    if (field.type == 'variable') custom_fields.push(form_field);
 
-	      scope.revert_profile_form = function (form) {
-	        if (form) {
-	          form.$setPristine();
-	          form.$setUntouched();
-	        }
-	        scope.sailplay.fill_profile.form = _angular2.default.copy(saved_form);
-	      };
+	                    //we need to assign received values to form
+	                    switch (form_field.type) {
 
-	      scope.toggle_tag = function (arr, tag) {
+	                        //we need define type
+	                        case 'system':
+	                            //bind different values to form field
+	                            switch (form_field.name) {
 
-	        if (!tag) return;
+	                                case 'firstName':
 
-	        var index = arr.indexOf(tag);
+	                                    form_field.value = user.user.first_name || '';
+	                                    break;
 
-	        if (index > -1) {
+	                                case 'lastName':
 
-	          arr.splice(index, 1);
-	        } else {
+	                                    form_field.value = user.user.last_name || '';
+	                                    break;
 
-	          arr.push(tag);
-	        }
-	      };
+	                                case 'middleName':
 
-	      scope.sailplay.fill_profile.submit = function (form, callback) {
+	                                    form_field.value = user.user.middle_name || '';
+	                                    break;
 
-	        if (!form || !form.$valid) {
-	          return;
-	        }
+	                                case 'birthDate':
 
-	        var data_user = SailPlayApi.data('load.user.info')() && SailPlayApi.data('load.user.info')().user;
-	        var req_user = {},
-	            custom_user_vars = {};
+	                                    var bd = user.user.birth_date && user.user.birth_date.split('-');
+	                                    form_field.value = bd ? [parseInt(bd[2]), parseInt(bd[1]), parseInt(bd[0])] : [null, null, null];
+	                                    break;
 
-	        _angular2.default.forEach(scope.sailplay.fill_profile.form.fields, function (item) {
-	          if (item.type == 'variable') {
-	            custom_user_vars[item.name] = item.value;
-	          } else req_user[item.name] = item.value;
-	        });
+	                                case 'addPhone':
+	                                    form_field.value = user.user.phone || '';
+	                                    break;
 
-	        if (req_user.addPhone && data_user && data_user.phone && data_user.phone.replace(/\D/g, '') == req_user.addPhone.replace(/\D/g, '')) {
-	          delete req_user.addPhone;
-	        }
+	                                case 'addEmail':
 
-	        if (req_user.addEmail && data_user && data_user.email && data_user.email == req_user.addEmail) {
-	          delete req_user.addEmail;
-	        }
+	                                    form_field.value = user.user.email || '';
+	                                    break;
 
-	        if (req_user.addOid && data_user && data_user.origin_user_id && data_user.origin_user_id == req_user.addOid) {
-	          delete req_user.addOid;
-	        }
+	                                case 'addOid':
 
-	        if (req_user.birthDate) {
-	          var bd = _angular2.default.copy(req_user.birthDate);
-	          bd[0] = parseInt(bd[0]) < 10 ? '0' + parseInt(bd[0]) : bd[0];
-	          bd[1] = parseInt(bd[1]) < 10 ? '0' + parseInt(bd[1]) : bd[1];
-	          req_user.birthDate = bd.reverse().join('-');
-	        }
+	                                    form_field.value = user.user.origin_user_id || '';
+	                                    break;
 
-	        SailPlay.send('users.update', req_user, function (user_res) {
+	                                case 'sex':
 
-	          if (user_res.status === 'ok') {
+	                                    form_field.value = user.user.sex || '';
+	                                    break;
 
-	            if ((0, _keys2.default)(custom_user_vars).length) {
-	              SailPlay.send('vars.add', { custom_vars: custom_user_vars }, function (res_vars) {
-	                if (!res_vars.status == 'ok') $rootScope.$broadcast('notifier:notify', {
-	                  body: res_vars.message
+	                            }
+
+	                            break;
+
+	                    }
+
+	                    return form_field;
 	                });
-	              });
-	            }
 
-	            if (MAGIC_CONFIG.data.force_registration && MAGIC_CONFIG.data.force_registration.active) {
-	              fillProfileTag.checkSubmitForm(scope.sailplay.fill_profile.form.fields).then(function (isValid) {
-	                if (isValid) {
-	                  var tagNameToSet = MAGIC_CONFIG.data.force_registration.tag_to_set_after_submit;
-	                  var tagNameMessage = MAGIC_CONFIG.data.force_registration.messageAfterSubmit;
-	                  var tagNameMessageUpdate = MAGIC_CONFIG.data.force_registration.messageAfterSubmitUpdate;
-	                  if (tagNameMessage || tagNameMessageUpdate) {
-	                    $rootScope.$broadcast('notifier:notify', {
-	                      body: scope.$parent.reg_incomplete ? tagNameMessage : tagNameMessageUpdate
+	                form.auth_hash = SailPlay.config().auth_hash;
+	                //angular.extend(scope.profile_form.user, user.user);
+	                //if(ipCookie(FillProfile.cookie_name) && SailPlay.config().auth_hash === ipCookie(FillProfile.cookie_name).user.auth_hash ){
+	                //  angular.extend(scope.profile_form, ipCookie(FillProfile.cookie_name));
+	                //}
+	                // console.dir(form);
+
+	                saved_form = _angular2.default.copy(form);
+
+	                if (custom_fields.length) {
+	                    SailPlayApi.call("vars.batch", { names: custom_fields.map(function (field) {
+	                            return field.name;
+	                        }).concat(config.load_vars) }, function (res) {
+	                        _angular2.default.forEach(res.vars, function (variable) {
+	                            _angular2.default.forEach(custom_fields, function (field) {
+	                                if (field.name == variable.name) field.value = variable.value;
+	                            });
+	                        });
 	                    });
-	                  }
-	                  $rootScope.submited = true;
-	                  if (scope.$parent.reg_incomplete && MAGIC_CONFIG.data.force_registration.logout_after_submit) {
-	                    SailPlayApi.call('logout');
-	                  }
 	                }
-	                if (typeof callback == 'function') callback();
-	                SailPlayApi.call('load.user.info', { all: 1, purchases: 1 });
-	              });
-	            } else {
-	              if (typeof callback == 'function') callback();
-	              SailPlayApi.call('load.user.info', { all: 1, purchases: 1 });
-	            }
-	          } else {
 
-	            if (user_res.status == 'error' && MAGIC_CONFIG.data.force_registration.active && MAGIC_CONFIG.data.force_registration.errors && MAGIC_CONFIG.data.force_registration.errors[user_res.status_code]) {
-	              user_res.message = MAGIC_CONFIG.data.force_registration.errors[user_res.status_code];
-	            }
+	                if (config.load_vars) {
+	                    setInterval(function () {
+	                        SailPlayApi.call("vars.batch", { names: config.load_vars }, function (res) {
+	                            return;
+	                        });
+	                    }, 5000);
+	                }
 
-	            $rootScope.$broadcast('notifier:notify', {
-	              body: user_res.message
+	                if (MAGIC_CONFIG.data.force_registration && MAGIC_CONFIG.data.force_registration.active && MAGIC_CONFIG.data.force_registration.tag_name && !$rootScope.submited) {
+
+	                    var tagName = MAGIC_CONFIG.data.force_registration.tag_name;
+
+	                    SailPlay.send('tags.exist', { tags: [tagName] }, function (res) {
+	                        if (res && res.tags.length) {
+	                            if (!res.tags[0].exist) {
+	                                $timeout(function () {
+	                                    scope.$parent.reg_incomplete = true;
+	                                    scope.$parent.preventClose = true;
+	                                    $rootScope.$broadcast('openProfile');
+	                                }, 10);
+	                            } else {
+	                                scope.$parent.reg_incomplete = false;
+	                                scope.$parent.preventClose = false;
+	                            }
+	                        }
+	                    });
+	                }
+
+	                form.auth_hash = SailPlay.config().auth_hash;
+
+	                if (scope.$root.$$phase != '$digest') scope.$digest();
 	            });
 
-	            scope.$apply();
-	          }
-	        });
-	      };
-	    }
+	            scope.revert_profile_form = function (form) {
+	                if (form) {
+	                    form.$setPristine();
+	                    form.$setUntouched();
+	                }
+	                scope.sailplay.fill_profile.form = _angular2.default.copy(saved_form);
+	            };
 
-	  };
+	            scope.toggle_tag = function (arr, tag) {
+
+	                if (!tag) return;
+
+	                var index = arr.indexOf(tag);
+
+	                if (index > -1) {
+
+	                    arr.splice(index, 1);
+	                } else {
+
+	                    arr.push(tag);
+	                }
+	            };
+
+	            scope.sailplay.fill_profile.submit = function (form, callback) {
+
+	                if (!form || !form.$valid) {
+	                    return;
+	                }
+
+	                var data_user = SailPlayApi.data('load.user.info')() && SailPlayApi.data('load.user.info')().user;
+	                var req_user = {},
+	                    custom_user_vars = {};
+
+	                _angular2.default.forEach(scope.sailplay.fill_profile.form.fields, function (item) {
+	                    if (item.type == 'variable') {
+	                        custom_user_vars[item.name] = item.value;
+	                    } else req_user[item.name] = item.value;
+	                });
+
+	                if (req_user.addPhone && data_user && data_user.phone && data_user.phone.replace(/\D/g, '') == req_user.addPhone.replace(/\D/g, '')) {
+	                    delete req_user.addPhone;
+	                }
+
+	                if (req_user.addEmail && data_user && data_user.email && data_user.email == req_user.addEmail) {
+	                    delete req_user.addEmail;
+	                }
+
+	                if (req_user.addOid && data_user && data_user.origin_user_id && data_user.origin_user_id == req_user.addOid) {
+	                    delete req_user.addOid;
+	                }
+
+	                if (req_user.birthDate) {
+	                    var bd = _angular2.default.copy(req_user.birthDate);
+	                    bd[0] = parseInt(bd[0]) < 10 ? '0' + parseInt(bd[0]) : bd[0];
+	                    bd[1] = parseInt(bd[1]) < 10 ? '0' + parseInt(bd[1]) : bd[1];
+	                    req_user.birthDate = bd.reverse().join('-');
+	                }
+
+	                SailPlay.send('users.update', req_user, function (user_res) {
+
+	                    if (user_res.status === 'ok') {
+
+	                        if ((0, _keys2.default)(custom_user_vars).length) {
+	                            SailPlay.send('vars.add', { custom_vars: custom_user_vars }, function (res_vars) {
+	                                if (!res_vars.status == 'ok') $rootScope.$broadcast('notifier:notify', {
+	                                    body: res_vars.message
+	                                });
+	                            });
+	                        }
+
+	                        if (MAGIC_CONFIG.data.force_registration && MAGIC_CONFIG.data.force_registration.active) {
+	                            fillProfileTag.checkSubmitForm(scope.sailplay.fill_profile.form.fields).then(function (isValid) {
+	                                if (isValid) {
+	                                    var tagNameToSet = MAGIC_CONFIG.data.force_registration.tag_to_set_after_submit;
+	                                    var tagNameMessage = MAGIC_CONFIG.data.force_registration.messageAfterSubmit;
+	                                    var tagNameMessageUpdate = MAGIC_CONFIG.data.force_registration.messageAfterSubmitUpdate;
+	                                    if (tagNameMessage || tagNameMessageUpdate) {
+	                                        $rootScope.$broadcast('notifier:notify', {
+	                                            body: scope.$parent.reg_incomplete ? tagNameMessage : tagNameMessageUpdate
+	                                        });
+	                                    }
+	                                    $rootScope.submited = true;
+	                                    if (scope.$parent.reg_incomplete && MAGIC_CONFIG.data.force_registration.logout_after_submit) {
+	                                        SailPlayApi.call('logout');
+	                                    }
+	                                }
+	                                if (typeof callback == 'function') callback();
+	                                SailPlayApi.call('load.user.info', { all: 1, purchases: 1 });
+	                            });
+	                        } else {
+	                            if (typeof callback == 'function') callback();
+	                            SailPlayApi.call('load.user.info', { all: 1, purchases: 1 });
+	                        }
+	                    } else {
+
+	                        if (user_res.status == 'error' && MAGIC_CONFIG.data.force_registration.active && MAGIC_CONFIG.data.force_registration.errors && MAGIC_CONFIG.data.force_registration.errors[user_res.status_code]) {
+	                            user_res.message = MAGIC_CONFIG.data.force_registration.errors[user_res.status_code];
+	                        }
+
+	                        $rootScope.$broadcast('notifier:notify', {
+	                            body: user_res.message
+	                        });
+
+	                        scope.$apply();
+	                    }
+	                });
+	            };
+	        }
+
+	    };
 	});
 
 	exports.default = SailPlayProfile.name;
@@ -44207,7 +44213,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.push([module.id, "@import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700);", ""]);
 
 	// module
-	exports.push([module.id, ".spm_wrapper {\n  /* Eric Meyer's CSS Reset */\n  /* HTML5 display-role reset for older browsers */\n  /* End of Eric Meyer's CSS Reset */\n}\n.spm_wrapper html,\n.spm_wrapper body,\n.spm_wrapper div,\n.spm_wrapper span,\n.spm_wrapper applet,\n.spm_wrapper object,\n.spm_wrapper iframe,\n.spm_wrapper h1,\n.spm_wrapper h2,\n.spm_wrapper h3,\n.spm_wrapper h4,\n.spm_wrapper h5,\n.spm_wrapper h6,\n.spm_wrapper p,\n.spm_wrapper blockquote,\n.spm_wrapper pre,\n.spm_wrapper a,\n.spm_wrapper abbr,\n.spm_wrapper acronym,\n.spm_wrapper address,\n.spm_wrapper big,\n.spm_wrapper cite,\n.spm_wrapper code,\n.spm_wrapper del,\n.spm_wrapper dfn,\n.spm_wrapper em,\n.spm_wrapper img,\n.spm_wrapper ins,\n.spm_wrapper kbd,\n.spm_wrapper q,\n.spm_wrapper s,\n.spm_wrapper samp,\n.spm_wrapper small,\n.spm_wrapper strike,\n.spm_wrapper strong,\n.spm_wrapper sub,\n.spm_wrapper sup,\n.spm_wrapper tt,\n.spm_wrapper var,\n.spm_wrapper b,\n.spm_wrapper u,\n.spm_wrapper i,\n.spm_wrapper center,\n.spm_wrapper dl,\n.spm_wrapper dt,\n.spm_wrapper dd,\n.spm_wrapper ol,\n.spm_wrapper ul,\n.spm_wrapper li,\n.spm_wrapper fieldset,\n.spm_wrapper form,\n.spm_wrapper label,\n.spm_wrapper legend,\n.spm_wrapper table,\n.spm_wrapper caption,\n.spm_wrapper tbody,\n.spm_wrapper tfoot,\n.spm_wrapper thead,\n.spm_wrapper tr,\n.spm_wrapper th,\n.spm_wrapper td,\n.spm_wrapper article,\n.spm_wrapper aside,\n.spm_wrapper canvas,\n.spm_wrapper details,\n.spm_wrapper embed,\n.spm_wrapper figure,\n.spm_wrapper figcaption,\n.spm_wrapper footer,\n.spm_wrapper header,\n.spm_wrapper hgroup,\n.spm_wrapper menu,\n.spm_wrapper nav,\n.spm_wrapper output,\n.spm_wrapper ruby,\n.spm_wrapper section,\n.spm_wrapper summary,\n.spm_wrapper time,\n.spm_wrapper mark,\n.spm_wrapper audio,\n.spm_wrapper video {\n  margin: 0;\n  padding: 0;\n  border: 0;\n  font-size: 100%;\n  font: inherit;\n  vertical-align: baseline;\n}\n.spm_wrapper article,\n.spm_wrapper aside,\n.spm_wrapper details,\n.spm_wrapper figcaption,\n.spm_wrapper figure,\n.spm_wrapper footer,\n.spm_wrapper header,\n.spm_wrapper hgroup,\n.spm_wrapper menu,\n.spm_wrapper nav,\n.spm_wrapper section {\n  display: block;\n}\n.spm_wrapper body {\n  line-height: 1;\n}\n.spm_wrapper ol,\n.spm_wrapper ul {\n  list-style: none;\n}\n.spm_wrapper blockquote,\n.spm_wrapper q {\n  quotes: none;\n}\n.spm_wrapper blockquote:before,\n.spm_wrapper blockquote:after,\n.spm_wrapper q:before,\n.spm_wrapper q:after {\n  content: '';\n  content: none;\n}\n.spm_wrapper table {\n  border-collapse: collapse;\n  border-spacing: 0;\n}\n.spm_wrapper article,\n.spm_wrapper aside,\n.spm_wrapper details,\n.spm_wrapper figcaption,\n.spm_wrapper figure,\n.spm_wrapper footer,\n.spm_wrapper header,\n.spm_wrapper hgroup,\n.spm_wrapper main,\n.spm_wrapper nav,\n.spm_wrapper section,\n.spm_wrapper summary {\n  display: block;\n}\n.spm_wrapper .button_primary {\n  -webkit-box-sizing: border-box;\n  -moz-box-sizing: border-box;\n  box-sizing: border-box;\n}\n.spm_wrapper .sp_btn {\n  display: inline-block;\n  outline: none;\n  width: auto;\n  line-height: 35px;\n  text-decoration: none;\n  color: #ffffff;\n  font-size: 14px;\n  font-weight: 500;\n  background-color: #888888;\n  border: 0;\n  border-bottom: 1px solid #000000;\n  text-shadow: 0 0 1px #000000;\n  margin-right: 45px;\n  margin-top: 12px;\n  white-space: nowrap;\n  padding-left: 20px;\n  padding-right: 20px;\n  cursor: pointer;\n}\n.spm_wrapper .sp_btn:hover {\n  background-color: #7b7b7b;\n}\n.spm_wrapper .sp_btn[disabled] {\n  opacity: .5;\n}\n.spm_wrapper .magic_select {\n  overflow: hidden;\n  width: 100%;\n  float: left;\n  height: 57px;\n  border: 0;\n  border-top: 2px solid #cccccc;\n  border-radius: 5px;\n  padding-left: 25px;\n  font-size: 18px;\n  outline: none;\n  box-sizing: border-box;\n  background-color: #ffffff;\n  position: relative;\n  display: inline-block;\n  background-image: url(https://d3sailplay.cdnvideo.ru/media/assets/assetfile/303e1f38393495b1a059952843abeeb0.png);\n  background-repeat: no-repeat;\n  background-position: right 10px center;\n  background-size: 10px;\n}\n.spm_wrapper .magic_select select {\n  position: absolute;\n  background: transparent;\n  border: none;\n  height: 100%;\n  width: 100%;\n  font-size: inherit;\n  font-weight: inherit;\n  font-family: inherit;\n  outline: none;\n  -webkit-appearance: none;\n  box-shadow: none;\n  background-image: none;\n}\n.spm_wrapper .form_field {\n  float: left;\n  width: 50%;\n  padding-bottom: 20px;\n  padding-right: 40px;\n  -webkit-box-sizing: border-box;\n  -moz-box-sizing: border-box;\n  box-sizing: border-box;\n  /* -------------------- Select Box Styles: stackoverflow.com Method */\n  /* -------------------- Source: http://stackoverflow.com/a/5809186 */\n}\n.spm_wrapper .form_field.type_full {\n  width: 100%;\n}\n.spm_wrapper .form_field .form_date {\n  float: left;\n  position: relative;\n  z-index: 1;\n}\n.spm_wrapper .form_field .form_date span {\n  color: #000000;\n  font-size: 18px;\n  float: left;\n  width: 100%;\n  box-sizing: border-box;\n  padding-left: 10px;\n  border: 2px solid #cccccc;\n  border-radius: 5px;\n  line-height: 57px;\n  height: 57px;\n  background-image: url('https://d3sailplay.cdnvideo.ru/media/assets/assetfile/303e1f38393495b1a059952843abeeb0.png');\n  background-repeat: no-repeat;\n  background-position: right 10px center;\n  background-size: 10px;\n}\n.spm_wrapper .form_field .form_date__popup {\n  display: none;\n  position: absolute;\n  top: 100%;\n  left: 0px;\n  right: 0px;\n  z-index: 2;\n  max-height: 100px;\n  overflow-x: hidden;\n  overflow-y: auto;\n  background-color: #ffffff;\n  border-radius: 0 0 3px 3px;\n  border: 1px solid #cccccc;\n  text-align: center;\n}\n.spm_wrapper .form_field .form_date__popup a {\n  float: left;\n  width: 100%;\n  line-height: 25px;\n  text-decoration: none;\n  color: #000000;\n  background: #ffffff;\n}\n.spm_wrapper .form_field .form_date__day {\n  width: 20%;\n}\n.spm_wrapper .form_field .form_date__month {\n  width: 48%;\n  margin: 0 1%;\n}\n.spm_wrapper .form_field .form_date__year {\n  width: 30%;\n}\n.spm_wrapper .form_field .form_date:hover .form_date__popup {\n  display: block;\n}\n.spm_wrapper .form_field .form_label {\n  width: 100%;\n  line-height: 100%;\n  color: #222222;\n  font-size: 16px;\n  float: left;\n}\n.spm_wrapper .form_field .form_textarea {\n  background-color: #ffffff;\n  float: left;\n  height: 100px;\n  resize: none;\n  border: 0;\n  border-top: 2px solid #cccccc;\n  border-radius: 5px;\n  padding-left: 25px;\n  width: 100%;\n  font-size: 18px;\n  outline: none;\n  box-sizing: border-box;\n}\n.spm_wrapper .form_field .form_input[type=\"text\"],\n.spm_wrapper .form_field .form_input[type=\"email\"] {\n  background-color: #ffffff;\n  float: left;\n  height: 57px;\n  border: 0;\n  border-top: 2px solid #cccccc;\n  border-radius: 5px;\n  padding-left: 25px;\n  width: 100%;\n  font-size: 18px;\n  outline: none;\n  box-sizing: border-box;\n}\n.spm_wrapper .form_field .form_select {\n  -webkit-appearance: button;\n  -webkit-border-radius: 2px;\n  -webkit-box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);\n  -webkit-padding-end: 20px;\n  -webkit-padding-start: 2px;\n  -webkit-user-select: none;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  color: #000000;\n  font-size: 18px;\n  float: left;\n  width: 100%;\n  box-sizing: border-box;\n  padding-left: 10px;\n  border: 2px solid #cccccc;\n  border-radius: 5px;\n  line-height: 57px;\n  height: 57px;\n  background-image: url('https://d3sailplay.cdnvideo.ru/media/assets/assetfile/303e1f38393495b1a059952843abeeb0.png');\n  background-repeat: no-repeat;\n  background-position: right 10px center;\n  background-size: 10px;\n  background-color: transparent;\n  outline: none;\n}\n@media only screen and (min-width: 530px) and (max-width: 949px), only screen and (max-width: 529px) {\n  .spm_wrapper .form_field {\n    width: 100%;\n    padding: 0 0 20px 0;\n  }\n}\n.spm_wrapper .overflow_hidden {\n  overflow: hidden;\n}\n.spm_wrapper .clearfix:after {\n  content: \"\";\n  display: table;\n  clear: both;\n}\n.spm_wrapper .transparent {\n  opacity: 0;\n}\n.spm_wrapper .spm_row {\n  -webkit-box-sizing: border-box;\n  -moz-box-sizing: border-box;\n  box-sizing: border-box;\n  margin-left: -15px;\n  margin-right: -15px;\n  display: block;\n  position: relative;\n}\n.spm_wrapper .spm_col {\n  padding-left: 15px;\n  padding-right: 15px;\n  -webkit-box-sizing: border-box;\n  -moz-box-sizing: border-box;\n  box-sizing: border-box;\n  min-height: 1px;\n  display: inline-block;\n  position: relative;\n  float: left;\n}\n.spm_wrapper .spm_col:after {\n  content: \"\";\n  display: table;\n  clear: both;\n}\n.spm_wrapper .ellipsis {\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  -o-text-overflow: ellipsis;\n}\n@font-face {\n  font-family: 'Rockwell EB';\n  src: url(" + __webpack_require__(99) + ") format('truetype');\n  font-weight: 'bolder';\n  font-style: normal;\n}\n@font-face {\n  font-family: 'Badaboom';\n  src: url(" + __webpack_require__(100) + ") format('truetype');\n  font-weight: 'bolder';\n  font-style: normal;\n}\n.spm_wrapper {\n  font-family: 'Roboto', sans-serif;\n}\n.spm_wrapper {\n  font-family: Rockwell;\n  color: #000;\n}\n.spm_wrapper .container {\n  padding-top: initial !important;\n  width: 100%;\n  max-width: initial;\n  line-height: initial;\n}\n.spm_wrapper .sp_profile {\n  display: flex;\n  width: 100%;\n  background-color: #f9b640;\n  border-bottom: 10px black solid;\n}\n@media screen and (max-width: 1000px) {\n  .spm_wrapper .sp_profile {\n    flex-direction: column;\n  }\n}\n.spm_wrapper .sp_profile_left {\n  display: flex;\n  flex-direction: column;\n  width: 100%;\n  padding: 40px 40px 40px 40px;\n  box-sizing: border-box;\n}\n.spm_wrapper .sp_profile_left_top {\n  display: flex;\n  margin-bottom: 80px;\n}\n.spm_wrapper .sp_profile_left_top .sp_avatar_wrapper {\n  position: relative;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  margin-right: 60px;\n}\n.spm_wrapper .sp_profile_left_top .sp_avatar_wrapper:hover .logout_btn {\n  display: flex;\n}\n@media screen and (max-width: 1000px) {\n  .spm_wrapper .sp_profile_left_top .sp_avatar_wrapper {\n    display: none;\n  }\n}\n.spm_wrapper .sp_profile_left_top .sp_avatar_wrapper .sp_avatar {\n  border-radius: 50%;\n  width: 100px;\n  height: 100px;\n  margin-bottom: 20px;\n}\n.spm_wrapper .sp_profile_left_top .sp_avatar_wrapper .logout_btn {\n  display: none;\n  cursor: pointer;\n  position: absolute;\n  top: 0;\n  left: 0;\n  color: white;\n  background-color: #a20b36;\n  border-radius: 50%;\n  height: 100px;\n  width: 100px;\n  align-items: center;\n  justify-content: center;\n}\n.spm_wrapper .sp_profile_left_top .sp_header_wrapper {\n  display: flex;\n  flex-direction: column;\n}\n.spm_wrapper .sp_profile_left_top .sp_header_wrapper .sp_top_header {\n  margin-bottom: 5px;\n}\n.spm_wrapper .sp_profile_left_top .sp_header_wrapper .sp_top_header .sp_top_name,\n.spm_wrapper .sp_profile_left_top .sp_header_wrapper .sp_top_header .sp_top_text {\n  font-size: 20px;\n}\n.spm_wrapper .sp_profile_left_top .sp_header_wrapper .sp_header {\n  font-family: 'Rockwell EB';\n  font-size: 46px;\n  margin-bottom: 15px;\n  font-weight: bolder;\n}\n.spm_wrapper .sp_profile_left_top .sp_header_wrapper .sp_spoiler {\n  font-size: 20px;\n}\n.spm_wrapper .sp_profile_left_bottom {\n  display: flex;\n  padding-left: 160px;\n  align-items: center;\n}\n@media screen and (max-width: 400px) {\n  .spm_wrapper .sp_profile_left_bottom {\n    flex-direction: column;\n  }\n}\n@media screen and (max-width: 1000px) {\n  .spm_wrapper .sp_profile_left_bottom {\n    padding-left: 0;\n  }\n}\n.spm_wrapper .sp_profile_left_bottom .sp_edit_profile_cta {\n  font-size: 20px;\n  margin-right: 20px;\n}\n@media screen and (max-width: 400px) {\n  .spm_wrapper .sp_profile_left_bottom .sp_edit_profile_cta {\n    margin-bottom: 40px;\n    margin-right: 0;\n    box-sizing: border-box;\n  }\n}\n.spm_wrapper .sp_profile_left_bottom .sp_edit_profile_arrows {\n  width: 150px;\n  height: 100px;\n  margin-right: 20px;\n  background-image: url(https://sailplays3.cdnvideo.ru/media/assets/assetfile/5e239be919456a2401d20afb7d8822e1.png);\n  background-size: contain;\n  background-position: center;\n  background-repeat: no-repeat;\n}\n@media screen and (max-width: 400px) {\n  .spm_wrapper .sp_profile_left_bottom .sp_edit_profile_arrows {\n    display: none;\n  }\n}\n.spm_wrapper .sp_profile_left_bottom .sp_edit_profile {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  text-align: center;\n  background-color: #a20b36;\n  border-radius: 10px;\n  color: #ffffff;\n  font-family: 'Rockwell EB';\n  font-size: 22px;\n  padding: 20px;\n  width: 100%;\n  max-width: 300px;\n  cursor: pointer;\n}\n.spm_wrapper .sp_profile_right {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n  width: 100%;\n  max-width: 400px;\n  background-color: #a20b36;\n  box-sizing: border-box;\n  padding: 50px;\n}\n@media screen and (max-width: 1000px) {\n  .spm_wrapper .sp_profile_right {\n    max-width: 100%;\n  }\n}\n.spm_wrapper .sp_profile_right .sp_points_wrapper {\n  display: flex;\n  flex-direction: column;\n  margin-bottom: 12px;\n  text-align: center;\n}\n.spm_wrapper .sp_profile_right .sp_points,\n.spm_wrapper .sp_profile_right .sp_points_name {\n  font-family: 'Rockwell EB';\n  color: #FFFFFF;\n  font-size: 46px;\n  text-transform: uppercase;\n}\n.spm_wrapper .sp_profile_right .sp_points {\n  margin-right: 5px;\n}\n.spm_wrapper .sp_profile_right .sp_history_button {\n  cursor: pointer;\n  color: #FFFFFF;\n  text-decoration: underline;\n}\n.spm_wrapper .fill_profile_form .sp_btn {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  text-align: center;\n  background-color: #a20b36;\n  border-radius: 10px;\n  color: #ffffff;\n  font-family: 'Rockwell EB';\n  font-size: 22px;\n  width: 100%;\n  max-width: 190px;\n  height: 50px;\n  cursor: pointer;\n}\n", ""]);
+	exports.push([module.id, ".spm_wrapper {\n  /* Eric Meyer's CSS Reset */\n  /* HTML5 display-role reset for older browsers */\n  /* End of Eric Meyer's CSS Reset */\n}\n.spm_wrapper html,\n.spm_wrapper body,\n.spm_wrapper div,\n.spm_wrapper span,\n.spm_wrapper applet,\n.spm_wrapper object,\n.spm_wrapper iframe,\n.spm_wrapper h1,\n.spm_wrapper h2,\n.spm_wrapper h3,\n.spm_wrapper h4,\n.spm_wrapper h5,\n.spm_wrapper h6,\n.spm_wrapper p,\n.spm_wrapper blockquote,\n.spm_wrapper pre,\n.spm_wrapper a,\n.spm_wrapper abbr,\n.spm_wrapper acronym,\n.spm_wrapper address,\n.spm_wrapper big,\n.spm_wrapper cite,\n.spm_wrapper code,\n.spm_wrapper del,\n.spm_wrapper dfn,\n.spm_wrapper em,\n.spm_wrapper img,\n.spm_wrapper ins,\n.spm_wrapper kbd,\n.spm_wrapper q,\n.spm_wrapper s,\n.spm_wrapper samp,\n.spm_wrapper small,\n.spm_wrapper strike,\n.spm_wrapper strong,\n.spm_wrapper sub,\n.spm_wrapper sup,\n.spm_wrapper tt,\n.spm_wrapper var,\n.spm_wrapper b,\n.spm_wrapper u,\n.spm_wrapper i,\n.spm_wrapper center,\n.spm_wrapper dl,\n.spm_wrapper dt,\n.spm_wrapper dd,\n.spm_wrapper ol,\n.spm_wrapper ul,\n.spm_wrapper li,\n.spm_wrapper fieldset,\n.spm_wrapper form,\n.spm_wrapper label,\n.spm_wrapper legend,\n.spm_wrapper table,\n.spm_wrapper caption,\n.spm_wrapper tbody,\n.spm_wrapper tfoot,\n.spm_wrapper thead,\n.spm_wrapper tr,\n.spm_wrapper th,\n.spm_wrapper td,\n.spm_wrapper article,\n.spm_wrapper aside,\n.spm_wrapper canvas,\n.spm_wrapper details,\n.spm_wrapper embed,\n.spm_wrapper figure,\n.spm_wrapper figcaption,\n.spm_wrapper footer,\n.spm_wrapper header,\n.spm_wrapper hgroup,\n.spm_wrapper menu,\n.spm_wrapper nav,\n.spm_wrapper output,\n.spm_wrapper ruby,\n.spm_wrapper section,\n.spm_wrapper summary,\n.spm_wrapper time,\n.spm_wrapper mark,\n.spm_wrapper audio,\n.spm_wrapper video {\n  margin: 0;\n  padding: 0;\n  border: 0;\n  font-size: 100%;\n  font: inherit;\n  vertical-align: baseline;\n}\n.spm_wrapper article,\n.spm_wrapper aside,\n.spm_wrapper details,\n.spm_wrapper figcaption,\n.spm_wrapper figure,\n.spm_wrapper footer,\n.spm_wrapper header,\n.spm_wrapper hgroup,\n.spm_wrapper menu,\n.spm_wrapper nav,\n.spm_wrapper section {\n  display: block;\n}\n.spm_wrapper body {\n  line-height: 1;\n}\n.spm_wrapper ol,\n.spm_wrapper ul {\n  list-style: none;\n}\n.spm_wrapper blockquote,\n.spm_wrapper q {\n  quotes: none;\n}\n.spm_wrapper blockquote:before,\n.spm_wrapper blockquote:after,\n.spm_wrapper q:before,\n.spm_wrapper q:after {\n  content: '';\n  content: none;\n}\n.spm_wrapper table {\n  border-collapse: collapse;\n  border-spacing: 0;\n}\n.spm_wrapper article,\n.spm_wrapper aside,\n.spm_wrapper details,\n.spm_wrapper figcaption,\n.spm_wrapper figure,\n.spm_wrapper footer,\n.spm_wrapper header,\n.spm_wrapper hgroup,\n.spm_wrapper main,\n.spm_wrapper nav,\n.spm_wrapper section,\n.spm_wrapper summary {\n  display: block;\n}\n.spm_wrapper .button_primary {\n  -webkit-box-sizing: border-box;\n  -moz-box-sizing: border-box;\n  box-sizing: border-box;\n}\n.spm_wrapper .sp_btn {\n  display: inline-block;\n  outline: none;\n  width: auto;\n  line-height: 35px;\n  text-decoration: none;\n  color: #ffffff;\n  font-size: 14px;\n  font-weight: 500;\n  background-color: #888888;\n  border: 0;\n  border-bottom: 1px solid #000000;\n  text-shadow: 0 0 1px #000000;\n  margin-right: 45px;\n  margin-top: 12px;\n  white-space: nowrap;\n  padding-left: 20px;\n  padding-right: 20px;\n  cursor: pointer;\n}\n.spm_wrapper .sp_btn:hover {\n  background-color: #7b7b7b;\n}\n.spm_wrapper .sp_btn[disabled] {\n  opacity: .5;\n}\n.spm_wrapper .magic_select {\n  overflow: hidden;\n  width: 100%;\n  float: left;\n  height: 57px;\n  border: 0;\n  border-top: 2px solid #cccccc;\n  border-radius: 5px;\n  padding-left: 25px;\n  font-size: 18px;\n  outline: none;\n  box-sizing: border-box;\n  background-color: #ffffff;\n  position: relative;\n  display: inline-block;\n  background-image: url(https://d3sailplay.cdnvideo.ru/media/assets/assetfile/303e1f38393495b1a059952843abeeb0.png);\n  background-repeat: no-repeat;\n  background-position: right 10px center;\n  background-size: 10px;\n}\n.spm_wrapper .magic_select select {\n  position: absolute;\n  background: transparent;\n  border: none;\n  height: 100%;\n  width: 100%;\n  font-size: inherit;\n  font-weight: inherit;\n  font-family: inherit;\n  outline: none;\n  -webkit-appearance: none;\n  box-shadow: none;\n  background-image: none;\n}\n.spm_wrapper .form_field {\n  float: left;\n  width: 50%;\n  padding-bottom: 20px;\n  padding-right: 40px;\n  -webkit-box-sizing: border-box;\n  -moz-box-sizing: border-box;\n  box-sizing: border-box;\n  /* -------------------- Select Box Styles: stackoverflow.com Method */\n  /* -------------------- Source: http://stackoverflow.com/a/5809186 */\n}\n.spm_wrapper .form_field.type_full {\n  width: 100%;\n}\n.spm_wrapper .form_field .form_date {\n  float: left;\n  position: relative;\n  z-index: 1;\n}\n.spm_wrapper .form_field .form_date span {\n  color: #000000;\n  font-size: 18px;\n  float: left;\n  width: 100%;\n  box-sizing: border-box;\n  padding-left: 10px;\n  border: 2px solid #cccccc;\n  border-radius: 5px;\n  line-height: 57px;\n  height: 57px;\n  background-image: url('https://d3sailplay.cdnvideo.ru/media/assets/assetfile/303e1f38393495b1a059952843abeeb0.png');\n  background-repeat: no-repeat;\n  background-position: right 10px center;\n  background-size: 10px;\n}\n.spm_wrapper .form_field .form_date__popup {\n  display: none;\n  position: absolute;\n  top: 100%;\n  left: 0px;\n  right: 0px;\n  z-index: 2;\n  max-height: 100px;\n  overflow-x: hidden;\n  overflow-y: auto;\n  background-color: #ffffff;\n  border-radius: 0 0 3px 3px;\n  border: 1px solid #cccccc;\n  text-align: center;\n}\n.spm_wrapper .form_field .form_date__popup a {\n  float: left;\n  width: 100%;\n  line-height: 25px;\n  text-decoration: none;\n  color: #000000;\n  background: #ffffff;\n}\n.spm_wrapper .form_field .form_date__day {\n  width: 20%;\n}\n.spm_wrapper .form_field .form_date__month {\n  width: 48%;\n  margin: 0 1%;\n}\n.spm_wrapper .form_field .form_date__year {\n  width: 30%;\n}\n.spm_wrapper .form_field .form_date:hover .form_date__popup {\n  display: block;\n}\n.spm_wrapper .form_field .form_label {\n  width: 100%;\n  line-height: 100%;\n  color: #222222;\n  font-size: 16px;\n  float: left;\n}\n.spm_wrapper .form_field .form_textarea {\n  background-color: #ffffff;\n  float: left;\n  height: 100px;\n  resize: none;\n  border: 0;\n  border-top: 2px solid #cccccc;\n  border-radius: 5px;\n  padding-left: 25px;\n  width: 100%;\n  font-size: 18px;\n  outline: none;\n  box-sizing: border-box;\n}\n.spm_wrapper .form_field .form_input[type=\"text\"],\n.spm_wrapper .form_field .form_input[type=\"email\"] {\n  background-color: #ffffff;\n  float: left;\n  height: 57px;\n  border: 0;\n  border-top: 2px solid #cccccc;\n  border-radius: 5px;\n  padding-left: 25px;\n  width: 100%;\n  font-size: 18px;\n  outline: none;\n  box-sizing: border-box;\n}\n.spm_wrapper .form_field .form_select {\n  -webkit-appearance: button;\n  -webkit-border-radius: 2px;\n  -webkit-box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);\n  -webkit-padding-end: 20px;\n  -webkit-padding-start: 2px;\n  -webkit-user-select: none;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  color: #000000;\n  font-size: 18px;\n  float: left;\n  width: 100%;\n  box-sizing: border-box;\n  padding-left: 10px;\n  border: 2px solid #cccccc;\n  border-radius: 5px;\n  line-height: 57px;\n  height: 57px;\n  background-image: url('https://d3sailplay.cdnvideo.ru/media/assets/assetfile/303e1f38393495b1a059952843abeeb0.png');\n  background-repeat: no-repeat;\n  background-position: right 10px center;\n  background-size: 10px;\n  background-color: transparent;\n  outline: none;\n}\n@media only screen and (min-width: 530px) and (max-width: 949px), only screen and (max-width: 529px) {\n  .spm_wrapper .form_field {\n    width: 100%;\n    padding: 0 0 20px 0;\n  }\n}\n.spm_wrapper .overflow_hidden {\n  overflow: hidden;\n}\n.spm_wrapper .clearfix:after {\n  content: \"\";\n  display: table;\n  clear: both;\n}\n.spm_wrapper .transparent {\n  opacity: 0;\n}\n.spm_wrapper .spm_row {\n  -webkit-box-sizing: border-box;\n  -moz-box-sizing: border-box;\n  box-sizing: border-box;\n  margin-left: -15px;\n  margin-right: -15px;\n  display: block;\n  position: relative;\n}\n.spm_wrapper .spm_col {\n  padding-left: 15px;\n  padding-right: 15px;\n  -webkit-box-sizing: border-box;\n  -moz-box-sizing: border-box;\n  box-sizing: border-box;\n  min-height: 1px;\n  display: inline-block;\n  position: relative;\n  float: left;\n}\n.spm_wrapper .spm_col:after {\n  content: \"\";\n  display: table;\n  clear: both;\n}\n.spm_wrapper .ellipsis {\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  -o-text-overflow: ellipsis;\n}\n@font-face {\n  font-family: 'Rockwell EB';\n  src: url(" + __webpack_require__(99) + ") format('truetype');\n  font-style: normal;\n}\n@font-face {\n  font-family: 'Badaboom';\n  src: url(" + __webpack_require__(100) + ") format('truetype');\n  font-style: normal;\n}\n.spm_wrapper {\n  font-family: 'Roboto', sans-serif;\n}\n.spm_wrapper {\n  font-family: 'Rockwell' !important;\n  color: #000;\n}\n.spm_wrapper .container {\n  padding-top: initial !important;\n  width: 100%;\n  max-width: initial;\n  line-height: initial;\n}\n.spm_wrapper .sp_profile {\n  display: flex;\n  width: 100%;\n  background-color: #f9b640;\n  border-bottom: 10px black solid;\n}\n@media screen and (max-width: 1000px) {\n  .spm_wrapper .sp_profile {\n    flex-direction: column;\n  }\n}\n.spm_wrapper .sp_profile_left {\n  display: flex;\n  flex-direction: column;\n  width: 100%;\n  padding: 40px 40px 40px 40px;\n  box-sizing: border-box;\n}\n.spm_wrapper .sp_profile_left_top {\n  display: flex;\n  margin-bottom: 80px;\n}\n.spm_wrapper .sp_profile_left_top .sp_avatar_wrapper {\n  position: relative;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  margin-right: 60px;\n}\n.spm_wrapper .sp_profile_left_top .sp_avatar_wrapper:hover .logout_btn {\n  display: flex;\n}\n@media screen and (max-width: 1000px) {\n  .spm_wrapper .sp_profile_left_top .sp_avatar_wrapper {\n    display: none;\n  }\n}\n.spm_wrapper .sp_profile_left_top .sp_avatar_wrapper .sp_avatar {\n  border-radius: 50%;\n  width: 100px;\n  height: 100px;\n  margin-bottom: 20px;\n}\n.spm_wrapper .sp_profile_left_top .sp_avatar_wrapper .logout_btn {\n  display: none;\n  cursor: pointer;\n  position: absolute;\n  top: 0;\n  left: 0;\n  color: white;\n  background-color: #a20b36;\n  border-radius: 50%;\n  height: 100px;\n  width: 100px;\n  align-items: center;\n  justify-content: center;\n}\n.spm_wrapper .sp_profile_left_top .sp_header_wrapper {\n  display: flex;\n  flex-direction: column;\n}\n.spm_wrapper .sp_profile_left_top .sp_header_wrapper .sp_top_header {\n  margin-bottom: 5px;\n}\n.spm_wrapper .sp_profile_left_top .sp_header_wrapper .sp_top_header .sp_top_name,\n.spm_wrapper .sp_profile_left_top .sp_header_wrapper .sp_top_header .sp_top_text {\n  font-size: 20px;\n}\n.spm_wrapper .sp_profile_left_top .sp_header_wrapper .sp_header {\n  font-family: 'Rockwell EB';\n  font-size: 46px;\n  margin-bottom: 15px;\n  font-weight: bolder;\n}\n.spm_wrapper .sp_profile_left_top .sp_header_wrapper .sp_spoiler {\n  font-size: 20px;\n}\n.spm_wrapper .sp_profile_left_bottom {\n  display: flex;\n  padding-left: 160px;\n  align-items: center;\n}\n@media screen and (max-width: 400px) {\n  .spm_wrapper .sp_profile_left_bottom {\n    flex-direction: column;\n  }\n}\n@media screen and (max-width: 1000px) {\n  .spm_wrapper .sp_profile_left_bottom {\n    padding-left: 0;\n  }\n}\n.spm_wrapper .sp_profile_left_bottom .sp_edit_profile_cta {\n  font-size: 20px;\n  margin-right: 20px;\n}\n@media screen and (max-width: 400px) {\n  .spm_wrapper .sp_profile_left_bottom .sp_edit_profile_cta {\n    margin-bottom: 40px;\n    margin-right: 0;\n    box-sizing: border-box;\n  }\n}\n.spm_wrapper .sp_profile_left_bottom .sp_edit_profile_arrows {\n  width: 150px;\n  height: 100px;\n  margin-right: 20px;\n  background-image: url(https://sailplays3.cdnvideo.ru/media/assets/assetfile/5e239be919456a2401d20afb7d8822e1.png);\n  background-size: contain;\n  background-position: center;\n  background-repeat: no-repeat;\n}\n@media screen and (max-width: 400px) {\n  .spm_wrapper .sp_profile_left_bottom .sp_edit_profile_arrows {\n    display: none;\n  }\n}\n.spm_wrapper .sp_profile_left_bottom .sp_edit_profile {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  text-align: center;\n  background-color: #a20b36;\n  border-radius: 10px;\n  color: #ffffff;\n  font-family: 'Rockwell EB';\n  font-size: 22px;\n  padding: 20px;\n  width: 100%;\n  max-width: 300px;\n  cursor: pointer;\n}\n.spm_wrapper .sp_profile_right {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n  width: 100%;\n  max-width: 400px;\n  background-color: #a20b36;\n  box-sizing: border-box;\n  padding: 50px;\n}\n@media screen and (max-width: 1000px) {\n  .spm_wrapper .sp_profile_right {\n    max-width: 100%;\n  }\n}\n.spm_wrapper .sp_profile_right .sp_points_wrapper {\n  display: flex;\n  flex-direction: column;\n  margin-bottom: 12px;\n  text-align: center;\n}\n.spm_wrapper .sp_profile_right .sp_points,\n.spm_wrapper .sp_profile_right .sp_points_name {\n  font-family: 'Rockwell EB';\n  color: #FFFFFF;\n  font-size: 46px;\n  text-transform: uppercase;\n}\n.spm_wrapper .sp_profile_right .sp_points {\n  margin-right: 5px;\n}\n.spm_wrapper .sp_profile_right .sp_history_button {\n  cursor: pointer;\n  color: #FFFFFF;\n  text-decoration: underline;\n}\n.spm_wrapper .fill_profile_form .sp_btn {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  text-align: center;\n  background-color: #a20b36;\n  border-radius: 10px;\n  color: #ffffff;\n  font-family: 'Rockwell EB';\n  font-size: 22px;\n  width: 100%;\n  max-width: 190px;\n  height: 50px;\n  cursor: pointer;\n}\n", ""]);
 
 	// exports
 
@@ -45411,216 +45417,216 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	(0, _widget.WidgetRegister)({
 
-	  id: 'gifts-grid',
-	  template: _giftsGrid2.default,
-	  inject: ['SailPlayApi', 'SailPlay', '$rootScope'],
-	  controller: function controller(SailPlayApi, SailPlay, $rootScope) {
+	    id: 'gifts-grid',
+	    template: _giftsGrid2.default,
+	    inject: ['SailPlayApi', 'SailPlay', '$rootScope'],
+	    controller: function controller(SailPlayApi, SailPlay, $rootScope) {
 
-	    return function (scope, elm, attrs) {
+	        return function (scope, elm, attrs) {
 
-	      // User model
-	      scope.user = SailPlayApi.data('load.user.info');
+	            // User model
+	            scope.user = SailPlayApi.data('load.user.info');
 
-	      // Grid blocks array
-	      scope.blocks = [];
+	            // Grid blocks array
+	            scope.blocks = [];
 
-	      scope.gifts = [];
+	            scope.gifts = [];
 
-	      scope.gift_code = "";
+	            scope.gift_code = "";
 
-	      scope.showMore = false;
+	            scope.showMore = false;
 
-	      scope.$on('showMore', function (ev, showMore) {
-	        scope.showMore = showMore;
-	      });
+	            scope.$on('showMore', function (ev, showMore) {
+	                scope.showMore = showMore;
+	            });
 
-	      scope.showMoreUpdate = function (bool) {
-	        $rootScope.$broadcast('showMore', bool);
-	      };
+	            scope.showMoreUpdate = function (bool) {
+	                $rootScope.$broadcast('showMore', bool);
+	            };
 
-	      scope.filter = scope.widget.options && scope.widget.options.filter || {};
+	            scope.filter = scope.widget.options && scope.widget.options.filter || {};
 
-	      scope.orderBy = scope.widget.options && scope.widget.options.orderBy || 'points';
+	            scope.orderBy = scope.widget.options && scope.widget.options.orderBy || 'points';
 
-	      // Current state of grid
-	      scope.state = 0;
+	            // Current state of grid
+	            scope.state = 0;
 
-	      scope.check_categories = false;
+	            scope.check_categories = false;
 
-	      scope.user_categories = [];
+	            scope.user_categories = [];
 
-	      // Grid block size
-	      var block_size = scope.widget.options && scope.widget.options.grid_size || 6;
+	            // Grid block size
+	            var block_size = scope.widget.options && scope.widget.options.grid_size || 6;
 
-	      var available_categories = scope.widget.options && scope.widget.options.available_categories || [];
+	            var available_categories = scope.widget.options && scope.widget.options.available_categories || [];
 
-	      var categories = scope.widget.options && scope.widget.options.categories || [];
+	            var categories = scope.widget.options && scope.widget.options.categories || [];
 
-	      if (!available_categories.length) {
-	        scope.check_categories = true;
-	      } else {
-	        SailPlay.send('tags.exist', { tags: categories.filter(function (item) {
-	            return available_categories.indexOf(item.id) !== -1;
-	          }).map(function (item) {
-	            return item.tag;
-	          }) }, function (tags_res) {
-	          if (tags_res && tags_res.status === 'ok') {
-	            scope.check_categories = true;
-	            scope.user_categories = tags_res.tags;
-	            scope.$digest();
-	          } else {
-	            console.error('Tags exit error. Response: ', tags_res);
-	          }
-	          scope.getBlocks();
-	          scope.$digest();
-	        });
-	      }
+	            if (!available_categories.length) {
+	                scope.check_categories = true;
+	            } else {
+	                SailPlay.send('tags.exist', { tags: categories.filter(function (item) {
+	                        return available_categories.indexOf(item.id) !== -1;
+	                    }).map(function (item) {
+	                        return item.tag;
+	                    }) }, function (tags_res) {
+	                    if (tags_res && tags_res.status === 'ok') {
+	                        scope.check_categories = true;
+	                        scope.user_categories = tags_res.tags;
+	                        scope.$digest();
+	                    } else {
+	                        console.error('Tags exit error. Response: ', tags_res);
+	                    }
+	                    scope.getBlocks();
+	                    scope.$digest();
+	                });
+	            }
 
-	      function replaceVariables(str, data) {
-	        if (!str || !data) return;
-	        var re;
-	        for (var field in data) {
-	          re = new RegExp('%%' + field + '%%', "g");
-	          str = str.replace(re, data[field]);
-	        }
-	        return str;
-	      }
+	            function replaceVariables(str, data) {
+	                if (!str || !data) return;
+	                var re;
+	                for (var field in data) {
+	                    re = new RegExp('%%' + field + '%%', "g");
+	                    str = str.replace(re, data[field]);
+	                }
+	                return str;
+	            }
 
-	      scope.isNotAvailableGift = function (gift) {
-	        if (!gift || !scope.user()) return;
-	        var status = categories.filter(function (item) {
-	          return item.id == gift.category;
-	        })[0];
-	        var obj = {
-	          tag_id: status && status.id,
-	          status_name: status && status.name,
-	          tag_name: status && status.tag
+	            scope.isNotAvailableGift = function (gift) {
+	                if (!gift || !scope.user()) return;
+	                var status = categories.filter(function (item) {
+	                    return item.id == gift.category;
+	                })[0];
+	                var obj = {
+	                    tag_id: status && status.id,
+	                    status_name: status && status.name,
+	                    tag_name: status && status.tag
+	                };
+	                $rootScope.$broadcast('notifier:notify', {
+	                    header: replaceVariables(scope.widget.texts.no_available_category.header, obj),
+	                    body: replaceVariables(scope.widget.texts.no_available_category.body, obj)
+	                });
+	            };
+
+	            scope.isAvailableGift = function (gift) {
+	                if (!gift || !scope.check_categories) return false;
+	                var category = categories.filter(function (category) {
+	                    return category.id == gift.category;
+	                })[0];
+	                if (scope.check_categories && (!gift.category || !category)) {
+	                    return true;
+	                }
+	                var checked = scope.user_categories.filter(function (tag) {
+	                    return tag.name == category.tag && tag.exist;
+	                })[0];
+	                return scope.check_categories && checked;
+	            };
+
+	            // Local variable for preparing grid data
+	            var i = 0,
+	                page = null,
+	                len = 0;
+
+	            scope.getBlocks = function () {
+	                scope.blocks = [];
+	                if (!scope.gifts && !scope.gifts.length && scope.check_categories) return;
+	                var gifts = angular.copy(scope.gifts);
+	                var block_len = block_size == 'all' ? gifts.length : block_size;
+	                len = Math.ceil(gifts.length / block_len);
+	                i = 0;
+	                do {
+	                    if (i == len - 1) {
+	                        page = gifts.slice(block_len * i);
+	                    } else {
+	                        page = gifts.slice(block_len * i, block_len * i + block_len);
+	                    }
+	                    scope.blocks.push(page);
+	                    i++;
+	                } while (len && i != len);
+	            };
+
+	            /**
+	             * Watch gift list, and prepare it for grid
+	             */
+	            SailPlayApi.observe('load.gifts.list', function (gifts) {
+	                scope.gifts = gifts;
+	                scope.getBlocks();
+	                scope.$digest();
+	            });
+
+	            /**
+	             * Change grid page
+	             * @param action
+	             */
+	            scope.move = function (action) {
+	                if (!scope.blocks[scope.state + action]) return;
+	                scope.state += action;
+	            };
+
+	            /**
+	             * Getting gift
+	             * @param gift
+	             */
+	            scope.gift_confirm = function (gift) {
+
+	                if (!scope.user()) SailPlay.authorize('remote', { widget: 'gifts-grid', action: 'gift_confirm' });else if (scope.user().user_points.confirmed < gift.points) {
+
+	                    $rootScope.$broadcast('notifier:notify', {
+	                        header: scope.widget.texts.purchase_error_header,
+	                        body: scope.widget.texts.no_points_message || res.success_message
+	                    });
+
+	                    scope.selected_gift = null;
+	                } else if (scope.user().user_points.confirmed >= gift.points) {
+	                    SailPlay.send('gifts.purchase', { gift: gift });
+	                }
+	            };
+
+	            scope.open = function (gift) {
+	                if (!gift) return;
+	                if (scope.isAvailableGift(gift)) {
+	                    scope.selected_gift = gift;
+	                } else {
+	                    scope.isNotAvailableGift(gift);
+	                }
+	            };
+
+	            var giftSuccessTemplate = '\n        <div class="gifts_grid__item"\n           data-ng-class="{\n           \'gift-available\': isAvailableGift(gift),\n           \'gift-unavailable\': !isAvailableGift(gift),\n           \'gift-points-not-enough\': user()\n           }">\n\n          <img class="gifts_grid__item-img gift_img"\n               data-ng-src="{{ gift.thumbs.url_250x250 | sailplay_pic }}"\n               alt="{{ gift.name }}">\n\n          <span class="gifts_grid__item-name gift_name" data-ng-bind="gift.name"></span>\n\n          <a class="gifts_grid__item-button button_primary" href="#"\n             data-ng-click="$event.preventDefault();open(gift)"\n               data-ng-bind="(gift.points | number) + \' \' + (gift.points | sailplay_pluralize:(\'points.texts.pluralize\' | tools))"></a>\n\n        </div>\n      ';
+
+	            /**
+	             * Track success gift purchase
+	             */
+	            SailPlay.on('gifts.purchase.success', function (res) {
+	                $rootScope.$apply(function () {
+	                    //scope.selected_gift = null;
+	                    scope.giftSuccess = true;
+	                    var date = new Date();
+	                    //res.coupon_number = scope.selected_gift.name.substring(0,5).toUpperCase() + '_' + (scope.selected_gift.id * String(date.getMinutes())* String(date.getSeconds()))
+	                    //console.log(res.coupon_number)
+	                    SailPlayApi.call('load.gifts.list');
+	                    SailPlayApi.call('load.user.info');
+
+	                    $rootScope.$broadcast('notifier:notify', {
+	                        header: scope.widget.texts.purchase_success_header,
+	                        body: res.coupon_number && scope.widget.texts.coupon_number + ' ' + res.coupon_number || res.success_message || scope.widget.texts.gift_received
+	                    });
+	                });
+	            });
+
+	            /**
+	             * Track error gift purchase
+	             */
+	            SailPlay.on('gift.purchase.error', function (error) {
+	                $rootScope.$apply(function () {
+	                    scope.selected_gift = null;
+	                    $rootScope.$broadcast('notifier:notify', {
+	                        header: scope.widget.texts.purchase_error_header,
+	                        body: error.message || scope.widget.texts.gift_received_error
+	                    });
+	                });
+	            });
 	        };
-	        $rootScope.$broadcast('notifier:notify', {
-	          header: replaceVariables(scope.widget.texts.no_available_category.header, obj),
-	          body: replaceVariables(scope.widget.texts.no_available_category.body, obj)
-	        });
-	      };
-
-	      scope.isAvailableGift = function (gift) {
-	        if (!gift || !scope.check_categories) return false;
-	        var category = categories.filter(function (category) {
-	          return category.id == gift.category;
-	        })[0];
-	        if (scope.check_categories && (!gift.category || !category)) {
-	          return true;
-	        }
-	        var checked = scope.user_categories.filter(function (tag) {
-	          return tag.name == category.tag && tag.exist;
-	        })[0];
-	        return scope.check_categories && checked;
-	      };
-
-	      // Local variable for preparing grid data
-	      var i = 0,
-	          page = null,
-	          len = 0;
-
-	      scope.getBlocks = function () {
-	        scope.blocks = [];
-	        if (!scope.gifts && !scope.gifts.length && scope.check_categories) return;
-	        var gifts = angular.copy(scope.gifts);
-	        var block_len = block_size == 'all' ? gifts.length : block_size;
-	        len = Math.ceil(gifts.length / block_len);
-	        i = 0;
-	        do {
-	          if (i == len - 1) {
-	            page = gifts.slice(block_len * i);
-	          } else {
-	            page = gifts.slice(block_len * i, block_len * i + block_len);
-	          }
-	          scope.blocks.push(page);
-	          i++;
-	        } while (len && i != len);
-	      };
-
-	      /**
-	       * Watch gift list, and prepare it for grid
-	       */
-	      SailPlayApi.observe('load.gifts.list', function (gifts) {
-	        scope.gifts = gifts;
-	        scope.getBlocks();
-	        scope.$digest();
-	      });
-
-	      /**
-	       * Change grid page
-	       * @param action
-	       */
-	      scope.move = function (action) {
-	        if (!scope.blocks[scope.state + action]) return;
-	        scope.state += action;
-	      };
-
-	      /**
-	       * Getting gift
-	       * @param gift
-	       */
-	      scope.gift_confirm = function (gift) {
-
-	        if (!scope.user()) SailPlay.authorize('remote', { widget: 'gifts-grid', action: 'gift_confirm' });else if (scope.user().user_points.confirmed < gift.points) {
-
-	          $rootScope.$broadcast('notifier:notify', {
-	            header: scope.widget.texts.purchase_error_header,
-	            body: scope.widget.texts.no_points_message || res.success_message
-	          });
-
-	          scope.selected_gift = null;
-	        } else if (scope.user().user_points.confirmed >= gift.points) {
-	          SailPlay.send('gifts.purchase', { gift: gift });
-	        }
-	      };
-
-	      scope.open = function (gift) {
-	        if (!gift) return;
-	        if (scope.isAvailableGift(gift)) {
-	          scope.selected_gift = gift;
-	        } else {
-	          scope.isNotAvailableGift(gift);
-	        }
-	      };
-
-	      var giftSuccessTemplate = '\n        <div class="gifts_grid__item"\n           data-ng-class="{\n           \'gift-available\': isAvailableGift(gift),\n           \'gift-unavailable\': !isAvailableGift(gift),\n           \'gift-points-not-enough\': user()\n           }">\n\n          <img class="gifts_grid__item-img gift_img"\n               data-ng-src="{{ gift.thumbs.url_250x250 | sailplay_pic }}"\n               alt="{{ gift.name }}">\n\n          <span class="gifts_grid__item-name gift_name" data-ng-bind="gift.name"></span>\n\n          <a class="gifts_grid__item-button button_primary" href="#"\n             data-ng-click="$event.preventDefault();open(gift)"\n               data-ng-bind="(gift.points | number) + \' \' + (gift.points | sailplay_pluralize:(\'points.texts.pluralize\' | tools))"></a>\n\n        </div>\n      ';
-
-	      /**
-	       * Track success gift purchase
-	       */
-	      SailPlay.on('gifts.purchase.success', function (res) {
-	        $rootScope.$apply(function () {
-	          //scope.selected_gift = null;
-	          scope.giftSuccess = true;
-	          var date = new Date();
-	          res.coupon_number = scope.selected_gift.name.substring(0, 5).toUpperCase() + '_' + scope.selected_gift.id * String(date.getMinutes()) * String(date.getSeconds());
-	          console.log(res.coupon_number);
-	          SailPlayApi.call('load.gifts.list');
-	          SailPlayApi.call('load.user.info');
-
-	          $rootScope.$broadcast('notifier:notify', {
-	            header: scope.widget.texts.purchase_success_header,
-	            body: res.coupon_number && scope.widget.texts.coupon_number + ' ' + res.coupon_number || res.success_message || scope.widget.texts.gift_received
-	          });
-	        });
-	      });
-
-	      /**
-	       * Track error gift purchase
-	       */
-	      SailPlay.on('gift.purchase.error', function (error) {
-	        $rootScope.$apply(function () {
-	          scope.selected_gift = null;
-	          $rootScope.$broadcast('notifier:notify', {
-	            header: scope.widget.texts.purchase_error_header,
-	            body: error.message || scope.widget.texts.gift_received_error
-	          });
-	        });
-	      });
-	    };
-	  }
+	    }
 
 	});
 
@@ -45628,7 +45634,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 133 */
 /***/ (function(module, exports) {
 
-	module.exports = "<div class=\"bon_choice_main container_nc clearfix gifts_grid_widget\">\n\n    <img class=\"parallax-img\" data-ng-src=\"{{widget.images.parallax.medium.img1}}\" du-parallax y=\"background\" alt=\"\" />\n    <img class=\"parallax-img\" data-ng-src=\"{{widget.images.parallax.medium.img2}}\" du-parallax y=\"background2\" alt=\"\" />\n    <img class=\"parallax-img-s\" data-ng-src=\"{{widget.images.parallax.small.img1}}\" du-parallax y=\"background\" alt=\"\" />\n    <img class=\"parallax-img-s\" data-ng-src=\"{{widget.images.parallax.small.img2}}\" du-parallax y=\"background2\" alt=\"\" />\n\n    <div class=\"triangle\"></div>\n\n    <h3 class=\"gifts_grid___header\">\n        <span class=\"header\" data-ng-bind=\"widget.texts.header\"></span>\n    </h3>\n\n    <!-- <h4 class=\"gifts_grid___caption\">\n        <span class=\"caption\" data-ng-bind=\"widget.texts.caption\"></span>\n    </h4> -->\n\n    <div data-sailplay-gifts class=\"clearfix xs-gifts\">\n      <div class=\"bon_item_main\" data-ng-show=\"gifts && gifts().length\" data-magic-slider>\n\n        <div class=\"bon_slide_cat_item_wrap\">\n          <div class=\"bon_slide_cat_item\">\n\n            <div class=\"bon_item_line\" data-ng-style=\"{left : left}\">\n\n\n              <div class=\"bon_item gift\" data-magic-gift data-ng-repeat=\"gift in gifts()\">\n                <div class=\"gifts_grid__item\"\n                     data-ng-class=\"{\n                     'gift-available': isAvailableGift(gift),\n                     'gift-unavailable': !isAvailableGift(gift),\n                     'gift-points-not-enough': user().user_points.confirmed < gift.points\n                     }\">\n\n                    <img class=\"gifts_grid__item-img gift_img\"\n                         data-ng-src=\"{{ gift.thumbs.url_250x250 | sailplay_pic }}\"\n                         alt=\"{{ gift.name }}\">\n\n                    <span class=\"gifts_grid__item-name gift_name\" data-ng-bind=\"gift.name\"></span>\n\n                    <a class=\"gifts_grid__item-button button_primary\" href=\"#\"\n                       data-ng-click=\"$event.preventDefault();$parent.giftSuccess = false;open(gift)\"\n                       data-ng-bind=\"(gift.points | number) + ' ' + (gift.points | sailplay_pluralize:('points.texts.pluralize' | tools))\"></a>\n\n                </div>\n              </div>\n\n            </div>\n\n          </div>\n\n        </div>\n\n      </div>\n    </div>\n\n    <div class=\"gifts_grid__wrapper clearfix\">\n\n        <div class=\"gifts_grid__blocks clearfix\" data-ng-class=\"{spoilered: !showMore}\">\n\n            <div class=\"gifts_grid__block\">\n\n                <div class=\"gifts_grid__item clearfix\"\n                     data-ng-class=\"{\n                     'gift-available': isAvailableGift(gift),\n                     'gift-unavailable': !isAvailableGift(gift),\n                     'gift-points-not-enough': user().user_points.confirmed < gift.points\n                     }\"\n                     data-ng-repeat=\"gift in blocks[state] | filter:filter | orderBy:orderBy track by $index\">\n\n                    <img class=\"gifts_grid__item-img gift_img\"\n                         data-ng-src=\"{{ gift.thumbs.url_250x250 | sailplay_pic }}\"\n                         alt=\"{{ gift.name }}\">\n\n                    <span class=\"gifts_grid__item-name gift_name\" data-ng-bind=\"gift.name\"></span>\n\n                    <a class=\"gifts_grid__item-button button_primary\" href=\"#\"\n                       data-ng-click=\"$event.preventDefault();$parent.giftSuccess = false;open(gift)\"\n                       data-ng-bind=\"(gift.points | number) + ' ' + (gift.points | sailplay_pluralize:('points.texts.pluralize' | tools))\"></a>\n\n                </div>\n\n            </div>\n\n        </div>\n\n        <div class=\"gifts_grid__spoiler\" data-ng-hide=\"showMore\"></div>\n\n        <div class=\"grid_buttons_container\">\n            <a class=\"gifts_grid__more_btn button_primary\" data-ng-show=\"!showMore\" data-ng-click=\"showMoreUpdate(true)\" data-ng-bind=\"widget.texts.more\"></a>\n            <a class=\"gifts_grid__more_btn button_primary\" data-ng-show=\"showMore\" data-ng-click=\"showMoreUpdate(false)\" data-ng-bind=\"widget.texts.less\"></a>\n        </div>\n\n    </div>\n\n    <magic-modal class=\"bns_overlay_gift\" data-show=\"selected_gift\">\n\n        <div class=\"modal_gift_container\">\n\n            <div class=\"bon_item gift modal\">\n\n              <div data-ng-show=\"giftSuccess\" class=\"headers-container\">\n                <h3 data-ng-bind=\"widget.texts.giftSuccessHeader\"></h3>\n                <h4 data-ng-bind=\"widget.texts.purchase_success_header\"></h4>\n              </div>\n\n\n              <div class=\"gifts_grid__item\">\n\n                <img class=\"gifts_grid__item-img gift_img\"\n                       data-ng-src=\"{{ selected_gift.thumbs.url_250x250 | sailplay_pic }}\"\n                       alt=\"{{ selected_gift.name }}\">\n\n                <span class=\"gifts_grid__item-name gift_name\" data-ng-bind=\"selected_gift.name\"></span>\n\n\n                <a class=\"gifts_grid__item-button button_primary modal\" href=\"#\"\n                     data-ng-bind=\"(selected_gift.points | number) + ' ' + (selected_gift.points | sailplay_pluralize:('points.texts.pluralize' | tools))\"></a>\n              </div>\n              <div class=\"modal_gift_buttons\">\n                <div data-ng-bind=\"gift_code\"> </div>\n\n                  <span data-ng-show=\"giftSuccess\" class=\"alink button_primary\"\n                        data-ng-click=\"$parent.$parent.selected_gift=null; $parent.$parent.giftSuccess=false\"\n                        style=\"margin: 5px;\">{{ 'buttons.texts.ok' | tools }}</span>\n\n                  <span data-ng-hide=\"giftSuccess\" class=\"alink button_primary\"\n                        style=\"margin: 5px;\"\n                        data-ng-click=\"gift_confirm(selected_gift);\"\n                        data-ng-bind=\"widget.texts.get\"></span>\n\n                </div>\n            </div>\n\n\n\n            <!--div class=\"gift_more_block\">\n\n                <span data-ng-bind=\"selected_gift\"></span>\n\n                <span class=\"gift_more_name modal_gift_name\" data-ng-bind=\"selected_gift.name\"></span>\n\n                <span class=\"gift_more_points modal_gift_points\"\n                      data-ng-bind=\"(selected_gift.points | number) + ' ' + (selected_gift.points | sailplay_pluralize:('points.texts.pluralize' | tools))\"></span>\n\n                <p class=\"gift_more_descr modal_gift_description\" data-ng-bind=\"selected_gift.descr\"></p>\n\n\n            </div-->\n        </div>\n</div>";
+	module.exports = "<div class=\"bon_choice_main container_nc clearfix gifts_grid_widget\">\n\n    <img class=\"parallax-img\" data-ng-src=\"{{widget.images.parallax.medium.img1}}\" du-parallax y=\"background\" alt=\"\" />\n    <img class=\"parallax-img\" data-ng-src=\"{{widget.images.parallax.medium.img2}}\" du-parallax y=\"background2\" alt=\"\" />\n    <img class=\"parallax-img-s\" data-ng-src=\"{{widget.images.parallax.small.img1}}\" du-parallax y=\"background\" alt=\"\" />\n    <img class=\"parallax-img-s\" data-ng-src=\"{{widget.images.parallax.small.img2}}\" du-parallax y=\"background2\" alt=\"\" />\n\n    <div class=\"triangle\"></div>\n\n    <h3 class=\"gifts_grid___header\">\n        <span class=\"header\" data-ng-bind=\"widget.texts.header\"></span>\n    </h3>\n\n    <!-- <h4 class=\"gifts_grid___caption\">\n        <span class=\"caption\" data-ng-bind=\"widget.texts.caption\"></span>\n    </h4> -->\n\n    <div data-sailplay-gifts class=\"clearfix xs-gifts\">\n        <div class=\"bon_item_main\" data-ng-show=\"gifts && gifts().length\" data-magic-slider>\n\n            <div class=\"bon_slide_cat_item_wrap\">\n                <div class=\"bon_slide_cat_item\">\n\n                    <div class=\"bon_item_line\" data-ng-style=\"{left : left}\">\n\n\n                        <div class=\"bon_item gift\" data-magic-gift data-ng-repeat=\"gift in gifts()\">\n                            <div class=\"gifts_grid__item\" data-ng-class=\"{\n                     'gift-available': isAvailableGift(gift),\n                     'gift-unavailable': !isAvailableGift(gift),\n                     'gift-points-not-enough': user().user_points.confirmed < gift.points\n                     }\">\n\n                                <img class=\"gifts_grid__item-img gift_img\" data-ng-src=\"{{ gift.thumbs.url_250x250 | sailplay_pic }}\" alt=\"{{ gift.name }}\">\n\n                                <span class=\"gifts_grid__item-name gift_name\" data-ng-bind=\"gift.name\"></span>\n\n                                <a class=\"gifts_grid__item-button button_primary\" href=\"#\" data-ng-click=\"$event.preventDefault();$parent.giftSuccess = false;open(gift)\" data-ng-bind=\"(gift.points | number) + ' ' + (gift.points | sailplay_pluralize:('points.texts.pluralize' | tools))\"></a>\n\n                            </div>\n                        </div>\n\n                    </div>\n\n                </div>\n\n            </div>\n\n        </div>\n    </div>\n\n    <div class=\"gifts_grid__wrapper clearfix\">\n\n        <div class=\"gifts_grid__blocks clearfix\" data-ng-class=\"{spoilered: !showMore}\">\n\n            <div class=\"gifts_grid__block\">\n\n                <div class=\"gifts_grid__item clearfix\" data-ng-class=\"{\n                     'gift-available': isAvailableGift(gift),\n                     'gift-unavailable': !isAvailableGift(gift),\n                     'gift-points-not-enough': user().user_points.confirmed < gift.points\n                     }\" data-ng-repeat=\"gift in blocks[state] | filter:filter | orderBy:orderBy track by $index\">\n\n                    <img class=\"gifts_grid__item-img gift_img\" data-ng-src=\"{{ gift.thumbs.url_250x250 | sailplay_pic }}\" alt=\"{{ gift.name }}\">\n\n                    <span class=\"gifts_grid__item-name gift_name\" data-ng-bind=\"gift.name\"></span>\n\n                    <a class=\"gifts_grid__item-button button_primary\" href=\"#\" data-ng-click=\"$event.preventDefault();$parent.giftSuccess = false;open(gift)\" data-ng-bind=\"(gift.points | number) + ' ' + (gift.points | sailplay_pluralize:('points.texts.pluralize' | tools))\"></a>\n\n                </div>\n\n            </div>\n\n        </div>\n\n        <div class=\"gifts_grid__spoiler\" data-ng-hide=\"showMore\"></div>\n\n        <div class=\"grid_buttons_container\">\n            <a class=\"gifts_grid__more_btn button_primary\" data-ng-show=\"!showMore\" data-ng-click=\"showMoreUpdate(true)\" data-ng-bind=\"widget.texts.more\"></a>\n            <a class=\"gifts_grid__more_btn button_primary\" data-ng-show=\"showMore\" data-ng-click=\"showMoreUpdate(false)\" data-ng-bind=\"widget.texts.less\"></a>\n        </div>\n\n    </div>\n\n    <magic-modal class=\"bns_overlay_gift\" data-show=\"selected_gift\">\n\n        <div class=\"modal_gift_container\">\n\n            <div class=\"bon_item gift modal\">\n\n                <div data-ng-show=\"giftSuccess\" class=\"headers-container\">\n                    <h3 data-ng-bind=\"widget.texts.giftSuccessHeader\"></h3>\n                    <h4 data-ng-bind=\"widget.texts.purchase_success_header\"></h4>\n                </div>\n\n\n                <div class=\"gifts_grid__item\">\n\n                    <img class=\"gifts_grid__item-img gift_img\" data-ng-src=\"{{ selected_gift.thumbs.url_250x250 | sailplay_pic }}\" alt=\"{{ selected_gift.name }}\">\n\n                    <span class=\"gifts_grid__item-name gift_name\" data-ng-bind=\"selected_gift.name\"></span>\n\n\n                    <a class=\"gifts_grid__item-button button_primary modal\" href=\"#\" data-ng-bind=\"(selected_gift.points | number) + ' ' + (selected_gift.points | sailplay_pluralize:('points.texts.pluralize' | tools))\"></a>\n                </div>\n                <div class=\"modal_gift_buttons\">\n                    <!--<div data-ng-bind=\"gift_code\"> </div>-->\n\n                    <span data-ng-show=\"giftSuccess\" class=\"alink button_primary\" data-ng-click=\"$parent.$parent.selected_gift=null; $parent.$parent.giftSuccess=false\" style=\"margin: 5px;\">{{ 'buttons.texts.ok' | tools }}</span>\n\n                    <span data-ng-hide=\"giftSuccess\" class=\"alink button_primary\" style=\"margin: 5px;\" data-ng-click=\"gift_confirm(selected_gift);\" data-ng-bind=\"widget.texts.get\"></span>\n\n                </div>\n            </div>\n\n\n\n            <!--div class=\"gift_more_block\">\n\n                <span data-ng-bind=\"selected_gift\"></span>\n\n                <span class=\"gift_more_name modal_gift_name\" data-ng-bind=\"selected_gift.name\"></span>\n\n                <span class=\"gift_more_points modal_gift_points\"\n                      data-ng-bind=\"(selected_gift.points | number) + ' ' + (selected_gift.points | sailplay_pluralize:('points.texts.pluralize' | tools))\"></span>\n\n                <p class=\"gift_more_descr modal_gift_description\" data-ng-bind=\"selected_gift.descr\"></p>\n\n\n            </div-->\n        </div>\n</div>";
 
 /***/ }),
 /* 134 */
@@ -46267,39 +46273,68 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var ProfileWidget = {
 
-	  id: 'profile',
-	  template: _profile2.default,
-	  inject: ['$rootScope'],
-	  controller: function controller($rootScope) {
+	    id: 'profile',
+	    template: _profile2.default,
+	    inject: ['SailPlay', '$rootScope'],
+	    controller: function controller(SailPlay, $rootScope) {
 
-	    return function (scope, elm, attrs) {
+	        return function (scope, elm, attrs) {
 
-	      // scope._tools = MAGIC_CONFIG.tools;
+	            // scope._tools = MAGIC_CONFIG.tools;
 
-	      scope.default_avatar = _avatar_default2.default;
-	      $rootScope.$on('openProfile', function () {
-	        scope.profile.show_fill_profile = true;
-	      });
-	      scope.profile = {
-	        history: false,
-	        show_fill_profile: false,
-	        fill_profile: function fill_profile(state) {
+	            scope.default_avatar = _avatar_default2.default;
+	            $rootScope.$on('openProfile', function () {
+	                scope.profile.show_fill_profile = true;
+	            });
+	            scope.profile = {
+	                history: false,
+	                show_fill_profile: false,
+	                promocodes: false,
+	                fill_profile: function fill_profile(state) {
 
-	          scope.profile.show_fill_profile = state || false;
-	        }
-	      };
-	    };
-	  }
+	                    scope.profile.show_fill_profile = state || false;
+	                }
+	            };
+
+	            scope.promocodes_status = [];
+	            scope.show_promocodes = false;
+
+	            SailPlay.on('vars.batch.success', function (res) {
+	                var parsed = res.vars;
+	                parsed = parsed.find(function (item) {
+	                    return item.name == 'promocodes_status';
+	                });
+	                if (parsed) {
+	                    parsed = parsed.value.replaceAll("NaN", "-1");
+	                    parsed = JSON.parse(parsed);
+	                    for (var i in parsed) {
+	                        if (parsed[i][1] == -1) {
+	                            parsed[i][1] = "Not used";
+	                        } else if (i[2] != -1) {
+	                            parsed[i][1] = "Used on " + parsed[i][2];
+	                        } else {
+	                            parsed[i][1] = "Used";
+	                        }
+	                    }
+	                    scope.promocodes_status = parsed;
+	                }
+
+	                if (res.vars.find(function (item) {
+	                    return item.name == 'show_promocodes';
+	                })) scope.show_promocodes = true;
+	            });
+	        };
+	    }
 
 	};
 
 	_widget.Widget.config(["MagicWidgetProvider", function (MagicWidgetProvider) {
 
-	  MagicWidgetProvider.register(ProfileWidget);
+	    MagicWidgetProvider.register(ProfileWidget);
 	}]);
 
 	_widget.Widget.run(["$templateCache", function ($templateCache) {
-	  $templateCache.put('profile.history_pagination', _history_pagination2.default);
+	    $templateCache.put('profile.history_pagination', _history_pagination2.default);
 	}]);
 
 	// .directive('sailplayMagicProfile', function(MAGIC_CONFIG){
@@ -46336,7 +46371,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 159 */
 /***/ (function(module, exports) {
 
-	module.exports = "<div class=\"bon_profile_wrap container\" data-ng-show=\"widget.enabled\" data-ng-cloak>\n  <div class=\"bon_profile_info\" data-sailplay-profile data-sailplay-gifts>\n    <div class=\"sp_profile\">\n      <div class=\"sp_profile_left\">\n        <div class=\"sp_profile_left_top\">\n          <div class=\"sp_avatar_wrapper\">\n            <img class=\"sp_avatar\" data-ng-src=\"{{ (user().user.pic | sailplay_pic) || default_avatar}}\" alt=\"You\">\n            <div class=\"logout_btn button_link\"  data-ng-if=\"user()\" data-ng-click=\"$event.preventDefault(); logout();\">{{ widget.texts.logout }}</div>\n          </div>\n          <div class=\"sp_header_wrapper\">\n            <div class=\"sp_top_header\">\n              <span class=\"sp_top_name\"  data-ng-bind=\"user().user.name.split(' ')[0] ? user().user.name.split(' ')[0] + ',': widget.texts.name_not_defined\"></span>\n              <span class=\"sp_top_text\">{{ widget.texts.header_top }}</span>\n            </div>\n            <span class=\"sp_header\">{{ widget.texts.header }}</span>\n            <span class=\"sp_spoiler\" data-ng-bind-html=\"widget.texts.spoiler | to_trusted\"></span>\n          </div>\n        </div>\n        <div class=\"sp_profile_left_bottom\" >\n          <div class=\"sp_edit_profile_cta\"  data-ng-if=\"user()\" data-ng-bind-html=\"widget.texts.edit_profile_cta | to_trusted\"></div>\n          <div class=\"sp_edit_profile_cta\"  data-ng-if=\"!user()\" data-ng-bind-html=\"widget.texts.login_cta | to_trusted\"></div>\n          <div class=\"sp_edit_profile_arrows\"></div>\n          <div class=\"sp_edit_profile\"  data-ng-if=\"user()\" data-ng-click=\"$event.preventDefault(); profile.fill_profile(true);\">{{ widget.texts.edit_profile_button }}</div>\n          <div class=\"sp_edit_profile\"  data-ng-if=\"!user()\" data-ng-click=\"$event.preventDefault(); login('remote', {widget: 'profile', element: 'profile_login_button'});\">{{ widget.texts.login }}</div>\n        </div>        \n      </div>\n      <div class=\"sp_profile_right\">\n        <div class=\"sp_points_wrapper\">\n          <span class=\"sp_points\" data-ng-bind=\"user().user_points.confirmed || 0 | number\"></span>\n          <span class=\"sp_points_name\" data-ng-bind=\"user().user_points.confirmed | sailplay_pluralize: ('points.texts.pluralize' | tools)\"></span>\n        </div>\n        <span class=\"sp_history_button\"  data-ng-if=\"user() data-ng-click=\"$event.preventDefault(); profile.history = true;\">{{ widget.texts.history_button }}</span>\n      </div>\n    </div>\n</div>\n    \n\n<!-- faq section -->\n<magic-modal class=\"faq_modal\" data-show=\"profile.openFaq\">\n\n  <div class=\"mb_popup mb_popup_prof\" data-sailplay-fill-profile data-config=\"widget.fill_profile.config\">\n\n    <div class=\"mb_popup_top\">\n      <span class=\"modal_faq_header\">{{ widget.texts.faq.header }}</span>\n    </div>\n\n    <div class=\"mb_popup_text\">\n      <div class=\"modal_faq_text\" data-ng-bind-html=\"widget.texts.faq.text | to_trusted\"></div>\n    </div>    \n    \n  </div>\n</magic-modal>\n\n  <magic-modal class=\"bns_overlay_hist\" data-show=\"profile.history\">\n\n    <div data-sailplay-history data-sailplay-profile>\n\n      <h3>\n        <span class=\"modal_history_header\">{{ widget.texts.history.header }}</span>\n        <!--<b>У вас {{ user().user_points.confirmed + ' ' + (user().user_points.confirmed | sailplay_pluralize:_tools.points.texts.pluralize) }}</b>-->\n      </h3>\n      <h4 class=\"modal_history_caption\">{{ widget.texts.history.caption }}</h4>\n\n      <table class=\"bns_hist_table\">\n\n        <tbody>\n\n        <tr data-dir-paginate=\"item in history() | itemsPerPage:10\" data-pagination-id=\"history_pages\">\n          <td>\n            <span class=\"modal_history_date\" data-ng-bind=\"item.action_date | date:'d/MM/yyyy'\"></span>\n          </td>\n          <td>\n            <span><b class=\"modal_history_content\" data-ng-bind=\"item | history_item\"></b></span>\n          </td>\n          <td>\n            <span class=\"modal_history_points\" data-ng-if=\"item.points_delta\" data-ng-bind=\"((item.points_delta|number) || 0) + ' ' + (item.points_delta | sailplay_pluralize:('points.texts.pluralize' | tools))\"></span>\n          </td>\n        </tr>\n\n        </tbody>\n      </table>\n\n      <dir-pagination-controls data-max-size=\"7\" data-pagination-id=\"history_pages\"\n                               data-template-url=\"profile.history_pagination\"\n                               data-auto-hide=\"true\"></dir-pagination-controls>\n    </div>\n\n\n\n  </magic-modal>\n\n  <!--profile edit section-->\n  <magic-modal class=\"fill_profile_modal\" data-show=\"profile.show_fill_profile\">\n\n    <div class=\"mb_popup mb_popup_prof\" data-sailplay-fill-profile data-config=\"widget.fill_profile.config\">\n\n      <div class=\"mb_popup_top\">\n        <span class=\"modal_profile_header\">{{ widget.fill_profile.header }}</span>\n      </div>\n\n      <form name=\"fill_profile_form\" class=\"fill_profile_form mb_popup_main mb_popup_main_mt\" data-ng-submit=\"sailplay.fill_profile.submit(fill_profile_form, profile.fill_profile);\">\n\n        <div class=\"form_field\" data-ng-repeat=\"field in sailplay.fill_profile.form.fields\" data-ng-switch=\"field.input\">\n\n          <div data-ng-switch-when=\"image\" class=\"avatar_upload clearfix\">\n            <img width=\"160px\" data-ng-src=\"{{ (field.value | sailplay_pic) || 'http://saike.ru/sailplay-magic/dist/img/profile/avatar_default.png'}}\" alt=\"\">\n          </div>\n\n          <div data-ng-switch-when=\"text\" class=\"clearfix\">\n            <label class=\"form_label\">{{ field.label }}</label>\n            <input class=\"form_input\" type=\"text\" placeholder=\"{{ field.placeholder }}\" data-ng-model=\"field.value\" data-ng-required=\"field.required\">\n          </div>\n\n          <div data-ng-switch-when=\"date\" class=\"clearfix\">\n            <label class=\"form_label\">{{ field.label }}</label>\n            <date-picker class=\"form_datepicker\" data-model=\"field.value\"></date-picker>\n          </div>\n\n          <div data-ng-switch-when=\"select\" class=\"clearfix\">\n            <label class=\"form_label\">{{ field.label }}</label>\n            <div class=\"magic_select form_input\">\n              <select data-ng-model=\"field.value\" data-ng-options=\"item.value as item.text for item in field.data\" data-ng-required=\"field.required\"></select>\n            </div>\n          </div>\n\n          <div data-ng-switch-when=\"phone\" class=\"clearfix\">\n            <label class=\"form_label\">{{ field.label }}</label>\n            <input class=\"form_input\" type=\"text\" data-model-view-value=\"true\" data-ui-mask=\"{{ field.placeholder }}\" data-ng-model=\"field.value\" data-ng-required=\"field.required\">\n          </div>\n\n          <div data-ng-switch-when=\"email\" class=\"clearfix\">\n            <label class=\"form_label\">{{ field.label }}</label>\n            <input class=\"form_input\" type=\"email\" placeholder=\"{{ field.placeholder }}\" data-ng-model=\"field.value\" data-ng-required=\"field.required\">\n          </div>\n\n        </div>\n\n        <div class=\"answ_text\">\n          <button type=\"submit\" class=\"sp_btn button_primary\">{{ 'buttons.texts.save' | tools }}</button>\n        </div>\n      </form>\n    </div>\n  </magic-modal>\n\n</div>";
+	module.exports = "<div class=\"bon_profile_wrap container\" data-ng-show=\"widget.enabled\" data-ng-cloak>\n    <div class=\"bon_profile_info\" data-sailplay-profile data-sailplay-gifts>\n        <div class=\"sp_profile\">\n            <div class=\"sp_profile_left\">\n                <div class=\"sp_profile_left_top\">\n                    <div class=\"sp_avatar_wrapper\">\n                        <img class=\"sp_avatar\" data-ng-src=\"{{ (user().user.pic | sailplay_pic) || default_avatar}}\" alt=\"You\">\n                        <div class=\"logout_btn button_link\" data-ng-if=\"user()\" data-ng-click=\"$event.preventDefault(); logout();\">{{ widget.texts.logout }}</div>\n                    </div>\n                    <div class=\"sp_header_wrapper\">\n                        <div class=\"sp_top_header\">\n                            <span class=\"sp_top_name\" data-ng-bind=\"user().user.name.split(' ')[0] ? user().user.name.split(' ')[0] + ',': widget.texts.name_not_defined\"></span>\n                            <span class=\"sp_top_text\">{{ widget.texts.header_top }}</span>\n                        </div>\n                        <span class=\"sp_header\">{{ widget.texts.header }}</span>\n                        <span class=\"sp_spoiler\" data-ng-bind-html=\"widget.texts.spoiler | to_trusted\"></span>\n                    </div>\n                </div>\n                <div class=\"sp_profile_left_bottom\">\n                    <div class=\"sp_edit_profile_cta\" data-ng-if=\"user()\" data-ng-bind-html=\"widget.texts.edit_profile_cta | to_trusted\"></div>\n                    <div class=\"sp_edit_profile_cta\" data-ng-if=\"!user()\" data-ng-bind-html=\"widget.texts.login_cta | to_trusted\"></div>\n                    <div class=\"sp_edit_profile_arrows\"></div>\n                    <div class=\"sp_edit_profile\" data-ng-if=\"user()\" data-ng-click=\"$event.preventDefault(); profile.fill_profile(true);\">{{ widget.texts.edit_profile_button }}</div>\n                    <div class=\"sp_edit_profile\" data-ng-if=\"!user()\" data-ng-click=\"$event.preventDefault(); login('remote', {widget: 'profile', element: 'profile_login_button'});\">{{ widget.texts.login }}</div>\n                </div>\n            </div>\n            <div class=\"sp_profile_right\">\n                <div class=\"sp_points_wrapper\">\n                    <span class=\"sp_points\" data-ng-bind=\"user().user_points.confirmed || 0 | number\"></span>\n                    <span class=\"sp_points_name\" data-ng-bind=\"user().user_points.confirmed | sailplay_pluralize: ('points.texts.pluralize' | tools)\"></span>\n                </div>\n                <span class=\"sp_history_button\" data-ng-if=\"user()\" data-ng-click=\"$event.preventDefault(); profile.history = true;\">{{ widget.texts.history_button }}</span>\n                <span class=\"sp_history_button\" style=\"margin-top:5px\" data-ng-if=\"user() && show_promocodes\" data-ng-click=\"$event.preventDefault(); profile.promocodes = true;\">{{ widget.texts.promocodes_button }}</span>\n            </div>\n        </div>\n    </div>\n\n\n    <!-- faq section -->\n    <magic-modal class=\"faq_modal\" data-show=\"profile.openFaq\">\n\n        <div class=\"mb_popup mb_popup_prof\" data-sailplay-fill-profile data-config=\"widget.fill_profile.config\">\n\n            <div class=\"mb_popup_top\">\n                <span class=\"modal_faq_header\">{{ widget.texts.faq.header }}</span>\n            </div>\n\n            <div class=\"mb_popup_text\">\n                <div class=\"modal_faq_text\" data-ng-bind-html=\"widget.texts.faq.text | to_trusted\"></div>\n            </div>\n\n        </div>\n    </magic-modal>\n\n    <magic-modal class=\"bns_overlay_hist\" data-show=\"profile.history\">\n\n        <div data-sailplay-history data-sailplay-profile>\n\n            <h3>\n                <span class=\"modal_history_header\">{{ widget.texts.history.header }}</span>\n                <!--<b>У вас {{ user().user_points.confirmed + ' ' + (user().user_points.confirmed | sailplay_pluralize:_tools.points.texts.pluralize) }}</b>-->\n            </h3>\n            <h4 class=\"modal_history_caption\">{{ widget.texts.history.caption }}</h4>\n\n            <table class=\"bns_hist_table\">\n\n                <tbody>\n\n                    <tr data-dir-paginate=\"item in history() | itemsPerPage:10\" data-pagination-id=\"history_pages\">\n                        <td>\n                            <span class=\"modal_history_date\" data-ng-bind=\"item.action_date | date:'d/MM/yyyy'\"></span>\n                        </td>\n                        <td>\n                            <span><b class=\"modal_history_content\" data-ng-bind=\"item | history_item\"></b></span>\n                        </td>\n                        <td>\n                            <span class=\"modal_history_points\" data-ng-if=\"item.points_delta\" data-ng-bind=\"((item.points_delta|number) || 0) + ' ' + (item.points_delta | sailplay_pluralize:('points.texts.pluralize' | tools))\"></span>\n                        </td>\n                    </tr>\n\n                </tbody>\n            </table>\n\n            <dir-pagination-controls data-max-size=\"7\" data-pagination-id=\"history_pages\" data-template-url=\"profile.history_pagination\" data-auto-hide=\"true\"></dir-pagination-controls>\n        </div>\n\n\n\n    </magic-modal>\n\n\n    <magic-modal class=\"bns_overlay_hist\" data-show=\"profile.promocodes\">\n\n        <div data-sailplay-history data-sailplay-profile>\n\n            <h3>\n                <span class=\"modal_history_header\">{{ widget.texts.promocodes.header }}</span>\n                <!--<b>У вас {{ user().user_points.confirmed + ' ' + (user().user_points.confirmed | sailplay_pluralize:_tools.points.texts.pluralize) }}</b>-->\n            </h3>\n            <h4 class=\"modal_history_caption\" style=\"margin-top:20px;margin-bottom:20px;opacity:1\">{{ widget.texts.promocodes.caption }}</h4>\n\n            <table class=\"bns_hist_table\">\n\n                <tbody>\n\n                    <tr data-dir-paginate=\"item in promocodes_status | itemsPerPage:10\" data-pagination-id=\"history_pages\">\n                        <td>\n                            <span class=\"modal_history_date\" data-ng-bind=\"item[0]\"></span>\n                        </td>\n                        <td style=\"text-align: right;\">\n                            <span class=\"modal_history_date\" data-ng-bind=\"item[1]\"></span>\n                        </td>\n                    </tr>\n                    <tr data-ng-if=\"!promocodes_status.length\">\n                        <td>\n                            <span style=\"font-size:16px\">\n                                {{ widget.texts.promocodes.placeholder }}\n                            </span></td>\n                    </tr>\n\n                </tbody>\n            </table>\n\n            <dir-pagination-controls data-ng-if=\"promocodes_status.length\" data-max-size=\"7\" data-pagination-id=\"history_pages\" data-template-url=\"profile.history_pagination\" data-auto-hide=\"true\"></dir-pagination-controls>\n        </div>\n\n\n\n    </magic-modal>\n\n    <!--profile edit section-->\n    <magic-modal class=\"fill_profile_modal\" data-show=\"profile.show_fill_profile\">\n\n        <div class=\"mb_popup mb_popup_prof\" data-sailplay-fill-profile data-config=\"widget.fill_profile.config\">\n\n            <div class=\"mb_popup_top\">\n                <span class=\"modal_profile_header\">{{ widget.fill_profile.header }}</span>\n            </div>\n\n            <form name=\"fill_profile_form\" class=\"fill_profile_form mb_popup_main mb_popup_main_mt\" data-ng-submit=\"sailplay.fill_profile.submit(fill_profile_form, profile.fill_profile);\">\n\n                <div class=\"form_field\" data-ng-repeat=\"field in sailplay.fill_profile.form.fields\" data-ng-switch=\"field.input\">\n\n                    <div data-ng-switch-when=\"image\" class=\"avatar_upload clearfix\">\n                        <img width=\"160px\" data-ng-src=\"{{ (field.value | sailplay_pic) || 'http://saike.ru/sailplay-magic/dist/img/profile/avatar_default.png'}}\" alt=\"\">\n                    </div>\n\n                    <div data-ng-switch-when=\"text\" class=\"clearfix\">\n                        <label class=\"form_label\">{{ field.label }}</label>\n                        <input class=\"form_input\" type=\"text\" placeholder=\"{{ field.placeholder }}\" data-ng-model=\"field.value\" data-ng-required=\"field.required\">\n                    </div>\n\n                    <div data-ng-switch-when=\"date\" class=\"clearfix\">\n                        <label class=\"form_label\">{{ field.label }}</label>\n                        <date-picker class=\"form_datepicker\" data-model=\"field.value\"></date-picker>\n                    </div>\n\n                    <div data-ng-switch-when=\"select\" class=\"clearfix\">\n                        <label class=\"form_label\">{{ field.label }}</label>\n                        <div class=\"magic_select form_input\">\n                            <select data-ng-model=\"field.value\" data-ng-options=\"item.value as item.text for item in field.data\" data-ng-required=\"field.required\"></select>\n                        </div>\n                    </div>\n\n                    <div data-ng-switch-when=\"phone\" class=\"clearfix\">\n                        <label class=\"form_label\">{{ field.label }}</label>\n                        <input class=\"form_input\" type=\"text\" data-model-view-value=\"true\" data-ui-mask=\"{{ field.placeholder }}\" data-ng-model=\"field.value\" data-ng-required=\"field.required\">\n                    </div>\n\n                    <div data-ng-switch-when=\"email\" class=\"clearfix\">\n                        <label class=\"form_label\">{{ field.label }}</label>\n                        <input class=\"form_input\" type=\"email\" placeholder=\"{{ field.placeholder }}\" data-ng-model=\"field.value\" data-ng-required=\"field.required\">\n                    </div>\n\n                </div>\n\n                <div class=\"answ_text\">\n                    <button type=\"submit\" class=\"sp_btn button_primary\">{{ 'buttons.texts.save' | tools }}</button>\n                </div>\n            </form>\n        </div>\n    </magic-modal>\n\n</div>";
 
 /***/ }),
 /* 160 */
@@ -46379,7 +46414,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	// module
-	exports.push([module.id, ".spm_wrapper .bns_hist_table {\n  float: left;\n  width: 100%;\n  margin-top: 12px;\n}\n.spm_wrapper .bns_hist_table td {\n  vertical-align: text-top;\n  padding: 5px 11px;\n}\n.spm_wrapper .bns_hist_table td:nth-child(1) {\n  color: #888888;\n  font-size: 13px;\n  line-height: 19px;\n  padding-right: 0px;\n  padding-left: 0px;\n  white-space: nowrap;\n}\n.spm_wrapper .bns_hist_table td:nth-child(2) {\n  color: #000000;\n  font-size: 12px;\n  font-weight: 200;\n  line-height: 19px;\n  position: relative;\n  padding-left: 0px;\n  width: 570px;\n}\n.spm_wrapper .bns_hist_table td:nth-child(2)::after {\n  position: absolute;\n  left: 0px;\n  width: 100%;\n  border-top: 1px dotted #444444;\n  top: 14px;\n  content: '';\n  display: block;\n}\n.spm_wrapper .bns_hist_table td:nth-child(2) span {\n  display: block;\n  position: relative;\n  z-index: 1;\n  font-size: 13px;\n  color: #222222;\n}\n.spm_wrapper .bns_hist_table td:nth-child(2) span b {\n  background-color: #ffffff;\n  padding-right: 15px;\n  padding-left: 11px;\n  font-weight: 200;\n}\n.spm_wrapper .bns_hist_table td:nth-child(2) span:first-child {\n  color: #000000;\n}\n.spm_wrapper .bns_hist_table td:nth-child(3) {\n  color: #444444;\n  font-size: 14px;\n  font-weight: bold;\n  text-align: right;\n  line-height: 19px;\n}\n.spm_wrapper .bns_hist_table td:nth-child(3) span {\n  display: block;\n  white-space: nowrap;\n  font-size: 13px;\n}\n.spm_wrapper .bns_hist_pager {\n  float: right;\n  font-size: 13px;\n}\n.spm_wrapper .bns_hist_pager a {\n  text-decoration: none;\n  color: #000;\n  margin-right: 4px;\n}\n.spm_wrapper .bns_hist_pager a.active {\n  font-weight: bold;\n}\n", ""]);
+	exports.push([module.id, ".spm_wrapper .bns_hist_table {\n  float: left;\n  width: 100%;\n  margin-top: 12px;\n}\n.spm_wrapper .bns_hist_table td {\n  vertical-align: text-top;\n  padding: 5px 11px;\n}\n.spm_wrapper .bns_hist_table td:nth-child(1) {\n  color: #888888;\n  font-size: 13px;\n  line-height: 19px;\n  padding-right: 0px;\n  padding-left: 0px;\n  white-space: nowrap;\n}\n.spm_wrapper .bns_hist_table td:nth-child(2) {\n  color: #000000;\n  font-size: 12px;\n  font-weight: 200;\n  line-height: 19px;\n  position: relative;\n  padding-left: 0px;\n  width: 570px;\n}\n.spm_wrapper .bns_hist_table td:nth-child(2)::after {\n  position: absolute;\n  left: 0px;\n  width: 100%;\n  border-top: 1px dotted #444444;\n  top: 14px;\n  content: none;\n  display: block;\n}\n.spm_wrapper .bns_hist_table td:nth-child(2) span {\n  display: block;\n  position: relative;\n  z-index: 1;\n  font-size: 13px;\n  color: #222222;\n}\n.spm_wrapper .bns_hist_table td:nth-child(2) span b {\n  background-color: #ffffff;\n  padding-right: 15px;\n  padding-left: 11px;\n  font-weight: 200;\n}\n.spm_wrapper .bns_hist_table td:nth-child(2) span:first-child {\n  color: #000000;\n}\n.spm_wrapper .bns_hist_table td:nth-child(3) {\n  color: #444444;\n  font-size: 14px;\n  font-weight: bold;\n  text-align: right;\n  line-height: 19px;\n}\n.spm_wrapper .bns_hist_table td:nth-child(3) span {\n  display: block;\n  white-space: nowrap;\n  font-size: 13px;\n}\n.spm_wrapper .bns_hist_pager {\n  float: right;\n  font-size: 13px;\n}\n.spm_wrapper .bns_hist_pager a {\n  text-decoration: none;\n  color: #000;\n  margin-right: 4px;\n}\n.spm_wrapper .bns_hist_pager a.active {\n  font-weight: bold;\n}\n", ""]);
 
 	// exports
 

@@ -30,7 +30,7 @@ const ProfileWidget = {
                 }
             };
 
-            scope.promocodes_status = ""
+            scope.promocodes_status = []
             scope.show_promocodes = false
 
             SailPlay.on('vars.batch.success', function(res) {
@@ -40,17 +40,15 @@ const ProfileWidget = {
                     parsed = parsed.value.replaceAll("NaN", "-1")
                     parsed = JSON.parse(parsed)
                     for (let i in parsed) {
-                        console.log(parsed[i])
                         if (parsed[i][1] == -1) {
-                            parsed[i][1] = "Not redeemed"
+                            parsed[i][1] = "Not used"
                         } else if (i[2] != -1) {
-                            parsed[i][1] = "Redeemed on " + parsed[i][2]
+                            parsed[i][1] = "Used on " + parsed[i][2]
                         } else {
-                            parsed[i][1] = "Redeemed"
+                            parsed[i][1] = "Used"
                         }
                     }
                     scope.promocodes_status = parsed
-                    console.log(res.vars)
                 }
 
                 if (res.vars.find(function(item) { return item.name == 'show_promocodes' }))

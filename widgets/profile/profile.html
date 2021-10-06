@@ -97,7 +97,7 @@
                 <span class="modal_history_header">{{ widget.texts.promocodes.header }}</span>
                 <!--<b>У вас {{ user().user_points.confirmed + ' ' + (user().user_points.confirmed | sailplay_pluralize:_tools.points.texts.pluralize) }}</b>-->
             </h3>
-            <h4 class="modal_history_caption">{{ widget.texts.promocodes.caption }}</h4>
+            <h4 class="modal_history_caption" style="margin-top:20px;margin-bottom:20px;opacity:1">{{ widget.texts.promocodes.caption }}</h4>
 
             <table class="bns_hist_table">
 
@@ -107,21 +107,21 @@
                         <td>
                             <span class="modal_history_date" data-ng-bind="item[0]"></span>
                         </td>
-                        <td>
+                        <td style="text-align: right;">
                             <span class="modal_history_date" data-ng-bind="item[1]"></span>
                         </td>
                     </tr>
-                    <tr data-ng-if="!promocodes_status">
+                    <tr data-ng-if="!promocodes_status.length">
                         <td>
                             <span style="font-size:16px">
-                                No rewards have been redeemed yet. Redeem a reward in order to access the promo codes list.
+                                {{ widget.texts.promocodes.placeholder }}
                             </span></td>
                     </tr>
 
                 </tbody>
             </table>
 
-            <dir-pagination-controls data-max-size="7" data-pagination-id="history_pages" data-template-url="profile.history_pagination" data-auto-hide="true"></dir-pagination-controls>
+            <dir-pagination-controls data-ng-if="promocodes_status.length" data-max-size="7" data-pagination-id="history_pages" data-template-url="profile.history_pagination" data-auto-hide="true"></dir-pagination-controls>
         </div>
 
 
