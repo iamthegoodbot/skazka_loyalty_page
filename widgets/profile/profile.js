@@ -31,7 +31,7 @@ const ProfileWidget = {
             };
 
             scope.promocodes_status = []
-            scope.show_promocodes = false
+            scope.show_promocodes = true
 
             SailPlay.on('vars.batch.success', function(res) {
                 let parsed = res.vars

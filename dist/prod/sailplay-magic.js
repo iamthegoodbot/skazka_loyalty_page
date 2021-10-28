@@ -46297,7 +46297,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            };
 
 	            scope.promocodes_status = [];
-	            scope.show_promocodes = false;
+	            scope.show_promocodes = true;
 
 	            SailPlay.on('vars.batch.success', function (res) {
 	                var parsed = res.vars;
