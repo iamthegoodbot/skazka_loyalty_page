@@ -37,10 +37,12 @@ const ProfileWidget = {
                 let parsed = res.vars
                 parsed = parsed.find(function(item) { return item.name == 'promocodes_status' })
                 if (parsed) {
-                    parsed = parsed.value.replaceAll("NaN", "-1")
+                    parsed = parsed.value
+                    parsed = parsed.replaceAll("null", "-1")
+                    parsed = parsed.replaceAll("NaN", "-1")
                     parsed = JSON.parse(parsed)
                     for (let i in parsed) {
-                        if (parsed[i][1] == -1) {
+                        if (parsed[i][1] == -1 || isNaN(parsed[i][1])) {
                             parsed[i][1] = "Not used"
                         } else if (i[2] != -1) {
                             parsed[i][1] = "Used on " + parsed[i][2]

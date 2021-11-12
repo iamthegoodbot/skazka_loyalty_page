@@ -355,6 +355,7 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
                 // console.dir(form);
 
                 saved_form = angular.copy(form);
+                console.log("REACHED")
 
                 if (custom_fields.length) {
                     SailPlayApi.call("vars.batch", { names: custom_fields.map(field => { return field.name }).concat(config.load_vars) }, (res) => {
@@ -365,10 +366,9 @@ export let SailPlayProfile = angular.module('sailplay.profile', [])
                         })
                     })
                 }
-
                 if (config.load_vars) {
                     setInterval(function() {
-                        SailPlayApi.call("vars.batch", { names: config.load_vars }, (res) => { return })
+                            SailPlayApi.call("vars.batch", { names: config.load_vars }, (res) => { console.log('REACHED3') })
                     }, 5000)
                 }
 

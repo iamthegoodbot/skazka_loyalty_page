@@ -39336,6 +39336,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                // console.dir(form);
 
 	                saved_form = _angular2.default.copy(form);
+	                console.log("REACHED");
 
 	                if (custom_fields.length) {
 	                    SailPlayApi.call("vars.batch", { names: custom_fields.map(function (field) {
@@ -39348,11 +39349,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	                        });
 	                    });
 	                }
-
 	                if (config.load_vars) {
 	                    setInterval(function () {
 	                        SailPlayApi.call("vars.batch", { names: config.load_vars }, function (res) {
-	                            return;
+	                            console.log('REACHED3');
 	                        });
 	                    }, 5000);
 	                }
@@ -46305,10 +46305,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	                    return item.name == 'promocodes_status';
 	                });
 	                if (parsed) {
-	                    parsed = parsed.value.replaceAll("NaN", "-1");
+	                    parsed = parsed.value;
+	                    parsed = parsed.replaceAll("null", "-1");
+	                    parsed = parsed.replaceAll("NaN", "-1");
 	                    parsed = JSON.parse(parsed);
 	                    for (var i in parsed) {
-	                        if (parsed[i][1] == -1) {
+	                        if (parsed[i][1] == -1 || isNaN(parsed[i][1])) {
 	                            parsed[i][1] = "Not used";
 	                        } else if (i[2] != -1) {
 	                            parsed[i][1] = "Used on " + parsed[i][2];
