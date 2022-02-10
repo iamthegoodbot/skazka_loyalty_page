@@ -39,7 +39,7 @@
     "less": "^2.7.3",
     "less-loader": "^4.0.5",
     "ng-annotate-loader": "^0.6.1",
-    "node-sass": "^4.7.2",
+    "node-sass": "^7.0.0",
     "postcss-class-prefix": "^0.3.0",
     "postcss-cli": "^5.0.0",
     "postcss-loader": "^2.1.3",
